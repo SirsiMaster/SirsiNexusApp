@@ -1,7 +1,7 @@
 # Jekyll configuration for SirsiNexus GitHub Pages
 title: "SirsiNexus"
 description: "Agent-embedded Infrastructure Platform"
-baseurl: "/SirsiNexus"
+baseurl: ""
 url: "https://sirsinexusdev.github.io"
 
 # Build settings
