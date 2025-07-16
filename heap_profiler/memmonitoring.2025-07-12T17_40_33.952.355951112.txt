@@ -1,0 +1,9 @@
+root 990 KiB (8.0 GiB / 0 B)
+    sql 930 KiB
+        SQLStats 30 KiB
+        SQLStats 690 KiB
+    server-cache-mon 10 KiB
+    closed-session-cache 10 KiB
+    kv-mem 20 KiB
+        rangefeed-monitor 20 KiB
+        rangefeed-system-monitor 70 KiB (128 MiB / 0 B)

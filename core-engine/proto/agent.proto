@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package sirsi.agent.v1;
+
+service AgentService {
+  // Starts a new agent session
+  rpc StartSession(StartSessionRequest) returns (StartSessionResponse);
+
+  // Spawns a new sub-agent of the specified type
+  rpc SpawnSubAgent(SpawnSubAgentRequest) returns (SpawnSubAgentResponse);
+
+  // Sends a message to an agent and gets a response
+  rpc SendMessage(SendMessageRequest) returns (SendMessageResponse);
+
+  // Gets suggestions from an agent based on current context
+  rpc GetSuggestions(GetSuggestionsRequest) returns (GetSuggestionsResponse);
+
+  // Gets the status of a specific sub-agent
+  rpc GetSubAgentStatus(GetSubAgentStatusRequest) returns (GetSubAgentStatusResponse);
+}
+
+message StartSessionRequest {
+  string user_id = 1;
+  map<string, string> context = 2;
+}
+
+message StartSessionResponse {
+  string session_id = 1;
+  repeated string available_agents = 2;
+}
+
+message SpawnSubAgentRequest {
+  string session_id = 1;
+  string agent_type = 2;
+  map<string, string> config = 3;
+}
+
+message SpawnSubAgentResponse {
+  string agent_id = 1;
+  string status = 2;
+}
+
+message SendMessageRequest {
+  string session_id = 1;
+  string agent_id = 2;
+  string message = 3;
+  map<string, string> context = 4;
+}
+
+message SendMessageResponse {
+  string message_id = 1;
+  string response = 2;
+  repeated Suggestion suggestions = 3;
+}
+
+message GetSuggestionsRequest {
+  string session_id = 1;
+  string agent_id = 2;
+  string context_type = 3;
+  map<string, string> context = 4;
+}
+
+message GetSuggestionsResponse {
+  repeated Suggestion suggestions = 1;
+}
+
+message GetSubAgentStatusRequest {
+  string session_id = 1;
+  string agent_id = 2;
+}
+
+message GetSubAgentStatusResponse {
+  string status = 1;
+  map<string, string> metrics = 2;
+  repeated string capabilities = 3;
+}
+
+message Suggestion {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string action_type = 4;
+  map<string, string> action_params = 5;
+  float confidence = 6;
+}

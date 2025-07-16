@@ -24,8 +24,8 @@
     </script>
     <title>Sirsi Nexus - Agent-Embedded Infrastructure Platform</title>
     <meta name="description" content="Agent-embedded migration & infrastructure platform" />
-    <!-- Cache buster: v1752705576 -->
-    <!-- MAIN BRANCH SYNC: 2025-07-16 01:32:56 -->
+    <!-- Cache buster: v1752627309 -->
+    <!-- MAIN BRANCH SYNC: 2025-07-16 01:15:09 -->
     <!-- JEKYLL DISABLED - STATIC SITE ONLY -->
     <script>
       (function() {
@@ -439,7 +439,7 @@ ul li::before {
 </head>
   <body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
     <!-- Header -->
-<header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+    <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
       <div class="max-w-7xl mx-auto px-6">
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center gap-6">
@@ -454,7 +454,7 @@ ul li::before {
                 </h1>
                 <div class="flex items-center gap-2">
                   <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
-                    v0.7.10-alpha
+                    v0.7.9-alpha
                   </span>
                   <div class="flex items-center gap-1">
                     <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
@@ -464,20 +464,16 @@ ul li::before {
               </div>
             </div>
           </div>
-          <nav class="flex items-center gap-4">
+          <nav class="flex items-center gap-6">
             <a href="index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Home</a>
             <a href="documentation.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Documentation</a>
             <a href="investor-login.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Investor Portal</a>
-            <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors border border-slate-300 dark:border-slate-600">
+            <a href="signup.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Sign Up</a>
+            <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors border border-slate-300 dark:border-slate-600 ml-4" style="min-width: 40px; min-height: 40px;">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
               </svg>
             </button>
-            <a href="print.md" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Print">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9v2m0 4h12v-4h4v6H2V11h4m6 12h6m-10-8v1m5-5v1m-5 4v1m5-5v1m-5 4v1m5-5v1M2 3a2 2 0 012-2h16a2 2 0 012 2v3m-2-3V3z"></path>
-              </svg>
-            </a>
           </nav>
           <button class="md:hidden text-slate-600 dark:text-slate-400" onclick="toggleMobileMenu()">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -489,27 +485,28 @@ ul li::before {
     </header>
 
     <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900 dark:to-emerald-800 py-20">
+    <section class="relative bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900 dark:to-emerald-800 py-20">
       <div class="max-w-7xl mx-auto px-6">
         <div class="text-center">
           <h1 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
             Agent-Embedded <span class="text-emerald-600">Infrastructure</span> Platform
           </h1>
           <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
-            SirsiNexus revolutionizes cloud infrastructure management.
+            SirsiNexus revolutionizes cloud infrastructure management with AI-powered agents, 
+            seamless migration tools, and intelligent automation for enterprise-scale deployments.
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="documentation.html" class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white font-medium rounded-md hover:bg-emerald-700 transition-colors">
-              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a href="documentation.html" class="inline-flex items-center px-6 py-3 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-colors">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
               </svg>
-              Docs
+              View Documentation
             </a>
-            <a href="signup.html" class="inline-flex items-center px-4 py-2 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium rounded-md hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a href="signup.html" class="inline-flex items-center px-6 py-3 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
               </svg>
-              Updates
+              Get Updates
             </a>
           </div>
         </div>
@@ -625,15 +622,15 @@ ul li::before {
       <div class="max-w-4xl mx-auto px-6 text-center">
         <h2 class="text-3xl font-bold text-white mb-4">Ready to Transform Your Infrastructure?</h2>
         <p class="text-xl text-white/90 mb-8">Join hundreds of enterprises already using SirsiNexus for their cloud operations</p>
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-          <a href="business-case.html" class="inline-flex items-center px-5 py-2 bg-white text-emerald-600 font-medium rounded-md hover:bg-gray-50 transition-colors">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="business-case.html" class="inline-flex items-center px-8 py-4 bg-white text-emerald-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
             </svg>
-            Business Case
+            View Business Case
           </a>
-          <a href="investor-login.html" class="inline-flex items-center px-5 py-2 border border-white text-white font-medium rounded-md hover:bg-white hover:text-emerald-600 transition-colors">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <a href="investor-login.html" class="inline-flex items-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-emerald-600 transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
             </svg>
             Investor Portal
@@ -683,9 +680,8 @@ ul li::before {
             </ul>
           </div>
         </div>
-        <div class="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8 text-center text-slate-600 dark:text-slate-400">
-          <p>&copy; 2025 Sirsi Technologies Inc. All rights reserved.</p>
-          <p class="text-sm mt-2">SirsiNexus is a product of Sirsi Technologies Inc.</p>
+<div class="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8 text-center text-slate-600 dark:text-slate-400">
+          <p>&copy; 2025 SirsiNexus. All rights reserved.</p>
         </div>
       </div>
     </footer>

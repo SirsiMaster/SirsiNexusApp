@@ -1,0 +1,123 @@
+{
+  "business_name": "UniEdu Analytics",
+  "business_type": "University-Aligned Educational Technology Consultancy",
+  "industry": "Education Technology & Analytics",
+  "founded": "2020",
+  "headquarters": "Boston, MA",
+  "employees": 45,
+  "revenue_annual": "$5.8M",
+  "clients": {
+    "universities": 12,
+    "student_records": 385000,
+    "active_students": 298000,
+    "alumni_tracked": 87000,
+    "data_growth_rate": "10% annually"
+  },
+  "business_objectives": {
+    "primary": "Migrate hundreds of thousands of student records to cloud while maintaining full control and analysis capabilities",
+    "secondary": [
+      "Implement predictive analytics for student success",
+      "Create comprehensive student lifecycle tracking",
+      "Develop employment outcome correlation models",
+      "Scale platform for 10% annual growth",
+      "Maintain FERPA compliance and data sovereignty"
+    ]
+  },
+  "current_infrastructure": {
+    "hosting": "On-premise university data centers",
+    "primary_systems": "Legacy SIS (Student Information Systems)",
+    "data_centers": ["Boston", "Chicago", "Austin"],
+    "architecture": "Distributed legacy systems with limited integration",
+    "student_data_tb": 28.5,
+    "academic_records_millions": 2.8,
+    "daily_transactions": 45000
+  },
+  "technology_stack": {
+    "current_sis": ["Banner ERP", "PeopleSoft", "Colleague"],
+    "databases": ["Oracle", "SQL Server", "MySQL", "PostgreSQL"],
+    "analytics": ["SAS", "R", "Python/Pandas", "Tableau"],
+    "integration": "ETL pipelines, custom APIs",
+    "reporting": "Crystal Reports, Business Objects"
+  },
+  "data_categories": {
+    "student_entry_data": {
+      "records": 385000,
+      "includes": ["Demographics", "Academic history", "Test scores", "Application data"],
+      "retention_years": 50
+    },
+    "academic_performance": {
+      "records": 2800000,
+      "includes": ["Grades", "Course enrollment", "GPA tracking", "Academic standing"],
+      "retention_years": 50
+    },
+    "faculty_evaluations": {
+      "records": 156000,
+      "includes": ["Teacher recommendations", "Research collaborations", "Mentorship records"],
+      "retention_years": 30
+    },
+    "achievements": {
+      "records": 89000,
+      "includes": ["Honors", "Awards", "Scholarships", "Dean's list", "Extracurricular activities"],
+      "retention_years": 50
+    },
+    "graduation_outcomes": {
+      "records": 87000,
+      "includes": ["Degree completion", "Time to graduation", "Post-grad surveys"],
+      "retention_years": 50
+    },
+    "employment_data": {
+      "records": 78000,
+      "includes": ["Job placement", "Salary data", "Career progression", "Alumni surveys"],
+      "retention_years": 30
+    }
+  },
+  "compliance_requirements": [
+    "FERPA (Family Educational Rights and Privacy Act)",
+    "GDPR (General Data Protection Regulation) - for international students",
+    "SOX (Sarbanes-Oxley) - for financial data",
+    "State education privacy laws",
+    "University data governance policies"
+  ],
+  "analytics_requirements": {
+    "predictive_models": [
+      "Student success prediction",
+      "Retention risk analysis",
+      "Career outcome forecasting",
+      "Resource allocation optimization"
+    ],
+    "real_time_analytics": [
+      "Academic performance tracking",
+      "Enrollment trends",
+      "Faculty workload analysis",
+      "Financial aid optimization"
+    ],
+    "longitudinal_studies": [
+      "Long-term career outcomes",
+      "Educational effectiveness",
+      "Alumni engagement patterns",
+      "ROI analysis for programs"
+    ]
+  },
+  "growth_projections": {
+    "annual_growth_rate": 0.10,
+    "student_records_5_year": 620000,
+    "data_volume_5_year_tb": 46.8,
+    "universities_target": 25,
+    "geographic_expansion": ["West Coast", "International"]
+  },
+  "demo_scenarios": {
+    "migration": {
+      "from": "Distributed on-premise university data centers",
+      "to": "Centralized cloud platform with data sovereignty controls",
+      "reason": "Scalability, analytics capability, and cost optimization"
+    },
+    "optimization": {
+      "focus": "Query performance and storage cost optimization for large-scale student data analytics",
+      "targets": ["Query response time", "Storage tiering", "Analytics pipeline efficiency"]
+    },
+    "scale_up": {
+      "growth_projection": "10% annual growth requiring elastic infrastructure",
+      "new_features": ["Real-time analytics", "ML-powered insights", "Global deployment"]
+    }
+  }
+}

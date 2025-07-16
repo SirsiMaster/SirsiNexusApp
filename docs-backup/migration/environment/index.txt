@@ -1,0 +1,52 @@
+1:"$Sreact.fragment"
+3:I[21286,["3397","static/chunks/3397-d0652276c05e6ea1.js","3065","static/chunks/3065-e130db2126d2820b.js","1121","static/chunks/1121-77a9f500efdb1d65.js","3470","static/chunks/3470-6ef5d16ca4c86f53.js","1642","static/chunks/1642-1417b0af57056574.js","2151","static/chunks/2151-065a7b453320399a.js","1596","static/chunks/1596-cc61e29772ba65f3.js","7177","static/chunks/app/layout-ea4dc06614c19161.js"],"Providers"]
+4:I[53614,["3397","static/chunks/3397-d0652276c05e6ea1.js","3065","static/chunks/3065-e130db2126d2820b.js","1121","static/chunks/1121-77a9f500efdb1d65.js","3470","static/chunks/3470-6ef5d16ca4c86f53.js","1642","static/chunks/1642-1417b0af57056574.js","2151","static/chunks/2151-065a7b453320399a.js","1596","static/chunks/1596-cc61e29772ba65f3.js","7177","static/chunks/app/layout-ea4dc06614c19161.js"],"ToastProvider"]
+5:I[1596,["3397","static/chunks/3397-d0652276c05e6ea1.js","3065","static/chunks/3065-e130db2126d2820b.js","1121","static/chunks/1121-77a9f500efdb1d65.js","3470","static/chunks/3470-6ef5d16ca4c86f53.js","1642","static/chunks/1642-1417b0af57056574.js","2151","static/chunks/2151-065a7b453320399a.js","1596","static/chunks/1596-cc61e29772ba65f3.js","7177","static/chunks/app/layout-ea4dc06614c19161.js"],"AIContextProvider"]
+6:I[95760,["3397","static/chunks/3397-d0652276c05e6ea1.js","3065","static/chunks/3065-e130db2126d2820b.js","1121","static/chunks/1121-77a9f500efdb1d65.js","3470","static/chunks/3470-6ef5d16ca4c86f53.js","1642","static/chunks/1642-1417b0af57056574.js","2151","static/chunks/2151-065a7b453320399a.js","1596","static/chunks/1596-cc61e29772ba65f3.js","7177","static/chunks/app/layout-ea4dc06614c19161.js"],"ErrorBoundary"]
+7:I[61359,["3397","static/chunks/3397-d0652276c05e6ea1.js","3065","static/chunks/3065-e130db2126d2820b.js","1121","static/chunks/1121-77a9f500efdb1d65.js","3470","static/chunks/3470-6ef5d16ca4c86f53.js","1642","static/chunks/1642-1417b0af57056574.js","2151","static/chunks/2151-065a7b453320399a.js","1596","static/chunks/1596-cc61e29772ba65f3.js","7177","static/chunks/app/layout-ea4dc06614c19161.js"],"ClientLayout"]
+8:I[49287,[],""]
+9:I[34235,[],""]
+a:I[17459,["3397","static/chunks/3397-d0652276c05e6ea1.js","3065","static/chunks/3065-e130db2126d2820b.js","1121","static/chunks/1121-77a9f500efdb1d65.js","3470","static/chunks/3470-6ef5d16ca4c86f53.js","1642","static/chunks/1642-1417b0af57056574.js","2151","static/chunks/2151-065a7b453320399a.js","1596","static/chunks/1596-cc61e29772ba65f3.js","7177","static/chunks/app/layout-ea4dc06614c19161.js"],"default"]
+b:I[4754,[],"ClientPageRoot"]
+c:I[24233,["3397","static/chunks/3397-d0652276c05e6ea1.js","8438","static/chunks/8438-543c8b7c3c1b4d5c.js","7427","static/chunks/app/migration/environment/page-fedbb1156c6464c8.js"],"default"]
+f:I[93621,[],"OutletBoundary"]
+12:I[16867,[],"AsyncMetadataOutlet"]
+14:I[93621,[],"ViewportBoundary"]
+16:I[93621,[],"MetadataBoundary"]
+18:I[27890,[],""]
+:HL["/SirsiNexus/_next/static/media/e4af272ccee01ff0-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/SirsiNexus/_next/static/css/5a4e5ff243db7bc0.css","style"]
+:HL["/SirsiNexus/_next/static/css/16dca7ab1dfc6772.css","style"]
+2:T40f,
+              (function() {
+                function getInitialColorMode() {
+                  const persistedColorPreference = window.localStorage.getItem('theme');
+                  const hasPersistedPreference = typeof persistedColorPreference === 'string';
+                  if (hasPersistedPreference) {
+                    return persistedColorPreference;
+                  }
+                  const mql = window.matchMedia('(prefers-color-scheme: dark)');
+                  const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+                  if (hasMediaQueryPreference) {
+                    return mql.matches ? 'dark' : 'light';
+                  }
+                  return 'light';
+                }
+                const colorMode = getInitialColorMode();
+                if (colorMode === 'dark') {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              })();
+            0:{"P":null,"b":"FsRvG1EdBJ6bHJNlDXnOg","p":"/SirsiNexus","c":["","migration","environment",""],"i":false,"f":[[["",{"children":["migration",{"children":["environment",{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/SirsiNexus/_next/static/css/5a4e5ff243db7bc0.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","link","1",{"rel":"stylesheet","href":"/SirsiNexus/_next/static/css/16dca7ab1dfc6772.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"className":"h-full","children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}]}],["$","body",null,{"className":"__className_29776b h-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100","children":["$","$L3",null,{"children":["$","$L4",null,{"children":["$","$L5",null,{"children":["$","$L6",null,{"children":["$","$L7",null,{"children":[["$","$L8",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L9",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}],["$","$L6",null,{"children":["$","$La",null,{}]}]]}]}]}]}]}]}]]}]]}],{"children":["migration",["$","$1","c",{"children":[null,["$","$L8",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L9",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["environment",["$","$1","c",{"children":[null,["$","$L8",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L9",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[["$","$Lb",null,{"Component":"$c","searchParams":{},"params":{},"promises":["$@d","$@e"]}],null,["$","$Lf",null,{"children":["$L10","$L11",["$","$L12",null,{"promise":"$@13"}]]}]]}],{},null,false]},null,false]},null,false]},null,false],["$","$1","h",{"children":[null,["$","$1","dCYciD0-66cSAluNMEPmAv",{"children":[["$","$L14",null,{"children":"$L15"}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],["$","$L16",null,{"children":"$L17"}]]}],false]],"m":"$undefined","G":["$18","$undefined"],"s":false,"S":true}
+19:"$Sreact.suspense"
+1a:I[16867,[],"AsyncMetadata"]
+d:{}
+e:{}
+17:["$","div",null,{"hidden":true,"children":["$","$19",null,{"fallback":null,"children":["$","$L1a",null,{"promise":"$@1b"}]}]}]
+11:null
+15:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+10:null
+13:{"metadata":[["$","title","0",{"children":"Sirsi Nexus"}],["$","meta","1",{"name":"description","content":"Agent-embedded migration & infrastructure platform"}]],"error":null,"digest":"$undefined"}
+1b:{"metadata":"$13:metadata","error":null,"digest":"$undefined"}

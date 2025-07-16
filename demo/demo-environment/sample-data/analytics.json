@@ -1,0 +1,19 @@
+{
+  "daily_stats": {
+    "total_checkouts": 47,
+    "total_returns": 32,
+    "new_registrations": 5,
+    "active_users": 234,
+    "popular_categories": [
+      {"category": "Technology", "count": 15},
+      {"category": "Information Science", "count": 12},
+      {"category": "Cataloging", "count": 8}
+    ]
+  },
+  "performance_metrics": {
+    "avg_response_time": "147ms",
+    "system_uptime": "99.97%",
+    "concurrent_users": 28,
+    "database_health": "excellent"
+  }
+}

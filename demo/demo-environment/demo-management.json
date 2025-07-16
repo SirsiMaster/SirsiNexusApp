@@ -1,0 +1,264 @@
+{
+  "demo_system_config": {
+    "version": "0.3.0",
+    "created_date": "2025-01-27",
+    "session_duration_days": 15,
+    "auto_cleanup_enabled": true,
+    "max_concurrent_demos_per_user": 3,
+    "supported_demo_types": ["migration", "optimization", "scale_up"]
+  },
+  "business_entities": [
+    {
+      "entity_id": "tvfone",
+      "entity_name": "TVfone",
+      "industry": "Media & Entertainment",
+      "complexity_level": "Medium",
+      "estimated_demo_duration_min": 45,
+      "key_features": [
+        "Streaming platform modernization",
+        "AI-powered recommendations",
+        "Multi-cloud deployment",
+        "Real-time content delivery optimization"
+      ],
+      "demo_scenarios": {
+        "migration": {
+          "available": true,
+          "duration_min": 15,
+          "complexity": "Medium",
+          "highlights": ["Hybrid to multi-cloud migration", "Global content delivery", "Cost optimization"]
+        },
+        "optimization": {
+          "available": true,
+          "duration_min": 12,
+          "complexity": "Low",
+          "highlights": ["CDN cost reduction", "Auto-scaling efficiency", "Database performance"]
+        },
+        "scale_up": {
+          "available": true,
+          "duration_min": 18,
+          "complexity": "High",
+          "highlights": ["300% user growth", "AI recommendations deployment", "Voice integration"]
+        }
+      }
+    },
+    {
+      "entity_id": "kulturio",
+      "entity_name": "Kulturio Skin Care",
+      "industry": "Healthcare Technology",
+      "complexity_level": "High",
+      "estimated_demo_duration_min": 55,
+      "key_features": [
+        "HIPAA/GDPR compliant migration",
+        "AI-powered skin analysis",
+        "Privacy-preserving compute",
+        "Global clinic network orchestration"
+      ],
+      "demo_scenarios": {
+        "migration": {
+          "available": true,
+          "duration_min": 20,
+          "complexity": "High",
+          "highlights": ["150K patient records migration", "HIPAA compliance", "Zero-downtime transition"]
+        },
+        "optimization": {
+          "available": true,
+          "duration_min": 15,
+          "complexity": "Medium",
+          "highlights": ["Image processing optimization", "Compliance automation", "Cost efficiency"]
+        },
+        "scale_up": {
+          "available": true,
+          "duration_min": 20,
+          "complexity": "High",
+          "highlights": ["500% patient growth", "Global telemedicine", "AI diagnostics rollout"]
+        }
+      }
+    },
+    {
+      "entity_id": "uniedu",
+      "entity_name": "UniEdu Analytics",
+      "industry": "Education Technology",
+      "complexity_level": "Medium",
+      "estimated_demo_duration_min": 40,
+      "key_features": [
+        "Student data analytics platform",
+        "FERPA compliant migration",
+        "Predictive student success models",
+        "Multi-university integration"
+      ],
+      "demo_scenarios": {
+        "migration": {
+          "available": true,
+          "duration_min": 15,
+          "complexity": "Medium",
+          "highlights": ["385K student records", "Data sovereignty", "Multi-system integration"]
+        },
+        "optimization": {
+          "available": true,
+          "duration_min": 12,
+          "complexity": "Low",
+          "highlights": ["Query performance", "Storage tiering", "Analytics pipeline efficiency"]
+        },
+        "scale_up": {
+          "available": true,
+          "duration_min": 13,
+          "complexity": "Medium",
+          "highlights": ["10% annual growth", "Elastic infrastructure", "ML-powered insights"]
+        }
+      }
+    }
+  ],
+  "demo_session_template": {
+    "user_id": "uuid",
+    "session_id": "uuid",
+    "created_at": "timestamp",
+    "expires_at": "timestamp",
+    "status": "active|completed|expired",
+    "selected_entities": [],
+    "active_demos": [],
+    "completed_demos": [],
+    "demo_results": {},
+    "user_preferences": {
+      "preferred_complexity": "low|medium|high",
+      "demo_pace": "fast|normal|detailed",
+      "focus_areas": []
+    }
+  },
+  "demo_execution_flows": {
+    "migration_demo": {
+      "steps": [
+        {
+          "step": 1,
+          "name": "Infrastructure Discovery",
+          "duration_min": 3,
+          "actions": ["Load current infrastructure", "Display resource inventory", "Show cost breakdown"]
+        },
+        {
+          "step": 2,
+          "name": "Target Architecture Planning",
+          "duration_min": 4,
+          "actions": ["Analyze requirements", "Recommend target architecture", "Show migration path"]
+        },
+        {
+          "step": 3,
+          "name": "Cost Analysis",
+          "duration_min": 3,
+          "actions": ["Calculate migration costs", "Compare total cost of ownership", "Show ROI projections"]
+        },
+        {
+          "step": 4,
+          "name": "Risk Assessment",
+          "duration_min": 2,
+          "actions": ["Identify migration risks", "Show mitigation strategies", "Compliance validation"]
+        },
+        {
+          "step": 5,
+          "name": "Migration Timeline",
+          "duration_min": 3,
+          "actions": ["Generate migration plan", "Show critical path", "Resource allocation"]
+        }
+      ]
+    },
+    "optimization_demo": {
+      "steps": [
+        {
+          "step": 1,
+          "name": "Performance Baseline",
+          "duration_min": 2,
+          "actions": ["Load performance metrics", "Identify bottlenecks", "Cost analysis"]
+        },
+        {
+          "step": 2,
+          "name": "Optimization Opportunities",
+          "duration_min": 4,
+          "actions": ["AI-driven recommendations", "Right-sizing analysis", "Resource consolidation"]
+        },
+        {
+          "step": 3,
+          "name": "Implementation Plan",
+          "duration_min": 3,
+          "actions": ["Prioritize optimizations", "Show implementation steps", "Risk assessment"]
+        },
+        {
+          "step": 4,
+          "name": "Expected Outcomes",
+          "duration_min": 3,
+          "actions": ["Project cost savings", "Performance improvements", "Monitoring plan"]
+        }
+      ]
+    },
+    "scale_up_demo": {
+      "steps": [
+        {
+          "step": 1,
+          "name": "Growth Analysis",
+          "duration_min": 3,
+          "actions": ["Load growth projections", "Capacity planning", "Performance requirements"]
+        },
+        {
+          "step": 2,
+          "name": "Scaling Strategy",
+          "duration_min": 5,
+          "actions": ["Auto-scaling configuration", "Multi-region deployment", "Load balancing"]
+        },
+        {
+          "step": 3,
+          "name": "Cost Projection",
+          "duration_min": 4,
+          "actions": ["Scale-up cost modeling", "Optimization recommendations", "Budget planning"]
+        },
+        {
+          "step": 4,
+          "name": "Implementation Roadmap",
+          "duration_min": 3,
+          "actions": ["Phased rollout plan", "Testing strategy", "Monitoring and alerts"]
+        }
+      ]
+    }
+  },
+  "output_bucket_structure": {
+    "demo_results": {
+      "infrastructure_assessment": "JSON report with current state analysis",
+      "migration_plan": "Detailed migration strategy and timeline",
+      "cost_analysis": "TCO comparison and ROI projections",
+      "optimization_recommendations": "Prioritized list of improvements",
+      "scaling_plan": "Growth accommodation strategy",
+      "compliance_report": "Regulatory compliance validation",
+      "risk_assessment": "Identified risks and mitigation strategies"
+    },
+    "artifacts": {
+      "architecture_diagrams": "SVG/PNG visual representations",
+      "cost_charts": "Interactive cost analysis charts",
+      "timeline_gantt": "Project timeline visualizations",
+      "performance_graphs": "Before/after performance comparisons",
+      "compliance_checklists": "Regulatory requirement validation"
+    },
+    "recommendations": {
+      "immediate_actions": "Quick wins and urgent recommendations",
+      "short_term_plan": "3-6 month implementation roadmap",
+      "long_term_strategy": "12-24 month strategic plan",
+      "technology_stack": "Recommended tools and platforms",
+      "best_practices": "Industry-specific guidelines"
+    }
+  },
+  "user_experience_features": {
+    "demo_customization": {
+      "industry_focus": "Tailor demos to specific industry requirements",
+      "complexity_adjustment": "Adjust technical depth based on audience",
+      "time_constraints": "Flexible demo duration (5-60 minutes)",
+      "interactive_elements": "Real-time Q&A and drill-down capabilities"
+    },
+    "session_persistence": {
+      "auto_save": "Continuous progress saving every 30 seconds",
+      "resume_capability": "Pick up exactly where user left off",
+      "cross_device_sync": "Access from multiple devices",
+      "offline_access": "Download demo results for offline review"
+    },
+    "collaboration": {
+      "shared_sessions": "Multiple users can join the same demo",
+      "presentation_mode": "Full-screen demo presentation",
+      "export_options": "PDF, PowerPoint, and JSON exports",
+      "commenting": "Add notes and comments during demos"
+    }
+  }
+}

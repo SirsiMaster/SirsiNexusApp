@@ -1,0 +1,28 @@
+[
+  {
+    "id": "TXN001",
+    "user_id": 1,
+    "isbn": "978-0-123456-78-9",
+    "action": "checkout",
+    "timestamp": "2025-07-03T06:01:39Z",
+    "due_date": "2025-07-17T06:01:39Z",
+    "status": "active"
+  },
+  {
+    "id": "TXN002",
+    "user_id": 2,
+    "isbn": "978-1-234567-89-0",
+    "action": "checkout",
+    "timestamp": "2025-07-05T06:01:39Z",
+    "due_date": "2025-07-19T06:01:39Z",
+    "status": "active"
+  },
+  {
+    "id": "TXN003",
+    "user_id": 3,
+    "isbn": "978-2-345678-90-1",
+    "action": "return",
+    "timestamp": "",
+    "status": "completed"
+  }
+]

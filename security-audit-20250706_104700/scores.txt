@@ -1,0 +1,12 @@
+# Security Audit Scores
+network_security_score: 60
+network_issues: 4
+authentication_score: 80
+auth_issues: 1
+database_security_score: 75
+database_issues: 2
+application_security_score: 70
+application_issues: 2
+docker_security_score: 60
+docker_issues: 15
+overall_security_score: 69

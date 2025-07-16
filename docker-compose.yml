@@ -1,0 +1,109 @@
+version: '3.8'
+
+services:
+  cockroachdb:
+    image: cockroachdb/cockroach:v23.1.14
+    container_name: sirsi-cockroachdb
+    ports:
+      - "26257:26257"  # SQL port
+      - "8081:8080"    # Admin UI port (different from app port)
+    volumes:
+      - cockroachdb_data:/cockroach/cockroach-data
+      - ./core-engine/migrations:/docker-entrypoint-initdb.d
+    command: >
+      start-single-node 
+      --insecure 
+      --advertise-addr=localhost 
+      --http-addr=0.0.0.0:8080
+      --sql-addr=0.0.0.0:26257
+    environment:
+      - COCKROACH_DATABASE=sirsi_nexus
+      - COCKROACH_USER=root
+    networks:
+      - sirsi-network
+    healthcheck:
+      test: ["CMD", "cockroach", "sql", "--insecure", "--execute", "SELECT 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Optional: For testing
+  cockroachdb-test:
+    image: cockroachdb/cockroach:v23.1.14
+    container_name: sirsi-cockroachdb-test
+    ports:
+      - "26258:26257"  # Different port for testing
+    volumes:
+      - cockroachdb_test_data:/cockroach/cockroach-data
+    command: >
+      start-single-node 
+      --insecure 
+      --advertise-addr=localhost 
+      --http-addr=0.0.0.0:8080
+      --sql-addr=0.0.0.0:26257
+    environment:
+      - COCKROACH_DATABASE=sirsi_test
+      - COCKROACH_USER=root
+    networks:
+      - sirsi-network
+    profiles:
+      - testing
+
+  redis:
+    image: redis:7
+    container_name: sirsi-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - sirsi-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.48
+    container_name: sirsi-jaeger
+    ports:
+      - "16686:16686"  # Jaeger UI
+      - "4317:4317"    # OTLP gRPC
+      - "4318:4318"    # OTLP HTTP
+    networks:
+      - sirsi-network
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+
+  # Vector Database for AI/ML workloads
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: sirsi-qdrant
+    ports:
+      - "6333:6333"   # REST API
+      - "6334:6334"   # gRPC API
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - sirsi-network
+    environment:
+      QDRANT__SERVICE__HTTP_PORT: 6333
+      QDRANT__SERVICE__GRPC_PORT: 6334
+      QDRANT__LOG_LEVEL: INFO
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  cockroachdb_data:
+  cockroachdb_test_data:
+  redis_data:
+  qdrant_data:
+
+networks:
+  sirsi-network:
+    driver: bridge

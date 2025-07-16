@@ -1,0 +1,38 @@
+[
+  {
+    "isbn": "978-0-123456-78-9",
+    "title": "Advanced Library Management Systems",
+    "author": "Dr. Sarah Wilson",
+    "publisher": "Academic Press",
+    "year": 2023,
+    "copies_available": 5,
+    "copies_total": 10,
+    "category": "Information Science",
+    "rating": 4.7,
+    "circulation_count": 127
+  },
+  {
+    "isbn": "978-1-234567-89-0",
+    "title": "Digital Transformation in Libraries",
+    "author": "Prof. Michael Chen",
+    "publisher": "Tech Publications",
+    "year": 2024,
+    "copies_available": 3,
+    "copies_total": 8,
+    "category": "Technology",
+    "rating": 4.9,
+    "circulation_count": 89
+  },
+  {
+    "isbn": "978-2-345678-90-1",
+    "title": "Modern Cataloging Practices",
+    "author": "Linda Rodriguez",
+    "publisher": "Library Science Press",
+    "year": 2023,
+    "copies_available": 7,
+    "copies_total": 12,
+    "category": "Cataloging",
+    "rating": 4.5,
+    "circulation_count": 156
+  }
+]

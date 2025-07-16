@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus - Product Roadmap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              emerald: {
+                600: '#059669',
+                700: '#047857',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <script>
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          if (persistedColorPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          if (mql.matches) {
+            return 'dark';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="assets/css/shared.css">
+    <script src="assets/js/theme-toggle.js"></script>
+    <!-- Cache buster: v1752625978 -->
+    <style>
+      .print-button {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        color: white;
+        border: none;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        transition: all 0.3s ease;
+      }
+      
+      .print-button:hover {
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(5, 150, 105, 0.4);
+      }
+    </style>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex h-16 items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 flex items-center justify-center">
+                            <img src="assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
+                            <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">SirsiNexus</h1>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">v0.5.0-alpha</span>
+                                <div class="flex items-center gap-1">
+                                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                                    <span class="text-xs text-slate-600 dark:text-slate-300">Live</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav class="flex items-center gap-6">
+                    <a href="index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Home</a>
+                    <a href="investor-portal.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Investor Dashboard</a>
+                    <div class="relative group">
+                        <button class="text-sm text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors flex items-center gap-1">
+                            Committee
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                            <div class="py-2">
+                                <a href="committee/index.html" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Committee Index</a>
+                                <a href="business-case.html" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Business Case</a>
+                                <a href="market-analysis.html" class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">Market Analysis</a>
+                                <span class="block px-4 py-2 text-sm text-emerald-600 dark:text-emerald-400 font-medium">Product Roadmap</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900 dark:to-emerald-800 py-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+                    Product <span class="text-emerald-600">Roadmap</span> & Strategy
+                </h1>
+                <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
+                    Delivering a compelling vision of product innovation and market growth, with detailed strategic phases, goals, and metrics to ensure transparency and strategic alignment.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <span class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-lg border border-slate-200 dark:border-slate-700">
+                        <svg class="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Strategic Roadmap
+                    </span>
+                    <span class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-lg border border-slate-200 dark:border-slate-700">
+                        <svg class="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 9l2 2 4-4"></path>
+                        </svg>
+                        July 2025
+                    </span>
+                    <span class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-lg border border-slate-200 dark:border-slate-700">
+                        <svg class="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                        Confidential
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Overview Section -->
+    <section class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+        <div class="max-w-6xl mx-auto px-6 py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+                    Strategic <span class="text-emerald-600">Product Vision</span>
+                </h2>
+                <p class="text-lg text-slate-600 dark:text-slate-400 max-w-4xl mx-auto">
+                    SirsiNexus represents a paradigm shift in cloud infrastructure management, built on a foundation of cutting-edge AI and proven enterprise-grade technology. Our strategic roadmap positions us to capture significant market share in the rapidly growing $78.8B cloud management market.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">Proven Foundation</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Built on battle-tested Rust architecture with distributed CockroachDB, delivering 99.9% uptime and sub-200ms response times across three major cloud providers.
+                    </p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">AI-Powered Innovation</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Advanced ML algorithms provide predictive scaling, anomaly detection, and cost optimization with 92% accuracy, delivering average 35% infrastructure cost reduction.
+                    </p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 8h1m-1-4h1m4 4h1m-1-4h1"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-2">Scalable Growth</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Engineered for enterprise scale with containerized architecture, multi-region support, and comprehensive security compliance including SOC 2 and GDPR readiness.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Market Opportunity -->
+            <div class="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 p-8 rounded-xl border border-slate-200 dark:border-slate-700">
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 text-center">
+                    Market Opportunity & Competitive Advantage
+                </h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Market Dynamics</h4>
+                        <ul class="space-y-3 text-slate-600 dark:text-slate-400">
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-emerald-600 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                                <span><strong>$78.8B Total Addressable Market</strong> - Cloud management and optimization services growing at 22% CAGR</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-emerald-600 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                                <span><strong>Enterprise Cloud Adoption</strong> - 94% of enterprises use cloud services with average 2.6 cloud providers</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-emerald-600 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                                <span><strong>Cost Optimization Demand</strong> - 61% of enterprises cite cost control as top cloud priority</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-emerald-600 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                                <span><strong>AI Integration Trend</strong> - 45% of cloud budgets allocated to AI/ML-powered solutions by 2027</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Competitive Differentiation</h4>
+                        <ul class="space-y-3 text-slate-600 dark:text-slate-400">
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                                <span><strong>Rust Performance Edge</strong> - 40% faster processing than Python/Node.js competitors</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                                <span><strong>Real-time AI Optimization</strong> - Millisecond response times vs. batch processing competitors</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                                <span><strong>Unified Multi-cloud</strong> - Single pane of glass for AWS, Azure, GCP management</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="w-2 h-2 bg-blue-600 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+                                <span><strong>Enterprise-first Security</strong> - Built-in compliance and audit capabilities</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-6xl mx-auto px-6 py-12">
+
+        <div class="space-y-8">
+            <!-- Phase 1: Foundation (Completed) -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border-l-4 border-emerald-500">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-emerald-600">Phase 1: Foundation</h2>
+                    <span class="bg-emerald-100 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-200 px-3 py-1 rounded-full text-sm font-medium">Completed</span>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 mb-4">Q1 2024 - Core infrastructure and MVP development</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100">✅ Achievements</h3>
+                        <ul class="text-slate-600 dark:text-slate-400 space-y-1">
+                            <li>• Rust-powered core engine</li>
+                            <li>• CockroachDB integration</li>
+                            <li>• Basic authentication system</li>
+                            <li>• Multi-cloud connectors (AWS, Azure, GCP)</li>
+                        </ul>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100">🎯 Key Metrics</h3>
+                        <ul class="text-slate-600 dark:text-slate-400 space-y-1">
+                            <li>• 99.9% uptime achieved</li>
+                            <li>• 3 cloud providers supported</li>
+                            <li>• 15 beta customers onboarded</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 2: AI Enhancement (Current) -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border-l-4 border-blue-500">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-blue-600">Phase 2: AI Enhancement</h2>
+                    <span class="bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm font-medium">In Progress</span>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 mb-4">Q2-Q3 2024 - Advanced AI and ML capabilities</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100">🔄 Current Work</h3>
+                        <ul class="text-slate-600 dark:text-slate-400 space-y-1">
+                            <li>• Real-time cost optimization</li>
+                            <li>• Predictive scaling algorithms</li>
+                            <li>• Anomaly detection system</li>
+                            <li>• ChatGPT integration for queries</li>
+                        </ul>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100">📊 Progress</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span>AI Engine</span>
+                                <span class="text-emerald-600">85%</span>
+                            </div>
+                            <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                                <div class="bg-emerald-600 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 3: Enterprise Features (Upcoming) -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border-l-4 border-orange-500">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-orange-600">Phase 3: Enterprise Features</h2>
+                    <span class="bg-orange-100 dark:bg-orange-900/20 text-orange-800 dark:text-orange-200 px-3 py-1 rounded-full text-sm font-medium">Q4 2024</span>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 mb-4">Enterprise-grade security and compliance</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100">🔒 Security & Compliance</h3>
+                        <ul class="text-slate-600 dark:text-slate-400 space-y-1">
+                            <li>• SOC 2 Type II certification</li>
+                            <li>• GDPR compliance framework</li>
+                            <li>• Advanced RBAC system</li>
+                            <li>• Audit logging enhancement</li>
+                        </ul>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100">📈 Advanced Analytics</h3>
+                        <ul class="text-slate-600 dark:text-slate-400 space-y-1">
+                            <li>• Custom dashboard builder</li>
+                            <li>• Advanced reporting engine</li>
+                            <li>• Cost allocation tracking</li>
+                            <li>• Executive summaries</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 4: Scale & Expansion (Future) -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border-l-4 border-purple-500">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-purple-600">Phase 4: Scale & Expansion</h2>
+                    <span class="bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-200 px-3 py-1 rounded-full text-sm font-medium">2025</span>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 mb-4">Global expansion and ecosystem integration</p>
+                
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100">🌍 Global Reach</h3>
+                        <ul class="text-slate-600 dark:text-slate-400 space-y-1">
+                            <li>• Multi-region deployment</li>
+                            <li>• Localization support</li>
+                            <li>• Partner ecosystem</li>
+                            <li>• API marketplace</li>
+                        </ul>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100">🔧 Platform Enhancement</h3>
+                        <ul class="text-slate-600 dark:text-slate-400 space-y-1">
+                            <li>• Custom integrations</li>
+                            <li>• Workflow automation</li>
+                            <li>• Mobile applications</li>
+                            <li>• Edge computing support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Executive Summary -->
+            <section class="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 p-6 rounded-lg border border-slate-200 dark:border-slate-700">
+                <h2 class="text-xl font-semibold mb-4 text-emerald-600">Strategic Roadmap Overview</h2>
+                <p class="text-slate-700 dark:text-slate-300 mb-4 leading-relaxed">
+                    SirsiNexus's product roadmap is built on a foundation of proven technology and strategic market positioning. Our phased approach ensures rapid market entry while maintaining technical excellence and scalability. Each phase builds upon previous achievements while introducing new capabilities that strengthen our competitive position.
+                </p>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-lg">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Total Investment</h3>
+                        <p class="text-2xl font-bold text-emerald-600">$2.1M</p>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Over 3 years</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-lg">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Revenue Target</h3>
+                        <p class="text-2xl font-bold text-emerald-600">$33M</p>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">By end of 2027</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-lg">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Customer Base</h3>
+                        <p class="text-2xl font-bold text-emerald-600">280</p>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Enterprise customers</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technology Stack -->
+            <section class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+                <h2 class="text-xl font-semibold mb-4 text-emerald-600">Technology Foundation</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Core Infrastructure</h3>
+                        <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-emerald-600 rounded-full mr-2"></span>
+                                <span>Rust-powered backend for performance and safety</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-emerald-600 rounded-full mr-2"></span>
+                                <span>CockroachDB for distributed, resilient data storage</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-emerald-600 rounded-full mr-2"></span>
+                                <span>React + TypeScript frontend for responsive UX</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-emerald-600 rounded-full mr-2"></span>
+                                <span>Docker containerization for scalable deployment</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">AI & ML Components</h3>
+                        <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+                                <span>TensorFlow/PyTorch for predictive modeling</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+                                <span>OpenAI GPT-4 integration for natural language</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+                                <span>Real-time anomaly detection algorithms</span>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="w-2 h-2 bg-blue-600 rounded-full mr-2"></span>
+                                <span>Cost optimization recommendation engine</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Development Metrics -->
+            <section class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+                <h2 class="text-xl font-semibold mb-4 text-emerald-600">Development Metrics & KPIs</h2>
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="text-2xl font-bold text-emerald-600 mb-1">99.9%</div>
+                        <div class="text-sm text-slate-600 dark:text-slate-400">Uptime SLA</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <div class="text-2xl font-bold text-blue-600 mb-1">< 200ms</div>
+                        <div class="text-sm text-slate-600 dark:text-slate-400">Response Time</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
+                            </svg>
+                        </div>
+                        <div class="text-2xl font-bold text-purple-600 mb-1">95%</div>
+                        <div class="text-sm text-slate-600 dark:text-slate-400">Code Coverage</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </div>
+                        <div class="text-2xl font-bold text-orange-600 mb-1">6</div>
+                        <div class="text-sm text-slate-600 dark:text-slate-400">Team Size</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Risk Assessment -->
+            <section class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm">
+                <h2 class="text-xl font-semibold mb-4 text-emerald-600">Risk Assessment & Mitigation</h2>
+                <div class="space-y-4">
+                    <div class="border-l-4 border-yellow-500 pl-4 bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-r-lg">
+                        <h3 class="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">Technical Risks</h3>
+                        <ul class="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
+                            <li>• Scalability challenges with rapid customer growth</li>
+                            <li>• Integration complexity with enterprise systems</li>
+                            <li>• AI model accuracy and reliability concerns</li>
+                        </ul>
+                        <p class="text-sm text-yellow-700 dark:text-yellow-300 mt-2"><strong>Mitigation:</strong> Robust testing, gradual rollout, fallback mechanisms</p>
+                    </div>
+                    <div class="border-l-4 border-red-500 pl-4 bg-red-50 dark:bg-red-900/20 p-4 rounded-r-lg">
+                        <h3 class="font-semibold text-red-800 dark:text-red-200 mb-2">Market Risks</h3>
+                        <ul class="text-sm text-red-700 dark:text-red-300 space-y-1">
+                            <li>• Competitive response from established players</li>
+                            <li>• Economic downturn affecting enterprise IT spending</li>
+                            <li>• Regulatory changes impacting cloud operations</li>
+                        </ul>
+                        <p class="text-sm text-red-700 dark:text-red-300 mt-2"><strong>Mitigation:</strong> Strong differentiation, flexible pricing, compliance focus</p>
+                    </div>
+                    <div class="border-l-4 border-blue-500 pl-4 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-r-lg">
+                        <h3 class="font-semibold text-blue-800 dark:text-blue-200 mb-2">Execution Risks</h3>
+                        <ul class="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                            <li>• Difficulty scaling sales team effectively</li>
+                            <li>• Customer success and support challenges</li>
+                            <li>• Timeline delays in feature development</li>
+                        </ul>
+                        <p class="text-sm text-blue-700 dark:text-blue-300 mt-2"><strong>Mitigation:</strong> Proven hiring practices, customer success focus, agile development</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Success Metrics -->
+            <section class="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 p-6 rounded-lg border border-slate-200 dark:border-slate-700">
+                <h2 class="text-xl font-semibold mb-4 text-emerald-600">Success Metrics & Milestones</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Business Metrics</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-600 dark:text-slate-400">Monthly ARR Growth</span>
+                                <span class="font-semibold text-emerald-600">>20%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-600 dark:text-slate-400">Customer Acquisition Cost</span>
+                                <span class="font-semibold text-emerald-600">< $12.5K</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-600 dark:text-slate-400">Net Revenue Retention</span>
+                                <span class="font-semibold text-emerald-600">>120%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-600 dark:text-slate-400">Customer Satisfaction</span>
+                                <span class="font-semibold text-emerald-600">>4.5/5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Technical Metrics</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-600 dark:text-slate-400">Platform Uptime</span>
+                                <span class="font-semibold text-emerald-600">>99.9%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-600 dark:text-slate-400">API Response Time</span>
+                                <span class="font-semibold text-emerald-600">< 200ms</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-600 dark:text-slate-400">Cost Optimization Accuracy</span>
+                                <span class="font-semibold text-emerald-600">>92%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-600 dark:text-slate-400">Security Incidents</span>
+                                <span class="font-semibold text-emerald-600">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+
+    <script>
+        function toggleTheme() {
+            console.log('Theme toggle clicked');
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                console.log('Switched to light mode');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                console.log('Switched to dark mode');
+            }
+        }
+        
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            console.log('Theme initialized:', theme);
+        }
+        
+        // Initialize immediately
+        initTheme();
+        
+        // Make toggleTheme available globally
+        window.toggleTheme = toggleTheme;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package sirsi.v1;
+
+service SirsiService {
+  // Send a message to Sirsi
+  rpc SendMessageToSirsi(SendMessageToSirsiRequest) returns (SendMessageToSirsiResponse);
+
+  // Get persona information
+  rpc GetPersonaInfo(GetPersonaInfoRequest) returns (GetPersonaInfoResponse);
+
+  // Start a new session
+  rpc StartSession(StartSirsiSessionRequest) returns (StartSirsiSessionResponse);
+
+  // End an ongoing session
+  rpc EndSession(EndSirsiSessionRequest) returns (EndSirsiSessionResponse);
+}
+
+message SendMessageToSirsiRequest {
+  string user_message = 1;
+  string session_id = 2;
+  map<string, string> context = 3;
+}
+
+message SendMessageToSirsiResponse {
+  string sirsi_response = 1;
+  repeated string suggestions = 2;
+}
+
+message GetPersonaInfoRequest {
+  string persona_id = 1;
+}
+
+message GetPersonaInfoResponse {
+  string details = 1;
+}
+
+message StartSirsiSessionRequest {
+  string user_id = 1;
+  map<string, string> initial_context = 2;
+}
+
+message StartSirsiSessionResponse {
+  string session_id = 1;
+}
+
+message EndSirsiSessionRequest {
+  string session_id = 1;
+}
+
+message EndSirsiSessionResponse {
+  string confirmation_message = 1;
+}
+

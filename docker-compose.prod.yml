@@ -1,0 +1,176 @@
+version: '3.8'
+
+services:
+  # Core Rust Backend Engine
+  core-engine:
+    build:
+      context: ./core-engine
+      dockerfile: Dockerfile.prod
+      target: production
+    ports:
+      - "8080:8080"
+      - "9090:9090"  # gRPC
+    environment:
+      - RUST_LOG=info
+      - DATABASE_URL=postgresql://root@cockroachdb:26257/sirsi_nexus?sslmode=disable
+      - REDIS_URL=redis://redis:6379
+      - ENVIRONMENT=production
+    depends_on:
+      - cockroachdb
+      - redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - sirsi-network
+
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile.prod
+      target: production
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://core-engine:8080
+      - NEXT_PUBLIC_GRPC_URL=http://core-engine:9090
+    depends_on:
+      - core-engine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - sirsi-network
+
+  # Analytics Platform (Python)
+  analytics:
+    build:
+      context: ./analytics-platform
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - ENVIRONMENT=production
+      - REDIS_URL=redis://redis:6379
+      - CORE_ENGINE_URL=http://core-engine:8080
+    depends_on:
+      - redis
+      - core-engine
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - sirsi-network
+
+  # CockroachDB (Production Configuration)
+  cockroachdb:
+    image: cockroachdb/cockroach:v25.2.1
+    command: start-single-node --insecure --listen-addr=0.0.0.0:26257 --http-addr=0.0.0.0:8081
+    ports:
+      - "26257:26257"
+      - "8081:8081"
+    volumes:
+      - cockroach-data:/cockroach/cockroach-data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - sirsi-network
+
+  # Redis (Production Configuration)
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - sirsi-network
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - core-engine
+      - analytics
+    restart: unless-stopped
+    networks:
+      - sirsi-network
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9000:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    networks:
+      - sirsi-network
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_USERS_ALLOW_SIGN_UP=false
+    networks:
+      - sirsi-network
+
+volumes:
+  cockroach-data:
+    driver: local
+  redis-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+
+networks:
+  sirsi-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

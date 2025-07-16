@@ -1,0 +1,29 @@
+# SirsiNexus Configuration File
+# This configuration file contains default settings for the unified sirsi-nexus platform
+
+server:
+  http_addr: "0.0.0.0:8082"      # REST API server address
+  grpc_addr: "0.0.0.0:50051"     # gRPC agent server address
+  websocket_addr: "0.0.0.0:8081" # WebSocket server address
+
+database:
+  host: "localhost"
+  port: 26257
+  username: "root"
+  password: ""
+  database: "sirsi_nexus"
+  max_connections: 20
+  sslmode: "disable"
+  url: "postgresql://root@localhost:26257/sirsi_nexus?sslmode=disable"
+
+redis:
+  url: "redis://127.0.0.1:6379"
+
+jwt:
+  secret: "your-secret-key-please-change-in-production"
+  expiration: 1440  # 24 hours in minutes
+
+telemetry:
+  service_name: "sirsi-nexus"
+  environment: "development"
+  otlp_endpoint: "http://localhost:4317"
