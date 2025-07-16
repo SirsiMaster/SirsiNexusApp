@@ -148,7 +148,7 @@
               localStorage.setItem('investor-id', investorId);
               
               // Redirect to investor portal
-              window.location.href = 'investor-portal.html';
+              window.location.href = 'investor-login.html';
           } else if (investorId === 'admin' && accessCode === 'admin2025') {
               console.log('✅ Admin access granted');
               // Store admin session
@@ -179,7 +179,7 @@
           if (userRole === 'admin') {
               window.location.href = 'investor-portal/admin/dashboard.html';
           } else {
-              window.location.href = 'investor-portal.html';
+              window.location.href = 'investor-login.html';
           }
       }
   });

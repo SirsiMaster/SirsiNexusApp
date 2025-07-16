@@ -18,7 +18,7 @@ Successfully cleaned up the SirsiNexus GitHub Pages docs directory from 91 files
 **Core Pages (10 files):**
 - `index.html` - Main landing page
 - `signup.html` - User registration page  
-- `investor-portal.html` - Investor portal with authentication
+- `investor-login.html` - Investor portal with authentication
 - `business-case.html` - Business case documentation
 - `documentation.html` - Technical documentation hub
 - `privacy-policy.html` - Privacy policy

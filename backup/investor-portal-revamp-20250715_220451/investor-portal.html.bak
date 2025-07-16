@@ -967,7 +967,7 @@ ul li::before {
                 
                 // Redirect to dashboard after 2 seconds
                 setTimeout(() => {
-                    window.location.href = 'investor-portal.html';
+                    window.location.href = 'investor-dashboard.html';
                 }, 2000);
             } else {
                 console.log('❌ Invalid credentials provided');

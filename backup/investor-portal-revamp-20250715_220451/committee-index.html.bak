@@ -46,7 +46,8 @@
     </script>
     <link rel="stylesheet" href="assets/css/shared.css">
     <script src="assets/js/theme-toggle.js"></script>
-    <!-- Cache buster: v1752625978 -->
+    <!-- Cache buster: v1752627221 -->
+    <!-- COMMITTEE PAGE FIXED: 2025-07-16 01:13:42 -->
 <style>
 /* Professional Investment-Ready Styling matching main page quality */
 
@@ -360,7 +361,7 @@ p {
                 </div>
                 <nav class="flex items-center gap-6">
                     <a href="index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Home</a>
-                    <a href="investor-login.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Investor Dashboard</a>
+                    <a href="investor-portal.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Investor Dashboard</a>
                     <div class="relative group">
                         <button class="text-sm text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors flex items-center gap-1">
                             Committee
@@ -552,5 +553,38 @@ p {
 
     </main>
 
+    <script>
+        function toggleTheme() {
+            console.log('Theme toggle clicked');
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                console.log('Switched to light mode');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                console.log('Switched to dark mode');
+            }
+        }
+        
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            console.log('Theme initialized:', theme);
+        }
+        
+        // Initialize immediately
+        initTheme();
+        
+        // Make toggleTheme available globally
+        window.toggleTheme = toggleTheme;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+        });
+    </script>
 </body>
 </html>
