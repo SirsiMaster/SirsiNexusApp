@@ -101,6 +101,22 @@ body {
     color: #e2e8f0;
 }
 
+.dark .bg-slate-50 {
+    background-color: #1e293b !important;
+}
+
+.dark .text-slate-900 {
+    color: #f1f5f9 !important;
+}
+
+.dark .text-slate-700 {
+    color: #cbd5e1 !important;
+}
+
+.dark .text-slate-600 {
+    color: #94a3b8 !important;
+}
+
 /* Professional Typography Scale */
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Inter', sans-serif;
@@ -520,7 +536,7 @@ footer * {
 
     <!-- Page Title Section -->
     <!-- Hero Section -->
-    <section class="relative bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900 dark:to-emerald-800 py-20">
+    <section class="relative bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900 dark:to-emerald-800 py-10">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center">
                 <h1 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
@@ -1293,6 +1309,87 @@ footer * {
 
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 text-slate-600 dark:text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-8 h-8 object-contain">
+                        </div>
+                        <span class="text-xl font-semibold">SirsiNexus</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400">Agent-embedded infrastructure platform for enterprise cloud operations.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Platform</h4>
+                    <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                        <li><a href="#features" class="hover:text-slate-900 dark:hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#platform" class="hover:text-slate-900 dark:hover:text-white transition-colors">Architecture</a></li>
+                        <li><a href="#docs" class="hover:text-slate-900 dark:hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#pricing" class="hover:text-slate-900 dark:hover:text-white transition-colors">Pricing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                        <li><a href="#about" class="hover:text-slate-900 dark:hover:text-white transition-colors">About</a></li>
+                        <li><a href="#careers" class="hover:text-slate-900 dark:hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#blog" class="hover:text-slate-900 dark:hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#contact" class="hover:text-slate-900 dark:hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                        <li><a href="privacy-policy.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms-of-service.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="documentation.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Security</a></li>
+                        <li><a href="investor-login.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Investor Relations</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8 text-center text-slate-600 dark:text-slate-400">
+                <p>&copy; 2025 SirsiNexus. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            console.log('Theme toggle clicked');
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                console.log('Switched to light mode');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                console.log('Switched to dark mode');
+            }
+        }
+        
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            console.log('Theme initialized:', theme);
+        }
+        
+        // Initialize immediately
+        initTheme();
+        
+        // Make toggleTheme available globally
+        window.toggleTheme = toggleTheme;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+        });
+    </script>
 
 </body>
 </html>
