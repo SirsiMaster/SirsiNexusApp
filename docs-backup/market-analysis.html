@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus - Market Analysis and Competitive Positioning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Suppress Tailwind CDN production warnings
+        const originalConsole = console.warn;
+        console.warn = function(message, ...args) {
+            if (typeof message === 'string' && message.includes('should not be used in production')) {
+                return; // Suppress this specific warning
+            }
+            originalConsole.apply(console, [message, ...args]);
+        };
+    </script>
+    <!-- Cache buster: v1752541253 -->
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              emerald: {
+                600: '#059669',
+                700: '#047857',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <script>
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          const hasPersistedPreference = typeof persistedColorPreference === 'string';
+          if (hasPersistedPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+          if (hasMediaQueryPreference) {
+            return mql.matches ? 'dark' : 'light';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+    
+
+
+
+
+
+
+
+<style>
+/* UNIVERSAL FIX - Working CSS for all pages */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #ffffff;
+    color: #1a1a1a;
+    line-height: 1.6;
+}
+
+/* Fix all headings - center them and make them readable */
+h1, h2, h3, h4, h5, h6 {
+    color: #1a1a1a;
+    text-align: center;
+    margin: 2rem 0 1rem 0;
+    font-weight: 600;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
+
+/* Fix paragraph text */
+p {
+    color: #374151;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+/* Fix the executive summary box */
+.executive-summary {
+    background-color: #f0f9ff;
+    border: 1px solid #0ea5e9;
+    border-left: 4px solid #0ea5e9;
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+}
+
+.executive-summary p {
+    color: #1e40af;
+    font-size: 1.1rem;
+}
+
+/* Fix all containers */
+.container, .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Fix cards - make them consistently readable */
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Fix tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    background-color: #ffffff;
+}
+
+th {
+    background-color: #374151;
+    color: #ffffff;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+/* Fix metric cards */
+.metric-card {
+    background-color: #1f2937;
+    color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    margin: 1rem;
+}
+
+/* Fix lists */
+ul, ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+/* Fix buttons */
+button, .btn {
+    background-color: #059669;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0.5rem;
+}
+
+button:hover, .btn:hover {
+    background-color: #047857;
+}
+
+/* Fix any light text on light background */
+.bg-blue-50 *, .bg-emerald-50 *, .bg-slate-50 * {
+    color: #1f2937 !important;
+}
+
+/* Fix any dark text on dark background */
+.bg-slate-800 *, .bg-slate-900 *, .bg-gray-800 * {
+    color: #ffffff !important;
+}
+
+/* Override any problematic styles */
+.text-slate-600 { color: #4b5563 !important; }
+.text-slate-700 { color: #374151 !important; }
+.text-slate-900 { color: #111827 !important; }
+.text-white { color: #ffffff !important; }
+
+/* Fix navigation */
+nav a {
+    color: #374151;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: 500;
+}
+
+nav a:hover {
+    color: #059669;
+}
+
+/* Fix headers */
+header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem 0;
+}
+
+/* Fix footers */
+footer {
+    background-color: #1f2937;
+    color: #ffffff;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+footer * {
+    color: #ffffff !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container, .section {
+        padding: 1rem;
+    }
+    
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
+    
+    table {
+        font-size: 0.875rem;
+    }
+    
+    th, td {
+        padding: 0.75rem;
+    }
+}
+</style>
+
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <button class="print-button" onclick="window.print()">🖨️ Print / PDF</button>
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex h-16 items-center justify-between">
+          <div class="flex items-center gap-6">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-slate-900 dark:bg-slate-100 rounded-lg flex items-center justify-center">
+                <span class="text-sm font-bold text-white dark:text-slate-900">S</span>
+              </div>
+              <div>
+                <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                  SirsiNexus
+                </h1>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+                    v0.7.9-alpha
+                  </span>
+                  <div class="flex items-center gap-1">
+                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                    <span class="text-xs text-slate-600 dark:text-slate-300">Live</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <nav class="hidden md:flex items-center gap-6">
+            <a href="index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Home</a>
+            <a href="committee-index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Committee Index</a>
+            <a href="investor-portal.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Investor Portal</a>
+            <span class="text-sm text-emerald-600 dark:text-emerald-400 font-medium">Market Analysis</span>
+            <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+            </button>
+          </nav>
+          <button class="md:hidden text-slate-600 dark:text-slate-400" onclick="toggleMobileMenu()">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Title Section -->
+    <section class="bg-slate-50 dark:bg-slate-800 py-12">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center">
+          <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">Market Analysis and Competitive Landscape</h1>
+          <p class="text-slate-600 dark:text-slate-400 mb-6">SirsiNexus AI-Powered Cloud Hypervisor Platform</p>
+          <div class="flex flex-wrap justify-center gap-4 text-sm text-slate-600 dark:text-slate-400">
+            <span><strong>Version:</strong> 1.0</span>
+            <span><strong>Date:</strong> July 2025</span>
+            <span><strong>Classification:</strong> Confidential Business Document</span>
+            <span><strong>Prepared for:</strong> Investment Committee Review</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="executive-summary">
+        <h2>Executive Summary</h2>
+        <p>SirsiNexus is positioned to disrupt the $47 billion cloud infrastructure management market through revolutionary natural language-driven infrastructure management. Unlike code-based solutions like Pulumi or traditional monitoring platforms like OpsCanvas, we deliver intuitive GUI-based cloud management that eliminates the need for specialized scripting knowledge while providing genuine AI-powered optimization.</p>
+        
+        <p><strong>Strategic Advantage:</strong> Our natural language interface combined with visual GUI design creates an unprecedented democratization of cloud infrastructure management. Users can manage complex multi-cloud environments using plain English commands and intuitive visual interfaces, eliminating the traditional barriers that require specialized DevOps expertise. This approach, combined with our founding team's deep connections across Techstars Universe, NVIDIA Inception, AWS Migration Acceleration, and academic networks, creates a unique market position that addresses the fundamental skills gap in cloud infrastructure management.</p>
+    </div>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <span class="metric-value">$47B</span>
+            <div class="metric-label">Total Addressable Market</div>
+        </div>
+        <div class="metric-card">
+            <span class="metric-value">30%</span>
+            <div class="metric-label">Average Cloud Waste</div>
+        </div>
+        <div class="metric-card">
+            <span class="metric-value">23%</span>
+            <div class="metric-label">Annual Market Growth</div>
+        </div>
+        <div class="metric-card">
+            <span class="metric-value">68%</span>
+            <div class="metric-label">Enterprises Seeking Solutions</div>
+        </div>
+    </div>
+
+    <div class="container section">
+
+        <h1>Market Opportunity Analysis</h1>
+
+        <h2>Primary Market: Cloud Cost Optimization</h2>
+        <p>The cloud optimization market has reached an inflection point. Enterprise cloud spending exceeded $490 billion in 2024, with Gartner projecting continued 15-20% annual growth through 2028. However, the critical issue is not growth—it's waste.</p>
+
+        <div class="info-box">
+        <strong>Market Reality:</strong> 68% of enterprises report significant cloud waste, with average waste rates of 25-40% of total cloud spend. This represents $147 billion in annual waste across the enterprise market alone.
+        </div>
+
+        <h3>Market Size and Projections</h3>
+        <table class="professional-table">
+        <thead>
+        <tr>
+        <th>Market Segment</th>
+        <th>2024 Size</th>
+        <th>2027 Projection</th>
+        <th>CAGR</th>
+        <th>Key Drivers</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>Cloud Cost Management</td>
+        <td>$4.2B</td>
+        <td>$8.9B</td>
+        <td>28%</td>
+        <td>Regulatory pressure, economic conditions</td>
+        </tr>
+        <tr>
+        <td>AI Operations (AIOps)</td>
+        <td>$15.8B</td>
+        <td>$35.1B</td>
+        <td>30%</td>
+        <td>Automation demand, skills shortage</td>
+        </tr>
+        <tr>
+        <td>Multi-Cloud Management</td>
+        <td>$6.1B</td>
+        <td>$14.2B</td>
+        <td>32%</td>
+        <td>Vendor diversity, risk mitigation</td>
+        </tr>
+        <tr>
+        <td>Infrastructure Automation</td>
+        <td>$12.3B</td>
+        <td>$21.8B</td>
+        <td>21%</td>
+        <td>DevOps adoption, efficiency needs</td>
+        </tr>
+        </tbody>
+        </table>
+
+        <h3>Target Customer Segments</h3>
+    
+        <h4>Primary: Mid-to-Large Enterprises (1,000+ employees)</h4>
+        <ul>
+        <li><strong>Market Size:</strong> ~45,000 organizations globally</li>
+        <li><strong>Average Cloud Spend:</strong> $2.8M annually</li>
+        <li><strong>Pain Points:</strong> Complex multi-cloud environments, compliance requirements, operational overhead</li>
+        <li><strong>Decision Timeline:</strong> 6-12 months with committee approval</li>
+        <li><strong>Budget Authority:</strong> CTO, VP Engineering, Cloud Architecture teams</li>
+        </ul>
+
+        <h4>Secondary: High-Growth Tech Companies (Series B+)</h4>
+        <ul>
+        <li><strong>Market Size:</strong> ~12,000 organizations globally</li>
+        <li><strong>Average Cloud Spend:</strong> $850K annually</li>
+        <li><strong>Pain Points:</strong> Rapid scaling, cost control during growth, limited DevOps resources</li>
+        <li><strong>Decision Timeline:</strong> 2-4 months with faster approval cycles</li>
+        <li><strong>Budget Authority:</strong> CTO, VP Engineering, Head of Infrastructure</li>
+        </ul>
+
+        <h2>Competitive Landscape</h2>
+
+        <h3>Current Market Leaders</h3>
+        <table class="professional-table">
+        <thead>
+        <tr>
+        <th>Company</th>
+        <th>Market Share</th>
+        <th>Revenue (2024)</th>
+        <th>Primary Focus</th>
+        <th>Key Weakness</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>Datadog</td>
+        <td>18%</td>
+        <td>$2.1B</td>
+        <td>Monitoring & Observability</td>
+        <td>Reactive, not predictive</td>
+        </tr>
+        <tr>
+        <td>New Relic</td>
+        <td>12%</td>
+        <td>$860M</td>
+        <td>Application Performance</td>
+        <td>Limited cost optimization</td>
+        </tr>
+        <tr>
+        <td>Dynatrace</td>
+        <td>15%</td>
+        <td>$1.3B</td>
+        <td>AI-Powered Observability</td>
+        <td>Complex implementation</td>
+        </tr>
+        <tr>
+        <td>CloudHealth (VMware)</td>
+        <td>8%</td>
+        <td>$340M</td>
+        <td>Cloud Financial Management</td>
+        <td>Single-purpose solution</td>
+        </tr>
+        </tbody>
+        </table>
+
+        <h3>Emerging Competitive Landscape</h3>
+    
+        <div class="highlight-box">
+        <strong>Market Reality:</strong> Our true competition comes from AI infrastructure startups like Pulumi (code-based IaC), OpsCanvas (traditional monitoring), and Base44 (manual automation). None offer natural language-driven infrastructure management or eliminate the specialized skills requirement that creates the fundamental market bottleneck.
+        </div>
+
+        <h4>AI Infrastructure Startup Competitive Analysis</h4>
+        <table class="professional-table">
+        <thead>
+        <tr>
+        <th>Competitor</th>
+        <th>Core Approach</th>
+        <th>User Interface</th>
+        <th>Learning Curve</th>
+        <th>SirsiNexus Advantage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>Pulumi</td>
+        <td>Code-based Infrastructure</td>
+        <td>Programming languages</td>
+        <td>Requires development skills</td>
+        <td>Plain English vs. programming</td>
+        </tr>
+        <tr>
+        <td>OpsCanvas</td>
+        <td>Traditional Monitoring</td>
+        <td>Dashboard-based</td>
+        <td>Moderate technical knowledge</td>
+        <td>Conversational AI vs. manual dashboards</td>
+        </tr>
+        <tr>
+        <td>Base44</td>
+        <td>Consulting-led Automation</td>
+        <td>Script and CLI-based</td>
+        <td>Expert-level requirements</td>
+        <td>Self-service GUI vs. consulting dependency</td>
+        </tr>
+        </tbody>
+        </table>
+
+        <h4>Natural Language Interface Advantage</h4>
+        <div class="success-box">
+        <strong>Revolutionary Approach:</strong> SirsiNexus is the first cloud platform where users can manage infrastructure development, migration, optimization, and scaling through natural language commands in an intuitive GUI—no scripting, programming, or specialized DevOps knowledge required.
+        </div>
+
+        <h4>Strategic Differentiation</h4>
+        <ul>
+        <li><strong>Democratized Infrastructure Management:</strong> Plain English commands eliminate 90% of the learning curve for cloud infrastructure management</li>
+        <li><strong>Visual + Conversational Interface:</strong> Combines intuitive GUI with natural language processing for unprecedented ease of use</li>
+        <li><strong>Skills Gap Solution:</strong> Addresses the fundamental market constraint of limited qualified DevOps personnel</li>
+        <li><strong>Business-Technical Bridge:</strong> Enables business stakeholders to participate directly in infrastructure decisions</li>
+        <li><strong>Network-Driven Go-to-Market:</strong> Leverage Techstars Universe, academic partnerships, and VC connections for rapid customer acquisition</li>
+        </ul>
+
+        <h2>Market Entry Strategy</h2>
+
+        <h3>Go-to-Market Approach</h3>
+    
+        <div class="timeline">
+        <div class="timeline-item">
+        <h4>Phase 1: Foundation (Q3-Q4 2025)</h4>
+        <p>Establish initial market presence with 20 enterprise customers. Focus on proving ROI with detailed case studies and building strategic partnerships with cloud consultants.</p>
+        </div>
+        <div class="timeline-item">
+        <h4>Phase 2: Expansion (Q1-Q2 2026)</h4>
+        <p>Scale to 100 customers through direct sales and partner channels. Launch marketplace presence on AWS, Azure, and GCP. Establish industry analyst recognition.</p>
+        </div>
+        <div class="timeline-item">
+        <h4>Phase 3: Market Leadership (Q3-Q4 2026)</h4>
+        <p>Achieve 300+ customers and establish thought leadership position. Expand internationally and develop industry-specific solutions.</p>
+        </div>
+        </div>
+
+        <h3>Competitive Positioning</h3>
+    
+        <div class="success-box">
+        <strong>Primary Message:</strong> "The first truly intelligent cloud hypervisor that learns and optimizes continuously, not just monitors and alerts."
+        </div>
+
+        <h4>Against Established Players</h4>
+        <ul>
+        <li><strong>vs. Datadog/New Relic:</strong> "Proactive optimization vs. reactive monitoring"</li>
+        <li><strong>vs. Cloud Native Tools:</strong> "Vendor-neutral intelligence vs. vendor lock-in"</li>
+        <li><strong>vs. AI Startups:</strong> "Production-ready platform vs. experimental prototypes"</li>
+        </ul>
+
+        <h2>Risk Assessment</h2>
+
+        <h3>Market Risks</h3>
+        <table class="professional-table">
+        <thead>
+        <tr>
+        <th>Risk Factor</th>
+        <th>Probability</th>
+        <th>Impact</th>
+        <th>Mitigation Strategy</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>Economic Downturn</td>
+        <td>Medium</td>
+        <td>High</td>
+        <td>Emphasize cost savings value proposition</td>
+        </tr>
+        <tr>
+        <td>Big Tech Competition</td>
+        <td>High</td>
+        <td>Medium</td>
+        <td>Focus on vendor-neutral approach</td>
+        </tr>
+        <tr>
+        <td>Technology Disruption</td>
+        <td>Low</td>
+        <td>High</td>
+        <td>Continuous R&D investment</td>
+        </tr>
+        <tr>
+        <td>Regulatory Changes</td>
+        <td>Low</td>
+        <td>Medium</td>
+        <td>Proactive compliance framework</td>
+        </tr>
+        </tbody>
+        </table>
+
+        <h2>Financial Projections</h2>
+
+        <h3>Revenue Opportunity</h3>
+        <p>Based on conservative market penetration assumptions:</p>
+
+        <table class="professional-table">
+        <thead>
+        <tr>
+        <th>Year</th>
+        <th>Customers</th>
+        <th>Average ACV</th>
+        <th>Total Revenue</th>
+        <th>Market Share</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>2025</td>
+        <td>20</td>
+        <td>$85,000</td>
+        <td>$1.7M</td>
+        <td>0.01%</td>
+        </tr>
+        <tr>
+        <td>2026</td>
+        <td>100</td>
+        <td>$95,000</td>
+        <td>$9.5M</td>
+        <td>0.08%</td>
+        </tr>
+        <tr>
+        <td>2027</td>
+        <td>300</td>
+        <td>$110,000</td>
+        <td>$33M</td>
+        <td>0.25%</td>
+        </tr>
+        <tr>
+        <td>2028</td>
+        <td>650</td>
+        <td>$125,000</td>
+        <td>$81M</td>
+        <td>0.45%</td>
+        </tr>
+        </tbody>
+        </table>
+
+        <div class="info-box">
+        <strong>Conservative Assumptions:</strong> These projections assume only 0.45% market share by 2028, well below typical successful SaaS penetration rates of 2-5% in fragmented markets.
+        </div>
+
+        <h2>Conclusion</h2>
+        <p>The cloud optimization market represents a compelling opportunity with clear customer pain points, significant market size, and limited genuine innovation from current players. SirsiNexus's AI-first approach addresses fundamental gaps in the market while requiring minimal upfront investment due to our existing technology foundation.</p>
+
+        <p>With conservative projections showing path to $80M+ revenue by 2028, and the potential for much higher growth given market dynamics, SirsiNexus is positioned to capture significant value in this rapidly expanding market.</p>
+
+        <!-- Footer Navigation -->
+        <nav class="document-footer-nav">
+        <div class="nav-actions">
+        <a href="business-case.html" class="nav-back">← Back: Business Case</a>
+        <a href="committee-index.html" class="nav-home">🏠 Committee Index</a>
+        <a href="product-roadmap.html" class="nav-next">Next: Product Roadmap →</a>
+        </div>
+        </nav>
+
+        <div class="document-footer">
+        <p><strong>Document Control:</strong> Confidential - For Committee Review Only</p>
+        <p>Prepared by: SirsiNexus Strategy Team | Review Date: Quarterly | Distribution: Executive Team, Investment Committee</p>
+        </div>
+
+    </div>
+
+    <script>
+      function toggleMobileMenu() {
+        // Mobile menu toggle functionality
+        console.log('Mobile menu toggle clicked');
+        // Add mobile menu implementation here
+      }
+
+      function toggleTheme() {
+        const html = document.documentElement;
+        const isDark = html.classList.contains('dark');
+        
+        if (isDark) {
+          html.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+        } else {
+          html.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+        }
+      }
+
+      // Initialize theme on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      });
+    </script>
+</body>
+</html>

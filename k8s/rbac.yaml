@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sirsi-service-account
+  namespace: sirsi-nexus
+  labels:
+    app: sirsi-nexus
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sirsi-role
+  namespace: sirsi-nexus
+  labels:
+    app: sirsi-nexus
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "endpoints", "configmaps", "secrets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sirsi-role-binding
+  namespace: sirsi-nexus
+  labels:
+    app: sirsi-nexus
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sirsi-role
+subjects:
+- kind: ServiceAccount
+  name: sirsi-service-account
+  namespace: sirsi-nexus
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sirsi-cluster-role
+  labels:
+    app: sirsi-nexus
+rules:
+- apiGroups: [""]
+  resources: ["nodes", "nodes/metrics", "services", "endpoints", "pods"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch"]
+- nonResourceURLs: ["/metrics"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sirsi-cluster-role-binding
+  labels:
+    app: sirsi-nexus
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: sirsi-cluster-role
+subjects:
+- kind: ServiceAccount
+  name: sirsi-service-account
+  namespace: sirsi-nexus

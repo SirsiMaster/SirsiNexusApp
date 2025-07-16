@@ -1,0 +1,230 @@
+{
+  "infrastructure_overview": {
+    "last_updated": "2025-01-27",
+    "assessment_period": "2024-12-01 to 2025-01-31",
+    "total_monthly_cost": 32450.00,
+    "total_resources": 64,
+    "compliance_status": "HIPAA compliant, GDPR preparation needed"
+  },
+  "on_premise_ehr": {
+    "location": "San Francisco Primary Data Center",
+    "monthly_cost": 18900.00,
+    "resources": [
+      {
+        "type": "Epic EHR Servers",
+        "count": 6,
+        "specs": "Dell PowerEdge R740, 256GB RAM, 8TB SSD",
+        "purpose": "Primary EHR application servers",
+        "monthly_cost": 7200.00,
+        "utilization": "78%",
+        "patient_records": 150000
+      },
+      {
+        "type": "Oracle Database Cluster",
+        "count": 4,
+        "specs": "Oracle Exadata X8, 512GB RAM, 50TB storage",
+        "purpose": "Patient data, medical records",
+        "monthly_cost": 5400.00,
+        "utilization": "85%",
+        "data_size_gb": 850
+      },
+      {
+        "type": "DICOM/PACS Servers",
+        "count": 3,
+        "specs": "HPE ProLiant DL380, 128GB RAM, 100TB storage",
+        "purpose": "Medical imaging storage and processing",
+        "monthly_cost": 4200.00,
+        "utilization": "72%",
+        "image_data_tb": 12.3
+      },
+      {
+        "type": "Network Security Appliances",
+        "count": 2,
+        "specs": "Cisco ASA 5516-X, HIPAA compliant firewall",
+        "purpose": "Network security and compliance",
+        "monthly_cost": 1200.00,
+        "utilization": "N/A"
+      },
+      {
+        "type": "Backup Systems",
+        "count": 2,
+        "specs": "Veeam B&R, 200TB capacity",
+        "purpose": "HIPAA compliant backup and disaster recovery",
+        "monthly_cost": 900.00,
+        "utilization": "65%"
+      }
+    ]
+  },
+  "legacy_cloud": {
+    "provider": "AWS (Limited deployment)",
+    "monthly_cost": 8750.00,
+    "regions": ["us-west-1"],
+    "resources": [
+      {
+        "service": "EC2",
+        "instance_types": ["m5.2xlarge", "r5.4xlarge"],
+        "count": 8,
+        "monthly_cost": 2880.00,
+        "purpose": "Telehealth platform, patient portal"
+      },
+      {
+        "service": "RDS",
+        "instance_type": "db.r5.2xlarge",
+        "count": 2,
+        "monthly_cost": 1600.00,
+        "purpose": "Telehealth data, appointment scheduling"
+      },
+      {
+        "service": "S3",
+        "storage_tb": 8,
+        "monthly_cost": 240.00,
+        "purpose": "Document storage, non-PHI data"
+      },
+      {
+        "service": "CloudFront",
+        "data_transfer_tb": 15,
+        "monthly_cost": 210.00,
+        "purpose": "Patient portal content delivery"
+      },
+      {
+        "service": "API Gateway",
+        "requests_millions": 5.2,
+        "monthly_cost": 156.00,
+        "purpose": "Mobile app API endpoints"
+      },
+      {
+        "service": "Lambda",
+        "invocations_millions": 12.5,
+        "monthly_cost": 125.00,
+        "purpose": "Data processing, notifications"
+      },
+      {
+        "service": "Other Services",
+        "monthly_cost": 3539.00,
+        "purpose": "Monitoring, logging, security services"
+      }
+    ]
+  },
+  "austin_dr_site": {
+    "location": "Austin Disaster Recovery Site",
+    "monthly_cost": 4800.00,
+    "resources": [
+      {
+        "type": "DR Servers",
+        "count": 4,
+        "specs": "Dell PowerEdge R640, 128GB RAM, 4TB SSD",
+        "purpose": "Disaster recovery and backup",
+        "monthly_cost": 2400.00,
+        "utilization": "15%"
+      },
+      {
+        "type": "Storage Array",
+        "count": 1,
+        "specs": "NetApp FAS8200, 100TB capacity",
+        "purpose": "DR data replication",
+        "monthly_cost": 1800.00,
+        "utilization": "45%"
+      },
+      {
+        "type": "Network & Facility",
+        "count": 1,
+        "specs": "Dedicated circuits, facility costs",
+        "purpose": "DR site infrastructure",
+        "monthly_cost": 600.00,
+        "utilization": "N/A"
+      }
+    ]
+  },
+  "compliance_infrastructure": {
+    "monthly_cost": 0,
+    "integrated_costs": true,
+    "components": [
+      {
+        "type": "HIPAA Compliance Monitoring",
+        "purpose": "Audit trails, access logging",
+        "integrated_cost": 1200.00
+      },
+      {
+        "type": "Encryption Systems",
+        "purpose": "Data at rest and in transit encryption",
+        "integrated_cost": 800.00
+      },
+      {
+        "type": "Identity and Access Management",
+        "purpose": "Role-based access control",
+        "integrated_cost": 600.00
+      },
+      {
+        "type": "Vulnerability Management",
+        "purpose": "Security scanning and remediation",
+        "integrated_cost": 400.00
+      }
+    ]
+  },
+  "performance_metrics": {
+    "average_response_time_ms": 180,
+    "uptime_percentage": 99.8,
+    "daily_patient_interactions": 15000,
+    "peak_concurrent_users": 1200,
+    "data_growth_monthly_gb": 45,
+    "image_processing_time_avg_sec": 12
+  },
+  "cost_breakdown": {
+    "ehr_systems": 12600.00,
+    "database_storage": 7200.00,
+    "imaging_systems": 4200.00,
+    "cloud_services": 8750.00,
+    "security_compliance": 3000.00,
+    "disaster_recovery": 4800.00,
+    "networking": 1900.00
+  },
+  "migration_challenges": [
+    {
+      "area": "Data Volume",
+      "challenge": "150,000 patient records + 12.3TB medical images",
+      "complexity": "High"
+    },
+    {
+      "area": "HIPAA Compliance",
+      "challenge": "Maintain compliance during migration",
+      "complexity": "Critical"
+    },
+    {
+      "area": "Downtime Constraints",
+      "challenge": "Zero downtime requirement for patient care",
+      "complexity": "High"
+    },
+    {
+      "area": "Data Integrity",
+      "challenge": "30-year retention requirement, audit trails",
+      "complexity": "High"
+    },
+    {
+      "area": "Integration Complexity",
+      "challenge": "Epic EHR integration with new AI systems",
+      "complexity": "High"
+    }
+  ],
+  "optimization_opportunities": [
+    {
+      "area": "Cloud Migration",
+      "potential_savings": 8900.00,
+      "recommendation": "Migrate to cloud-native HIPAA compliant platform"
+    },
+    {
+      "area": "AI-Powered Diagnostics",
+      "potential_efficiency": "65% faster diagnosis",
+      "recommendation": "Implement automated skin analysis system"
+    },
+    {
+      "area": "Telemedicine Scaling",
+      "potential_revenue": "300% patient capacity increase",
+      "recommendation": "Global telemedicine platform deployment"
+    },
+    {
+      "area": "Operational Automation",
+      "potential_savings": 2400.00,
+      "recommendation": "Automate clinic orchestration and scheduling"
+    }
+  ]
+}

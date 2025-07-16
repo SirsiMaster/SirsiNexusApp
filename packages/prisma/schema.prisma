@@ -1,0 +1,99 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                String     @id @default(cuid())
+  name              String?
+  password          String?
+  email             String     @unique
+  emailVerified     DateTime?
+  image             String?
+  role              String     @default("user")
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  assignedTasks     Task[]     @relation("TaskAssignee")
+  createdTasks      Task[]     @relation("TaskCreator")
+  ownedProjects     Project[]  @relation("ProjectOwner")
+  teamMemberships   TeamMember[]
+}
+
+model Project {
+  id          String      @id @default(cuid())
+  name        String
+  description String
+  status      String      @default("active")
+  ownerId     String
+  owner       User        @relation("ProjectOwner", fields: [ownerId], references: [id])
+  team        TeamMember[]
+  tasks       Task[]
+  stats       ProjectStats?
+  settings    Json        @default("{}")
+  tags        String[]    @default([])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model TeamMember {
+  id          String    @id @default(cuid())
+  projectId   String
+  userId      String
+  role        String    @default("member")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, userId])
+}
+
+enum TaskStatus {
+  todo
+  in_progress
+  completed
+  blocked
+}
+
+enum TaskPriority {
+  low
+  medium
+  high
+  urgent
+}
+
+model Task {
+  id          String      @id @default(cuid())
+  title       String
+  description String
+  status      TaskStatus  @default(todo)
+  priority    TaskPriority @default(medium)
+  dueDate     DateTime?
+  projectId   String
+  assigneeId  String?
+  createdById String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  project     Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assignee    User?       @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  createdBy   User        @relation("TaskCreator", fields: [createdById], references: [id])
+}
+
+model ProjectStats {
+  id          String    @id @default(cuid())
+  projectId   String    @unique
+  tasks       Int       @default(0)
+  completed   Int       @default(0)
+  inProgress  Int       @default(0)
+  blockers    Int       @default(0)
+  updatedAt   DateTime  @updatedAt
+
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}

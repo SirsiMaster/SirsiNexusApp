@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Suppress Tailwind CDN production warnings
+        const originalConsole = console.warn;
+        console.warn = function(message, ...args) {
+            if (typeof message === 'string' && message.includes('should not be used in production')) {
+                return; // Suppress this specific warning
+            }
+            originalConsole.apply(console, [message, ...args]);
+        };
+    </script>
+    <title>Terms of Service - SirsiNexus</title>
+    <meta name="description" content="SirsiNexus Service Terms and Conditions" />
+    <!-- Cache buster: v1752541253 -->
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              emerald: {
+                50: '#f0fdf4',
+                600: '#059669',
+                700: '#047857',
+              },
+              slate: {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a',
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <script>
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          const hasPersistedPreference = typeof persistedColorPreference === 'string';
+          if (hasPersistedPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+          if (hasMediaQueryPreference) {
+            return mql.matches ? 'dark' : 'light';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+  
+
+
+
+<style>
+/* UNIVERSAL FIX - Working CSS for all pages */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #ffffff;
+    color: #1a1a1a;
+    line-height: 1.6;
+}
+
+/* Fix all headings - center them and make them readable */
+h1, h2, h3, h4, h5, h6 {
+    color: #1a1a1a;
+    text-align: center;
+    margin: 2rem 0 1rem 0;
+    font-weight: 600;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
+
+/* Fix paragraph text */
+p {
+    color: #374151;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+/* Fix the executive summary box */
+.executive-summary {
+    background-color: #f0f9ff;
+    border: 1px solid #0ea5e9;
+    border-left: 4px solid #0ea5e9;
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+}
+
+.executive-summary p {
+    color: #1e40af;
+    font-size: 1.1rem;
+}
+
+/* Fix all containers */
+.container, .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Fix cards - make them consistently readable */
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Fix tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    background-color: #ffffff;
+}
+
+th {
+    background-color: #374151;
+    color: #ffffff;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+/* Fix metric cards */
+.metric-card {
+    background-color: #1f2937;
+    color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    margin: 1rem;
+}
+
+/* Fix lists */
+ul, ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+/* Fix buttons */
+button, .btn {
+    background-color: #059669;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0.5rem;
+}
+
+button:hover, .btn:hover {
+    background-color: #047857;
+}
+
+/* Fix any light text on light background */
+.bg-blue-50 *, .bg-emerald-50 *, .bg-slate-50 * {
+    color: #1f2937 !important;
+}
+
+/* Fix any dark text on dark background */
+.bg-slate-800 *, .bg-slate-900 *, .bg-gray-800 * {
+    color: #ffffff !important;
+}
+
+/* Override any problematic styles */
+.text-slate-600 { color: #4b5563 !important; }
+.text-slate-700 { color: #374151 !important; }
+.text-slate-900 { color: #111827 !important; }
+.text-white { color: #ffffff !important; }
+
+/* Fix navigation */
+nav a {
+    color: #374151;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: 500;
+}
+
+nav a:hover {
+    color: #059669;
+}
+
+/* Fix headers */
+header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem 0;
+}
+
+/* Fix footers */
+footer {
+    background-color: #1f2937;
+    color: #ffffff;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+footer * {
+    color: #ffffff !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container, .section {
+        padding: 1rem;
+    }
+    
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
+    
+    table {
+        font-size: 0.875rem;
+    }
+    
+    th, td {
+        padding: 0.75rem;
+    }
+}
+</style>
+
+</head>
+  <body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex h-16 items-center justify-between">
+          <div class="flex items-center gap-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 flex items-center justify-center">
+                <img src="assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
+                <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+              </div>
+              <div>
+                <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                  SirsiNexus Terms of Service
+                </h1>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+                    v0.7.9-alpha
+                  </span>
+                  <div class="flex items-center gap-1">
+                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                    <span class="text-xs text-slate-600 dark:text-slate-300">Live</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <nav class="hidden md:flex items-center gap-6">
+            <a href="index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Home</a>
+            <a href="investor-portal.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Investor Portal</a>
+            <a href="signup.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Sign Up</a>
+            <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+            </button>
+          </nav>
+          <button class="md:hidden text-slate-600 dark:text-slate-400" onclick="toggleMobileMenu()">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900 dark:to-emerald-800 py-12">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center">
+          <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+            Terms of <span class="text-emerald-600">Service</span>
+          </h1>
+          <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
+            SirsiNexus Service Terms and Conditions
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="py-16 bg-white dark:bg-slate-900">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="prose prose-slate dark:prose-invert max-w-none">
+          <div class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Acceptance of Terms</h2>
+            <p class="text-slate-600 dark:text-slate-400 mb-6">By accessing and using the SirsiNexus platform, you accept and agree to be bound by the terms and conditions of this agreement. These terms apply to all users of the site, including without limitation users who are browsers, vendors, customers, merchants, and contributors of content.</p>
+
+            <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Provision of Services</h3>
+            <p class="text-slate-600 dark:text-slate-400 mb-6">SirsiNexus provides an AI-powered cloud management platform designed to streamline cloud operations through natural language interfaces. We reserve the right to modify or discontinue the service (or any part or content thereof) without notice at any time.</p>
+
+            <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">User Responsibilities</h3>
+            <ul class="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-2 mb-6">
+              <li>Provide accurate and current information as prompted by the registration forms.</li>
+              <li>Maintain the security of your password and identification.</li>
+              <li>Accept all risks of unauthorized access to registration data and any other information you provide to us.</li>
+            </ul>
+
+            <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Intellectual Property</h3>
+            <p class="text-slate-600 dark:text-slate-400 mb-6">All content included on the service, such as text, graphics, logos, images, and software, is the property of SirsiNexus or its content suppliers and is protected by international copyright laws.</p>
+
+            <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Contact Information</h3>
+            <p class="text-slate-600 dark:text-slate-400 mb-6">For questions about the terms of service, contact us at <a href="mailto:terms@sirsinexus.com" class="text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300">terms@sirsinexus.com</a></p>
+          </div>
+
+          <div class="text-center">
+            <button onclick="window.print()" class="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+              </svg>
+              Print / PDF
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-8">
+      <div class="max-w-7xl mx-auto px-6 text-center">
+        <p class="text-slate-400">&copy; 2025 SirsiNexus. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      function toggleTheme() {
+        const html = document.documentElement;
+        const isDark = html.classList.contains('dark');
+        
+        if (isDark) {
+          html.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+        } else {
+          html.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+        }
+      }
+
+      function toggleMobileMenu() {
+        // Mobile menu toggle functionality
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenu) {
+          mobileMenu.classList.toggle('hidden');
+        }
+      }
+    </script>
+  </body>
+</html>

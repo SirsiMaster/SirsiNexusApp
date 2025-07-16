@@ -1,0 +1,198 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cockroachdb
+  namespace: sirsi-nexus
+  labels:
+    app: cockroachdb
+    version: v25.2.1
+spec:
+  serviceName: cockroachdb-service
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cockroachdb
+  template:
+    metadata:
+      labels:
+        app: cockroachdb
+        version: v25.2.1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8081"
+        prometheus.io/path: "/_status/vars"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+      - name: cockroachdb
+        image: cockroachdb/cockroach:v25.2.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: grpc
+          containerPort: 26257
+          protocol: TCP
+        - name: http
+          containerPort: 8081
+          protocol: TCP
+        command:
+        - /cockroach/cockroach
+        - start
+        - --insecure
+        - --advertise-host=$(POD_NAME).cockroachdb-service.$(POD_NAMESPACE).svc.cluster.local
+        - --http-addr=0.0.0.0:8081
+        - --listen-addr=0.0.0.0:26257
+        - --sql-addr=0.0.0.0:26257
+        - --cache=256MiB
+        - --max-sql-memory=256MiB
+        - --join=cockroachdb-0.cockroachdb-service.$(POD_NAMESPACE).svc.cluster.local:26257,cockroachdb-1.cockroachdb-service.$(POD_NAMESPACE).svc.cluster.local:26257,cockroachdb-2.cockroachdb-service.$(POD_NAMESPACE).svc.cluster.local:26257
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: COCKROACH_CHANNEL
+          value: kubernetes-multiregion
+        volumeMounts:
+        - name: datadir
+          mountPath: /cockroach/cockroach-data
+        - name: cockroach-env
+          mountPath: /cockroach/cockroach-env
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8081
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health?ready=1
+            port: 8081
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 5
+          failureThreshold: 3
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
+      terminationGracePeriodSeconds: 60
+      volumes:
+      - name: cockroach-env
+        emptyDir: {}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - cockroachdb
+              topologyKey: kubernetes.io/hostname
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 100Gi
+      storageClassName: standard
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cockroachdb-service
+  namespace: sirsi-nexus
+  labels:
+    app: cockroachdb
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: grpc
+    port: 26257
+    targetPort: 26257
+    protocol: TCP
+  - name: http
+    port: 8081
+    targetPort: 8081
+    protocol: TCP
+  selector:
+    app: cockroachdb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cockroachdb-public
+  namespace: sirsi-nexus
+  labels:
+    app: cockroachdb
+spec:
+  type: ClusterIP
+  ports:
+  - name: grpc
+    port: 26257
+    targetPort: 26257
+    protocol: TCP
+  - name: http
+    port: 8081
+    targetPort: 8081
+    protocol: TCP
+  selector:
+    app: cockroachdb
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cockroachdb-init
+  namespace: sirsi-nexus
+  labels:
+    app: cockroachdb-init
+spec:
+  template:
+    spec:
+      containers:
+      - name: cockroachdb-init
+        image: cockroachdb/cockroach:v25.2.1
+        imagePullPolicy: IfNotPresent
+        command:
+        - /cockroach/cockroach
+        - init
+        - --insecure
+        - --host=cockroachdb-0.cockroachdb-service.sirsi-nexus.svc.cluster.local:26257
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+      restartPolicy: OnFailure

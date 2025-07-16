@@ -1,0 +1,178 @@
+{
+  "sections": {
+    "financial-reports": {
+      "title": "Financial Reports",
+      "files": [
+        {
+          "name": "Business Case Analysis",
+          "path": "business-case.html",
+          "description": "Comprehensive business case for SirsiNexus AI platform",
+          "date": "2025-01-07"
+        },
+        {
+          "name": "Q4 2024 Financial Statement",
+          "path": "Business_Case_and_ROI_Documentation.html",
+          "description": "Complete financial analysis and ROI projections",
+          "date": "2024-12-31"
+        },
+        {
+          "name": "Cash Flow Analysis",
+          "path": "#",
+          "description": "Detailed cash flow projections and analysis",
+          "date": "2024-12-31"
+        },
+        {
+          "name": "Budget Projections 2025",
+          "path": "#",
+          "description": "Annual budget forecasts and strategic financial planning",
+          "date": "2025-01-01"
+        }
+      ]
+    },
+    "business-metrics": {
+      "title": "Business Metrics",
+      "files": [
+        {
+          "name": "Market Analysis Report",
+          "path": "market-analysis.html",
+          "description": "Market analysis and competitive positioning",
+          "date": "2025-01-07"
+        },
+        {
+          "name": "Competitive Analysis",
+          "path": "Market_Analysis_and_Competitive_Positioning.html",
+          "description": "Comprehensive competitive landscape analysis",
+          "date": "2024-12-15"
+        },
+        {
+          "name": "Customer Growth Report",
+          "path": "#",
+          "description": "Monthly active users and customer acquisition metrics",
+          "date": "2024-12-31"
+        },
+        {
+          "name": "Platform Usage Analytics",
+          "path": "#",
+          "description": "Real-time platform usage statistics and trends",
+          "date": "2024-12-31"
+        }
+      ]
+    },
+    "legal-documents": {
+      "title": "Legal Documents",
+      "files": [
+        {
+          "name": "Privacy Policy",
+          "path": "privacy-policy.html",
+          "description": "Company privacy policy and data protection",
+          "date": "2025-01-07"
+        },
+        {
+          "name": "Terms of Service",
+          "path": "terms-of-service.html",
+          "description": "Service terms and conditions",
+          "date": "2025-01-07"
+        },
+        {
+          "name": "Articles of Incorporation",
+          "path": "#",
+          "description": "Legal incorporation documents and corporate structure",
+          "date": "2024-06-15"
+        },
+        {
+          "name": "IP Portfolio",
+          "path": "#",
+          "description": "Intellectual property patents and trademarks",
+          "date": "2024-12-01"
+        }
+      ]
+    },
+    "strategic-plans": {
+      "title": "Strategic Plans",
+      "files": [
+        {
+          "name": "Product Roadmap",
+          "path": "product-roadmap.html",
+          "description": "Product development roadmap and milestones",
+          "date": "2025-01-07"
+        },
+        {
+          "name": "Go-to-Market Strategy",
+          "path": "Product_Roadmap_and_Go_To_Market_Strategy.html",
+          "description": "Comprehensive go-to-market strategy and execution plan",
+          "date": "2024-12-10"
+        },
+        {
+          "name": "5-Year Strategic Plan",
+          "path": "#",
+          "description": "Long-term strategic vision and growth initiatives",
+          "date": "2024-12-01"
+        },
+        {
+          "name": "Risk Management Strategy",
+          "path": "#",
+          "description": "Comprehensive risk assessment and mitigation strategies",
+          "date": "2024-11-30"
+        }
+      ]
+    },
+    "communications": {
+      "title": "Communications",
+      "files": [
+        {
+          "name": "Committee Index",
+          "path": "committee-index.html",
+          "description": "Executive committee meeting index and summaries",
+          "date": "2025-01-07"
+        },
+        {
+          "name": "Monthly Newsletter",
+          "path": "#",
+          "description": "Monthly updates for investors and stakeholders",
+          "date": "2024-12-31"
+        },
+        {
+          "name": "Quarterly Updates",
+          "path": "#",
+          "description": "Quarterly business performance and milestone updates",
+          "date": "2024-12-31"
+        },
+        {
+          "name": "CEO Letters",
+          "path": "#",
+          "description": "Strategic communications from company leadership",
+          "date": "2024-12-15"
+        }
+      ]
+    },
+    "investment-terms": {
+      "title": "Investment Terms",
+      "files": [
+        {
+          "name": "Term Sheet",
+          "path": "#",
+          "description": "Investment terms and conditions overview",
+          "date": "2024-12-01"
+        },
+        {
+          "name": "Valuation Report",
+          "path": "#",
+          "description": "Independent company valuation and financial assessment",
+          "date": "2024-12-15"
+        },
+        {
+          "name": "Due Diligence Package",
+          "path": "#",
+          "description": "Comprehensive due diligence materials and documentation",
+          "date": "2024-12-10"
+        },
+        {
+          "name": "Investment Agreement",
+          "path": "#",
+          "description": "Legal investment agreement and shareholder terms",
+          "date": "2024-12-01"
+        }
+      ]
+    }
+  }
+}

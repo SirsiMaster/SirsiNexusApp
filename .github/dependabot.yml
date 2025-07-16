@@ -1,0 +1,126 @@
+version: 2
+updates:
+  # Rust dependencies (Cargo)
+  - package-ecosystem: "cargo"
+    directory: "/core-engine"
+    schedule:
+      interval: "daily"
+      time: "06:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    reviewers:
+      - "SirsiNexusDev"
+    assignees:
+      - "SirsiNexusDev"
+    commit-message:
+      prefix: "security"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "security"
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-type: "all"
+    groups:
+      security-updates:
+        dependency-type: "all"
+        update-types:
+          - "security"
+
+  # Node.js dependencies (npm)
+  - package-ecosystem: "npm"
+    directory: "/ui"
+    schedule:
+      interval: "daily"
+      time: "06:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    reviewers:
+      - "SirsiNexusDev"
+    assignees:
+      - "SirsiNexusDev"
+    commit-message:
+      prefix: "security"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "security"
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-type: "all"
+    groups:
+      security-updates:
+        dependency-type: "all"
+        update-types:
+          - "security"
+
+  # Python dependencies (pip)
+  - package-ecosystem: "pip"
+    directory: "/analytics-platform"
+    schedule:
+      interval: "daily"
+      time: "06:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    reviewers:
+      - "SirsiNexusDev"
+    assignees:
+      - "SirsiNexusDev"
+    commit-message:
+      prefix: "security"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "security"
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-type: "all"
+    groups:
+      security-updates:
+        dependency-type: "all"
+        update-types:
+          - "security"
+
+  # Docker dependencies
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    reviewers:
+      - "SirsiNexusDev"
+    assignees:
+      - "SirsiNexusDev"
+    commit-message:
+      prefix: "security"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "security"
+      - "docker"
+    open-pull-requests-limit: 3
+
+  # GitHub Actions dependencies
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    target-branch: "develop"
+    reviewers:
+      - "SirsiNexusDev"
+    assignees:
+      - "SirsiNexusDev"
+    commit-message:
+      prefix: "security"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "security"
+      - "github-actions"
+    open-pull-requests-limit: 3

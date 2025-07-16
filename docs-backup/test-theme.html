@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
+    <title>Theme Toggle Test</title>
+    <script>
+      (function() {
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white p-8">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">Theme Toggle Test</h1>
+        
+        <div class="mb-6">
+            <p class="mb-4">Current theme: <span id="currentTheme" class="font-bold"></span></p>
+            <button onclick="toggleTheme()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                Toggle Theme
+            </button>
+        </div>
+        
+        <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded">
+            <p>This box should change colors when you toggle the theme.</p>
+        </div>
+    </div>
+
+    <script>
+        function updateThemeDisplay() {
+            const isDark = document.documentElement.classList.contains('dark');
+            document.getElementById('currentTheme').textContent = isDark ? 'Dark' : 'Light';
+        }
+        
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            console.log('Toggle clicked, current theme:', isDark ? 'dark' : 'light');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            
+            updateThemeDisplay();
+        }
+        
+        // Initialize display
+        updateThemeDisplay();
+    </script>
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../assets/sirsi-nexus.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Admin Dashboard - Investor Portal</title>
+    <!-- Cache buster: v1752541253 -->
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+          }
+        }
+      }
+    </script>
+
+
+
+
+<style>
+/* UNIVERSAL FIX - Working CSS for all pages */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #ffffff;
+    color: #1a1a1a;
+    line-height: 1.6;
+}
+
+/* Fix all headings - center them and make them readable */
+h1, h2, h3, h4, h5, h6 {
+    color: #1a1a1a;
+    text-align: center;
+    margin: 2rem 0 1rem 0;
+    font-weight: 600;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
+
+/* Fix paragraph text */
+p {
+    color: #374151;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+/* Fix the executive summary box */
+.executive-summary {
+    background-color: #f0f9ff;
+    border: 1px solid #0ea5e9;
+    border-left: 4px solid #0ea5e9;
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+}
+
+.executive-summary p {
+    color: #1e40af;
+    font-size: 1.1rem;
+}
+
+/* Fix all containers */
+.container, .section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Fix cards - make them consistently readable */
+.card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Fix tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    background-color: #ffffff;
+}
+
+th {
+    background-color: #374151;
+    color: #ffffff;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+/* Fix metric cards */
+.metric-card {
+    background-color: #1f2937;
+    color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    margin: 1rem;
+}
+
+/* Fix lists */
+ul, ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+/* Fix buttons */
+button, .btn {
+    background-color: #059669;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0.5rem;
+}
+
+button:hover, .btn:hover {
+    background-color: #047857;
+}
+
+/* Fix any light text on light background */
+.bg-blue-50 *, .bg-emerald-50 *, .bg-slate-50 * {
+    color: #1f2937 !important;
+}
+
+/* Fix any dark text on dark background */
+.bg-slate-800 *, .bg-slate-900 *, .bg-gray-800 * {
+    color: #ffffff !important;
+}
+
+/* Override any problematic styles */
+.text-slate-600 { color: #4b5563 !important; }
+.text-slate-700 { color: #374151 !important; }
+.text-slate-900 { color: #111827 !important; }
+.text-white { color: #ffffff !important; }
+
+/* Fix navigation */
+nav a {
+    color: #374151;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: 500;
+}
+
+nav a:hover {
+    color: #059669;
+}
+
+/* Fix headers */
+header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem 0;
+}
+
+/* Fix footers */
+footer {
+    background-color: #1f2937;
+    color: #ffffff;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+footer * {
+    color: #ffffff !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container, .section {
+        padding: 1rem;
+    }
+    
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
+    
+    table {
+        font-size: 0.875rem;
+    }
+    
+    th, td {
+        padding: 0.75rem;
+    }
+}
+</style>
+
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-slate-200 dark:border-slate-700">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex h-16 items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 flex items-center justify-center">
+                        <img src="../../assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
+                        <img src="../../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+                    </div>
+
+    <div class="container section">
+        <h1 class="text-lg font-semibold">Investor Portal Admin</h1>
+        </div>
+        <div class="flex items-center gap-4">
+        <!-- Site Navigation -->
+        <div class="flex items-center gap-2 text-sm">
+        <a href="../../index.html" class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 px-3 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+        🏠 Home
+        </a>
+        <span class="text-slate-300 dark:text-slate-600">|</span>
+        <a href="../../investor-portal.html" class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 px-3 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+        💼 Portal
+        </a>
+        <span class="text-slate-300 dark:text-slate-600">|</span>
+        <a href="../../committee-index.html" class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 px-3 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+        📄 Docs
+        </a>
+        </div>
+        <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+        </button>
+        <button onclick="logout()" class="text-red-600 hover:text-red-700 text-sm font-medium">
+        Logout
+        </button>
+        </div>
+        </div>
+        </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Section Management -->
+        <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-6">Data Room Management</h2>
+            
+        <div class="grid lg:grid-cols-3 gap-6" id="sectionsGrid">
+        <!-- Sections will be populated by JavaScript -->
+        </div>
+        </div>
+
+        <!-- File Upload Modal -->
+        <div id="uploadModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="card">
+        <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold">Add New File</h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+        </button>
+        </div>
+        <form id="fileForm">
+        <div class="space-y-4">
+        <div>
+        <label class="block text-sm font-medium mb-2">File Name</label>
+        <input type="text" id="fileName" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700" required>
+        </div>
+        <div>
+        <label class="block text-sm font-medium mb-2">File Path</label>
+        <input type="text" id="filePath" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700" placeholder="../document.html" required>
+        </div>
+        <div>
+        <label class="block text-sm font-medium mb-2">Description</label>
+        <textarea id="fileDescription" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 dark:bg-slate-700" rows="2"></textarea>
+        </div>
+        <div class="flex gap-3">
+        <button type="submit" class="flex-1 bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-emerald-700 transition-colors">
+        Add File
+        </button>
+        <button type="button" onclick="closeModal()" class="flex-1 bg-slate-300 dark:bg-slate-600 text-slate-700 dark:text-slate-200 py-2 px-4 rounded-lg hover:bg-slate-400 dark:hover:bg-slate-500 transition-colors">
+        Cancel
+        </button>
+        </div>
+        </div>
+        </form>
+        </div>
+        </div>
+        </div>
+        </main>
+
+    </div>
+
+    <script>
+        let currentSection = '';
+        let dataRoomConfig = {};
+
+        // Load configuration
+        async function loadConfig() {
+            try {
+                const response = await fetch('../assets/data-room-config.json');
+                dataRoomConfig = await response.json();
+                renderSections();
+            } catch (error) {
+                console.error('Error loading config:', error);
+                // Fallback to default structure
+                dataRoomConfig = {
+                    sections: {
+                        'financial-reports': { title: 'Financial Reports', files: [] },
+                        'business-metrics': { title: 'Business Metrics', files: [] },
+                        'legal-documents': { title: 'Legal Documents', files: [] },
+                        'strategic-plans': { title: 'Strategic Plans', files: [] },
+                        'communications': { title: 'Communications', files: [] },
+                        'investment-terms': { title: 'Investment Terms', files: [] }
+                    }
+                };
+                renderSections();
+            }
+        }
+
+        function renderSections() {
+            const grid = document.getElementById('sectionsGrid');
+            grid.innerHTML = '';
+
+            Object.entries(dataRoomConfig.sections).forEach(([sectionId, section]) => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6';
+                sectionDiv.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">${section.title}</h3>
+                        <button onclick="openModal('${sectionId}')" class="text-emerald-600 hover:text-emerald-700 text-sm font-medium">
+                            + Add File
+                        </button>
+                    </div>
+                    <div class="space-y-2">
+                        ${section.files.map((file, index) => `
+                            <div class="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-700 rounded">
+                                <div class="flex-1">
+                                    <div class="text-sm font-medium">${file.name}</div>
+                                    <div class="text-xs text-slate-500 dark:text-slate-400">${file.path}</div>
+                                </div>
+                                <button onclick="removeFile('${sectionId}', ${index})" class="text-red-600 hover:text-red-700 text-sm">
+                                    Remove
+                                </button>
+                            </div>
+                        `).join('')}
+                        ${section.files.length === 0 ? '<div class="text-sm text-slate-500 dark:text-slate-400">No files added yet</div>' : ''}
+                    </div>
+                `;
+                grid.appendChild(sectionDiv);
+            });
+        }
+
+        function openModal(sectionId) {
+            currentSection = sectionId;
+            document.getElementById('uploadModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('uploadModal').classList.add('hidden');
+            document.getElementById('fileForm').reset();
+            currentSection = '';
+        }
+
+        function removeFile(sectionId, fileIndex) {
+            if (confirm('Are you sure you want to remove this file?')) {
+                dataRoomConfig.sections[sectionId].files.splice(fileIndex, 1);
+                saveConfig();
+                renderSections();
+            }
+        }
+
+        function saveConfig() {
+            // In a real application, this would save to a server
+            // For now, we'll just store in localStorage
+            localStorage.setItem('dataRoomConfig', JSON.stringify(dataRoomConfig));
+            console.log('Configuration saved:', dataRoomConfig);
+        }
+
+        function logout() {
+            window.location.href = '../../investor-portal.html';
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize theme
+        (function() {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+
+        // Form submission
+        document.getElementById('fileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fileName = document.getElementById('fileName').value;
+            const filePath = document.getElementById('filePath').value;
+            const fileDescription = document.getElementById('fileDescription').value;
+            
+            const newFile = {
+                name: fileName,
+                path: filePath,
+                description: fileDescription,
+                date: new Date().toISOString().split('T')[0]
+            };
+            
+            dataRoomConfig.sections[currentSection].files.push(newFile);
+            saveConfig();
+            renderSections();
+            closeModal();
+        });
+
+        // Load configuration on page load
+        loadConfig();
+    </script>
+</body>
+</html>

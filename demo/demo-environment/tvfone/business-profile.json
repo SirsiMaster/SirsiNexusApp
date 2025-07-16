@@ -1,0 +1,67 @@
+{
+  "business_name": "TVfone",
+  "business_type": "Streaming Technology Platform",
+  "industry": "Media & Entertainment",
+  "founded": "2019",
+  "headquarters": "Austin, TX",
+  "employees": 125,
+  "revenue_annual": "$8.2M",
+  "customers": {
+    "active_users": 450000,
+    "mobile_users": 315000,
+    "smart_tv_users": 135000,
+    "voice_assistant_users": 89000
+  },
+  "business_objectives": {
+    "primary": "Increase streaming viewership among mobile users by 40% within 12 months",
+    "secondary": [
+      "Modernize architecture for 10x scale",
+      "Integrate explainable AI for personalized recommendations",
+      "Add monetization layers to achieve $15M ARR",
+      "Implement cross-platform unified experience"
+    ]
+  },
+  "current_infrastructure": {
+    "hosting": "Hybrid (On-premise + AWS)",
+    "primary_cloud": "AWS",
+    "regions": ["us-east-1", "us-west-2", "eu-west-1"],
+    "architecture": "Monolithic with microservices transition",
+    "data_volume_tb": 45.7,
+    "monthly_active_requests": 28500000,
+    "peak_concurrent_users": 75000
+  },
+  "technology_stack": {
+    "backend": ["Node.js", "Python", "Java"],
+    "frontend": ["React Native", "React", "Vue.js"],
+    "databases": ["PostgreSQL", "Redis", "Elasticsearch"],
+    "streaming": ["AWS Media Services", "CDN"],
+    "ml_ai": ["TensorFlow", "PyTorch", "AWS SageMaker"]
+  },
+  "integration_requirements": {
+    "streaming_platforms": 15,
+    "oauth_providers": ["Netflix", "Prime Video", "Hulu", "Disney+", "HBO Max", "Apple TV+"],
+    "apis": ["TMDB", "OMDB", "Rotten Tomatoes", "Cultural Trends APIs"],
+    "payment_gateways": ["Stripe", "PayPal", "Apple Pay", "Google Pay"]
+  },
+  "compliance_requirements": [
+    "COPPA (Children's Online Privacy Protection)",
+    "CCPA (California Consumer Privacy Act)",
+    "GDPR (General Data Protection Regulation)",
+    "SOC 2 Type II"
+  ],
+  "demo_scenarios": {
+    "migration": {
+      "from": "Hybrid AWS + On-premise",
+      "to": "Multi-cloud (AWS + Azure + GCP)",
+      "reason": "Global expansion and vendor diversification"
+    },
+    "optimization": {
+      "focus": "Cost reduction and performance improvement",
+      "targets": ["CDN costs", "Database performance", "Auto-scaling efficiency"]
+    },
+    "scale_up": {
+      "growth_projection": "300% user growth in next 18 months",
+      "new_features": ["AI recommendations", "Voice integration", "Smart TV apps"]
+    }
+  }
+}

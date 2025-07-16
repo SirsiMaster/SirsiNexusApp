@@ -1,0 +1,4 @@
+# Security Audit Scores
+network_security_score: 60
+authentication_score: 85
+database_security_score: 55
