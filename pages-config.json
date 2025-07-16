@@ -1,0 +1,11 @@
+{
+  "baseUrl": "https://sirsimaster.github.io/SirsiNexus",
+  "title": "SirsiNexus - Enterprise Cloud Optimization Platform"
+}
+
+{
+  "source": {
+    "branch": "main",
+    "path": "/"
+  }
+}

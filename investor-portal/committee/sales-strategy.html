@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Strategy - SirsiNexus</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 dark:bg-gray-800">
+    <div id="auth-check" class="hidden">Your authentication logic here</div>
+    <div class="max-w-4xl mx-auto mt-10">
+        <h1 class="text-3xl font-bold text-center text-gray-900 dark:text-gray-100">Sales Strategy</h1>
+        <section id="strategic-overview" class="my-10">
+            <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Strategic Overview</h2>
+            <p class="text-gray-700 dark:text-gray-300">Detail the strategic initiatives around sales...</p>
+        </section>
+
+        <div class="my-10" id="line-chart-container">
+            <canvas id="sales-line-chart"></canvas>
+        </div>
+
+        <section id="sales-metrics" class="my-10">
+            <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Sales Metrics</h2>
+            <!-- Metric charts and content here -->
+        </section>
+
+        <section id="competitive-landscape" class="my-10">
+            <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Competitive Landscape</h2>
+            <p class="text-gray-700 dark:text-gray-300">Discuss the competitive landscape...</p>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize theme toggle and AOS
+            AOS.init();
+
+            // GSAP Animation
+            gsap.fromTo('#strategic-overview', {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 1, scrollTrigger: {
+                trigger: '#strategic-overview',
+                start: 'top 80%',
+                toggleActions: 'play none none none'
+            }});
+
+            // Line Chart for Sales Strategy
+            const ctxLine = document.getElementById('sales-line-chart').getContext('2d');
+            new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                    datasets: [{
+                        label: 'Revenue Growth',
+                        data: [15, 25, 35, 50],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        yAxisID: 'y',
+                    }, {
+                        label: 'Market Share Increase',
+                        data: [1, 2, 3, 4],
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        yAxisID: 'y1',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        }
+                    }
+                }
+            });
+
+            // Hover effects
+            gsap.utils.toArray('.content-box').forEach(box => {
+                gsap.fromTo(box, {scale: 0.95}, {
+                    scale: 1,
+                    duration: 0.5,
+                    ease: 'ease-in-out',
+                    scrollTrigger: {
+                        trigger: box,
+                        start: 'top 95%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

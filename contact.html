@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Support - SirsiNexus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              emerald: {
+                600: '#059669',
+                700: '#047857',
+              },
+            },
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex h-16 items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 flex items-center justify-center">
+                            <img src="assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
+                            <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">SirsiNexus</h1>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">Contact Support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav class="flex items-center gap-6">
+                    <a href="index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">← Back to Home</a>
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-3xl mx-auto px-6 py-12">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold mb-4">Contact <span class="text-emerald-600">Support</span></h1>
+            <p class="text-lg text-slate-600 dark:text-slate-400">Get in touch with our dedicated support team</p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-8 mb-8">
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h2 class="text-xl font-semibold mb-4">Support Hours</h2>
+                    <div class="space-y-3 text-slate-600 dark:text-slate-400">
+                        <p>Monday - Friday: 9:00 AM - 8:00 PM EST</p>
+                        <p>Saturday: 10:00 AM - 5:00 PM EST</p>
+                        <p>Sunday: Emergency Support Only</p>
+                    </div>
+
+                    <div class="mt-8">
+                        <h3 class="font-semibold mb-3">Priority Support</h3>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4">Enterprise customers receive 24/7 priority support access.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-semibold mb-2">Email Support</h3>
+                        <a href="mailto:support@sirsinexus.com" class="text-emerald-600 hover:text-emerald-700">support@sirsinexus.com</a>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold mb-2">Phone Support</h3>
+                        <p class="text-slate-600 dark:text-slate-400">+1 (888) SIRSI-AI</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold mb-2">Enterprise Support</h3>
+                        <p class="text-slate-600 dark:text-slate-400">Contact your dedicated account manager or email:</p>
+                        <a href="mailto:enterprise@sirsinexus.com" class="text-emerald-600 hover:text-emerald-700">enterprise@sirsinexus.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-lg p-8 border border-slate-200 dark:border-slate-700">
+            <h2 class="text-xl font-semibold mb-4">Knowledge Base</h2>
+            <p class="text-slate-600 dark:text-slate-400 mb-6">
+                Browse our comprehensive documentation and guides to find quick answers to common questions.
+            </p>
+            <a href="#" class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+                Visit Knowledge Base
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-10 h-10 object-contain">
+                        <div>
+                            <h3 class="text-lg font-semibold">SirsiNexus</h3>
+                            <p class="text-sm text-slate-400">AI-Powered Cloud Infrastructure</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Revolutionizing cloud infrastructure management with cutting-edge AI technology and enterprise-grade solutions.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="investor-portal/index.html" class="hover:text-white transition-colors">Investor Portal</a></li>
+                        <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact Info</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li>Email: support@sirsinexus.com</li>
+                        <li>Phone: +1 (888) SIRSI-AI</li>
+                        <li>Hours: Mon-Fri 9AM-8PM EST</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-8 pt-8 text-center text-sm text-slate-400">
+                <p>&copy; 2025 Sirsi Technologies Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+        }
+        
+        // Initialize immediately
+        initTheme();
+        
+        // Make toggleTheme available globally
+        window.toggleTheme = toggleTheme;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+        });
+    </script>
+</body>
+</html>

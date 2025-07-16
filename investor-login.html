@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus - Investor Login</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script>console.log('🚀 Page loaded at:', new Date().toISOString());</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              emerald: {
+                600: '#059669',
+                700: '#047857',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <script>
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          const hasPersistedPreference = typeof persistedColorPreference === 'string';
+          if (hasPersistedPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+          if (hasMediaQueryPreference) {
+            return mql.matches ? 'dark' : 'light';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+    <style>
+      /* Professional Print Button */
+      .print-button {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        color: white;
+        border: none;
+        padding: 0.875rem 1.5rem;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 600;
+        box-shadow: 0 4px 20px rgba(5, 150, 105, 0.3);
+        transition: all 0.3s ease;
+        font-family: 'Inter', sans-serif;
+      }
+      .print-button:hover {
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(5, 150, 105, 0.4);
+      }
+      
+      /* Professional Document Header */
+      .document-header {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        color: white;
+        padding: 5rem 2rem;
+        text-align: center;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .document-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(4, 120, 87, 0.05) 100%);
+        pointer-events: none;
+      }
+      .document-header h1 {
+        font-size: clamp(2.5rem, 4vw, 3.5rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        letter-spacing: -0.02em;
+        position: relative;
+        z-index: 1;
+      }
+      .document-header p {
+        font-size: 1.25rem;
+        opacity: 0.9;
+        line-height: 1.6;
+        max-width: 600px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+      
+      /* Professional Document Meta */
+      .document-meta {
+        background: #ffffff;
+        padding: 2rem;
+        margin: 2rem auto;
+        max-width: 1200px;
+        border-radius: 16px;
+        text-align: center;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+      .dark .document-meta {
+        background: #1e293b;
+        border-color: #334155;
+        color: #f1f5f9;
+      }
+      
+      /* Professional Navigation */
+      .document-nav {
+        max-width: 1200px;
+        margin: 0 auto 3rem;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .breadcrumb-link {
+        color: #059669;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.2s ease;
+      }
+      .breadcrumb-link:hover {
+        color: #047857;
+        text-decoration: underline;
+      }
+      .breadcrumb-separator {
+        color: #94a3b8;
+        font-weight: 400;
+      }
+      .breadcrumb-current {
+        color: #64748b;
+        font-weight: 600;
+      }
+      .nav-actions {
+        display: flex;
+        gap: 1rem;
+      }
+      .nav-back, .nav-next, .nav-home {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid #059669;
+        color: #059669;
+        background: transparent;
+        font-family: 'Inter', sans-serif;
+      }
+      .nav-back:hover, .nav-next:hover, .nav-home:hover {
+        background: #059669;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+      }
+      
+      /* Professional Executive Summary */
+      .executive-summary {
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        padding: 3rem;
+        margin: 3rem auto;
+        max-width: 1200px;
+        border-radius: 16px;
+        border-left: 5px solid #059669;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+      .dark .executive-summary {
+        background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+        color: #f0fdf4;
+      }
+      
+      /* Professional Metrics Grid */
+      .metrics-d-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 3rem auto;
+        padding: 0 2rem;
+      }
+      .metric-card {
+        background: #ffffff;
+        padding: 2.5rem;
+        border-radius: 16px;
+        text-align: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .metric-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+      }
+      .dark .metric-card {
+        background: #1e293b;
+        border-color: #334155;
+      }
+      .metric-value {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #059669;
+        display: block;
+        margin-bottom: 0.75rem;
+        line-height: 1;
+      }
+      .metric-label {
+        font-size: 0.875rem;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        line-height: 1.4;
+      }
+      .dark .metric-label {
+        color: #94a3b8;
+      }
+      
+      /* Professional Document Sections */
+      .document-section {
+        max-width: 1200px;
+        margin: 3rem auto;
+        padding: 2.5rem;
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .document-section:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      }
+      .dark .document-section {
+        background: #1e293b;
+        border-color: #334155;
+        color: #f1f5f9;
+      }
+      .document-section h2 {
+        color: #059669;
+        margin-bottom: 1.5rem;
+        font-size: clamp(1.5rem, 2.5vw, 2rem);
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+      }
+      
+      /* Professional Action Buttons */
+      .document-actions {
+        margin-top: 2rem;
+      }
+      .button-primary {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        color: #ffffff;
+        border: 2px solid transparent;
+        cursor: pointer;
+        font-family: 'Inter', sans-serif;
+      }
+      .button-primary:hover {
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+      }
+      
+      /* Professional Info Box */
+      .info-box {
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        border: 1px solid #bfdbfe;
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin: 2rem auto;
+        max-width: 1200px;
+        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
+      }
+      .dark .info-box {
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        border-color: #3b82f6;
+        color: #f1f5f9;
+      }
+      
+      /* Professional Footer Navigation */
+      .document-footer-nav {
+        max-width: 1200px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+      .dark .document-footer-nav {
+        background: #1e293b;
+        border-color: #334155;
+      }
+      
+      /* Professional Footer */
+      .document-footer {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 2rem;
+        text-align: center;
+        font-size: 0.875rem;
+        color: #64748b;
+        border-top: 1px solid #e5e7eb;
+      }
+      .dark .document-footer {
+        color: #94a3b8;
+        border-color: #334155;
+      }
+    </style>
+
+<style>
+/* Professional Investment-Ready Styling */
+
+/* Typography & Font Loading */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Global Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #1a1a1a;
+    background-color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* Professional Typography Scale */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #0a0a0a;
+    margin-bottom: 1rem;
+}
+
+main h1, .document-section h1 {
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+h3 {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+h4 {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 600;
+}
+
+p {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #4a4a4a;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+}
+
+/* Professional Container System */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.section {
+    padding: 5rem 0;
+}
+
+.section-sm {
+    padding: 3rem 0;
+}
+
+/* Enhanced Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+}
+
+th {
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+    color: #ffffff;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #374151;
+}
+
+td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #374151;
+}
+
+tr:hover {
+    background-color: #f8fafc;
+    transition: background-color 0.2s ease;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Professional Lists */
+ul, ol {
+    margin: 1.5rem 0;
+    padding-left: 0;
+}
+
+li {
+    position: relative;
+    padding: 0.75rem 0 0.75rem 2.5rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+    color: #374151;
+    font-size: 1.05rem;
+}
+
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1.2rem;
+    width: 6px;
+    height: 6px;
+    background: #059669;
+    border-radius: 50%;
+    transform: translateY(-50%);
+}
+
+/* Enhanced Cards */
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 2rem;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Professional Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #059669;
+    border-color: #059669;
+}
+
+.btn-secondary:hover {
+    background: #059669;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* Professional Spacing */
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+.mb-5 { margin-bottom: 2.5rem; }
+.mb-6 { margin-bottom: 3rem; }
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+.mt-5 { margin-top: 2.5rem; }
+.mt-6 { margin-top: 3rem; }
+
+/* Professional Colors */
+.text-primary { color: #059669; }
+.text-secondary { color: #6b7280; }
+.text-muted { color: #9ca3af; }
+.text-dark { color: #1f2937; }
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .section {
+        padding: 3rem 0;
+    }
+    
+    main h1, .document-section h1 {
+        font-size: 2.5rem;
+    }
+    
+    h2 {
+        font-size: 2rem;
+    }
+    
+    h3 {
+        font-size: 1.5rem;
+    }
+    
+    p {
+        font-size: 1rem;
+    }
+    
+    .card {
+        padding: 1.5rem;
+    }
+    
+    table {
+        font-size: 0.875rem;
+    }
+    
+    th, td {
+        padding: 1rem;
+    }
+}
+
+/* Dark Mode Support */
+.dark body {
+    background-color: #0f172a;
+    color: #e2e8f0;
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    color: #f1f5f9;
+}
+
+.dark p {
+    color: #cbd5e1;
+}
+
+.dark .card {
+    background: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+.dark table {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+.dark th {
+    background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+    color: #f1f5f9;
+    border-bottom-color: #4b5563;
+}
+
+.dark td {
+    color: #e2e8f0;
+    border-color: #374151;
+}
+
+.dark tr:hover {
+    background-color: #334155;
+}
+
+.dark li {
+    color: #cbd5e1;
+}
+
+.dark .text-secondary {
+    color: #94a3b8;
+}
+
+.dark .text-muted {
+    color: #64748b;
+}
+
+.dark .text-dark {
+    color: #e2e8f0;
+}
+
+/* Dark mode gradient backgrounds */
+.dark .bg-gradient-to-br {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+.dark .bg-gradient-to-r {
+    background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
+}
+
+/* Dark mode CTA section */
+.dark .bg-gradient-to-r.from-emerald-600.to-blue-600 {
+    background: linear-gradient(90deg, #047857 0%, #1e40af 100%);
+}
+
+/* Dark mode footer */
+.dark .bg-slate-900 {
+    background-color: #020617;
+}
+
+.dark .border-slate-800 {
+    border-color: #1e293b;
+}
+
+/* Dark mode specific document header */
+.dark .document-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.dark .document-header::before {
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.15) 0%, rgba(4, 120, 87, 0.08) 100%);
+}
+
+/* Dark mode form inputs */
+.dark input[type="text"], .dark input[type="password"] {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #f1f5f9;
+}
+
+.dark input[type="text"]:focus, .dark input[type="password"]:focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}
+
+.dark input[type="text"]::placeholder, .dark input[type="password"]::placeholder {
+    color: #64748b;
+}
+
+/* Print Styles */
+@media print {
+    * {
+        background: transparent !important;
+        color: black !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    
+    .card {
+        border: 1px solid #ccc;
+        page-break-inside: avoid;
+    }
+    
+    table {
+        border-collapse: collapse;
+        page-break-inside: avoid;
+    }
+    
+    h1, h2, h3 {
+        page-break-after: avoid;
+    }
+}
+</style>
+
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex h-16 items-center justify-between">
+          <div class="flex items-center gap-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 flex items-center justify-center">
+                <img src="assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
+                <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+              </div>
+              <div>
+                <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                  SirsiNexus
+                </h1>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+                    v0.7.9-alpha
+                  </span>
+                  <div class="flex items-center gap-1">
+                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                    <span class="text-xs text-slate-600 dark:text-slate-300">Live</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <nav class="hidden md:flex items-center gap-6">
+            <a href="index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">← Back to Home</a>
+            <span class="text-sm text-emerald-600 dark:text-emerald-400 font-medium">Investor Portal</span>
+            <a href="signup.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Sign Up</a>
+            <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors border border-slate-300 dark:border-slate-600 ml-4" style="min-width: 40px; min-height: 40px;">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+            </button>
+          </nav>
+          <button class="md:hidden text-slate-600 dark:text-slate-400" onclick="toggleMobileMenu()">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Title Section -->
+
+    <!-- Print Button -->
+    <button onclick="window.print()" class="print-button" title="Print this page">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+        </svg>
+        Print/PDF
+    </button>
+
+    <!-- Main Content -->
+    <main class="min-h-[calc(100vh-4rem)] flex items-center justify-center py-8">
+        <!-- Access Gate -->
+        <div id="accessGate" class="max-w-md w-full mx-auto bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 p-8">
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">SirsiNexus Investor Portal</h1>
+                <p class="text-sm text-slate-600 dark:text-slate-400">Access financial data, reports, and investor communications</p>
+            </div>
+            
+            <form id="accessForm" class="space-y-4">
+                <div>
+                    <label for="investorId" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Investor ID</label>
+                    <input
+                        type="text"
+                        id="investorId"
+                        name="investorId"
+                        required
+                        class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white text-sm"
+                        placeholder="Enter your investor ID"
+                    />
+                </div>
+                        
+                <div>
+                    <label for="accessCode" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Access Code</label>
+                    <input
+                        type="password"
+                        id="accessCode"
+                        name="accessCode"
+                        required
+                        class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white text-sm"
+                        placeholder="Enter your access code"
+                    />
+                </div>
+                        
+                <button
+                    type="submit"
+                    class="w-full bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-colors font-medium text-sm mt-6"
+                >
+                    Access Portal
+                </button>
+                
+                <button
+                    type="button"
+                    onclick="testLogin()"
+                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors font-medium text-sm mt-2"
+                >
+                    🧪 Test Login (Demo)
+                </button>
+            </form>
+                
+            <div class="mt-6 text-center">
+                <p class="text-sm text-slate-500 dark:text-slate-400">
+                    Need access? Contact us at <a href="mailto:cylton@sirsi.ai" class="text-emerald-600 hover:text-emerald-700 font-medium">cylton@sirsi.ai</a>
+                </p>
+                <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
+                    Access requires approval from the administrator.
+                </p>
+            </div>
+        </div>
+
+        <!-- Login Success Message -->
+        <div id="loginSuccess" class="hidden fixed inset-0 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm">
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-8 max-w-sm w-full mx-4 shadow-lg border border-slate-200 dark:border-slate-700">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">Login Successful</h2>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Redirecting to investor dashboard...</p>
+                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-600 mx-auto"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 text-slate-600 dark:text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <div class="flex items-center justify-center gap-2 mb-4">
+                    <div class="w-8 h-8 flex items-center justify-center">
+                        <img src="assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-8 h-8 object-contain dark:hidden">
+                        <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-8 h-8 object-contain hidden dark:block">
+                    </div>
+                    <span class="text-xl font-semibold">SirsiNexus</span>
+                </div>
+                <p class="text-slate-600 dark:text-slate-400 mb-4">Agent-embedded infrastructure platform for enterprise cloud operations.</p>
+                <div class="border-t border-slate-200 dark:border-slate-800 pt-8 text-center text-slate-600 dark:text-slate-400">
+                    <p>&copy; 2025 Sirsi Technologies Inc. All rights reserved.</p>
+                    <p class="text-sm mt-2">SirsiNexus is a product of Sirsi Technologies Inc.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            // Mobile menu toggle functionality
+            console.log('Mobile menu toggle clicked');
+            // Add mobile menu implementation here
+        }
+
+        function initTheme() {
+            try {
+                const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.classList.toggle('dark', theme === 'dark');
+                console.log('Theme initialized:', theme);
+            } catch (error) {
+                console.error('Error initializing theme:', error);
+            }
+        }
+
+        function toggleTheme() {
+            try {
+                console.log('Toggle theme clicked');
+                const html = document.documentElement;
+                const wasDark = html.classList.contains('dark');
+                
+                if (wasDark) {
+                    html.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    console.log('Switched to light mode');
+                } else {
+                    html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    console.log('Switched to dark mode');
+                }
+            } catch (error) {
+                console.error('Error toggling theme:', error);
+            }
+        }
+
+        // LOGIN HANDLER - Clean version for login-only page
+        console.log('🔧 Setting up login handler');
+        
+        // Test function to verify login works
+        window.testLogin = function() {
+            console.log('🧪 Testing login function');
+            const investorId = 'demo';
+            const accessCode = 'investor2025';
+            
+            console.log('🔐 TEST LOGIN ATTEMPT:', { investorId, accessCode });
+            
+            // Store authentication in sessionStorage
+            sessionStorage.setItem('investorAuth', JSON.stringify({
+                id: investorId,
+                role: 'investor',
+                loginTime: new Date().toISOString()
+            }));
+            
+            console.log('✅ Test login successful, redirecting...');
+            window.location.href = 'investor-portal/index.html';
+        };
+        
+        document.getElementById('accessForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const investorId = document.getElementById('investorId').value.trim();
+            const accessCode = document.getElementById('accessCode').value.trim();
+            
+            console.log('🔐 LOGIN ATTEMPT:', { investorId, accessCode });
+            
+            // Check for admin access
+            if (investorId === 'admin' && accessCode === 'admin2025') {
+                console.log('✅ Admin access granted');
+                
+                // Store authentication in sessionStorage
+                sessionStorage.setItem('investorAuth', JSON.stringify({
+                    id: investorId,
+                    role: 'admin',
+                    loginTime: new Date().toISOString()
+                }));
+                
+                // Show success message
+                document.getElementById('accessGate').classList.add('hidden');
+                document.getElementById('loginSuccess').classList.remove('hidden');
+                
+                // Redirect to dashboard after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'investor-portal/index.html';
+                }, 2000);
+                return;
+            }
+            
+            // Simple demo authentication (in production, this would be server-side)
+            if (investorId === 'demo' && accessCode === 'investor2025') {
+                console.log('✅ Demo access granted');
+                
+                // Show success message
+                document.getElementById('accessGate').classList.add('hidden');
+                document.getElementById('loginSuccess').classList.remove('hidden');
+                
+                // Store authentication in sessionStorage
+                sessionStorage.setItem('investorAuth', JSON.stringify({
+                    id: investorId,
+                    role: 'investor',
+                    loginTime: new Date().toISOString()
+                }));
+                
+                // Redirect to dashboard after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'investor-portal/index.html';
+                }, 2000);
+            } else {
+                console.log('❌ Invalid credentials provided');
+                alert('❌ Invalid credentials.\n\n🔑 Demo access: ID="demo", Code="investor2025"\n👨‍💼 Admin access: ID="admin", Code="admin2025"');
+            }
+        });
+
+        // Initialize theme immediately
+        initTheme();
+        
+        // Also initialize on DOMContentLoaded as backup
+        document.addEventListener('DOMContentLoaded', initTheme);
+        
+        // Make sure toggleTheme is available globally
+        window.toggleTheme = toggleTheme;
+        
+        </script>
+
+</body>
+<!-- Force rebuild: 1752699490 -->
+</html>

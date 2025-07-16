@@ -1,0 +1,69 @@
+{
+  "sections": {
+    "financial-reports": {
+      "title": "Financial Reports",
+      "files": []
+    },
+    "business-metrics": {
+      "title": "Business Metrics",
+      "files": [
+        {
+          "name": "Market Analysis Report",
+          "path": "committee/market-analysis.html",
+          "description": "Market analysis and competitive positioning",
+          "date": "January 2025"
+        }
+      ]
+    },
+    "legal-documents": {
+      "title": "Legal Documents",
+      "files": [
+        {
+          "name": "Privacy Policy",
+          "path": "../privacy-policy.html",
+          "description": "Company privacy policy and data protection",
+          "date": "January 2025"
+        },
+        {
+          "name": "Terms of Service",
+          "path": "../terms-of-service.html",
+          "description": "Service terms and conditions",
+          "date": "January 2025"
+        }
+      ]
+    },
+    "strategic-plans": {
+      "title": "Strategic Plans",
+      "files": [
+        {
+          "name": "Product Roadmap",
+          "path": "committee/product-roadmap.html",
+          "description": "Product development roadmap and milestones",
+          "date": "January 2025"
+        }
+      ]
+    },
+    "communications": {
+      "title": "Communications",
+      "files": [
+        {
+          "name": "Committee Index",
+          "path": "committee/index.html",
+          "description": "Executive committee meeting index and summaries",
+          "date": "January 2025"
+        }
+      ]
+    },
+    "investment-terms": {
+      "title": "Investment Terms",
+      "files": [
+        {
+          "name": "Documentation",
+          "path": "../documentation.html",
+          "description": "Technical documentation and platform information",
+          "date": "January 2025"
+        }
+      ]
+    }
+  }
+}

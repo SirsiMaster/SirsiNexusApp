@@ -1,0 +1,41 @@
+# Warp Terminal Development Rules
+
+## Rule #1: Hard Assessment Protocol (HAP)
+
+### Assessment Standards
+- **No hyperbole or celebration of basic functionality**
+- **Distinguish infrastructure from product capabilities**
+- **Identify gaps between working code and working product**
+- **Measure value delivered to end users, not lines of code written**
+
+### Technical Evaluation Framework
+1. **What actually works end-to-end?** (not what compiles)
+2. **What provides real user value?** (not what looks impressive)
+3. **What are the critical production gaps?** (not what's "almost done")
+4. **What's the fastest path to working product?** (not the most elegant architecture)
+
+### Implementation Approach
+- **Elite technical route**: Shortest path to real functionality
+- **No mock implementations**: Build real integrations or acknowledge limitations
+- **Production-first mindset**: Every feature must handle real-world failure cases
+- **Value-driven development**: Prioritize features that solve actual problems
+
+### Communication Standards
+- **Precise language**: "WebSocket connectivity established" not "real-time agent platform"
+- **Gap identification**: Always list what doesn't work alongside what does
+- **Next action clarity**: Specific next steps, not roadmap aspirations
+- **Technical honesty**: Acknowledge when something is infrastructure vs product
+
+### Decision Making
+- **Choose the most technically proficient route**
+- **Optimize for working product over perfect architecture**
+- **Prioritize real functionality over impressive demos**
+- **Build incrementally with each step providing measurable value**
+
+### Code Quality Standards
+- **No technical debt justified by "we'll fix it later"**
+- **Real error handling for real failure modes**
+- **Production-ready logging and observability from day one**
+- **Security and authentication built in, not bolted on**
+
+This rule governs all development decisions, assessments, and communications.

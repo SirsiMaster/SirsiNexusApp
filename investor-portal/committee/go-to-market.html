@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go To Market - SirsiNexus</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 dark:bg-gray-800">
+    <div id="auth-check" class="hidden">Your authentication logic here</div>
+    <div class="max-w-4xl mx-auto mt-10">
+        <h1 class="text-3xl font-bold text-center text-gray-900 dark:text-gray-100">Go To Market Strategy</h1>
+        <section id="strategic-overview" class="my-10">
+            <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Strategic Overview</h2>
+            <p class="text-gray-700 dark:text-gray-300">Outline the go-to-market strategy with initiatives and focus areas...</p>
+        </section>
+
+        <div class="my-10" id="line-chart-container">
+            <canvas id="gtm-line-chart"></canvas>
+        </div>
+
+        <section id="gtm-metrics" class="my-10">
+            <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Go To Market Metrics</h2>
+            <!-- Metric charts and content here -->
+        </section>
+
+        <section id="competitive-advantage" class="my-10">
+            <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Competitive Advantage</h2>
+            <p class="text-gray-700 dark:text-gray-300">Articulate key competitive advantages...
+            </p>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize theme toggle and AOS
+            AOS.init();
+
+            // GSAP Animation
+            gsap.fromTo('#strategic-overview', {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 1, scrollTrigger: {
+                trigger: '#strategic-overview',
+                start: 'top 80%',
+                toggleActions: 'play none none none'
+            }});
+
+            // Line Chart for Go To Market Strategy
+            const ctxLine = document.getElementById('gtm-line-chart').getContext('2d');
+            new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: ['Launch', 'Growth', 'Mature'],
+                    datasets: [{
+                        label: 'Customer Acquisition',
+                        data: [10, 30, 60],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        yAxisID: 'y',
+                    }, {
+                        label: 'Market Penetration',
+                        data: [5, 15, 40],
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        yAxisID: 'y1',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        }
+                    }
+                }
+            });
+
+            // Hover effects
+            gsap.utils.toArray('.content-box').forEach(box => {
+                gsap.fromTo(box, {scale: 0.95}, {
+                    scale: 1,
+                    duration: 0.5,
+                    ease: 'ease-in-out',
+                    scrollTrigger: {
+                        trigger: box,
+                        start: 'top 95%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

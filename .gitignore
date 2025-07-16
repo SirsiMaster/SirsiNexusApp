@@ -1,0 +1,130 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Testing
+coverage/
+
+# Next.js
+.next/
+out/
+
+# Production
+build/
+dist/
+
+# Rust
+target/
+**/*.rs.bk
+Cargo.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# Built binaries
+sirsi-nexus
+sirsi-nexus-*
+*.pprof
+
+# Note: Database files are now tracked with Git LFS
+# See .gitattributes for LFS configuration
+
+# Application logs (specific files, not *.log since LFS handles those)
+backend-server.log
+backend.log
+sirsi.log
+sirsi-launch.log
+dev.log
+dev-server.log
+
+# Security and sensitive files
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.csr
+*.der
+secrets/
+keys/
+certs/
+.ssh/
+.gnupg/
+
+# Security scan results
+security-reports/
+vulnerability-reports/
+*.sarif
+*.json.security
+bandit-report.json
+trivy-results.sarif
+security-audit.log
+
+# Environment files with secrets
+.env.production
+.env.staging
+.env.secret
+.env.*.secret
+
+# Database dumps and backups
+*.sql.gz
+*.dump
+*.backup
+backups/
+
+# Development and testing files that might contain secrets
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
