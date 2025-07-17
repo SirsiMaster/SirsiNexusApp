@@ -400,9 +400,6 @@
 <span class="text-xs text-secondary-500 dark:text-secondary-400 bg-secondary-100 dark:bg-secondary-800 px-2 py-0.5 rounded">
                     v0.7.9-alpha
                   </span>
-                  <span class="text-xs text-orange-600 dark:text-orange-400 bg-orange-100 dark:bg-orange-800 px-2 py-0.5 rounded">
-                    LIVE UPDATE - 1752698850
-                  </span>
                   <div class="flex items-center gap-1">
                     <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
                     <span class="text-xs text-slate-600 dark:text-slate-300">Live</span>
@@ -566,7 +563,7 @@
                 <div class="mb-6">
                     <h4 class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 px-3 uppercase">On This Page</h4>
                     <div class="space-y-1">
-        <button onclick="scrollToSection(sectionId)" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors text-sm text-secondary-600 dark:text-secondary-400">
+        <button onclick="scrollToSection('executive-summary')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors text-sm text-secondary-600 dark:text-secondary-400">
                             Executive Summary
                         </button>
                         <button onclick="scrollToSection('market-opportunity')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors text-sm text-secondary-600 dark:text-secondary-400">
@@ -619,7 +616,7 @@
                 </p>
                 
                 <!-- Executive Summary Embedded -->
-                <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 mb-8 max-w-4xl mx-auto text-left">
+                <div id="executive-summary" class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 mb-8 max-w-4xl mx-auto text-left">
                     <div class="space-y-6">
                         <p class="text-base leading-relaxed text-slate-700 dark:text-slate-300">
                             SirsiNexus is revolutionizing cloud infrastructure management through our proprietary Graph of Thought AI architecture integrated with Hedera Hashgraph technology. Our unique superpower lies in strategic traction - exclusive access to NVIDIA's invite-only Inception Program and AWS's Migration Acceleration Program positions us at the epicenter of cloud transformation. With pre-qualified pipeline opportunities through Techstars Universe, tier-1 university networks (Chicago Booth, Howard, UT Austin, Brown), and direct VC portfolio optimization mandates, we deliver 35% cost reductions with 99.99% AI prediction accuracy. This strategic positioning creates an unfair advantage in the $78.8B cloud optimization market.
@@ -665,7 +662,7 @@
 
 
         <!-- Market Opportunity & Financial Projections -->
-        <section class="document-section">
+        <section id="market-opportunity" class="document-section">
             <h2 class="text-xl font-semibold mb-6">Market Opportunity & Financial Projections</h2>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <!-- Market Opportunity -->
@@ -716,7 +713,7 @@
                             <thead>
                                 <tr class="border-b border-slate-200 dark:border-slate-700">
                                     <th class="text-left py-4 font-semibold">Metric</th>
-                                    th class="text-right py-4 font-semibold"Y1 (2025)/th
+                                    <th class="text-right py-4 font-semibold">Y1 (2025)</th>
                                     <th class="text-right py-4 font-semibold">Y3 (2027)</th>
                                     <th class="text-right py-4 font-semibold">Y5 (2029)</th>
                                 </tr>
@@ -789,7 +786,7 @@
         </section>
 
         <!-- Enhanced Data Room Section -->
-        <div class="document-section">
+        <div id="data-room" class="document-section">
             <h2>Investor Data Room</h2>
             <p class="text-slate-600 dark:text-slate-300 mb-6">Access detailed documentation and analysis for each section below. Click on any section to explore available documents.</p>
             
@@ -1324,6 +1321,23 @@
           await originalLoadDataRoomConfig();
           buildSearchIndex();
         };
+        
+        // Sidebar toggle functionality
+        function toggleSidebar() {
+          const sidebar = document.getElementById('sidebar');
+          const isHidden = sidebar.classList.contains('-translate-x-full');
+          
+          if (isHidden) {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0');
+          } else {
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+          }
+        }
+        
+        // Make toggleSidebar available globally
+        window.toggleSidebar = toggleSidebar;
         
         // Check authentication when page loads
         document.addEventListener('DOMContentLoaded', function() {
