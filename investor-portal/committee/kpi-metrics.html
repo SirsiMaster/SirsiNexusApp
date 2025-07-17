@@ -85,8 +85,19 @@
                 KPI & Unit <span class="text-emerald-600">Metrics</span>
             </h1>
             <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-                Comprehensive performance indicators, unit economics, and strategic metrics demonstrating SirsiNexus's operational excellence and growth trajectory.
+                Pro forma performance indicators, unit economics, and strategic metrics projecting SirsiNexus's post-market entry trajectory starting Q4 2025.
             </p>
+            <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mt-6 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+                <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div>
+                        <h3 class="text-sm font-semibold text-amber-800 dark:text-amber-400">Pre-Market Phase</h3>
+                        <p class="text-sm text-amber-700 dark:text-amber-300">SirsiNexus is currently in pre-market development. All metrics represent pro forma projections based on strategic partnerships, technical validation, and market analysis.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -103,7 +114,7 @@
                         </div>
                         <div>
                             <div class="text-2xl font-bold text-emerald-600">$2.1M</div>
-                            <div class="text-sm text-slate-500 dark:text-slate-400">ARR Target (2025)</div>
+                            <div class="text-sm text-slate-500 dark:text-slate-400">ARR Target (Year 1)</div>
                         </div>
                     </div>
                 </div>
@@ -116,8 +127,8 @@
                             </svg>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-slate-900 dark:text-slate-100">92%</div>
-                            <div class="text-sm text-slate-600 dark:text-slate-400">Customer Retention</div>
+                            <div class="text-2xl font-bold text-slate-900 dark:text-slate-100">Target</div>
+                            <div class="text-sm text-slate-600 dark:text-slate-400">Pre-Market Phase</div>
                         </div>
                     </div>
                 </div>
@@ -131,7 +142,7 @@
                         </div>
                         <div>
                             <div class="text-2xl font-bold text-slate-900 dark:text-slate-100">$45K</div>
-                            <div class="text-sm text-slate-500 dark:text-slate-400">Average ACV</div>
+                            <div class="text-sm text-slate-500 dark:text-slate-400">Target ACV</div>
                         </div>
                     </div>
                 </div>
@@ -144,8 +155,8 @@
                             </svg>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-slate-900 dark:text-slate-100">35%</div>
-                            <div class="text-sm text-slate-500 dark:text-slate-400">Cost Reduction</div>
+                            <div class="text-2xl font-bold text-emerald-600">35%</div>
+                            <div class="text-sm text-slate-500 dark:text-slate-400">Proven Value</div>
                         </div>
                     </div>
                 </div>
@@ -402,18 +413,18 @@
         const growthChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025', 'Q1 2026', 'Q2 2026', 'Q3 2026', 'Q4 2026'],
+                labels: ['Q4 2025\n(Market Entry)', 'Q1 2026', 'Q2 2026', 'Q3 2026', 'Q4 2026', 'Q1 2027', 'Q2 2027', 'Q3 2027'],
                 datasets: [{
-                    label: 'ARR ($M)',
-                    data: [0.15, 0.42, 0.78, 1.25, 1.89, 2.67, 3.58, 4.75],
+                    label: 'Pro Forma ARR ($M)',
+                    data: [0.08, 0.25, 0.52, 0.89, 1.45, 2.18, 3.02, 4.15],
                     borderColor: '#10b981',
                     backgroundColor: 'rgba(16, 185, 129, 0.1)',
                     borderWidth: 3,
                     fill: true,
                     tension: 0.4
                 }, {
-                    label: 'Target ARR ($M)',
-                    data: [0.10, 0.35, 0.70, 1.20, 1.80, 2.50, 3.40, 4.50],
+                    label: 'Conservative Target ($M)',
+                    data: [0.05, 0.18, 0.40, 0.75, 1.25, 1.90, 2.70, 3.80],
                     borderColor: '#6b7280',
                     backgroundColor: 'rgba(107, 114, 128, 0.1)',
                     borderWidth: 2,
