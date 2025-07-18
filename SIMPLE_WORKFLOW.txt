@@ -1,0 +1,14 @@
+=== First Workflow ===
+Name: SirsiNexus - Pages Dev
+Command: ./dev-context.sh pages
+Description: Switch to GitHub Pages development mode
+
+=== Second Workflow ===
+Name: SirsiNexus - App Dev
+Command: ./dev-context.sh app
+Description: Switch to application development mode
+
+=== Third Workflow ===
+Name: SirsiNexus - Deploy
+Command: ./deploy-safeguard.sh
+Description: Deploy changes with safety checks
