@@ -165,27 +165,67 @@ class UILibrary {
     }
 
     setupComponents() {
-        // Register custom elements
-        customElements.define('sirsi-header', this.createHeader());
-        customElements.define('sirsi-footer', this.createFooter());
-        customElements.define('sirsi-metric', this.createMetric());
-        customElements.define('sirsi-feature', this.createFeature());
-        customElements.define('sirsi-chart', this.createChart());
+        try {
+            // Only define components if they haven't been defined yet
+            const components = [
+                ['sirsi-header', this.createHeader()],
+                ['sirsi-footer', this.createFooter()],
+                ['sirsi-metric', this.createMetric()],
+                ['sirsi-feature', this.createFeature()],
+                ['sirsi-chart', this.createChart()]
+            ];
+
+            components.forEach(([name, component]) => {
+                if (!customElements.get(name)) {
+                    customElements.define(name, component);
+                    console.log(`✅ Registered component: ${name}`);
+                }
+            });
+        } catch (error) {
+            console.error('❌ Error setting up components:', error);
+        }
     }
 
     createHeader() {
         return class extends HTMLElement {
+            static get observedAttributes() {
+                return ['logo-path', 'version'];
+            }
+
+            constructor() {
+                super();
+                this.version = window.SirsiUI?.version || 'v0.5.0-alpha';
+            }
+
+            attributeChangedCallback(name, oldValue, newValue) {
+                if (name === 'version' && newValue) {
+                    this.version = newValue;
+                    this.render();
+                }
+            }
+
             connectedCallback() {
+                this.render();
+            }
+
+            render() {
+                // Get logo path from attribute or use relative path as fallback
+                const logoPath = this.getAttribute('logo-path') || '../assets/images/Sirsi_Logo_300ppi_cguiyg.png';
+                const darkLogoPath = this.getAttribute('dark-logo-path') || '../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png';
+                
                 this.innerHTML = `
                     <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700">
                         <div class="sirsi-container">
                             <div class="flex h-16 items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <img src="/assets/images/logo.svg" alt="SirsiNexus" class="h-8 w-auto">
+                                    <div class="w-12 h-12 flex items-center justify-center">
+                                        <img src="${logoPath}" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
+                                        <img src="${darkLogoPath}" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+                                    </div>
                                     <div>
-                                        <h1 class="text-lg font-semibold">SirsiNexus</h1>
+                                        <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">SirsiNexus</h1>
                                         <div class="flex items-center gap-2">
-                                            <span class="sirsi-version-badge">${this.version}</span>
+                                            <span class="version-badge text-xs text-secondary-500 dark:text-secondary-400 bg-secondary-100 dark:bg-secondary-800 px-2 py-0.5 rounded">${this.version}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -263,12 +303,59 @@ class UILibrary {
 
     createChart() {
         return class extends HTMLElement {
+            static get observedAttributes() {
+                return ['title', 'theme'];
+            }
+
+            constructor() {
+                super();
+                this.theme = 'light';
+                this.observer = new MutationObserver(() => this.updateChartTheme());
+            }
+
             connectedCallback() {
+                this.render();
+                
+                // Observe theme changes
+                this.observer.observe(document.documentElement, {
+                    attributes: true,
+                    attributeFilter: ['class']
+                });
+
+                // Set initial theme
+                this.updateChartTheme();
+            }
+
+            disconnectedCallback() {
+                this.observer.disconnect();
+            }
+
+            attributeChangedCallback(name, oldValue, newValue) {
+                if (oldValue !== newValue) {
+                    this.render();
+                }
+            }
+
+            updateChartTheme() {
+                const isDark = document.documentElement.classList.contains('dark');
+                const chartElement = this.querySelector('canvas');
+                if (chartElement && chartElement.chart) {
+                    const chart = chartElement.chart;
+                    chart.options.theme = isDark ? 'dark' : 'light';
+                    chart.options.scales.x.grid.color = isDark ? '#334155' : '#e2e8f0';
+                    chart.options.scales.y.grid.color = isDark ? '#334155' : '#e2e8f0';
+                    chart.options.scales.x.ticks.color = isDark ? '#94a3b8' : '#64748b';
+                    chart.options.scales.y.ticks.color = isDark ? '#94a3b8' : '#64748b';
+                    chart.update();
+                }
+            }
+
+            render() {
                 const title = this.getAttribute('title');
                 
                 this.innerHTML = `
-                    <div class="sirsi-chart-container">
-                        <h3 class="font-semibold mb-4">${title}</h3>
+                    <div class="sirsi-chart-container dark:bg-slate-800">
+                        <h3 class="font-semibold mb-4 text-slate-900 dark:text-slate-100">${title}</h3>
                         <div class="w-full h-full">
                             <slot></slot>
                         </div>
