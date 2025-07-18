@@ -1,0 +1,59 @@
+# SirsiNexus Development Rules
+# These rules help maintain consistent development practices across the team
+
+# Context Rules
+[context]
+description = "Rules for maintaining development context"
+check_context = "./dev-context.sh"
+enforce_context = true
+context_switch_cooldown = 300  # 5 minutes
+
+# GitHub Pages Rules
+[pages]
+description = "Rules for GitHub Pages development"
+working_directory = "SirsiNexus-Pages"
+deployment_script = "./deploy-safeguard.sh"
+required_files = ["README.md", "index.html"]
+protected_branches = ["gh-pages", "main"]
+deployment_cooldown = 300
+
+# Application Rules
+[app]
+description = "Rules for core application development"
+working_directory = "SirsiNexus-Core"
+deployment_script = "./deploy-safeguard.sh"
+required_files = ["README.md", "core-engine/*"]
+protected_branches = ["main", "develop"]
+deployment_cooldown = 300
+
+# Commit Rules
+[commit]
+description = "Rules for making commits"
+enforce_conventional_commits = true
+max_files_per_commit = 20
+require_description = true
+prevent_direct_main = true
+
+# Branch Rules
+[branch]
+description = "Rules for branch management"
+require_feature_prefix = true
+require_issue_number = true
+max_branch_age = 7  # days
+auto_delete_merged = true
+
+# Review Rules
+[review]
+description = "Rules for code review"
+require_approval = true
+block_wip = true
+require_tests = true
+enforce_coverage = true
+
+# Documentation Rules
+[docs]
+description = "Rules for documentation"
+require_updates = true
+changelog_required = true
+readme_required = true
+

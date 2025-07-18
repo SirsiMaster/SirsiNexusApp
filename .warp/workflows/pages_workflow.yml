@@ -1,0 +1,41 @@
+name: "GitHub Pages Development"
+description: "Workflow for GitHub Pages development and deployment"
+
+steps:
+  - name: "Set Pages Context"
+    command: "./dev-context.sh pages"
+    description: "Switch to GitHub Pages development context"
+
+  - name: "Check Status"
+    command: "git status"
+    description: "View current repository status"
+
+  - name: "Pull Latest"
+    command: "git pull origin gh-pages"
+    description: "Get latest changes from remote"
+
+  - name: "Create Feature Branch"
+    command: "git checkout -b pages/{{feature_name}}"
+    description: "Create new feature branch"
+    variables:
+      - name: "feature_name"
+        description: "Name of the feature or update"
+
+  - name: "Stage Changes"
+    command: "git add ."
+    description: "Stage all changes"
+
+  - name: "Commit Changes"
+    command: 'git commit -m "{{commit_message}}"'
+    description: "Commit changes with meaningful message"
+    variables:
+      - name: "commit_message"
+        description: "Descriptive commit message"
+
+  - name: "Deploy Pages"
+    command: "./deploy-safeguard.sh"
+    description: "Deploy changes with safeguards"
+
+  - name: "Verify Deployment"
+    command: "echo 'Visit https://sirsimaster.github.io/SirsiNexus/ to verify changes'"
+    description: "Manual verification step"
