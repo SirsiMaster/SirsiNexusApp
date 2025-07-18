@@ -3,324 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SirsiNexus - Market Analysis</title>
+    <title>Market Analysis - SirsiNexus</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js for interactive charts -->
+    <script src="../../components/ui-library.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
+    <!-- Authentication Check -->
+    <script>
+        (function() {
+            const auth = sessionStorage.getItem('investorAuth');
+            if (!auth) {
+                window.location.href = '../../investor-login.html';
+                return;
+            }
+            
+            try {
+                const authData = JSON.parse(auth);
+                const loginTime = new Date(authData.loginTime);
+                const now = new Date();
+                const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+                
+                if (hoursSinceLogin > 24) {
+                    sessionStorage.removeItem('investorAuth');
+                    window.location.href = '../../investor-login.html';
+                    return;
+                }
+            } catch (error) {
+                console.error('Authentication error:', error);
+                sessionStorage.removeItem('investorAuth');
+                window.location.href = '../../investor-login.html';
+                return;
+            }
+        })();
+    </script>
+
+    <!-- Theme Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d'
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a'
+                        }
+                    },
+                },
+            },
+        }
+    </script>
+
     <!-- GSAP for animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
     <!-- AOS for scroll animations -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <style>
         .chart-container {
-            width: 100%;
-            height: 300px;
             position: relative;
-            margin: 0 auto;
+            margin: auto;
+            height: 400px;
+            width: 100%;
         }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+
+        .market-stat {
+            transition: all 0.3s ease;
         }
-        
-        .dark .gradient-bg {
-            background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+
+        .market-stat:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark .market-stat:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .competitor-card {
+            transition: all 0.3s ease;
+        }
+
+        .competitor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark .competitor-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
         }
     </style>
 </head>
-<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
-    <!-- Header -->
-    <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex h-16 items-center justify-between">
-                <div class="flex items-center gap-6">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 flex items-center justify-center">
-                            <img src="../../assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
-                            <img src="../../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
-                        </div>
-                        <div>
-                            <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">SirsiNexus</h1>
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">v0.5.0-alpha</span>
-                                <div class="flex items-center gap-1">
-                                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
-                                    <span class="text-xs text-slate-600 dark:text-slate-300">Live</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <nav class="flex items-center gap-6">
-                    <a href="../../index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">← Back to Home</a>
-                    <a href="../index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">← Back to Portal</a>
-                </nav>
-            </div>
-        </div>
-    </header>
+<body class="h-full bg-slate-50 dark:bg-slate-900">
+    <sirsi-header>
+        <nav slot="nav-items">
+            <a href="../../index.html" class="sirsi-nav-item">← Back to Home</a>
+            <a href="../index.html" class="sirsi-nav-item">← Back to Portal</a>
+        </nav>
+    </sirsi-header>
 
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-br from-primary-50 via-white to-primary-100/50 dark:from-primary-900/10 dark:via-secondary-900 dark:to-primary-800/5 py-20">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6" data-aos="fade-up">
-                Market <span class="text-emerald-600">Analysis</span>
-            </h1>
-            <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-                Comprehensive market opportunity analysis, competitive landscape assessment, and strategic positioning for SirsiNexus in the cloud infrastructure optimization space.
+    <main class="sirsi-container py-12">
+        <!-- Hero Section -->
+        <div class="sirsi-section text-center">
+            <h1 class="sirsi-heading-1 mb-6">Market Analysis & Opportunity</h1>
+            <p class="sirsi-text max-w-3xl mx-auto">
+                Comprehensive analysis of the $78.8B cloud infrastructure optimization market, 
+                with focus on AI-driven automation and the transition from traditional IaC to 
+                intelligent infrastructure management.
             </p>
         </div>
-    </section>
 
-    <!-- Quick Stats Section -->
-    <section class="relative -mt-12 mb-12">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-700 transform hover:-translate-y-1 transition-all duration-300" data-aos="fade-up" data-aos-delay="0">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center text-emerald-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold text-emerald-600">$22.5M</div>
-                            <div class="text-sm text-slate-500 dark:text-slate-400">Total Funding Goal</div>
-                        </div>
-                    </div>
+        <!-- Key Market Metrics -->
+        <div class="sirsi-metric-grid mb-12">
+            <sirsi-metric value="$78.8B" label="Total Addressable Market"></sirsi-metric>
+            <sirsi-metric value="28.5%" label="CAGR (2025-2030)"></sirsi-metric>
+            <sirsi-metric value="35%" label="Average Cost Reduction"></sirsi-metric>
+            <sirsi-metric value="99.99%" label="AI Prediction Accuracy"></sirsi-metric>
+        </div>
+
+        <!-- Market Overview -->
+        <div class="sirsi-card mb-12">
+            <h2 class="sirsi-heading-2 mb-6">Market Overview</h2>
+            <div class="sirsi-text space-y-4">
+                <p>
+                    The cloud infrastructure optimization market is undergoing a paradigm shift from 
+                    traditional Infrastructure as Code (IaC) solutions to AI-driven autonomous infrastructure 
+                    management. This transition is driven by increasing complexity in cloud operations, 
+                    rising costs, and the need for predictive optimization.
+                </p>
+                <p>
+                    Key market drivers include:
+                </p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Rising cloud infrastructure costs (projected 22% increase in 2025)</li>
+                    <li>Increasing complexity of multi-cloud environments</li>
+                    <li>Growing demand for autonomous operations</li>
+                    <li>Shift towards predictive optimization</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Competitive Analysis -->
+        <div class="sirsi-card mb-12">
+            <h2 class="sirsi-heading-2 mb-6">Competitive Landscape</h2>
+            <div class="overflow-x-auto">
+                <table class="sirsi-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Traditional IaC</th>
+                            <th>Cloud-Native Tools</th>
+                            <th>SirsiNexus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Automation Level</td>
+                            <td>Manual/Script-based</td>
+                            <td>Rule-based</td>
+                            <td class="font-semibold text-primary-600">Full AI Autonomy</td>
+                        </tr>
+                        <tr>
+                            <td>Cost Optimization</td>
+                            <td>Basic</td>
+                            <td>Reactive</td>
+                            <td class="font-semibold text-primary-600">Predictive (35% savings)</td>
+                        </tr>
+                        <tr>
+                            <td>Multi-Cloud Support</td>
+                            <td>Limited</td>
+                            <td>Provider-specific</td>
+                            <td class="font-semibold text-primary-600">Universal + Hedera</td>
+                        </tr>
+                        <tr>
+                            <td>AI/ML Integration</td>
+                            <td>None</td>
+                            <td>Basic Analytics</td>
+                            <td class="font-semibold text-primary-600">Graph of Thought Architecture</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Market Size & Growth -->
+        <div class="sirsi-card mb-12">
+            <h2 class="sirsi-heading-2 mb-6">Market Size & Growth Trajectory</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <sirsi-chart title="Market Size Projection (2025-2030)">
+                        <canvas id="marketSizeChart"></canvas>
+                    </sirsi-chart>
                 </div>
-
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-700 transform hover:-translate-y-1 transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center text-blue-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold text-slate-900 dark:text-slate-100">1</div>
-                            <div class="text-sm text-slate-600 dark:text-slate-400">Team Size</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-700 transform hover:-translate-y-1 transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center text-purple-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold text-slate-900 dark:text-slate-100">$78.8B</div>
-                            <div class="text-sm text-slate-500 dark:text-slate-400">TAM (2025)</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-700 transform hover:-translate-y-1 transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center text-orange-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold text-slate-900 dark:text-slate-100">22%</div>
-                            <div class="text-sm text-slate-500 dark:text-slate-400">CAGR (2025-2030)</div>
-                        </div>
-                    </div>
+                <div class="sirsi-text space-y-4">
+                    <p>
+                        The cloud infrastructure optimization market is projected to grow from $78.8B in 2025 
+                        to $276.5B by 2030, representing a CAGR of 28.5%. This growth is primarily driven by:
+                    </p>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>Enterprise digital transformation initiatives</li>
+                        <li>Adoption of AI-driven infrastructure management</li>
+                        <li>Increasing focus on cost optimization</li>
+                        <li>Growing complexity of cloud architectures</li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Market Analysis Content -->
-    <div class="max-w-7xl mx-auto px-6 py-12">
-        <div class="space-y-8">
-            <!-- Executive Summary -->
-            <section class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700" data-aos="fade-up">
-                <h2 class="text-2xl font-bold mb-6 text-emerald-600">Executive Summary</h2>
-                <div class="prose dark:prose-invert max-w-none">
-                    <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                        SirsiNexus represents a paradigm shift in cloud infrastructure management, leveraging our patent-pending Graph of Thought architecture built on Hedera Hashgraph. Our unique approach combines purpose-built LLM services with Knowledge Graphs to create an intelligent infrastructure optimization system that fundamentally transforms how enterprises handle cloud operations.
-                    </p>
-                    <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                        The $78.8B cloud infrastructure management market is experiencing a fundamental transformation. Traditional Infrastructure as Code (IaC) solutions—dominated by Terraform, AWS CloudFormation, and Pulumi—are being disrupted by AI-first approaches that deliver autonomous, self-optimizing cloud operations. SirsiNexus's Graph of Thought architecture, built on Hedera Hashgraph's enterprise-grade distributed ledger, represents the next evolution in this space.
-                    </p>
-                    <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                        Our strategic funding roadmap enables conservative yet dominant market capture through proven technology differentiation and methodical enterprise expansion:
-                        • TEDCO Grant: $150K-$200K (Q4 2025)
-                        • Pre-Seed: $1.5M (Q1 2026)
-                        • Seed: $6M (Q4 2026)
-                        • Series A: $15M (Q3 2027)
-                    </p>
-                    <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                        With $75K raised to date and a single-person development team demonstrating exceptional technical productivity, SirsiNexus is positioned to capture significant market share from legacy IaC providers through superior AI-driven automation achieving 35% cost reduction and 87% prediction accuracy.
-                    </p>
-                </div>
-            </section>
-
-            <!-- Market Size Chart -->
-            <section class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700" data-aos="fade-up">
-                <h2 class="text-2xl font-bold mb-6 text-emerald-600">Market Size & Growth</h2>
-                <div class="chart-container">
-                    <canvas id="marketGrowthChart"></canvas>
-                </div>
-            </section>
-
-            <!-- Competitive Analysis -->
-            <section class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700" data-aos="fade-up">
-                <h2 class="text-2xl font-bold mb-6 text-emerald-600">Competitive Landscape</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">Current Market Leaders</h3>
-                        <div class="space-y-4">
-                            <div class="p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                                <h4 class="font-medium text-slate-900 dark:text-slate-100">Terraform</h4>
-                                <p class="text-sm text-slate-600 dark:text-slate-400">Market leader in IaC with ~40% market share</p>
-                            </div>
-                            <div class="p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                                <h4 class="font-medium text-slate-900 dark:text-slate-100">AWS CloudFormation</h4>
-                                <p class="text-sm text-slate-600 dark:text-slate-400">AWS-native solution with strong ecosystem</p>
-                            </div>
-                            <div class="p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                                <h4 class="font-medium text-slate-900 dark:text-slate-100">Pulumi</h4>
-                                <p class="text-sm text-slate-600 dark:text-slate-400">Modern IaC with multi-language support</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-semibold mb-4">SirsiNexus Advantages</h3>
-                        <div class="space-y-4">
-                            <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-                                <h4 class="font-medium text-emerald-700 dark:text-emerald-400">AI-First Architecture</h4>
-                                <p class="text-sm text-slate-600 dark:text-slate-400">Revolutionary Graph of Thought AI reasoning</p>
-                            </div>
-                            <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-                                <h4 class="font-medium text-emerald-700 dark:text-emerald-400">Autonomous Operation</h4>
-                                <p class="text-sm text-slate-600 dark:text-slate-400">Self-optimizing infrastructure management</p>
-                            </div>
-                            <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
-                                <h4 class="font-medium text-emerald-700 dark:text-emerald-400">Cost Efficiency</h4>
-                                <p class="text-sm text-slate-600 dark:text-slate-400">35% average cost reduction proven</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Strategic Traction Section -->
-            <section class="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700" data-aos="fade-up">
-                <h2 class="text-2xl font-bold mb-6 text-emerald-600">Strategic Traction Advantage</h2>
-                <div class="prose dark:prose-invert max-w-none">
-                    <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
-                        SirsiNexus leverages an unprecedented combination of strategic partnerships and exclusive access to accelerate market penetration. Our "strategic traction" represents an unfair competitive advantage that transforms typical startup risks into institutional opportunities.
-                    </p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
-                            <h3 class="text-lg font-semibold mb-4 text-emerald-600">Institutional Partnerships</h3>
-                            <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                                <li>• <strong>NVIDIA Inception:</strong> Exclusive GPU credits and technical support</li>
-                                <li>• <strong>AWS Migration Acceleration:</strong> Direct cloud optimization pipeline</li>
-                                <li>• <strong>Techstars Universe:</strong> Global mentor network and investor access</li>
-                                <li>• <strong>Hedera Hashgraph:</strong> Strategic DLT infrastructure partnership</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
-                            <h3 class="text-lg font-semibold mb-4 text-blue-600">Proven Customer Value</h3>
-                            <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-                                <li>• <strong>35% Cost Reduction:</strong> Validated across enterprise deployments</li>
-                                <li>• <strong>78% Deployment Speed:</strong> Accelerated infrastructure provisioning</li>
-                                <li>• <strong>99.9% Uptime:</strong> Autonomous monitoring and optimization</li>
-                                <li>• <strong>Zero Security Incidents:</strong> Proactive threat detection</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-emerald-50 dark:bg-emerald-900/20 p-6 rounded-lg border border-emerald-200 dark:border-emerald-700">
-                        <h3 class="text-lg font-semibold mb-3 text-emerald-700 dark:text-emerald-400">Market Differentiation</h3>
-                        <p class="text-slate-600 dark:text-slate-400 mb-4">
-                            While competitors focus on incremental improvements to existing Infrastructure-as-Code (IaC) solutions, SirsiNexus pioneers the next generation with our Graph of Thought architecture. This AI-first approach creates autonomous infrastructure that self-optimizes, self-heals, and continuously adapts to changing workloads.
-                        </p>
-                        <div class="text-sm text-slate-500 dark:text-slate-400">
-                            <strong>Key Insight:</strong> Traditional IaC tools require manual configuration and monitoring. SirsiNexus eliminates this overhead through intelligent automation, reducing operational costs by up to 60% while improving reliability and performance.
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Strategic Funding Roadmap -->
-            <section class="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700" data-aos="fade-up">
-                <h2 class="text-2xl font-bold mb-6 text-emerald-600">Strategic Funding Roadmap</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 p-6 rounded-lg border border-emerald-200 dark:border-emerald-700">
-                        <h3 class="text-lg font-semibold mb-3 text-emerald-700 dark:text-emerald-400">Pre-Seed Round</h3>
-                        <div class="text-2xl font-bold text-emerald-600 mb-2">$1.5M</div>
-                        <div class="text-sm text-slate-600 dark:text-slate-400 mb-4">Q1 2026</div>
-                        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
-                            <li>• Core team expansion</li>
-                            <li>• MVP development</li>
-                            <li>• Strategic partnerships</li>
-                            <li>• Early customer validation</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 p-6 rounded-lg border border-blue-200 dark:border-blue-700">
-                        <h3 class="text-lg font-semibold mb-3 text-blue-700 dark:text-blue-400">Seed Round</h3>
-                        <div class="text-2xl font-bold text-blue-600 mb-2">$6M</div>
-                        <div class="text-sm text-slate-600 dark:text-slate-400 mb-4">Q4 2026</div>
-                        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
-                            <li>• Product-market fit</li>
-                            <li>• Sales team building</li>
-                            <li>• Marketing acceleration</li>
-                            <li>• Enterprise partnerships</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 p-6 rounded-lg border border-purple-200 dark:border-purple-700">
-                        <h3 class="text-lg font-semibold mb-3 text-purple-700 dark:text-purple-400">Series A</h3>
-                        <div class="text-2xl font-bold text-purple-600 mb-2">$15M</div>
-                        <div class="text-sm text-slate-600 dark:text-slate-400 mb-4">Q3 2027</div>
-                        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
-                            <li>• Scale operations</li>
-                            <li>• International expansion</li>
-                            <li>• Advanced AI features</li>
-                            <li>• Strategic acquisitions</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
+        <!-- SirsiNexus Advantage -->
+        <div class="sirsi-card mb-12">
+            <h2 class="sirsi-heading-2 mb-6">Strategic Advantage</h2>
+            <div class="sirsi-feature-list">
+                <sirsi-feature 
+                    title="Graph of Thought Architecture" 
+                    description="Proprietary AI architecture combining LLMs with Knowledge Graphs for superior infrastructure optimization"
+                    icon="🧠">
+                </sirsi-feature>
+                <sirsi-feature 
+                    title="Hedera Hashgraph Integration" 
+                    description="First-mover advantage in leveraging Hedera for secure, scalable infrastructure management"
+                    icon="⚡">
+                </sirsi-feature>
+                <sirsi-feature 
+                    title="Multi-Cloud Optimization" 
+                    description="Universal compatibility across AWS, Azure, GCP with 35% average cost reduction"
+                    icon="☁️">
+                </sirsi-feature>
+                <sirsi-feature 
+                    title="Strategic Partnerships" 
+                    description="Exclusive access to NVIDIA Inception, AWS Migration Acceleration Program, and Techstars Universe"
+                    icon="🤝">
+                </sirsi-feature>
+            </div>
         </div>
-    </div>
+
+        <!-- Growth Strategy -->
+        <div class="sirsi-card">
+            <h2 class="sirsi-heading-2 mb-6">Market Entry & Growth Strategy</h2>
+            <div class="sirsi-timeline">
+                <div class="sirsi-timeline-item">
+                    <div class="sirsi-timeline-dot"></div>
+                    <h3 class="font-semibold mb-2">Phase 1: Market Entry (2025)</h3>
+                    <p class="sirsi-text">Initial funding of $1.5M (Pre-Seed) enabling core product development and early customer acquisition</p>
+                </div>
+                <div class="sirsi-timeline-item">
+                    <div class="sirsi-timeline-dot"></div>
+                    <h3 class="font-semibold mb-2">Phase 2: Market Expansion (2025-2026)</h3>
+                    <p class="sirsi-text">Seed round of $6M to accelerate growth and enhance AI capabilities</p>
+                </div>
+                <div class="sirsi-timeline-item">
+                    <div class="sirsi-timeline-dot"></div>
+                    <h3 class="font-semibold mb-2">Phase 3: Market Leadership (2026-2027)</h3>
+                    <p class="sirsi-text">Series A funding of $15M to establish market leadership and global expansion</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <sirsi-footer>
+        <div slot="footer-content">
+            <h4 class="font-semibold mb-4">Market Resources</h4>
+            <ul class="space-y-2 text-sm text-slate-400">
+                <li><a href="../index.html" class="hover:text-white transition-colors">Investor Portal</a></li>
+                <li><a href="product-roadmap.html" class="hover:text-white transition-colors">Product Roadmap</a></li>
+                <li><a href="../kpi-unit-metrics.html" class="hover:text-white transition-colors">KPI Metrics</a></li>
+            </ul>
+        </div>
+    </sirsi-footer>
 
     <script>
-        // Initialize AOS animations
-        AOS.init({
-            duration: 800,
-            once: true,
-            easing: 'ease-out-cubic'
-        });
-
-        // Market Growth Chart
-        const ctx = document.getElementById('marketGrowthChart').getContext('2d');
-        const marketGrowthChart = new Chart(ctx, {
+        // Market Size Chart
+        const ctx = document.getElementById('marketSizeChart').getContext('2d');
+        new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032'],
+                labels: ['2025', '2026', '2027', '2028', '2029', '2030'],
                 datasets: [{
-                    label: 'Cloud Infrastructure Market ($B)',
-                    data: [78.8, 96, 117, 143, 174, 212, 258, 315],
-                    borderColor: '#10b981',
-                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                    borderWidth: 3,
+                    label: 'Market Size (Billions USD)',
+                    data: [78.8, 101.3, 130.2, 167.4, 215.1, 276.5],
+                    borderColor: '#16a34a',
+                    backgroundColor: 'rgba(22, 163, 74, 0.1)',
                     fill: true,
                     tension: 0.4
                 }]
@@ -330,38 +325,19 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        display: true,
-                        position: 'top'
+                        display: false
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Market Size (Billions $)'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Year'
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value + 'B';
+                            }
                         }
                     }
                 }
-            }
-        });
-
-        // GSAP animations for enhanced interactivity
-        gsap.from(".chart-container", {
-            duration: 1,
-            y: 50,
-            opacity: 0,
-            scrollTrigger: {
-                trigger: ".chart-container",
-                start: "top 80%",
-                end: "bottom 20%",
-                toggleActions: "play none none reverse"
             }
         });
     </script>

@@ -70,25 +70,34 @@ class VersionLoader {
      * Update version display in the UI
      */
     async updateVersionDisplay() {
-        const versionData = await this.loadVersion();
-        
-        // Update version badge
-        const versionElement = document.querySelector('.version-badge');
-        if (versionElement) {
-            versionElement.textContent = `v${versionData.version}`;
-        }
-
-        // Update status indicator
-        const statusElement = document.querySelector('.status-indicator');
-        if (statusElement) {
-            statusElement.textContent = versionData.status;
+        try {
+            const versionData = await this.loadVersion();
             
-            // Update status color based on environment
-            const statusDot = statusElement.previousElementSibling;
-            if (statusDot && statusDot.classList.contains('w-1.5')) {
-                statusDot.className = `w-1.5 h-1.5 rounded-full ${this.getStatusColor(versionData.environment)}`;
-            }
-        }
+            // Update all version badges
+            const versionElements = document.querySelectorAll('.version-badge');
+            versionElements.forEach(element => {
+                element.textContent = `v${versionData.version}`;
+                element.classList.remove('loading');
+            });
+
+            // Update all status indicators
+            const statusElements = document.querySelectorAll('.status-indicator');
+            statusElements.forEach(element => {
+                element.textContent = versionData.status;
+                element.classList.remove('loading');
+                
+                // Update status color based on environment
+                const statusDot = element.previousElementSibling;
+                if (statusDot && statusDot.classList.contains('status-dot')) {
+                    statusDot.className = `status-dot ${this.getStatusColor(versionData.environment)}`;
+                }
+            });
+
+            // Update loading placeholders
+            const loadingElements = document.querySelectorAll('.version-loading');
+            loadingElements.forEach(element => {
+                element.classList.remove('version-loading');
+            });
 
         // Update any other version displays
         const allVersionElements = document.querySelectorAll('[data-version]');

@@ -1,116 +1,259 @@
 <!DOCTYPE html>
-            <html lang="en" class="h-full"> <!-- Comprehensive update for AI infrastructure focus -->
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SirsiNexus - Product Roadmap</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      // Authentication check - redirect if not authenticated
-      (function() {
-        const auth = sessionStorage.getItem('investorAuth');
-        if (!auth) {
-          window.location.href = '../../investor-login.html';
-          return;
-        }
-        
-        try {
-          const authData = JSON.parse(auth);
-          const loginTime = new Date(authData.loginTime);
-          const now = new Date();
-          const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
-          
-          // Check if session expired (24 hours)
-          if (hoursSinceLogin > 24) {
-            sessionStorage.removeItem('investorAuth');
-            window.location.href = '../../investor-login.html';
-            return;
-          }
-          
-          console.log('✅ Authentication verified for committee access:', authData.id);
-        } catch (error) {
-          console.error('❌ Authentication error:', error);
-          sessionStorage.removeItem('investorAuth');
-          window.location.href = '../../investor-login.html';
-          return;
-        }
-      })();
-    </script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              'inter': ['Inter', 'sans-serif'],
-            },
-            colors: {
-              primary: {
-                50: '#f0fdf4',
-                100: '#dcfce7',
-                200: '#bbf7d0',
-                300: '#86efac',
-                400: '#4ade80',
-                500: '#22c55e',
-                600: '#16a34a',
-                700: '#15803d',
-                800: '#166534',
-                900: '#14532d'
-              },
-              secondary: {
-                50: '#f8fafc',
-                100: '#f1f5f9',
-                200: '#e2e8f0',
-                300: '#cbd5e1',
-                400: '#94a3b8',
-                500: '#64748b',
-                600: '#475569',
-                700: '#334155',
-                800: '#1e293b',
-                900: '#0f172a'
-              }
-            },
-          },
-        },
-      }
-    </script>
-    <script>
-      (function() {
-        function getInitialColorMode() {
-          const persistedColorPreference = window.localStorage.getItem('theme');
-          if (persistedColorPreference) {
-            return persistedColorPreference;
-          }
-          const mql = window.matchMedia('(prefers-color-scheme: dark)');
-          if (mql.matches) {
-            return 'dark';
-          }
-          return 'light';
-        }
-        const colorMode = getInitialColorMode();
-        if (colorMode === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
-      })();
-    </script>
-    <link rel="stylesheet" href="assets/css/shared.css">
-    <script src="assets/js/theme-toggle.js"></script>
-            <meta name="cache-bust" content="v1752627108 - Updated: 2025-07-16T19:51:48Z">
-            <script src="../../assets/js/version-loader.js"></script> <!-- Dynamic version system integrated -->
-            <link href="../../assets/css/enhanced-ui.css" rel="stylesheet"> <!-- Enhanced CSS for professional styling -->
+    <meta name="description" content="SirsiNexus Product Roadmap - Strategic vision and development timeline for our AI-powered cloud infrastructure management platform">
+    <title>Product Roadmap - SirsiNexus Investor Portal</title>
     
-    <!-- Chart.js for interactive charts -->
+    <!-- Preload critical assets -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" as="style">
+    <link rel="preload" href="../../assets/css/shared.css" as="style">
+    <link rel="preload" href="../../assets/css/enhanced-ui.css" as="style">
+    <link rel="preload" href="../../assets/js/charts.js" as="script">
+    <link rel="preload" href="../../assets/js/animations.js" as="script">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <link rel="stylesheet" href="../../assets/css/enhanced-ui.css">
+    <link rel="stylesheet" href="../../assets/css/print.css" media="print">
+    
+    <!-- Core Dependencies -->
+    <script src="https://cdn.tailwindcss.com" defer></script>
+    <script src="../../components/ui-library.js" defer></script>
+    
+    <!-- Data Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    
+    <!-- Application Scripts -->
+    <script src="../../assets/js/auth.js" defer></script>
+    <script src="../../assets/js/theme.js" defer></script>
+    <script src="../../assets/js/charts.js" defer></script>
+    <script src="../../assets/js/animations.js" defer></script>
+    
+    <!-- Core Scripts -->
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/theme.js"></script>
+    <script src="../../assets/js/charts.js"></script>
+    <script src="../../assets/js/animations.js"></script>
+</head>
+<body class="h-full bg-slate-50 dark:bg-slate-900">
+    <sirsi-header>
+        <nav slot="nav-items">
+            <a href="../../index.html" class="sirsi-nav-item">← Back to Home</a>
+            <a href="../index.html" class="sirsi-nav-item">← Back to Portal</a>
+        </nav>
+    </sirsi-header>
+
+    <main class="sirsi-container py-12">
+        <!-- Hero Section -->
+        <div class="sirsi-section text-center">
+            <h1 class="sirsi-heading-1 mb-6">Product Roadmap & Vision</h1>
+            <p class="sirsi-text max-w-3xl mx-auto">
+                Strategic product development plan leveraging Graph of Thought AI architecture 
+                and Hedera Hashgraph integration to revolutionize cloud infrastructure management.
+            </p>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="sirsi-metric-grid mb-12">
+            <sirsi-metric value="Phase 5" label="Current Development Phase"></sirsi-metric>
+            <sirsi-metric value="35%" label="Cost Reduction Achievement"></sirsi-metric>
+            <sirsi-metric value="99.99%" label="AI Prediction Accuracy"></sirsi-metric>
+            <sirsi-metric value="87%" label="Gross Margin"></sirsi-metric>
+        </div>
+
+        <!-- Technical Architecture -->
+        <div class="sirsi-card mb-12">
+            <h2 class="sirsi-heading-2 mb-6">Technical Architecture</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="sirsi-text space-y-4">
+                    <h3 class="text-xl font-semibold mb-4">Core Components</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="mt-1 w-6 h-6 flex-shrink-0 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center">
+                                <span class="text-emerald-600">1</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Graph of Thought AI Engine</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">
+                                    Purpose-built LLM services combined with Knowledge Graphs for superior reasoning and optimization
+                                </p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="mt-1 w-6 h-6 flex-shrink-0 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center">
+                                <span class="text-emerald-600">2</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Hedera Hashgraph Integration</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">
+                                    Enterprise-grade distributed ledger for secure, scalable infrastructure management
+                                </p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="mt-1 w-6 h-6 flex-shrink-0 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center">
+                                <span class="text-emerald-600">3</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Multi-Cloud Orchestration</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">
+                                    Universal compatibility across AWS, Azure, GCP with automated optimization
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Technology Stack</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                            <h4 class="font-medium mb-2">Core Engine</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">
+                                Rust (Axum, SQLx, Tokio) - High-performance unified binary
+                            </p>
+                        </div>
+                        <div class="p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                            <h4 class="font-medium mb-2">Analytics Platform</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">
+                                Python (TensorFlow, pandas, Prophet, scikit-learn)
+                            </p>
+                        </div>
+                        <div class="p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                            <h4 class="font-medium mb-2">ML Platform</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">
+                                Python (PyTorch, XGBoost) for cost prediction models
+                            </p>
+                        </div>
+                        <div class="p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                            <h4 class="font-medium mb-2">Frontend</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">
+                                React/Next.js with TypeScript (100% type coverage)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Development Phases -->
+        <div class="sirsi-card mb-12">
+            <h2 class="sirsi-heading-2 mb-6">Development Timeline</h2>
+            <div class="sirsi-timeline">
+                <div class="sirsi-timeline-item">
+                    <div class="sirsi-timeline-dot"></div>
+                    <h3 class="font-semibold mb-2">Phase 1: Core Infrastructure (Completed)</h3>
+                    <p class="sirsi-text">
+                        • Rust core engine with CockroachDB integration
+                        • Authentication system
+                        • Basic frontend foundation
+                    </p>
+                </div>
+                <div class="sirsi-timeline-item">
+                    <div class="sirsi-timeline-dot"></div>
+                    <h3 class="font-semibold mb-2">Phase 2: AI Hypervisor (Completed)</h3>
+                    <p class="sirsi-text">
+                        • gRPC communication layer
+                        • Agent framework implementation
+                        • Redis context store
+                    </p>
+                </div>
+                <div class="sirsi-timeline-item">
+                    <div class="sirsi-timeline-dot"></div>
+                    <h3 class="font-semibold mb-2">Phase 3: Unified Platform (Completed)</h3>
+                    <p class="sirsi-text">
+                        • Single executable deployment
+                        • Multi-cloud provider support
+                        • Enhanced security features
+                    </p>
+                </div>
+                <div class="sirsi-timeline-item">
+                    <div class="sirsi-timeline-dot"></div>
+                    <h3 class="font-semibold mb-2">Phase 4: Advanced AI (Completed)</h3>
+                    <p class="sirsi-text">
+                        • Analytics platform integration
+                        • Machine learning optimization
+                        • Predictive scaling capabilities
+                    </p>
+                </div>
+                <div class="sirsi-timeline-item">
+                    <div class="sirsi-timeline-dot"></div>
+                    <h3 class="font-semibold mb-2">Phase 5: Full-Stack Enhancement (Current)</h3>
+                    <p class="sirsi-text">
+                        • Graph of Thought AI architecture
+                        • Hedera Hashgraph integration
+                        • Production-ready backend
+                        • Real AI API integrations
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Future Roadmap -->
+        <div class="sirsi-card">
+            <h2 class="sirsi-heading-2 mb-6">Strategic Vision (2025-2027)</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-6 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-4">Q1-Q2 2025</h3>
+                    <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+                        <li>• Enhanced Graph of Thought capabilities</li>
+                        <li>• Advanced multi-cloud optimization</li>
+                        <li>• Enterprise customer onboarding</li>
+                        <li>• TEDCO grant acquisition ($150-200K)</li>
+                    </ul>
+                </div>
+                <div class="p-6 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-4">Q3-Q4 2025</h3>
+                    <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+                        <li>• Automated infrastructure migration</li>
+                        <li>• Enhanced security features</li>
+                        <li>• Pre-seed round ($1.5M)</li>
+                        <li>• Team expansion</li>
+                    </ul>
+                </div>
+                <div class="p-6 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                    <h3 class="text-lg font-semibold mb-4">2026-2027</h3>
+                    <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-400">
+                        <li>• Global market expansion</li>
+                        <li>• Advanced AI capabilities</li>
+                        <li>• Seed round ($6M)</li>
+                        <li>• Series A funding ($15M)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <sirsi-footer>
+        <div slot="footer-content">
+            <h4 class="font-semibold mb-4">Product Resources</h4>
+            <ul class="space-y-2 text-sm text-slate-400">
+                <li><a href="../index.html" class="hover:text-white transition-colors">Investor Portal</a></li>
+                <li><a href="market-analysis.html" class="hover:text-white transition-colors">Market Analysis</a></li>
+                <li><a href="../kpi-unit-metrics.html" class="hover:text-white transition-colors">KPI Metrics</a></li>
+            </ul>
+        </div>
+    </sirsi-footer>
+</body>
+</html>
+    <!-- External CSS -->
+    <link rel="stylesheet" href="../../assets/css/shared.css">
+    <link rel="stylesheet" href="../../assets/css/enhanced-ui.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    
+    <!-- External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- GSAP for animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    
-    <!-- AOS for scroll animations -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script src="../../assets/js/tailwind.config.js"></script>
+    
+    <!-- Version Information -->
+    <meta name="cache-bust" content="v1752627108 - Updated: 2025-07-16T19:51:48Z">
+    <script src="../../assets/js/version-loader.js"></script>
     
     <style>
       .print-button {
@@ -214,8 +357,8 @@
                 <div class="flex items-center gap-6">
                     <div class="flex items-center gap-3">
                         <div class="w-12 h-12 flex items-center justify-center">
-                            <img src="../../assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
-                            <img src="../../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+<img src="../../assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden" loading="lazy">
+                            <img src="../../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block" loading="lazy">
                         </div>
                         <div>
                             <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">SirsiNexus</h1>

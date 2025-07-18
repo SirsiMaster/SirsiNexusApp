@@ -1,14 +1,23 @@
-# SirsiNexus
+# SirsiNexus Core Application
 
-SirsiNexus Enterprise Cloud Optimization Platform
+This is the main application repository for SirsiNexus Enterprise Cloud Optimization Platform.
 
-## GitHub Pages
+## Repository Purpose
+- Main application codebase
+- Core functionality and features
+- Development and testing environment
 
-The site is live at: https://sirsimaster.github.io/SirsiNexus
+## Repository Details
+- Remote: github.com:SirsiMaster/SirsiNexus.git
+- Primary Branch: main
+- Last Validated: $(date +"%Y-%m-%d %H:%M:%S")
 
-Key pages:
-- Main Landing Page: https://sirsimaster.github.io/SirsiNexus/
-- Signup: https://sirsimaster.github.io/SirsiNexus/signup.html
-- Investor Portal: https://sirsimaster.github.io/SirsiNexus/investor-portal.html
+## Related Repositories
+- GitHub Pages: /Users/thekryptodragon/SirsiNexus-Pages
+- Documentation: https://sirsimaster.github.io/SirsiNexus/
 
-# SirsiNexus
+## Development Workflow
+1. All application development happens in this repository
+2. Use feature branches for new development
+3. Main branch should always be deployment-ready
+
