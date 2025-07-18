@@ -3,11 +3,11 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   
-  // Configure for GitHub Pages static export
-  output: 'export',
-  trailingSlash: true,
-  basePath: '/SirsiNexus',
-  assetPrefix: '/SirsiNexus',
+  // Development mode - disable static export
+  // output: 'export',
+  // trailingSlash: true,
+  // basePath: '/SirsiNexus',
+  // assetPrefix: '/SirsiNexus',
   
   images: {
     remotePatterns: [

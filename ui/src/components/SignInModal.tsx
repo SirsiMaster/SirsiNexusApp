@@ -60,27 +60,23 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSig
     
     try {
       if (activeTab === 'signin') {
-        // Simulate API call - replace with real authentication
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        // Use NextAuth signIn function
+        const result = await signIn('credentials', {
+          username: email,
+          password: password,
+          redirect: false
+        });
         
-        // Demo credentials check
-        const validCredentials = [
-          { email: 'admin@migration.com', password: 'admin123' },
-          { email: 'user@migration.com', password: 'user123' }
-        ];
+        console.log('SignIn result:', result);
         
-        const isValid = validCredentials.some(cred => 
-          cred.email === email && cred.password === password
-        );
-        
-        if (isValid) {
+        if (result?.error) {
+          setErrors({ signin: 'Invalid credentials. Please check your email and password.' });
+        } else if (result?.ok) {
           setShowSuccess(true);
           setTimeout(() => {
             onSignIn({ email, password, rememberMe });
             onClose();
           }, 2000);
-        } else {
-          setErrors({ signin: 'Invalid credentials. Please check your email and password.' });
         }
       } else {
         // Registration logic
@@ -102,11 +98,11 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSig
 
   const fillDemoCredentials = (type: 'admin' | 'user') => {
     if (type === 'admin') {
-      setEmail('admin@migration.com');
-      setPassword('admin123');
+      setEmail('admin');
+      setPassword('admin');
     } else {
-      setEmail('user@migration.com');
-      setPassword('user123');
+      setEmail('user');
+      setPassword('user');
     }
   };
 
@@ -345,8 +341,8 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSig
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
                     <p className="font-medium text-blue-800 dark:text-blue-200">Admin User:</p>
-                    <p className="text-blue-700 dark:text-blue-300">admin@migration.com</p>
-                    <p className="text-blue-700 dark:text-blue-300">Password: admin123</p>
+                    <p className="text-blue-700 dark:text-blue-300">Username: admin</p>
+                    <p className="text-blue-700 dark:text-blue-300">Password: admin</p>
                     <button
                       type="button"
                       onClick={() => fillDemoCredentials('admin')}
@@ -357,8 +353,8 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose, onSig
                   </div>
                   <div>
                     <p className="font-medium text-blue-800 dark:text-blue-200">Regular User:</p>
-                    <p className="text-blue-700 dark:text-blue-300">user@migration.com</p>
-                    <p className="text-blue-700 dark:text-blue-300">Password: user123</p>
+                    <p className="text-blue-700 dark:text-blue-300">Username: user</p>
+                    <p className="text-blue-700 dark:text-blue-300">Password: user</p>
                     <button
                       type="button"
                       onClick={() => fillDemoCredentials('user')}
