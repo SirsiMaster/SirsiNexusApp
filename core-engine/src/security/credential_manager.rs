@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use sqlx::PgPool;
+use sqlx::{PgPool, Row};
 use tokio::sync::RwLock;
 use aes_gcm::{aead::Aead, KeyInit, Nonce, Key};
 use aes_gcm::aes::Aes256;
@@ -162,28 +162,28 @@ impl CredentialManager {
         let encrypted_data_base64 = general_purpose::STANDARD.encode(&encrypted.encrypted_data);
         let nonce_base64 = general_purpose::STANDARD.encode(&encrypted.nonce);
 
-        sqlx::query!(
+        sqlx::query(
             r#"
             INSERT INTO encrypted_credentials 
             (id, user_id, tenant_id, provider, credential_type, name, description, 
              encrypted_data, nonce, checksum, created_at, updated_at, expires_at, is_active)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
             "#,
-            credential_id,
-            user_id,
-            tenant_id,
-            provider,
-            credential_type,
-            name,
-            description,
-            encrypted_data_base64,
-            nonce_base64,
-            encrypted.checksum,
-            now_time,
-            now_time,
-            expires_at_time,
-            true
         )
+        .bind(credential_id)
+        .bind(user_id)
+        .bind(tenant_id)
+        .bind(provider)
+        .bind(credential_type)
+        .bind(name)
+        .bind(description)
+        .bind(encrypted_data_base64)
+        .bind(nonce_base64)
+        .bind(encrypted.checksum.clone())
+        .bind(now_time)
+        .bind(now_time)
+        .bind(expires_at_time)
+        .bind(true)
         .execute(&self.pool)
         .await
         .map_err(AppError::Database)?;
@@ -235,7 +235,7 @@ impl CredentialManager {
         }
 
         // Load from database with tenant isolation
-        let row = sqlx::query!(
+        let row = sqlx::query(
             r#"
             SELECT id, user_id, tenant_id, provider, credential_type, name, description,
                    encrypted_data, nonce, checksum, created_at, updated_at, expires_at, 
@@ -243,9 +243,9 @@ impl CredentialManager {
             FROM encrypted_credentials 
             WHERE id = $1 AND tenant_id = $2 AND is_active = true
             "#,
-            credential_id,
-            tenant_id
         )
+        .bind(credential_id)
+        .bind(tenant_id)
         .fetch_optional(&self.pool)
         .await
         .map_err(AppError::Database)?;
@@ -255,7 +255,8 @@ impl CredentialManager {
         })?;
 
         // Verify user has access (either owns it or has admin permission)
-        if row.user_id != user_id {
+        let row_user_id: Uuid = row.get("user_id");
+        if row_user_id != user_id {
             let has_admin = rbac.check_permission(user_id, "credentials", "admin").await?;
             if !has_admin {
                 self.log_access(user_id, tenant_id, Some(credential_id), "get_credential", false, 
@@ -265,31 +266,33 @@ impl CredentialManager {
         }
 
         // Decrypt credential data
-        let encrypted_data = general_purpose::STANDARD.decode(&row.encrypted_data)
+        let encrypted_data_str: String = row.get("encrypted_data");
+        let encrypted_data = general_purpose::STANDARD.decode(&encrypted_data_str)
             .map_err(|e| AppError::Internal(format!("Failed to decode encrypted data: {}", e)))?;
-        let nonce = general_purpose::STANDARD.decode(&row.nonce)
+        let nonce_str: String = row.get("nonce");
+        let nonce = general_purpose::STANDARD.decode(&nonce_str)
             .map_err(|e| AppError::Internal(format!("Failed to decode nonce: {}", e)))?;
 
         let metadata = CredentialMetadata {
-            id: row.id,
-            user_id: row.user_id,
-            tenant_id: row.tenant_id,
-            provider: row.provider,
-            credential_type: row.credential_type,
-            name: row.name,
-            description: row.description,
-            created_at: row.created_at.map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()).unwrap_or_default(),
-            updated_at: row.updated_at.map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()).unwrap_or_default(),
-            expires_at: row.expires_at.map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()),
-            last_used: row.last_used.map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()),
-            is_active: row.is_active.unwrap_or(true),
+            id: row.get("id"),
+            user_id: row.get("user_id"),
+            tenant_id: row.get("tenant_id"),
+            provider: row.get("provider"),
+            credential_type: row.get("credential_type"),
+            name: row.get("name"),
+            description: row.get("description"),
+            created_at: row.get::<Option<time::OffsetDateTime>, _>("created_at").map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()).unwrap_or_default(),
+            updated_at: row.get::<Option<time::OffsetDateTime>, _>("updated_at").map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()).unwrap_or_default(),
+            expires_at: row.get::<Option<time::OffsetDateTime>, _>("expires_at").map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()),
+            last_used: row.get::<Option<time::OffsetDateTime>, _>("last_used").map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()),
+            is_active: row.get::<Option<bool>, _>("is_active").unwrap_or(true),
         };
 
         let encrypted_credential = EncryptedCredential {
             metadata,
             encrypted_data,
             nonce,
-            checksum: row.checksum,
+            checksum: row.get("checksum"),
         };
 
         // Cache it
@@ -297,11 +300,11 @@ impl CredentialManager {
 
         // Update last used timestamp
         let now = time::OffsetDateTime::now_utc();
-        sqlx::query!(
-            "UPDATE encrypted_credentials SET last_used = $1 WHERE id = $2",
-            now,
-            credential_id
+        sqlx::query(
+            "UPDATE encrypted_credentials SET last_used = $1 WHERE id = $2"
         )
+        .bind(now)
+        .bind(credential_id)
         .execute(&self.pool)
         .await
         .map_err(AppError::Database)?;
@@ -327,7 +330,7 @@ impl CredentialManager {
             return Err(AppError::Unauthorized("Permission denied to list credentials".into()));
         }
 
-        let rows = sqlx::query!(
+        let rows = sqlx::query(
             r#"
             SELECT id, user_id, tenant_id, provider, credential_type, name, description,
                    created_at, updated_at, expires_at, last_used, is_active
@@ -336,28 +339,28 @@ impl CredentialManager {
               AND ($3::text IS NULL OR provider = $3)
             ORDER BY created_at DESC
             "#,
-            user_id,
-            tenant_id,
-            provider_filter
         )
+        .bind(user_id)
+        .bind(tenant_id)
+        .bind(provider_filter)
         .fetch_all(&self.pool)
         .await
         .map_err(AppError::Database)?;
 
         let credentials = rows.into_iter().map(|row| {
             CredentialMetadata {
-                id: row.id,
-                user_id: row.user_id,
-                tenant_id: row.tenant_id,
-                provider: row.provider,
-                credential_type: row.credential_type,
-                name: row.name,
-                description: row.description,
-                created_at: row.created_at.map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()).unwrap_or_default(),
-                updated_at: row.updated_at.map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()).unwrap_or_default(),
-                expires_at: row.expires_at.map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()),
-                last_used: row.last_used.map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()),
-                is_active: row.is_active.unwrap_or(true),
+                id: row.get("id"),
+                user_id: row.get("user_id"),
+                tenant_id: row.get("tenant_id"),
+                provider: row.get("provider"),
+                credential_type: row.get("credential_type"),
+                name: row.get("name"),
+                description: row.get("description"),
+                created_at: row.get::<Option<time::OffsetDateTime>, _>("created_at").map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()).unwrap_or_default(),
+                updated_at: row.get::<Option<time::OffsetDateTime>, _>("updated_at").map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()).unwrap_or_default(),
+                expires_at: row.get::<Option<time::OffsetDateTime>, _>("expires_at").map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()),
+                last_used: row.get::<Option<time::OffsetDateTime>, _>("last_used").map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()),
+                is_active: row.get::<Option<bool>, _>("is_active").unwrap_or(true),
             }
         }).collect();
 
@@ -381,17 +384,18 @@ impl CredentialManager {
         }
 
         // Soft delete with tenant isolation
-        let result = sqlx::query!(
+        let is_admin = rbac.check_permission(user_id, "credentials", "admin").await?;
+        let result = sqlx::query(
             r#"
             UPDATE encrypted_credentials 
             SET is_active = false, updated_at = NOW()
             WHERE id = $1 AND tenant_id = $2 AND (user_id = $3 OR $4)
             "#,
-            credential_id,
-            tenant_id,
-            user_id,
-            rbac.check_permission(user_id, "credentials", "admin").await?
         )
+        .bind(credential_id)
+        .bind(tenant_id)
+        .bind(user_id)
+        .bind(is_admin)
         .execute(&self.pool)
         .await
         .map_err(AppError::Database)?;
@@ -497,23 +501,23 @@ impl CredentialManager {
         let now = time::OffsetDateTime::now_utc();
         let ip_network = ip_address.map(|ip| ip.parse::<sqlx::types::ipnetwork::IpNetwork>().ok()).flatten();
 
-        sqlx::query!(
+        sqlx::query(
             r#"
             INSERT INTO credential_access_logs 
             (id, credential_id, user_id, tenant_id, action, success, ip_address, user_agent, timestamp, details)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             "#,
-            log_id,
-            credential_id,
-            user_id,
-            tenant_id,
-            action,
-            success,
-            ip_network,
-            user_agent,
-            now,
-            details
         )
+        .bind(log_id)
+        .bind(credential_id)
+        .bind(user_id)
+        .bind(tenant_id)
+        .bind(action)
+        .bind(success)
+        .bind(ip_network)
+        .bind(user_agent)
+        .bind(now)
+        .bind(details)
         .execute(&self.pool)
         .await
         .map_err(AppError::Database)?;
@@ -536,7 +540,7 @@ impl CredentialManager {
             return Err(AppError::Unauthorized("Permission denied to view audit logs".into()));
         }
 
-        let rows = sqlx::query!(
+        let rows = sqlx::query(
             r#"
             SELECT id, credential_id, user_id, tenant_id, action, success, 
                    ip_address, user_agent, timestamp, details
@@ -546,26 +550,26 @@ impl CredentialManager {
             ORDER BY timestamp DESC
             LIMIT $3
             "#,
-            tenant_id,
-            credential_id,
-            limit.unwrap_or(100)
         )
+        .bind(tenant_id)
+        .bind(credential_id)
+        .bind(limit.unwrap_or(100))
         .fetch_all(&self.pool)
         .await
         .map_err(AppError::Database)?;
 
         let logs = rows.into_iter().map(|row| {
             CredentialAccessLog {
-                id: row.id,
-                credential_id: row.credential_id.unwrap_or_default(),
-                user_id: row.user_id,
-                tenant_id: row.tenant_id,
-                action: row.action,
-                success: row.success,
-                ip_address: row.ip_address.map(|ip| ip.to_string()),
-                user_agent: row.user_agent,
-                timestamp: row.timestamp.map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()).unwrap_or_default(),
-                details: row.details,
+                id: row.get("id"),
+                credential_id: row.get::<Option<Uuid>, _>("credential_id").unwrap_or_default(),
+                user_id: row.get("user_id"),
+                tenant_id: row.get("tenant_id"),
+                action: row.get("action"),
+                success: row.get("success"),
+                ip_address: row.get::<Option<sqlx::types::ipnetwork::IpNetwork>, _>("ip_address").map(|ip| ip.to_string()),
+                user_agent: row.get("user_agent"),
+                timestamp: row.get::<Option<time::OffsetDateTime>, _>("timestamp").map(|t| chrono::DateTime::from_timestamp(t.unix_timestamp(), 0).unwrap()).unwrap_or_default(),
+                details: row.get("details"),
             }
         }).collect();
 

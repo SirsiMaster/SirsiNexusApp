@@ -48,7 +48,7 @@ echo -e "${BLUE}🔧 Step 1: Starting Backend Services${NC}"
 echo -e "${YELLOW}🚀 Launching sirsi-nexus backend in development mode...${NC}"
 
 # Start backend in background
-./sirsi start --dev &
+./sirsi-nexus start --dev &
 BACKEND_PID=$!
 
 # Wait a bit for backend to start

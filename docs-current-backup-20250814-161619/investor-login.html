@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus - Investor Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              emerald: {
+                600: '#059669',
+                700: '#047857',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <script>
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          const hasPersistedPreference = typeof persistedColorPreference === 'string';
+          if (hasPersistedPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+          if (hasMediaQueryPreference) {
+            return mql.matches ? 'dark' : 'light';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+    <style>
+        .document-section {
+            max-width: 2xl;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+    </style>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- Page Title Section -->
+    <section class="bg-slate-50 dark:bg-slate-800 py-12">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center">
+          <h1 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">SirsiNexus Investor Portal</h1>
+          <p class="text-slate-600 dark:text-slate-400 mb-6">Secure access to the Investor Dashboard</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Access Gate -->
+    <div id="accessGate" class="document-section">
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Investor Login</h2>
+            <p class="text-slate-600 dark:text-slate-400">Access financial data, reports, and investor communications securely</p>
+        </div>
+        
+        <form id="accessForm" class="max-w-md mx-auto space-y-6">
+            <div>
+                <label for="investorId" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Investor ID</label>
+                <input
+                    type="text"
+                    id="investorId"
+                    name="investorId"
+                    required
+                    class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white"
+                    placeholder="Enter your investor ID"
+                />
+            </div>
+                    
+            <div>
+                <label for="accessCode" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Access Code</label>
+                <input
+                    type="password"
+                    id="accessCode"
+                    name="accessCode"
+                    required
+                    class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white"
+                    placeholder="Enter your access code"
+                />
+            </div>
+                    
+            <button
+                type="submit"
+                class="w-full bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-colors font-medium"
+            >
+                Access Portal
+            </button>
+        </form>
+        
+            <div class="mt-6 text-center">
+                <p class="text-sm text-slate-500 dark:text-slate-400">
+                    Need access? Contact us at <a href="mailto:cylton@sirsi.ai" class="text-emerald-600 hover:text-emerald-700 font-medium">cylton@sirsi.ai</a>
+                </p>
+                <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">
+                    Access requires approval from the administrator.
+                </p>
+                <!-- Demo credentials for testing -->
+                <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                    <p class="text-xs text-blue-700 dark:text-blue-300 font-medium">Demo Access:</p>
+                    <p class="text-xs text-blue-600 dark:text-blue-400">ID: demo | Code: investor2025</p>
+                </div>
+            </div>
+    </div>
+
+<script>
+  // Demo authentication for testing
+  document.getElementById('accessForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const investorId = document.getElementById('investorId').value.trim();
+      const accessCode = document.getElementById('accessCode').value.trim();
+      const submitButton = document.querySelector('button[type="submit"]');
+      
+      // Show loading state
+      submitButton.disabled = true;
+      submitButton.textContent = 'Authenticating...';
+      
+      // Simple demo authentication
+      setTimeout(() => {
+          if (investorId === 'demo' && accessCode === 'investor2025') {
+              console.log('✅ Demo access granted');
+              // Store demo session
+              localStorage.setItem('investor-authenticated', 'true');
+              localStorage.setItem('investor-id', investorId);
+              
+              // Redirect to investor portal
+              window.location.href = 'investor-login.html';
+          } else if (investorId === 'admin' && accessCode === 'admin2025') {
+              console.log('✅ Admin access granted');
+              // Store admin session
+              localStorage.setItem('investor-authenticated', 'true');
+              localStorage.setItem('investor-id', investorId);
+              localStorage.setItem('user-role', 'admin');
+              
+              // Redirect to admin dashboard
+              window.location.href = 'investor-portal/admin/dashboard.html';
+          } else {
+              console.log('❌ Invalid credentials');
+              alert('❌ Invalid credentials.\n\n🔑 Demo access: ID="demo", Code="investor2025"\n👨‍💼 Admin access: ID="admin", Code="admin2025"');
+          }
+          
+          // Reset button state
+          submitButton.disabled = false;
+          submitButton.textContent = 'Access Portal';
+      }, 1000);
+  });
+  
+  // Check if user is already authenticated on page load
+  window.addEventListener('load', function() {
+      const isAuthenticated = localStorage.getItem('investor-authenticated');
+      const userRole = localStorage.getItem('user-role');
+      
+      if (isAuthenticated === 'true') {
+          // User is already authenticated, redirect to appropriate dashboard
+          if (userRole === 'admin') {
+              window.location.href = 'investor-portal/admin/dashboard.html';
+          } else {
+              window.location.href = 'investor-login.html';
+          }
+      }
+  });
+</script>
+
+</body>
+</html>

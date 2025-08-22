@@ -139,7 +139,7 @@ async fn main() -> Result<()> {
     println!("🧠 Hypervisor is managing {} services", final_status.total_services);
     println!("🚀 Platform ready for production deployment");
     
-    // Success - exit cleanly instead of hanging
+    // Success - now run persistently and wait for shutdown signal
     info!("✅ SIRSI Hypervisor initialization complete!");
     
     // Optional: Quick demo to show it's working
@@ -147,10 +147,46 @@ async fn main() -> Result<()> {
         println!("\n🎯 Running in demo mode for 10 seconds...");
         tokio::time::sleep(std::time::Duration::from_secs(10)).await;
         println!("✅ Demo completed successfully!");
+        info!("🛑 Shutting down SIRSI Hypervisor Platform...");
+        println!("\n👋 SIRSI Hypervisor stopped. Services managed with zero downtime capability!");
+        return Ok(());
     }
 
-    info!("🛑 Shutting down SIRSI Hypervisor Platform...");
-    println!("\n👋 SIRSI Hypervisor stopped. Services managed with zero downtime capability!");
+    // Start the hypervisor control loop and wait for shutdown signal
+    println!("🔄 Starting hypervisor control loop...");
+    info!("🔄 Hypervisor running - waiting for shutdown signal (Ctrl+C)");
+    
+    // Clone the hypervisor for the control loop
+    let hypervisor_clone = Arc::clone(&hypervisor);
+    
+    // Start the status monitoring loop
+    let status_task = tokio::spawn(async move {
+        let mut interval = tokio::time::interval(std::time::Duration::from_secs(30));
+        loop {
+            interval.tick().await;
+            let status = hypervisor_clone.read().await.get_status().await;
+            info!("🧠 Hypervisor Status: {} | Services: {}/{} running | Failed: {} | Restarts: {}", 
+                status.status, status.running_services, status.total_services, 
+                status.failed_services, status.total_restarts);
+        }
+    });
+    
+    // Wait for shutdown signal (Ctrl+C)
+    tokio::select! {
+        _ = signal::ctrl_c() => {
+            info!("📡 Received shutdown signal (Ctrl+C)");
+            println!("\n🛑 Shutting down SIRSI Hypervisor Platform...");
+        }
+        _ = status_task => {
+            // Status task completed (shouldn't happen)
+            info!("📡 Status monitoring task completed");
+        }
+    }
 
+    // Graceful shutdown
+    info!("🛑 Performing graceful shutdown...");
+    // TODO: Add proper service shutdown logic here
+    
+    println!("👋 SIRSI Hypervisor stopped. Services managed with zero downtime capability!");
     Ok(())
 }
