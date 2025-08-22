@@ -14,9 +14,9 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
-    "cookie": "^0.5.0"
+    "cookie": "^1.0.2"
   },
   "devDependencies": {
-    "netlify-cli": "^17.0.0"
+    "netlify-cli": "^23.3.0"
   }
 }
