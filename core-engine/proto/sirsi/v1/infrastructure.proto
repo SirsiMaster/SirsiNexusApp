@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package sirsi.infrastructure.v1;
+
+option go_package = "github.com/sirsi/infrastructure/api/v1;infrapb";
+
+// InfrastructureService manages the Sirsi portfolio project registry.
+service InfrastructureService {
+  // Registers a new portfolio project or updates an existing one.
+  rpc RegisterProject(RegisterProjectRequest) returns (RegisterProjectResponse);
+  
+  // Retrieves a specific project configuration by ID.
+  rpc GetProject(GetProjectRequest) returns (ProjectConfig);
+  
+  // Lists all active portfolio projects.
+  rpc ListProjects(ListProjectsRequest) returns (ListProjectsResponse);
+}
+
+message ProjectConfig {
+  string project_id = 1;
+  string name = 2;
+  string tagline = 3;
+  string logo_url = 4;
+  string theme = 5;
+  string primary_color = 6;
+  string accent_color = 7;
+  
+  LegalMetadata legal_metadata = 8;
+  ValueRealization value_realization = 9;
+  ScopeSummary scope_summary = 10;
+}
+
+message LegalMetadata {
+  string company_name = 1;
+  string jurisdiction = 2;
+  bool disclosure_ai = 3;
+  bool disclosure_financial = 4;
+  string maintenance_sla = 5;
+}
+
+message ValueRealization {
+  double market_multiplier = 1;
+  string market_label = 2;
+  double google_multiplier = 3;
+  string google_label = 4;
+  double sirsi_multiplier = 5;
+  string sirsi_label = 6;
+}
+
+message ScopeSummary {
+  string platform = 1;
+  string architecture = 2;
+  string timeline = 3;
+}
+
+message RegisterProjectRequest {
+  ProjectConfig config = 1;
+}
+
+message RegisterProjectResponse {
+  string project_id = 1;
+  bool success = 2;
+}
+
+message GetProjectRequest {
+  string project_id = 1;
+}
+
+message ListProjectsRequest {}
+
+message ListProjectsResponse {
+  repeated ProjectConfig projects = 1;
+}

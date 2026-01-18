@@ -1,4 +1,4 @@
-# SirsiNexus Technical Implementation Document
+# SirsiNexus Technical Design Document
 ## NGINX IPC + Protocol Buffers High-Performance Architecture
 
 **Version:** 2.0.0  

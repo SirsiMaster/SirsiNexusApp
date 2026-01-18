@@ -127,11 +127,11 @@ cockroach sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute
 ### **Status & Achievement Documents**
 - `FINAL_STATUS_SUMMARY.md` - Complete achievement overview
 - `INTEGRATION_STATUS.md` - Detailed integration verification
-- `docs/core/PROJECT_TRACKER.md` - Phase completion tracking
+- `docs/PROJECT_MANAGEMENT.md` - Phase completion tracking
 - `docs/core/CHANGELOG.md` - Version history with Phase 5.3 entry
 
 ### **Technical Reference**
-- `docs/core/COMPREHENSIVE_DEVELOPMENT_BLUEPRINT.md` - Master architecture
+- `docs/ARCHITECTURE_DESIGN.md` - Master architecture
 - `docs/core/ARCHITECTURE.md` - System design patterns
 - `ui/src/app/settings/page.tsx` - Complete settings implementation
 - `core-engine/crates/core/src/credential_manager/` - Secure credential system

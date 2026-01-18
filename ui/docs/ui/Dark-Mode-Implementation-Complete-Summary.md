@@ -49,7 +49,7 @@ We have successfully implemented comprehensive dark mode support across your ent
   - Projects, Settings, Help ✅
   - All documentation pages ✅
 
-## 🔧 Technical Implementation
+## 🔧 Technical Design
 
 ### **Theme Toggle System**
 ```typescript
@@ -194,7 +194,7 @@ npm run dev
 ### **Implementation Guides**
 - `EnvironmentSetupStep-DarkMode-Fix-Summary.md` - Detailed component example
 - `Dark-Mode-Implementation-Status.md` - Historical progress tracking
-- `COMPREHENSIVE_DEVELOPMENT_BLUEPRINT.md` - Updated with dark mode info
+- `ARCHITECTURE_DESIGN.md` - Updated with dark mode info
 
 ### **Best Practices**
 ```jsx

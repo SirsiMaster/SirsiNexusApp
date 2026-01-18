@@ -1,4 +1,4 @@
-# Sirsi Nexus Comprehensive Development Blueprint (CDB)
+# Sirsi Nexus Architecture Design (CDB)
 
 **Version:** 2.0.0  
 **Last Updated:** 2025-07-11  

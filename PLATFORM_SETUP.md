@@ -206,8 +206,8 @@ npm run dev
 
 ## 📚 Additional Resources
 
-- [Comprehensive Development Blueprint](docs/core/COMPREHENSIVE_DEVELOPMENT_BLUEPRINT.md)
-- [Project Tracker](docs/core/PROJECT_TRACKER.md)
+- [Architecture Design](docs/ARCHITECTURE_DESIGN.md)
+- [Project Management](docs/PROJECT_MANAGEMENT.md)
 - [Changelog](docs/core/CHANGELOG.md)
 - [Infrastructure Builder Guide](ui/INFRASTRUCTURE_BUILDER.md)
 

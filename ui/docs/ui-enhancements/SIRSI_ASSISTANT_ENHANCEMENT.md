@@ -32,7 +32,7 @@ Successfully implemented all requested UI enhancements, including moving Sirsi t
 - **Icon Mode**: When collapsed, shows essential navigation icons
 - **Smooth Transitions**: 300ms animations for width changes
 
-## 🔧 Technical Implementation
+## 🔧 Technical Design
 
 ### **New SirsiHeaderAssistant Component**
 - **Location**: `src/components/SirsiHeaderAssistant.tsx`

@@ -239,9 +239,9 @@ cd ui && npm run dev
 ## 📚 Documentation References
 
 ### **Core Documents**
-- **Main Blueprint**: `docs/core/COMPREHENSIVE_DEVELOPMENT_BLUEPRINT.md`
+- **Main Blueprint**: `docs/ARCHITECTURE_DESIGN.md`
 - **Implementation Guide**: `docs/core/TECHNICAL_IMPLEMENTATION_DOCUMENT.md`
-- **Project Tracker**: `docs/core/PROJECT_TRACKER.md`
+- **Project Management**: `docs/PROJECT_MANAGEMENT.md`
 - **Change Log**: `docs/core/CHANGELOG.md`
 
 ### **API Documentation**

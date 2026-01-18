@@ -40,9 +40,9 @@
 - **Business Impact**: 20-30% cost savings through AI optimization
 
 ## Important Files
-- docs/core/COMPREHENSIVE_DEVELOPMENT_BLUEPRINT.md - Master architecture (v1.3.0)
+- docs/ARCHITECTURE_DESIGN.md - Master architecture (v1.3.0)
 - docs/core/CHANGELOG.md - Complete history (Phase 5 entry added)
-- docs/core/PROJECT_TRACKER.md - Live project status (Phase 5 complete)
+- docs/PROJECT_MANAGEMENT.md - Live project status (Phase 5 complete)
 - docs/core/VERSION.md - Version details
 - VERSION - Current version (0.5.0-alpha)
 
@@ -65,4 +65,4 @@
 - All navigation 404s fixed with functional pages
 - Production-ready with enterprise security and Kubernetes orchestration
 - Documentation consolidated and updated (144+ organized files)
-- Completion updates tracked in PROJECT_TRACKER.md with milestone history
+- Completion updates tracked in PROJECT_MANAGEMENT.md with milestone history

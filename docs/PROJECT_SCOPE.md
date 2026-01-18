@@ -1,4 +1,4 @@
-# SirsiNexus Project Summary
+# SirsiNexus Project Scope
 ## AI-Powered Cloud Infrastructure Platform
 
 **Version:** 0.6.0-alpha  

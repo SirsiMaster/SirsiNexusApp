@@ -106,7 +106,7 @@ InfrastructureBuilder/
 - Supports template storage and versioning
 - Integrates with CI/CD pipeline management
 
-## Technical Implementation
+## Technical Design
 
 ### Key Technologies
 - **React 18**: Modern component architecture

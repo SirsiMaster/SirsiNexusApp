@@ -51,8 +51,8 @@
 │   ├── src/services/websocket.ts   # WebSocket client
 │   └── src/components/             # React components
 ├── docs/core/                      # Technical documentation
-│   ├── COMPREHENSIVE_DEVELOPMENT_BLUEPRINT.md
-│   ├── PROJECT_TRACKER.md
+│   ├── ARCHITECTURE_DESIGN.md
+│   ├── PROJECT_MANAGEMENT.md
 │   └── CHANGELOG.md
 └── VERSION                         # 0.5.9-alpha
 ```
@@ -135,8 +135,8 @@
 ## 📚 Reference Documentation
 
 ### **Core Technical Specs**
-- [`docs/core/COMPREHENSIVE_DEVELOPMENT_BLUEPRINT.md`](docs/core/COMPREHENSIVE_DEVELOPMENT_BLUEPRINT.md) - Complete system architecture
-- [`docs/core/PROJECT_TRACKER.md`](docs/core/PROJECT_TRACKER.md) - Current development status
+- [`docs/ARCHITECTURE_DESIGN.md`](docs/ARCHITECTURE_DESIGN.md) - Complete system architecture
+- [`docs/PROJECT_MANAGEMENT.md`](docs/PROJECT_MANAGEMENT.md) - Current development status
 - [`docs/core/CHANGELOG.md`](docs/core/CHANGELOG.md) - Version history and changes
 
 ### **Implementation Guides**

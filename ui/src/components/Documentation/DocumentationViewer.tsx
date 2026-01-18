@@ -24,10 +24,10 @@ export default function DocumentationViewer({ aiMode = false }: DocumentationVie
     // Core Documentation
     { path: '/docs/core/ARCHITECTURE.md', title: 'System Architecture', category: 'core', lastModified: '2025-01-06' },
     { path: '/docs/core/PLATFORM_ARCHITECTURE.md', title: 'Platform Architecture', category: 'core', lastModified: '2025-01-06' },
-    { path: '/docs/core/PROJECT_TRACKER.md', title: 'Project Tracker', category: 'core', lastModified: '2025-01-06' },
+    { path: '/docs/PROJECT_MANAGEMENT.md', title: 'Project Management', category: 'core', lastModified: '2025-01-06' },
     { path: '/docs/core/CHANGELOG.md', title: 'Change Log', category: 'core', lastModified: '2025-01-06' },
     { path: '/docs/core/PRODUCTION_READY.md', title: 'Production Ready', category: 'core', lastModified: '2025-01-06' },
-    { path: '/docs/core/COMPREHENSIVE_DEVELOPMENT_BLUEPRINT.md', title: 'Development Blueprint', category: 'core', lastModified: '2025-01-06' },
+    { path: '/docs/ARCHITECTURE_DESIGN.md', title: 'Development Blueprint', category: 'core', lastModified: '2025-01-06' },
     { path: '/docs/core/RESUMPTION_PROMPT.md', title: 'Resumption Context', category: 'core', lastModified: '2025-01-06' },
     
     // Phase Documentation

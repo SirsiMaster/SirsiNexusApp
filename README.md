@@ -36,21 +36,56 @@ Sirsi is the world's first **Generative AI Infrastructure Assistant**. Simply de
 
 **Transform your infrastructure with AI-powered intelligence. SirsiNexus generates, manages, and optimizes your entire cloud infrastructure through natural language conversations. Simply describe what you need, and Sirsi creates it.**
 
-## 📋 **Documentation**
+## 📋 **Documentation Governance**
 
-**Seven Core Documents Only** - Streamlined documentation focused on essential information
+**The 28 Canonical Sources of Truth** — Sirsi development is governed by the 28-file benchmark defined in the `111-Venture-Projects` repository. All architectural and engineering decisions MUST align with these documents.
 
-### Core Documents:
-- **[Comprehensive Development Blueprint](./docs/core/COMPREHENSIVE_DEVELOPMENT_BLUEPRINT.md)**: Master architecture and vision
-- **[Technical Implementation Document](./docs/core/TECHNICAL_IMPLEMENTATION.md)**: Detailed technical specifications and code examples
-- **[Project Tracker](./docs/core/PROJECT_TRACKER.md)**: Live project status and milestone tracking
-- **[Project Summary](./docs/core/PROJECT_SUMMARY.md)**: High-level overview and business value
-- **[README](./README.md)**: This document - getting started and overview
-- **[VERSION](./docs/core/VERSION.md)**: Version information and release details
-- **[CHANGELOG](./docs/core/CHANGELOG.md)**: Complete development history and updates
+### 🏛 The Financial Trinity
+1.  `proposals/CONTRACT.md`
+2.  `proposals/SOW.md`
+3.  `proposals/COST_PROPOSAL.md`
+
+### 📋 Project Governance
+4.  **[GEMINI.md](./GEMINI.md)** (Rules of Engagement)
+5.  **[Project Scope](./docs/PROJECT_SCOPE.md)**
+6.  **[Project Management](./docs/PROJECT_MANAGEMENT.md)**
+
+### 🏗 Architecture & Design
+7.  **[Architecture Design](./docs/ARCHITECTURE_DESIGN.md)**
+8.  **[Technical Design](./docs/TECHNICAL_DESIGN.md)**
+9.  `docs/DATA_MODEL.md`
+10. `docs/API_SPECIFICATION.md`
+
+### ⚖️ Compliance & Security
+11. `docs/SECURITY_COMPLIANCE.md`
+12. `docs/RISK_MANAGEMENT.md`
+13. `docs/QA_PLAN.md`
+
+### 🔬 Requirements & Specifications
+14. `docs/REQUIREMENTS_SPECIFICATION.md`
+15. `docs/USER_STORIES.md`
+16. `docs/MARKET_JUSTIFICATION.md`
+
+### 🚀 Operations & Deployment
+17. `docs/DEPLOYMENT_GUIDE.md`
+18. `docs/MAINTENANCE_SUPPORT.md`
+19. `docs/CHANGE_MANAGEMENT.md`
+20. `docs/COMMUNICATION_PLAN.md`
+21. `docs/TEST_PLAN.md`
+22. `docs/TRAINING_DOCUMENTATION.md`
+
+### 🧠 Knowledge & Decisions
+23. `docs/ADR-001-ARCHITECTURE-DECISIONS.md`
+24. `docs/ADR-002-IMPLEMENTATION-PLAN.md`
+25. `docs/POST_IMPLEMENTATION_REVIEW.md`
+
+### 📚 Indices
+26. `docs/ADR-INDEX.md`
+27. `docs/DOCUMENTATION_INDEX.md`
+28. `docs/ADR-TEMPLATE.md`
 
 ### Documentation Policy:
-**ONLY** these seven core documents are maintained going forward. All legacy documents have been archived to `docs/archive/` for historical reference. New information and updates are incorporated into these core documents exclusively.
+**ONLY** these 28 canonical documents are maintained. All development, whether in shared libraries or tenant-specific modules, must be documented within this framework to ensure global consistency across the Studio.
 
 ## Overview
 

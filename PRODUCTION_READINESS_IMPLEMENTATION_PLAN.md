@@ -497,9 +497,9 @@ services:
 - **No phase complete without:** End-to-end testing, security audit, performance benchmarking
 
 ### **Documentation Requirements**
-- Update Comprehensive Development Blueprint weekly
-- Maintain Technical Implementation Document with all changes
-- Update Project Tracker with real progress metrics
+- Update Architecture Design weekly
+- Maintain Technical Design Document with all changes
+- Update Project Management with real progress metrics
 - Document all security implementations for compliance
 
 ---
