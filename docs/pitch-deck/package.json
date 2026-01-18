@@ -1,0 +1,17 @@
+{
+  "name": "sirsi-pitch-deck",
+  "version": "1.0.0",
+  "description": "A beautiful, modern web-based pitch deck for Sirsi - The World's First Generative AI Infrastructure Assistant.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "jsdom": "^26.1.0",
+    "pptxgenjs": "^4.0.1"
+  }
+}

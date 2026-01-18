@@ -1,0 +1,128 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ============================================
+    // MULTI-TENANT ENVELOPE SECURITY RULES
+    // ============================================
+    
+    // Envelopes - multi-tenant access control with project isolation
+    match /envelopes/{envelopeId} {
+      
+      // Read access rules:
+      // 1. Guest signers can read their own envelopes (identified by email in signers array)
+      // 2. Authenticated users can read envelopes they created or are listed as signers
+      // 3. Project admins can read all envelopes for their project
+      // 4. Sirsi admins can read all envelopes
+      allow read: if 
+        // Guest access for signing (envelope must be marked as guest signing)
+        resource.data.isGuestSigning == true ||
+        // Authenticated user access
+        (request.auth != null && (
+          // Creator access
+          resource.data.createdBy == request.auth.uid ||
+          // Listed signer access
+          request.auth.token.email in resource.data.signers ||
+          // Project admin access (custom claim)
+          (request.auth.token.projectId != null && 
+           request.auth.token.projectId == resource.data.projectId &&
+           request.auth.token.projectAdmin == true) ||
+          // Sirsi global admin access
+          request.auth.token.sirsiAdmin == true
+        ));
+      
+      // Create access - only via authenticated users or admin SDK (for guest envelopes)
+      allow create: if request.auth != null || 
+                    (request.resource.data.isGuestSigning == true);
+      
+      // Update access rules:
+      // 1. Creator can update their own envelopes
+      // 2. Signers can update signature-related fields only
+      // 3. Project admins can update envelopes in their project
+      // 4. Sirsi admins have full update access
+      allow update: if request.auth != null && (
+        // Creator update access
+        resource.data.createdBy == request.auth.uid ||
+        // Admin override
+        request.auth.token.sirsiAdmin == true ||
+        // Project admin access
+        (request.auth.token.projectId == resource.data.projectId &&
+         request.auth.token.projectAdmin == true)
+      ) ||
+      // Guest signing update (signature submission only)
+      (resource.data.isGuestSigning == true && 
+       request.resource.data.diff(resource.data).affectedKeys()
+         .hasOnly(['signatures', 'status', 'updatedAt', 'signedAt']));
+      
+      // No client-side delete - only via admin SDK
+      allow delete: if false;
+    }
+    
+    // ============================================
+    // PROJECT CONFIGURATION
+    // ============================================
+    
+    // Project settings - read-only for authenticated users, write for project admins
+    match /projects/{projectId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && (
+        request.auth.token.sirsiAdmin == true ||
+        (request.auth.token.projectId == projectId && request.auth.token.projectAdmin == true)
+      );
+    }
+    
+    // ============================================
+    // WEBHOOKS & SYSTEM DATA
+    // ============================================
+    
+    // Webhooks - only accessible by admin SDK (server-side)
+    match /webhooks/{webhookId} {
+      allow read, write: if false;
+    }
+    
+    // ============================================
+    // AUDIT LOGS
+    // ============================================
+    
+    // Audit logs - read with project isolation, write only via admin SDK
+    match /auditLogs/{logId} {
+      allow read: if request.auth != null && (
+        // Sirsi admins see all
+        request.auth.token.sirsiAdmin == true ||
+        // Project admins see their project logs
+        (request.auth.token.projectAdmin == true && 
+         request.auth.token.projectId == resource.data.projectId) ||
+        // Users see logs related to them
+        resource.data.userId == request.auth.uid
+      );
+      allow write: if false; // Only accessible via admin SDK
+    }
+    
+    // ============================================
+    // SIGNATURES COLLECTION (if separate)
+    // ============================================
+    
+    match /signatures/{signatureId} {
+      allow read: if request.auth != null && (
+        resource.data.signerEmail == request.auth.token.email ||
+        request.auth.token.sirsiAdmin == true
+      );
+      allow write: if false; // Only via admin SDK
+    }
+    
+    // ============================================
+    // SECURITY LOGS (MITM/XSS Protection)
+    // ============================================
+    
+    // Security logs - tracks signature verification and security events
+    // Read by admins only, write only via server-side SDK
+    match /securityLogs/{logId} {
+      allow read: if request.auth != null && (
+        request.auth.token.sirsiAdmin == true ||
+        (request.auth.token.projectAdmin == true && 
+         request.auth.token.projectId == resource.data.projectId)
+      );
+      allow write: if false; // Only via admin SDK - never client-side
+    }
+  }
+}

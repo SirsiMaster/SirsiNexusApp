@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "ui",
-    "cli"
+    "cli",
+    "packages/*"
   ],
   "scripts": {
     "build": "yarn workspaces run build",

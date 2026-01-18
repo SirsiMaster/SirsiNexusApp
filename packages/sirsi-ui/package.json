@@ -1,0 +1,24 @@
+{
+  "name": "@sirsimaster/sirsi-ui",
+  "version": "0.1.0",
+  "description": "Sirsi UI – shared, framework-agnostic UI tokens, presets, and web components.",
+  "license": "MIT",
+  "main": "dist/sirsi-ui.js",
+  "module": "dist/sirsi-ui.esm.js",
+  "style": "dist/sirsi-ui.css",
+  "files": [
+    "dist",
+    "tailwind-preset.js",
+    "src"
+  ],
+  "scripts": {
+    "build:css": "tailwindcss -i src/css/index.css -o dist/sirsi-ui.css --minify || true",
+    "build:js": "mkdir -p dist && cp src/js/components.js dist/sirsi-ui.js",
+    "build": "npm run build:css && npm run build:js",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.10"
+  }
+}
+

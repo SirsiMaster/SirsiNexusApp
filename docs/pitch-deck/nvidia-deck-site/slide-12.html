@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sirsi + NVIDIA - AI Infrastructure Partnership</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+
+<link href="css/style.css" rel="stylesheet"/></head><body><div class="presentation"><div class="slide" style="; display: flex !important; opacity: 1 !important;">
+<div class="slide-content">
+<div class="text-center" style="margin-bottom: 2rem;">
+<h2 style="margin-bottom: 0;">Path to $1B+ Valuation</h2>
+</div>
+<!-- Chart placeholder -->
+<div style="position: relative; height: 180px; margin: 15px auto; padding: 10px; background: white; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.05); max-width: 1000px;">
+<canvas id="revenueChart"></canvas>
+</div>
+<!-- Year by year breakdown -->
+<div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; max-width: 1000px; margin: 0 auto;">
+<div class="card" style="text-align: center; padding: 1.5rem 1rem;">
+<p style="color: var(--primary); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem;">YEAR 1
+                    </p>
+<p style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 0.5rem;">$2M
+                    </p>
+<p style="font-size: 0.8rem; color: var(--text-light);">600 customers</p>
+<p style="font-size: 0.75rem; color: var(--text-light); margin-top: 0.5rem;">Launch &amp; early adopters
+                    </p>
+</div>
+<div class="card" style="text-align: center; padding: 1.5rem 1rem;">
+<p style="color: var(--primary); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem;">YEAR 2
+                    </p>
+<p style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 0.5rem;">$8M
+                    </p>
+<p style="font-size: 0.8rem; color: var(--text-light);">2,500 customers</p>
+<p style="font-size: 0.75rem; color: var(--text-light); margin-top: 0.5rem;">Product-market fit</p>
+</div>
+<div class="card" style="text-align: center; padding: 1.5rem 1rem;">
+<p style="color: var(--primary); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem;">YEAR 3
+                    </p>
+<p style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 0.5rem;">$18M
+                    </p>
+<p style="font-size: 0.8rem; color: var(--text-light);">5,500 customers</p>
+<p style="font-size: 0.75rem; color: var(--text-light); margin-top: 0.5rem;">Scale sales team</p>
+</div>
+<div class="card" style="text-align: center; padding: 1.5rem 1rem;">
+<p style="color: var(--primary); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem;">YEAR 4
+                    </p>
+<p style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 0.5rem;">$38M
+                    </p>
+<p style="font-size: 0.8rem; color: var(--text-light);">12,000 customers</p>
+<p style="font-size: 0.75rem; color: var(--text-light); margin-top: 0.5rem;">Global expansion</p>
+</div>
+<div class="card" style="text-align: center; padding: 1.5rem 1rem;">
+<p style="color: var(--primary); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem;">YEAR 5
+                    </p>
+<p style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 0.5rem;">$73M
+                    </p>
+<p style="font-size: 0.8rem; color: var(--text-light);">20,000 customers</p>
+<p style="font-size: 0.75rem; color: var(--text-light); margin-top: 0.5rem;">Market leader</p>
+</div>
+</div>
+<div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.03)); padding: 1.5rem; border-radius: 12px; margin-top: 1.5rem; text-align: center; border: 2px solid rgba(0, 211, 127, 0.2); max-width: 1000px; margin: 1.5rem auto 0;">
+<h3 style="color: var(--primary); font-size: 1.25rem; margin-bottom: 0.5rem;">$73M ARR × 14x AI SaaS
+                    Multiple = $1B+ Valuation</h3>
+<p style="color: var(--text-light); margin: 0;">Conservative multiple based on current AI infrastructure
+                    comparables (10-20x range)</p>
+</div>
+</div>
+</div></div><div class="static-nav"><a href="slide-11.html">Previous</a><span class="page-num">12 / 15</span><a href="slide-13.html">Next</a></div><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script>
+        let currentSlide = 1;
+        const totalSlides = 15;
+        const slideBadges = {
+            1: null,
+            2: 'Why Now',
+            3: 'The Problem',
+            4: 'The Solution',
+            5: 'The Patents',
+            6: 'GPU Partnership',
+            7: 'Competitive Moat',
+            8: 'Economics',
+            9: 'Market',
+            10: 'The Founder',
+            11: 'Traction',
+            12: 'Path to $1B',
+            13: 'The Ask',
+            14: 'Partnership',
+            15: 'Contact'
+        };
+
+        // Financial Chart
+        let chart;
+        function drawChart() {
+            const ctx = document.getElementById('revenueChart');
+            if (!ctx) return;
+            if (chart) chart.destroy();
+            const data = {
+                labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                datasets: [{
+                    label: 'Revenue ($M)',
+                    data: [2, 8, 18, 38, 73],
+                    borderColor: '#00D37F',
+                    backgroundColor: 'rgba(0, 211, 127, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3
+                }]
+            };
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function (value) { return '$' + value + 'M'; }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function showSlide(n) {
+            const slides = Array.from(document.querySelectorAll('.slide')).filter(s => s.style.display !== 'none');
+            if (n > totalSlides) currentSlide = totalSlides;
+            if (n < 1) currentSlide = 1;
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+            const badgeEl = document.querySelector('.badge-fixed');
+            if (slideBadges[currentSlide]) {
+                badgeEl.textContent = slideBadges[currentSlide];
+                badgeEl.style.opacity = '1';
+                badgeEl.style.visibility = 'visible';
+            } else {
+                badgeEl.style.opacity = '0';
+                badgeEl.style.visibility = 'hidden';
+            }
+            document.getElementById('currentSlide').textContent = currentSlide;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+            const progress = ((currentSlide - 1) / (totalSlides - 1)) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            // Draw chart on Path to $1B slide
+            if (currentSlide === 12) setTimeout(drawChart, 400);
+        }
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+        document.getElementById('totalSlides').textContent = totalSlides;
+        showSlide(1);
+    </script></body></html>

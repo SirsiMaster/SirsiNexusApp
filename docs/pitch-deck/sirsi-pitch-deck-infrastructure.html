@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sirsi - AI Infrastructure Optimization</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00D37F;
+            --primary-dark: #00A865;
+            --text-dark: #0A0E1A;
+            --text-light: #64748B;
+            --bg: #FFFFFF;
+            --bg-light: #F9FAFB;
+            --bg-off-white: #FAFBFC;
+            --border: #E2E8F0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-off-white);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--bg-off-white);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            padding-top: 60px;
+        }
+
+        .presentation {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            padding: 20px 30px;
+            padding-top: 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .slide-content {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            max-height: 100%;
+            overflow: visible;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.125rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .text-center { text-align: center; }
+        .text-primary { color: var(--primary); }
+
+        .badge-fixed {
+            padding: 0.5rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-desc {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .nav-footer {
+            background: white;
+            border-top: 2px solid var(--border);
+            padding: 0.75rem;
+            box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            flex-shrink: 0;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-counter {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-light);
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.5s ease;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1.125rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .stats-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .slide { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="slide-header">
+        <div class="badge-fixed" data-slide="1"></div>
+    </div>
+
+    <div class="main-content">
+        <div class="presentation">
+        
+        <!-- Slide 1: Title -->
+        <div class="slide active" style="align-items: center;">
+            <div class="slide-content text-center">
+                <img src="assets/sirsi-logo.png" alt="Sirsi Logo" style="height: 280px; width: auto; margin: 0 auto 50px; display: block;">
+                <h1 style="font-size: 4rem; margin-bottom: 1.5rem;">AI Infrastructure <span class="text-primary">Optimization at Scale</span></h1>
+                <p class="lead" style="font-size: 1.5rem;">Reduce costs. Optimize utilization. Scale intelligently.</p>
+                <p class="lead" style="font-size: 1.5rem; color: var(--text-light); margin-top: 0.5rem;">The only platform that enables datacenters and enterprises to optimize AI workload placement, predict demand, and maximize infrastructure ROI</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: The Infrastructure Challenge -->
+        <div class="slide">
+            <div class="slide-content" style="padding-top: 40px;">
+                <div class="text-center" style="margin-bottom: 2rem;">
+                    <h2>The Infrastructure Optimization Opportunity</h2>
+                    <p style="font-size: 1rem; color: var(--text-light); margin: 0.5rem 0 0;">Datacenters and enterprises face a critical efficiency crisis</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1100px; margin: 0 auto;">
+                    <div class="card" style="background: linear-gradient(135deg, rgba(255, 59, 59, 0.04), rgba(255, 59, 59, 0.02)); border: 2px solid rgba(255, 59, 59, 0.2);">
+                        <h3 style="color: #FF3B3B; margin-top: 0;">Datacenters & Co-Location</h3>
+                        <ul style="list-style: none; padding: 0; margin: 1.5rem 0 0;">
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;">
+                                <i class="fas fa-alert-circle" style="color: #FF3B3B; min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);">20-40% Compute Waste</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;">Suboptimal AI workload placement loses millions in margin</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;">
+                                <i class="fas fa-alert-circle" style="color: #FF3B3B; min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);">Idle Capacity Revenue Lost</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;">Cannot monetize unused rackspace and infrastructure</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <i class="fas fa-alert-circle" style="color: #FF3B3B; min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">No Unified Optimization</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">Legacy tools don't understand AI workload behavior</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.04), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.2);">
+                        <h3 style="color: var(--primary); margin-top: 0;">Enterprises & Conversions</h3>
+                        <ul style="list-style: none; padding: 0; margin: 1.5rem 0 0;">
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;">
+                                <i class="fas fa-alert-circle" style="color: #FF3B3B; min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">Infrastructure Overspend</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">Cannot efficiently deploy or scale AI workloads</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;">
+                                <i class="fas fa-alert-circle" style="color: #FF3B3B; min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">Monetization Blocked</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">Universities/enterprises can't offer infrastructure-as-service</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <i class="fas fa-alert-circle" style="color: #FF3B3B; min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">Performance Unpredictability</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">No visibility into demand, bottlenecks, or optimization</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: rgba(255, 59, 59, 0.08); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 59, 59, 0.2); text-align: center; max-width: 1100px; margin: 2rem auto 0;">
+                    <p style="font-size: 1.1rem; color: var(--text-dark); margin: 0; font-weight: 600;\">Result: Every 1-2% efficiency loss = millions in annual margin erosion</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Sirsi Solution -->
+        <div class="slide">
+            <div class="slide-content" style="padding-top: 40px;">
+                <div class="text-center" style="margin-bottom: 2rem;">
+                    <h2>Sirsi: AI Infrastructure Optimization Engine</h2>
+                    <p style="font-size: 1rem; color: var(--primary); margin: 0; font-weight: 600;\">Reduce costs, maximize utilization, predict demand</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1100px; margin: 0 auto;">
+                    <div class="card">
+                        <h3 style="color: var(--primary); margin-top: 0;">Core Capability</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">AI Learns Workload Patterns</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">Understands resource requirements, cost drivers, scaling behavior</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">Predictive Demand Forecasting</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">Anticipates resource needs before spikes occur</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">Auto-Scale & Resource Placement</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">Optimally allocates workloads across infrastructure</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.03)); border: 2px solid rgba(0, 211, 127, 0.2);">
+                        <h3 style="color: var(--primary); margin-top: 0;\">Business Outcome</h3>
+                        <div style="display: grid; gap: 1rem;">
+                            <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary);">
+                                <p style="font-weight: 700; margin: 0 0 0.25rem; font-size: 1.4rem; color: var(--primary);\">25-40%</p>
+                                <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">Infrastructure cost reduction</p>
+                            </div>
+                            <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary);">
+                                <p style="font-weight: 700; margin: 0 0 0.25rem; font-size: 1.4rem; color: var(--primary);\">20-30%</p>
+                                <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">Utilization improvement</p>
+                            </div>
+                            <div style="background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary);">
+                                <p style="font-weight: 700; margin: 0 0 0.25rem; font-size: 1.4rem; color: var(--primary);\">100%+</p>
+                                <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">Margin improvement on idle capacity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(0, 211, 127, 0.08); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(0, 211, 127, 0.2); text-align: center; max-width: 1100px; margin: 2rem auto 0;">
+                    <h3 style="color: var(--primary); margin: 0 0 0.5rem;\">Defensible Moat: Proprietary AI Model</h3>
+                    <p style=\"font-size: 0.95rem; color: var(--text-light); margin: 0;\">Every optimized workload improves prediction accuracy. Network effects compound competitive advantage.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: The Build Layer (Wedge) -->
+        <div class="slide">
+            <div class="slide-content" style="padding-top: 40px;">
+                <div class="text-center" style="margin-bottom: 2rem;">
+                    <h2>The Build Layer: Your Entry Wedge</h2>
+                    <p style="font-size: 1rem; color: var(--text-light); margin: 0;\">Self-service app builder + hosting = easy customer onboarding</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1100px; margin: 0 auto 2rem;">
+                    <div class="card">
+                        <h3 style="color: var(--primary); margin-top: 0;\">Stage 1: Acquisition</h3>
+                        <p style="margin: 0.75rem 0; font-size: 1rem;\">Self-service builder + hosting makes it easy for startups and enterprises to deploy AI workloads onto your infrastructure</p>
+                        <ul style="list-style: none; padding: 0; margin: 1rem 0 0;\">
+                            <li style=\"display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.9rem;\">
+                                <i class=\"fas fa-check\" style=\"color: var(--primary); min-width: 12px; margin-top: 0.25rem;\"></i> No DevOps expertise required
+                            </li>
+                            <li style=\"display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.9rem;\">
+                                <i class=\"fas fa-check\" style=\"color: var(--primary); min-width: 12px; margin-top: 0.25rem;\"></i> Fast onboarding
+                            </li>
+                            <li style=\"display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem;\">
+                                <i class=\"fas fa-check\" style=\"color: var(--primary); min-width: 12px; margin-top: 0.25rem;\"></i> Low friction entry
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.03)); border: 2px solid rgba(0, 211, 127, 0.2);">
+                        <h3 style="color: var(--primary); margin-top: 0;\">Stage 2: Monetization</h3>
+                        <p style="margin: 0.75rem 0; font-size: 1rem; font-weight: 600; color: var(--text-dark);\">Optimization Engine Activates</p>
+                        <p style="margin: 0.75rem 0; font-size: 0.95rem;\">Once workloads are running, Sirsi's AI engine automatically optimizes:</p>
+                        <ul style="list-style: none; padding: 0; margin: 1rem 0 0;\">
+                            <li style=\"display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.9rem;\">
+                                <i class=\"fas fa-check\" style=\"color: var(--primary); min-width: 12px; margin-top: 0.25rem;\"></i> Recurring optimization revenue
+                            </li>
+                            <li style=\"display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.9rem;\">
+                                <i class=\"fas fa-check\" style=\"color: var(--primary); min-width: 12px; margin-top: 0.25rem;\"></i> High-margin ARR
+                            </li>
+                            <li style=\"display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.9rem;\">
+                                <i class=\"fas fa-check\" style=\"color: var(--primary); min-width: 12px; margin-top: 0.25rem;\"></i> Long-term customer lock-in
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: rgba(0, 211, 127, 0.08); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(0, 211, 127, 0.2); text-align: center; max-width: 1100px; margin: 0 auto;\">
+                    <p style="font-size: 0.95rem; color: var(--text-light); margin: 0; font-style: italic;\"><strong>Analogy:</strong> ChatGPT is the entree that gets users to the LLMOps table. Build is the entree; optimization is the recurring revenue.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Revenue Model & GTM -->
+        <div class="slide">
+            <div class="slide-content" style="padding-top: 40px;">
+                <div class="text-center" style="margin-bottom: 2rem;">
+                    <h2>Revenue Model: Multi-Stream, High-Margin</h2>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; max-width: 1100px; margin: 0 auto;">
+                    <!-- Datacenter Partnerships -->
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.04), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.2);">
+                        <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 0.5rem; font-size: 1.1rem;\">Datacenter Partnerships</h3>
+                        <p style="font-size: 0.9rem; font-weight: 600; color: var(--text-dark); margin: 0 0 1rem;\">PRIMARY REVENUE DRIVER</p>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem;\">
+                            <li style="margin-bottom: 0.75rem;\"><strong>Model:</strong> Revenue share on cost savings</li>
+                            <li style="margin-bottom: 0.75rem;\"><strong>Scale:</strong> $2-5M+ per regional partner annually</li>
+                            <li style="margin-bottom: 0.75rem;\"><strong>Targets:</strong> Regional/edge datacenters, co-locations</li>
+                            <li><strong>Outcome:</strong> Partner monetizes idle capacity + improves margins</li>
+                        </ul>
+                    </div>
+
+                    <!-- Enterprise Contracts -->
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.04), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.2);">
+                        <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 0.5rem; font-size: 1.1rem;\">Enterprise Optimization</h3>
+                        <p style="font-size: 0.9rem; font-weight: 600; color: var(--text-dark); margin: 0 0 1rem;\">HIGH-MARGIN RECURRING</p>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem;\">
+                            <li style="margin-bottom: 0.75rem;\"><strong>Model:</strong> Optimization-as-a-service subscription</li>
+                            <li style="margin-bottom: 0.75rem;\"><strong>Scale:</strong> $500K-2M+ per enterprise annually</li>
+                            <li style="margin-bottom: 0.75rem;\"><strong>Targets:</strong> Enterprises, universities, \"conversions\"</li>
+                            <li><strong>Outcome:</strong> Customer reduces infrastructure spend 25-40%</li>
+                        </ul>
+                    </div>
+
+                    <!-- Developer Tier -->
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.04), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.2);">
+                        <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 0.5rem; font-size: 1.1rem;\">Developer/SMB Tier</h3>
+                        <p style="font-size: 0.9rem; font-weight: 600; color: var(--text-dark); margin: 0 0 1rem;\">VOLUME + UPSELL</p>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.9rem;\">
+                            <li style="margin-bottom: 0.75rem;\"><strong>Model:</strong> Pay-as-you-scale SaaS</li>
+                            <li style="margin-bottom: 0.75rem;\"><strong>Scale:</strong> $100-500K per customer (scaling up)</li>
+                            <li style="margin-bottom: 0.75rem;\"><strong>Targets:</strong> Startups, SMBs building on platform</li>
+                            <li><strong>Outcome:</strong> Some scale into enterprise tier</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: rgba(0, 211, 127, 0.08); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(0, 211, 127, 0.2); text-align: center; max-width: 1100px; margin: 2rem auto 0;\">
+                    <p style="font-size: 0.95rem; color: var(--text-dark); margin: 0; font-weight: 600;\">GTM Priority: Datacenters First → Enterprises → SMB/Developer Scale</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Market Opportunity -->
+        <div class="slide">
+            <div class="slide-content" style="padding-top: 80px;\">
+                <div class="text-center">
+                    <h2>Massive Market for Infrastructure Optimization</h2>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number text-primary">$547B</div>
+                        <div class="stat-label">TAM</div>
+                        <div class="stat-desc">Cloud Infrastructure Market</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number text-primary">$89B</div>
+                        <div class="stat-label">SAM</div>
+                        <div class="stat-desc">Infrastructure Automation + Optimization</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number text-primary">$5-10B</div>
+                        <div class="stat-label">SOM</div>
+                        <div class="stat-desc">AI-Driven Optimization (Distributed)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Founder & Traction -->
+        <div class="slide">
+            <div class="slide-content" style="padding-top: 40px;">
+                <div class="text-center" style="margin-bottom: 10px;">
+                    <h2 style="margin-bottom: 0;">Cylton Collymore</h2>
+                </div>
+                <div class="card" style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 160px 1fr; gap: 30px; align-items: center; padding: 20px 30px;">
+                    <div style="width: 160px; height: 160px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #00FF88); display: flex; align-items: center; justify-content: center; color: white; font-size: 55px; font-weight: 700; box-shadow: 0 15px 40px rgba(0, 215, 127, 0.3);">CC</div>
+                    <div>
+                        <p style="color: var(--primary); font-weight: 700; font-size: 1.1rem; margin: 0 0 10px;">Infrastructure Expert & 2x Founder</p>
+                        <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 10px;">
+                            <li style="display: flex; align-items: flex-start; gap: 8px;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 18px; font-size: 16px; margin-top: 2px;"></i>
+                                <span style="font-size: 0.9rem; line-height: 1.3;"><strong>20+ Years Infrastructure Management</strong> - Built infrastructure for enterprises</span>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 8px;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 18px; font-size: 16px; margin-top: 2px;"></i>
+                                <span style="font-size: 0.9rem; line-height: 1.3;"><strong>Oracle Vault Lead Architect</strong> - Protected US passport & visa database</span>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 8px;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 18px; font-size: 16px; margin-top: 2px;"></i>
+                                <span style="font-size: 0.9rem; line-height: 1.3;\"><strong>2x Founder</strong> - Raised $1M for Zimbali Networks, backed by Techstars, Visa, Hedera</span>
+                            </li>
+                        </ul>
+                        <div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.03)); padding: 12px 15px; border-radius: 10px; border-left: 3px solid var(--primary);">
+                            <p style="font-style: italic; color: var(--text-dark); line-height: 1.3; font-size: 0.875rem; margin: 0;">
+                                \"I've lived 20 years in infrastructure. Every datacenter I've worked with has the same problem: massive inefficiency and waste. Sirsi fixes this.\"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Traction & Partnerships -->
+        <div class="slide">
+            <div class="slide-content" style="padding-top: 50px;">
+                <div class="text-center">
+                    <h2>Partnerships & Momentum</h2>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1100px; margin: 0 auto;">
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 10px; font-size: 1.3rem;\">Infrastructure Partnerships</h3>
+                        <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.05), rgba(0, 255, 136, 0.03)); padding: 20px;\">
+                            <h4 style="margin-bottom: 15px; font-size: 1.15rem; text-align: center; font-weight: 600;\">$1.5M Unlocks Strategic Support</h4>
+                            
+                            <div style="display: grid; gap: 12px;">
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 14px; background: white; border-radius: 10px; border: 1px solid rgba(0, 211, 127, 0.15); box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                                    <i class="fab fa-aws" style="font-size: 32px; color: #FF9900; min-width: 32px;\"></i>
+                                    <div>
+                                        <h5 style="margin: 0; font-size: 1rem; font-weight: 700;\">AWS</h5>
+                                        <p style="margin: 2px 0 0; color: var(--text-light); font-size: 0.8rem;\">Credits, technical support, optimization integrations</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 14px; background: white; border-radius: 10px; border: 1px solid rgba(0, 211, 127, 0.15); box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                                    <i class="fas fa-microchip" style="font-size: 32px; color: #76B900; min-width: 32px;\"></i>
+                                    <div>
+                                        <h5 style="margin: 0; font-size: 1rem; font-weight: 700;\">NVIDIA</h5>
+                                        <p style="margin: 2px 0 0; color: var(--text-light); font-size: 0.8rem;\">GPU optimization, infrastructure partnerships</p>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 14px; background: white; border-radius: 10px; border: 1px solid rgba(0, 211, 127, 0.15); box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                                    <span style="font-size: 32px; color: #8D5FD3; font-weight: 700; min-width: 32px; text-align: center; line-height: 1;\">Ħ</span>
+                                    <div>
+                                        <h5 style="margin: 0; font-size: 1rem; font-weight: 700;\">Hedera</h5>
+                                        <p style="margin: 2px 0 0; color: var(--text-light); font-size: 0.8rem;\">Distributed infrastructure optimization</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 10px; font-size: 1.3rem;\">Market Traction</h3>
+                        <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.05), rgba(0, 255, 136, 0.03)); padding: 20px;\">
+                            <div style="display: grid; gap: 12px;\">
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 14px; background: white; border-radius: 10px; border: 1px solid rgba(0, 211, 127, 0.15); box-shadow: 0 2px 8px rgba(0,0,0,0.04);\">
+                                    <i class="fas fa-users\" style=\"font-size: 32px; color: var(--primary); min-width: 32px;\"></i>
+                                    <div>
+                                        <h5 style=\"margin: 0; font-size: 1rem; font-weight: 700;\">3 Datacenters in Pipeline</h5>
+                                        <p style=\"margin: 2px 0 0; color: var(--text-light); font-size: 0.8rem;\">Regional edge operators + co-location partners</p>
+                                    </div>
+                                </div>
+                                
+                                <div style=\"display: flex; align-items: center; gap: 12px; padding: 14px; background: white; border-radius: 10px; border: 1px solid rgba(0, 211, 127, 0.15); box-shadow: 0 2px 8px rgba(0,0,0,0.04);\">
+                                    <i class=\"fas fa-file-contract\" style=\"font-size: 32px; color: var(--primary); min-width: 32px;\"></i>
+                                    <div>
+                                        <h5 style=\"margin: 0; font-size: 1rem; font-weight: 700;\">3 Patents Pending</h5>
+                                        <p style=\"margin: 2px 0 0; color: var(--text-light); font-size: 0.8rem;\">AI optimization architecture & workload placement</p>
+                                    </div>
+                                </div>
+                                
+                                <div style=\"display: flex; align-items: center; gap: 12px; padding: 14px; background: white; border-radius: 10px; border: 1px solid rgba(0, 211, 127, 0.15); box-shadow: 0 2px 8px rgba(0,0,0,0.04);\">
+                                    <i class=\"fas fa-hand-holding-usd\" style=\"font-size: 32px; color: var(--primary); min-width: 32px;\"></i>
+                                    <div>
+                                        <h5 style=\"margin: 0; font-size: 1rem; font-weight: 700;\">$100K Committed</h5>
+                                        <p style=\"margin: 2px 0 0; color: var(--text-light); font-size: 0.8rem;\">Infrastructure-focused investors</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Financials -->
+        <div class="slide">
+            <div class="slide-content">
+                <div class="text-center" style="margin-bottom: 8px;">
+                    <h2 style="margin-bottom: 0;\">Path to $1B+ Valuation</h2>
+                </div>
+                
+                <div style="position: relative; height: 180px; margin: 15px auto; padding: 10px; background: white; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.05); max-width: 1000px;\">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; max-width: 1000px; margin: 0 auto;\">
+                    <div class="card" style="text-align: center; padding: 15px 12px;\">
+                        <p style="color: var(--primary); font-weight: 700; font-size: 0.9rem; margin-bottom: 8px;\">YEAR 1</p>
+                        <p style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 5px;\">$2M</p>
+                        <p style="font-size: 0.8rem; color: var(--text-light);\">Datacenter + SMB pilots</p>
+                        <p style="font-size: 0.7rem; color: var(--text-light); margin-top: 8px;\">Early adoption</p>
+                    </div>
+                    <div class="card" style="text-align: center; padding: 20px 15px;\">
+                        <p style="color: var(--primary); font-weight: 700; font-size: 0.9rem; margin-bottom: 8px;\">YEAR 2</p>
+                        <p style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 5px;\">$8M</p>
+                        <p style="font-size: 0.8rem; color: var(--text-light);\">Datacenter partnerships scale</p>
+                        <p style="font-size: 0.7rem; color: var(--text-light); margin-top: 8px;\">Network effects kick in</p>
+                    </div>
+                    <div class="card" style="text-align: center; padding: 20px 15px;\">
+                        <p style="color: var(--primary); font-weight: 700; font-size: 0.9rem; margin-bottom: 8px;\">YEAR 3</p>
+                        <p style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 5px;\">$18M</p>
+                        <p style="font-size: 0.8rem; color: var(--text-light);\">Enterprise contracts + regional expansion</p>
+                        <p style="font-size: 0.7rem; color: var(--text-light); margin-top: 8px;\">Multi-region deployment</p>
+                    </div>
+                    <div class="card" style="text-align: center; padding: 20px 15px;\">
+                        <p style="color: var(--primary); font-weight: 700; font-size: 0.9rem; margin-bottom: 8px;\">YEAR 4</p>
+                        <p style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 5px;\">$38M</p>
+                        <p style="font-size: 0.8rem; color: var(--text-light);\">Global datacenter footprint</p>
+                        <p style="font-size: 0.7rem; color: var(--text-light); margin-top: 8px;\">Market consolidation</p>
+                    </div>
+                    <div class="card" style="text-align: center; padding: 20px 15px;\">
+                        <p style="color: var(--primary); font-weight: 700; font-size: 0.9rem; margin-bottom: 8px;\">YEAR 5</p>
+                        <p style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 5px;\">$73M</p>
+                        <p style="font-size: 0.8rem; color: var(--text-light);\">Infrastructure standard</p>
+                        <p style="font-size: 0.7rem; color: var(--text-light); margin-top: 8px;\">IPO-ready valuation</p>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.03)); padding: 15px; border-radius: 12px; margin-top: 15px; text-align: center; border: 2px solid rgba(0, 211, 127, 0.2); max-width: 1000px; margin: 15px auto 0;\">
+                    <h3 style="color: var(--primary); font-size: 1.3rem; margin-bottom: 8px;\">$73M ARR × 14x AI SaaS Multiple = $1B+ Valuation</h3>
+                    <p style="color: var(--text-light); font-size: 0.85rem; margin: 0;\">Infrastructure optimization SaaS trades 10-20x multiples. Conservative valuation for founder-led, recurring revenue business.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Patient Capital Deployment -->
+        <div class="slide">
+            <div class="slide-content" style="padding-top: 40px;">
+                <div class="text-center" style="margin-bottom: 2rem;">
+                    <h2>Patient Capital Deployment Opportunity</h2>
+                    <p style="font-size: 1rem; color: var(--text-light); margin: 0.5rem 0 0;\">Sirsi thrives independently. Together, we build infrastructure dominance.</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; max-width: 1100px; margin: 0 auto 2rem;">
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.04), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.2); padding: 1.5rem;\">
+                        <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 0.5rem; font-size: 1.1rem;\">Pre-Seed</h3>
+                        <p style="font-size: 0.9rem; font-weight: 600; color: var(--text-dark); margin: 0 0 1rem;\">$1.5M @ $7M pre-money</p>
+                        <ul style="list-style: none; padding: 0; font-size: 0.9rem; margin: 0 0 1rem;\">
+                            <li style="margin-bottom: 0.5rem;\"><strong style="color: var(--primary);\">Founder keeps:</strong> 82.4%</li>
+                            <li style="margin-bottom: 0.5rem;\"><strong style="color: var(--primary);\">Timeline:</strong> 12-18 months</li>
+                        </ul>
+                        <div style="background: white; padding: 0.75rem; border-radius: 8px; font-size: 0.8rem; color: var(--text-light);\">
+                            Alpha launch, datacenter pilots, market validation
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.04), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.2); padding: 1.5rem;\">
+                        <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 0.5rem; font-size: 1.1rem;\">Seed</h3>
+                        <p style="font-size: 0.9rem; font-weight: 600; color: var(--text-dark); margin: 0 0 1rem;\">$6M @ $16M pre-money</p>
+                        <ul style="list-style: none; padding: 0; font-size: 0.9rem; margin: 0 0 1rem;\">
+                            <li style="margin-bottom: 0.5rem;\"><strong style="color: var(--primary);\">Founder keeps:</strong> 72.7%</li>
+                            <li style="margin-bottom: 0.5rem;\"><strong style="color: var(--primary);\">Timeline:</strong> 12-18 months</li>
+                        </ul>
+                        <div style="background: white; padding: 0.75rem; border-radius: 8px; font-size: 0.8rem; color: var(--text-light);\">
+                            Scale partnerships, multi-region, enterprise GTM
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.04), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.2); padding: 1.5rem;\">
+                        <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 0.5rem; font-size: 1.1rem;\">Series A</h3>
+                        <p style="font-size: 0.9rem; font-weight: 600; color: var(--text-dark); margin: 0 0 1rem;\">$12.5M @ $37.5M pre-money</p>
+                        <ul style="list-style: none; padding: 0; font-size: 0.9rem; margin: 0 0 1rem;\">
+                            <li style="margin-bottom: 0.5rem;\"><strong style="color: var(--primary);\">Founder keeps:</strong> 60%</li>
+                            <li style="margin-bottom: 0.5rem;\"><strong style="color: var(--primary);\">Timeline:</strong> IPO in 3 years</li>
+                        </ul>
+                        <div style="background: white; padding: 0.75rem; border-radius: 8px; font-size: 0.8rem; color: var(--text-light);\">
+                            Global scale, unicorn status, IPO path
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(0, 211, 127, 0.08); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(0, 211, 127, 0.2); max-width: 1100px; margin: 0 auto;\">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; text-align: center;\">
+                        <div>
+                            <h4 style="color: var(--primary); margin: 0 0 0.5rem; font-size: 1.1rem;\">$20M Total</h4>
+                            <p style="color: var(--text-light); font-size: 0.85rem; margin: 0;\">Patient capital deployment</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--primary); margin: 0 0 0.5rem; font-size: 1.1rem;\">Lead Investor Journey</h4>
+                            <p style="color: var(--text-light); font-size: 0.85rem; margin: 0;\">Pre-Seed → Seed → Series A → IPO</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--primary); margin: 0 0 0.5rem; font-size: 1.1rem;\">$1B+ Valuation</h4>
+                            <p style="color: var(--text-light); font-size: 0.85rem; margin: 0;\">5 years • Infrastructure-first</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Partnership Model -->
+        <div class="slide">
+            <div class="slide-content" style="padding-top: 40px;">
+                <div class="text-center" style="margin-bottom: 2rem;">
+                    <h2>Partnership: Patient Capital Meets Infrastructure Vision</h2>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1100px; margin: 0 auto;">
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.04), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.15);\">
+                        <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 1.5rem;\">What We Bring</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0;\">
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;\">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;\"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">Infrastructure Expertise</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">20+ years, $1B+ infrastructure deployed</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;\">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;\"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">Market Traction</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">3 datacenters in pipeline, 3 patents, $100K committed</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem;\">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;\"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">Strategic Partnerships</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">AWS, NVIDIA, Hedera already committed</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.04), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.15);\">
+                        <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 1.5rem;\">What You Gain</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0;\">
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;\">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;\"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">Board Seat & Strategic Guidance</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">Hands-on partnership with quarterly strategic reviews</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;\">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;\"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">Infrastructure Network Leverage</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">Your datacenter relationships accelerate adoption & GTM</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem;\">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 18px; margin-top: 0.25rem; font-size: 0.9rem;\"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem; color: var(--text-dark);\">Long-Term Alignment</p>
+                                    <p style="font-size: 0.85rem; color: var(--text-light); margin: 0;\">No extraction pressure—sustainable infrastructure business</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="background: rgba(0, 211, 127, 0.08); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(0, 211, 127, 0.2); text-align: center; max-width: 1100px; margin: 2rem auto 0;\">
+                    <p style="font-size: 1.1rem; color: var(--text-dark); margin: 0 0 0.5rem; font-weight: 600;\">Sirsi will optimize infrastructure independently.</p>
+                    <p style="font-size: 1rem; color: var(--primary); margin: 0; font-weight: 700;\">Join us to build the infrastructure optimization standard.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Contact -->
+        <div class="slide">
+            <div class="slide-content text-center" style="padding-top: 80px;\">
+                <h1>Let's Build the Infrastructure Future</h1>
+                <div style="margin: 2rem 0;\">
+                    <h3>Cylton Collymore</h3>
+                    <p class="lead">Founder & CEO</p>
+                    <a href="mailto:cylton@sirsi.ai" class="btn btn-primary" style="margin: 2rem 0;\">cylton@sirsi.ai</a>
+                </div>
+            </div>
+        </div>
+
+        </div><!-- End presentation -->
+    </div><!-- End main-content -->
+
+    <!-- Navigation Footer -->
+    <footer class="nav-footer">
+        <nav class="nav">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="nav-counter">
+                <span id="currentSlide">1</span> / <span id="totalSlides">12</span>
+            </span>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </nav>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 12;
+
+        const slideBadges = {
+            1: null,
+            2: 'The Challenge',
+            3: 'The Solution',
+            4: 'Entry Wedge',
+            5: 'Revenue Model',
+            6: 'Market Opportunity',
+            7: 'The Founder',
+            8: 'Traction & Partnerships',
+            9: 'Financials & Path',
+            10: 'Investment Opportunity',
+            11: 'Partnership Model',
+            12: 'Contact'
+        };
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            
+            if (n > totalSlides) currentSlide = totalSlides;
+            if (n < 1) currentSlide = 1;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+            
+            const badgeEl = document.querySelector('.badge-fixed');
+            if (slideBadges[currentSlide]) {
+                badgeEl.textContent = slideBadges[currentSlide];
+                badgeEl.style.opacity = '1';
+                badgeEl.style.visibility = 'visible';
+            } else {
+                badgeEl.style.opacity = '0';
+                badgeEl.style.visibility = 'hidden';
+            }
+            
+            document.getElementById('currentSlide').textContent = currentSlide;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+            
+            const progress = ((currentSlide - 1) / (totalSlides - 1)) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            if(currentSlide === 9) setTimeout(drawChart, 400);
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        function drawChart() {
+            const canvas = document.getElementById('revenueChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Y1', 'Y2', 'Y3', 'Y4', 'Y5'],
+                    datasets: [{
+                        label: 'ARR ($M)',
+                        data: [2, 8, 18, 38, 73],
+                        borderColor: '#00D37F',
+                        backgroundColor: 'rgba(0, 211, 127, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 6,
+                        pointBackgroundColor: '#00D37F',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 80,
+                            ticks: { callback: (v) => '$' + v + 'M' }
+                        }
+                    }
+                }
+            });
+        }
+
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

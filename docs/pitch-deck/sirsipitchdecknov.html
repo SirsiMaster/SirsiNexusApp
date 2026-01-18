@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sirsi - Innovators + Infrastructure</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #00D37F;
+            --primary-dark: #00A865;
+            --text-dark: #0A0E1A;
+            --text-light: #64748B;
+            --danger: #FF3B3B;
+            --bg: #FFFFFF;
+            --bg-light: #F9FAFB;
+            --bg-off-white: #FAFBFC;
+            --border: #E2E8F0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-off-white);
+            color: var(--text-dark);
+            line-height: 1.6;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-size: 18px;
+        }
+        .slide-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--bg-off-white);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .main-content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            padding-top: 60px;
+        }
+        .presentation {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            padding: 20px 10px;
+            padding-top: 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .slide-content {
+            width: 95%;
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 40px;
+        }
+        h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+        h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        p {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+        .lead {
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+        .text-center { text-align: center; }
+        .text-primary { color: var(--primary); }
+        .badge-fixed {
+            padding: 0.5rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: var(--shadow);
+            min-width: 120px;
+            text-align: center;
+        }
+        .card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+        .stat-number {
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        .stat-desc {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+        .nav-footer {
+            background: white;
+            border-top: 2px solid var(--border);
+            padding: 0.75rem;
+            box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            flex-shrink: 0;
+        }
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .nav-btn:hover:not(:disabled) {
+            background: var(--primary);
+            color: white;
+        }
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .nav-counter {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-light);
+            min-width: 60px;
+            text-align: center;
+        }
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            z-index: 1000;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.5s ease;
+        }
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1.5rem;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .stats-grid { grid-template-columns: 1fr; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="slide-header">
+        <div class="badge-fixed" data-slide="1"></div>
+    </div>
+
+    <div class="main-content">
+        <div class="presentation">
+        
+        <!-- SLIDE 1: Hero -->
+        <div class="slide active" style="align-items: center;">
+            <div class="slide-content text-center">
+                <img src="assets/sirsi-logo.png" alt="Sirsi Logo" style="height: 280px; width: auto; margin: 0 auto 50px; display: block;">
+                <h1 style="font-size: 4rem; margin-bottom: 1.5rem;">Innovators <span class="text-primary">+</span> Infrastructure</h1>
+                <p class="lead" style="font-size: 1.5rem;">Build, host, and scale apps—without a team</p>
+                <p class="lead" style="font-size: 1.5rem; color: var(--text-light); margin-top: 0.5rem;">The only platform that handles both app building AND infrastructure</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: Why Now - Perfect Storm -->
+        <div class="slide" style="padding-top: 50px;">
+            <div class="slide-content">
+                <div class="text-center" style="margin-bottom: 3rem;">
+                    <h2 style="font-size: 2.8rem; letter-spacing: -0.02em;">Why Now?</h2>
+                    <p style="font-size: 1.5rem; color: var(--text-light); margin-top: 0.5rem; font-weight: 500;">Three forces converging. One window closing.</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3rem; max-width: 1400px; margin: 0 auto; width: 95%;">
+                    <div style="padding: 2rem 0; border-left: 3px solid var(--primary);">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--text-dark); margin: 0 0 0.75rem 1rem;">AI is Now Table Stakes</h3>
+                        <p style="font-size: 1.3rem; color: var(--text-light); margin: 0 0 0 1rem; line-height: 1.6;">Every company is racing to integrate AI. Those without infrastructure advantage lose.</p>
+                    </div>
+                    <div style="padding: 2rem 0; border-left: 3px solid var(--primary);">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--text-dark); margin: 0 0 0.75rem 1rem;">Infrastructure Costs Exploding</h3>
+                        <p style="font-size: 1.3rem; color: var(--text-light); margin: 0 0 0 1rem; line-height: 1.6;">Cloud bills, GPU scarcity, DevOps talent shortages make scaling prohibitive.</p>
+                    </div>
+                    <div style="padding: 2rem 0; border-left: 3px solid var(--primary);">
+                        <h3 style="font-size: 1.5rem; font-weight: 700; color: var(--text-dark); margin: 0 0 0.75rem 1rem;">Technical Leaders Need Solutions</h3>
+                        <p style="font-size: 1.3rem; color: var(--text-light); margin: 0 0 0 1rem; line-height: 1.6;">CTOs are stuck managing complexity. Finance needs cost control. Both need relief.</p>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                    <p style="font-size: 1.4rem; font-weight: 600; color: var(--primary);">Sirsi solves all three. Now.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: Problem - The Infrastructure Dilemma -->
+        <div class="slide" style="padding-top: 60px;">
+            <div class="slide-content">
+                <div class="text-center" style="margin-bottom: 3rem;">
+                    <h2 style="font-size: 2.8rem; letter-spacing: -0.02em;">The Infrastructure Dilemma</h2>
+                    <p style="font-size: 1.5rem; color: var(--text-light); margin-top: 0.5rem;">You own the technical stack. You own the budget. Pick one.</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.5rem; max-width: 1400px; margin: 0 auto; width: 95%;">
+                    <div style="border: 1px solid var(--border); padding: 2rem; background: var(--bg);">
+                        <h3 style="font-size: 1.4rem; font-weight: 700; color: var(--text-dark); margin: 0 0 1.5rem; text-align: center; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.1rem;">No-Code: Fast</h3>
+                        <div style="display: grid; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div style="padding: 1rem; background: var(--bg-light); border-left: 2px solid var(--primary); border-radius: 4px;">
+                                <div style="font-weight: 700; color: var(--primary); margin-bottom: 0.25rem;">✓ Deploy in days</div>
+                                <p style="font-size: 1.1rem; color: var(--text-light); margin: 0;">Zero DevOps overhead</p>
+                            </div>
+                            <div style="padding: 1rem; background: #fff3f3; border-left: 2px solid #EF4444; border-radius: 4px;">
+                                <div style="font-weight: 700; color: #EF4444; margin-bottom: 0.25rem;">✕ Vendor lock-in</div>
+                                <p style="font-size: 1.1rem; color: var(--text-light); margin: 0;">Can't migrate. Limited control.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="border: 1px solid var(--border); padding: 2rem; background: var(--bg);">
+                        <h3 style="font-size: 1.4rem; font-weight: 700; color: var(--text-dark); margin: 0 0 1.5rem; text-align: center; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.1rem;">Open Source: Flexible</h3>
+                        <div style="display: grid; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div style="padding: 1rem; background: var(--bg-light); border-left: 2px solid var(--primary); border-radius: 4px;">
+                                <div style="font-weight: 700; color: var(--primary); margin-bottom: 0.25rem;">✓ Any cloud, any way</div>
+                                <p style="font-size: 1.1rem; color: var(--text-light); margin: 0;">Full flexibility</p>
+                            </div>
+                            <div style="padding: 1rem; background: #fff3f3; border-left: 2px solid #EF4444; border-radius: 4px;">
+                                <div style="font-weight: 700; color: #EF4444; margin-bottom: 0.25rem;">✕ $250K/year team</div>
+                                <p style="font-size: 1.1rem; color: var(--text-light); margin: 0;">6+ months to deploy</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="border: 1px solid var(--border); padding: 2rem; background: var(--bg);">
+                        <h3 style="font-size: 1.4rem; font-weight: 700; color: var(--text-dark); margin: 0 0 1.5rem; text-align: center; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.1rem;">DIY: Internal</h3>
+                        <div style="display: grid; gap: 1rem; margin-bottom: 1.5rem;">
+                            <div style="padding: 1rem; background: #fff3f3; border-left: 2px solid #EF4444; border-radius: 4px;">
+                                <div style="font-weight: 700; color: #EF4444; margin-bottom: 0.25rem;">✕ 6-12 month build</div>
+                                <p style="font-size: 1.1rem; color: var(--text-light); margin: 0;">Manual setup & maintenance</p>
+                            </div>
+                            <div style="padding: 1rem; background: #fff3f3; border-left: 2px solid #EF4444; border-radius: 4px;">
+                                <div style="font-weight: 700; color: #EF4444; margin-bottom: 0.25rem;">✕ You become DevOps</div>
+                                <p style="font-size: 1.1rem; color: var(--text-light); margin: 0;">Your best engineer, trapped</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                    <p style="font-size: 1.5rem; font-weight: 600; color: var(--text-dark);">None of these work.</p>
+                    <p style="font-size: 1.4rem; font-weight: 600; color: var(--primary); margin-top: 0.5rem;">Until now.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: Solution - The Way Out -->
+        <div class="slide" style="padding-top: 50px;">
+            <div class="slide-content">
+                <div class="text-center" style="margin-bottom: 2rem;">
+                    <h2 style="font-size: 2.6rem; margin-bottom: 0.75rem;">Sirsi: The Third Way</h2>
+                    <p style="font-size: 1.5rem; color: var(--primary); font-weight: 600;">Speed of Lovable. Flexibility of Terraform. Cost of neither.</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; max-width: 1400px; margin: 0 auto 2rem; width: 95%;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 3.5rem; font-weight: 900; color: var(--primary); margin-bottom: 0.5rem;">3 Months</div>
+                        <p style="font-size: 1.35rem; color: var(--text-light); margin: 0;">Build → Deploy → Live</p>
+                    </div>
+                    <div style="text-align: center; border-left: 2px solid rgba(0,211,127,0.2); border-right: 2px solid rgba(0,211,127,0.2); padding: 0 2rem;">
+                        <div style="font-size: 3.5rem; font-weight: 900; color: var(--primary); margin-bottom: 0.5rem;">$9.5K</div>
+                        <p style="font-size: 1.35rem; color: var(--text-light); margin: 0;">Cost per customer (vs. $55K)</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 3.5rem; font-weight: 900; color: var(--primary); margin-bottom: 0.5rem;">1</div>
+                        <p style="font-size: 1.35rem; color: var(--text-light); margin: 0;">Developer needed</p>
+                    </div>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.03)); padding: 1.5rem; border-radius: 12px; border: 2px solid rgba(0, 211, 127, 0.3); max-width: 1200px; margin: 0 auto; width: 95%;">
+                    <h3 style="color: var(--primary); font-size: 1.4rem; font-weight: 700; margin: 0 0 1rem; text-align: center;">How We Do It Differently</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;">
+                        <div>
+                            <h4 style="font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin: 0 0 0.5rem;">AI Understands Intent</h4>
+                            <p style="font-size: 1.1rem; color: var(--text-light); margin: 0; line-height: 1.5;">Natural language commands. No YAML. Learns your infrastructure.</p>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin: 0 0 0.5rem;">Multi-Agent Orchestration</h4>
+                            <p style="font-size: 1.1rem; color: var(--text-light); margin: 0; line-height: 1.5;">GPUs, storage, networking auto-managed. Zero manual config.</p>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin: 0 0 0.5rem;">Real-Time Query Engine</h4>
+                            <p style="font-size: 1.1rem; color: var(--text-light); margin: 0; line-height: 1.5;">Query infrastructure as a database. Predict costs. Auto-scale.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center" style="margin-top: 2rem;">
+                    <p style="font-size: 1.3rem; font-style: italic; color: var(--text-light); max-width: 700px; margin: 0 auto;">
+                        "We deployed our AI infrastructure in 12 weeks with one developer. That should have taken 6 months and a $250K team."<br>
+                        <strong style="color: var(--primary); font-weight: 700;">— Assiduous Realty Founder (Live Customer)</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: The 3 Patents (The Moat) -->
+        <div class="slide" style="padding-top: 50px;">
+            <div class="slide-content">
+                <div class="text-center" style="margin-bottom: 1.5rem;">
+                    <h2 style="font-size: 2.5rem;">3 Patents. One Insight.</h2>
+                    <p style="font-size: 1.4rem; color: var(--text-light);">Every competitor is missing this combination</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; max-width: 1400px; margin: 0 auto; width: 95%;">
+                    <div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.3); padding: 1.25rem; display: flex; flex-direction: column; border-radius: 8px;">
+                        <h3 style="color: var(--primary); margin: 0 0 0.75rem; font-size: 1.2rem; font-weight: 700;">Hedera LLM + Knowledge Graph</h3>
+                        <p style="font-size: 1.1rem; color: var(--text-light); margin: 0 0 1rem; line-height: 1.5; flex-grow: 1;">Natural language understands YOUR infrastructure. Learns from deployments. Gets smarter with scale.</p>
+                        <div style="background: white; padding: 0.75rem; border-radius: 6px; border-left: 3px solid var(--primary); font-size: 1rem; color: var(--text-dark);">
+                            <strong>Why:</strong> Terraform = 10K lines of code. Sirsi = intent.
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.3); padding: 1.25rem; display: flex; flex-direction: column; border-radius: 8px;">
+                        <h3 style="color: var(--primary); margin: 0 0 0.75rem; font-size: 1.2rem; font-weight: 700;">NebuLang Agent Protocol</h3>
+                        <p style="font-size: 1.1rem; color: var(--text-light); margin: 0 0 1rem; line-height: 1.5; flex-grow: 1;">Multi-agent coordination across clouds. Orchestrates GPUs, storage, networking. No YAML. Pure AI.</p>
+                        <div style="background: white; padding: 0.75rem; border-radius: 6px; border-left: 3px solid var(--primary); font-size: 1rem; color: var(--text-dark);">
+                            <strong>Why:</strong> Kubernetes = manual. NebuLang = auto-optimized.
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.3); padding: 1.25rem; display: flex; flex-direction: column; border-radius: 8px;">
+                        <h3 style="color: var(--primary); margin: 0 0 0.75rem; font-size: 1.2rem; font-weight: 700;">KG Query Language</h3>
+                        <p style="font-size: 1.1rem; color: var(--text-light); margin: 0 0 1rem; line-height: 1.5; flex-grow: 1;">Query infrastructure like a database. Real-time visibility. Predictive scaling. Built-in cost forecasting.</p>
+                        <div style="background: white; padding: 0.75rem; border-radius: 6px; border-left: 3px solid var(--primary); font-size: 1rem; color: var(--text-dark);">
+                            <strong>Why:</strong> CloudWatch = reactive. KG = predictive.
+                        </div>
+                    </div>
+                </div>
+                <div style="background: rgba(0, 211, 127, 0.08); padding: 1.5rem; border-radius: 12px; margin-top: 2rem; border: 1px solid rgba(0, 211, 127, 0.2); max-width: 1050px; margin-left: auto; margin-right: auto;">
+                    <p style="font-size: 1.3rem; color: var(--text-dark); margin: 0; line-height: 1.6;">
+                        <strong style="color: var(--primary);">The combination is defensible.</strong> Competitors have pieces. None connect LLM understanding → multi-agent orchestration → real-time query. This is why Assiduous deploys in 3 months with one developer.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: Why Sirsi Wins (Competitive Advantage) -->
+        <div class="slide" style="padding-top: 40px;">
+            <div class="slide-content">
+                <div class="text-center" style="margin-bottom: 1.5rem;">
+                    <h2 style="font-size: 2.25rem;">The Competitive Moat</h2>
+                    <p style="font-size: 1.3rem; color: var(--text-light);">Why competitors can't copy what we do</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 2rem; max-width: 1400px; margin: 0 auto 1.5rem; width: 95%;">
+                    <div style="background: rgba(255,255,255,0.6); border-radius: 8px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid rgba(59,130,246,0.15); text-align: center;">
+                        <div style="font-size: 1.55rem; text-transform: uppercase; color: #3B82F6; font-weight: 700; margin-bottom: 0.75rem;">Lovable</div>
+                        <h3 style="font-size: 1.45rem; font-weight: 700; margin: 0 0 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Build Only</h3>
+                        <div style="font-size: 1.4rem; color: var(--text-light);">
+                            <div style="margin-bottom: 0.5rem;"><strong>Missing:</strong></div>
+                            <div>Infrastructure</div>
+                            <div>Optimization</div>
+                            <div>DevOps</div>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.6); border-radius: 8px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid rgba(239,68,68,0.15); text-align: center;">
+                        <div style="font-size: 1.55rem; text-transform: uppercase; color: #EF4444; font-weight: 700; margin-bottom: 0.75rem;">Terraform</div>
+                        <h3 style="font-size: 1.45rem; font-weight: 700; margin: 0 0 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Deploy Only</h3>
+                        <div style="font-size: 1.4rem; color: var(--text-light);">
+                            <div style="margin-bottom: 0.5rem;"><strong>Missing:</strong></div>
+                            <div>App building</div>
+                            <div>AI reasoning</div>
+                            <div>Auto-optimization</div>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.6); border-radius: 8px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid rgba(245,158,11,0.15); text-align: center;">
+                        <div style="font-size: 1.55rem; text-transform: uppercase; color: #F59E0B; font-weight: 700; margin-bottom: 0.75rem;">AWS/Azure</div>
+                        <h3 style="font-size: 1.45rem; font-weight: 700; margin: 0 0 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Optimize Only</h3>
+                        <div style="font-size: 1.4rem; color: var(--text-light);">
+                            <div style="margin-bottom: 0.5rem;"><strong>Missing:</strong></div>
+                            <div>App building</div>
+                            <div>Deployment</div>
+                            <div>Cross-cloud</div>
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.03)); border-radius: 8px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,211,127,0.15); border: 2px solid rgba(0,211,127,0.3); text-align: center;">
+                        <div style="font-size: 1.55rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 0.75rem;">Sirsi</div>
+                        <h3 style="font-size: 1.55rem; font-weight: 700; margin: 0 0 0.75rem; color: var(--primary);">End-to-End</h3>
+                        <div style="font-size: 1.4rem; color: var(--text-dark);">
+                            <div style="margin-bottom: 0.5rem;"><strong style="color: var(--primary);">Complete:</strong></div>
+                            <div>✓ Build</div>
+                            <div>✓ Deploy</div>
+                            <div>✓ Optimize</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: white; border: 2px solid rgba(0,211,127,0.3); border-radius: 12px; padding: 2rem; max-width: 1400px; margin: 0 auto; width: 95%;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <div style="font-size: 1.4rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem;">Speed to Value</div>
+                            <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-dark);">3 Months</div>
+                            <p style="font-size: 1.4rem; color: var(--text-light); margin: 0.5rem 0 0;">vs. 6+ months (traditional)</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.4rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem;">Cost Per Customer</div>
+                            <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-dark);">$9.5K</div>
+                            <p style="font-size: 1.4rem; color: var(--text-light); margin: 0.5rem 0 0;">vs. $55K (traditional)</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.4rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 0.5rem;">Team Required</div>
+                            <div style="font-size: 1.5rem; font-weight: 800; color: var(--text-dark);">1 Developer</div>
+                            <p style="font-size: 1.4rem; color: var(--text-light); margin: 0.5rem 0 0;">vs. 3-5 person team</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: The Journey (Only Sirsi Completes It) - HIDDEN FOR 12-SLIDE DECK -->
+        <div class="slide" style="padding-top: 40px; display: none;">
+            <div class="slide-content">
+                <div class="text-center" style="margin-bottom: 2rem;">
+                    <h2 style="font-size: 2.6rem; margin-bottom: 0.5rem;">Only Sirsi Completes the Journey</h2>
+                    <p style="font-size: 1.4rem; color: var(--text-light);">From idea to production—without switching tools</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.5rem; max-width: 1400px; margin: 0 auto 2rem; width: 95%;">
+                    <div style="background: rgba(255,255,255,0.6); border-radius: 8px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid rgba(59,130,246,0.15);">
+                        <div style="text-align: center; margin-bottom: 1.5rem;">
+                            <div style="font-size: 1.55rem; text-transform: uppercase; color: #64748B; font-weight: 700; margin-bottom: 0.75rem;">App Builders</div>
+                            <h3 style="font-size: 1.55rem; font-weight: 700; margin: 0;">Lovable • Cursor</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: #10B981; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <span style="color: white; font-size: 1.6rem; font-weight: 700;">✓</span>
+                                </div>
+                                <span style="font-size: 1.3rem;">Build apps</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: #E5E7EB; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <span style="color: #9CA3AF; font-size: 1.6rem;">✕</span>
+                                </div>
+                                <span style="font-size: 1.3rem; color: var(--text-light);">Deploy infrastructure</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: #E5E7EB; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <span style="color: #9CA3AF; font-size: 1.6rem;">✕</span>
+                                </div>
+                                <span style="font-size: 1.3rem; color: var(--text-light);">Auto-optimize</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.6); border-radius: 8px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid rgba(239,68,68,0.15);">
+                        <div style="text-align: center; margin-bottom: 1.5rem;">
+                            <div style="font-size: 1.55rem; text-transform: uppercase; color: #64748B; font-weight: 700; margin-bottom: 0.75rem;">Infrastructure</div>
+                            <h3 style="font-size: 1.55rem; font-weight: 700; margin: 0;">Terraform • Pulumi</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: #E5E7EB; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <span style="color: #9CA3AF; font-size: 1.6rem;">✕</span>
+                                </div>
+                                <span style="font-size: 1.3rem; color: var(--text-light);">Build apps</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: #10B981; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <span style="color: white; font-size: 1.6rem; font-weight: 700;">✓</span>
+                                </div>
+                                <span style="font-size: 1.3rem;">Deploy infrastructure</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: #E5E7EB; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <span style="color: #9CA3AF; font-size: 1.6rem;">✕</span>
+                                </div>
+                                <span style="font-size: 1.3rem; color: var(--text-light);">Auto-optimize</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.03)); border-radius: 8px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,211,127,0.15); border: 2px solid rgba(0,211,127,0.3);">
+                        <div style="text-align: center; margin-bottom: 1.5rem;">
+                            <div style="font-size: 1.55rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 0.75rem;">Complete Solution</div>
+                            <h3 style="font-size: 1.8rem; font-weight: 700; color: var(--primary); margin: 0;">Sirsi</h3>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,211,127,0.3);">
+                                    <span style="color: white; font-size: 1.6rem; font-weight: 700;">✓</span>
+                                </div>
+                                <span style="font-size: 1.3rem; font-weight: 600;">Build apps</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,211,127,0.3);">
+                                    <span style="color: white; font-size: 1.6rem; font-weight: 700;">✓</span>
+                                </div>
+                                <span style="font-size: 1.3rem; font-weight: 600;">Deploy infrastructure</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,211,127,0.3);">
+                                    <span style="color: white; font-size: 1.6rem; font-weight: 700;">✓</span>
+                                </div>
+                                <span style="font-size: 1.3rem; font-weight: 600;">Auto-optimize (ongoing revenue)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="display: inline-block; background: rgba(0,211,127,0.08); padding: 1.5rem 3rem; border-radius: 8px; border: 2px solid rgba(0,211,127,0.3);">
+                        <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary); margin: 0;">
+                            One platform. Zero handoffs. Complete solution.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: Unit Economics - Validated by Assiduous -->
+        <div class="slide" style="padding-top: 40px;">
+            <div class="slide-content">
+                <div class="text-center" style="margin-bottom: 1.5rem;">
+                    <h2 style="font-size: 2.5rem;">Unit Economics: Proven by Reality</h2>
+                    <p style="font-size: 1.3rem; color: var(--text-light);"><strong style="color: var(--primary);">Assiduous Realty</strong> validates our model. Path to profitability is clear.</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; max-width: 1400px; margin: 0 auto 1.5rem; width: 95%;">
+                    <div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.03)); border: 2px solid rgba(0, 211, 127, 0.3); border-radius: 8px; padding: 1.25rem; border-left: 3px solid var(--primary);">
+                        <div style="font-size: 1rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 0.75rem; text-align: center; letter-spacing: 0.05em;">Assiduous Live</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid rgba(0, 211, 127, 0.2); margin-bottom: 0.75rem;">
+                            <span style="font-weight: 600; font-size: 1rem;">MRR</span>
+                            <span style="font-size: 1.4rem; font-weight: 800; color: var(--primary);">$30K</span>
+                        </div>
+                        <div style="display: grid; gap: 0.5rem; font-size: 1.05rem;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>LTV/CAC</strong></span>
+                                <span style="color: var(--primary); font-weight: 700;">19.5x</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>CAC Payback</strong></span>
+                                <span style="color: var(--primary); font-weight: 700;">3.2 mo</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Gross Margin</strong></span>
+                                <span style="color: var(--primary); font-weight: 700;">63%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: white; border: 1px solid rgba(0, 211, 127, 0.25); border-radius: 8px; padding: 1.25rem;">
+                        <div style="font-size: 1rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 0.75rem; text-align: center; letter-spacing: 0.05em;">Month 12 Projection</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid rgba(0, 211, 127, 0.2); margin-bottom: 0.75rem;">
+                            <span style="font-weight: 600; font-size: 1rem;">ARR (15 customers)</span>
+                            <span style="font-size: 1.4rem; font-weight: 800; color: var(--primary);">$1.08M</span>
+                        </div>
+                        <div style="display: grid; gap: 0.5rem; font-size: 1.05rem;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Magic Number</strong></span>
+                                <span style="color: var(--primary); font-weight: 700;">0.95</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Net Churn</strong></span>
+                                <span style="color: var(--primary); font-weight: 700;">&lt;2%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Runway</strong></span>
+                                <span style="color: var(--primary); font-weight: 700;">Indefinite</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: white; border: 1px solid rgba(0, 211, 127, 0.25); border-radius: 8px; padding: 1.25rem;">
+                        <div style="font-size: 1rem; text-transform: uppercase; color: var(--primary); font-weight: 700; margin-bottom: 0.75rem; text-align: center; letter-spacing: 0.05em;">Month 18 Projection</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid rgba(0, 211, 127, 0.2); margin-bottom: 0.75rem;">
+                            <span style="font-weight: 600; font-size: 1rem;">ARR (30 customers)</span>
+                            <span style="font-size: 1.4rem; font-weight: 800; color: var(--primary);">$2.16M</span>
+                        </div>
+                        <div style="display: grid; gap: 0.5rem; font-size: 1.05rem;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Rule of 40</strong></span>
+                                <span style="color: var(--primary); font-weight: 700;">115%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Growth Rate</strong></span>
+                                <span style="color: var(--primary); font-weight: 700;">40%</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Margin %</strong></span>
+                                <span style="color: var(--primary); font-weight: 700;">75%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.1), rgba(0, 255, 136, 0.03)); border: 2px solid rgba(0, 211, 127, 0.3); border-radius: 12px; padding: 1.5rem; max-width: 1400px; margin: 0 auto; width: 95%;">
+                    <p style="font-size: 1.3rem; color: var(--text-dark); margin: 0; line-height: 1.6;">
+                        <strong style="color: var(--primary);">The Math:</strong> 19.5x LTV/CAC + 0.95 Magic Number = unicorn-grade efficiency. Rule of 40 (115%) proves profitability at scale. Sirsi proves the model works.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: Market -->
+        <div class="slide" style="padding-top: 40px;">
+            <div class="slide-content text-center">
+                <h2 style="font-size: 3.2rem; margin-bottom: 0.5rem; font-weight: 800;">Massive & Growing Fast</h2>
+                <p style="font-size: 1.5rem; color: var(--text-light); margin-bottom: 3rem;">Sirsi targets a $12B expanding opportunity</p>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; max-width: 1500px; margin: 0 auto; width: 95%;">
+                    <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, rgba(0, 211, 127, 0.04), rgba(0, 255, 136, 0.02)); border-radius: 12px; border: 2px solid rgba(0, 211, 127, 0.15);">
+                        <div style="font-size: 6rem; font-weight: 900; line-height: 1; margin-bottom: 1.5rem; color: var(--primary);">$547B</div>
+                        <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.75rem;">TAM</div>
+                        <div style="font-size: 1.4rem; color: var(--text-light); line-height: 1.4;">Cloud Infrastructure Market</div>
+                    </div>
+                    <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.03)); border-radius: 12px; border: 2px solid rgba(0, 211, 127, 0.25);">
+                        <div style="font-size: 6rem; font-weight: 900; line-height: 1; margin-bottom: 1.5rem; color: var(--primary);">$89B</div>
+                        <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.75rem;">SAM</div>
+                        <div style="font-size: 1.4rem; color: var(--text-light); line-height: 1.4;">Infrastructure Automation</div>
+                    </div>
+                    <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, rgba(0, 211, 127, 0.1), rgba(0, 255, 136, 0.04)); border-radius: 12px; border: 2px solid rgba(0, 211, 127, 0.3);">
+                        <div style="font-size: 6rem; font-weight: 900; line-height: 1; margin-bottom: 1.5rem; color: var(--primary);">$12B</div>
+                        <div style="font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.75rem;">SOM</div>
+                        <div style="font-size: 1.4rem; color: var(--text-light); line-height: 1.4;">AI-Driven Infrastructure</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: Founder -->
+        <div class="slide" style="padding-top: 40px;">
+            <div class="slide-content">
+                <div class="text-center" style="margin-bottom: 10px;">
+                    <h2 style="margin-bottom: 0;">Cylton Collymore</h2>
+                </div>
+                <div class="card" style="max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 200px 1fr; gap: 40px; align-items: flex-start;">
+                    <div style="width: 200px; height: 200px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #00FF88); display: flex; align-items: center; justify-content: center; color: white; font-size: 70px; font-weight: 700; box-shadow: 0 15px 40px rgba(0, 215, 127, 0.3); flex-shrink: 0;">CC</div>
+                    <div>
+                        <p style="color: var(--primary); font-weight: 700; font-size: 1.8rem; margin: 0 0 15px;">Solo Founder, CEO/CTO/CFO</p>
+                        <ul style="list-style: none; padding: 0; display: grid; gap: 12px; margin-bottom: 15px;">
+                            <li style="display: flex; align-items: flex-start; gap: 12px;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 22px; margin-top: 3px; font-size: 1.3rem;"></i>
+                                <span style="font-size: 1.35rem; line-height: 1.4;"><strong>20+ Years DevOps & Infrastructure</strong> - Built & scaled systems for enterprises</span>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 12px;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 22px; margin-top: 3px; font-size: 1.3rem;"></i>
+                                <span style="font-size: 1.35rem; line-height: 1.4;"><strong>MIT xPro Full Stack Developer</strong> (2022-2023) - MERN Stack, AI/ML fundamentals</span>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 12px;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 22px; margin-top: 3px; font-size: 1.3rem;"></i>
+                                <span style="font-size: 1.35rem; line-height: 1.4;"><strong>Cybersecurity Architect</strong> - Led security for travel.state.gov (passport/visa database)</span>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 12px;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); min-width: 22px; margin-top: 3px; font-size: 1.3rem;"></i>
+                                <span style="font-size: 1.35rem; line-height: 1.4;"><strong>2x Founder</strong> - Raised $1M for Zimbali Networks (backed by Techstars, Visa, Hedera)</span>
+                            </li>
+                        </ul>
+                        <div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.03)); padding: 20px 20px; border-radius: 10px; border-left: 4px solid var(--primary);">
+                            <p style="font-style: italic; color: var(--text-dark); line-height: 1.5; font-size: 1.4rem; margin: 0;">
+                                "I've lived the pain of infrastructure complexity at the highest levels. Sirsi is my solution to democratize technology for every entrepreneur."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: Proof of Execution (Traction) -->
+        <div class="slide" style="padding-top: 30px;">
+            <div class="slide-content">
+                <div class="text-center" style="margin-bottom: 1.5rem;">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Proof of Execution</h2>
+                    <p style="font-size: 1.3rem; color: var(--text-light);">MVP validated. Customers paying. Growth accelerating.</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1400px; margin: 0 auto 2rem; width: 95%;">
+                    <div style="background: white; border: 2px solid rgba(0, 211, 127, 0.2); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                        <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">TEDCO Grant</div>
+                        <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-bottom: 0.5rem;">$100K</div>
+                        <div style="font-size: 1.1rem; color: var(--text-dark); font-weight: 600;">MVP + Patents</div>
+                    </div>
+                    <div style="background: white; border: 2px solid rgba(0, 211, 127, 0.2); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                        <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Live Customer</div>
+                        <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-bottom: 0.5rem;">$30K MRR</div>
+                        <div style="font-size: 1.1rem; color: var(--text-dark); font-weight: 600;">Assiduous Realty</div>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1400px; margin: 0 auto; width: 95%;">
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.2rem; font-weight: 700; text-align: center; text-transform: uppercase; letter-spacing: 0.05em;">Core Metrics</h3>
+                        <div style="display: grid; gap: 1rem;">
+                            <div style="background: white; padding: 1.2rem; border-radius: 8px; border-left: 3px solid var(--primary); display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: center;">
+                                <div>
+                                    <div style="font-size: 1rem; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.25rem;">Time to Deploy</div>
+                                    <div style="font-size: 1.5rem; font-weight: 900; color: var(--text-dark);">3 Months</div>
+                                </div>
+                                <div style="text-align: right; font-size: 0.9rem; color: var(--text-light);">vs. 6+ mo traditional</div>
+                            </div>
+                            <div style="background: white; padding: 1.2rem; border-radius: 8px; border-left: 3px solid var(--primary); display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: center;">
+                                <div>
+                                    <div style="font-size: 1rem; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.25rem;">Cost Per Customer</div>
+                                    <div style="font-size: 1.5rem; font-weight: 900; color: var(--text-dark);">$9.5K</div>
+                                </div>
+                                <div style="text-align: right; font-size: 0.9rem; color: var(--text-light);">vs. $55K traditional</div>
+                            </div>
+                            <div style="background: white; padding: 1.2rem; border-radius: 8px; border-left: 3px solid var(--primary); display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: center;">
+                                <div>
+                                    <div style="font-size: 1rem; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.25rem;">Team Size</div>
+                                    <div style="font-size: 1.5rem; font-weight: 900; color: var(--text-dark);">1 Developer</div>
+                                </div>
+                                <div style="text-align: right; font-size: 0.9rem; color: var(--text-light);">vs. 3-5 team</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.2rem; font-weight: 700; text-align: center; text-transform: uppercase; letter-spacing: 0.05em;">Strategic Backing</h3>
+                        <div style="display: grid; gap: 1rem;">
+                            <div style="background: white; padding: 1.2rem; border-radius: 8px; border: 1px solid rgba(0, 211, 127, 0.2); display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center;">
+                                <i class="fab fa-aws" style="font-size: 28px; color: #FF9900; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 1.05rem; color: var(--text-dark);">AWS</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-light);">$65K • Credits + GTM</div>
+                                </div>
+                            </div>
+                            <div style="background: white; padding: 1.2rem; border-radius: 8px; border: 1px solid rgba(0, 211, 127, 0.2); display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center;">
+                                <i class="fas fa-microchip" style="font-size: 28px; color: #76B900; flex-shrink: 0;"></i>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 1.05rem; color: var(--text-dark);">NVIDIA</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-light);">GPU • AI partnership</div>
+                                </div>
+                            </div>
+                            <div style="background: white; padding: 1.2rem; border-radius: 8px; border: 1px solid rgba(0, 211, 127, 0.2); display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: center;">
+                                <span style="font-size: 24px; color: #8D5FD3; font-weight: 700; flex-shrink: 0;">Ħ</span>
+                                <div>
+                                    <div style="font-weight: 700; font-size: 1.05rem; color: var(--text-dark);">Hedera</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-light);">Knowledge graph</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 15: The Ask -->
+        <div class="slide" style="padding-top: 30px;">
+            <div class="slide-content">
+                <div class="text-center" style="margin-bottom: 1.5rem;">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">The Capital Path</h2>
+                    <p style="font-size: 1.3rem; color: var(--text-light);">De-risked execution from MVP to scale</p>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; max-width: 1400px; margin: 0 auto 1.5rem; width: 95%;">
+                    <div style="background: white; border: 2px solid rgba(0, 211, 127, 0.2); border-radius: 10px; padding: 1.25rem;">
+                        <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Phase 1</div>
+                        <div style="font-size: 2rem; font-weight: 900; color: var(--primary); margin-bottom: 0.25rem;">$2.5M</div>
+                        <div style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem;">Pre-Seed</div>
+                        <div style="border-top: 1px solid rgba(0, 211, 127, 0.1); padding-top: 0.75rem;">
+                            <div style="font-size: 0.85rem; color: var(--text-dark); margin-bottom: 0.4rem;"><strong>Focus:</strong> Sales + Product</div>
+                            <div style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">5+ customers<br>$50K MRR<br>12-18 mo</div>
+                        </div>
+                    </div>
+                    <div style="background: white; border: 2px solid rgba(0, 211, 127, 0.3); border-radius: 10px; padding: 1.25rem;">
+                        <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Phase 2</div>
+                        <div style="font-size: 2rem; font-weight: 900; color: var(--primary); margin-bottom: 0.25rem;">$6M</div>
+                        <div style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem;">Seed Round</div>
+                        <div style="border-top: 1px solid rgba(0, 211, 127, 0.1); padding-top: 0.75rem;">
+                            <div style="font-size: 0.85rem; color: var(--text-dark); margin-bottom: 0.4rem;"><strong>Focus:</strong> Enterprise GTM</div>
+                            <div style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">25+ customers<br>$1M ARR<br>12-18 mo</div>
+                        </div>
+                    </div>
+                    <div style="background: white; border: 2px solid rgba(0, 211, 127, 0.2); border-radius: 10px; padding: 1.25rem;">
+                        <div style="font-size: 0.95rem; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Phase 3</div>
+                        <div style="font-size: 2rem; font-weight: 900; color: var(--primary); margin-bottom: 0.25rem;">$12.5M</div>
+                        <div style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.75rem;">Series A</div>
+                        <div style="border-top: 1px solid rgba(0, 211, 127, 0.1); padding-top: 0.75rem;">
+                            <div style="font-size: 0.85rem; color: var(--text-dark); margin-bottom: 0.4rem;"><strong>Focus:</strong> Market Leader</div>
+                            <div style="font-size: 0.85rem; color: var(--text-light); line-height: 1.4;">200+ customers<br>$3M+ ARR<br>→ Unicorn</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.08), rgba(0, 255, 136, 0.03)); border: 1px solid rgba(0, 211, 127, 0.2); border-radius: 12px; padding: 1.5rem; max-width: 1400px; margin: 0 auto; width: 95%;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <div style="font-size: 1rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Total Capital</div>
+                            <div style="font-size: 2.2rem; font-weight: 900; color: var(--text-dark);">$20.5M</div>
+                            <div style="font-size: 1rem; color: var(--text-light); margin-top: 0.25rem;">Over 5 years → $1B+ valuation</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 1rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Your Multiple</div>
+                            <div style="font-size: 2.2rem; font-weight: 900; color: var(--text-dark);">14x</div>
+                            <div style="font-size: 1rem; color: var(--text-light); margin-top: 0.25rem;">De-risked with proven team + MVP</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 16: Partnership -->
+        <div class="slide" style="padding-top: 40px;">
+            <div class="slide-content">
+                <div class="text-center" style="margin-bottom: 2rem;">
+                    <h2>Partnership: Patient Capital Meets Founder Vision</h2>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1100px; margin: 0 auto;">
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.04), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.15);">
+                        <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 1.5rem;">What We Bring</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); margin-top: 0.25rem; font-size: 1.25rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem;">Proven Leadership</p>
+                                    <p style="font-size: 1.15rem; color: var(--text-light); margin: 0;">20+ years DevOps, 2x founder, enterprise execution</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); margin-top: 0.25rem; font-size: 1.25rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem;">Market Traction</p>
+                                    <p style="font-size: 1.15rem; color: var(--text-light); margin: 0;">Live customer, 3 patents, AWS/NVIDIA backing</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); margin-top: 0.25rem; font-size: 1.25rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem;">Strategic Moat</p>
+                                    <p style="font-size: 1.15rem; color: var(--text-light); margin: 0;">3 patents + $65K AWS + NVIDIA = defensible</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card" style="background: linear-gradient(135deg, rgba(0, 211, 127, 0.04), rgba(0, 255, 136, 0.02)); border: 2px solid rgba(0, 211, 127, 0.15);">
+                        <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 1.5rem;">What You Gain</h3>
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); margin-top: 0.25rem; font-size: 1.25rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem;">Board Seat</p>
+                                    <p style="font-size: 1.15rem; color: var(--text-light); margin: 0;">Transparency, quarterly updates, strategic input</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); margin-top: 0.25rem; font-size: 1.25rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem;">Network Leverage</p>
+                                    <p style="font-size: 1.15rem; color: var(--text-light); margin: 0;">Your relationships accelerate GTM and partnerships</p>
+                                </div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <i class="fas fa-check-circle" style="color: var(--primary); margin-top: 0.25rem; font-size: 1.25rem;"></i>
+                                <div>
+                                    <p style="font-weight: 600; margin: 0 0 0.25rem;">Long-Term Alignment</p>
+                                    <p style="font-size: 1.15rem; color: var(--text-light); margin: 0;">No extraction—sustainable growth to unicorn</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="background: rgba(0, 211, 127, 0.08); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(0, 211, 127, 0.2); text-align: center; max-width: 1100px; margin: 2rem auto 0;">
+                    <p style="font-size: 1.55rem; color: var(--text-dark); margin: 0 0 0.5rem; font-weight: 600;">Sirsi will succeed independently.</p>
+                    <p style="font-size: 1.4rem; color: var(--primary); margin: 0; font-weight: 700;">Join us to build something extraordinary.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 17: Let's Connect -->
+        <div class="slide" style="align-items: center;">
+            <div class="slide-content text-center" style="padding-top: 0;">
+                <h1>Let's Build the Future Together</h1>
+                <div style="margin: 2rem 0;">
+                    <h3>Cylton Collymore</h3>
+                    <p class="lead">Founder & CEO</p>
+                    <a href="mailto:cylton@sirsi.ai" class="btn btn-primary" style="margin: 2rem 0; display: inline-block;">cylton@sirsi.ai</a>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <a href="https://sirsi.ai" class="btn btn-outline">
+                        <i class="fas fa-globe"></i> Website
+                    </a>
+                    <a href="https://github.com/SirsiNexus" class="btn btn-outline">
+                        <i class="fab fa-github"></i> GitHub
+                    </a>
+                    <a href="https://linkedin.com/in/cylton" class="btn btn-outline">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        </div><!-- End presentation -->
+    </div><!-- End main-content -->
+
+    <footer class="nav-footer">
+        <nav class="nav">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="nav-counter">
+                <span id="currentSlide">1</span> / <span id="totalSlides">13</span>
+            </span>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </nav>
+    </footer>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 13;
+        const slideBadges = {
+            1: null,
+            2: 'Why Now',
+            3: 'The Problem',
+            4: 'The Solution',
+            5: 'The Patents',
+            6: 'Competitive Moat',
+            7: 'Economics',
+            8: 'Market',
+            9: 'The Founder',
+            10: 'Traction',
+            11: 'The Ask',
+            12: 'Partnership',
+            13: 'Contact'
+        };
+        function showSlide(n) {
+            const slides = Array.from(document.querySelectorAll('.slide')).filter(s => s.style.display !== 'none');
+            if (n > totalSlides) currentSlide = totalSlides;
+            if (n < 1) currentSlide = 1;
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+            const badgeEl = document.querySelector('.badge-fixed');
+            if (slideBadges[currentSlide]) {
+                badgeEl.textContent = slideBadges[currentSlide];
+                badgeEl.style.opacity = '1';
+                badgeEl.style.visibility = 'visible';
+            } else {
+                badgeEl.style.opacity = '0';
+                badgeEl.style.visibility = 'hidden';
+            }
+            document.getElementById('currentSlide').textContent = currentSlide;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+            const progress = ((currentSlide - 1) / (totalSlides - 1)) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+        document.getElementById('totalSlides').textContent = totalSlides;
+        showSlide(1);
+    </script>
+</body>
+</html>

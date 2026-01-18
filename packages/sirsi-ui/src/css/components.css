@@ -1,0 +1,45 @@
+/* Sirsi UI Components */
+
+/* Button */
+.sirsi-btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;border-radius:.5rem;padding:.6rem 1rem;border:1px solid transparent;cursor:pointer;transition:all .2s ease;}
+.sirsi-btn:focus{outline:2px solid rgba(96,163,217,.4);outline-offset:2px}
+.sirsi-btn--primary{background:var(--sirsi-color-primary);color:#fff;border-color:var(--sirsi-color-primary)}
+.sirsi-btn--primary:hover{filter:brightness(.95)}
+.sirsi-btn--secondary{background:#fff;color:#111;border-color:#e5e7eb}
+.sirsi-btn--secondary:hover{background:#f9fafb}
+.sirsi-btn--ghost{background:transparent;color:#111;border-color:transparent}
+.sirsi-btn--ghost:hover{background:#f3f4f6}
+
+.sirsi-btn--sm{padding:.4rem .75rem;font-size:.875rem}
+.sirsi-btn--md{padding:.6rem 1rem;font-size:.95rem}
+.sirsi-btn--lg{padding:.8rem 1.25rem;font-size:1rem}
+
+/* Card */
+.sirsi-card{background:#fff;border:1px solid #e5e7eb;border-radius:.75rem;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:box-shadow .2s ease, transform .2s ease}
+.sirsi-card--elevated{box-shadow:var(--sirsi-shadow-card)}
+.sirsi-card:hover{transform:translateY(-2px);box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)}
+
+/* Badge */
+.sirsi-badge{display:inline-flex;align-items:center;gap:.35rem;font-weight:600;border-radius:999px;padding:.25rem .6rem;font-size:.75rem;border:1px solid transparent}
+.sirsi-badge--primary{background:rgba(96,163,217,.12);color:#0B1F41;border-color:rgba(96,163,217,.25)}
+.sirsi-badge--success{background:rgba(5,150,105,.12);color:#065f46;border-color:rgba(5,150,105,.25)}
+.sirsi-badge--warning{background:rgba(255,217,64,.18);color:#7c5d00;border-color:rgba(255,217,64,.35)}
+
+/* Input */
+.sirsi-input{width:100%;padding:.65rem .8rem;border:1px solid #d1d5db;border-radius:.5rem;font-size:.95rem;transition:border-color .15s ease, box-shadow .15s ease}
+.sirsi-input:focus{outline:none;border-color:var(--sirsi-color-primary);box-shadow:0 0 0 3px rgba(96,163,217,.15)}
+
+/* Modal */
+.sirsi-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:1000}
+.sirsi-modal-backdrop.active{display:flex}
+.sirsi-modal{background:#fff;border-radius:.75rem;box-shadow:var(--sirsi-shadow-card);max-width:520px;width:92%;padding:1.25rem;border:1px solid #e5e7eb}
+.sirsi-modal__header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem}
+.sirsi-modal__title{font-weight:700;font-size:1.125rem}
+.sirsi-modal__close{background:none;border:none;font-size:1.25rem;cursor:pointer;color:#6b7280}
+
+/* Tabs */
+.sirsi-tabs{display:flex;gap:.25rem;border-bottom:1px solid #e5e7eb}
+.sirsi-tab{padding:.6rem .9rem;border:none;background:transparent;cursor:pointer;color:#6b7280;border-bottom:2px solid transparent;font-weight:600}
+.sirsi-tab.active{color:#0B1F41;border-bottom-color:var(--sirsi-color-primary)}
+.sirsi-tabpanel{display:none;padding:1rem 0}
+.sirsi-tabpanel.active{display:block}

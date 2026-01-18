@@ -1,0 +1,10 @@
+@import "./tokens.css";
+@import "./components.css";
+
+/* minimal base styles for preview */
+:root { color-scheme: light dark; }
+
+/* helpers */
+.sirsi-card { box-shadow: var(--sirsi-shadow-card); border-radius: var(--sirsi-radius-md); }
+.sirsi-btn { background: var(--sirsi-color-primary); color: #fff; padding: .625rem 1rem; border-radius: .5rem; }
+
