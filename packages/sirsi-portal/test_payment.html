@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayPal Integration Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- PayPal SDK - LIVE TESTING -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ASUI7q4yAs6anh26J6T_7hLyX0UwUbVWQS-8lgngn9z0W6VX4zrt2y7Q_auiXBAUrzxd1ibBrz22KDAr&currency=USD&components=buttons,marks,funding-eligibility&enable-funding=venmo,paylater,card&disable-funding=credit"></script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 p-8">
+    <div class="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
+        <h1 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">PayPal Integration Test</h1>
+        
+        <!-- Test Status -->
+        <div id="test-status" class="mb-8 p-6 bg-blue-50 dark:bg-blue-900/50 rounded-xl">
+            <h2 class="text-xl font-semibold mb-3 text-blue-800 dark:text-blue-200">Test Status</h2>
+            <div id="status-log" class="space-y-2 text-sm text-gray-700 dark:text-gray-300"></div>
+        </div>
+        
+        <!-- Amount Input -->
+        <div class="mb-8">
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Test Amount ($5 minimum)</label>
+            <input type="number" id="test-amount" min="5" max="1000" step="0.01" value="10.00" 
+                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl shadow-sm focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white transition-all">
+        </div>
+        
+        <!-- PayPal Button Container -->
+        <div id="paypal-button-container" class="mb-8"></div>
+        
+        <!-- Available Payment Methods -->
+        <div class="mb-8 p-6 bg-yellow-50 dark:bg-yellow-900/50 rounded-xl">
+            <h3 class="font-semibold mb-3 text-yellow-800 dark:text-yellow-200">Available Payment Methods (via PayPal):</h3>
+            <div id="funding-eligibility" class="grid grid-cols-2 gap-3 text-sm"></div>
+        </div>
+        
+        <!-- Test Results -->
+        <div id="test-results" class="hidden p-6 bg-green-50 dark:bg-green-900/50 rounded-xl">
+            <h3 class="font-semibold text-green-800 dark:text-green-200 mb-3">✓ Payment Test Successful</h3>
+            <div id="transaction-details" class="text-sm text-green-700 dark:text-green-300 space-y-1"></div>
+        </div>
+    </div>
+
+    <script>
+        // Test logging
+        function log(message, type = 'info') {
+            const statusLog = document.getElementById('status-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? 'text-red-600' : type === 'success' ? 'text-green-600' : 'text-blue-600';
+            statusLog.innerHTML += `<div class="${color}">[${timestamp}] ${message}</div>`;
+        }
+        
+        // Initialize tests
+        document.addEventListener('DOMContentLoaded', function() {
+            log('Starting PayPal integration tests...');
+            
+            // Test 1: SDK Loading
+            if (typeof paypal !== 'undefined') {
+                log('✓ PayPal SDK loaded successfully', 'success');
+                testFundingEligibility();
+                initializeTestButton();
+            } else {
+                log('✗ PayPal SDK failed to load', 'error');
+            }
+        });
+        
+        // Test funding eligibility
+        function testFundingEligibility() {
+            const eligibilityDiv = document.getElementById('funding-eligibility');
+            const methods = [
+                { name: 'PayPal', key: 'paypal' },
+                { name: 'Venmo', key: 'venmo' },
+                { name: 'Pay Later', key: 'paylater' },
+                { name: 'Card', key: 'card' },
+                { name: 'Credit', key: 'credit' }
+            ];
+            
+            methods.forEach(method => {
+                try {
+                    const eligible = paypal.getFundingSources().includes(method.key);
+                    const status = eligible ? '✓ Available' : '✗ Not Available';
+                    const color = eligible ? 'text-green-600' : 'text-red-600';
+                    eligibilityDiv.innerHTML += `<div class="${color}">${method.name}: ${status}</div>`;
+                    log(`${method.name} funding: ${eligible ? 'Available' : 'Not Available'}`, eligible ? 'success' : 'info');
+                } catch (e) {
+                    eligibilityDiv.innerHTML += `<div class="text-gray-600">${method.name}: Unknown</div>`;
+                }
+            });
+        }
+        
+        // Initialize test button
+        function initializeTestButton() {
+            const amount = document.getElementById('test-amount').value || '10.00';
+            log(`Initializing PayPal button with amount: $${amount}`);
+            
+            try {
+                paypal.Buttons({
+                    createOrder: function(data, actions) {
+                        log('Creating PayPal order...', 'info');
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: parseFloat(amount).toFixed(2)
+                                },
+                                description: 'SirsiNexus Payment Test',
+                                payee: {
+                                    email_address: 'cylton@cylton.com'
+                                }
+                            }]
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        log('Payment approved, capturing transaction...', 'success');
+                        return actions.order.capture().then(function(details) {
+                            log('✓ Payment captured successfully!', 'success');
+                            showTestResults(details);
+                        });
+                    },
+                    onError: function(err) {
+                        log('✗ Payment error: ' + JSON.stringify(err), 'error');
+                        console.error('PayPal Error:', err);
+                    },
+                    onCancel: function(data) {
+                        log('Payment cancelled by user', 'info');
+                    },
+                    style: {
+                        layout: 'vertical',
+                        color: 'blue',
+                        shape: 'pill',
+                        label: 'paypal',
+                        height: 50
+                    }
+                }).render('#paypal-button-container');
+                
+                log('✓ PayPal button rendered successfully', 'success');
+                
+            } catch (error) {
+                log('✗ Error rendering PayPal button: ' + error.message, 'error');
+            }
+        }
+        
+        // Show test results
+        function showTestResults(details) {
+            const resultsDiv = document.getElementById('test-results');
+            const detailsDiv = document.getElementById('transaction-details');
+            
+            resultsDiv.classList.remove('hidden');
+            detailsDiv.innerHTML = `
+                <strong>Transaction ID:</strong> ${details.id}<br>
+                <strong>Status:</strong> ${details.status}<br>
+                <strong>Payer Name:</strong> ${details.payer.name?.given_name || 'N/A'} ${details.payer.name?.surname || ''}<br>
+                <strong>Email:</strong> ${details.payer.email_address}<br>
+                <strong>Amount:</strong> $${details.purchase_units[0].amount.value}<br>
+                <strong>Time:</strong> ${new Date().toLocaleString()}
+            `;
+        }
+        
+        // Update button when amount changes
+        document.getElementById('test-amount').addEventListener('input', function() {
+            document.getElementById('paypal-button-container').innerHTML = '';
+            setTimeout(initializeTestButton, 500);
+        });
+    </script>
+</body>
+</html>

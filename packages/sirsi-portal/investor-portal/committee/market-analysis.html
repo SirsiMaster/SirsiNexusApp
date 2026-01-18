@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>SirsiNexus - Market Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Authentication check - redirect if not authenticated
+      (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+          window.location.href = '/investor-login.html';
+          return;
+        }
+        
+        try {
+          const authData = JSON.parse(auth);
+          const loginTime = new Date(authData.loginTime);
+          const now = new Date();
+          const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+          
+          // Check if session expired (24 hours)
+          if (hoursSinceLogin > 24) {
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '/investor-login.html';
+            return;
+          }
+          
+          console.log('✅ Authentication verified for committee access:', authData.id);
+        } catch (error) {
+          console.error('❌ Authentication error:', error);
+          sessionStorage.removeItem('investorAuth');
+          window.location.href = '/investor-login.html';
+          return;
+        }
+      })();
+    </script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              emerald: {
+                600: '#059669',
+                700: '#047857',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <script>
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          if (persistedColorPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          if (mql.matches) {
+            return 'dark';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/shared.css">
+    
+    <!-- Cache buster: v1752628042 WORKFLOW TEST -->
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <style>
+      /* Professional Investment-Ready Styling */
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: #1a1a1a;
+        background-color: #ffffff;
+        overflow-x: hidden;
+      }
+      
+      .dark body {
+        background-color: #0f172a;
+        color: #e2e8f0;
+      }
+      
+      .print-button {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        color: white;
+        border: none;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(5, 150, 105, 0.3);
+        transition: all 0.3s ease;
+      }
+      
+      .print-button:hover {
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(5, 150, 105, 0.4);
+      }
+      
+      /* Pagination styles */
+      .page-slide {
+        display: none;
+        opacity: 0;
+        transform: translateX(20px);
+        transition: all 0.3s ease;
+      }
+      
+      .page-slide.active {
+        display: block;
+        opacity: 1;
+        transform: translateX(0);
+      }
+      
+    </style>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+<!-- Navigation and Layout Header -->
+<div id="unified-header"></div>
+
+<!-- Page Scripts -->
+<script src="/components/universal-navigation.js"></script>
+<script src="/components/navigation-customizer.js"></script>
+<script src="/assets/js/shared-theme-toggle.js"></script>
+
+<!-- Authentication Check -->
+<script>
+    (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+            window.location.href = '/investor-login.html';
+            return;
+        }
+        
+        try {
+            const authData = JSON.parse(auth);
+            const loginTime = new Date(authData.loginTime);
+            const now = new Date();
+            const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+            
+            if (hoursSinceLogin > 24) {
+                sessionStorage.removeItem('investorAuth');
+                window.location.href = '/investor-login.html';
+                return;
+            }
+        } catch (error) {
+            console.error('Authentication error:', error);
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '/investor-login.html';
+            return;
+        }
+    })();
+</script>
+
+<!-- Page-specific customization -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Get the current page from URL
+        const path = window.location.pathname;
+        const pageName = path.split('/').pop().replace('.html', '');
+        
+        // Add committee menu if we're in the committee section
+        if (path.includes('/committee/')) {
+            navCustomizer.addCommitteeMenu(pageName);
+        }
+        
+        // Add action buttons based on page
+        switch(pageName) {
+            case 'data-room':
+                navCustomizer.addActionButtons([{
+                    label: 'Upload Document',
+                    className: 'bg-emerald-600 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-700 transition-colors',
+                    onClick: () => showUploadModal()
+                }]);
+                break;
+            case 'kpi-metrics':
+                navCustomizer.addActionButtons([{
+                    label: 'Export Report',
+                    className: 'bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors',
+                    onClick: () => exportMetrics()
+                }]);
+                break;
+        }
+    });
+</script>
+
+    <!-- Header -->
+    <div id="unified-header"></div>
+    <!-- Sidebar Navigation -->
+    <aside class="fixed left-0 top-16 bottom-0 w-52 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 overflow-y-auto hidden lg:block">
+        <div class="p-4">
+            <div class="space-y-1">
+                <a href="index.html" class="flex items-center px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="data-room.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Data Room
+                </a>
+                <a href="kpi-unit-metrics.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                    </svg>
+                    KPI Metrics
+                </a>
+                <a href="committee/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                    Committee
+                </a>
+            </div>
+            
+            <div class="mt-8">
+                <h3 class="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Resources</h3>
+                <div class="mt-2 space-y-1">
+                    <a href="#" class="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                        <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                        Download Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile menu button -->
+    <button class="lg:hidden fixed bottom-4 right-4 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg" onclick="toggleMobileSidebar()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
+
+    
+    <!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900 dark:to-emerald-800 py-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+                    Market Analysis & <span class="text-emerald-600">Opportunity</span>
+                </h1>
+                <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
+                    Data-driven analysis of the cloud infrastructure market through 2025-2030, with conservative growth projections and QSBS investment benefits.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <span class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-lg border border-slate-200 dark:border-slate-700">
+                        <svg class="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        Market Research
+                    </span>
+                    <span class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-lg border border-slate-200 dark:border-slate-700">
+                        <svg class="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 9l2 2 4-4"></path>
+                        </svg>
+                        July 2025
+                    </span>
+                    <span class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-lg border border-slate-200 dark:border-slate-700">
+                        <svg class="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                        Confidential
+                    </span>
+                </div>
+                <div class="mt-4 flex justify-center">
+                    <button onclick="window.print()" class="inline-flex items-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                        </svg>
+                        Print Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Controls -->
+    <div class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100">Market Analysis</h3>
+                        <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <span id="currentPage">1</span>
+                            <span>/</span>
+                            <span id="totalPages">9</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="hidden md:flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <span>Use</span>
+                            <kbd class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded text-xs">←→</kbd>
+                            <span>or</span>
+                            <kbd class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded text-xs">Tab</kbd>
+                            <span>to navigate</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button id="prevBtn" class="p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" disabled>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <button id="nextBtn" class="p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Container -->
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Page 1: Executive Summary -->
+        <div class="page-slide active" id="page-1">
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-sm min-h-[600px] flex flex-col">
+                <h2 class="text-2xl font-semibold mb-6 text-emerald-600">Executive Summary</h2>
+                <div class="flex-1 space-y-6">
+                    <div class="prose max-w-none">
+                        <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
+                            SirsiNexus represents a paradigm shift in cloud infrastructure management, leveraging advanced AI to fundamentally transform traditional Infrastructure as Code (IaC) approaches. Our breakthrough comes at a critical inflection point: enterprises are hitting a complexity wall with traditional IaC tools like Terraform, Pulumi, and CloudFormation, facing mounting technical debt and skyrocketing operational costs.
+                        </p>
+                        <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
+                            Our AI-first platform doesn't just automate - it thinks, learns, and optimizes. By applying advanced machine learning to infrastructure patterns, we've achieved what traditional IaC vendors claimed was impossible: truly autonomous infrastructure that self-optimizes, self-heals, and continuously improves.
+                        </p>
+                        <p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed">
+                            Operating as a Qualified Small Business Corporation (QSBC), we combine aggressive technological innovation with investor-friendly tax advantages through the enhanced QSBS program. Our conservative growth projections focus on high-margin enterprise customers, with a clear path to capturing 30% of the rapidly growing AI-assisted infrastructure market by 2027.
+                        </p>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-6 mt-8">
+                        <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-lg text-center">
+                            <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Total Market Size</h3>
+                            <p class="text-3xl font-bold text-emerald-600">$48.2B</p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">2025 TAM for AI-Infrastructure</p>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-lg text-center">
+                            <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">AI Infrastructure CAGR</h3>
+                            <p class="text-3xl font-bold text-emerald-600">32.5%</p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Growth Rate 2025-2030</p>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-lg text-center">
+                            <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">SaaS Revenue</h3>
+                            <p class="text-3xl font-bold text-emerald-600">87%</p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Gross Margin (2025)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Competitive Landscape -->
+        <div class="page-slide" id="page-2">
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-sm min-h-[600px] flex flex-col">
+                <h2 class="text-2xl font-semibold mb-6 text-emerald-600">Competitive Landscape Analysis</h2>
+                <div class="flex-1 space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-lg">
+                            <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Traditional IaC Limitations</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <h4 class="font-medium text-emerald-600">HashiCorp (Terraform) - $5.1B</h4>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400">• 76% report maintenance overhead<br>• Manual configuration drives 40% slower deployments<br>• No AI capabilities for optimization</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-emerald-600">Pulumi - $1.8B Valuation</h4>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400">• Requires deep programming expertise<br>• No automated optimization<br>• High learning curve (65% of users)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-lg">
+                            <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">SirsiNexus AI Advantages</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <h4 class="font-medium text-emerald-600">Autonomous Infrastructure</h4>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400">• Self-optimizing infrastructure patterns<br>• Real-time cost optimization (35% savings)<br>• Predictive scaling with 99.99% accuracy</p>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-emerald-600">Enterprise-Grade Platform</h4>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400">• SOC 2 Type II certified<br>• Multi-cloud unified management<br>• 99.99% uptime SLA</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 p-6 rounded-lg">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Strategic Market Position</h3>
+                        <p class="text-slate-600 dark:text-slate-400">
+                            SirsiNexus is uniquely positioned to capture the growing demand for AI-powered infrastructure management. Our platform bridges the gap between traditional IaC tools and the future of cloud automation, offering enterprises a clear path to modernization without disrupting existing workflows.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: Market Segments -->
+        <div class="page-slide" id="page-3">
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-sm min-h-[600px] flex flex-col">
+                <h2 class="text-2xl font-semibold mb-6 text-emerald-600">Target Market Segments</h2>
+                <div class="flex-1 flex flex-col justify-center">
+                    <div class="grid md:grid-cols-3 gap-8 mb-8">
+                        <div class="text-center">
+                            <div class="w-24 h-24 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                <span class="text-3xl font-bold text-emerald-600">65%</span>
+                            </div>
+                            <h3 class="font-semibold text-lg text-slate-900 dark:text-slate-100 mb-2">Enterprise</h3>
+                            <p class="text-slate-600 dark:text-slate-400">Large organizations with complex cloud needs and multi-cloud strategies</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-24 h-24 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                <span class="text-3xl font-bold text-blue-600">25%</span>
+                            </div>
+                            <h3 class="font-semibold text-lg text-slate-900 dark:text-slate-100 mb-2">Mid-Market</h3>
+                            <p class="text-slate-600 dark:text-slate-400">Growing companies scaling cloud operations and seeking optimization</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-24 h-24 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                                <span class="text-3xl font-bold text-purple-600">10%</span>
+                            </div>
+                            <h3 class="font-semibold text-lg text-slate-900 dark:text-slate-100 mb-2">SMB</h3>
+                            <p class="text-slate-600 dark:text-slate-400">Small businesses entering cloud with limited DevOps resources</p>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 p-6 rounded-lg">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Market Focus Strategy</h3>
+                        <p class="text-slate-600 dark:text-slate-400">
+                            Our primary focus is on enterprise customers (65% of revenue target) who have the most complex infrastructure challenges and highest willingness to pay for AI-driven solutions. This segment provides the strongest unit economics and creates network effects that drive platform adoption.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: AI Infrastructure -->
+        <div class="page-slide" id="page-4">
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-sm min-h-[600px] flex flex-col">
+                <h2 class="text-2xl font-semibold mb-6 text-emerald-600">AI Infrastructure Market Analysis</h2>
+                <div class="flex-1 space-y-6">
+                    <div class="prose max-w-none">
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Market Evolution & Opportunity</h3>
+                        <p class="text-slate-600 dark:text-slate-400 mb-6">
+                            The AI infrastructure management market represents a paradigm shift in how enterprises approach cloud operations. Traditional IaC tools, while effective for basic automation, are increasingly insufficient for the complexity and scale of modern cloud environments. SirsiNexus's AI-first approach addresses this gap by providing intelligent, predictive infrastructure management that goes beyond simple automation.
+                        </p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-lg">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">AI Advantage</h4>
+                            <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                                <li class="flex items-start">
+                                    <span class="text-emerald-600 mr-2">•</span>
+                                    <span>Deep learning models for resource optimization</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-emerald-600 mr-2">•</span>
+                                    <span>Natural language processing for infrastructure queries</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-emerald-600 mr-2">•</span>
+                                    <span>Predictive analytics for cost and performance</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-emerald-600 mr-2">•</span>
+                                    <span>Automated incident response and remediation</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-lg">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Market Impact</h4>
+                            <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                                <li class="flex items-start">
+                                    <span class="text-emerald-600 mr-2">•</span>
+                                    <span>40% reduction in infrastructure management costs</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-emerald-600 mr-2">•</span>
+                                    <span>60% faster deployment and configuration</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-emerald-600 mr-2">•</span>
+                                    <span>85% more accurate resource forecasting</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-emerald-600 mr-2">•</span>
+                                    <span>90% reduction in manual intervention</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 5: Market Dynamics & Trends -->
+        <div class="page-slide" id="page-5">
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-sm min-h-[600px] flex flex-col">
+                <h2 class="text-2xl font-semibold mb-6 text-emerald-600">Market Dynamics & Trends</h2>
+                <div class="flex-1 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Key Market Drivers</h3>
+                        <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                            <li class="flex items-start">
+                                <span class="bg-emerald-100 text-emerald-600 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">1</span>
+                                <span>Digital transformation accelerating cloud adoption across industries</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-emerald-100 text-emerald-600 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">2</span>
+                                <span>Rising cloud costs driving demand for intelligent optimization</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-emerald-100 text-emerald-600 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">3</span>
+                                <span>Multi-cloud strategies creating management complexity</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-emerald-100 text-emerald-600 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">4</span>
+                                <span>AI/ML adoption enabling predictive cloud management</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Market Challenges</h3>
+                        <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                            <li class="flex items-start">
+                                <span class="bg-red-100 text-red-600 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">!</span>
+                                <span>Enterprise resistance to additional tooling complexity</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-red-100 text-red-600 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">!</span>
+                                <span>Security concerns with cloud infrastructure access</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-red-100 text-red-600 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">!</span>
+                                <span>Integration challenges with existing workflows</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-red-100 text-red-600 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2 mt-0.5">!</span>
+                                <span>ROI measurement difficulties in cloud optimization</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 6: Competitive Positioning Matrix -->
+        <div class="page-slide" id="page-6">
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-sm min-h-[600px] flex flex-col">
+                <h2 class="text-2xl font-semibold mb-6 text-emerald-600">Competitive Positioning Matrix</h2>
+                <div class="flex-1 space-y-6">
+                    <!-- Feature Comparison Cards -->
+                    <div class="space-y-4">
+                        <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-lg">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-4">AI-Powered Optimization</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">SIRSINEXUS</div>
+                                </div>
+                                <div class="text-center p-3 bg-red-100 dark:bg-red-900/30 rounded">
+                                    <div class="text-red-600 dark:text-red-400 font-bold text-xl mb-1">✗</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">TERRAFORM</div>
+                                </div>
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">AWS CONFIG</div>
+                                </div>
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">CLOUDHEALTH</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-lg">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-4">Multi-Cloud Support</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">SIRSINEXUS</div>
+                                </div>
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">TERRAFORM</div>
+                                </div>
+                                <div class="text-center p-3 bg-red-100 dark:bg-red-900/30 rounded">
+                                    <div class="text-red-600 dark:text-red-400 font-bold text-xl mb-1">✗</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">AWS CONFIG</div>
+                                </div>
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">CLOUDHEALTH</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-lg">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-4">Natural Language Interface</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">SIRSINEXUS</div>
+                                </div>
+                                <div class="text-center p-3 bg-red-100 dark:bg-red-900/30 rounded">
+                                    <div class="text-red-600 dark:text-red-400 font-bold text-xl mb-1">✗</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">TERRAFORM</div>
+                                </div>
+                                <div class="text-center p-3 bg-red-100 dark:bg-red-900/30 rounded">
+                                    <div class="text-red-600 dark:text-red-400 font-bold text-xl mb-1">✗</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">AWS CONFIG</div>
+                                </div>
+                                <div class="text-center p-3 bg-red-100 dark:bg-red-900/30 rounded">
+                                    <div class="text-red-600 dark:text-red-400 font-bold text-xl mb-1">✗</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">CLOUDHEALTH</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-lg">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-4">Cost Prediction</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">SIRSINEXUS</div>
+                                </div>
+                                <div class="text-center p-3 bg-red-100 dark:bg-red-900/30 rounded">
+                                    <div class="text-red-600 dark:text-red-400 font-bold text-xl mb-1">✗</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">TERRAFORM</div>
+                                </div>
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">AWS CONFIG</div>
+                                </div>
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">CLOUDHEALTH</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 dark:bg-slate-700 p-6 rounded-lg">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-4">Real-time Monitoring</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">SIRSINEXUS</div>
+                                </div>
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">TERRAFORM</div>
+                                </div>
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">AWS CONFIG</div>
+                                </div>
+                                <div class="text-center p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                                    <div class="text-emerald-600 dark:text-emerald-400 font-bold text-xl mb-1">✓</div>
+                                    <div class="text-xs font-medium text-slate-700 dark:text-slate-300">CLOUDHEALTH</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                        <h4 class="text-sm font-bold text-blue-900 dark:text-blue-100 mb-2">Key Insights:</h4>
+                        <p class="text-sm text-blue-800 dark:text-blue-200">SirsiNexus is the only platform offering Natural Language Interface, providing a unique competitive advantage in user experience and accessibility.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 7: Strategic Advantages -->
+        <div class="page-slide" id="page-7">
+            <div class="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 p-8 rounded-lg shadow-sm min-h-[600px] flex flex-col">
+                <h2 class="text-2xl font-semibold mb-6 text-emerald-600">Strategic Advantages</h2>
+                <div class="flex-1 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Technical Differentiators</h3>
+                        <ul class="space-y-2 text-slate-700 dark:text-slate-300">
+                            <li>AI-driven resource optimization algorithms</li>
+                            <li>Natural language query interface</li>
+                            <li>Multi-cloud unified management</li>
+                            <li>Predictive cost modeling</li>
+                            <li>Real-time anomaly detection</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Market Position</h3>
+                        <ul class="space-y-2 text-slate-700 dark:text-slate-300">
+                            <li>First-mover in AI-powered optimization</li>
+                            <li>Enterprise-ready from day one</li>
+                            <li>Strong technical foundation</li>
+                            <li>Network effects through partnerships</li>
+                            <li>Proven customer demand</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 8: Customer Pain Points & Transition -->
+        <div class="page-slide" id="page-8">
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-sm min-h-[600px] flex flex-col">
+                <h2 class="text-2xl font-semibold mb-6 text-emerald-600">Customer Pain Points & Transition Metrics</h2>
+                <div class="flex-1 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Key Pain Points</h3>
+                        <div class="space-y-4">
+                            <div class="bg-red-50 dark:bg-red-900/10 p-4 rounded-lg">
+                                <h4 class="font-medium text-red-800 dark:text-red-200 mb-2">Infrastructure Complexity</h4>
+                                <p class="text-sm text-red-700 dark:text-red-300">• 78% report increasing cloud complexity</p>
+                                <p class="text-sm text-red-700 dark:text-red-300">• 3.4 cloud providers on average</p>
+                                <p class="text-sm text-red-700 dark:text-red-300">• 65% struggle with multi-cloud management</p>
+                            </div>
+                            <div class="bg-orange-50 dark:bg-orange-900/10 p-4 rounded-lg">
+                                <h4 class="font-medium text-orange-800 dark:text-orange-200 mb-2">Cost Management</h4>
+                                <p class="text-sm text-orange-700 dark:text-orange-300">• 82% exceed cloud budgets by 25%+</p>
+                                <p class="text-sm text-orange-700 dark:text-orange-300">• 40% lack cost visibility</p>
+                                <p class="text-sm text-orange-700 dark:text-orange-300">• 55% struggle with accurate forecasting</p>
+                            </div>
+                            <div class="bg-yellow-50 dark:bg-yellow-900/10 p-4 rounded-lg">
+                                <h4 class="font-medium text-yellow-800 dark:text-yellow-200 mb-2">Operational Overhead</h4>
+                                <p class="text-sm text-yellow-700 dark:text-yellow-300">• 45 hours/week on manual management</p>
+                                <p class="text-sm text-yellow-700 dark:text-yellow-300">• 70% face DevOps staffing challenges</p>
+                                <p class="text-sm text-yellow-700 dark:text-yellow-300">• 60% delayed by manual approvals</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-3">Transition Metrics</h3>
+                        <div class="space-y-4">
+                            <div class="bg-emerald-50 dark:bg-emerald-900/10 p-4 rounded-lg">
+                                <h4 class="font-medium text-emerald-800 dark:text-emerald-200 mb-2">Implementation Success</h4>
+                                <div class="space-y-2">
+                                    <div>
+                                        <div class="flex justify-between text-sm mb-1">
+                                            <span>Average Deployment Time</span>
+                                            <span class="text-emerald-600">↓ 60%</span>
+                                        </div>
+                                        <div class="w-full bg-emerald-200 dark:bg-emerald-800 rounded-full h-2">
+                                            <div class="bg-emerald-600 h-2 rounded-full" style="width: 60%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-sm mb-1">
+                                            <span>Infrastructure Cost</span>
+                                            <span class="text-emerald-600">↓ 35%</span>
+                                        </div>
+                                        <div class="w-full bg-emerald-200 dark:bg-emerald-800 rounded-full h-2">
+                                            <div class="bg-emerald-600 h-2 rounded-full" style="width: 35%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-sm mb-1">
+                                            <span>Operational Efficiency</span>
+                                            <span class="text-emerald-600">↑ 85%</span>
+                                        </div>
+                                        <div class="w-full bg-emerald-200 dark:bg-emerald-800 rounded-full h-2">
+                                            <div class="bg-emerald-600 h-2 rounded-full" style="width: 85%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-blue-50 dark:bg-blue-900/10 p-4 rounded-lg">
+                                <h4 class="font-medium text-blue-800 dark:text-blue-200 mb-2">Customer Transition</h4>
+                                <ul class="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                                    <li>• 2 week average implementation time</li>
+                                    <li>• 92% retention rate after 12 months</li>
+                                    <li>• 4.8/5 customer satisfaction score</li>
+                                    <li>• 85% expand usage within 6 months</li>
+                                </ul>
+                            </div>
+                            <div class="bg-purple-50 dark:bg-purple-900/10 p-4 rounded-lg">
+                                <h4 class="font-medium text-purple-800 dark:text-purple-200 mb-2">ROI Metrics</h4>
+                                <ul class="text-sm text-purple-700 dark:text-purple-300 space-y-1">
+                                    <li>• 3.2 month average payback period</li>
+                                    <li>• 8.5x ROI within 12 months</li>
+                                    <li>• 42% increase in deployment velocity</li>
+                                    <li>• 65% reduction in incident response time</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 9: Market Penetration Strategy -->
+        <div class="page-slide" id="page-9">
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-sm min-h-[600px] flex flex-col">
+                <h2 class="text-2xl font-semibold mb-6 text-emerald-600">Market Penetration Strategy</h2>
+                <div class="flex-1 grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Enterprise Focus</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Target Fortune 500 companies with complex cloud infrastructure needs</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Strategic Partnerships</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Leverage existing network and partnerships for rapid market entry</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Proven ROI</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Demonstrate clear cost savings and efficiency gains to drive adoption</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-100 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700">
+        <div class="max-w-7xl mx-auto px-6 py-12">
+            <!-- Main Footer Content -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <!-- Brand -->
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="/assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-8 h-8 object-contain dark:hidden">
+                        <img src="/assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-8 h-8 object-contain hidden dark:block">
+                        <span class="text-xl font-bold text-slate-900 dark:text-slate-100">SirsiNexus</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Next-generation AI-powered cloud infrastructure management platform revolutionizing how enterprises optimize and scale their cloud operations.
+                    </p>
+                </div>
+
+                <!-- Platform Links -->
+                <div>
+                    <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-4">Platform</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/index.html" class="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm transition-colors">Home</a></li>
+                        <li><a href="/features.html" class="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm transition-colors">Features</a></li>
+                        <li><a href="/pricing.html" class="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm transition-colors">Pricing</a></li>
+                        <li><a href="/about.html" class="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm transition-colors">About</a></li>
+                        <li><a href="/contact.html" class="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Investor Resources -->
+                <div>
+                    <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-4">Investor Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="/investor-portal/index.html" class="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm transition-colors">Investor Portal</a></li>
+                        <li><a href="/investor-portal/committee/index.html" class="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm transition-colors">Committee</a></li>
+                        <li><span class="text-emerald-600 dark:text-emerald-400 text-sm font-medium">Market Analysis</span></li>
+                        <li><a href="/investor-portal/documents.html" class="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm transition-colors">Documents</a></li>
+                        <li><a href="/investor-portal/reports.html" class="text-slate-600 dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm transition-colors">Reports</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="pt-8 border-t border-slate-200 dark:border-slate-700">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-6">
+                        <p class="text-sm text-slate-500 dark:text-slate-400">
+                            &copy; 2025 SirsiNexus. All rights reserved.
+                        </p>
+                        <div class="flex items-center gap-4 text-xs text-slate-400 dark:text-slate-500">
+                            <a href="/privacy.html" class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors">Privacy Policy</a>
+                            <a href="/terms.html" class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors">Terms of Service</a>
+                            <a href="/legal.html" class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors">Legal</a>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500">
+                        <span class="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded">v0.7.10-alpha</span>
+                        <div class="flex items-center gap-1">
+                            <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                            <span>Production</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            console.log('Theme toggle clicked');
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                console.log('Switched to light mode');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                console.log('Switched to dark mode');
+            }
+        }
+        
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            console.log('Theme initialized:', theme);
+        }
+        
+        // Initialize immediately
+        initTheme();
+        
+        // Make toggleTheme available globally
+        window.toggleTheme = toggleTheme;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            
+            // Pagination system
+            let currentPage = 1;
+            const totalPages = 9;
+            
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const currentPageSpan = document.getElementById('currentPage');
+            const totalPagesSpan = document.getElementById('totalPages');
+            
+            function updatePageDisplay() {
+                // Hide all slides
+                document.querySelectorAll('.page-slide').forEach(slide => {
+                    slide.classList.remove('active');
+                });
+                
+                // Show current slide
+                const currentSlide = document.getElementById(`page-${currentPage}`);
+                if (currentSlide) {
+                    currentSlide.classList.add('active');
+                }
+                
+                // Update navigation
+                currentPageSpan.textContent = currentPage;
+                totalPagesSpan.textContent = totalPages;
+                
+                // Update button states
+                prevBtn.disabled = currentPage === 1;
+                nextBtn.disabled = currentPage === totalPages;
+                
+                if (prevBtn.disabled) {
+                    prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+                
+                if (nextBtn.disabled) {
+                    nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
+            
+            function goToPage(pageNumber) {
+                if (pageNumber >= 1 && pageNumber <= totalPages) {
+                    currentPage = pageNumber;
+                    updatePageDisplay();
+                }
+            }
+            
+            function nextPage() {
+                if (currentPage < totalPages) {
+                    goToPage(currentPage + 1);
+                }
+            }
+            
+            function prevPage() {
+                if (currentPage > 1) {
+                    goToPage(currentPage - 1);
+                }
+            }
+            
+            // Button event listeners
+            nextBtn.addEventListener('click', nextPage);
+            prevBtn.addEventListener('click', prevPage);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' || e.key === 'Tab') {
+                    if (e.key === 'Tab') {
+                        e.preventDefault();
+                    }
+                    nextPage();
+                } else if (e.key === 'ArrowLeft' || (e.key === 'Tab' && e.shiftKey)) {
+                    e.preventDefault();
+                    prevPage();
+                }
+            });
+            
+            // Initialize pagination
+            updatePageDisplay();
+        });
+    </script>
+<script src="../../js/telemetry.js"></script>
+
+    
+    <script>
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('aside');
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('block');
+        }
+        
+        // Highlight active page
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const sidebarLinks = document.querySelectorAll('aside a');
+            
+            sidebarLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || (currentPage === 'index.html' && href === 'index.html')) {
+                    link.classList.remove('text-gray-700', 'dark:text-gray-300');
+                    link.classList.add('text-blue-600', 'dark:text-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>Admin Sidebar Navigation - SirsiNexus Demo</title>
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="assets/css/shared.css">
+    <link rel="stylesheet" href="assets/css/common-styles.css">
+    
+    <!-- Theme Toggle Script -->
+    <script src="assets/js/fresh-theme-toggle.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1a202c;
+            transition: all 0.3s ease;
+        }
+
+        .dark body {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .demo-header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 280px;
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            z-index: 100;
+            transition: left 0.3s ease;
+        }
+
+        .dark .demo-header {
+            background: #1e293b;
+            border-bottom-color: #334155;
+        }
+
+        .admin-sidebar.collapsed ~ .demo-header {
+            left: 80px;
+        }
+
+        .demo-content {
+            margin-left: 280px;
+            margin-top: 70px;
+            padding: 2rem;
+            min-height: calc(100vh - 70px);
+            transition: margin-left 0.3s ease;
+        }
+
+        .admin-sidebar.collapsed ~ .demo-content {
+            margin-left: 80px;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+        }
+
+        .dark .demo-card {
+            background: #1e293b;
+            border-color: #334155;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .dark .feature-item {
+            background: #0f172a;
+            border-color: #334155;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            color: #059669;
+            margin-bottom: 1rem;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .dark .theme-toggle {
+            border-color: #334155;
+            color: #94a3b8;
+        }
+
+        .dark .theme-toggle:hover {
+            background: #334155;
+            border-color: #475569;
+        }
+
+        @media (max-width: 768px) {
+            .demo-header {
+                left: 0;
+            }
+
+            .demo-content {
+                margin-left: 0;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter">
+    <!-- Admin Sidebar -->
+    <admin-sidebar></admin-sidebar>
+    
+    <!-- Demo Header -->
+    <div class="demo-header">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="mobile-toggle" onclick="toggleMobileSidebar()">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+            <h1 style="font-size: 1.5rem; font-weight: 600; margin: 0;">Admin Dashboard</h1>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Demo Content -->
+    <main class="demo-content">
+        <div class="demo-card">
+            <h2 style="color: #059669; margin-bottom: 1rem;">🎯 Multi-Section Sidebar Navigation</h2>
+            <p style="margin-bottom: 1.5rem; color: #64748b;">
+                A comprehensive sidebar navigation system with all the requested features implemented and fully functional.
+            </p>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 19v-6a2 2 0 00-2-2h-2a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10V4a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 10V8a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2z"></path>
+                    </svg>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Dashboard Analytics</h3>
+                    <p style="color: #64748b; font-size: 0.875rem; margin: 0;">Complete analytics dashboard with KPI metrics and real-time data visualization.</p>
+                </div>
+
+                <div class="feature-item">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M23 21v-2a4 4 0 00-3-3.87"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3.13a4 4 0 010 7.75"></path>
+                    </svg>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">User Management</h3>
+                    <p style="color: #64748b; font-size: 0.875rem; margin: 0;">Comprehensive user administration with roles, permissions, and access control.</p>
+                </div>
+
+                <div class="feature-item">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"></path>
+                    </svg>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Data Room</h3>
+                    <p style="color: #64748b; font-size: 0.875rem; margin: 0;">Secure document management and data room access for investor materials.</p>
+                </div>
+
+                <div class="feature-item">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 20V10"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20V4"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 20v-6"></path>
+                    </svg>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Telemetry</h3>
+                    <p style="color: #64748b; font-size: 0.875rem; margin: 0;">Advanced system monitoring with real-time telemetry and performance metrics.</p>
+                </div>
+
+                <div class="feature-item">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"></path>
+                    </svg>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Site Administration</h3>
+                    <p style="color: #64748b; font-size: 0.875rem; margin: 0;">System configuration, settings management, and administrative controls.</p>
+                </div>
+
+                <div class="feature-item">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Security Center</h3>
+                    <p style="color: #64748b; font-size: 0.875rem; margin: 0;">Security monitoring, threat detection, and access control management.</p>
+                </div>
+
+                <div class="feature-item">
+                    <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
+                        <polyline points="14,2 14,8 20,8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10,9 9,9 8,9"></polyline>
+                    </svg>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">System Logs</h3>
+                    <p style="color: #64748b; font-size: 0.875rem; margin: 0;">Comprehensive logging system with audit trails and system activity monitoring.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-card">
+            <h2 style="color: #059669; margin-bottom: 1rem;">✨ Key Features</h2>
+            <ul style="color: #64748b; line-height: 1.8;">
+                <li><strong>Line Art SVG Icons:</strong> All sections use beautiful, consistent line art SVG icons</li>
+                <li><strong>Active State Highlighting:</strong> Visual feedback for the current active section</li>
+                <li><strong>Collapsible Design:</strong> Sidebar can be collapsed to save screen space</li>
+                <li><strong>Mobile Responsive:</strong> Fully collapsible on mobile with overlay and touch gestures</li>
+                <li><strong>Dark Mode Support:</strong> Seamless dark/light theme switching</li>
+                <li><strong>Persistent State:</strong> Remembers collapsed state between sessions</li>
+                <li><strong>Smooth Animations:</strong> Fluid transitions and micro-interactions</li>
+                <li><strong>Accessibility:</strong> Proper ARIA labels and keyboard navigation support</li>
+            </ul>
+        </div>
+
+        <div class="demo-card">
+            <h2 style="color: #059669; margin-bottom: 1rem;">🎮 Try It Out</h2>
+            <p style="color: #64748b; margin-bottom: 1rem;">Test the sidebar functionality:</p>
+            <ul style="color: #64748b; line-height: 1.8;">
+                <li>Click the toggle button in the sidebar to collapse/expand it</li>
+                <li>Navigate between different sections to see active state changes</li>
+                <li>On mobile, the sidebar automatically becomes an overlay</li>
+                <li>Try switching between dark and light themes</li>
+                <li>The sidebar remembers its collapsed state when you reload the page</li>
+            </ul>
+        </div>
+    </main>
+
+    <!-- Load Admin Sidebar Component -->
+    <script src="components/admin-sidebar.js"></script>
+    
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const wasDark = html.classList.contains('dark');
+            
+            if (wasDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Mobile sidebar toggle
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('admin-sidebar');
+            if (sidebar) {
+                sidebar.toggleSidebar();
+            }
+        }
+
+        // Initialize theme
+        document.addEventListener('DOMContentLoaded', function() {
+            const theme = localStorage.getItem('theme') || 
+                         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+
+            // Listen for sidebar events
+            document.addEventListener('sidebar-toggle', function(e) {
+                console.log('Sidebar toggled:', e.detail);
+            });
+
+            document.addEventListener('sidebar-navigation', function(e) {
+                console.log('Navigation clicked:', e.detail);
+            });
+
+            document.addEventListener('admin-logout', function(e) {
+                console.log('Logout requested');
+                alert('Logout functionality would redirect to login page');
+            });
+        });
+    </script>
+<script src="../../js/telemetry.js"></script>
+</body>
+</html>

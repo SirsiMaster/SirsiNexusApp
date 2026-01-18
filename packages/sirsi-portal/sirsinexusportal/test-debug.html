@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Test</title>
+</head>
+<body>
+    <h1>Debug Test Page</h1>
+    
+    <button onclick="testClick()">Test Direct OnClick</button>
+    <button id="testBtn">Test AddEventListener</button>
+    
+    <div id="output"></div>
+    
+    <script>
+        const output = document.getElementById('output');
+        
+        function log(message) {
+            output.innerHTML += `<p>${new Date().toISOString()}: ${message}</p>`;
+            console.log(message);
+        }
+        
+        // Test direct onclick
+        function testClick() {
+            log('Direct onclick works!');
+        }
+        
+        // Test addEventListener
+        document.getElementById('testBtn').addEventListener('click', function() {
+            log('AddEventListener works!');
+        });
+        
+        // Check what's available
+        log('Checking global objects...');
+        log('typeof DashboardAPI: ' + typeof DashboardAPI);
+        log('typeof APIService: ' + typeof APIService);
+        log('typeof sessionManager: ' + typeof sessionManager);
+        
+        // Try to check if scripts are loading
+        log('Scripts in page: ' + document.querySelectorAll('script').length);
+    </script>
+<script src="js/telemetry.js"></script>
+</body>
+</html>

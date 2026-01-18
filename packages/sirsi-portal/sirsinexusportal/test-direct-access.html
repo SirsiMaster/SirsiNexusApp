@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus - Direct Access Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-inter bg-gray-50 text-gray-900 min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full space-y-8 p-8">
+        <div class="text-center">
+            <h2 class="text-3xl font-bold">Direct Access Test</h2>
+            <p class="mt-2 text-gray-600">Quick access buttons for testing</p>
+        </div>
+        
+        <div class="bg-white shadow-xl rounded-lg p-6 space-y-4">
+            <div>
+                <h3 class="text-lg font-semibold mb-3">Test Login Credentials:</h3>
+                <div class="space-y-2 text-sm bg-blue-50 p-3 rounded">
+                    <p><strong>Regular Investor:</strong></p>
+                    <p>ID: <code class="bg-white px-1">INV001</code> | Code: <code class="bg-white px-1">DEMO2025</code></p>
+                    <p>ID: <code class="bg-white px-1">GUEST</code> | Code: <code class="bg-white px-1">GUEST2025</code></p>
+                    <p><strong>Admin:</strong></p>
+                    <p>ID: <code class="bg-white px-1">ADMIN</code> | Code: <code class="bg-white px-1">ADMIN2025</code></p>
+                </div>
+            </div>
+
+            <div class="border-t pt-4">
+                <h3 class="text-lg font-semibold mb-3">Quick Access (Sets Session):</h3>
+                <div class="space-y-2">
+                    <button onclick="loginAsInvestor()" class="w-full py-2 px-4 bg-emerald-600 text-white rounded hover:bg-emerald-700">
+                        Login as Investor (INV001)
+                    </button>
+                    <button onclick="loginAsAdmin()" class="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700">
+                        Login as Admin
+                    </button>
+                    <button onclick="loginAsGuest()" class="w-full py-2 px-4 bg-gray-600 text-white rounded hover:bg-gray-700">
+                        Login as Guest
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-t pt-4">
+                <h3 class="text-lg font-semibold mb-3">Direct Links:</h3>
+                <div class="space-y-2">
+                    <a href="investor-portal/index.html" class="block w-full py-2 px-4 bg-purple-600 text-white rounded hover:bg-purple-700 text-center">
+                        Investor Portal (Requires Auth)
+                    </a>
+                    <a href="admin/index.html" class="block w-full py-2 px-4 bg-orange-600 text-white rounded hover:bg-orange-700 text-center">
+                        Admin Dashboard
+                    </a>
+                    <a href="investor-login.html" class="block w-full py-2 px-4 bg-teal-600 text-white rounded hover:bg-teal-700 text-center">
+                        Login Page
+                    </a>
+                </div>
+            </div>
+
+            <div class="border-t pt-4">
+                <button onclick="clearSession()" class="w-full py-2 px-4 bg-red-600 text-white rounded hover:bg-red-700">
+                    Clear Session (Logout)
+                </button>
+            </div>
+
+            <div id="status" class="mt-4 p-3 rounded hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.className = `mt-4 p-3 rounded ${type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
+            status.innerHTML = message;
+            status.classList.remove('hidden');
+        }
+
+        function loginAsInvestor() {
+            const authData = {
+                id: 'INV001',
+                name: 'Demo Investor',
+                role: 'investor',
+                loginTime: new Date().toISOString()
+            };
+            sessionStorage.setItem('investorAuth', JSON.stringify(authData));
+            showStatus('✅ Logged in as Investor! You can now access the <a href="investor-portal/index.html" class="underline">Investor Portal</a>', 'success');
+            setTimeout(() => {
+                window.location.href = 'investor-portal/index.html';
+            }, 1500);
+        }
+
+        function loginAsAdmin() {
+            const authData = {
+                id: 'ADMIN',
+                name: 'Administrator',
+                role: 'admin',
+                loginTime: new Date().toISOString()
+            };
+            sessionStorage.setItem('investorAuth', JSON.stringify(authData));
+            showStatus('✅ Logged in as Admin! Redirecting to <a href="admin/index.html" class="underline">Admin Dashboard</a>', 'success');
+            setTimeout(() => {
+                window.location.href = 'admin/index.html';
+            }, 1500);
+        }
+
+        function loginAsGuest() {
+            const authData = {
+                id: 'GUEST',
+                name: 'Guest Access',
+                role: 'guest',
+                loginTime: new Date().toISOString()
+            };
+            sessionStorage.setItem('investorAuth', JSON.stringify(authData));
+            showStatus('✅ Logged in as Guest! You can access the <a href="investor-portal/index.html" class="underline">Investor Portal</a>', 'success');
+            setTimeout(() => {
+                window.location.href = 'investor-portal/index.html';
+            }, 1500);
+        }
+
+        function clearSession() {
+            sessionStorage.removeItem('investorAuth');
+            localStorage.removeItem('investorAuth');
+            showStatus('🗑️ Session cleared! You are now logged out.', 'success');
+        }
+
+        // Check current session on load
+        window.addEventListener('DOMContentLoaded', function() {
+            const auth = sessionStorage.getItem('investorAuth');
+            if (auth) {
+                try {
+                    const authData = JSON.parse(auth);
+                    showStatus(`ℹ️ Currently logged in as: ${authData.name} (${authData.role})`, 'success');
+                } catch (e) {
+                    console.error('Invalid auth data:', e);
+                }
+            } else {
+                showStatus('ℹ️ No active session. Use the buttons above to log in.', 'success');
+            }
+        });
+    </script>
+</body>
+</html>

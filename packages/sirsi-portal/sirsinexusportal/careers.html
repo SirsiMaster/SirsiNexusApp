@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers at SirsiNexus - Join Our Mission</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
+    
+    <!-- Firebase Auth Module -->
+    <script src="assets/js/firebase-auth-module.js" defer></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="/index.html" class="flex items-center">
+                            <img class="h-8 w-8" src="assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="SirsiNexus">
+                            <span class="ml-2 text-xl font-bold">SirsiNexus</span>
+                        </a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="about.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About</a>
+                        <a href="careers.html" class="text-white px-3 py-2 rounded-md text-sm font-medium">Careers</a>
+                        <a href="blog.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Blog</a>
+                        <a href="contact.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                    Build the Future with Us
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Join a team of innovators, dreamers, and builders creating the next generation of AI infrastructure.
+                </p>
+                <div class="mt-8">
+                    <a href="#openings" class="bg-purple-600 hover:bg-purple-700 px-8 py-3 rounded-lg font-semibold text-lg transition">
+                        View Open Positions
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Why SirsiNexus -->
+    <section class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Why SirsiNexus?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                    <i class="fas fa-rocket text-purple-400 text-3xl mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-3">Cutting-Edge Technology</h3>
+                    <p class="text-gray-400">Work with quantum computing, advanced AI, and next-gen infrastructure technologies that push the boundaries of what's possible.</p>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                    <i class="fas fa-users text-blue-400 text-3xl mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-3">Diverse & Inclusive</h3>
+                    <p class="text-gray-400">We celebrate diversity and foster an inclusive environment where every voice is heard and valued.</p>
+                </div>
+                
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                    <i class="fas fa-chart-line text-green-400 text-3xl mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-3">Growth & Impact</h3>
+                    <p class="text-gray-400">Make a real impact on the future of AI while growing your career with mentorship and learning opportunities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Benefits & Perks</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="bg-purple-500 bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-heartbeat text-purple-400"></i>
+                    </div>
+                    <h4 class="font-semibold mb-1">Health & Wellness</h4>
+                    <p class="text-sm text-gray-400">Comprehensive health, dental, and vision coverage</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-blue-500 bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-home text-blue-400"></i>
+                    </div>
+                    <h4 class="font-semibold mb-1">Remote First</h4>
+                    <p class="text-sm text-gray-400">Work from anywhere with flexible hours</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-green-500 bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-graduation-cap text-green-400"></i>
+                    </div>
+                    <h4 class="font-semibold mb-1">Learning Budget</h4>
+                    <p class="text-sm text-gray-400">$5,000 annual professional development</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-yellow-500 bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-chart-pie text-yellow-400"></i>
+                    </div>
+                    <h4 class="font-semibold mb-1">Equity</h4>
+                    <p class="text-sm text-gray-400">Competitive equity packages for all employees</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-red-500 bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-plane text-red-400"></i>
+                    </div>
+                    <h4 class="font-semibold mb-1">Unlimited PTO</h4>
+                    <p class="text-sm text-gray-400">Take the time you need to recharge</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-indigo-500 bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-baby text-indigo-400"></i>
+                    </div>
+                    <h4 class="font-semibold mb-1">Parental Leave</h4>
+                    <p class="text-sm text-gray-400">16 weeks paid parental leave</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-pink-500 bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-laptop text-pink-400"></i>
+                    </div>
+                    <h4 class="font-semibold mb-1">Tech Stipend</h4>
+                    <p class="text-sm text-gray-400">Top-tier equipment and $200/month stipend</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-orange-500 bg-opacity-20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-users text-orange-400"></i>
+                    </div>
+                    <h4 class="font-semibold mb-1">Team Events</h4>
+                    <p class="text-sm text-gray-400">Quarterly team retreats and events</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Open Positions (Dynamic from Firestore) -->
+    <section id="openings" class="py-20 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Open Positions</h2>
+            
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 mb-8">
+                <button onclick="filterJobs('all')" class="filter-btn active bg-purple-600 px-4 py-2 rounded-lg">All</button>
+                <button onclick="filterJobs('engineering')" class="filter-btn bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg">Engineering</button>
+                <button onclick="filterJobs('product')" class="filter-btn bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg">Product</button>
+                <button onclick="filterJobs('design')" class="filter-btn bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg">Design</button>
+                <button onclick="filterJobs('sales')" class="filter-btn bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg">Sales</button>
+                <button onclick="filterJobs('operations')" class="filter-btn bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg">Operations</button>
+            </div>
+            
+            <div id="jobs-container" class="space-y-4">
+                <!-- Jobs will be loaded dynamically -->
+                <div class="text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-4xl text-purple-400"></i>
+                    <p class="mt-4 text-gray-400">Loading positions...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Form -->
+    <section class="py-20 bg-gray-900">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gray-800 rounded-xl p-8 border border-gray-700">
+                <h2 class="text-2xl font-bold mb-6">Don't See Your Role?</h2>
+                <p class="text-gray-400 mb-8">We're always looking for exceptional talent. Send us your information and we'll reach out when we have a position that matches your skills.</p>
+                
+                <form id="general-application" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">First Name</label>
+                            <input type="text" name="firstName" required class="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Last Name</label>
+                            <input type="text" name="lastName" required class="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Email</label>
+                        <input type="email" name="email" required class="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">LinkedIn Profile</label>
+                        <input type="url" name="linkedin" class="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Area of Interest</label>
+                        <select name="interest" required class="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="">Select an area</option>
+                            <option value="engineering">Engineering</option>
+                            <option value="product">Product</option>
+                            <option value="design">Design</option>
+                            <option value="sales">Sales & Marketing</option>
+                            <option value="operations">Operations</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Tell us about yourself</label>
+                        <textarea name="message" rows="4" class="w-full px-4 py-2 bg-gray-900 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold transition">
+                        Submit Application
+                    </button>
+                </form>
+                
+                <div id="application-success" class="hidden mt-6 p-4 bg-green-900 border border-green-700 rounded-lg">
+                    <p class="text-green-400">Thank you for your interest! We'll review your application and get back to you soon.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">&copy; 2024 SirsiNexus. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Firebase
+        document.addEventListener('DOMContentLoaded', async () => {
+            await SirsiAuth.init();
+            loadJobs();
+        });
+        
+        // Job positions data (would be loaded from Firestore in production)
+        const jobsData = [
+            {
+                id: 1,
+                title: "Senior Backend Engineer",
+                department: "engineering",
+                location: "Remote",
+                type: "Full-time",
+                description: "Build scalable infrastructure for AI workloads using Go and Kubernetes."
+            },
+            {
+                id: 2,
+                title: "Machine Learning Engineer",
+                department: "engineering",
+                location: "Remote",
+                type: "Full-time",
+                description: "Develop and optimize ML models for edge computing environments."
+            },
+            {
+                id: 3,
+                title: "Product Manager - AI Platform",
+                department: "product",
+                location: "Remote",
+                type: "Full-time",
+                description: "Lead product strategy for our AI infrastructure platform."
+            },
+            {
+                id: 4,
+                title: "Senior UI/UX Designer",
+                department: "design",
+                location: "Remote",
+                type: "Full-time",
+                description: "Design intuitive interfaces for complex AI systems."
+            },
+            {
+                id: 5,
+                title: "DevOps Engineer",
+                department: "engineering",
+                location: "Remote",
+                type: "Full-time",
+                description: "Implement CI/CD pipelines and maintain cloud infrastructure."
+            },
+            {
+                id: 6,
+                title: "Sales Engineer",
+                department: "sales",
+                location: "Remote",
+                type: "Full-time",
+                description: "Bridge technical expertise with customer needs in enterprise sales."
+            }
+        ];
+        
+        async function loadJobs() {
+            const container = document.getElementById('jobs-container');
+            
+            try {
+                // Try to load from Firestore
+                const snapshot = await firebase.firestore()
+                    .collection('careers')
+                    .where('status', '==', 'open')
+                    .get();
+                
+                if (!snapshot.empty) {
+                    const jobs = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    displayJobs(jobs);
+                } else {
+                    // Use default data
+                    displayJobs(jobsData);
+                }
+            } catch (error) {
+                console.error('Error loading jobs:', error);
+                displayJobs(jobsData);
+            }
+        }
+        
+        function displayJobs(jobs) {
+            const container = document.getElementById('jobs-container');
+            
+            if (jobs.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-400">No open positions at this time. Check back soon!</p>';
+                return;
+            }
+            
+            container.innerHTML = jobs.map(job => `
+                <div class="job-card bg-gray-900 rounded-lg p-6 border border-gray-700 hover:border-purple-500 transition" data-department="${job.department}">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">${job.title}</h3>
+                            <p class="text-gray-400 mb-3">${job.description}</p>
+                            <div class="flex gap-4 text-sm">
+                                <span class="text-purple-400"><i class="fas fa-briefcase"></i> ${job.department}</span>
+                                <span class="text-blue-400"><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
+                                <span class="text-green-400"><i class="fas fa-clock"></i> ${job.type}</span>
+                            </div>
+                        </div>
+                        <button onclick="applyForJob(${job.id})" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg text-sm font-medium transition">
+                            Apply Now
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function filterJobs(department) {
+            // Update button styles
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-600', 'active');
+                btn.classList.add('bg-gray-700');
+            });
+            event.target.classList.remove('bg-gray-700');
+            event.target.classList.add('bg-purple-600', 'active');
+            
+            // Filter jobs
+            const cards = document.querySelectorAll('.job-card');
+            cards.forEach(card => {
+                if (department === 'all' || card.dataset.department === department) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        function applyForJob(jobId) {
+            // In production, this would open an application modal or redirect
+            window.location.href = `mailto:careers@sirsi.ai?subject=Application for Position ${jobId}`;
+        }
+        
+        // Handle general application form
+        document.getElementById('general-application').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                // Save to Firestore
+                await firebase.firestore().collection('career_applications').add({
+                    ...data,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'new'
+                });
+                
+                // Show success message
+                document.getElementById('application-success').classList.remove('hidden');
+                e.target.reset();
+                
+                // Track event
+                await SirsiAuth.trackEvent('career_application_submitted', {
+                    area: data.interest
+                });
+            } catch (error) {
+                console.error('Error submitting application:', error);
+                alert('Error submitting application. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

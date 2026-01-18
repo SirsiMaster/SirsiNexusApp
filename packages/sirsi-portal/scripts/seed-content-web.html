@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus Content Seeder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">SirsiNexus Content Seeder</h1>
+        
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">Authentication</h2>
+            <button id="loginBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                Login as Admin
+            </button>
+            <div id="userInfo" class="mt-4 text-sm text-gray-600"></div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold mb-4">Seed Content</h2>
+            <p class="text-gray-600 mb-4">This will populate Firestore with sample content for all pages.</p>
+            
+            <div class="space-y-3">
+                <button id="seedTeamBtn" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50" disabled>
+                    Seed Team Members (4 members)
+                </button>
+                
+                <button id="seedBlogBtn" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50" disabled>
+                    Seed Blog Posts (3 posts)
+                </button>
+                
+                <button id="seedJobsBtn" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50" disabled>
+                    Seed Job Listings (3 jobs)
+                </button>
+                
+                <button id="seedPricingBtn" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50" disabled>
+                    Seed Pricing Tiers (3 tiers)
+                </button>
+                
+                <button id="seedAllBtn" class="w-full bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 disabled:opacity-50" disabled>
+                    Seed All Content
+                </button>
+            </div>
+            
+            <div id="status" class="mt-6 p-4 bg-gray-50 rounded text-sm font-mono"></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFd4RAvVZWy3G1geLudrq4KgDDsGr-jb8",
+            authDomain: "sirsi-nexus-live.firebaseapp.com",
+            databaseURL: "https://sirsi-nexus-live-default-rtdb.firebaseio.com",
+            projectId: "sirsi-nexus-live",
+            storageBucket: "sirsi-nexus-live.firebasestorage.app",
+            messagingSenderId: "210890802638",
+            appId: "1:210890802638:web:9b721753a295620422179f"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // UI elements
+        const loginBtn = document.getElementById('loginBtn');
+        const userInfo = document.getElementById('userInfo');
+        const status = document.getElementById('status');
+        const seedButtons = document.querySelectorAll('button[id^="seed"]');
+
+        // Content data
+        const teamMembers = [
+            {
+                id: 'founder-ceo',
+                name: 'Alex Chen',
+                role: 'Founder & CEO',
+                bio: 'Former Google Cloud architect with 15+ years building scalable infrastructure.',
+                image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
+                order: 1
+            },
+            {
+                id: 'cto',
+                name: 'Sarah Martinez',
+                role: 'Chief Technology Officer',
+                bio: 'AI/ML expert with PhD from MIT. Previously built autonomous systems at Tesla.',
+                image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
+                order: 2
+            },
+            {
+                id: 'head-engineering',
+                name: 'James Wilson',
+                role: 'Head of Engineering',
+                bio: 'Full-stack architect with expertise in Rust, Go, and distributed systems.',
+                image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=James',
+                order: 3
+            },
+            {
+                id: 'head-product',
+                name: 'Emily Zhang',
+                role: 'Head of Product',
+                bio: 'Product visionary who launched enterprise products at Salesforce and Oracle.',
+                image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Emily',
+                order: 4
+            }
+        ];
+
+        const blogPosts = [
+            {
+                id: 'introducing-sirsinexus',
+                title: 'Introducing SirsiNexus: The Future of Intelligent Infrastructure',
+                slug: 'introducing-sirsinexus',
+                excerpt: 'Revolutionary AI-powered infrastructure platform that thinks, learns, and evolves.',
+                content: 'Full blog content here...',
+                author: 'Alex Chen',
+                category: 'Announcement',
+                tags: ['launch', 'ai', 'infrastructure'],
+                publishedAt: new Date('2024-12-01'),
+                readTime: 5,
+                featured: true,
+                views: 0,
+                likes: 0
+            },
+            {
+                id: 'ai-agents-infrastructure',
+                title: 'How AI Agents Are Revolutionizing Infrastructure Management',
+                slug: 'ai-agents-infrastructure',
+                excerpt: 'Explore how autonomous AI agents can manage your infrastructure.',
+                content: 'Full blog content here...',
+                author: 'Sarah Martinez',
+                category: 'Technology',
+                tags: ['ai', 'agents', 'automation'],
+                publishedAt: new Date('2024-12-05'),
+                readTime: 7,
+                featured: true,
+                views: 0,
+                likes: 0
+            },
+            {
+                id: 'cost-optimization-guide',
+                title: 'The Ultimate Guide to Cloud Cost Optimization with AI',
+                slug: 'cost-optimization-guide',
+                excerpt: 'Learn how AI can reduce your cloud costs by up to 60%.',
+                content: 'Full blog content here...',
+                author: 'James Wilson',
+                category: 'Best Practices',
+                tags: ['cost', 'optimization', 'cloud'],
+                publishedAt: new Date('2024-12-10'),
+                readTime: 10,
+                featured: false,
+                views: 0,
+                likes: 0
+            }
+        ];
+
+        const jobListings = [
+            {
+                id: 'senior-rust-engineer',
+                title: 'Senior Rust Engineer',
+                department: 'Engineering',
+                location: 'Remote (US/EU)',
+                type: 'Full-time',
+                experience: 'Senior',
+                salary: '$180k - $250k + equity',
+                description: 'Build the core infrastructure engine of SirsiNexus.',
+                responsibilities: ['Design systems', 'Optimize performance', 'Mentor engineers'],
+                requirements: ['5+ years experience', 'Rust expertise', 'Distributed systems'],
+                benefits: ['Competitive salary', 'Remote work', 'Unlimited PTO'],
+                publishedAt: new Date('2024-12-08'),
+                active: true,
+                applications: 0,
+                views: 0
+            },
+            {
+                id: 'ml-engineer',
+                title: 'Machine Learning Engineer',
+                department: 'AI/ML',
+                location: 'Remote (Global)',
+                type: 'Full-time',
+                experience: 'Senior',
+                salary: '$200k - $300k + equity',
+                description: 'Build the AI brain of SirsiNexus.',
+                responsibilities: ['Develop ML models', 'Research AI techniques', 'Build ML infrastructure'],
+                requirements: ['MS/PhD in ML', '3+ years ML experience', 'PyTorch/TensorFlow'],
+                benefits: ['Top compensation', 'Conference attendance', 'GPU resources'],
+                publishedAt: new Date('2024-12-09'),
+                active: true,
+                applications: 0,
+                views: 0
+            },
+            {
+                id: 'developer-advocate',
+                title: 'Developer Advocate',
+                department: 'Developer Relations',
+                location: 'Remote (US)',
+                type: 'Full-time',
+                experience: 'Mid-Senior',
+                salary: '$140k - $180k + equity',
+                description: 'Be the voice of SirsiNexus in the developer community.',
+                responsibilities: ['Create content', 'Speak at events', 'Build community'],
+                requirements: ['3+ years DevRel', 'Communication skills', 'Cloud knowledge'],
+                benefits: ['Travel budget', 'Flexible schedule', 'Remote work'],
+                publishedAt: new Date('2024-12-10'),
+                active: true,
+                applications: 0,
+                views: 0
+            }
+        ];
+
+        const pricingTiers = [
+            {
+                id: 'starter',
+                name: 'Starter',
+                price: 99,
+                period: 'month',
+                description: 'Perfect for small teams and projects',
+                features: ['Up to 50 resources', 'Basic AI optimization', 'Email support'],
+                cta: 'Start Free Trial',
+                popular: false,
+                order: 1
+            },
+            {
+                id: 'professional',
+                name: 'Professional',
+                price: 499,
+                period: 'month',
+                description: 'For growing businesses and teams',
+                features: ['Up to 500 resources', 'Advanced AI optimization', 'Priority support', 'Multi-cloud support', 'API access'],
+                cta: 'Start Free Trial',
+                popular: true,
+                order: 2
+            },
+            {
+                id: 'enterprise',
+                name: 'Enterprise',
+                price: null,
+                period: 'custom',
+                description: 'For large organizations with complex needs',
+                features: ['Unlimited resources', 'Full AI capabilities', 'Dedicated support', 'Custom integrations'],
+                cta: 'Contact Sales',
+                popular: false,
+                order: 3
+            }
+        ];
+
+        // Authentication
+        loginBtn.addEventListener('click', async () => {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await auth.signInWithPopup(provider);
+                userInfo.textContent = `Logged in as: ${result.user.email}`;
+                seedButtons.forEach(btn => btn.disabled = false);
+                addStatus('✅ Authentication successful');
+            } catch (error) {
+                addStatus(`❌ Authentication failed: ${error.message}`);
+            }
+        });
+
+        // Seeding functions
+        async function seedTeam() {
+            try {
+                addStatus('Seeding team members...');
+                const batch = db.batch();
+                teamMembers.forEach(member => {
+                    const ref = db.collection('team').doc(member.id);
+                    batch.set(ref, {
+                        ...member,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+                await batch.commit();
+                addStatus(`✅ Added ${teamMembers.length} team members`);
+            } catch (error) {
+                addStatus(`❌ Error seeding team: ${error.message}`);
+            }
+        }
+
+        async function seedBlog() {
+            try {
+                addStatus('Seeding blog posts...');
+                const batch = db.batch();
+                blogPosts.forEach(post => {
+                    const ref = db.collection('blog').doc(post.id);
+                    batch.set(ref, {
+                        ...post,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+                await batch.commit();
+                addStatus(`✅ Added ${blogPosts.length} blog posts`);
+            } catch (error) {
+                addStatus(`❌ Error seeding blog: ${error.message}`);
+            }
+        }
+
+        async function seedJobs() {
+            try {
+                addStatus('Seeding job listings...');
+                const batch = db.batch();
+                jobListings.forEach(job => {
+                    const ref = db.collection('jobs').doc(job.id);
+                    batch.set(ref, {
+                        ...job,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+                await batch.commit();
+                addStatus(`✅ Added ${jobListings.length} job listings`);
+            } catch (error) {
+                addStatus(`❌ Error seeding jobs: ${error.message}`);
+            }
+        }
+
+        async function seedPricing() {
+            try {
+                addStatus('Seeding pricing tiers...');
+                const batch = db.batch();
+                pricingTiers.forEach(tier => {
+                    const ref = db.collection('pricing').doc(tier.id);
+                    batch.set(ref, {
+                        ...tier,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+                await batch.commit();
+                addStatus(`✅ Added ${pricingTiers.length} pricing tiers`);
+            } catch (error) {
+                addStatus(`❌ Error seeding pricing: ${error.message}`);
+            }
+        }
+
+        async function seedAll() {
+            addStatus('🌱 Starting complete content seed...');
+            await seedTeam();
+            await seedBlog();
+            await seedJobs();
+            await seedPricing();
+            addStatus('🎉 All content seeded successfully!');
+            addStatus('Visit https://sirsi.ai to see the content');
+        }
+
+        function addStatus(message) {
+            const time = new Date().toLocaleTimeString();
+            status.innerHTML += `[${time}] ${message}<br>`;
+            status.scrollTop = status.scrollHeight;
+        }
+
+        // Button event listeners
+        document.getElementById('seedTeamBtn').addEventListener('click', seedTeam);
+        document.getElementById('seedBlogBtn').addEventListener('click', seedBlog);
+        document.getElementById('seedJobsBtn').addEventListener('click', seedJobs);
+        document.getElementById('seedPricingBtn').addEventListener('click', seedPricing);
+        document.getElementById('seedAllBtn').addEventListener('click', seedAll);
+
+        // Check auth state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                userInfo.textContent = `Logged in as: ${user.email}`;
+                seedButtons.forEach(btn => btn.disabled = false);
+            } else {
+                userInfo.textContent = 'Not logged in';
+                seedButtons.forEach(btn => btn.disabled = true);
+            }
+        });
+    </script>
+</body>
+</html>

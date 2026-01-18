@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Roadmap - SirsiNexus Investor Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Authentication check -->
+    <script>
+      (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+          window.location.href = '../../investor-login.html';
+          return;
+        }
+        
+        try {
+          const authData = JSON.parse(auth);
+          const loginTime = new Date(authData.loginTime);
+          const now = new Date();
+          const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+          
+          if (hoursSinceLogin > 24) {
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '../../investor-login.html';
+            return;
+          }
+          
+          console.log('✅ Authentication verified for committee access:', authData.id);
+        } catch (error) {
+          console.error('❌ Authentication error:', error);
+          sessionStorage.removeItem('investorAuth');
+          window.location.href = '../../investor-login.html';
+          return;
+        }
+      })();
+    </script>
+    
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                200: '#bbf7d0',
+                300: '#86efac',
+                400: '#4ade80',
+                500: '#22c55e',
+                600: '#16a34a',
+                700: '#15803d',
+                800: '#166534',
+                900: '#14532d'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Theme initialization -->
+    <script>
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          if (persistedColorPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          return mql.matches ? 'dark' : 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    
+    <link rel="stylesheet" href="/assets/css/shared.css">
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+<!-- Navigation and Layout Header -->
+<div id="unified-header"></div>
+
+<!-- Page Scripts -->
+<script src="/components/universal-navigation.js"></script>
+<script src="/components/navigation-customizer.js"></script>
+<script src="/assets/js/shared-theme-toggle.js"></script>
+
+<!-- Authentication Check -->
+<script>
+    (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+            window.location.href = '/investor-login.html';
+            return;
+        }
+        
+        try {
+            const authData = JSON.parse(auth);
+            const loginTime = new Date(authData.loginTime);
+            const now = new Date();
+            const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+            
+            if (hoursSinceLogin > 24) {
+                sessionStorage.removeItem('investorAuth');
+                window.location.href = '/investor-login.html';
+                return;
+            }
+        } catch (error) {
+            console.error('Authentication error:', error);
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '/investor-login.html';
+            return;
+        }
+    })();
+</script>
+
+<!-- Page-specific customization -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Get the current page from URL
+        const path = window.location.pathname;
+        const pageName = path.split('/').pop().replace('.html', '');
+        
+        // Add committee menu if we're in the committee section
+        if (path.includes('/committee/')) {
+            navCustomizer.addCommitteeMenu(pageName);
+        }
+        
+        // Add action buttons based on page
+        switch(pageName) {
+            case 'data-room':
+                navCustomizer.addActionButtons([{
+                    label: 'Upload Document',
+                    className: 'bg-emerald-600 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-700 transition-colors',
+                    onClick: () => showUploadModal()
+                }]);
+                break;
+            case 'kpi-metrics':
+                navCustomizer.addActionButtons([{
+                    label: 'Export Report',
+                    className: 'bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors',
+                    onClick: () => exportMetrics()
+                }]);
+                break;
+        }
+    });
+</script>
+
+    <!-- Header -->
+    <div id="unified-header"></div>
+    <!-- Sidebar Navigation -->
+    <aside class="fixed left-0 top-16 bottom-0 w-52 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 overflow-y-auto hidden lg:block">
+        <div class="p-4">
+            <div class="space-y-1">
+                <a href="index.html" class="flex items-center px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="data-room.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Data Room
+                </a>
+                <a href="kpi-unit-metrics.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                    </svg>
+                    KPI Metrics
+                </a>
+                <a href="committee/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                    Committee
+                </a>
+            </div>
+            
+            <div class="mt-8">
+                <h3 class="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Resources</h3>
+                <div class="mt-2 space-y-1">
+                    <a href="#" class="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                        <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                        Download Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile menu button -->
+    <button class="lg:hidden fixed bottom-4 right-4 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg" onclick="toggleMobileSidebar()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
+
+    
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900 dark:to-emerald-800 py-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+                    Product <span class="text-emerald-600">Roadmap</span> & Strategy
+                </h1>
+                <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
+                    Strategic development timeline and investment targets for our AI-powered cloud infrastructure platform.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <span class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-lg border border-slate-200 dark:border-slate-700">
+                        <span class="mr-2">🚀</span>
+                        Q4 2025: AI Core
+                    </span>
+                    <span class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-lg border border-slate-200 dark:border-slate-700">
+                        <span class="mr-2">⚡</span>
+                        Q2 2026: Enterprise
+                    </span>
+                    <span class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-lg border border-slate-200 dark:border-slate-700">
+                        <span class="mr-2">🌐</span>
+                        2027: Scale
+                    </span>
+                </div>
+                <button onclick="window.print()" class="inline-flex items-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                    </svg>
+                    Print Roadmap
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-8">
+
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-700">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center text-emerald-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-emerald-600">$150K</div>
+                        <div class="text-sm text-slate-500 dark:text-slate-400">Funds Raised</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-700">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center text-blue-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-slate-900 dark:text-slate-100">4</div>
+                        <div class="text-sm text-slate-600 dark:text-slate-400">Team Members</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-700">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center text-purple-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-slate-900 dark:text-slate-100">92%</div>
+                        <div class="text-sm text-slate-500 dark:text-slate-400">AI Accuracy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-slate-200 dark:border-slate-700">
+                <div class="flex items-center gap-4 mb-3">
+                    <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center text-orange-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-slate-900 dark:text-slate-100">42%</div>
+                        <div class="text-sm text-slate-500 dark:text-slate-400">Cost Reduction</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Architecture -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg border border-slate-200 dark:border-slate-700 mb-12">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Technical Architecture</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="sirsi-text space-y-4">
+                    <h3 class="text-xl font-semibold mb-4">Core Components</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="mt-1 w-6 h-6 flex-shrink-0 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center">
+                                <span class="text-emerald-600">1</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Graph of Thought AI Engine</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">
+                                    Purpose-built LLM services combined with Knowledge Graphs for superior reasoning and optimization
+                                </p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="mt-1 w-6 h-6 flex-shrink-0 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center">
+                                <span class="text-emerald-600">2</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Hedera Hashgraph Integration</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">
+                                    Enterprise-grade distributed ledger for secure, scalable infrastructure management
+                                </p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="mt-1 w-6 h-6 flex-shrink-0 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center">
+                                <span class="text-emerald-600">3</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">Multi-Cloud Orchestration</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">
+                                    Universal compatibility across AWS, Azure, GCP with automated optimization
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Technology Stack</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                            <h4 class="font-medium mb-2">Core Engine</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">
+                                Rust (Axum, SQLx, Tokio) - High-performance unified binary
+                            </p>
+                        </div>
+                        <div class="p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                            <h4 class="font-medium mb-2">Analytics Platform</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">
+                                Python (TensorFlow, pandas, Prophet, scikit-learn)
+                            </p>
+                        </div>
+                        <div class="p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                            <h4 class="font-medium mb-2">ML Platform</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">
+                                Python (PyTorch, XGBoost) for cost prediction models
+                            </p>
+                        </div>
+                        <div class="p-4 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                            <h4 class="font-medium mb-2">Frontend</h4>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">
+                                React/Next.js with TypeScript (100% type coverage)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strategic Development Timeline -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg border border-slate-200 dark:border-slate-700 mb-12">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-8">Development Timeline & Strategic Milestones</h2>
+            <div class="space-y-8">
+                <!-- Phase 1 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="text-lg font-semibold text-emerald-600">Q3-Q4 2025: Foundation & AI Core</h3>
+                            <span class="bg-emerald-100 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-200 px-2 py-1 rounded text-xs">Active</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 mb-3">Build core infrastructure and advanced Graph of Thought AI engine</p>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                                <li>Graph of Thought AI implementation</li>
+                                <li>Hedera Hashgraph integration</li>
+                                <li>Multi-cloud optimization v1</li>
+                            </ul>
+                            <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                                <li>Strategic investment ($150-250K)</li>
+                                <li>Enterprise pilot customers</li>
+                                <li>Core team expansion</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">2</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="text-lg font-semibold text-blue-600">Q1-Q2 2026: Market Entry & Scale</h3>
+                            <span class="bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-xs">Planned</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 mb-3">Enterprise portal launch and rapid customer acquisition</p>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                                <li>$2M Pre-Seed round closure</li>
+                                <li>Enterprise portal GA launch</li>
+                                <li>92% AI prediction accuracy</li>
+                            </ul>
+                            <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                                <li>25 enterprise customers</li>
+                                <li>SOC 2 Type II certification</li>
+                                <li>Advanced security features</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">3</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="text-lg font-semibold text-purple-600">Q3-Q4 2026: Global Expansion</h3>
+                            <span class="bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-200 px-2 py-1 rounded text-xs">Future</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 mb-3">Scale operations and establish market leadership</p>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                                <li>$8M Seed funding secured</li>
+                                <li>100+ enterprise customers</li>
+                                <li>42% cost reduction achieved</li>
+                            </ul>
+                            <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                                <li>Global market expansion</li>
+                                <li>FedRAMP certification</li>
+                                <li>Advanced AI features</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 4 -->
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold">4</div>
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-3 mb-2">
+                            <h3 class="text-lg font-semibold text-orange-600">2027: Market Leadership</h3>
+                            <span class="bg-orange-100 dark:bg-orange-900/20 text-orange-800 dark:text-orange-200 px-2 py-1 rounded text-xs">Vision</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 mb-3">Establish industry dominance and prepare for exit opportunities</p>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                                <li>$15M Series A funding</li>
+                                <li>500+ enterprise customers</li>
+                                <li>On-premises solution GA</li>
+                            </ul>
+                            <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-1">
+                                <li>Strategic partnerships</li>
+                                <li>Advanced AI rollout</li>
+                                <li>Acquisition opportunities</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Strategy Section -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg border border-slate-200 dark:border-slate-700 mb-12">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-8">Market Strategy & Competitive Position</h2>
+            
+            <!-- Strategic Vision -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Strategic Vision</h3>
+                <div class="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/10 dark:to-blue-900/10 p-6 rounded-lg">
+                    <p class="text-slate-600 dark:text-slate-400 mb-4">
+                        SirsiNexus represents a paradigm shift in cloud infrastructure management, fundamentally disrupting the traditional Infrastructure as Code (IaC) market through our revolutionary AI-first approach.
+                    </p>
+                    <p class="text-slate-600 dark:text-slate-400">
+                        Built on Hedera Hashgraph's enterprise-grade distributed ledger technology, our patent-pending Graph of Thought combines purpose-built LLM services with Knowledge Graphs.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Market Opportunity & Differentiators -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Key Differentiators</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                            <div class="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center text-emerald-600 font-semibold text-sm">AI</div>
+                            <div class="text-sm text-slate-600 dark:text-slate-400">Graph of Thought AI Architecture</div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                            <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center text-blue-600 font-semibold text-sm">DL</div>
+                            <div class="text-sm text-slate-600 dark:text-slate-400">Hedera Hashgraph Integration</div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                            <div class="w-8 h-8 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center text-purple-600 font-semibold text-sm">3.5x</div>
+                            <div class="text-sm text-slate-600 dark:text-slate-400">Faster deployment speed</div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                            <div class="w-8 h-8 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center text-orange-600 font-semibold text-sm">35%</div>
+                            <div class="text-sm text-slate-600 dark:text-slate-400">Cost efficiency improvement</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Market Opportunity</h3>
+                    <div class="space-y-3">
+                        <div class="bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-900/10 p-4 rounded-lg">
+                            <div class="text-2xl font-bold text-emerald-600 mb-1">$78.8B</div>
+                            <div class="text-sm text-slate-600 dark:text-slate-400">Total Addressable Market</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-500 mt-1">Growing at 22% CAGR</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-900/10 p-4 rounded-lg">
+                            <div class="text-2xl font-bold text-blue-600 mb-1">$12.8B</div>
+                            <div class="text-sm text-slate-600 dark:text-slate-400">IaC Market Segment</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-500 mt-1">Our primary target</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-900/10 p-4 rounded-lg">
+                            <div class="text-2xl font-bold text-purple-600 mb-1">94%</div>
+                            <div class="text-sm text-slate-600 dark:text-slate-400">Enterprise Cloud Adoption</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-500 mt-1">Average 2.6 providers per enterprise</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Investment & Growth Targets -->
+        <section class="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/10 dark:to-blue-900/10 rounded-xl p-8 border border-emerald-200 dark:border-emerald-700 mb-12">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 text-center">Investment & Growth Targets</h2>
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-emerald-600 mb-2">$25M</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400">Total Funding Target</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-500 mt-1">Through Series A</div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-blue-600 mb-2">500+</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400">Enterprise Customers</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-500 mt-1">By end of 2027</div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-purple-600 mb-2">$45M</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400">Annual Revenue</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-500 mt-1">2027 target</div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-orange-600 mb-2">42%</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400">Cost Reduction</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-500 mt-1">Customer savings</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Risk Assessment -->
+        <section class="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg border border-slate-200 dark:border-slate-700 mb-12">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Risk Assessment & Mitigation</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="border-l-4 border-yellow-500 pl-4 bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-r-lg">
+                    <h3 class="font-semibold text-yellow-800 dark:text-yellow-200 mb-3">Technical Risks</h3>
+                    <div class="space-y-2 text-sm text-yellow-700 dark:text-yellow-300 mb-3">
+                        <div class="flex items-start gap-2">
+                            <span class="bg-yellow-200 dark:bg-yellow-800 w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"></span>
+                            <span>AI model accuracy challenges</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="bg-yellow-200 dark:bg-yellow-800 w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"></span>
+                            <span>Scalability with rapid growth</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="bg-yellow-200 dark:bg-yellow-800 w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"></span>
+                            <span>Integration complexity</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-yellow-700 dark:text-yellow-300"><strong>Mitigation:</strong> Robust testing, gradual rollout, fallback systems</p>
+                </div>
+                <div class="border-l-4 border-red-500 pl-4 bg-red-50 dark:bg-red-900/20 p-4 rounded-r-lg">
+                    <h3 class="font-semibold text-red-800 dark:text-red-200 mb-3">Market Risks</h3>
+                    <div class="space-y-2 text-sm text-red-700 dark:text-red-300 mb-3">
+                        <div class="flex items-start gap-2">
+                            <span class="bg-red-200 dark:bg-red-800 w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"></span>
+                            <span>Competitive response</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="bg-red-200 dark:bg-red-800 w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"></span>
+                            <span>Economic downturn</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="bg-red-200 dark:bg-red-800 w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"></span>
+                            <span>Regulatory changes</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-red-700 dark:text-red-300"><strong>Mitigation:</strong> Strong differentiation, flexible pricing, compliance focus</p>
+                </div>
+                <div class="border-l-4 border-blue-500 pl-4 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-r-lg">
+                    <h3 class="font-semibold text-blue-800 dark:text-blue-200 mb-3">Execution Risks</h3>
+                    <div class="space-y-2 text-sm text-blue-700 dark:text-blue-300 mb-3">
+                        <div class="flex items-start gap-2">
+                            <span class="bg-blue-200 dark:bg-blue-800 w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"></span>
+                            <span>Team scaling challenges</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="bg-blue-200 dark:bg-blue-800 w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"></span>
+                            <span>Customer success issues</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="bg-blue-200 dark:bg-blue-800 w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"></span>
+                            <span>Development delays</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-blue-700 dark:text-blue-300"><strong>Mitigation:</strong> Proven hiring, customer focus, agile development</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Success Metrics -->
+        <section class="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 p-8 rounded-lg border border-slate-200 dark:border-slate-700">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 text-center">Success Metrics & KPIs</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Business Metrics</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 dark:text-slate-400">Monthly ARR Growth</span>
+                            <span class="font-semibold text-emerald-600">>20%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 dark:text-slate-400">Customer Acquisition Cost</span>
+                            <span class="font-semibold text-emerald-600"><$12.5K</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 dark:text-slate-400">Net Revenue Retention</span>
+                            <span class="font-semibold text-emerald-600">>120%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 dark:text-slate-400">Customer Satisfaction</span>
+                            <span class="font-semibold text-emerald-600">>4.5/5</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Technical Metrics</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 dark:text-slate-400">Platform Uptime</span>
+                            <span class="font-semibold text-emerald-600">>99.9%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 dark:text-slate-400">API Response Time</span>
+                            <span class="font-semibold text-emerald-600"><200ms</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 dark:text-slate-400">AI Prediction Accuracy</span>
+                            <span class="font-semibold text-emerald-600">>92%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-600 dark:text-slate-400">Security Incidents</span>
+                            <span class="font-semibold text-emerald-600">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 text-slate-600 dark:text-white py-12">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <img src="/assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-8 h-8 object-contain">
+                        </div>
+                        <span class="text-xl font-semibold">SirsiNexus</span>
+                    </div>
+                    <p class="text-slate-600 dark:text-slate-400">Agent-embedded infrastructure platform for enterprise cloud operations.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Platform</h4>
+                    <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                        <li><a href="#features" class="hover:text-slate-900 dark:hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#platform" class="hover:text-slate-900 dark:hover:text-white transition-colors">Architecture</a></li>
+                        <li><a href="#docs" class="hover:text-slate-900 dark:hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#pricing" class="hover:text-slate-900 dark:hover:text-white transition-colors">Pricing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Investor Resources</h4>
+                    <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                        <li><a href="/investor-portal/index.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Investor Portal</a></li>
+                        <li><a href="market-analysis.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Market Analysis</a></li>
+                        <li><span class="text-emerald-600 dark:text-emerald-400 font-medium">Product Roadmap</span></li>
+                        <li><a href="/investor-portal/committee/index.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Committee Access</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                        <li><a href="/privacy-policy.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="/terms-of-service.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="/documentation.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Security</a></li>
+                        <li><a href="/investor-login.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Investor Relations</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8 text-center text-slate-600 dark:text-slate-400">
+                <p>&copy; 2025 Sirsi Technologies Inc. All rights reserved.</p>
+                <p class="text-sm mt-2">SirsiNexus is a product of Sirsi Technologies Inc.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        function logout() {
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '/investor-login.html';
+        }
+        
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+        }
+        
+        // Initialize immediately
+        initTheme();
+        
+        // Make functions available globally
+        window.toggleTheme = toggleTheme;
+        window.logout = logout;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+        });
+    </script>
+<script src="../../js/telemetry.js"></script>
+
+    
+    <script>
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('aside');
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('block');
+        }
+        
+        // Highlight active page
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const sidebarLinks = document.querySelectorAll('aside a');
+            
+            sidebarLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || (currentPage === 'index.html' && href === 'index.html')) {
+                    link.classList.remove('text-gray-700', 'dark:text-gray-300');
+                    link.classList.add('text-blue-600', 'dark:text-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

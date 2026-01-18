@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Room Test - SirsiNexus Admin</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Basic test styles */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .test-header {
+            background: #10b981;
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+        }
+        
+        .test-sidebar {
+            background: #f3f4f6;
+            width: 256px;
+            position: fixed;
+            top: 64px;
+            left: 0;
+            bottom: 0;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        
+        .test-main {
+            margin-left: 256px;
+            margin-top: 64px;
+            padding: 2rem;
+            background: white;
+            min-height: calc(100vh - 64px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Test Header -->
+    <div class="test-header">
+        <h1>SirsiNexus Admin - Data Room Test</h1>
+    </div>
+    
+    <!-- Test Sidebar -->
+    <div class="test-sidebar">
+        <h2 class="font-bold mb-4">Navigation</h2>
+        <ul>
+            <li><a href="admin-dashboard.html">Dashboard</a></li>
+            <li><a href="user-management.html">User Management</a></li>
+            <li class="font-bold text-green-600">Data Room (Current)</li>
+        </ul>
+    </div>
+    
+    <!-- Test Main Content -->
+    <div class="test-main">
+        <h1 class="text-2xl font-bold mb-4">Data Room Test Page</h1>
+        <p>If you can see this page with the green header and sidebar, then the basic layout is working.</p>
+        
+        <div class="mt-8 p-4 bg-green-100 rounded">
+            <h2 class="font-bold">Quick Test Results:</h2>
+            <ul class="mt-2">
+                <li>✓ Page loads</li>
+                <li>✓ Styles applied</li>
+                <li>✓ Layout structure visible</li>
+            </ul>
+        </div>
+        
+        <div class="mt-4">
+            <button onclick="window.location.href='data-room.html'" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                Go to Actual Data Room Page
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        console.log('Data Room Test Page Loaded Successfully');
+    </script>
+<script src="../../js/telemetry.js"></script>
+</body>
+</html>

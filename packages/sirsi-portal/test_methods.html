@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Methods Test</title>
+    <script src="https://www.paypal.com/sdk/js?client-id=ASUI7q4yAs6anh26J6T_7hLyX0UwUbVWQS-8lgngn9z0W6VX4zrt2y7Q_auiXBAUrzxd1ibBrz22KDAr&currency=USD&components=buttons,marks,funding-eligibility,applepay,googlepay&enable-funding=venmo,paylater,card,applepay,googlepay&disable-funding=credit"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ddd; }
+        .result { padding: 10px; margin: 10px 0; background: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Payment Methods Availability Test</h1>
+    
+    <div class="test-section">
+        <h2>Current Available Methods:</h2>
+        <div id="funding-sources" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Payment ($10.00):</h2>
+        <div id="paypal-buttons"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Device & Browser Info:</h2>
+        <div id="device-info" class="result"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Test funding sources
+            const fundingDiv = document.getElementById('funding-sources');
+            
+            try {
+                const availableSources = paypal.getFundingSources ? paypal.getFundingSources() : [];
+                fundingDiv.innerHTML = `
+                    <strong>Available Payment Methods:</strong><br>
+                    ${availableSources.length > 0 ? availableSources.join(', ') : 'Unable to detect - will check via button rendering'}
+                `;
+            } catch (e) {
+                fundingDiv.innerHTML = `<em>Funding detection method not available, checking via button rendering...</em>`;
+            }
+            
+            // Device info
+            const deviceDiv = document.getElementById('device-info');
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const isAndroid = /Android/.test(navigator.userAgent);
+            const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+            
+            deviceDiv.innerHTML = `
+                <strong>Device:</strong> ${navigator.platform}<br>
+                <strong>Browser:</strong> ${navigator.userAgent.split(' ').pop()}<br>
+                <strong>iOS Device:</strong> ${isIOS ? '✅ Yes' : '❌ No'}<br>
+                <strong>Android:</strong> ${isAndroid ? '✅ Yes' : '❌ No'}<br>
+                <strong>Mac Safari:</strong> ${isMac && isSafari ? '✅ Yes' : '❌ No'}<br>
+                <strong>Apple Pay Compatible:</strong> ${(isIOS || (isMac && isSafari)) ? '✅ Likely' : '❌ Unlikely'}
+            `;
+            
+            // Render payment buttons
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: { value: '10.00' },
+                            description: 'Payment Method Test'
+                        }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    alert('✅ Test payment approved! (Order ID: ' + data.orderID + ')');
+                    return actions.order.capture();
+                },
+                onError: function(err) {
+                    alert('❌ Error: ' + JSON.stringify(err));
+                },
+                style: {
+                    layout: 'vertical',
+                    height: 50
+                }
+            }).render('#paypal-buttons');
+        });
+    </script>
+</body>
+</html>

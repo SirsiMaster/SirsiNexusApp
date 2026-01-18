@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PayPal Debug Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.paypal.com/sdk/js?client-id=ASUI7q4yAs6anh26J6T_7hLyX0UwUbVWQS-8lgngn9z0W6VX4zrt2y7Q_auiXBAUrzxd1ibBrz22KDAr&currency=USD&components=buttons,marks,funding-eligibility,applepay,googlepay&enable-funding=venmo,paylater,card,applepay,googlepay&disable-funding=credit"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .debug-info { background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .amount-input { width: 200px; padding: 10px; font-size: 16px; margin: 10px; }
+        button { padding: 10px 20px; font-size: 16px; margin: 10px; }
+        #paypal-button-container { margin: 20px 0; min-height: 100px; border: 2px dashed #ccc; }
+    </style>
+</head>
+<body>
+    <h1>PayPal Integration Debug Test</h1>
+    
+    <div class="debug-info">
+        <h3>Debug Information:</h3>
+        <p><strong>PayPal SDK Loaded:</strong> <span id="sdk-status">Checking...</span></p>
+        <p><strong>Current Time:</strong> <span id="current-time"></span></p>
+        <p><strong>User Agent:</strong> <span id="user-agent"></span></p>
+    </div>
+    
+    <div>
+        <label>Test Amount: $</label>
+        <input type="number" id="amount" class="amount-input" value="10.00" step="0.01" min="1">
+        <button onclick="renderButtons()">Render PayPal Buttons</button>
+        <button onclick="clearButtons()">Clear Buttons</button>
+    </div>
+    
+    <div id="paypal-button-container"></div>
+    
+    <div id="messages"></div>
+    
+    <script>
+        // Debug info
+        document.getElementById('current-time').textContent = new Date().toISOString();
+        document.getElementById('user-agent').textContent = navigator.userAgent;
+        
+        function updateSDKStatus() {
+            const status = document.getElementById('sdk-status');
+            if (typeof paypal !== 'undefined') {
+                status.textContent = 'YES ✅';
+                status.style.color = 'green';
+                console.log('PayPal SDK loaded successfully');
+            } else {
+                status.textContent = 'NO ❌';
+                status.style.color = 'red';
+                console.log('PayPal SDK not loaded');
+            }
+        }
+        
+        function logMessage(message, type = 'info') {
+            const messagesDiv = document.getElementById('messages');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? 'red' : type === 'success' ? 'green' : 'black';
+            messagesDiv.innerHTML += `<p style="color: ${color}; margin: 5px 0;">[${timestamp}] ${message}</p>`;
+            console.log(message);
+        }
+        
+        function clearButtons() {
+            document.getElementById('paypal-button-container').innerHTML = '';
+            document.getElementById('messages').innerHTML = '';
+            logMessage('Buttons cleared');
+        }
+        
+        function renderButtons() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            if (!amount || amount < 1) {
+                logMessage('Please enter a valid amount ($1 or more)', 'error');
+                return;
+            }
+            
+            logMessage(`Attempting to render PayPal buttons for $${amount}`);
+            
+            if (typeof paypal === 'undefined') {
+                logMessage('PayPal SDK not loaded!', 'error');
+                return;
+            }
+            
+            const container = document.getElementById('paypal-button-container');
+            container.innerHTML = '';
+            
+            try {
+                paypal.Buttons({
+                    createOrder: function(data, actions) {
+                        logMessage('Creating PayPal order...');
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: amount.toFixed(2),
+                                    currency_code: 'USD'
+                                },
+                                description: 'Debug Test Payment'
+                            }]
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        logMessage('Payment approved, capturing...', 'success');
+                        return actions.order.capture().then(function(details) {
+                            logMessage(`Payment successful! Transaction ID: ${details.id}`, 'success');
+                        });
+                    },
+                    onError: function(err) {
+                        logMessage(`PayPal error: ${err}`, 'error');
+                        console.error('PayPal error:', err);
+                    },
+                    onCancel: function(data) {
+                        logMessage('Payment cancelled by user');
+                        console.log('Payment cancelled:', data);
+                    },
+                    style: {
+                        layout: 'vertical',
+                        color: 'blue',
+                        shape: 'pill',
+                        label: 'paypal'
+                    }
+                }).render('#paypal-button-container').then(function() {
+                    logMessage('PayPal buttons rendered successfully!', 'success');
+                }).catch(function(err) {
+                    logMessage(`PayPal render error: ${err}`, 'error');
+                    console.error('PayPal render error:', err);
+                });
+            } catch (error) {
+                logMessage(`JavaScript error: ${error.message}`, 'error');
+                console.error('JavaScript error:', error);
+            }
+        }
+        
+        // Check SDK status when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(updateSDKStatus, 1000);
+            logMessage('Page loaded, PayPal SDK check scheduled');
+        });
+        
+        // Auto-render buttons after SDK loads
+        setTimeout(function() {
+            if (typeof paypal !== 'undefined') {
+                renderButtons();
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus - Investor Login</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              emerald: {
+                600: '#059669',
+                700: '#047857',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <script>
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          const hasPersistedPreference = typeof persistedColorPreference === 'string';
+          if (hasPersistedPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+          if (hasMediaQueryPreference) {
+            return mql.matches ? 'dark' : 'light';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full space-y-8 p-8">
+        <div class="text-center">
+            <div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900">
+                <svg class="h-6 w-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+            </div>
+            <h2 class="mt-6 text-3xl font-bold text-gray-900 dark:text-white">
+                SirsiNexus Investor Portal
+            </h2>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                Access financial data, reports, and investor communications
+            </p>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-6">
+            <form id="loginForm" class="space-y-6">
+                <div id="errorMessage" class="hidden bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-md p-4 mb-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
+                                Invalid credentials
+                            </h3>
+                            <p class="text-sm text-red-700 dark:text-red-300 mt-1">
+                                Please check your Investor ID and Access Code.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="investor-id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Investor ID
+                    </label>
+                    <input id="investor-id" name="investor-id" type="text" required
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                           placeholder="Enter your investor ID">
+                </div>
+                
+                <div>
+                    <label for="access-code" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Access Code
+                    </label>
+                    <input id="access-code" name="access-code" type="password" required
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                           placeholder="Enter your access code">
+                </div>
+                
+                <div>
+                    <button type="submit" id="submitButton" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span id="buttonText">Access Portal</span>
+                        <svg id="loadingSpinner" class="hidden animate-spin -mr-1 ml-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Need access? Contact us at <a href="mailto:cylton@sirsi.ai" class="text-emerald-600 hover:text-emerald-800 transition-colors">cylton@sirsi.ai</a>
+                </p>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-500">
+                    Access requires approval from the administrator.
+                </p>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <a href="/sirsinexusportal/index.html" class="text-emerald-600 hover:text-emerald-800 transition-colors text-sm font-medium">
+                ← Back to Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Load approved investors from localStorage
+        function getApprovedInvestors() {
+            const applications = JSON.parse(localStorage.getItem('investorApplications') || '[]');
+            return applications.filter(app => app.status === 'approved');
+        }
+        
+        // Demo credentials (in production, this would be handled server-side)
+        const VALID_CREDENTIALS = [
+            { id: 'INV001', code: 'DEMO2025', name: 'Demo Investor', role: 'investor' },
+            { id: 'INV002', code: 'BETA2025', name: 'Beta Investor', role: 'investor' },
+            { id: 'ADMIN', code: 'ADMIN2025', name: 'Administrator', role: 'admin' },
+            { id: 'GUEST', code: 'GUEST2025', name: 'Guest Access', role: 'guest' }
+        ];
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const investorId = document.getElementById('investor-id').value.trim();
+            const accessCode = document.getElementById('access-code').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            const submitButton = document.getElementById('submitButton');
+            const buttonText = document.getElementById('buttonText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            
+            // Hide error message
+            errorMessage.classList.add('hidden');
+            
+            // Show loading state
+            submitButton.disabled = true;
+            buttonText.textContent = 'Verifying...';
+            loadingSpinner.classList.remove('hidden');
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Check credentials against demo accounts
+                let validCredential = VALID_CREDENTIALS.find(cred => 
+                    cred.id === investorId && cred.code === accessCode
+                );
+                
+                // Also check approved investors (using email as ID and a default code)
+                if (!validCredential) {
+                    const approvedInvestors = getApprovedInvestors();
+                    const approvedInvestor = approvedInvestors.find(inv => 
+                        inv.email === investorId && accessCode === 'investor2025'
+                    );
+                    
+                    if (approvedInvestor) {
+                        validCredential = {
+                            id: approvedInvestor.id,
+                            name: approvedInvestor.name,
+                            role: 'investor'
+                        };
+                    }
+                }
+                
+                if (validCredential) {
+                    // Store session data (matching what portal expects)
+                    sessionStorage.setItem('investorAuth', JSON.stringify({
+                        id: validCredential.id,
+                        name: validCredential.name,
+                        role: validCredential.role,
+                        loginTime: new Date().toISOString()
+                    }));
+                    
+                    // Success - redirect appropriately based on role
+                    buttonText.textContent = 'Access Granted!';
+                    
+                    // Add success message with link
+                    const successDiv = document.createElement('div');
+                    successDiv.className = 'mt-4 p-3 bg-green-50 dark:bg-green-900 rounded-md text-xs text-green-700 dark:text-green-300';
+                    
+                    if (validCredential.role === 'admin') {
+                        successDiv.innerHTML = `
+                            <strong>✅ Admin Login Successful!</strong><br>
+                            Redirecting to <a href="admin-dashboard.html" class="underline" target="_blank">Admin Dashboard</a><br>
+                            <em>If redirect fails, click the link above</em>
+                        `;
+                    } else {
+                        successDiv.innerHTML = `
+                            <strong>✅ Login Successful!</strong><br>
+                            Redirecting to <a href="/sirsinexusportal/investor-portal/index.html" class="underline" target="_blank">Investor Portal</a><br>
+                            <em>If redirect fails, click the link above</em>
+                        `;
+                    }
+                    
+                    document.querySelector('.bg-white.dark\\:bg-gray-800').appendChild(successDiv);
+                    
+                    setTimeout(() => {
+                        console.log('Attempting redirect...');
+                        try {
+                            if (validCredential.role === 'admin') {
+                                window.location.href = 'admin-dashboard.html';
+                            } else {
+                                window.location.href = 'investor-portal/index.html';
+                            }
+                        } catch (error) {
+                            console.error('Redirect failed:', error);
+                            // Fallback: open in new tab
+                            if (validCredential.role === 'admin') {
+                                window.open('admin-dashboard.html', '_blank');
+                            } else {
+                                window.open('investor-portal/index.html', '_blank');
+                            }
+                        }
+                    }, 2000);
+                } else {
+                    // Show error
+                    errorMessage.classList.remove('hidden');
+                    
+                    // Reset form
+                    submitButton.disabled = false;
+                    buttonText.textContent = 'Access Portal';
+                    loadingSpinner.classList.add('hidden');
+                    
+                    // Clear fields
+                    document.getElementById('investor-id').value = '';
+                    document.getElementById('access-code').value = '';
+                    document.getElementById('investor-id').focus();
+                }
+            }, 1500); // 1.5 second delay to simulate server processing
+        });
+        
+        // Demo credentials helper
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add demo credentials info (for development)
+            const demoInfo = document.createElement('div');
+            demoInfo.className = 'mt-4 p-3 bg-blue-50 dark:bg-blue-900 rounded-md text-xs text-blue-700 dark:text-blue-300';
+            
+            // Get approved investors count
+            const approvedInvestors = getApprovedInvestors();
+            
+            demoInfo.innerHTML = `
+                <strong>Demo Credentials:</strong><br>
+                • ID: <code>INV001</code> Code: <code>DEMO2025</code><br>
+                • ID: <code>GUEST</code> Code: <code>GUEST2025</code><br>
+                • ID: <code>ADMIN</code> Code: <code>ADMIN2025</code> (Admin Dashboard)<br>
+                ${approvedInvestors.length > 0 ? `<br><strong>Approved Investors:</strong><br>• Use your email and code: <code>investor2025</code>` : ''}
+            `;
+            document.querySelector('.bg-white.dark\\:bg-gray-800').appendChild(demoInfo);
+        });
+    </script>
+<script src="js/telemetry.js"></script>
+</body>
+</html>

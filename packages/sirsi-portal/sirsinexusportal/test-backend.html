@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Backend Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.success {
+            background: #10b981;
+            color: white;
+        }
+        .status.error {
+            background: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mock Backend API Test</h1>
+        <p>Test the mock backend endpoints for the admin dashboard.</p>
+        
+        <h2>Test Endpoints</h2>
+        <div>
+            <button onclick="testAPI('kpis')">Test KPIs</button>
+            <button onclick="testAPI('users')">Test Users</button>
+            <button onclick="testAPI('activity/recent')">Test Recent Activity</button>
+            <button onclick="testAPI('notifications')">Test Notifications</button>
+            <button onclick="testAPI('system/status')">Test System Status</button>
+            <button onclick="testAPI('charts/revenue')">Test Revenue Chart</button>
+            <button onclick="testAPI('charts/users')">Test Users Chart</button>
+        </div>
+        
+        <h2>Test User Operations</h2>
+        <div>
+            <button onclick="createUser()">Create User</button>
+            <button onclick="updateUser()">Update User</button>
+            <button onclick="deleteUser()">Delete User</button>
+        </div>
+        
+        <h2>Clear Data</h2>
+        <div>
+            <button onclick="clearAllData()">Clear All LocalStorage</button>
+            <button onclick="location.reload()">Reload Page</button>
+        </div>
+        
+        <div id="result" class="result"></div>
+    </div>
+    
+    <!-- Load the mock backend -->
+    <script src="/assets/js/mock-backend.js"></script>
+    
+    <script>
+        function showResult(endpoint, data, error = null) {
+            const resultDiv = document.getElementById('result');
+            const status = error ? 'error' : 'success';
+            const statusClass = error ? 'error' : 'success';
+            
+            resultDiv.innerHTML = `
+                <h3>Endpoint: /api/${endpoint}</h3>
+                <p>Status: <span class="status ${statusClass}">${status.toUpperCase()}</span></p>
+                <p>Response:</p>
+                <pre>${error ? error : JSON.stringify(data, null, 2)}</pre>
+            `;
+        }
+        
+        async function testAPI(endpoint) {
+            try {
+                const response = await fetch(`/api/${endpoint}`);
+                const data = await response.json();
+                showResult(endpoint, data);
+            } catch (error) {
+                showResult(endpoint, null, error.toString());
+            }
+        }
+        
+        async function createUser() {
+            try {
+                const userData = {
+                    name: 'Test User',
+                    email: `test${Date.now()}@example.com`,
+                    role: 'investor'
+                };
+                
+                const response = await fetch('/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const data = await response.json();
+                showResult('users (POST)', data);
+            } catch (error) {
+                showResult('users (POST)', null, error.toString());
+            }
+        }
+        
+        async function updateUser() {
+            try {
+                // Get users first
+                const usersResponse = await fetch('/api/users');
+                const usersData = await usersResponse.json();
+                const users = usersData.data;
+                
+                if (users && users.length > 0) {
+                    const userId = users[0].id;
+                    const updateData = {
+                        name: 'Updated User Name'
+                    };
+                    
+                    const response = await fetch(`/api/users/${userId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updateData)
+                    });
+                    
+                    const data = await response.json();
+                    showResult(`users/${userId} (PUT)`, data);
+                } else {
+                    showResult('users (PUT)', null, 'No users found to update');
+                }
+            } catch (error) {
+                showResult('users (PUT)', null, error.toString());
+            }
+        }
+        
+        async function deleteUser() {
+            try {
+                // Get users first
+                const usersResponse = await fetch('/api/users');
+                const usersData = await usersResponse.json();
+                const users = usersData.data;
+                
+                if (users && users.length > 1) {
+                    // Delete the last user (not the admin)
+                    const userId = users[users.length - 1].id;
+                    
+                    const response = await fetch(`/api/users/${userId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const data = await response.json();
+                    showResult(`users/${userId} (DELETE)`, data);
+                } else {
+                    showResult('users (DELETE)', null, 'No users found to delete');
+                }
+            } catch (error) {
+                showResult('users (DELETE)', null, error.toString());
+            }
+        }
+        
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all data?')) {
+                localStorage.clear();
+                showResult('clear', { message: 'All localStorage data cleared' });
+                setTimeout(() => location.reload(), 1000);
+            }
+        }
+        
+        // Test on load
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('Mock Backend loaded:', typeof MockBackend !== 'undefined');
+            showResult('status', { message: 'Mock backend is ready!' });
+        });
+    </script>
+<script src="js/telemetry.js"></script>
+</body>
+</html>

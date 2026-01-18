@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Sirsi Nexus</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-functions-compat.js"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .password-strength {
+            height: 4px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex items-center justify-center p-4">
+    <div class="glass-effect rounded-2xl shadow-2xl max-w-md w-full p-8">
+        <!-- Logo -->
+        <div class="text-center mb-8">
+            <a href="/">
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                    Sirsi Nexus
+                </h1>
+            </a>
+            <p class="text-gray-600 mt-2">Create your account to get started</p>
+        </div>
+
+        <!-- Alert Container -->
+        <div id="alertContainer"></div>
+
+        <!-- Registration Form -->
+        <form id="registerForm" class="space-y-6">
+            <!-- Name Field -->
+            <div>
+                <label for="displayName" class="block text-sm font-medium text-gray-700 mb-2">
+                    Full Name
+                </label>
+                <input 
+                    type="text" 
+                    id="displayName" 
+                    name="displayName" 
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition"
+                    placeholder="John Doe"
+                    autocomplete="name"
+                >
+            </div>
+
+            <!-- Username Field -->
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                    Username
+                </label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    required
+                    pattern="[a-zA-Z0-9_-]{3,30}"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition"
+                    placeholder="Choose a username (3-30 letters, numbers, _ or -)"
+                    autocomplete="username"
+                >
+                <p class="text-xs text-gray-500 mt-1">Used for login after registration. Must be unique.</p>
+            </div>
+
+            <!-- Email Field -->
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                    Email Address
+                </label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                >
+                <p class="text-xs text-gray-500 mt-1">We'll send you a verification email</p>
+            </div>
+
+            <!-- Password Field -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                    Password
+                </label>
+                <div class="relative">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        required
+                        minlength="6"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition"
+                        placeholder="Minimum 6 characters"
+                        autocomplete="new-password"
+                    >
+                    <button 
+                        type="button" 
+                        id="togglePassword"
+                        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <!-- Password Strength Indicator -->
+                <div class="mt-2">
+                    <div class="password-strength bg-gray-200" id="passwordStrength"></div>
+                    <p class="text-xs text-gray-500 mt-1" id="passwordStrengthText"></p>
+                </div>
+            </div>
+
+            <!-- Confirm Password Field -->
+            <div>
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                    Confirm Password
+                </label>
+                <input 
+                    type="password" 
+                    id="confirmPassword" 
+                    name="confirmPassword" 
+                    required
+                    minlength="6"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent transition"
+                    placeholder="Re-enter your password"
+                    autocomplete="new-password"
+                >
+            </div>
+
+            <!-- Terms & Conditions -->
+            <div>
+                <label class="flex items-start">
+                    <input 
+                        type="checkbox" 
+                        id="agreeTerms" 
+                        name="agreeTerms"
+                        required
+                        class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded mt-1"
+                    >
+                    <span class="ml-2 text-sm text-gray-600">
+                        I agree to the 
+                        <a href="/terms.html" target="_blank" class="text-purple-600 hover:text-purple-700">Terms of Service</a> 
+                        and 
+                        <a href="/privacy.html" target="_blank" class="text-purple-600 hover:text-purple-700">Privacy Policy</a>
+                    </span>
+                </label>
+            </div>
+
+            <!-- Newsletter Opt-in -->
+            <div>
+                <label class="flex items-center">
+                    <input 
+                        type="checkbox" 
+                        id="newsletter" 
+                        name="newsletter"
+                        class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                    >
+                    <span class="ml-2 text-sm text-gray-600">
+                        Send me updates and newsletters
+                    </span>
+                </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+                type="submit" 
+                id="submitBtn"
+                class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                Create Account
+            </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+                <span class="px-4 bg-white text-gray-500">Or sign up with</span>
+            </div>
+        </div>
+
+        <!-- Social Signup Buttons -->
+        <div class="space-y-3">
+            <button 
+                type="button"
+                id="googleSignUp"
+                class="w-full flex items-center justify-center gap-3 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+            >
+                <svg class="w-5 h-5" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                <span class="text-gray-700">Sign up with Google</span>
+            </button>
+
+            <button 
+                type="button"
+                id="githubSignUp"
+                class="w-full flex items-center justify-center gap-3 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+            >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                <span class="text-gray-700">Sign up with GitHub</span>
+            </button>
+        </div>
+
+        <!-- Sign In Link -->
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                Already have an account? 
+                <a href="login.html" class="text-purple-600 hover:text-purple-700 font-semibold">
+                    Sign in
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-sm mx-4 text-center">
+            <svg class="w-16 h-16 text-green-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h3 class="text-xl font-semibold mb-2">Account Created!</h3>
+            <p class="text-gray-600 mb-4">We've sent a verification email to your inbox. Please verify your email to continue.</p>
+            <button 
+                onclick="window.location.href='login.html'"
+                class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
+            >
+                Go to Login
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Firebase Config -->
+    <script src="/assets/js/firebase-config.js"></script>
+    
+    <!-- Auth Service -->
+    <script src="/assets/js/auth-service.js"></script>
+    
+    <!-- Page Script -->
+    <script>
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            const strengthBar = document.getElementById('passwordStrength');
+            const strengthText = document.getElementById('passwordStrengthText');
+            
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]+/)) strength++;
+            if (password.match(/[A-Z]+/)) strength++;
+            if (password.match(/[0-9]+/)) strength++;
+            if (password.match(/[$@#&!]+/)) strength++;
+            
+            switch(strength) {
+                case 0:
+                case 1:
+                    strengthBar.style.width = '20%';
+                    strengthBar.className = 'password-strength bg-red-500';
+                    strengthText.textContent = 'Weak password';
+                    strengthText.className = 'text-xs text-red-500 mt-1';
+                    break;
+                case 2:
+                    strengthBar.style.width = '40%';
+                    strengthBar.className = 'password-strength bg-orange-500';
+                    strengthText.textContent = 'Fair password';
+                    strengthText.className = 'text-xs text-orange-500 mt-1';
+                    break;
+                case 3:
+                    strengthBar.style.width = '60%';
+                    strengthBar.className = 'password-strength bg-yellow-500';
+                    strengthText.textContent = 'Good password';
+                    strengthText.className = 'text-xs text-yellow-500 mt-1';
+                    break;
+                case 4:
+                    strengthBar.style.width = '80%';
+                    strengthBar.className = 'password-strength bg-blue-500';
+                    strengthText.textContent = 'Strong password';
+                    strengthText.className = 'text-xs text-blue-500 mt-1';
+                    break;
+                case 5:
+                    strengthBar.style.width = '100%';
+                    strengthBar.className = 'password-strength bg-green-500';
+                    strengthText.textContent = 'Very strong password';
+                    strengthText.className = 'text-xs text-green-500 mt-1';
+                    break;
+            }
+        }
+
+        // Password input listener
+        document.getElementById('password').addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            confirmPasswordInput.setAttribute('type', type);
+            
+            // Toggle icon
+            this.innerHTML = type === 'password' 
+                ? `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                   </svg>`
+                : `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+                   </svg>`;
+        });
+
+        // Show loading
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            document.getElementById('submitBtn').disabled = true;
+        }
+
+        // Hide loading
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+            document.getElementById('submitBtn').disabled = false;
+        }
+
+        // Show alert
+        function showAlert(message, type = 'error') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertClass = type === 'success' 
+                ? 'bg-green-100 text-green-700 border-green-400' 
+                : 'bg-red-100 text-red-700 border-red-400';
+            
+            alertContainer.innerHTML = `
+                <div class="mb-4 p-4 border rounded-lg ${alertClass}">
+                    <p class="text-sm">${message}</p>
+                </div>
+            `;
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        // Handle registration form submission
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const displayName = document.getElementById('displayName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            const newsletter = document.getElementById('newsletter').checked;
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match');
+                return;
+            }
+            
+            // Validate terms agreement
+            if (!agreeTerms) {
+                showAlert('Please agree to the Terms of Service and Privacy Policy');
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                const result = await authService.register(email, password, displayName);
+                
+                if (result.success) {
+                    // Require username setup immediately after registration
+                    const username = document.getElementById('username').value.trim();
+                    try {
+                        const setUsernameFn = firebase.functions().httpsCallable('setUsername');
+                        await setUsernameFn({ username });
+                    } catch (e) {
+                        // If username is taken or invalid, show error and stop here
+                        const msg = (e?.message || '').includes('already taken') 
+                            ? 'That username is already taken. Please choose another.'
+                            : 'Could not set username. Please check the format and try again.';
+                        showAlert(msg);
+                        hideLoading();
+                        return;
+                    }
+
+                    // Update newsletter preference if checked
+                    if (newsletter) {
+                        await authService.updateProfile({ 
+                            settings: { newsletter: true } 
+                        });
+                    }
+                    
+                    // Show success modal
+                    document.getElementById('successModal').classList.remove('hidden');
+                    hideLoading();
+                } else {
+                    showAlert(result.error);
+                    hideLoading();
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showAlert('An unexpected error occurred. Please try again.');
+                hideLoading();
+            }
+        });
+
+        // Handle Google sign up
+        document.getElementById('googleSignUp').addEventListener('click', async () => {
+            showLoading();
+            
+            try {
+                const result = await authService.signInWithGoogle();
+                
+                if (result.success) {
+                    // Redirect to dashboard or welcome page
+                    const redirect = result.isNewUser 
+                        ? '/dashboard/welcome.html' 
+                        : '/dashboard/';
+                    window.location.href = redirect;
+                } else {
+                    showAlert(result.error);
+                    hideLoading();
+                }
+            } catch (error) {
+                console.error('Google sign up error:', error);
+                showAlert('Failed to sign up with Google. Please try again.');
+                hideLoading();
+            }
+        });
+
+        // Handle GitHub sign up
+        document.getElementById('githubSignUp').addEventListener('click', async () => {
+            showLoading();
+            
+            try {
+                const result = await authService.signInWithGitHub();
+                
+                if (result.success) {
+                    // Redirect to developer portal or dashboard
+                    const redirect = result.isNewUser 
+                        ? '/developer-portal.html' 
+                        : '/dashboard/';
+                    window.location.href = redirect;
+                } else {
+                    showAlert(result.error);
+                    hideLoading();
+                }
+            } catch (error) {
+                console.error('GitHub sign up error:', error);
+                showAlert('Failed to sign up with GitHub. Please try again.');
+                hideLoading();
+            }
+        });
+    </script>
+</body>
+</html>

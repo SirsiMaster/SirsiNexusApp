@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Authentication Debug & Setup</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto p-8">
+        <h1 class="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+            Firebase Authentication Debug & Setup
+        </h1>
+
+        <!-- Status Display -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Firebase Status -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Firebase Status</h2>
+                <div id="firebase-status" class="space-y-2">
+                    <div class="flex justify-between">
+                        <span>SDK Loaded:</span>
+                        <span id="sdk-status" class="text-gray-400">Checking...</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Project ID:</span>
+                        <span id="project-id" class="text-gray-400">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Auth Domain:</span>
+                        <span id="auth-domain" class="text-gray-400">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>App Initialized:</span>
+                        <span id="app-status" class="text-gray-400">Checking...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Status -->
+            <div class="bg-gray-800 rounded-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Service Status</h2>
+                <div id="service-status" class="space-y-2">
+                    <div class="flex justify-between">
+                        <span>Authentication:</span>
+                        <span id="auth-service" class="text-gray-400">Checking...</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Firestore:</span>
+                        <span id="firestore-service" class="text-gray-400">Checking...</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Realtime Database:</span>
+                        <span id="database-service" class="text-gray-400">Checking...</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Storage:</span>
+                        <span id="storage-service" class="text-gray-400">Checking...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auth Status -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Authentication Status</h2>
+            <div id="auth-status" class="space-y-2">
+                <div class="flex justify-between">
+                    <span>Current User:</span>
+                    <span id="current-user" class="text-gray-400">Not signed in</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Email:</span>
+                    <span id="user-email" class="text-gray-400">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>UID:</span>
+                    <span id="user-uid" class="text-gray-400">-</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Email Verified:</span>
+                    <span id="email-verified" class="text-gray-400">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Authentication -->
+        <div class="bg-gray-800 rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Test Authentication</h2>
+            
+            <!-- Email/Password Sign Up -->
+            <div class="mb-6">
+                <h3 class="text-lg font-medium mb-3">Create Test Account</h3>
+                <div class="space-y-3">
+                    <input type="email" id="signup-email" placeholder="Email" 
+                           class="w-full px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <input type="password" id="signup-password" placeholder="Password (min 6 chars)" 
+                           class="w-full px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <button onclick="signUpWithEmail()" 
+                            class="w-full py-2 bg-green-600 hover:bg-green-700 rounded-lg font-medium transition">
+                        Create Account
+                    </button>
+                </div>
+            </div>
+
+            <!-- Email/Password Sign In -->
+            <div class="mb-6">
+                <h3 class="text-lg font-medium mb-3">Sign In</h3>
+                <div class="space-y-3">
+                    <input type="email" id="signin-email" placeholder="Email" 
+                           class="w-full px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <input type="password" id="signin-password" placeholder="Password" 
+                           class="w-full px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button onclick="signInWithEmail()" 
+                            class="w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition">
+                        Sign In
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="space-y-3">
+                <button onclick="createAdminAccount()" 
+                        class="w-full py-2 bg-purple-600 hover:bg-purple-700 rounded-lg font-medium transition">
+                    Create Admin Account (admin@sirsi.ai)
+                </button>
+                <button onclick="signOut()" 
+                        class="w-full py-2 bg-red-600 hover:bg-red-700 rounded-lg font-medium transition">
+                    Sign Out
+                </button>
+            </div>
+        </div>
+
+        <!-- Console Output -->
+        <div class="bg-gray-800 rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Console Output</h2>
+            <div id="console-output" class="bg-black rounded p-4 h-64 overflow-y-auto font-mono text-sm text-green-400">
+                <div>Initializing Firebase...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFd4RAvVZWy3G1geLudrq4KgDDsGr-jb8",
+            authDomain: "sirsi-nexus-live.firebaseapp.com",
+            databaseURL: "https://sirsi-nexus-live-default-rtdb.firebaseio.com",
+            projectId: "sirsi-nexus-live",
+            storageBucket: "sirsi-nexus-live.firebasestorage.app",
+            messagingSenderId: "210890802638",
+            appId: "1:210890802638:web:9b721753a295620422179f"
+        };
+
+        // Log function
+        function log(message, type = 'info') {
+            const consoleOutput = document.getElementById('console-output');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? 'text-red-400' : 
+                         type === 'success' ? 'text-green-400' : 
+                         type === 'warning' ? 'text-yellow-400' : 'text-gray-400';
+            
+            const div = document.createElement('div');
+            div.className = color;
+            div.textContent = `[${timestamp}] ${message}`;
+            consoleOutput.appendChild(div);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+            
+            // Also log to browser console
+            console.log(`[${type}] ${message}`);
+        }
+
+        // Initialize Firebase
+        let auth, db, rtdb, storage, functions;
+        
+        try {
+            log('Initializing Firebase app...');
+            firebase.initializeApp(firebaseConfig);
+            log('Firebase app initialized successfully', 'success');
+            
+            // Update status
+            document.getElementById('sdk-status').textContent = '✅ Loaded';
+            document.getElementById('sdk-status').className = 'text-green-400';
+            document.getElementById('project-id').textContent = firebaseConfig.projectId;
+            document.getElementById('auth-domain').textContent = firebaseConfig.authDomain;
+            document.getElementById('app-status').textContent = '✅ Initialized';
+            document.getElementById('app-status').className = 'text-green-400';
+            
+            // Initialize services
+            try {
+                auth = firebase.auth();
+                log('Authentication service initialized', 'success');
+                document.getElementById('auth-service').textContent = '✅ Ready';
+                document.getElementById('auth-service').className = 'text-green-400';
+            } catch (e) {
+                log('Failed to initialize Auth: ' + e.message, 'error');
+                document.getElementById('auth-service').textContent = '❌ Failed';
+                document.getElementById('auth-service').className = 'text-red-400';
+            }
+            
+            try {
+                db = firebase.firestore();
+                log('Firestore service initialized', 'success');
+                document.getElementById('firestore-service').textContent = '✅ Ready';
+                document.getElementById('firestore-service').className = 'text-green-400';
+            } catch (e) {
+                log('Failed to initialize Firestore: ' + e.message, 'error');
+                document.getElementById('firestore-service').textContent = '❌ Failed';
+                document.getElementById('firestore-service').className = 'text-red-400';
+            }
+            
+            try {
+                rtdb = firebase.database();
+                log('Realtime Database service initialized', 'success');
+                document.getElementById('database-service').textContent = '✅ Ready';
+                document.getElementById('database-service').className = 'text-green-400';
+            } catch (e) {
+                log('Failed to initialize Realtime Database: ' + e.message, 'error');
+                document.getElementById('database-service').textContent = '❌ Failed';
+                document.getElementById('database-service').className = 'text-red-400';
+            }
+            
+            try {
+                storage = firebase.storage();
+                log('Storage service initialized', 'success');
+                document.getElementById('storage-service').textContent = '✅ Ready';
+                document.getElementById('storage-service').className = 'text-green-400';
+            } catch (e) {
+                log('Failed to initialize Storage: ' + e.message, 'error');
+                document.getElementById('storage-service').textContent = '❌ Failed';
+                document.getElementById('storage-service').className = 'text-red-400';
+            }
+            
+            // Listen for auth state changes
+            if (auth) {
+                auth.onAuthStateChanged((user) => {
+                    if (user) {
+                        log(`User signed in: ${user.email}`, 'success');
+                        document.getElementById('current-user').textContent = user.displayName || user.email;
+                        document.getElementById('current-user').className = 'text-green-400';
+                        document.getElementById('user-email').textContent = user.email;
+                        document.getElementById('user-uid').textContent = user.uid;
+                        document.getElementById('email-verified').textContent = user.emailVerified ? '✅ Yes' : '❌ No';
+                    } else {
+                        log('No user signed in');
+                        document.getElementById('current-user').textContent = 'Not signed in';
+                        document.getElementById('current-user').className = 'text-gray-400';
+                        document.getElementById('user-email').textContent = '-';
+                        document.getElementById('user-uid').textContent = '-';
+                        document.getElementById('email-verified').textContent = '-';
+                    }
+                });
+            }
+            
+        } catch (error) {
+            log('Failed to initialize Firebase: ' + error.message, 'error');
+            document.getElementById('sdk-status').textContent = '❌ Error';
+            document.getElementById('sdk-status').className = 'text-red-400';
+            document.getElementById('app-status').textContent = '❌ Failed';
+            document.getElementById('app-status').className = 'text-red-400';
+        }
+
+        // Sign up with email
+        async function signUpWithEmail() {
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            
+            if (!email || !password) {
+                log('Please enter email and password', 'warning');
+                return;
+            }
+            
+            try {
+                log(`Creating account for ${email}...`);
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                log(`Account created successfully! UID: ${userCredential.user.uid}`, 'success');
+                
+                // Send verification email
+                await userCredential.user.sendEmailVerification();
+                log('Verification email sent', 'success');
+                
+                // Create user profile in Firestore
+                if (db) {
+                    await db.collection('users').doc(userCredential.user.uid).set({
+                        email: email,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        role: 'user'
+                    });
+                    log('User profile created in Firestore', 'success');
+                }
+            } catch (error) {
+                log(`Sign up failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Sign in with email
+        async function signInWithEmail() {
+            const email = document.getElementById('signin-email').value;
+            const password = document.getElementById('signin-password').value;
+            
+            if (!email || !password) {
+                log('Please enter email and password', 'warning');
+                return;
+            }
+            
+            try {
+                log(`Signing in as ${email}...`);
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                log(`Signed in successfully! UID: ${userCredential.user.uid}`, 'success');
+            } catch (error) {
+                log(`Sign in failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Create admin account
+        async function createAdminAccount() {
+            const email = 'admin@sirsi.ai';
+            const password = 'SirsiAdmin2024!';
+            
+            try {
+                log(`Creating admin account for ${email}...`);
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                log(`Admin account created! UID: ${userCredential.user.uid}`, 'success');
+                
+                // Create admin profile in Firestore
+                if (db) {
+                    await db.collection('users').doc(userCredential.user.uid).set({
+                        email: email,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        role: 'admin',
+                        displayName: 'Admin'
+                    });
+                    log('Admin profile created in Firestore with admin role', 'success');
+                }
+                
+                log(`Admin credentials: ${email} / ${password}`, 'warning');
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    log('Admin account already exists, trying to sign in...', 'warning');
+                    try {
+                        await auth.signInWithEmailAndPassword(email, password);
+                        log('Signed in as admin', 'success');
+                    } catch (signInError) {
+                        log(`Sign in failed: ${signInError.message}`, 'error');
+                    }
+                } else {
+                    log(`Failed to create admin: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        // Sign out
+        async function signOut() {
+            try {
+                await auth.signOut();
+                log('Signed out successfully', 'success');
+            } catch (error) {
+                log(`Sign out failed: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+Development Folder Structure Audit (before reset)
+=================================================
+Generated on: July 18, 2025
+Directory: /Users/thekryptodragon/Development Folder
+
+TOP-LEVEL STRUCTURE:
+Development Folder/
+├── CONTEXT_GUIDE.md
+├── deploy-safeguard.sh
+├── DEPLOYMENT_GUIDE.md
+├── dev-context.sh
+├── ENVIRONMENT_SETUP_DOCUMENTATION.md
+├── GithubPages/
+│   ├── SirsiMaster.github.io/
+│   ├── SirsiMaster.github.io-backup-20250718_004847/
+│   ├── SirsiNexus-Pages-Clone/
+│   └── SNGP/
+├── REPOSITORY_GUIDE.md
+├── SirsiNexusApp/                           ⭐ MAIN APPLICATION DIRECTORY
+│   ├── analytics-platform/
+│   ├── assets/
+│   ├── backup/
+│   ├── committee/
+│   ├── config/
+│   ├── core-engine/                         ⭐ BACKEND/API COMPONENT
+│   │   ├── config/
+│   │   ├── docs/
+│   │   ├── k8s/
+│   │   ├── migrations/
+│   │   ├── proto/
+│   │   ├── scripts/
+│   │   ├── src/
+│   │   └── tests/
+│   ├── demo/
+│   ├── docs/
+│   ├── k8s/
+│   ├── load-testing/
+│   ├── migration-templates/
+│   ├── mobile/
+│   ├── monitoring/
+│   ├── netlify/
+│   ├── nginx/
+│   ├── node_modules/
+│   ├── packages/
+│   ├── planner/
+│   ├── scripts/
+│   ├── security/
+│   ├── target/
+│   ├── tests/
+│   ├── ui/                                  ⭐ FRONTEND/UI COMPONENT
+│   │   └── server/
+│   ├── Cargo.toml
+│   ├── Cargo.lock
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── yarn.lock
+│   ├── docker-compose.yml
+│   ├── docker-compose.prod.yml
+│   ├── launch-full-stack.sh
+│   ├── launch-gui.sh
+│   ├── sirsi (executable)
+│   ├── sirsi-daemon (executable)
+│   ├── start.sh
+│   ├── setup.sh
+│   ├── README.md
+│   ├── LICENSE
+│   ├── VERSION
+│   └── [various other documentation and config files]
+└── WARP_DEVELOPMENT_GUIDE.md
+
+VERIFICATION RESULTS:
+✅ SirsiNexusApp/ directory EXISTS
+✅ UI component found at: SirsiNexusApp/ui/
+✅ Backend/API component found at: SirsiNexusApp/core-engine/
+✅ Full-stack application structure is present
+
+TECHNICAL STACK IDENTIFIED:
+- Frontend: JavaScript/TypeScript (based on package.json, node_modules)
+- Backend: Rust (based on Cargo.toml, .rs files)
+- Database: SQL-based (migrations directory, .sqlx)
+- Containerization: Docker (docker-compose files)
+- Orchestration: Kubernetes (k8s directories)
+- Build Tools: Cargo (Rust), npm/yarn (JavaScript)
+
+SUMMARY:
+The development folder contains a complete SirsiNexusApp with both frontend (ui/) and backend (core-engine/) components. The application appears to be a full-stack web application with modern deployment infrastructure including Docker containers and Kubernetes orchestration.

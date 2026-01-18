@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus - Investor Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Cache buster: 1752716245 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    <!-- Chart.js for interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- AOS for scroll animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Dynamic Version Loader -->
+    <script src="/sirsinexusportal/assets/js/version-loader.js"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                200: '#bbf7d0',
+                300: '#86efac',
+                400: '#4ade80',
+                500: '#22c55e',
+                600: '#16a34a',
+                700: '#15803d',
+                800: '#166534',
+                900: '#14532d'
+              },
+              secondary: {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a'
+              }
+            },
+          },
+        },
+      }
+    </script>
+    <script>
+      // Check authentication first
+      (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+          // No authentication, redirect to login
+          window.location.href = '../investor-login.html';
+          return;
+        }
+        
+        try {
+          const authData = JSON.parse(auth);
+          const loginTime = new Date(authData.loginTime);
+          const now = new Date();
+          const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+          
+          // Check if session expired (24 hours)
+          if (hoursSinceLogin > 24) {
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '../investor-login.html';
+            return;
+          }
+          
+          console.log('✅ Authentication verified for:', authData.id);
+        } catch (error) {
+          console.error('❌ Authentication error:', error);
+          sessionStorage.removeItem('investorAuth');
+          window.location.href = '../investor-login.html';
+          return;
+        }
+      })();
+      
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          const hasPersistedPreference = typeof persistedColorPreference === 'string';
+          if (hasPersistedPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+          if (hasMediaQueryPreference) {
+            return mql.matches ? 'dark' : 'light';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+    <style>
+      /* Professional Investment-Ready Styling */
+      
+      /* Typography & Font Loading */
+      /* Fonts already loaded in head */
+      
+      /* Global Reset and Base Styles */
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+      
+      html {
+          scroll-behavior: smooth;
+          font-size: 16px;
+          line-height: 1.5;
+      }
+      
+      body {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          color: #1a1a1a;
+          background-color: #ffffff;
+          overflow-x: hidden;
+      }
+      
+      /* Professional Typography Scale */
+      h1, h2, h3, h4, h5, h6 {
+          font-family: 'Inter', sans-serif;
+          font-weight: 700;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
+          color: #0a0a0a;
+          margin-bottom: 1rem;
+      }
+      
+      h1 {
+          font-size: clamp(2.5rem, 4vw, 3.5rem);
+          font-weight: 800;
+          line-height: 1.1;
+      }
+      
+      h2 {
+          font-size: clamp(2rem, 3vw, 2.75rem);
+          font-weight: 700;
+          line-height: 1.15;
+      }
+      
+      h3 {
+          font-size: clamp(1.5rem, 2.5vw, 2rem);
+          font-weight: 600;
+          line-height: 1.3;
+      }
+      
+      h4 {
+          font-size: clamp(1.25rem, 2vw, 1.5rem);
+          font-weight: 600;
+      }
+      
+      p {
+          font-size: 1.125rem;
+          line-height: 1.7;
+          color: #4a4a4a;
+          margin-bottom: 1.5rem;
+          font-weight: 400;
+      }
+      
+      /* Professional Container System */
+      .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 2rem;
+      }
+      
+      .section {
+          padding: 5rem 0;
+      }
+      
+      .section-sm {
+          padding: 3rem 0;
+      }
+      
+      /* Professional Metrics Grid */
+      .metrics-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 2rem;
+          max-width: 1200px;
+          margin: 3rem auto;
+          padding: 0 2rem;
+      }
+      
+      .metric-card {
+          background: #ffffff;
+          padding: 2.5rem;
+          border-radius: 16px;
+          text-align: center;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          border: 1px solid #e5e7eb;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .metric-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+      }
+      
+      .dark .metric-card {
+          background: #1e293b;
+          border-color: #334155;
+      }
+      
+      .metric-value {
+          font-size: 3rem;
+          font-weight: 800;
+          color: #059669;
+          display: block;
+          margin-bottom: 0.75rem;
+          line-height: 1;
+      }
+      
+      .metric-label {
+          font-size: 0.875rem;
+          color: #64748b;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          line-height: 1.4;
+      }
+      
+      .dark .metric-label {
+          color: #94a3b8;
+      }
+      
+      /* Professional Document Sections */
+      .document-section {
+          max-width: 1200px;
+          margin: 3rem auto;
+          padding: 2.5rem;
+          background: #ffffff;
+          border-radius: 16px;
+          border: 1px solid #e5e7eb;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .document-section:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      }
+      
+      .dark .document-section {
+          background: #1e293b;
+          border-color: #334155;
+          color: #f1f5f9;
+      }
+      
+      .document-section h2 {
+          color: #059669;
+          margin-bottom: 1.5rem;
+          font-size: clamp(1.5rem, 2.5vw, 2rem);
+          font-weight: 700;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
+      }
+      
+      /* Professional Executive Summary */
+      .executive-summary {
+          background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+          padding: 3rem;
+          margin: 3rem auto;
+          max-width: 1200px;
+          border-radius: 16px;
+          border-left: 5px solid #059669;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+      
+      .dark .executive-summary {
+          background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+          color: #f0fdf4;
+      }
+      
+      /* Professional Action Buttons */
+      .button-primary {
+          display: inline-flex;
+          align-items: center;
+          padding: 0.875rem 2rem;
+          font-size: 1rem;
+          font-weight: 600;
+          border-radius: 10px;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          background: linear-gradient(135deg, #059669 0%, #047857 100%);
+          color: #ffffff;
+          border: 2px solid transparent;
+          cursor: pointer;
+          font-family: 'Inter', sans-serif;
+      }
+      
+      .button-primary:hover {
+          background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+      }
+      
+      /* Dark Mode Support */
+      .dark body {
+          background-color: #0f172a;
+          color: #e2e8f0;
+      }
+      
+      .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+          color: #f1f5f9;
+      }
+      
+      .dark p {
+          color: #cbd5e1;
+      }
+      
+      /* Dark mode form inputs */
+      .dark input[type="text"], .dark input[type="password"] {
+          background-color: #1e293b;
+          border-color: #334155;
+          color: #f1f5f9;
+      }
+      
+      .dark input[type="text"]:focus, .dark input[type="password"]:focus {
+          border-color: #059669;
+          box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+      }
+      
+      .dark input[type="text"]::placeholder, .dark input[type="password"]::placeholder {
+          color: #64748b;
+      }
+      
+      /* Responsive Design */
+      @media (max-width: 768px) {
+          .container {
+              padding: 0 1rem;
+          }
+          
+          .section {
+              padding: 3rem 0;
+          }
+          
+          h1 {
+              font-size: 2.5rem;
+          }
+          
+          h2 {
+              font-size: 2rem;
+          }
+          
+          h3 {
+              font-size: 1.5rem;
+          }
+          
+          p {
+              font-size: 1rem;
+          }
+          
+          .document-section {
+              padding: 1.5rem;
+          }
+      }
+    </style>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+<!-- Navigation and Layout Header -->
+<div id="unified-header"></div>
+
+<!-- Page Scripts -->
+<script src="/sirsinexusportal/components/universal-navigation.js"></script>
+<script src="/sirsinexusportal/components/navigation-customizer.js"></script>
+<script src="/sirsinexusportal/assets/js/shared-theme-toggle.js"></script>
+
+<!-- Authentication Check -->
+<script>
+    (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+            window.location.href = '/sirsinexusportal/investor-login.html';
+            return;
+        }
+        
+        try {
+            const authData = JSON.parse(auth);
+            const loginTime = new Date(authData.loginTime);
+            const now = new Date();
+            const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+            
+            if (hoursSinceLogin > 24) {
+                sessionStorage.removeItem('investorAuth');
+                window.location.href = '/sirsinexusportal/investor-login.html';
+                return;
+            }
+        } catch (error) {
+            console.error('Authentication error:', error);
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '/sirsinexusportal/investor-login.html';
+            return;
+        }
+    })();
+</script>
+
+<!-- Page-specific customization -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Get the current page from URL
+        const path = window.location.pathname;
+        const pageName = path.split('/').pop().replace('.html', '');
+        
+        // Add committee menu if we're in the committee section
+        if (path.includes('/committee/')) {
+            navCustomizer.addCommitteeMenu(pageName);
+        }
+        
+        // Add action buttons based on page
+        switch(pageName) {
+            case 'data-room':
+                navCustomizer.addActionButtons([{
+                    label: 'Upload Document',
+                    className: 'bg-emerald-600 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-700 transition-colors',
+                    onClick: () => showUploadModal()
+                }]);
+                break;
+            case 'kpi-metrics':
+                navCustomizer.addActionButtons([{
+                    label: 'Export Report',
+                    className: 'bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors',
+                    onClick: () => exportMetrics()
+                }]);
+                break;
+        }
+    });
+</script>
+
+    <!-- Header -->
+    <div id="unified-header"></div>
+    <!-- Sidebar Navigation -->
+    <aside class="fixed left-0 top-16 bottom-0 w-52 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 overflow-y-auto hidden lg:block">
+        <div class="p-4">
+            <div class="space-y-1">
+                <a href="index.html" class="flex items-center px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="data-room.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Data Room
+                </a>
+                <a href="kpi-unit-metrics.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                    </svg>
+                    KPI Metrics
+                </a>
+                <a href="committee/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                    Committee
+                </a>
+            </div>
+            
+            <div class="mt-8">
+                <h3 class="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Resources</h3>
+                <div class="mt-2 space-y-1">
+                    <a href="#" class="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                        <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                        Download Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile menu button -->
+    <button class="lg:hidden fixed bottom-4 right-4 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg" onclick="toggleMobileSidebar()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
+    
+    
+    <!-- Live KPI Banner -->
+    <div class="bg-gradient-to-r from-primary-50 to-primary-100/50 dark:from-primary-900/10 dark:to-primary-800/5 border-b border-secondary-200 dark:border-secondary-700">
+      <div class="max-w-7xl mx-auto px-6 py-3">
+          <div class="flex items-center justify-between overflow-x-auto flex-wrap gap-4">
+          <div class="flex items-center gap-8 min-w-0">
+            <div class="flex items-center gap-2 min-w-0">
+              <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">ARR Y3:</span>
+              <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">$33M</span>
+            </div>
+            <div class="flex items-center gap-2 min-w-0">
+              <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Customers:</span>
+              <span class="text-sm font-bold text-blue-600 dark:text-blue-400">280</span>
+            </div>
+            <div class="flex items-center gap-2 min-w-0">
+              <div class="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Savings:</span>
+              <span class="text-sm font-bold text-purple-600 dark:text-purple-400">25%</span>
+            </div>
+            <div class="flex items-center gap-2 min-w-0">
+              <div class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Uptime:</span>
+              <span class="text-sm font-bold text-orange-600 dark:text-orange-400">99.2%</span>
+            </div>
+            <div class="flex items-center gap-2 min-w-0">
+              <div class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
+              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">ROI:</span>
+              <span class="text-sm font-bold text-indigo-600 dark:text-indigo-400">8.5x</span>
+            </div>
+            <div class="flex items-center gap-2 min-w-0">
+              <div class="w-2 h-2 bg-rose-500 rounded-full animate-pulse"></div>
+              <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Payback:</span>
+              <span class="text-sm font-bold text-rose-600 dark:text-rose-400">3.2mo</span>
+            </div>
+          </div>
+          <div class="text-xs text-slate-500 dark:text-slate-400 whitespace-nowrap ml-4">
+            Live Data • Updated 2 min ago
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="fixed bottom-4 right-4 z-50 flex gap-2">
+        <button onclick="window.print()" class="bg-slate-700/90 backdrop-blur-sm text-white p-2 rounded-lg hover:bg-slate-600 transition-colors shadow-lg flex items-center" title="Print this page">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+            </svg>
+        </button>
+        <button onclick="scrollToTop()" class="bg-slate-700/90 backdrop-blur-sm text-white p-2 rounded-lg hover:bg-slate-600 transition-colors shadow-lg flex items-center" title="Scroll to top">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Left Sidebar Navigation -->
+    <nav class="fixed left-0 top-16 bottom-0 w-48 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 shadow-lg z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300" id="sidebar">
+        <div class="h-full flex flex-col overflow-hidden">
+            <div class="flex-1 overflow-y-auto p-4">
+                <h3 class="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">Investor Portal</h3>
+                
+                <!-- Main Navigation -->
+                <div class="space-y-1 mb-6">
+                    <a href="/sirsinexusportal/index.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm text-slate-700 dark:text-slate-300">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        Dashboard
+                    </a>
+                </div>
+
+                <!-- Committee Documents -->
+                <div class="mb-6">
+                    <h4 class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 px-3 uppercase">Committee Docs</h4>
+                    <div class="space-y-1">
+                        <a href="/sirsinexusportal/investor-portal/committee/index.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm text-slate-700 dark:text-slate-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                            </svg>
+                            Overview
+                        </a>
+                        <a href="/sirsinexusportal/investor-portal/committee/market-analysis.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm text-slate-700 dark:text-slate-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            Market Analysis
+                        </a>
+                        <a href="/sirsinexusportal/investor-portal/committee/product-roadmap.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm text-slate-700 dark:text-slate-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                            </svg>
+                            Product Roadmap
+                        </a>
+                        <a href="/sirsinexusportal/investor-portal/committee/sales-strategy.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm text-slate-700 dark:text-slate-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
+                            Sales Strategy
+                        </a>
+                        <a href="/sirsinexusportal/investor-portal/committee/go-to-market.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm text-slate-700 dark:text-slate-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            Go-to-Market
+                        </a>
+                        <a href="/sirsinexusportal/investor-portal/committee/kpi-metrics.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm text-slate-700 dark:text-slate-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            KPI Metrics
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Data Room -->
+                <div class="mb-6">
+                    <h4 class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 px-3 uppercase">Data Room</h4>
+                    <div class="space-y-1">
+                        <a href="data-room.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm text-slate-700 dark:text-slate-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                            Document Library
+                        </a>
+                        <a href="kpi-unit-metrics.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm text-slate-700 dark:text-slate-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            KPI Metrics
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Current Page Sections -->
+                <div class="mb-6">
+                    <h4 class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 px-3 uppercase">On This Page</h4>
+                    <div class="space-y-1">
+                        <button onclick="scrollToSection('executive-summary')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors text-sm text-secondary-600 dark:text-secondary-400">
+                            Executive Summary
+                        </button>
+                        <button onclick="scrollToSection('market-opportunity')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors text-sm text-secondary-600 dark:text-secondary-400">
+                            Market Opportunity
+                        </button>
+                        <button onclick="scrollToSection('data-room')" class="w-full text-left px-3 py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors text-sm text-secondary-600 dark:text-secondary-400">
+                            Data Room
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Links in Sidebar -->
+            <div class="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                <div class="space-y-1">
+                    <a href="../support/contact.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm text-slate-600 dark:text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                        </svg>
+                        Contact Support
+                    </a>
+                    <a href="../legal/privacy-policy.html" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm text-slate-600 dark:text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                        Privacy Policy
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Sidebar Toggle Button (Mobile) -->
+    <button onclick="toggleSidebar()" class="fixed top-20 left-4 z-50 lg:hidden bg-white dark:bg-slate-800 p-2 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700">
+        <svg class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+    
+    <!-- Main Content -->
+    <main class="min-h-[calc(100vh-8rem)] lg:pl-52 pb-16 w-full overflow-x-hidden">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-primary-50 via-white to-primary-100/50 dark:from-primary-900/10 dark:via-secondary-900 dark:to-primary-800/5 py-20">
+            <div class="max-w-7xl mx-auto px-6 text-center">
+                <h1 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+                    SirsiNexus <span class="text-emerald-600">Investor</span> Dashboard
+                </h1>
+                <p class="text-base text-slate-600 dark:text-slate-300 mb-6 max-w-3xl mx-auto">
+                    Your secure gateway to comprehensive investment insights, financial projections, and strategic documentation
+                </p>
+                
+                <!-- Executive Summary Embedded -->
+                <div id="executive-summary" class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 mb-8 max-w-4xl mx-auto text-left">
+                    <div class="space-y-6">
+                        <p class="text-base leading-relaxed text-slate-700 dark:text-slate-300">
+                            SirsiNexus is revolutionizing cloud infrastructure management through our proprietary Graph of Thought AI architecture integrated with Hedera Hashgraph technology. Our unique superpower lies in strategic traction - exclusive access to NVIDIA's invite-only Inception Program and AWS's Migration Acceleration Program positions us at the epicenter of cloud transformation. With pre-qualified pipeline opportunities through Techstars Universe, tier-1 university networks (Chicago Booth, Howard, UT Austin, Brown), and direct VC portfolio optimization mandates, we deliver 35% cost reductions with high-accuracy AI predictions. This strategic positioning creates an unfair advantage in the $78.8B cloud optimization market.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-100 dark:border-emerald-800">
+                                <h4 class="font-semibold text-emerald-700 dark:text-emerald-400 mb-2">Investment Opportunity</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">Pre-Seed funding of $1.5M unlocks NVIDIA and AWS co-investment commitments, plus Hedera Hashgraph strategic investment interest. Our strategic traction creates a domino effect: TEDCO investment triggers tier-1 tech giants' participation in our cap table.</p>
+                            </div>
+                            <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800">
+                                <h4 class="font-semibold text-blue-700 dark:text-blue-400 mb-2">Use of Funds</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">40% Graph of Thought AI development including Hedera integration, 35% enterprise sales expansion, 15% Fortune 100 acceptance and adoption, and 10% working capital.</p>
+                            </div>
+                            <div class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-100 dark:border-purple-800">
+                                <h4 class="font-semibold text-purple-700 dark:text-purple-400 mb-2">Target Return</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">10x return potential within 5 years through strategic exit or IPO, driven by our dominant market position and proprietary AI technology.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ready to Dive Deeper Navigation -->
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Ready to Dive Deeper?</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                    <a href="/sirsinexusportal/investor-portal/committee/index.html" class="bg-primary-600 text-white px-6 py-4 rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm text-center shadow-sm hover:shadow-md">
+                        Committee Documents
+                    </a>
+                    <a href="data-room.html" class="bg-primary-600 text-white px-6 py-4 rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm text-center shadow-sm hover:shadow-md">
+                        Data Room
+                    </a>
+                    <a href="kpi-unit-metrics.html" class="bg-primary-600 text-white px-6 py-4 rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm text-center shadow-sm hover:shadow-md">
+                        KPI/Unit Metrics
+                    </a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Market Opportunity & Financial Projections -->
+        <section id="market-opportunity" class="document-section">
+            <h2 class="text-xl font-semibold mb-6">Market Opportunity & Financial Projections</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Market Opportunity -->
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-lg font-semibold mb-4">Market Opportunity</h3>
+                    <ul class="space-y-4">
+                        <li class="flex gap-4">
+                            <div class="flex-shrink-0 w-6 h-6 text-emerald-600">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">$78.8B TAM</h4>
+                                <p class="text-slate-600 dark:text-slate-400">Growing cloud infrastructure optimization market with 28.5% CAGR, driven by enterprise digital transformation</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <div class="flex-shrink-0 w-6 h-6 text-emerald-600">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">28.5% CAGR</h4>
+                                <p class="text-slate-600 dark:text-slate-400">Rapid market expansion driven by cloud adoption and AI-powered optimization demand</p>
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <div class="flex-shrink-0 w-6 h-6 text-emerald-600">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold mb-1">Enterprise Focus</h4>
+                                <p class="text-slate-600 dark:text-slate-400">Targeting high-value enterprise customers with $125K average contract value and 96% logo retention</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Financial Projections -->
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-lg font-semibold mb-4">Financial Projections</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-slate-200 dark:border-slate-700">
+                                    <th class="text-left py-4 font-semibold">Metric</th>
+                                    <th class="text-right py-4 font-semibold">Y1 (2025)</th>
+                                    <th class="text-right py-4 font-semibold">Y3 (2027)</th>
+                                    <th class="text-right py-4 font-semibold">Y5 (2029)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-slate-200 dark:border-slate-700">
+                                    <td class="py-4">Revenue</td>
+                                    <td class="text-right py-4">$5.6M</td>
+                                    <td class="text-right py-4">$33.0M</td>
+                                    <td class="text-right py-4">$190.1M</td>
+                                </tr>
+                                <tr class="border-b border-slate-200 dark:border-slate-700">
+                                    <td class="py-4">Gross Margin</td>
+                                    <td class="text-right py-4">78%</td>
+                                    <td class="text-right py-4">82%</td>
+                                    <td class="text-right py-4">84%</td>
+                                </tr>
+                                <tr class="border-b border-slate-200 dark:border-slate-700">
+                                    <td class="py-4">EBITDA</td>
+                                    <td class="text-right py-4">-$8.4M</td>
+                                    <td class="text-right py-4">$3.3M</td>
+                                    <td class="text-right py-4">$47.5M</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-4">Enterprise Customers</td>
+                                    <td class="text-right py-4">80</td>
+                                    <td class="text-right py-4">280</td>
+                                    <td class="text-right py-4">960</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Use of Funds -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg">
+                <h3 class="text-lg font-semibold mb-4">Use of Funds</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center">
+                        <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center">
+                            <span class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">40%</span>
+                        </div>
+                        <h3 class="font-semibold mb-2">AI Development</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Graph of Thought AI development and Hedera Hashgraph integration</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                            <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">35%</span>
+                        </div>
+                        <h3 class="font-semibold mb-2">Sales & Marketing</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Enterprise sales team expansion</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
+                            <span class="text-2xl font-bold text-purple-600 dark:text-purple-400">15%</span>
+                        </div>
+                        <h3 class="font-semibold mb-2">Fortune 100 Expansion</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Broad Fortune 100 enterprise acceptance and adoption</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-amber-100 dark:bg-amber-900 flex items-center justify-center">
+                            <span class="text-2xl font-bold text-amber-600 dark:text-amber-400">10%</span>
+                        </div>
+                        <h3 class="font-semibold mb-2">Working Capital</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Operations and team growth</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Data Room Section -->
+        <div id="data-room" class="document-section">
+            <h2>Investor Data Room</h2>
+            <p class="text-slate-600 dark:text-slate-300 mb-6">Access detailed documentation and analysis for each section below. Click on any section to explore available documents.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="dataRoomSections">
+                <!-- Enhanced data room cards will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="document-section">
+            <p><strong>Document Control:</strong> Confidential - For Investment Committee Review Only</p>
+            <p>Prepared by: SirsiNexus Strategy Team | Review Date: Quarterly | Distribution: Executive Team, Investment Committee</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-900 text-slate-600 dark:text-white py-4 lg:pl-52 border-t border-slate-200 dark:border-slate-700 w-full">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between text-sm">
+                <div class="flex items-center gap-2">
+                    <img src="/sirsinexusportal/assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-6 h-6 object-contain dark:hidden">
+                    <img src="/sirsinexusportal/assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-6 h-6 object-contain hidden dark:block">
+                    <span>&copy; 2025 Sirsi Technologies Inc.</span>
+                </div>
+                <div class="text-slate-500 dark:text-slate-400">
+                    v0.7.9-alpha
+                    <span class="version-badge">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+      // Debug logging
+      console.log('🎯 Investor Portal Index Page loaded');
+      console.log('🔍 Current URL:', window.location.href);
+      console.log('🔍 Session Storage:', sessionStorage.getItem('investorAuth'));
+      
+      // Check authentication
+      function checkAuth() {
+        const authData = sessionStorage.getItem('investorAuth');
+        console.log('🔐 Auth check:', authData);
+        
+        if (!authData) {
+          console.log('❌ No authentication found - redirecting to login');
+          window.location.href = '../investor-login.html';
+          return false;
+        }
+        
+        try {
+          const auth = JSON.parse(authData);
+          console.log('✅ Authentication found:', auth);
+          
+          // Update UI based on role
+          if (auth.role === 'admin') {
+            console.log('🔧 Admin access detected');
+            document.title = 'SirsiNexus - Admin Portal';
+          }
+          
+          return true;
+        } catch (error) {
+          console.error('❌ Invalid auth data:', error);
+          sessionStorage.removeItem('investorAuth');
+          window.location.href = '../investor-login.html';
+          return false;
+        }
+      }
+      
+      let dataRoomConfig = {};
+      
+      // Section icon mapping
+      const sectionIcons = {
+        'financial-reports': {
+          icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
+          colors: 'bg-blue-100 dark:bg-blue-900/20 text-blue-600'
+        },
+        'business-metrics': {
+          icon: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6',
+          colors: 'bg-emerald-100 dark:bg-emerald-900/20 text-emerald-600'
+        },
+        'legal-documents': {
+          icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+          colors: 'bg-purple-100 dark:bg-purple-900/20 text-purple-600'
+        },
+        'strategic-plans': {
+          icon: 'M9.663 17h4.673M12 3v1m6.364-.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z',
+          colors: 'bg-orange-100 dark:bg-orange-900/20 text-orange-600'
+        },
+        'communications': {
+          icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+          colors: 'bg-red-100 dark:bg-red-900/20 text-red-600'
+        },
+        'investment-terms': {
+          icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1',
+          colors: 'bg-green-100 dark:bg-green-900/20 text-green-600'
+        }
+      };
+      
+      async function loadDataRoomConfig() {
+        try {
+          const response = await fetch('assets/data-room-config.json');
+          dataRoomConfig = await response.json();
+          renderDataRoomSections();
+        } catch (error) {
+          console.error('Error loading data room config:', error);
+          // Fallback to default config
+          dataRoomConfig = {
+            sections: {
+              'financial-reports': {
+                title: 'Financial Reports',
+                files: [
+                ]
+              },
+              'business-metrics': {
+                title: 'Business Metrics',
+                files: [
+                  { name: 'Market Analysis Report', path: 'committee/market-analysis.html', description: 'Market analysis and competitive positioning', date: 'January 2025' }
+                ]
+              },
+              'legal-documents': {
+                title: 'Legal Documents',
+                files: [
+                  { name: 'Privacy Policy', path: '../privacy-policy.html', description: 'Company privacy policy and data protection', date: 'January 2025' }
+                ]
+              },
+              'strategic-plans': {
+                title: 'Strategic Plans',
+                files: [
+                  { name: 'Product Roadmap', path: 'committee/product-roadmap.html', description: 'Product development roadmap and milestones', date: 'January 2025' }
+                ]
+              },
+              'communications': {
+                title: 'Communications',
+                files: [
+                  { name: 'Committee Index', path: 'committee/index.html', description: 'Executive committee meeting index and summaries', date: 'January 2025' }
+                ]
+              },
+              'investment-terms': {
+                title: 'Investment Terms',
+                files: [
+                  { name: 'Terms of Service', path: '../terms-of-service.html', description: 'Service terms and conditions', date: 'January 2025' }
+                ]
+              }
+            }
+          };
+          renderDataRoomSections();
+        }
+      }
+      
+      function renderDataRoomSections() {
+        const container = document.getElementById('dataRoomSections');
+        container.innerHTML = '';
+        
+        const authData = JSON.parse(sessionStorage.getItem('investorAuth') || '{}');
+        const isAdmin = authData.role === 'admin';
+        
+        Object.entries(dataRoomConfig.sections).forEach(([sectionId, section]) => {
+          const iconConfig = sectionIcons[sectionId] || sectionIcons['financial-reports'];
+          
+          const sectionDiv = document.createElement('div');
+          sectionDiv.className = 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-105';
+          sectionDiv.innerHTML = `
+            <div class="flex flex-col items-center text-center mb-4">
+              <div class="w-20 h-20 ${iconConfig.colors} rounded-xl flex items-center justify-center mb-4 shadow-md">
+                <svg class="w-10 h-10 ${iconConfig.colors.split(' ')[2]}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${iconConfig.icon}"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">${section.title}</h3>
+              <div class="text-sm text-slate-500 dark:text-slate-400 mb-4">${section.files.length} document${section.files.length === 1 ? '' : 's'}</div>
+            </div>
+            
+            ${isAdmin ? `
+              <div class="mb-4 pb-4 border-b border-slate-200 dark:border-slate-700">
+                <button onclick="showUploadModal('${sectionId}', '${section.title}')" class="w-full bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors font-medium text-sm flex items-center justify-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                  </svg>
+                  Upload File
+                </button>
+              </div>
+            ` : ''}
+            
+            <div class="space-y-3">
+              <div class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">File Types Available:</div>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-xs font-medium">PDF Reports</span>
+                <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 rounded-full text-xs font-medium">Financial Data</span>
+                <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 rounded-full text-xs font-medium">Analysis</span>
+              </div>
+              
+              ${section.files.length > 0 ? `
+                <div class="space-y-2">
+                  ${section.files.slice(0, 2).map(file => `
+                    <div class="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                      <div class="flex-1">
+                        <div class="text-sm font-medium text-slate-900 dark:text-slate-100">${file.name}</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400">${file.description}</div>
+                      </div>
+                      <div class="flex gap-2">
+                        <button onclick="openPreview('${file.path}', '${file.name}')" class="p-1 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200" title="Preview">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                          </svg>
+                        </button>
+                        <button onclick="downloadPDF('${file.path}', '${file.name}')" class="p-1 text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-200" title="Download PDF">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                          </svg>
+                        </button>
+                        ${isAdmin ? `
+                          <button onclick="deleteFile('${sectionId}', '${file.name}')" class="p-1 text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200" title="Delete File">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                          </button>
+                        ` : ''}
+                      </div>
+                    </div>
+                  `).join('')}
+                  ${section.files.length > 2 ? `<div class="text-sm text-slate-500 dark:text-slate-400 text-center">+${section.files.length - 2} more files available</div>` : ''}
+                </div>
+              ` : '<div class="text-slate-400 dark:text-slate-500 text-sm text-center">No documents available</div>'}
+            </div>
+          `;
+          
+          // Add click handler for card expansion
+          sectionDiv.addEventListener('click', function(e) {
+            if (!e.target.closest('button')) {
+              showSectionDetails(sectionId, section);
+            }
+          });
+          
+          container.appendChild(sectionDiv);
+        });
+        }
+      
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function initTheme() {
+          try {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            console.log('Theme initialized:', theme);
+          } catch (error) {
+            console.error('Error initializing theme:', error);
+          }
+        }
+
+        function toggleTheme() {
+          try {
+            console.log('Toggle theme clicked');
+            const html = document.documentElement;
+            const wasDark = html.classList.contains('dark');
+            
+            if (wasDark) {
+              html.classList.remove('dark');
+              localStorage.setItem('theme', 'light');
+              console.log('Switched to light mode');
+            } else {
+              html.classList.add('dark');
+              localStorage.setItem('theme', 'dark');
+              console.log('Switched to dark mode');
+            }
+            
+            // Re-render data room sections to apply new theme
+            if (dataRoomConfig.sections) {
+              renderDataRoomSections();
+            }
+          } catch (error) {
+            console.error('Error toggling theme:', error);
+          }
+        }
+
+        function logout() {
+          // Clear authentication data
+          sessionStorage.removeItem('investorAuth');
+          localStorage.removeItem('investor-authenticated');
+          localStorage.removeItem('investor-id');
+          localStorage.removeItem('user-role');
+          
+          // Redirect to login
+          window.location.href = '../investor-login.html';
+        }
+
+        // Initialize theme immediately
+        initTheme();
+        
+        // Load data room config on page load
+        loadDataRoomConfig();
+        
+        // Make sure toggleTheme is available globally
+        window.toggleTheme = toggleTheme;
+        
+        // Preview functionality
+        function openPreview(filePath, fileName) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 max-w-4xl max-h-[90vh] w-full mx-4 overflow-hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Preview: ${fileName}</h3>
+                        <button onclick="closePreview()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden" style="height: 70vh;">
+                        <iframe src="${filePath}" class="w-full h-full" frameborder="0"></iframe>
+                    </div>
+                    <div class="mt-4 flex gap-2">
+                        <button onclick="downloadPDF('${filePath}', '${fileName}')" class="button-primary">Download PDF</button>
+                        <button onclick="window.open('${filePath}', '_blank')" class="button-secondary">Open in New Tab</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            window.currentPreviewModal = modal;
+        }
+        
+        function closePreview() {
+            if (window.currentPreviewModal) {
+                document.body.removeChild(window.currentPreviewModal);
+                window.currentPreviewModal = null;
+            }
+        }
+        
+        // Download PDF functionality
+        function downloadPDF(filePath, fileName) {
+            // In a real implementation, this would generate a PDF from the HTML content
+            // For now, we'll open the page in a new tab and suggest using browser print
+            const newWindow = window.open(filePath, '_blank');
+            if (newWindow) {
+                newWindow.onload = function() {
+                    setTimeout(() => {
+                        if (confirm('To download as PDF, use your browser\'s Print function and select "Save as PDF". Open print dialog now?')) {
+                            newWindow.print();
+                        }
+                    }, 1000);
+                };
+            }
+        }
+        
+        // Section details modal
+        function showSectionDetails(sectionId, section) {
+            const authData = JSON.parse(sessionStorage.getItem('investorAuth') || '{}');
+            const isAdmin = authData.role === 'admin';
+            
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-auto">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">${section.title}</h3>
+                        <button onclick="closeSectionDetails()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    ${isAdmin ? `
+                        <div class="mb-4 pb-4 border-b border-slate-200 dark:border-slate-700">
+                            <button onclick="showUploadModal('${sectionId}', '${section.title}')" class="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors font-medium text-sm flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                                Add New File
+                            </button>
+                        </div>
+                    ` : ''}
+                    <div class="space-y-4">
+                        ${section.files.map(file => `
+                            <div class="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-1">${file.name}</h4>
+                                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-2">${file.description}</p>
+                                        <div class="text-xs text-slate-500 dark:text-slate-500">Last updated: ${file.date}</div>
+                                    </div>
+                                    <div class="flex gap-2 ml-4">
+                                        <button onclick="openPreview('${file.path}', '${file.name}')" class="p-2 bg-blue-100 text-blue-600 rounded-lg hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-800/50" title="Preview">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick="downloadPDF('${file.path}', '${file.name}')" class="p-2 bg-green-100 text-green-600 rounded-lg hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-800/50" title="Download PDF">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                        </button>
+                                        <a href="${file.path}" class="p-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-400 dark:hover:bg-slate-600" title="Open">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                            </svg>
+                                        </a>
+                                        ${isAdmin ? `
+                                            <button onclick="deleteFile('${sectionId}', '${file.name}')" class="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-800/50" title="Delete File">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                </svg>
+                                            </button>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            window.currentSectionModal = modal;
+        }
+        
+        function closeSectionDetails() {
+            if (window.currentSectionModal) {
+                document.body.removeChild(window.currentSectionModal);
+                window.currentSectionModal = null;
+            }
+        }
+        
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('fixed') && e.target.classList.contains('inset-0')) {
+                if (window.currentPreviewModal) closePreview();
+                if (window.currentSectionModal) closeSectionDetails();
+            }
+        });
+        
+        // Close modals with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (window.currentPreviewModal) closePreview();
+                if (window.currentSectionModal) closeSectionDetails();
+            }
+        });
+        
+        // Scroll to section functionality
+        function scrollToSection(sectionId) {
+          const element = document.getElementById(sectionId);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+        
+        // Search functionality
+        let searchIndex = [];
+        
+        function buildSearchIndex() {
+          searchIndex = [];
+          
+          // Index all data room files
+          Object.entries(dataRoomConfig.sections || {}).forEach(([sectionId, section]) => {
+            section.files.forEach(file => {
+              searchIndex.push({
+                type: 'file',
+                title: file.name,
+                description: file.description,
+                path: file.path,
+                section: section.title,
+                date: file.date,
+                searchTerms: `${file.name} ${file.description} ${section.title}`.toLowerCase()
+              });
+            });
+          });
+          
+          // Index committee documents
+          searchIndex.push(
+            {
+              type: 'committee',
+              title: 'Market Analysis',
+              description: 'Market opportunity, competitive landscape, and strategic positioning analysis',
+              path: 'committee/market-analysis.html',
+              section: 'Committee Documents',
+              searchTerms: 'market analysis competitive landscape strategic positioning opportunity'.toLowerCase()
+            },
+            {
+              type: 'committee',
+              title: 'Product Roadmap',
+              description: 'Product development timeline, market entry strategy, and scaling plans',
+              path: 'committee/product-roadmap.html',
+              section: 'Committee Documents',
+              searchTerms: 'product roadmap development timeline market entry strategy scaling plans'.toLowerCase()
+            }
+          );
+          
+          // Index KPIs
+          searchIndex.push(
+            {
+              type: 'kpi',
+              title: 'ARR Year 3: $33M',
+              description: 'Annual Recurring Revenue projection for year 3',
+              section: 'Key Performance Indicators',
+              searchTerms: 'arr annual recurring revenue 33m year 3 financial performance'.toLowerCase()
+            },
+            {
+              type: 'kpi',
+              title: 'ROI: 8.5x',
+              description: 'Return on Investment by year 3',
+              section: 'Key Performance Indicators',
+              searchTerms: 'roi return investment 8.5x performance financial'.toLowerCase()
+            },
+            {
+              type: 'kpi',
+              title: 'Customer Savings: 25%',
+              description: 'Average customer cost savings',
+              section: 'Key Performance Indicators',
+              searchTerms: 'customer savings 25% cost reduction efficiency'.toLowerCase()
+            }
+          );
+        }
+        
+        function performSearch(query) {
+          const searchResults = document.getElementById('searchResults');
+          
+          if (!query.trim()) {
+            searchResults.classList.add('hidden');
+            return;
+          }
+          
+          const results = searchIndex.filter(item => 
+            item.searchTerms.includes(query.toLowerCase())
+          );
+          
+          if (results.length === 0) {
+            searchResults.innerHTML = '<div class="p-4 text-center text-slate-500 dark:text-slate-400">No results found</div>';
+            searchResults.classList.remove('hidden');
+            return;
+          }
+          
+          const resultHTML = results.map(result => `
+            <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer border-b border-slate-200 dark:border-slate-600 last:border-b-0" onclick="${result.type === 'file' ? `openPreview('${result.path}', '${result.title}')` : result.type === 'committee' ? `window.open('${result.path}', '_blank')` : 'void(0)'}">}
+              <div class="flex items-start gap-3">
+                <div class="flex-shrink-0 w-8 h-8 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
+                  ${result.type === 'file' ? 
+                    '<svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>' :
+                    result.type === 'committee' ?
+                    '<svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>' :
+                    '<svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>'
+                  }
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-medium text-slate-900 dark:text-slate-100 truncate">${result.title}</div>
+                  <div class="text-sm text-slate-500 dark:text-slate-400 mt-1">${result.description}</div>
+                  <div class="text-xs text-slate-400 dark:text-slate-500 mt-1">${result.section}</div>
+                </div>
+              </div>
+            </div>
+          `).join('');
+          
+          searchResults.innerHTML = resultHTML;
+          searchResults.classList.remove('hidden');
+        }
+        
+        // Hide search results when clicking outside
+        document.addEventListener('click', function(e) {
+          const searchContainer = document.getElementById('documentSearch').parentElement;
+          const searchResults = document.getElementById('searchResults');
+          
+          if (!searchContainer.contains(e.target)) {
+            searchResults.classList.add('hidden');
+          }
+        });
+        
+        // Build search index after loading data room config
+        const originalLoadDataRoomConfig = loadDataRoomConfig;
+        loadDataRoomConfig = async function() {
+          await originalLoadDataRoomConfig();
+          buildSearchIndex();
+        };
+        
+        // Sidebar toggle functionality
+        function toggleSidebar() {
+          const sidebar = document.getElementById('sidebar');
+          sidebar.classList.toggle('-translate-x-full');
+          sidebar.classList.toggle('translate-x-0');
+        }
+        
+        // Make toggleSidebar available globally
+        window.toggleSidebar = toggleSidebar;
+        
+        // File management functions for admin
+        const fileTypes = {
+          'financial-reports': {
+            'Annual Report': 'annual-report',
+            'Quarterly Report': 'quarterly-report',
+            'Income Statement': 'income-statement',
+            'Balance Sheet': 'balance-sheet',
+            'Cash Flow Statement': 'cash-flow',
+            'Audit Report': 'audit-report'
+          },
+          'legal-documents': {
+            'Articles of Incorporation': 'incorporation-doc',
+            'EIN Certificate': 'ein',
+            'Operating Agreement': 'operating-agreement',
+            'Board Resolutions': 'board-resolutions',
+            'IP Documentation': 'ip-documentation',
+            'Compliance Certificates': 'compliance-cert'
+          },
+          'business-metrics': {
+            'KPI Dashboard': 'kpi-dashboard',
+            'Unit Economics': 'unit-economics',
+            'Market Analysis': 'market-analysis',
+            'Customer Metrics': 'customer-metrics',
+            'Growth Analysis': 'growth-analysis'
+          },
+          'strategic-plans': {
+            'Business Plan': 'business-plan',
+            'Strategic Roadmap': 'strategic-roadmap',
+            'Market Entry Strategy': 'market-entry',
+            'Product Roadmap': 'product-roadmap',
+            'Competitive Analysis': 'competitive-analysis'
+          },
+          'communications': {
+            'Board Minutes': 'board-minutes',
+            'Investor Updates': 'investor-updates',
+            'Press Releases': 'press-releases',
+            'Management Presentations': 'mgmt-presentations'
+          },
+          'investment-terms': {
+            'Term Sheet': 'term-sheet',
+            'Shareholders Agreement': 'shareholders-agreement',
+            'Stock Purchase Agreement': 'stock-purchase',
+            'Subscription Agreement': 'subscription-agreement',
+            'Cap Table': 'cap-table'
+          }
+        };
+        
+        function showUploadModal(sectionId, sectionTitle) {
+          const modal = document.createElement('div');
+          modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+          
+          const availableTypes = fileTypes[sectionId] || {};
+          const typeOptions = Object.entries(availableTypes).map(([name, value]) => 
+            `<option value="${value}">${name}</option>`
+          ).join('');
+          
+          modal.innerHTML = `
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 max-w-md w-full mx-4">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Upload File to ${sectionTitle}</h3>
+                <button onclick="closeUploadModal()" class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+              
+              <form id="uploadForm" class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Document Type</label>
+                  <select id="fileType" class="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100" required>
+                    <option value="">Select document type...</option>
+                    ${typeOptions}
+                  </select>
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">File Name</label>
+                  <input type="text" id="fileName" class="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100" placeholder="Enter file name..." required>
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Description</label>
+                  <textarea id="fileDescription" rows="3" class="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100" placeholder="Brief description of the document..." required></textarea>
+                </div>
+                
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Upload File</label>
+                  <div class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 text-center">
+                    <input type="file" id="fileUpload" class="hidden" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx" onchange="handleFileSelect(event)">
+                    <button type="button" onclick="document.getElementById('fileUpload').click()" class="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">
+                      Choose File
+                    </button>
+                    <div id="selectedFile" class="mt-2 text-sm text-slate-600 dark:text-slate-400"></div>
+                  </div>
+                </div>
+                
+                <div class="flex gap-3 pt-4">
+                  <button type="submit" class="flex-1 bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors font-medium">
+                    Upload Document
+                  </button>
+                  <button type="button" onclick="closeUploadModal()" class="flex-1 bg-slate-300 text-slate-700 py-3 rounded-lg hover:bg-slate-400 transition-colors font-medium">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          `;
+          
+          document.body.appendChild(modal);
+          window.currentUploadModal = modal;
+          
+          // Handle form submission
+          document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleFileUpload(sectionId);
+          });
+        }
+        
+        function handleFileSelect(event) {
+          const file = event.target.files[0];
+          const selectedFileDiv = document.getElementById('selectedFile');
+          if (file) {
+            selectedFileDiv.textContent = `Selected: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+          } else {
+            selectedFileDiv.textContent = '';
+          }
+        }
+        
+        function handleFileUpload(sectionId) {
+          const fileType = document.getElementById('fileType').value;
+          const fileName = document.getElementById('fileName').value;
+          const fileDescription = document.getElementById('fileDescription').value;
+          const fileUpload = document.getElementById('fileUpload').files[0];
+          
+          if (!fileType || !fileName || !fileDescription || !fileUpload) {
+            alert('Please fill in all fields and select a file.');
+            return;
+          }
+          
+          // Here you would implement the actual file upload logic
+          // For now, we'll simulate adding it to the local config
+          const newFile = {
+            name: fileName,
+            path: `uploaded/${fileType}_${Date.now()}.pdf`, // Simulated path
+            description: fileDescription,
+            date: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+            type: fileType
+          };
+          
+          // Add to dataRoomConfig
+          if (!dataRoomConfig.sections[sectionId]) {
+            dataRoomConfig.sections[sectionId] = { title: '', files: [] };
+          }
+          dataRoomConfig.sections[sectionId].files.push(newFile);
+          
+          // Re-render the data room sections
+          renderDataRoomSections();
+          buildSearchIndex();
+          
+          // Close modal and show success message
+          closeUploadModal();
+          showNotification(`Successfully uploaded "${fileName}" to ${dataRoomConfig.sections[sectionId].title}`, 'success');
+        }
+        
+        function deleteFile(sectionId, fileName) {
+          if (confirm(`Are you sure you want to delete "${fileName}"? This action cannot be undone.`)) {
+            // Remove from dataRoomConfig
+            const section = dataRoomConfig.sections[sectionId];
+            section.files = section.files.filter(file => file.name !== fileName);
+            
+            // Re-render the data room sections
+            renderDataRoomSections();
+            buildSearchIndex();
+            
+            // Close any open modals and show success message
+            if (window.currentSectionModal) closeSectionDetails();
+            showNotification(`Successfully deleted "${fileName}"`, 'success');
+          }
+        }
+        
+        function closeUploadModal() {
+          if (window.currentUploadModal) {
+            document.body.removeChild(window.currentUploadModal);
+            window.currentUploadModal = null;
+          }
+        }
+        
+        function showNotification(message, type = 'info') {
+          const notification = document.createElement('div');
+          notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white ${
+            type === 'success' ? 'bg-emerald-600' : 
+            type === 'error' ? 'bg-red-600' : 
+            'bg-blue-600'
+          } transform translate-x-full opacity-0 transition-all duration-300`;
+          notification.textContent = message;
+          
+          document.body.appendChild(notification);
+          
+          // Animate in
+          setTimeout(() => {
+            notification.classList.remove('translate-x-full', 'opacity-0');
+          }, 100);
+          
+          // Animate out and remove
+          setTimeout(() => {
+            notification.classList.add('translate-x-full', 'opacity-0');
+            setTimeout(() => {
+              if (notification.parentNode) {
+                document.body.removeChild(notification);
+              }
+            }, 300);
+          }, 3000);
+        }
+        
+        // Check authentication when page loads
+        async function initPageChecks() {
+            try {
+                if (!checkAuth()) return;
+                await loadDataRoomConfig();
+                initTheme();
+                buildSearchIndex();
+            } catch (error) {
+                console.error('Error during initialization:', error);
+            }
+        }
+
+        // Initialize on DOMContentLoaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPageChecks);
+        } else {
+            initPageChecks();
+        }
+        
+        // Populate navigation when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.universalNav) {
+                const navContainer = document.getElementById('universal-navigation');
+                if (navContainer) {
+                    navContainer.innerHTML = window.universalNav.renderNavigation();
+                }
+            }
+        });
+        </script>
+
+<script src="../js/telemetry.js"></script>
+
+    
+    <script>
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('aside');
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('block');
+        }
+        
+        // Highlight active page
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const sidebarLinks = document.querySelectorAll('aside a');
+            
+            sidebarLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || (currentPage === 'index.html' && href === 'index.html')) {
+                    link.classList.remove('text-gray-700', 'dark:text-gray-300');
+                    link.classList.add('text-blue-600', 'dark:text-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

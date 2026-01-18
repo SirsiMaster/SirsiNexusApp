@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Payment Portal Layout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Force visible borders for debugging */
+        .debug {
+            border: 3px solid red !important;
+            background-color: rgba(255, 0, 0, 0.1) !important;
+        }
+        
+        .debug-container {
+            border: 2px solid blue !important;
+            background-color: rgba(0, 0, 255, 0.05) !important;
+        }
+        
+        /* Prevent any horizontal scrolling */
+        * {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+        
+        /* Show current breakpoint */
+        .breakpoint-indicator {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: black;
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            z-index: 9999;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        
+        @media (min-width: 640px) {
+            .breakpoint-indicator:after { content: ' SM+'; }
+        }
+        
+        @media (min-width: 768px) {
+            .breakpoint-indicator:after { content: ' MD+'; }
+        }
+        
+        @media (min-width: 1024px) {
+            .breakpoint-indicator:after { content: ' LG+'; }
+        }
+    </style>
+</head>
+<body class="font-inter bg-slate-50 min-h-screen">
+    
+    <!-- Breakpoint indicator -->
+    <div class="breakpoint-indicator">
+        Viewport: <span id="viewport-size"></span>
+    </div>
+    
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 debug">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 debug-container">
+            <div class="flex h-16 items-center justify-between">
+                <div class="text-lg font-bold text-slate-900">SirsiNexus</div>
+                <div class="text-sm text-slate-600">Navigation</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Section -->
+    <section class="relative py-8 bg-slate-50 debug">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 debug-container">
+            
+            <!-- Title -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">Debug Layout Test</h1>
+                <p class="text-xl text-slate-600 max-w-2xl mx-auto">Testing responsive layout issues</p>
+            </div>
+            
+            <!-- Progress Indicator -->
+            <div class="flex justify-center mb-16 debug">
+                <div class="flex items-center space-x-2 sm:space-x-4 md:space-x-8 debug-container">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-emerald-600 text-white rounded-full flex items-center justify-center font-semibold text-xs sm:text-sm">1</div>
+                        <span class="ml-2 sm:ml-3 text-xs sm:text-sm font-medium text-slate-900">Account</span>
+                    </div>
+                    <div class="w-8 sm:w-12 md:w-16 h-0.5 bg-slate-300"></div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-emerald-600 text-white rounded-full flex items-center justify-center font-semibold text-xs sm:text-sm">2</div>
+                        <span class="ml-2 sm:ml-3 text-xs sm:text-sm font-medium text-slate-900">Details</span>
+                    </div>
+                    <div class="w-8 sm:w-12 md:w-16 h-0.5 bg-slate-300"></div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-emerald-600 text-white rounded-full flex items-center justify-center font-semibold text-xs sm:text-sm">3</div>
+                        <span class="ml-2 sm:ml-3 text-xs sm:text-sm font-medium text-slate-900">Payment</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Test Cards -->
+            <div class="space-y-8">
+                <div class="bg-white rounded-2xl shadow-xl border border-slate-200 debug-container">
+                    <div class="p-8">
+                        <h2 class="text-2xl font-bold text-slate-900 mb-4">Step 1: Account Information</h2>
+                        <p class="text-slate-600">This card should align with header and progress indicator.</p>
+                        <div class="mt-4 p-4 bg-gray-50 rounded">
+                            <p class="text-sm text-gray-600">Card content area</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-xl border border-slate-200 debug-container">
+                    <div class="p-8">
+                        <h2 class="text-2xl font-bold text-slate-900 mb-4">Step 2: Payment Details</h2>
+                        <p class="text-slate-600">All containers should be aligned and responsive.</p>
+                        <div class="mt-4 p-4 bg-gray-50 rounded">
+                            <p class="text-sm text-gray-600">Card content area</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    
+    <!-- Layout Info Panel -->
+    <div class="fixed bottom-4 right-4 bg-black text-white p-4 rounded text-sm max-w-xs">
+        <div><strong>Debug Info:</strong></div>
+        <div>Viewport: <span id="viewport-dimensions"></span></div>
+        <div>Breakpoint: <span id="current-breakpoint"></span></div>
+        <div>Max Container: <span class="text-green-400">max-w-4xl</span></div>
+    </div>
+
+    <script>
+        function updateLayoutInfo() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            document.getElementById('viewport-size').textContent = `${width}x${height}`;
+            document.getElementById('viewport-dimensions').textContent = `${width}x${height}`;
+            
+            // Determine current breakpoint
+            let breakpoint = 'BASE';
+            if (width >= 1024) breakpoint = 'LG (1024px+)';
+            else if (width >= 768) breakpoint = 'MD (768px+)';
+            else if (width >= 640) breakpoint = 'SM (640px+)';
+            else breakpoint = 'BASE (< 640px)';
+            
+            document.getElementById('current-breakpoint').textContent = breakpoint;
+            
+            console.log('Layout Debug:', {
+                viewport: `${width}x${height}`,
+                breakpoint: breakpoint,
+                maxWidth: '4xl (896px)',
+                containerPadding: width >= 1024 ? '2rem' : width >= 640 ? '1.5rem' : '1rem'
+            });
+        }
+        
+        updateLayoutInfo();
+        window.addEventListener('resize', updateLayoutInfo);
+        
+        // Log any layout issues
+        window.addEventListener('load', function() {
+            const containers = document.querySelectorAll('.max-w-4xl');
+            console.log('Found containers:', containers.length);
+            
+            containers.forEach((container, index) => {
+                const rect = container.getBoundingClientRect();
+                console.log(`Container ${index + 1}:`, {
+                    width: rect.width,
+                    left: rect.left,
+                    right: rect.right,
+                    element: container.className
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>

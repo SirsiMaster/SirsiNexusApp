@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemetry Integration Example - SirsiNexus</title>
+    
+    <!-- Include the telemetry script on every page -->
+    <script src="js/telemetry.js"></script>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .button {
+            background: #10b981;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button:hover {
+            background: #059669;
+        }
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .file-zone {
+            border: 2px dashed #ddd;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            background: #fafafa;
+        }
+        #tracking-log {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Telemetry Integration Example</h1>
+        <p>This page demonstrates how the telemetry system tracks user interactions automatically.</p>
+        
+        <div class="section">
+            <h2>Automatic Tracking Features</h2>
+            <p>The telemetry system automatically tracks:</p>
+            <ul>
+                <li>✓ Page loads and performance metrics</li>
+                <li>✓ Click locations and heatmaps</li>
+                <li>✓ Scroll depth (25%, 50%, 75%, 100%)</li>
+                <li>✓ Time spent on page</li>
+                <li>✓ Mouse movements (sampled)</li>
+                <li>✓ Form interactions</li>
+                <li>✓ File uploads/downloads</li>
+                <li>✓ Element visibility</li>
+                <li>✓ JavaScript errors</li>
+                <li>✓ Page visibility changes</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Interactive Elements (All Tracked Automatically)</h2>
+            
+            <h3>Buttons</h3>
+            <button class="button" data-action="primary-action">Primary Action</button>
+            <button class="button" data-action="secondary-action">Secondary Action</button>
+            <button class="button" data-action="download-report">Download Report</button>
+            
+            <h3>Form Fields</h3>
+            <form id="sample-form">
+                <input type="text" name="username" placeholder="Username (tracks focus/blur/changes)">
+                <input type="email" name="email" placeholder="Email (tracks interactions)">
+                <textarea name="comments" placeholder="Comments (tracks time to fill)"></textarea>
+                <button type="submit" class="button">Submit Form</button>
+            </form>
+            
+            <h3>File Upload</h3>
+            <div class="file-zone">
+                <input type="file" id="file-upload" multiple>
+                <p>Drop files here or click to upload<br>(tracks file selections)</p>
+            </div>
+            
+            <h3>Download Links</h3>
+            <a href="#" download="sample-report.pdf" class="button" style="text-decoration: none; display: inline-block;">Download PDF</a>
+            <a href="#" download="data-export.xlsx" class="button" style="text-decoration: none; display: inline-block;">Download Excel</a>
+        </div>
+
+        <div class="section">
+            <h2>Custom Tracking Examples</h2>
+            <p>You can also track custom events programmatically:</p>
+            
+            <button class="button" onclick="trackCustomEvent()">Track Custom Event</button>
+            <button class="button" onclick="trackUserAction()">Track User Action</button>
+            <button class="button" onclick="showTrackingLog()">Show Tracking Log</button>
+            
+            <div id="tracking-log" style="display: none; margin-top: 20px;">
+                <strong>Live Tracking Log:</strong>
+                <div id="log-content"></div>
+            </div>
+        </div>
+
+        <div class="section" style="height: 800px; background: linear-gradient(to bottom, #f9fafb, #e5e7eb);">
+            <h2>Scroll Tracking Area</h2>
+            <p>Scroll down to see how the system tracks scroll depth...</p>
+            <div style="margin-top: 200px;">
+                <p>25% Scroll Depth Marker</p>
+            </div>
+            <div style="margin-top: 200px;">
+                <p>50% Scroll Depth Marker</p>
+            </div>
+            <div style="margin-top: 200px;">
+                <p>75% Scroll Depth Marker</p>
+            </div>
+            <div style="margin-top: 200px;">
+                <p>100% Scroll Depth Marker - You've reached the bottom!</p>
+            </div>
+        </div>
+
+        <div class="section" data-track="important-content">
+            <h2>Visibility Tracking</h2>
+            <p>This section is marked with data-track attribute and will be tracked when it becomes visible.</p>
+        </div>
+    </div>
+
+    <script>
+        // Example of custom tracking
+        function trackCustomEvent() {
+            if (window.SirsiTelemetry) {
+                window.SirsiTelemetry.trackCustom('button_test', {
+                    buttonLabel: 'Track Custom Event',
+                    timestamp: new Date().toISOString(),
+                    customData: {
+                        source: 'example_page',
+                        version: '1.0'
+                    }
+                });
+                alert('Custom event tracked! Check the console if debug mode is enabled.');
+            }
+        }
+
+        function trackUserAction() {
+            if (window.SirsiTelemetry) {
+                window.SirsiTelemetry.trackAction('viewed_important_content', {
+                    contentId: 'telemetry-example',
+                    contentType: 'documentation',
+                    userIntent: 'learning'
+                });
+                alert('User action tracked!');
+            }
+        }
+
+        // Show tracking log
+        let logVisible = false;
+        function showTrackingLog() {
+            logVisible = !logVisible;
+            const logDiv = document.getElementById('tracking-log');
+            logDiv.style.display = logVisible ? 'block' : 'none';
+            
+            if (logVisible && window.SirsiTelemetry) {
+                // Override the track method temporarily to log events
+                const originalTrack = window.SirsiTelemetry.track.bind(window.SirsiTelemetry);
+                window.SirsiTelemetry.track = function(eventType, data) {
+                    originalTrack(eventType, data);
+                    
+                    // Display in log
+                    const logContent = document.getElementById('log-content');
+                    const logEntry = document.createElement('div');
+                    logEntry.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${eventType}: ${JSON.stringify(data, null, 2)}`;
+                    logContent.insertBefore(logEntry, logContent.firstChild);
+                    
+                    // Keep only last 10 entries
+                    while (logContent.children.length > 10) {
+                        logContent.removeChild(logContent.lastChild);
+                    }
+                };
+            }
+        }
+
+        // Simulate form submission
+        document.getElementById('sample-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Form submitted! This action was automatically tracked by telemetry.');
+        });
+
+        // Add some dynamic content after page load
+        setTimeout(() => {
+            const dynamicSection = document.createElement('div');
+            dynamicSection.className = 'section';
+            dynamicSection.setAttribute('data-track', 'dynamic-content');
+            dynamicSection.innerHTML = `
+                <h2>Dynamic Content (Added After 5 Seconds)</h2>
+                <p>This content was added dynamically and will still be tracked!</p>
+                <button class="button" onclick="alert('Dynamic button clicked!')">Dynamic Button</button>
+            `;
+            document.querySelector('.container').appendChild(dynamicSection);
+        }, 5000);
+    </script>
+</body>
+</html>

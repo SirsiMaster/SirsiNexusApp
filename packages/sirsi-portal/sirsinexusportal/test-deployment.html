@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deployment Test</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>Deployment Test Page</h1>
+    <p>Last updated: <span id="timestamp"></span></p>
+    <p>If you can see this page, the deployment is working.</p>
+    <script>
+        document.getElementById('timestamp').textContent = new Date().toISOString();
+    </script>
+<script src="js/telemetry.js"></script>
+</body>
+</html>

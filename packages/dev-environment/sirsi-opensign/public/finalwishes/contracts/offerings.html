@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en" data-auth-protect="admin" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sirsi Offerings | Build Your Solution</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Dependencies - Same as contracts/index.html -->
+    <link href="../../assets/css/tailwind.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/admin-layout.css?v=2.0.1">
+    <link rel="stylesheet" href="../../assets/css/finalwishes.css">
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+
+    <style>
+        /* ============================================
+           OFFERINGS PAGE - ROYAL NEO-DECO DARK THEME
+           Matching contracts/index.html styling
+           ============================================ */
+
+        /* FORCE DARK THEME OVERRIDE OF ADMIN-LAYOUT */
+        /* SOLID ROYAL BLUE - No gradients, no dark navy */
+        body {
+            background-color: #1e3a8a !important;
+            background-image: none !important;
+            color: #FFFFFF !important;
+        }
+
+        /* Main Content - Solid Royal Blue */
+        .main-content {
+            background: #1e3a8a !important;
+        }
+
+        /* Sidebar - Royal Blue with Gold Accents */
+        .sidebar {
+            background: #1e3a8a !important;
+            border-right: 1px solid rgba(200, 169, 81, 0.4) !important;
+        }
+
+        .sidebar-logo {
+            border-bottom: 1px solid rgba(200, 169, 81, 0.2) !important;
+        }
+
+        .sidebar-logo svg {
+            color: #C8A951 !important;
+        }
+
+        .nav-item {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        .nav-item:hover {
+            color: #FFFFFF !important;
+            background: rgba(200, 169, 81, 0.1) !important;
+        }
+
+        .nav-item.active {
+            color: #C8A951 !important;
+            background: rgba(200, 169, 81, 0.15) !important;
+            border-left-color: #C8A951 !important;
+        }
+
+        /* Header - Royal Blue with Gold */
+        .admin-header {
+            background: rgba(30, 58, 138, 0.95) !important;
+            border-bottom: 1px solid rgba(200, 169, 81, 0.3) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+
+        .admin-header h1 {
+            color: #C8A951 !important;
+        }
+
+        .admin-header p {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        .search-bar {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .search-bar input {
+            color: #FFFFFF !important;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        /* CSS Variables for Offerings */
+        :root {
+            --gold: #C8A951;
+            --gold-dim: rgba(200, 169, 81, 0.6);
+            --blue-light: #93c5fd;
+            --emerald: #10B981;
+            --bg-dark: #1e3a8a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        .offerings-wrapper {
+            min-height: 100vh;
+            padding-bottom: 8rem;
+        }
+
+        /* Category Cards */
+        .category-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 1rem;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .category-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--gold);
+            transform: translateY(-4px);
+        }
+
+        .category-card.active {
+            border-color: var(--gold);
+            background: rgba(200, 169, 81, 0.1);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-desc {
+            font-size: 0.875rem;
+            color: var(--blue-light);
+        }
+
+        .category-price {
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        /* ============================================
+           ROYAL NEO-DECO PREMIUM STYLING
+           Matching contracts page aesthetic
+           ============================================ */
+
+        /* TIER 1: Platform Hero Section */
+        .platform-hero {
+            margin-bottom: 3rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .platform-hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8125rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        /* Platform Card - Refined, not oversized */
+        .platform-card {
+            background: linear-gradient(145deg, rgba(30, 58, 138, 0.5), rgba(15, 23, 42, 0.7));
+            border: 1px solid rgba(200, 169, 81, 0.4);
+            border-radius: 0.75rem;
+            padding: 2rem 2.5rem;
+            display: grid;
+            grid-template-columns: 1fr 220px;
+            gap: 2rem;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+            position: relative;
+        }
+
+        /* Subtle shine effect */
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .platform-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .platform-card.selected {
+            border-color: var(--gold);
+            background: linear-gradient(145deg, rgba(200, 169, 81, 0.12), rgba(30, 58, 138, 0.5));
+        }
+
+        .platform-info h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+        }
+
+        .platform-tagline {
+            font-size: 0.9375rem;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .platform-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .platform-feature-tag {
+            font-size: 0.6875rem;
+            color: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.06);
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .platform-pricing {
+            text-align: center;
+            padding: 1.25rem;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .platform-price-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.6875rem;
+            color: rgba(255, 255, 255, 0.55);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.25rem;
+        }
+
+        .platform-price {
+            font-family: 'Cinzel', serif;
+            font-size: 2.25rem;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .platform-select-btn {
+            background: var(--gold);
+            color: #0f172a;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .platform-select-btn:hover {
+            background: #d4b85a;
+            transform: translateY(-1px);
+        }
+
+        .platform-select-btn.selected {
+            background: rgba(200, 169, 81, 0.15);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+        }
+
+        /* TIER 2: Add-ons Section */
+        .addons-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .addons-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .addons-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.8125rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            opacity: 0.9;
+        }
+
+        .addons-pricing-note {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.55);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .addons-pricing-note.bundled {
+            color: var(--emerald);
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.25);
+        }
+
+        /* Add-ons Grid - FIXED 3 columns, no auto-fill */
+        .addons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Responsive: 2 columns on medium, 1 on small */
+        @media (max-width: 1100px) {
+            .addons-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .addons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Add-on Card - LIGHTER for contrast against dark background */
+        .addon-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.2s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .addon-card:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .addon-card.in-cart {
+            border-color: var(--gold);
+            background: rgba(200, 169, 81, 0.12);
+        }
+
+        .addon-card.locked {
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        .addon-card.locked::after {
+            content: '🔒 Requires Platform';
+            position: absolute;
+            bottom: 0.75rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.625rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .addon-card.locked::after {
+            content: '🔒 Requires Platform';
+            position: absolute;
+            bottom: 0.75rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.625rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.625rem;
+            gap: 0.75rem;
+        }
+
+        .product-name {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: white;
+            line-height: 1.3;
+        }
+
+        .product-category-badge {
+            font-size: 0.5625rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.55);
+            flex-shrink: 0;
+        }
+
+        .product-category-badge.feature {
+            color: #60a5fa;
+            border-color: rgba(96, 165, 250, 0.3);
+            background: rgba(96, 165, 250, 0.08);
+        }
+
+        .product-category-badge.service {
+            color: var(--emerald);
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .product-category-badge.platform {
+            color: var(--gold);
+            border-color: rgba(200, 169, 81, 0.3);
+            background: rgba(200, 169, 81, 0.08);
+        }
+
+        .product-description {
+            font-size: 0.8125rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .product-meta {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.6875rem;
+            color: rgba(255, 255, 255, 0.45);
+            margin-bottom: 0.875rem;
+        }
+
+        .product-pricing {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.875rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: auto;
+        }
+
+        .product-price {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .product-price-bundled {
+            font-size: 0.6875rem;
+            color: rgba(255, 255, 255, 0.35);
+            text-decoration: line-through;
+        }
+
+        .product-price-label {
+            font-size: 0.5625rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.45);
+            margin-top: 0.125rem;
+        }
+
+        .add-to-cart-btn {
+            background: transparent;
+            border: 1px solid rgba(200, 169, 81, 0.5);
+            color: var(--gold);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.625rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            background: var(--gold);
+            color: #0f172a;
+        }
+
+        .add-to-cart-btn.in-cart {
+            background: var(--gold);
+            color: #0f172a;
+            border-color: var(--gold);
+        }
+
+        .add-to-cart-btn:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+
+        /* Shopping Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 400px;
+            max-width: 90vw;
+            background: rgba(15, 23, 42, 0.98);
+            border-left: 1px solid var(--glass-border);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .cart-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .cart-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cart-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            line-height: 1;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .cart-item {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .cart-item-price {
+            font-size: 0.875rem;
+            color: var(--gold);
+        }
+
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            padding: 0.25rem;
+            font-size: 1.25rem;
+            transition: color 0.2s;
+        }
+
+        .cart-item-remove:hover {
+            color: #ef4444;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .cart-total-label {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .cart-total-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .cart-savings {
+            font-size: 0.75rem;
+            color: var(--emerald);
+            text-align: right;
+            margin-bottom: 1rem;
+        }
+
+        .cart-checkout-btn {
+            width: 100%;
+            background: var(--gold);
+            color: #1e293b;
+            border: none;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cart-checkout-btn:hover {
+            background: #d4b866;
+        }
+
+        .cart-checkout-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Floating Cart Button */
+        .cart-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--gold);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(200, 169, 81, 0.4);
+            z-index: 998;
+            transition: transform 0.2s ease;
+        }
+
+        .cart-fab:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-fab svg {
+            width: 24px;
+            height: 24px;
+            color: #1e293b;
+        }
+
+        .cart-fab-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Section Headers - Refined */
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.9375rem;
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Pricing Toggle - Removed, not needed with tiered layout */
+
+        /* Category Filter Tabs - Premium Glass */
+        .category-tabs {
+            display: flex;
+            justify-content: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: rgba(255, 255, 255, 0.7) !important;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-tab:hover {
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.08);
+            color: white !important;
+        }
+
+        .category-tab.active {
+            background: var(--gold) !important;
+            border-color: var(--gold);
+            color: #0f172a !important;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(200, 169, 81, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar Component -->
+        <div id="sidebar-root" data-active="proposal-contract"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header Component -->
+            <header id="universal-header-root" data-title="Build Your Solution"
+                data-subtitle="Sirsi Engineering Services • Universal Offerings"
+                data-search-placeholder="Search offerings..."></header>
+
+            <div class="offerings-wrapper px-8 py-12">
+                <!-- Section Header -->
+                <div class="section-header">
+                    <h1 class="section-title">Build Your Solution</h1>
+                    <p class="section-subtitle">Start with your foundation, then enhance with powerful add-ons</p>
+                </div>
+
+                <!-- ============================================
+                     TIER 1: PLATFORM SELECTION
+                     ============================================ -->
+                <div class="platform-hero" id="platform-hero">
+                    <div class="platform-hero-title">
+                        <span>Step 1: Choose Your Foundation</span>
+                    </div>
+
+                    <!-- Platform card will be injected here -->
+                    <div id="platform-container"></div>
+                </div>
+
+                <!-- ============================================
+                     TIER 2: ADD-ON MODULES
+                     ============================================ -->
+                <div class="addons-section" id="addons-section">
+                    <div class="addons-header">
+                        <div class="addons-title">
+                            <span>Step 2: Enhance Your Platform</span>
+                        </div>
+                        <div class="addons-pricing-note" id="addons-pricing-note">
+                            Select platform above for bundled pricing
+                        </div>
+                    </div>
+
+                    <!-- Category Filter Tabs -->
+                    <div class="category-tabs" id="category-tabs">
+                        <button class="category-tab active" data-category="all" onclick="selectCategory('all')">
+                            All Modules
+                        </button>
+                        <!-- Additional category tabs injected here -->
+                    </div>
+
+                    <!-- Add-ons Grid -->
+                    <div class="addons-grid" id="addons-grid">
+                        <!-- Add-on cards will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <span class="cart-title">Your Selection</span>
+            <button class="cart-close" onclick="closeCart()">×</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <div class="cart-empty">
+                <p>Your cart is empty</p>
+                <p style="font-size: 0.75rem; margin-top: 0.5rem;">Select offerings to get started</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-savings" id="cart-savings" style="display: none;">
+                <!-- Savings info when bundled -->
+            </div>
+            <div class="cart-total">
+                <span class="cart-total-label">Total</span>
+                <span class="cart-total-amount" id="cart-total">$0</span>
+            </div>
+            <button class="cart-checkout-btn" id="checkout-btn" onclick="proceedToContract()" disabled>
+                Review Contract →
+            </button>
+        </div>
+    </div>
+
+    <!-- Floating Cart Button -->
+    <button class="cart-fab" id="cart-fab" onclick="toggleCart()">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+            </path>
+        </svg>
+        <span class="cart-fab-badge" id="cart-badge" style="display: none;">0</span>
+    </button>
+
+    <!-- Scripts -->
+    <script src="../../components/sidebar.js"></script>
+    <script src="../../components/universal-header.js"></script>
+
+    <!-- Offerings Engine -->
+    <script src="../../lib/offerings/catalog-data.js"></script>
+    <script src="../../lib/offerings/pricing-engine.js"></script>
+    <script src="../../lib/offerings/cart-manager.js"></script>
+    <script src="../../lib/offerings/offerings-engine.js"></script>
+
+    <script>
+        // =====================================================================
+        // OFFERINGS PAGE CONTROLLER
+        // =====================================================================
+
+        let engine = null;
+        let currentCategory = 'all';
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('[OfferingsPage] Initializing...');
+
+            // Initialize the offerings engine
+            engine = initOfferingsEngine('sirsi-engineering', {
+                onCartChange: onCartUpdate
+            });
+
+            // Render initial state
+            renderCategoryTabs();
+            renderProducts();
+            updateCartUI();
+
+            console.log('[OfferingsPage] Ready');
+        });
+
+        // =====================================================================
+        // RENDERING
+        // =====================================================================
+
+        function renderCategoryTabs() {
+            const container = document.getElementById('category-tabs');
+            const categories = engine.getCategories();
+
+            // Filter to only show add-on relevant categories (not platform)
+            const addonCategories = categories.filter(cat => cat.id !== 'platform');
+
+            let html = `
+                <button class="category-tab ${currentCategory === 'all' ? 'active' : ''}" 
+                        data-category="all" onclick="selectCategory('all')">
+                    All Modules
+                </button>
+            `;
+
+            addonCategories.forEach(cat => {
+                html += `
+                    <button class="category-tab ${currentCategory === cat.id ? 'active' : ''}" 
+                            data-category="${cat.id}" onclick="selectCategory('${cat.id}')">
+                        ${cat.icon} ${cat.name}
+                    </button>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // =====================================================================
+        // TIERED RENDERING
+        // =====================================================================
+
+        function renderPlatformHero() {
+            const container = document.getElementById('platform-container');
+            const bundles = engine.getBundles();
+
+            // Get the main platform bundle (FinalWishes Core)
+            const platform = bundles.find(b => b.id === 'finalwishes-core') || bundles[0];
+
+            if (!platform) {
+                container.innerHTML = '<p>No platform available</p>';
+                return;
+            }
+
+            const inCart = engine.isInCart(platform.id);
+            const priceDisplay = engine.getItemPriceDisplay(platform.id);
+
+            container.innerHTML = `
+                <div class="platform-card ${inCart ? 'selected' : ''}" data-id="${platform.id}">
+                    <div class="platform-info">
+                        <h2>${platform.name}</h2>
+                        <p class="platform-tagline">${platform.shortDescription || platform.description}</p>
+                        <div class="platform-features">
+                            <span class="platform-feature-tag">📅 ${platform.timeline} ${platform.timelineUnit || 'weeks'}</span>
+                            <span class="platform-feature-tag">✓ Foundation for all add-ons</span>
+                            <span class="platform-feature-tag">✓ Unlocks bundled pricing</span>
+                        </div>
+                    </div>
+                    <div class="platform-pricing">
+                        <div class="platform-price-label">Platform Investment</div>
+                        <div class="platform-price">${priceDisplay.formatted}</div>
+                        <button class="platform-select-btn ${inCart ? 'selected' : ''}" 
+                                onclick="toggleCartItem('${platform.id}')">
+                            ${inCart ? '✓ Selected' : 'Select Platform'}
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Update the add-ons pricing note based on platform selection
+            updateAddonsPricingNote(inCart);
+        }
+
+        function updateAddonsPricingNote(hasPlatform) {
+            const note = document.getElementById('addons-pricing-note');
+            if (hasPlatform) {
+                note.className = 'addons-pricing-note bundled';
+                note.innerHTML = '✓ Bundled pricing unlocked';
+            } else {
+                note.className = 'addons-pricing-note';
+                note.innerHTML = 'Select platform above for bundled pricing';
+            }
+        }
+
+        function renderAddons() {
+            const container = document.getElementById('addons-grid');
+            const products = engine.getProducts();
+            const hasPlatform = engine.cart.hasBundleOrPlatform(engine.catalog);
+
+            // Filter by category if needed (exclude platform category)
+            let items = products.filter(p => p.category !== 'platform');
+            if (currentCategory !== 'all') {
+                items = items.filter(item => item.category === currentCategory);
+            }
+
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: rgba(255,255,255,0.5);">
+                        No modules in this category
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = items.map(item => renderAddonCard(item, hasPlatform)).join('');
+        }
+
+        function renderAddonCard(item, hasPlatform) {
+            const inCart = engine.isInCart(item.id);
+            const priceDisplay = engine.getItemPriceDisplay(item.id);
+
+            // Check if this requires a platform (i.e., not standalone capable)
+            const requiresPlatform = item.standalone === false;
+            const isLocked = requiresPlatform && !hasPlatform && !inCart;
+
+            const classes = [
+                'addon-card',
+                inCart ? 'in-cart' : '',
+                isLocked ? 'locked' : ''
+            ].filter(Boolean).join(' ');
+
+            // Determine price display
+            let priceLabel, priceValue;
+            if (hasPlatform) {
+                priceLabel = 'Add to project';
+                priceValue = priceDisplay.bundledFormatted || priceDisplay.formatted;
+            } else {
+                priceLabel = 'Standalone';
+                priceValue = priceDisplay.formatted;
+            }
+
+            return `
+                <div class="${classes}" data-id="${item.id}">
+                    <div class="product-header">
+                        <div class="product-name">${item.name}</div>
+                        <span class="product-category-badge ${item.category}">${item.category}</span>
+                    </div>
+                    
+                    <div class="product-description">${item.shortDescription || item.description}</div>
+                    
+                    <div class="product-meta">
+                        <span>📅 ${item.timeline} ${item.timelineUnit || 'weeks'}</span>
+                    </div>
+                    
+                    <div class="product-pricing">
+                        <div>
+                            <div class="product-price">${priceValue}</div>
+                            <div class="product-price-label">${priceLabel}</div>
+                        </div>
+                        <button class="add-to-cart-btn ${inCart ? 'in-cart' : ''}" 
+                                onclick="toggleCartItem('${item.id}')"
+                                ${isLocked ? 'disabled' : ''}>
+                            ${inCart ? '✓ Added' : 'Add'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Keep for compatibility - renamed internal render
+        function renderProducts() {
+            renderPlatformHero();
+            renderAddons();
+        }
+
+        function updateCartUI() {
+            const pricing = engine.getCartPricing();
+            const items = engine.cart.getItemsWithDetails(engine.catalog);
+
+            // Update badge
+            const badge = document.getElementById('cart-badge');
+            badge.textContent = items.length;
+            badge.style.display = items.length > 0 ? 'flex' : 'none';
+
+            // Update total
+            document.getElementById('cart-total').textContent = formatPrice(pricing.total);
+
+            // Update checkout button
+            document.getElementById('checkout-btn').disabled = items.length === 0;
+
+            // Update add-ons pricing note based on platform status
+            updateAddonsPricingNote(pricing.hasBundleOrPlatform);
+
+            // Update cart items
+            const cartItemsContainer = document.getElementById('cart-items');
+            if (items.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="cart-empty">
+                        <p>Your cart is empty</p>
+                        <p style="font-size: 0.75rem; margin-top: 0.5rem;">Select offerings to get started</p>
+                    </div>
+                `;
+            } else {
+                cartItemsContainer.innerHTML = items.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${formatPrice(pricing.items.find(i => i.id === item.id)?.price || 0)}</div>
+                        </div>
+                        <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">×</button>
+                    </div>
+                `).join('');
+            }
+
+            // Update savings display
+            const savingsContainer = document.getElementById('cart-savings');
+            if (pricing.hasBundleOrPlatform && items.length > 1) {
+                const savings = engine.getBundleSavings();
+                if (savings.savings > 0) {
+                    savingsContainer.style.display = 'block';
+                    savingsContainer.innerHTML = `You're saving ${formatPrice(savings.savings)} with bundled pricing!`;
+                } else {
+                    savingsContainer.style.display = 'none';
+                }
+            } else {
+                savingsContainer.style.display = 'none';
+            }
+        }
+
+        // =====================================================================
+        // EVENT HANDLERS
+        // =====================================================================
+
+        function selectCategory(categoryId) {
+            currentCategory = categoryId;
+            renderCategoryTabs();
+            renderProducts();
+        }
+
+        function toggleCartItem(itemId) {
+            const result = engine.toggleCartItem(itemId);
+            if (!result.success) {
+                alert(result.message);
+            }
+        }
+
+        function removeFromCart(itemId) {
+            engine.removeFromCart(itemId);
+        }
+
+        function onCartUpdate(items, pricing) {
+            updateCartUI();
+            renderProducts(); // Re-render to update in-cart states
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        function closeCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+        }
+
+        function proceedToContract() {
+            const contractData = engine.generateContractData();
+
+            // Determine project ID from selected bundle or default
+            const selectedBundle = engine.cart.items.find(id => id.endsWith('-core'));
+            const projectId = selectedBundle ? selectedBundle.replace('-core', '') : 'finalwishes';
+
+            // Store in sessionStorage for the contract page
+            sessionStorage.setItem('offerings_contract_data', JSON.stringify(contractData));
+
+            // Navigate to contracts page
+            window.location.href = `./index.html?from=offerings&project=${projectId}`;
+        }
+    </script>
+</body>
+
+</html>

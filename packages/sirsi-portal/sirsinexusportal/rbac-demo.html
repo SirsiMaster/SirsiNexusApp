@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus RBAC Demo</title>
+    
+    <!-- Tailwind CSS -->
+    <link href="https://unpkg.com/tailwindcss@^3/dist/tailwind.min.css" rel="stylesheet">
+    
+    <!-- RBAC System -->
+    <script src="/assets/js/rbac-system.js"></script>
+    
+    <!-- RBAC UI Component -->
+    <script src="/components/rbac-ui.js"></script>
+    
+    <!-- Mock Backend -->
+    <script src="/assets/js/mock-backend.js"></script>
+    
+    <!-- Theme Toggle -->
+    <script src="/assets/js/fresh-theme-toggle.js"></script>
+    
+    <style>
+        .feature-card {
+            @apply bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700;
+        }
+        
+        .restricted {
+            @apply opacity-50 cursor-not-allowed relative;
+        }
+        
+        .restricted::after {
+            content: '🔒';
+            @apply absolute top-2 right-2 text-2xl;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+    <!-- RBAC UI Component -->
+    <rbac-ui></rbac-ui>
+    
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold">SirsiNexus RBAC Demo</h1>
+                <div class="flex items-center space-x-4">
+                    <!-- Role Switcher -->
+                    <select id="roleSwitch" class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700">
+                        <option value="super_admin">Super Admin</option>
+                        <option value="admin">Admin</option>
+                        <option value="manager">Manager</option>
+                        <option value="investor">Investor</option>
+                        <option value="committee">Committee Member</option>
+                        <option value="contributor">Contributor</option>
+                        <option value="viewer">Viewer</option>
+                        <option value="guest">Guest</option>
+                    </select>
+                    
+                    <!-- Theme Toggle -->
+                    <button data-theme-toggle class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        <!-- Current User Info -->
+        <div class="mb-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <h2 class="text-lg font-semibold mb-2">Current User</h2>
+            <div id="userInfo" class="text-sm">Loading...</div>
+        </div>
+        
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Admin Dashboard -->
+            <div class="feature-card" data-feature="admin_dashboard">
+                <h3 class="text-xl font-semibold mb-3">Admin Dashboard</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    Access the main administrative dashboard with system metrics and controls.
+                </p>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" 
+                        onclick="accessFeature('admin_dashboard')">
+                    Access Dashboard
+                </button>
+            </div>
+            
+            <!-- User Management -->
+            <div class="feature-card" data-feature="user_management">
+                <h3 class="text-xl font-semibold mb-3">User Management</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    Manage users, roles, and permissions across the platform.
+                </p>
+                <div class="space-y-2">
+                    <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 w-full" 
+                            data-permission="users.create"
+                            onclick="performAction('users.create', 'Create User')">
+                        Create User
+                    </button>
+                    <button class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 w-full" 
+                            data-permission="users.update"
+                            onclick="performAction('users.update', 'Edit User')">
+                        Edit User
+                    </button>
+                    <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 w-full" 
+                            data-permission="users.delete"
+                            onclick="performAction('users.delete', 'Delete User')">
+                        Delete User
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Document Management -->
+            <div class="feature-card" data-feature="document_permissions">
+                <h3 class="text-xl font-semibold mb-3">Document Management</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    Manage documents and their access permissions.
+                </p>
+                <div class="space-y-2">
+                    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 w-full" 
+                            data-permission="documents.read"
+                            onclick="performAction('documents.read', 'View Documents')">
+                        View Documents
+                    </button>
+                    <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 w-full" 
+                            data-permission="documents.create"
+                            onclick="performAction('documents.create', 'Upload Document')">
+                        Upload Document
+                    </button>
+                    <button class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 w-full" 
+                            data-permission="documents.manage_permissions"
+                            onclick="performAction('documents.manage_permissions', 'Manage Permissions')">
+                        Manage Permissions
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Investment Dashboard -->
+            <div class="feature-card" data-feature="investment_dashboard">
+                <h3 class="text-xl font-semibold mb-3">Investment Portal</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    View investment portfolio and financial reports.
+                </p>
+                <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700" 
+                        onclick="accessFeature('investment_dashboard')">
+                    View Portfolio
+                </button>
+            </div>
+            
+            <!-- Analytics -->
+            <div class="feature-card" data-feature="basic_analytics">
+                <h3 class="text-xl font-semibold mb-3">Analytics</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    Access platform analytics and reporting tools.
+                </p>
+                <div class="space-y-2">
+                    <button class="px-4 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 w-full" 
+                            data-permission="analytics.view"
+                            onclick="performAction('analytics.view', 'View Analytics')">
+                        View Analytics
+                    </button>
+                    <button class="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 w-full" 
+                            data-permission="analytics.export"
+                            onclick="performAction('analytics.export', 'Export Data')">
+                        Export Data
+                    </button>
+                </div>
+            </div>
+            
+            <!-- System Monitoring -->
+            <div class="feature-card" data-feature="system_monitoring">
+                <h3 class="text-xl font-semibold mb-3">System Monitoring</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    Monitor system health and performance metrics.
+                </p>
+                <button class="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700" 
+                        data-permission="system.monitor"
+                        onclick="performAction('system.monitor', 'View System Status')">
+                    View System Status
+                </button>
+            </div>
+        </div>
+        
+        <!-- Action Log -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold mb-4">Action Log</h2>
+            <div id="actionLog" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-h-96 overflow-y-auto">
+                <p class="text-gray-500 dark:text-gray-400">No actions performed yet.</p>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // Initialize demo
+        let currentUser = null;
+        const actionLog = [];
+        
+        // Initialize on DOM ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial role
+            setRole('admin');
+            
+            // Role switcher
+            document.getElementById('roleSwitch').addEventListener('change', (e) => {
+                setRole(e.target.value);
+            });
+            
+            // Theme toggle
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        });
+        
+        // Set user role
+        function setRole(role) {
+            // Create mock user
+            currentUser = {
+                id: `demo-${role}`,
+                name: `Demo ${role.charAt(0).toUpperCase() + role.slice(1).replace('_', ' ')}`,
+                email: `${role}@sirsinexus.com`,
+                role: role
+            };
+            
+            // Update RBAC system
+            if (window.rbac) {
+                window.rbac.setCurrentUser(currentUser);
+            }
+            
+            // Update UI
+            updateUserInfo();
+            updateFeatureAccess();
+            
+            // Log role change
+            logAction(`Role changed to: ${role}`, 'info');
+        }
+        
+        // Update user info display
+        function updateUserInfo() {
+            const userInfoEl = document.getElementById('userInfo');
+            const roleInfo = window.rbac.getRoleInfo(currentUser.role);
+            
+            userInfoEl.innerHTML = `
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <strong>Name:</strong> ${currentUser.name}<br>
+                        <strong>Email:</strong> ${currentUser.email}<br>
+                        <strong>Role:</strong> <span class="px-2 py-1 rounded text-white text-xs" style="background-color: ${roleInfo.color}">${roleInfo.name}</span>
+                    </div>
+                    <div>
+                        <strong>Description:</strong> ${roleInfo.description}<br>
+                        <strong>Level:</strong> ${roleInfo.level}<br>
+                        <strong>Permissions:</strong> ${window.rbac.getRolePermissions(currentUser.role).length} permissions
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Update feature access based on role
+        function updateFeatureAccess() {
+            // Update feature cards
+            document.querySelectorAll('[data-feature]').forEach(card => {
+                const feature = card.dataset.feature;
+                const hasAccess = window.rbac.hasFeatureAccess(feature);
+                
+                if (!hasAccess) {
+                    card.classList.add('restricted');
+                } else {
+                    card.classList.remove('restricted');
+                }
+            });
+            
+            // Update permission buttons
+            document.querySelectorAll('[data-permission]').forEach(button => {
+                const permission = button.dataset.permission;
+                const hasPermission = window.rbac.hasPermission(permission);
+                
+                if (!hasPermission) {
+                    button.disabled = true;
+                    button.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    button.disabled = false;
+                    button.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            });
+        }
+        
+        // Access feature
+        function accessFeature(feature) {
+            if (window.rbac.hasFeatureAccess(feature)) {
+                logAction(`Accessed feature: ${feature}`, 'success');
+                showToast(`Successfully accessed ${feature}`, 'success');
+            } else {
+                logAction(`Access denied for feature: ${feature}`, 'error');
+                showToast(`Access denied: You don't have permission to access ${feature}`, 'error');
+                
+                // Show upgrade prompt
+                const roleInfo = window.rbac.getRoleInfo(currentUser.role);
+                if (window.RBACUIHelpers) {
+                    const prompt = window.RBACUIHelpers.showUpgradePrompt(
+                        'Administrator',
+                        roleInfo.name
+                    );
+                    document.body.appendChild(prompt);
+                    setTimeout(() => prompt.remove(), 5000);
+                }
+            }
+        }
+        
+        // Perform action
+        function performAction(permission, actionName) {
+            window.rbac.guard(permission, 
+                () => {
+                    logAction(`Performed action: ${actionName} (${permission})`, 'success');
+                    showToast(`Successfully performed: ${actionName}`, 'success');
+                },
+                () => {
+                    logAction(`Permission denied: ${actionName} (${permission})`, 'error');
+                    showToast(`Permission denied: ${permission} required`, 'error');
+                    
+                    // Show permission required message
+                    if (window.RBACUIHelpers) {
+                        const button = event.target;
+                        const message = window.RBACUIHelpers.showPermissionRequired(permission, button);
+                        setTimeout(() => {
+                            message.remove();
+                            button.style.opacity = '';
+                            button.style.pointerEvents = '';
+                        }, 3000);
+                    }
+                }
+            );
+        }
+        
+        // Log action
+        function logAction(message, type) {
+            const timestamp = new Date().toLocaleTimeString();
+            const roleInfo = window.rbac.getRoleInfo(currentUser.role);
+            
+            actionLog.unshift({
+                timestamp,
+                message,
+                type,
+                role: roleInfo.name
+            });
+            
+            updateActionLog();
+        }
+        
+        // Update action log display
+        function updateActionLog() {
+            const logEl = document.getElementById('actionLog');
+            
+            if (actionLog.length === 0) {
+                logEl.innerHTML = '<p class="text-gray-500 dark:text-gray-400">No actions performed yet.</p>';
+                return;
+            }
+            
+            const colors = {
+                info: 'text-blue-600 dark:text-blue-400',
+                success: 'text-green-600 dark:text-green-400',
+                error: 'text-red-600 dark:text-red-400'
+            };
+            
+            logEl.innerHTML = actionLog.slice(0, 50).map(entry => `
+                <div class="py-2 border-b border-gray-200 dark:border-gray-700 last:border-0">
+                    <div class="flex items-center justify-between">
+                        <span class="${colors[entry.type] || 'text-gray-600'}">
+                            ${entry.message}
+                        </span>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                            <span class="mr-2">${entry.role}</span>
+                            <span>${entry.timestamp}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg text-white font-medium shadow-lg z-50 transform transition-all duration-300 translate-y-full`;
+            
+            const colors = {
+                success: '#10b981',
+                error: '#ef4444',
+                warning: '#f59e0b',
+                info: '#3b82f6'
+            };
+            
+            toast.style.backgroundColor = colors[type] || colors.info;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            // Animate in
+            setTimeout(() => {
+                toast.classList.remove('translate-y-full');
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-y-full');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+    </script>
+<script src="js/telemetry.js"></script>
+</body>
+</html>

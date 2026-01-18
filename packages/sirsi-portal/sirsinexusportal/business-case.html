@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Case - ROI Calculator | SirsiNexus</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-functions-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+    
+    <!-- Firebase Auth Module -->
+    <script src="assets/js/firebase-auth-module.js" defer></script>
+    
+    <!-- Chart.js for visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="/index.html" class="flex items-center">
+                            <img class="h-8 w-8" src="assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="SirsiNexus">
+                            <span class="ml-2 text-xl font-bold">SirsiNexus</span>
+                        </a>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="about.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About</a>
+                        <a href="pricing.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Pricing</a>
+                        <a href="business-case.html" class="text-white px-3 py-2 rounded-md text-sm font-medium">Business Case</a>
+                        <a href="contact.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br from-gray-900 via-green-900 to-gray-900 py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-5xl font-bold mb-6 bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+                    Calculate Your ROI with SirsiNexus
+                </h1>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Discover how much you can save and earn by switching to our quantum-enhanced AI infrastructure
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROI Calculator -->
+    <section class="py-16 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Input Section -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                    <h2 class="text-2xl font-bold mb-6">Your Current Infrastructure</h2>
+                    
+                    <form id="roi-calculator" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Company Size</label>
+                            <select id="company-size" class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
+                                <option value="startup">Startup (1-50 employees)</option>
+                                <option value="mid" selected>Mid-Market (51-500 employees)</option>
+                                <option value="enterprise">Enterprise (500+ employees)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Current Monthly Cloud Spend ($)</label>
+                            <input type="number" id="cloud-spend" value="50000" min="1000" 
+                                   class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Number of AI Models in Production</label>
+                            <input type="number" id="ai-models" value="10" min="1" 
+                                   class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Average Inference Requests per Day</label>
+                            <input type="number" id="inference-requests" value="1000000" min="1000" 
+                                   class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Current Team Size (DevOps/ML Engineers)</label>
+                            <input type="number" id="team-size" value="15" min="1" 
+                                   class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Industry</label>
+                            <select id="industry" class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
+                                <option value="tech">Technology</option>
+                                <option value="finance">Finance</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="retail">Retail</option>
+                                <option value="manufacturing">Manufacturing</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <button type="button" onclick="calculateROI()" 
+                                class="w-full bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-semibold text-lg transition">
+                            Calculate ROI
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Results Section -->
+                <div class="bg-gray-900 rounded-xl p-8 border border-gray-700">
+                    <h2 class="text-2xl font-bold mb-6">Your Projected Savings</h2>
+                    
+                    <div id="roi-results" class="space-y-6">
+                        <!-- Initial State -->
+                        <div class="text-center py-12">
+                            <i class="fas fa-calculator text-6xl text-gray-600 mb-4"></i>
+                            <p class="text-gray-400">Enter your details to see potential savings</p>
+                        </div>
+                    </div>
+
+                    <!-- Chart Container -->
+                    <div class="mt-8 hidden" id="chart-container">
+                        <canvas id="savings-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Benefits -->
+    <section class="py-16 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">How SirsiNexus Delivers Value</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="text-green-400 text-4xl mb-4">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Cost Reduction</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-check text-green-400 mr-2"></i>70% lower compute costs</li>
+                        <li><i class="fas fa-check text-green-400 mr-2"></i>90% reduction in energy consumption</li>
+                        <li><i class="fas fa-check text-green-400 mr-2"></i>50% less operational overhead</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="text-blue-400 text-4xl mb-4">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Performance Gains</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i>10x faster inference</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i>5x faster training</li>
+                        <li><i class="fas fa-check text-blue-400 mr-2"></i>99.99% uptime SLA</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl p-6 border border-gray-700">
+                    <div class="text-purple-400 text-4xl mb-4">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Risk Mitigation</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fas fa-check text-purple-400 mr-2"></i>Quantum-resistant security</li>
+                        <li><i class="fas fa-check text-purple-400 mr-2"></i>Automated compliance</li>
+                        <li><i class="fas fa-check text-purple-400 mr-2"></i>Zero-trust architecture</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies -->
+    <section class="py-16 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Success Stories</h2>
+            
+            <div id="case-studies" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Case studies will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Report -->
+    <section class="py-16 bg-gray-900">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-green-900 to-blue-900 rounded-xl p-8 text-center">
+                <h2 class="text-3xl font-bold mb-4">Get Your Personalized Business Case</h2>
+                <p class="text-xl mb-8 text-gray-200">
+                    Download a detailed ROI report customized for your organization
+                </p>
+                
+                <form id="download-report" class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                    <input type="email" placeholder="Enter your business email" required
+                           class="flex-1 px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-semibold">
+                        Get Report
+                    </button>
+                </form>
+                
+                <div id="download-success" class="hidden mt-6 text-green-400">
+                    <i class="fas fa-check-circle"></i> Report sent to your email!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">&copy; 2024 SirsiNexus. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        let savingsChart = null;
+
+        // Initialize Firebase
+        document.addEventListener('DOMContentLoaded', async () => {
+            await SirsiAuth.init();
+            
+            // Initialize analytics
+            if (firebase.analytics) {
+                firebase.analytics();
+            }
+            
+            loadCaseStudies();
+            
+            // Auto-calculate on input change
+            document.querySelectorAll('#roi-calculator input, #roi-calculator select').forEach(input => {
+                input.addEventListener('change', calculateROI);
+            });
+        });
+
+        // Calculate ROI
+        function calculateROI() {
+            const companySize = document.getElementById('company-size').value;
+            const cloudSpend = parseFloat(document.getElementById('cloud-spend').value) || 0;
+            const aiModels = parseInt(document.getElementById('ai-models').value) || 0;
+            const inferenceRequests = parseInt(document.getElementById('inference-requests').value) || 0;
+            const teamSize = parseInt(document.getElementById('team-size').value) || 0;
+            const industry = document.getElementById('industry').value;
+
+            // Calculate savings based on inputs
+            const computeSavings = cloudSpend * 0.7; // 70% reduction
+            const operationalSavings = teamSize * 5000; // $5k per engineer per month in efficiency
+            const energySavings = cloudSpend * 0.15; // 15% of cloud spend is energy
+            const performanceGains = inferenceRequests * 0.00001; // Value per request improvement
+
+            const totalMonthlySavings = computeSavings + operationalSavings + energySavings + performanceGains;
+            const totalAnnualSavings = totalMonthlySavings * 12;
+            const threeYearROI = totalAnnualSavings * 3;
+
+            // Implementation cost estimate
+            let implementationCost = 50000; // Base cost
+            if (companySize === 'enterprise') implementationCost = 250000;
+            else if (companySize === 'mid') implementationCost = 100000;
+
+            const paybackPeriod = implementationCost / totalMonthlySavings;
+            const netROI = ((threeYearROI - implementationCost) / implementationCost * 100).toFixed(0);
+
+            // Display results
+            displayResults({
+                computeSavings,
+                operationalSavings,
+                energySavings,
+                performanceGains,
+                totalMonthlySavings,
+                totalAnnualSavings,
+                threeYearROI,
+                implementationCost,
+                paybackPeriod,
+                netROI
+            });
+
+            // Track calculation
+            if (firebase.analytics) {
+                firebase.analytics().logEvent('roi_calculated', {
+                    company_size: companySize,
+                    monthly_savings: totalMonthlySavings,
+                    industry: industry
+                });
+            }
+        }
+
+        // Display results
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('roi-results');
+            
+            resultsDiv.innerHTML = `
+                <div class="space-y-4">
+                    <div class="bg-green-900 bg-opacity-30 rounded-lg p-4 border border-green-700">
+                        <div class="text-3xl font-bold text-green-400">
+                            $${data.totalMonthlySavings.toLocaleString()}
+                        </div>
+                        <div class="text-sm text-gray-300">Monthly Savings</div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <div class="text-xl font-semibold text-blue-400">
+                                $${data.totalAnnualSavings.toLocaleString()}
+                            </div>
+                            <div class="text-xs text-gray-400">Annual Savings</div>
+                        </div>
+                        
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <div class="text-xl font-semibold text-purple-400">
+                                ${data.paybackPeriod.toFixed(1)} months
+                            </div>
+                            <div class="text-xs text-gray-400">Payback Period</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-4">
+                        <div class="text-2xl font-bold text-yellow-400">
+                            ${data.netROI}% ROI
+                        </div>
+                        <div class="text-sm text-gray-400">3-Year Return on Investment</div>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-gray-700">
+                        <h3 class="font-semibold mb-3">Savings Breakdown</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Compute Cost Reduction</span>
+                                <span class="text-green-400">$${data.computeSavings.toLocaleString()}/mo</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Operational Efficiency</span>
+                                <span class="text-green-400">$${data.operationalSavings.toLocaleString()}/mo</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Energy Savings</span>
+                                <span class="text-green-400">$${data.energySavings.toLocaleString()}/mo</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Performance Gains</span>
+                                <span class="text-green-400">$${data.performanceGains.toLocaleString()}/mo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Show and update chart
+            updateChart(data);
+        }
+
+        // Update chart
+        function updateChart(data) {
+            const container = document.getElementById('chart-container');
+            container.classList.remove('hidden');
+
+            const ctx = document.getElementById('savings-chart').getContext('2d');
+            
+            if (savingsChart) {
+                savingsChart.destroy();
+            }
+
+            savingsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Year 1', 'Year 2', 'Year 3'],
+                    datasets: [{
+                        label: 'Cumulative Savings',
+                        data: [
+                            data.totalAnnualSavings - data.implementationCost,
+                            (data.totalAnnualSavings * 2) - data.implementationCost,
+                            data.threeYearROI - data.implementationCost
+                        ],
+                        backgroundColor: 'rgba(16, 185, 129, 0.5)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#9CA3AF'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#9CA3AF',
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            },
+                            grid: {
+                                color: '#374151'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#9CA3AF'
+                            },
+                            grid: {
+                                color: '#374151'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Load case studies
+        async function loadCaseStudies() {
+            const container = document.getElementById('case-studies');
+            
+            // Default case studies
+            const caseStudies = [
+                {
+                    company: 'TechCorp',
+                    industry: 'SaaS',
+                    savings: '82%',
+                    performance: '12x',
+                    quote: 'SirsiNexus transformed our AI infrastructure, reducing costs while dramatically improving performance.',
+                    author: 'CTO, TechCorp'
+                },
+                {
+                    company: 'FinanceAI',
+                    industry: 'Fintech',
+                    savings: '75%',
+                    performance: '8x',
+                    quote: 'The quantum-enhanced computing capabilities gave us a competitive edge in real-time trading algorithms.',
+                    author: 'Head of Engineering, FinanceAI'
+                },
+                {
+                    company: 'HealthML',
+                    industry: 'Healthcare',
+                    savings: '68%',
+                    performance: '15x',
+                    quote: 'Critical for our diagnostic AI models. The security features ensure HIPAA compliance effortlessly.',
+                    author: 'VP Technology, HealthML'
+                },
+                {
+                    company: 'RetailNext',
+                    industry: 'E-commerce',
+                    savings: '71%',
+                    performance: '10x',
+                    quote: 'Our recommendation engine now processes millions of requests with sub-millisecond latency.',
+                    author: 'Director of AI, RetailNext'
+                }
+            ];
+
+            try {
+                // Try to load from Firestore
+                const snapshot = await firebase.firestore()
+                    .collection('case_studies')
+                    .where('published', '==', true)
+                    .limit(4)
+                    .get();
+
+                const studies = snapshot.empty ? caseStudies : snapshot.docs.map(doc => doc.data());
+                
+                container.innerHTML = studies.map(study => `
+                    <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-semibold">${study.company}</h3>
+                                <p class="text-sm text-gray-400">${study.industry}</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-green-400">${study.savings}</div>
+                                <div class="text-xs text-gray-400">Cost Reduction</div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <span class="text-3xl font-bold text-blue-400">${study.performance}</span>
+                            <span class="text-sm text-gray-400 ml-2">Performance Gain</span>
+                        </div>
+                        <blockquote class="text-gray-300 italic mb-2">
+                            "${study.quote}"
+                        </blockquote>
+                        <p class="text-sm text-gray-500">- ${study.author}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading case studies:', error);
+                container.innerHTML = caseStudies.map(study => `
+                    <div class="bg-gray-900 rounded-xl p-6 border border-gray-700">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-semibold">${study.company}</h3>
+                                <p class="text-sm text-gray-400">${study.industry}</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-green-400">${study.savings}</div>
+                                <div class="text-xs text-gray-400">Cost Reduction</div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <span class="text-3xl font-bold text-blue-400">${study.performance}</span>
+                            <span class="text-sm text-gray-400 ml-2">Performance Gain</span>
+                        </div>
+                        <blockquote class="text-gray-300 italic mb-2">
+                            "${study.quote}"
+                        </blockquote>
+                        <p class="text-sm text-gray-500">- ${study.author}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Download report form
+        document.getElementById('download-report').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = e.target.querySelector('input[type="email"]').value;
+
+            try {
+                // Save lead to Firestore
+                await firebase.firestore().collection('business_case_leads').add({
+                    email,
+                    requestedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    calculatorData: {
+                        cloudSpend: document.getElementById('cloud-spend').value,
+                        companySize: document.getElementById('company-size').value,
+                        industry: document.getElementById('industry').value
+                    }
+                });
+
+                // Call Cloud Function to send report
+                const sendReport = firebase.functions().httpsCallable('sendBusinessCaseReport');
+                await sendReport({ email });
+
+                document.getElementById('download-success').classList.remove('hidden');
+                e.target.reset();
+
+                // Track conversion
+                if (firebase.analytics) {
+                    firebase.analytics().logEvent('lead_generated', {
+                        source: 'business_case',
+                        value: parseFloat(document.getElementById('cloud-spend').value)
+                    });
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('Error sending report. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

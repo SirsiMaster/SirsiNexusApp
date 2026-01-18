@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>User Management - SirsiNexus Admin</title>
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/common-styles.css">
+    <link rel="stylesheet" href="assets/css/user-management.css">
+    
+    <!-- Theme Toggle Script -->
+    <script src="../assets/js/fresh-theme-toggle.js"></script>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <!-- Admin Sidebar Navigation -->
+    <admin-sidebar></admin-sidebar>
+    
+    <!-- Professional Admin Header -->
+    <admin-header 
+        breadcrumbs="Admin,User Management"
+        user-name="Administrator"
+        user-email="admin@sirsinexus.com">
+    </admin-header>
+    
+    <!-- Main User Management Content -->
+    <main class="sidebar-content content-wrapper py-8">
+        <!-- Page Header -->
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">User Management</h1>
+                <p class="text-gray-600 dark:text-gray-300">Manage user accounts, roles, and permissions</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button id="export-csv-btn" class="btn btn-secondary">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    Export CSV
+                </button>
+                <button id="add-user-btn" class="btn btn-primary">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Add User
+                </button>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="card">
+                <div class="stat-card">
+                    <div class="stat-icon bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="total-users">0</span>
+                        <span class="stat-label">Total Users</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="stat-card">
+                    <div class="stat-icon bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="active-users">0</span>
+                        <span class="stat-label">Active Users</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="stat-card">
+                    <div class="stat-icon bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="inactive-users">0</span>
+                        <span class="stat-label">Inactive Users</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="stat-card">
+                    <div class="stat-icon bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value" id="admin-users">0</span>
+                        <span class="stat-label">Admin Users</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="card mb-8">
+            <div class="filter-section">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="search-box">
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                id="search-input" 
+                                placeholder="Search users..." 
+                                class="search-input"
+                            >
+                            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <select id="role-filter" class="filter-select">
+                            <option value="">All Roles</option>
+                            <option value="admin">Admin</option>
+                            <option value="investor">Investor</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="status-filter" class="filter-select">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="apply-filters-btn" class="btn btn-primary flex-1">Apply Filters</button>
+                        <button id="clear-filters-btn" class="btn btn-secondary">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="card">
+            <div class="table-header mb-6">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">User Directory</h3>
+                <div class="table-controls">
+                    <div class="flex items-center gap-4">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Show:</span>
+                        <select id="page-size-select" class="page-size-select">
+                            <option value="10">10</option>
+                            <option value="25" selected>25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">entries</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table id="users-table" class="users-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" id="select-all" class="checkbox">
+                            </th>
+                            <th class="sortable" data-sort="name">
+                                Name
+                                <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="m7 15 5 5 5-5M7 9l5-5 5 5"/>
+                                </svg>
+                            </th>
+                            <th class="sortable" data-sort="email">
+                                Email
+                                <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="m7 15 5 5 5-5M7 9l5-5 5 5"/>
+                                </svg>
+                            </th>
+                            <th class="sortable" data-sort="role">
+                                Role
+                                <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="m7 15 5 5 5-5M7 9l5-5 5 5"/>
+                                </svg>
+                            </th>
+                            <th class="sortable" data-sort="status">
+                                Status
+                                <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="m7 15 5 5 5-5M7 9l5-5 5 5"/>
+                                </svg>
+                            </th>
+                            <th class="sortable" data-sort="created">
+                                Created
+                                <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="m7 15 5 5 5-5M7 9l5-5 5 5"/>
+                                </svg>
+                            </th>
+                            <th class="sortable" data-sort="lastLogin">
+                                Last Login
+                                <svg class="sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="m7 15 5 5 5-5M7 9l5-5 5 5"/>
+                                </svg>
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                        <!-- Dynamic content will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-container mt-6">
+                <div class="pagination-info">
+                    <span id="pagination-info" class="text-sm text-gray-600 dark:text-gray-400">
+                        Showing 1 to 25 of 100 entries
+                    </span>
+                </div>
+                <nav class="pagination" id="pagination">
+                    <!-- Dynamic pagination buttons will be inserted here -->
+                </nav>
+            </div>
+        </div>
+    </main>
+
+    <!-- User Modal -->
+    <div id="user-modal" class="modal hidden">
+        <div class="modal-overlay" id="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="modal-title" class="modal-title">Add New User</h3>
+                <button id="close-modal" class="modal-close">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form id="user-form" class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="user-first-name" class="form-label">First Name *</label>
+                        <input type="text" id="user-first-name" name="firstName" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-last-name" class="form-label">Last Name *</label>
+                        <input type="text" id="user-last-name" name="lastName" class="form-input" required>
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label for="user-email" class="form-label">Email Address *</label>
+                        <input type="email" id="user-email" name="email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-role" class="form-label">Role *</label>
+                        <select id="user-role" name="role" class="form-select" required>
+                            <option value="">Select Role</option>
+                            <option value="admin">Admin</option>
+                            <option value="investor">Investor</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-status" class="form-label">Status *</label>
+                        <select id="user-status" name="status" class="form-select" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-group-full" id="password-group">
+                        <label for="user-password" class="form-label">Password *</label>
+                        <input type="password" id="user-password" name="password" class="form-input">
+                        <small class="form-help">Password must be at least 8 characters long</small>
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label for="user-phone" class="form-label">Phone Number</label>
+                        <input type="tel" id="user-phone" name="phone" class="form-input">
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label for="user-company" class="form-label">Company</label>
+                        <input type="text" id="user-company" name="company" class="form-input">
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" id="cancel-btn" class="btn btn-secondary">Cancel</button>
+                <button type="submit" form="user-form" id="save-btn" class="btn btn-primary">Save User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-container modal-sm">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Delete</h3>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <div class="delete-icon">
+                        <svg class="w-12 h-12 mx-auto text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </div>
+                    <p class="mt-4 text-gray-600 dark:text-gray-400">
+                        Are you sure you want to delete this user? This action cannot be undone.
+                    </p>
+                    <p id="delete-user-info" class="mt-2 font-medium text-gray-900 dark:text-white"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancel-delete-btn" class="btn btn-secondary">Cancel</button>
+                <button type="button" id="confirm-delete-btn" class="btn btn-danger">Delete User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Admin Components -->
+    <script src="../components/admin-header.js"></script>
+    <script src="../components/admin-sidebar.js"></script>
+    
+    <!-- User Management JavaScript -->
+    <script src="assets/js/user-management.js"></script>
+<script src="../../js/telemetry.js"></script>
+</body>
+</html>

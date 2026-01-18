@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contracts Manager | Sirsi Admin</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Admin Layout -->
+    <link href="/assets/css/tailwind.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/admin-layout.css">
+
+    <style>
+        :root {
+            --color-gold: #C8A951;
+            --color-navy: #0f172a;
+            --color-emerald: #10B981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, rgb(37, 99, 235) 0%, var(--color-navy) 300px);
+            color: rgba(255, 255, 255, 0.9);
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .manager-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(200, 169, 81, 0.3);
+            padding-bottom: 1rem;
+        }
+
+        .page-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--color-gold);
+            letter-spacing: 0.05em;
+        }
+
+        /* Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(200, 169, 81, 0.3);
+        }
+
+        .card-header {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            color: var(--color-gold);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Form */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-gold);
+            box-shadow: 0 0 0 2px rgba(200, 169, 81, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Color Picker */
+        .color-picker-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .color-picker {
+            width: 50px;
+            height: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            cursor: pointer;
+            background: transparent;
+            padding: 0;
+        }
+
+        .color-picker::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-picker::-webkit-color-swatch {
+            border: none;
+            border-radius: 2px;
+        }
+
+        .color-value {
+            font-family: monospace;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Payment Plans */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .plan-input-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .plan-input-card h4 {
+            font-family: 'Cinzel', serif;
+            color: white;
+            margin: 0 0 1rem 0;
+            text-align: center;
+        }
+
+        .plan-field {
+            margin-bottom: 0.75rem;
+        }
+
+        .plan-field label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .plan-field input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 0.5rem;
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 0.875rem;
+        }
+
+        .btn-gold {
+            background: linear-gradient(to right, var(--color-gold), #E2C76B);
+            color: #000;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(200, 169, 81, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--color-gold);
+            color: var(--color-gold);
+        }
+
+        /* Table */
+        .contracts-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .contracts-table th {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-gold);
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(200, 169, 81, 0.3);
+        }
+
+        .contracts-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .contracts-table tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-draft {
+            background: rgba(100, 116, 139, 0.3);
+            color: #94a3b8;
+        }
+
+        .status-active {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--color-emerald);
+        }
+
+        .status-signed {
+            background: rgba(200, 169, 81, 0.2);
+            color: var(--color-gold);
+        }
+
+        .status-paid {
+            background: rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+        }
+
+        /* Preview Panel */
+        .preview-panel {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(200, 169, 81, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .preview-header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            background: white;
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: var(--color-gold);
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(200, 169, 81, 0.3);
+            border-top-color: var(--color-gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .tab:hover {
+            border-color: rgba(200, 169, 81, 0.5);
+        }
+
+        .tab.active {
+            background: rgba(200, 169, 81, 0.1);
+            border-color: var(--color-gold);
+            color: var(--color-gold);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="manager-container">
+        <!-- Header -->
+        <header class="page-header">
+            <h1 class="page-title">Contracts Manager</h1>
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn btn-outline" onclick="refreshContracts()">↻ Refresh</button>
+                <button class="btn btn-gold" onclick="showCreateForm()">+ New Contract</button>
+            </div>
+        </header>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" data-tab="list">Contracts</button>
+            <button class="tab" data-tab="create">Create New</button>
+            <button class="tab" data-tab="preview">Preview</button>
+        </div>
+
+        <!-- Contracts List Tab -->
+        <div id="tab-list" class="tab-content active">
+            <div class="glass-card">
+                <div class="card-header">Active Contracts</div>
+                <table class="contracts-table">
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Client</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contracts-tbody">
+                        <tr>
+                            <td colspan="6" class="loading">
+                                <div class="spinner"></div> Loading contracts...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Create Contract Tab -->
+        <div id="tab-create" class="tab-content">
+            <form id="contract-form" onsubmit="createContract(event)">
+                <!-- Basic Info -->
+                <div class="glass-card">
+                    <div class="card-header">Contract Details</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Project ID</label>
+                            <select class="form-input" name="projectId" required>
+                                <option value="finalwishes">FinalWishes</option>
+                                <option value="assiduous">Assiduous</option>
+                                <option value="sirsi">Sirsi</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-input" name="projectName"
+                                placeholder="Strategic Partnership Agreement" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Client Name</label>
+                            <input type="text" class="form-input" name="clientName" placeholder="Acme Corporation"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Client Email</label>
+                            <input type="email" class="form-input" name="clientEmail" placeholder="client@example.com"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Total Amount ($)</label>
+                            <input type="number" class="form-input" name="totalAmount" value="200000" min="1000"
+                                step="1000" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theme Colors -->
+                <div class="glass-card">
+                    <div class="card-header">Theme & Branding</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Primary Color (Gold)</label>
+                            <div class="color-picker-group">
+                                <input type="color" class="color-picker" name="primaryColor" value="#C8A951"
+                                    onchange="updateColorValue(this)">
+                                <span class="color-value">#C8A951</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Secondary Color (Navy)</label>
+                            <div class="color-picker-group">
+                                <input type="color" class="color-picker" name="secondaryColor" value="#0f172a"
+                                    onchange="updateColorValue(this)">
+                                <span class="color-value">#0f172a</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Accent Color (Emerald)</label>
+                            <div class="color-picker-group">
+                                <input type="color" class="color-picker" name="accentColor" value="#10B981"
+                                    onchange="updateColorValue(this)">
+                                <span class="color-value">#10B981</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Heading Font</label>
+                            <select class="form-input" name="fontHeading">
+                                <option value="Cinzel">Cinzel (Serif)</option>
+                                <option value="Playfair Display">Playfair Display</option>
+                                <option value="Cormorant">Cormorant</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Plans -->
+                <div class="glass-card">
+                    <div class="card-header">Payment Plans</div>
+                    <div class="plans-grid">
+                        <!-- Plan A -->
+                        <div class="plan-input-card">
+                            <h4>Plan A</h4>
+                            <div class="plan-field">
+                                <label>Description</label>
+                                <input type="text" name="planA_desc" value="4 Monthly Payments">
+                            </div>
+                            <div class="plan-field">
+                                <label>Payment Count</label>
+                                <input type="number" name="planA_count" value="4" min="1" max="12">
+                            </div>
+                            <div class="plan-field">
+                                <label>Monthly Amount ($)</label>
+                                <input type="number" name="planA_amount" value="50000">
+                            </div>
+                        </div>
+
+                        <!-- Plan B -->
+                        <div class="plan-input-card">
+                            <h4>Plan B</h4>
+                            <div class="plan-field">
+                                <label>Description</label>
+                                <input type="text" name="planB_desc" value="5 Monthly Payments">
+                            </div>
+                            <div class="plan-field">
+                                <label>Payment Count</label>
+                                <input type="number" name="planB_count" value="5" min="1" max="12">
+                            </div>
+                            <div class="plan-field">
+                                <label>Monthly Amount ($)</label>
+                                <input type="number" name="planB_amount" value="40000">
+                            </div>
+                        </div>
+
+                        <!-- Plan C -->
+                        <div class="plan-input-card">
+                            <h4>Plan C</h4>
+                            <div class="plan-field">
+                                <label>Description</label>
+                                <input type="text" name="planC_desc" value="6 Monthly Payments">
+                            </div>
+                            <div class="plan-field">
+                                <label>Payment Count</label>
+                                <input type="number" name="planC_count" value="6" min="1" max="12">
+                            </div>
+                            <div class="plan-field">
+                                <label>Monthly Amount ($)</label>
+                                <input type="number" name="planC_amount" value="33333">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
+                    <button type="button" class="btn btn-outline" onclick="resetForm()">Reset</button>
+                    <button type="submit" class="btn btn-gold">Create Contract</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Preview Tab -->
+        <div id="tab-preview" class="tab-content">
+            <div class="preview-panel">
+                <div class="preview-header">
+                    <span style="color: var(--color-gold); font-family: 'Cinzel', serif;">
+                        Contract Preview
+                    </span>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-outline" onclick="refreshPreview()">↻ Refresh</button>
+                        <button class="btn btn-gold" onclick="openPreviewNewTab()">Open in New Tab</button>
+                    </div>
+                </div>
+                <iframe id="preview-iframe" class="preview-iframe" src="about:blank"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // gRPC Service URL (Cloud Run)
+        const GRPC_SERVICE_URL = 'https://contracts-grpc-210890802638.us-central1.run.app';
+
+        // State
+        let contracts = [];
+        let selectedContract = null;
+
+        // Tab Navigation
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+            });
+        });
+
+        // Color Picker Update
+        function updateColorValue(input) {
+            const valueSpan = input.nextElementSibling;
+            valueSpan.textContent = input.value.toUpperCase();
+        }
+
+        // Show Create Tab
+        function showCreateForm() {
+            document.querySelector('[data-tab="create"]').click();
+        }
+
+        // Reset Form
+        function resetForm() {
+            document.getElementById('contract-form').reset();
+        }
+
+        // Create Contract
+        async function createContract(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            const contractData = {
+                projectId: formData.get('projectId'),
+                projectName: formData.get('projectName'),
+                clientName: formData.get('clientName'),
+                clientEmail: formData.get('clientEmail'),
+                totalAmount: parseInt(formData.get('totalAmount')) * 100, // Convert to cents
+                theme: {
+                    primaryColor: formData.get('primaryColor'),
+                    secondaryColor: formData.get('secondaryColor'),
+                    accentColor: formData.get('accentColor'),
+                    fontHeading: formData.get('fontHeading'),
+                    fontBody: 'Inter'
+                },
+                paymentPlans: [
+                    {
+                        id: 'plan-a',
+                        name: 'Plan A',
+                        description: formData.get('planA_desc'),
+                        paymentCount: parseInt(formData.get('planA_count')),
+                        monthlyAmount: parseInt(formData.get('planA_amount')) * 100,
+                        totalAmount: parseInt(formData.get('planA_amount')) * parseInt(formData.get('planA_count')) * 100
+                    },
+                    {
+                        id: 'plan-b',
+                        name: 'Plan B',
+                        description: formData.get('planB_desc'),
+                        paymentCount: parseInt(formData.get('planB_count')),
+                        monthlyAmount: parseInt(formData.get('planB_amount')) * 100,
+                        totalAmount: parseInt(formData.get('planB_amount')) * parseInt(formData.get('planB_count')) * 100
+                    },
+                    {
+                        id: 'plan-c',
+                        name: 'Plan C',
+                        description: formData.get('planC_desc'),
+                        paymentCount: parseInt(formData.get('planC_count')),
+                        monthlyAmount: parseInt(formData.get('planC_amount')) * 100,
+                        totalAmount: parseInt(formData.get('planC_amount')) * parseInt(formData.get('planC_count')) * 100
+                    }
+                ]
+            };
+
+            try {
+                // TODO: Replace with actual gRPC call via Connect-Query
+                console.log('Creating contract:', contractData);
+                alert('Contract created! (gRPC service deployment pending)');
+
+                // Switch to list tab and refresh
+                document.querySelector('[data-tab="list"]').click();
+                refreshContracts();
+            } catch (error) {
+                console.error('Error creating contract:', error);
+                alert('Failed to create contract: ' + error.message);
+            }
+        }
+
+        // Refresh Contracts List
+        async function refreshContracts() {
+            const tbody = document.getElementById('contracts-tbody');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="loading">
+                        <div class="spinner"></div> Loading contracts...
+                    </td>
+                </tr>
+            `;
+
+            try {
+                // TODO: Replace with actual gRPC call
+                // For now, show sample data
+                setTimeout(() => {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td>Strategic Partnership Agreement</td>
+                            <td>Acme Corporation</td>
+                            <td>$200,000</td>
+                            <td><span class="status-badge status-draft">Draft</span></td>
+                            <td>Dec 31, 2024</td>
+                            <td>
+                                <button class="btn btn-outline" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</button>
+                                <button class="btn btn-gold" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Generate</button>
+                            </td>
+                        </tr>
+                    `;
+                }, 1000);
+            } catch (error) {
+                console.error('Error fetching contracts:', error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #ef4444;">
+                            Failed to load contracts. <a href="#" onclick="refreshContracts()">Retry</a>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Preview Functions
+        function refreshPreview() {
+            const iframe = document.getElementById('preview-iframe');
+            if (selectedContract) {
+                // TODO: Call gRPC GeneratePage and display result
+                iframe.src = `https://sirsi-sign.web.app/contracts/${selectedContract}/preview`;
+            }
+        }
+
+        function openPreviewNewTab() {
+            if (selectedContract) {
+                window.open(`https://sirsi-sign.web.app/contracts/${selectedContract}`, '_blank');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshContracts();
+        });
+    </script>
+</body>
+
+</html>

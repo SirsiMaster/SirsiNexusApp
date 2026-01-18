@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Theme Toggle Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      }
+    </script>
+    <script>
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          if (persistedColorPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          if (mql.matches) {
+            return 'dark';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 p-8">
+<!-- Navigation and Layout Header -->
+<div id="unified-header"></div>
+
+<!-- Page Scripts -->
+<script src="/components/universal-navigation.js"></script>
+<script src="/components/navigation-customizer.js"></script>
+<script src="/assets/js/shared-theme-toggle.js"></script>
+
+<!-- Authentication Check -->
+<script>
+    (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+            window.location.href = '/investor-login.html';
+            return;
+        }
+        
+        try {
+            const authData = JSON.parse(auth);
+            const loginTime = new Date(authData.loginTime);
+            const now = new Date();
+            const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+            
+            if (hoursSinceLogin > 24) {
+                sessionStorage.removeItem('investorAuth');
+                window.location.href = '/investor-login.html';
+                return;
+            }
+        } catch (error) {
+            console.error('Authentication error:', error);
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '/investor-login.html';
+            return;
+        }
+    })();
+</script>
+
+<!-- Page-specific customization -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Get the current page from URL
+        const path = window.location.pathname;
+        const pageName = path.split('/').pop().replace('.html', '');
+        
+        // Add committee menu if we're in the committee section
+        if (path.includes('/committee/')) {
+            navCustomizer.addCommitteeMenu(pageName);
+        }
+        
+        // Add action buttons based on page
+        switch(pageName) {
+            case 'data-room':
+                navCustomizer.addActionButtons([{
+                    label: 'Upload Document',
+                    className: 'bg-emerald-600 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-700 transition-colors',
+                    onClick: () => showUploadModal()
+                }]);
+                break;
+            case 'kpi-metrics':
+                navCustomizer.addActionButtons([{
+                    label: 'Export Report',
+                    className: 'bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors',
+                    onClick: () => exportMetrics()
+                }]);
+                break;
+        }
+    });
+</script>
+
+    <div class="max-w-4xl mx-auto space-y-8">
+        <div class="flex items-center justify-between">
+            <h1 class="text-3xl font-bold">Theme Toggle Test</h1>
+            <button onclick="toggleTheme()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                Toggle Theme
+            </button>
+        </div>
+        
+        <div class="bg-slate-50 dark:bg-slate-800 p-6 rounded-lg">
+            <h2 class="text-xl font-semibold mb-4">Current Theme Status</h2>
+            <div id="themeStatus" class="text-lg"></div>
+        </div>
+        
+        <div class="space-y-4">
+            <h2 class="text-xl font-semibold">Table Test</h2>
+            
+            <!-- Test Table 1: Green Header Background -->
+            <div class="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
+                <table class="w-full">
+                    <thead class="bg-emerald-100 dark:bg-emerald-800">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-emerald-900 dark:text-emerald-100">Test Header 1</th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-emerald-900 dark:text-emerald-100">Test Header 2</th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-emerald-900 dark:text-emerald-100">Test Header 3</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white dark:bg-slate-800">
+                        <tr>
+                            <td class="px-6 py-4 text-sm text-slate-700 dark:text-slate-300">Data 1</td>
+                            <td class="px-6 py-4 text-sm text-slate-700 dark:text-slate-300">Data 2</td>
+                            <td class="px-6 py-4 text-sm text-slate-700 dark:text-slate-300">Data 3</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Test with different background approaches -->
+            <div class="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
+                <table class="w-full bg-white dark:bg-slate-800">
+                    <thead>
+                        <tr class="bg-emerald-100 dark:bg-emerald-800">
+                            <th class="px-6 py-4 text-left text-sm font-bold text-emerald-900 dark:text-emerald-100">Another Header 1</th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-emerald-900 dark:text-emerald-100">Another Header 2</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+                            <td class="px-6 py-4 text-sm text-slate-700 dark:text-slate-300">Test Data A</td>
+                            <td class="px-6 py-4 text-sm text-slate-700 dark:text-slate-300">Test Data B</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
+            <h3 class="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">Debug Info</h3>
+            <div id="debugInfo" class="text-sm text-yellow-700 dark:text-yellow-300"></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            console.log('Theme toggle clicked');
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                console.log('Switched to light mode');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                console.log('Switched to dark mode');
+            }
+            
+            updateStatus();
+        }
+        
+        function updateStatus() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            const stored = localStorage.getItem('theme');
+            
+            document.getElementById('themeStatus').innerHTML = `
+                <div>Current Mode: <strong>${isDark ? 'Dark' : 'Light'}</strong></div>
+                <div>Stored Theme: <strong>${stored || 'None'}</strong></div>
+                <div>HTML Classes: <strong>${html.className}</strong></div>
+            `;
+            
+            document.getElementById('debugInfo').innerHTML = `
+                <div>Document Element Classes: ${html.classList.toString()}</div>
+                <div>Local Storage Theme: ${localStorage.getItem('theme')}</div>
+                <div>System Prefers Dark: ${window.matchMedia('(prefers-color-scheme: dark)').matches}</div>
+                <div>Tailwind Dark Mode: ${html.classList.contains('dark') ? 'Active' : 'Inactive'}</div>
+            `;
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatus();
+        });
+        
+        // Make toggleTheme available globally
+        window.toggleTheme = toggleTheme;
+    </script>
+<script src="../../js/telemetry.js"></script>
+</body>
+</html>

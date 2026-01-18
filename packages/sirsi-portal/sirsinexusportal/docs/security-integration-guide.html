@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Integration Guide - SirsiNexus</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .code-block {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            margin: 1rem 0;
+        }
+        
+        .dark .code-block {
+            background: #111827;
+        }
+        
+        .content-section {
+            margin-bottom: 3rem;
+        }
+        
+        .highlight {
+            background-color: #fef3c7;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+        }
+        
+        .dark .highlight {
+            background-color: #451a03;
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-colors duration-300">
+    <!-- Header -->
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-slate-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/admin/documentation.html" class="flex items-center space-x-2">
+                        <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Back to Documentation</span>
+                    </a>
+                </div>
+                <h1 class="text-xl font-bold text-gray-900 dark:text-white">Security Integration Guide</h1>
+                <button id="theme-toggle" class="p-2 rounded-md bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600 dark:text-gray-300 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 818 0z"></path>
+                    </svg>
+                    <svg class="w-5 h-5 text-gray-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8">
+            <!-- Overview -->
+            <section class="content-section">
+                <h2 class="text-2xl font-bold mb-4">Overview</h2>
+                <p class="text-gray-700 dark:text-gray-300 mb-4">
+                    The SirsiNexus Security Integration provides a comprehensive security layer for authentication, authorization, and data protection across all portal applications. This guide covers implementation details, configuration options, and best practices.
+                </p>
+                
+                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 mb-4">
+                    <p class="text-sm text-blue-800 dark:text-blue-200">
+                        <strong>Note:</strong> This security system is designed to be invisible to end users while providing robust protection against common web vulnerabilities.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Architecture -->
+            <section class="content-section">
+                <h2 class="text-2xl font-bold mb-4">Architecture</h2>
+                
+                <h3 class="text-xl font-semibold mb-3">Core Components</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+                        <h4 class="font-semibold mb-2 text-emerald-600 dark:text-emerald-400">secure-auth.js</h4>
+                        <p class="text-sm">Main authentication service handling user sessions, encryption, and security tokens</p>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+                        <h4 class="font-semibold mb-2 text-emerald-600 dark:text-emerald-400">auth-integration.js</h4>
+                        <p class="text-sm">Integration wrapper that seamlessly connects existing login/signup forms</p>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+                        <h4 class="font-semibold mb-2 text-emerald-600 dark:text-emerald-400">IndexedDB Storage</h4>
+                        <p class="text-sm">Encrypted local storage for sensitive data with automatic cleanup</p>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+                        <h4 class="font-semibold mb-2 text-emerald-600 dark:text-emerald-400">Session Manager</h4>
+                        <p class="text-sm">Handles session lifecycle, timeouts, and concurrent session limits</p>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mb-3">Security Layers</h3>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
+                    <li><strong>Transport Security:</strong> Enforced HTTPS, secure cookies, HSTS headers</li>
+                    <li><strong>Input Validation:</strong> XSS prevention, SQL injection protection, CSRF tokens</li>
+                    <li><strong>Authentication:</strong> Multi-factor support, password policies, account lockout</li>
+                    <li><strong>Authorization:</strong> Role-based access control, permission inheritance</li>
+                    <li><strong>Data Protection:</strong> AES-256 encryption, secure key management</li>
+                    <li><strong>Audit Trail:</strong> Comprehensive logging of all security events</li>
+                </ul>
+            </section>
+
+            <!-- Implementation Guide -->
+            <section class="content-section">
+                <h2 class="text-2xl font-bold mb-4">Implementation Guide</h2>
+                
+                <h3 class="text-xl font-semibold mb-3">Step 1: Include Required Scripts</h3>
+                <p class="text-gray-700 dark:text-gray-300 mb-2">Add these scripts to your HTML pages:</p>
+                <div class="code-block">
+&lt;!-- Core Security Service --&gt;
+&lt;script src="/assets/js/secure-auth.js"&gt;&lt;/script&gt;
+
+&lt;!-- Integration Wrapper --&gt;
+&lt;script src="/assets/js/auth-integration.js"&gt;&lt;/script&gt;
+                </div>
+
+                <h3 class="text-xl font-semibold mb-3">Step 2: Initialize Security Service</h3>
+                <p class="text-gray-700 dark:text-gray-300 mb-2">Initialize the security service on page load:</p>
+                <div class="code-block">
+// Initialize security service
+document.addEventListener('DOMContentLoaded', async () => {
+    await window.SecureAuth.init({
+        appName: 'SirsiNexusPortal',
+        requireHttps: true,
+        sessionTimeout: 30 * 60 * 1000, // 30 minutes
+        enableAudit: true
+    });
+});
+                </div>
+
+                <h3 class="text-xl font-semibold mb-3">Step 3: Secure Forms</h3>
+                <p class="text-gray-700 dark:text-gray-300 mb-2">The integration automatically secures forms with these attributes:</p>
+                <div class="code-block">
+&lt;!-- Login Form --&gt;
+&lt;form data-secure-form="login"&gt;
+    &lt;input type="email" name="email" required&gt;
+    &lt;input type="password" name="password" required&gt;
+    &lt;button type="submit"&gt;Login&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;!-- Signup Form --&gt;
+&lt;form data-secure-form="signup"&gt;
+    &lt;input type="text" name="name" required&gt;
+    &lt;input type="email" name="email" required&gt;
+    &lt;input type="password" name="password" required&gt;
+    &lt;button type="submit"&gt;Sign Up&lt;/button&gt;
+&lt;/form&gt;
+                </div>
+
+                <h3 class="text-xl font-semibold mb-3">Step 4: Handle Authentication Events</h3>
+                <div class="code-block">
+// Listen for authentication events
+window.addEventListener('auth:login:success', (event) => {
+    console.log('User logged in:', event.detail.user);
+    // Redirect or update UI
+});
+
+window.addEventListener('auth:login:failed', (event) => {
+    console.error('Login failed:', event.detail.error);
+    // Show error message
+});
+
+window.addEventListener('auth:logout', () => {
+    console.log('User logged out');
+    // Redirect to login page
+});
+                </div>
+            </section>
+
+            <!-- API Reference -->
+            <section class="content-section">
+                <h2 class="text-2xl font-bold mb-4">API Reference</h2>
+                
+                <h3 class="text-xl font-semibold mb-3">SecureAuth Methods</h3>
+                
+                <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4 mb-4">
+                    <h4 class="font-mono font-semibold mb-2">init(config)</h4>
+                    <p class="text-sm mb-2">Initialize the security service with configuration</p>
+                    <div class="code-block">
+await SecureAuth.init({
+    appName: 'MyApp',
+    requireHttps: true,
+    sessionTimeout: 1800000,
+    enableAudit: true,
+    maxLoginAttempts: 5
+});
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4 mb-4">
+                    <h4 class="font-mono font-semibold mb-2">login(credentials)</h4>
+                    <p class="text-sm mb-2">Authenticate a user</p>
+                    <div class="code-block">
+const result = await SecureAuth.login({
+    email: 'user@example.com',
+    password: 'securepassword',
+    rememberMe: true
+});
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4 mb-4">
+                    <h4 class="font-mono font-semibold mb-2">logout()</h4>
+                    <p class="text-sm mb-2">End the current session</p>
+                    <div class="code-block">
+await SecureAuth.logout();
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4 mb-4">
+                    <h4 class="font-mono font-semibold mb-2">checkPermission(resource, action)</h4>
+                    <p class="text-sm mb-2">Check if current user has permission</p>
+                    <div class="code-block">
+const canEdit = await SecureAuth.checkPermission('documents', 'edit');
+                    </div>
+                </div>
+            </section>
+
+            <!-- Configuration Options -->
+            <section class="content-section">
+                <h2 class="text-2xl font-bold mb-4">Configuration Options</h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-slate-700">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Option</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Default</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">appName</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">string</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">'SirsiNexus'</td>
+                                <td class="px-4 py-3 text-sm">Application identifier</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">requireHttps</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">boolean</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">true</td>
+                                <td class="px-4 py-3 text-sm">Enforce HTTPS connections</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">sessionTimeout</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">number</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">1800000</td>
+                                <td class="px-4 py-3 text-sm">Session timeout in milliseconds</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">enableAudit</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">boolean</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">true</td>
+                                <td class="px-4 py-3 text-sm">Enable audit logging</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">maxLoginAttempts</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">number</td>
+                                <td class="px-4 py-3 whitespace-nowrap text-sm">5</td>
+                                <td class="px-4 py-3 text-sm">Max failed login attempts</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Best Practices -->
+            <section class="content-section">
+                <h2 class="text-2xl font-bold mb-4">Best Practices</h2>
+                
+                <div class="space-y-4">
+                    <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-4">
+                        <h3 class="font-semibold mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Always Use HTTPS
+                        </h3>
+                        <p class="text-sm">Ensure all pages using the security service are served over HTTPS to prevent man-in-the-middle attacks.</p>
+                    </div>
+                    
+                    <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-4">
+                        <h3 class="font-semibold mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Regular Security Updates
+                        </h3>
+                        <p class="text-sm">Keep the security scripts updated and monitor security advisories for any vulnerabilities.</p>
+                    </div>
+                    
+                    <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-4">
+                        <h3 class="font-semibold mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Monitor Audit Logs
+                        </h3>
+                        <p class="text-sm">Regularly review audit logs for suspicious activity or repeated failed login attempts.</p>
+                    </div>
+                    
+                    <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-4">
+                        <h3 class="font-semibold mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Implement Rate Limiting
+                        </h3>
+                        <p class="text-sm">Use the built-in rate limiting features to prevent brute force attacks.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Troubleshooting -->
+            <section class="content-section">
+                <h2 class="text-2xl font-bold mb-4">Troubleshooting</h2>
+                
+                <div class="space-y-4">
+                    <div class="border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20 p-4">
+                        <h3 class="font-semibold text-red-800 dark:text-red-200">HTTPS Required Error</h3>
+                        <p class="text-sm mt-1">The security service requires HTTPS. During development, you can disable this check:</p>
+                        <div class="code-block">
+SecureAuth.init({ requireHttps: false }); // Development only!
+                        </div>
+                    </div>
+                    
+                    <div class="border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20 p-4">
+                        <h3 class="font-semibold text-red-800 dark:text-red-200">Session Expired</h3>
+                        <p class="text-sm mt-1">Sessions expire after the configured timeout. Handle this gracefully:</p>
+                        <div class="code-block">
+window.addEventListener('auth:session:expired', () => {
+    alert('Your session has expired. Please log in again.');
+    window.location.href = '/login';
+});
+                        </div>
+                    </div>
+                    
+                    <div class="border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20 p-4">
+                        <h3 class="font-semibold text-red-800 dark:text-red-200">IndexedDB Not Available</h3>
+                        <p class="text-sm mt-1">Some browsers or private modes may not support IndexedDB. The service will fall back to sessionStorage with a warning.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Support -->
+            <section class="content-section">
+                <h2 class="text-2xl font-bold mb-4">Support & Resources</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+                        <h3 class="font-semibold mb-2">Documentation</h3>
+                        <ul class="space-y-1 text-sm">
+                            <li><a href="/admin/documentation.html" class="text-emerald-600 hover:text-emerald-700">Admin Documentation</a></li>
+                            <li><a href="/docs/security-quick-reference.html" class="text-emerald-600 hover:text-emerald-700">Quick Reference</a></li>
+                            <li><a href="#" class="text-emerald-600 hover:text-emerald-700">API Documentation</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+                        <h3 class="font-semibold mb-2">Contact</h3>
+                        <ul class="space-y-1 text-sm">
+                            <li>Email: <a href="mailto:security@sirsinexus.com" class="text-emerald-600 hover:text-emerald-700">security@sirsinexus.com</a></li>
+                            <li>Security Issues: <a href="mailto:security@sirsinexus.com" class="text-emerald-600 hover:text-emerald-700">Report Vulnerability</a></li>
+                            <li>Support: Available 24/7</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <p class="text-center text-sm text-gray-500 dark:text-gray-400">
+                © 2024 SirsiNexus. Security Integration Guide v1.0
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/fresh-theme-toggle.js"></script>
+</body>
+</html>

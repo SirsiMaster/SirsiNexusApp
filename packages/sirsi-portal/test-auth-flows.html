@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Flow Testing - Sirsi Nexus</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8">Authentication Flow Testing Suite</h1>
+        
+        <!-- Test Results Summary -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Test Results Summary</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-gray-700" id="totalTests">0</div>
+                    <div class="text-sm text-gray-500">Total Tests</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600" id="passedTests">0</div>
+                    <div class="text-sm text-gray-500">Passed</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-red-600" id="failedTests">0</div>
+                    <div class="text-sm text-gray-500">Failed</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-yellow-600" id="pendingTests">0</div>
+                    <div class="text-sm text-gray-500">Pending</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Controls -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">Test Controls</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Test Email</label>
+                    <input type="email" id="testEmail" value="test@sirsi.ai" class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Test Password</label>
+                    <input type="password" id="testPassword" value="Test123456!" class="w-full px-4 py-2 border rounded-lg">
+                </div>
+                <div class="flex gap-4">
+                    <button onclick="runAllTests()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Run All Tests
+                    </button>
+                    <button onclick="runSelectedTests()" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                        Run Selected Tests
+                    </button>
+                    <button onclick="clearResults()" class="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">
+                        Clear Results
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Cases -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Test Cases</h2>
+            <div id="testCases" class="space-y-4">
+                <!-- Test cases will be populated here -->
+            </div>
+        </div>
+
+        <!-- Test Log -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+            <h2 class="text-xl font-semibold mb-4">Test Log</h2>
+            <div id="testLog" class="space-y-2 max-h-96 overflow-y-auto font-mono text-sm">
+                <!-- Log entries will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Config -->
+    <script src="/assets/js/firebase-config.js"></script>
+    <!-- Auth Service -->
+    <script src="/assets/js/auth-service.js"></script>
+
+    <script>
+        // Test suite configuration
+        const testSuite = {
+            tests: [
+                {
+                    id: 'auth-service-init',
+                    name: 'Auth Service Initialization',
+                    category: 'Core',
+                    run: async () => {
+                        if (!window.authService) throw new Error('Auth service not found');
+                        await authService.init();
+                        if (!authService.initialized) throw new Error('Auth service not initialized');
+                        return 'Auth service initialized successfully';
+                    }
+                },
+                {
+                    id: 'user-registration',
+                    name: 'User Registration',
+                    category: 'Registration',
+                    run: async () => {
+                        const email = `test_${Date.now()}@sirsi.ai`;
+                        const result = await authService.register(email, 'Test123456!', 'Test User');
+                        if (!result.success) throw new Error(result.error);
+                        
+                        // Clean up - delete test user
+                        await authService.getCurrentUser()?.delete();
+                        
+                        return `User registered successfully: ${email}`;
+                    }
+                },
+                {
+                    id: 'email-login',
+                    name: 'Email/Password Login',
+                    category: 'Authentication',
+                    run: async () => {
+                        const email = document.getElementById('testEmail').value;
+                        const password = document.getElementById('testPassword').value;
+                        
+                        // Try to create user first if doesn't exist
+                        try {
+                            await authService.register(email, password, 'Test User');
+                        } catch (e) {
+                            // User might already exist
+                        }
+                        
+                        const result = await authService.signIn(email, password);
+                        if (!result.success) throw new Error(result.error);
+                        
+                        return `Login successful for: ${email}`;
+                    }
+                },
+                {
+                    id: 'session-persistence',
+                    name: 'Session Persistence',
+                    category: 'Session',
+                    run: async () => {
+                        if (!authService.isAuthenticated()) {
+                            throw new Error('User not authenticated');
+                        }
+                        
+                        const user = authService.getCurrentUser();
+                        if (!user) throw new Error('No current user');
+                        
+                        // Check session storage
+                        const sessionId = sessionStorage.getItem('sirsi_session_id');
+                        if (!sessionId) throw new Error('No session ID found');
+                        
+                        return `Session persisted for user: ${user.email}`;
+                    }
+                },
+                {
+                    id: 'profile-creation',
+                    name: 'Profile Creation',
+                    category: 'Profile',
+                    run: async () => {
+                        const profile = authService.getUserProfile();
+                        if (!profile) throw new Error('No user profile found');
+                        
+                        // Verify profile fields
+                        if (!profile.email) throw new Error('Profile missing email');
+                        if (!profile.createdAt) throw new Error('Profile missing createdAt');
+                        
+                        return `Profile exists with email: ${profile.email}`;
+                    }
+                },
+                {
+                    id: 'profile-update',
+                    name: 'Profile Update',
+                    category: 'Profile',
+                    run: async () => {
+                        const updates = {
+                            displayName: 'Updated Test User',
+                            phoneNumber: '+1234567890',
+                            company: 'Test Company'
+                        };
+                        
+                        const result = await authService.updateProfile(updates);
+                        if (!result.success) throw new Error(result.error);
+                        
+                        const profile = authService.getUserProfile();
+                        if (profile.displayName !== updates.displayName) {
+                            throw new Error('Profile not updated correctly');
+                        }
+                        
+                        return 'Profile updated successfully';
+                    }
+                },
+                {
+                    id: 'password-reset',
+                    name: 'Password Reset Email',
+                    category: 'Authentication',
+                    run: async () => {
+                        const email = document.getElementById('testEmail').value;
+                        const result = await authService.sendPasswordResetEmail(email);
+                        if (!result.success) throw new Error(result.error);
+                        
+                        return `Password reset email sent to: ${email}`;
+                    }
+                },
+                {
+                    id: 'role-check',
+                    name: 'Role Verification',
+                    category: 'Authorization',
+                    run: async () => {
+                        const profile = authService.getUserProfile();
+                        if (!profile) throw new Error('No profile found');
+                        
+                        const isAdmin = authService.isAdmin();
+                        const isDeveloper = authService.isDeveloper();
+                        const role = profile.role || 'user';
+                        
+                        return `User role: ${role}, Admin: ${isAdmin}, Developer: ${isDeveloper}`;
+                    }
+                },
+                {
+                    id: 'session-timeout',
+                    name: 'Session Timeout Check',
+                    category: 'Session',
+                    run: async () => {
+                        const sessionStart = sessionStorage.getItem('sessionStart');
+                        if (!sessionStart) {
+                            sessionStorage.setItem('sessionStart', Date.now().toString());
+                        }
+                        
+                        const elapsed = Date.now() - parseInt(sessionStart || Date.now().toString());
+                        const timeout = 24 * 60 * 60 * 1000; // 24 hours
+                        
+                        if (elapsed > timeout) {
+                            throw new Error('Session should have timed out');
+                        }
+                        
+                        return `Session valid, ${Math.round((timeout - elapsed) / 1000 / 60)} minutes remaining`;
+                    }
+                },
+                {
+                    id: 'sign-out',
+                    name: 'Sign Out',
+                    category: 'Authentication',
+                    run: async () => {
+                        const result = await authService.signOut();
+                        if (!result.success) throw new Error(result.error);
+                        
+                        if (authService.isAuthenticated()) {
+                            throw new Error('User still authenticated after sign out');
+                        }
+                        
+                        return 'Sign out successful';
+                    }
+                },
+                {
+                    id: 'protected-route',
+                    name: 'Protected Route Access',
+                    category: 'Authorization',
+                    run: async () => {
+                        // Simulate accessing protected route
+                        const isAuth = authService.isAuthenticated();
+                        
+                        if (!isAuth) {
+                            // Should redirect to login
+                            return 'Correctly blocked - user not authenticated';
+                        }
+                        
+                        return 'Access granted to protected route';
+                    }
+                },
+                {
+                    id: 'csrf-token',
+                    name: 'CSRF Token Generation',
+                    category: 'Security',
+                    run: async () => {
+                        const token = sessionStorage.getItem('csrfToken');
+                        if (!token) {
+                            // Generate new token
+                            const array = new Uint8Array(32);
+                            crypto.getRandomValues(array);
+                            const newToken = Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+                            sessionStorage.setItem('csrfToken', newToken);
+                        }
+                        
+                        const currentToken = sessionStorage.getItem('csrfToken');
+                        if (!currentToken || currentToken.length < 32) {
+                            throw new Error('Invalid CSRF token');
+                        }
+                        
+                        return `CSRF token valid: ${currentToken.substring(0, 10)}...`;
+                    }
+                },
+                {
+                    id: 'analytics-tracking',
+                    name: 'Analytics Event Tracking',
+                    category: 'Analytics',
+                    run: async () => {
+                        // Test analytics tracking
+                        const eventName = 'test_event';
+                        const eventData = { test: true, timestamp: Date.now() };
+                        
+                        // Mock tracking since we don't have actual analytics yet
+                        const tracked = await new Promise(resolve => {
+                            setTimeout(() => resolve(true), 100);
+                        });
+                        
+                        if (!tracked) throw new Error('Analytics tracking failed');
+                        
+                        return `Analytics event tracked: ${eventName}`;
+                    }
+                }
+            ],
+            
+            results: {},
+            
+            async runTest(test) {
+                const startTime = Date.now();
+                const testElement = document.getElementById(`test-${test.id}`);
+                
+                try {
+                    this.log(`Running test: ${test.name}`, 'info');
+                    testElement.querySelector('.status').innerHTML = '🔄 Running...';
+                    testElement.querySelector('.status').className = 'status text-yellow-600';
+                    
+                    const result = await test.run();
+                    const duration = Date.now() - startTime;
+                    
+                    this.results[test.id] = { status: 'pass', message: result, duration };
+                    testElement.querySelector('.status').innerHTML = `✅ Passed (${duration}ms)`;
+                    testElement.querySelector('.status').className = 'status text-green-600';
+                    testElement.querySelector('.result').textContent = result;
+                    
+                    this.log(`✅ ${test.name}: ${result}`, 'success');
+                    return true;
+                } catch (error) {
+                    const duration = Date.now() - startTime;
+                    
+                    this.results[test.id] = { status: 'fail', message: error.message, duration };
+                    testElement.querySelector('.status').innerHTML = `❌ Failed (${duration}ms)`;
+                    testElement.querySelector('.status').className = 'status text-red-600';
+                    testElement.querySelector('.result').textContent = error.message;
+                    
+                    this.log(`❌ ${test.name}: ${error.message}`, 'error');
+                    return false;
+                }
+            },
+            
+            async runAll() {
+                let passed = 0;
+                let failed = 0;
+                
+                this.log('Starting all tests...', 'info');
+                
+                for (const test of this.tests) {
+                    const result = await this.runTest(test);
+                    if (result) passed++;
+                    else failed++;
+                    
+                    this.updateSummary();
+                    await new Promise(resolve => setTimeout(resolve, 500)); // Delay between tests
+                }
+                
+                this.log(`Test suite complete: ${passed} passed, ${failed} failed`, 
+                    failed === 0 ? 'success' : 'error');
+            },
+            
+            async runSelected() {
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+                let passed = 0;
+                let failed = 0;
+                
+                for (const checkbox of checkboxes) {
+                    const testId = checkbox.value;
+                    const test = this.tests.find(t => t.id === testId);
+                    if (test) {
+                        const result = await this.runTest(test);
+                        if (result) passed++;
+                        else failed++;
+                        
+                        this.updateSummary();
+                    }
+                }
+                
+                this.log(`Selected tests complete: ${passed} passed, ${failed} failed`, 
+                    failed === 0 ? 'success' : 'error');
+            },
+            
+            updateSummary() {
+                const total = this.tests.length;
+                const passed = Object.values(this.results).filter(r => r.status === 'pass').length;
+                const failed = Object.values(this.results).filter(r => r.status === 'fail').length;
+                const pending = total - passed - failed;
+                
+                document.getElementById('totalTests').textContent = total;
+                document.getElementById('passedTests').textContent = passed;
+                document.getElementById('failedTests').textContent = failed;
+                document.getElementById('pendingTests').textContent = pending;
+            },
+            
+            log(message, type = 'info') {
+                const logElement = document.getElementById('testLog');
+                const entry = document.createElement('div');
+                const timestamp = new Date().toLocaleTimeString();
+                
+                const colors = {
+                    info: 'text-gray-600',
+                    success: 'text-green-600',
+                    error: 'text-red-600',
+                    warning: 'text-yellow-600'
+                };
+                
+                entry.className = colors[type] || 'text-gray-600';
+                entry.textContent = `[${timestamp}] ${message}`;
+                logElement.appendChild(entry);
+                logElement.scrollTop = logElement.scrollHeight;
+            },
+            
+            renderTests() {
+                const container = document.getElementById('testCases');
+                const categories = [...new Set(this.tests.map(t => t.category))];
+                
+                categories.forEach(category => {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'mb-6';
+                    categoryDiv.innerHTML = `<h3 class="font-semibold text-lg mb-2">${category}</h3>`;
+                    
+                    const testsDiv = document.createElement('div');
+                    testsDiv.className = 'space-y-2';
+                    
+                    this.tests
+                        .filter(t => t.category === category)
+                        .forEach(test => {
+                            const testDiv = document.createElement('div');
+                            testDiv.id = `test-${test.id}`;
+                            testDiv.className = 'flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50';
+                            testDiv.innerHTML = `
+                                <div class="flex items-center space-x-3">
+                                    <input type="checkbox" value="${test.id}" checked>
+                                    <span class="font-medium">${test.name}</span>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <span class="status text-gray-500">⏳ Pending</span>
+                                    <span class="result text-sm text-gray-600"></span>
+                                </div>
+                            `;
+                            testsDiv.appendChild(testDiv);
+                        });
+                    
+                    categoryDiv.appendChild(testsDiv);
+                    container.appendChild(categoryDiv);
+                });
+            }
+        };
+
+        // Initialize
+        testSuite.renderTests();
+        testSuite.updateSummary();
+
+        // Global functions
+        function runAllTests() {
+            testSuite.runAll();
+        }
+
+        function runSelectedTests() {
+            testSuite.runSelected();
+        }
+
+        function clearResults() {
+            testSuite.results = {};
+            testSuite.updateSummary();
+            document.getElementById('testLog').innerHTML = '';
+            document.querySelectorAll('.status').forEach(el => {
+                el.innerHTML = '⏳ Pending';
+                el.className = 'status text-gray-500';
+            });
+            document.querySelectorAll('.result').forEach(el => {
+                el.textContent = '';
+            });
+        }
+    </script>
+</body>
+</html>

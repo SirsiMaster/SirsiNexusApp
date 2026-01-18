@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus - Investor Login</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              emerald: {
+                600: '#059669',
+                700: '#047857',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <script>
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          const hasPersistedPreference = typeof persistedColorPreference === 'string';
+          if (hasPersistedPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+          if (hasMediaQueryPreference) {
+            return mql.matches ? 'dark' : 'light';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+    <!-- Load QR Code Generator for tracking -->
+    <script src="components/qr-code-generator.js"></script>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full space-y-8 p-8">
+        <div class="text-center">
+            <div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900">
+                <svg class="h-6 w-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+            </div>
+            <h2 class="mt-6 text-3xl font-bold text-gray-900 dark:text-white">
+                SirsiNexus Investor Portal
+            </h2>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                Access financial data, reports, and investor communications
+            </p>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-6">
+            <form id="loginForm" class="space-y-6">
+                <div id="errorMessage" class="hidden bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-md p-4 mb-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
+                                Invalid credentials
+                            </h3>
+                            <p class="text-sm text-red-700 dark:text-red-300 mt-1">
+                                Please check your Investor ID and Access Code.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="investor-id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Investor ID
+                    </label>
+                    <input id="investor-id" name="investor-id" type="text" required
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                           placeholder="Enter your investor ID">
+                </div>
+                
+                <div>
+                    <label for="access-code" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Access Code
+                    </label>
+                    <input id="access-code" name="access-code" type="password" required
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                           placeholder="Enter your access code">
+                </div>
+                
+                <div>
+                    <button type="submit" id="submitButton" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span id="buttonText">Access Portal</span>
+                        <svg id="loadingSpinner" class="hidden animate-spin -mr-1 ml-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="mt-4">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white dark:bg-gray-800 text-gray-500">Or continue with</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 grid grid-cols-2 gap-3">
+                        <button type="button" id="githubSignIn" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="ml-2">GitHub</span>
+                        </button>
+                        
+                        <button type="button" id="googleSignIn" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            <span class="ml-2">Google</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Need access? Contact us at <a href="mailto:cylton@sirsi.ai" class="text-emerald-600 hover:text-emerald-800 transition-colors">cylton@sirsi.ai</a>
+                </p>
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-500">
+                    Access requires approval from the administrator.
+                </p>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <a href="/" class="text-emerald-600 hover:text-emerald-800 transition-colors text-sm font-medium" aria-label="Back to Sirsi.ai home">
+                ← Back to Home
+            </a>
+        </div>
+    </div>
+
+    <!-- Firebase SDK for Authentication -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getAuth, 
+            signInWithPopup, 
+            signInWithEmailAndPassword,
+            GithubAuthProvider, 
+            GoogleAuthProvider,
+            onAuthStateChanged 
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFd4RAvVZWy3G1geLudrq4KgDDsGr-jb8",
+            authDomain: "sirsi-nexus-live.firebaseapp.com",
+            projectId: "sirsi-nexus-live",
+            storageBucket: "sirsi-nexus-live.firebasestorage.app",
+            messagingSenderId: "210890802638",
+            appId: "1:210890802638:web:9b721753a295620422179f"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Initialize providers
+        const githubProvider = new GithubAuthProvider();
+        const googleProvider = new GoogleAuthProvider();
+
+        // Handle authentication state
+        async function handleAuthSuccess(user) {
+            try {
+                // Check if user document exists
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                
+                let userData = {};
+                if (!userDoc.exists()) {
+                    // Create new user document
+                    userData = {
+                        uid: user.uid,
+                        email: user.email,
+                        name: user.displayName || user.email.split('@')[0],
+                        photoURL: user.photoURL,
+                        role: 'investor', // Default role
+                        provider: user.providerData[0]?.providerId,
+                        createdAt: new Date().toISOString(),
+                        lastLogin: new Date().toISOString()
+                    };
+                    
+                    await setDoc(doc(db, 'users', user.uid), userData);
+                } else {
+                    // Update last login
+                    userData = userDoc.data();
+                    await setDoc(doc(db, 'users', user.uid), {
+                        ...userData,
+                        lastLogin: new Date().toISOString()
+                    }, { merge: true });
+                }
+
+                // Store session
+                sessionStorage.setItem('investorAuth', JSON.stringify({
+                    id: user.uid,
+                    email: user.email,
+                    name: userData.name,
+                    role: userData.role,
+                    photoURL: user.photoURL,
+                    loginTime: new Date().toISOString()
+                }));
+
+                // Show success
+                showSuccess(`Welcome back, ${userData.name}!`);
+                
+                // Redirect based on role
+                setTimeout(() => {
+                    if (userData.role === 'admin') {
+                        window.location.href = 'admin/index.html';
+                    } else {
+                        window.location.href = 'investor-portal/index.html';
+                    }
+                }, 1500);
+            } catch (error) {
+                console.error('Error handling auth success:', error);
+                showError('Authentication successful but profile creation failed.');
+            }
+        }
+
+        // GitHub Sign In
+        window.signInWithGitHub = async function() {
+            try {
+                showLoading('githubSignIn');
+                const result = await signInWithPopup(auth, githubProvider);
+                await handleAuthSuccess(result.user);
+            } catch (error) {
+                console.error('GitHub sign-in error:', error);
+                showError(`GitHub sign-in failed: ${error.message}`);
+                hideLoading('githubSignIn');
+            }
+        };
+
+        // Google Sign In
+        window.signInWithGoogle = async function() {
+            try {
+                showLoading('googleSignIn');
+                const result = await signInWithPopup(auth, googleProvider);
+                await handleAuthSuccess(result.user);
+            } catch (error) {
+                console.error('Google sign-in error:', error);
+                showError(`Google sign-in failed: ${error.message}`);
+                hideLoading('googleSignIn');
+            }
+        };
+
+        // Helper functions
+        function showLoading(buttonId) {
+            const button = document.getElementById(buttonId);
+            button.disabled = true;
+            button.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        function hideLoading(buttonId) {
+            const button = document.getElementById(buttonId);
+            button.disabled = false;
+            button.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.querySelector('p').textContent = message;
+            errorMessage.classList.remove('hidden');
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            successDiv.textContent = message;
+            document.body.appendChild(successDiv);
+            setTimeout(() => successDiv.remove(), 3000);
+        }
+
+        // Check if already authenticated
+        onAuthStateChanged(auth, (user) => {
+            if (user && !window.location.pathname.includes('investor-portal')) {
+                // User is signed in via Firebase, auto-redirect
+                handleAuthSuccess(user);
+            }
+        });
+
+        // Attach event listeners when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('githubSignIn')?.addEventListener('click', signInWithGitHub);
+            document.getElementById('googleSignIn')?.addEventListener('click', signInWithGoogle);
+        });
+    </script>
+    
+    <script>
+        // Load approved investors from localStorage (for legacy demo mode)
+        function getApprovedInvestors() {
+            const applications = JSON.parse(localStorage.getItem('investorApplications') || '[]');
+            return applications.filter(app => app.status === 'approved');
+        }
+        
+        // Demo credentials (in production, this would be handled server-side)
+        const VALID_CREDENTIALS = [
+            { id: 'INV001', code: 'DEMO2025', name: 'Demo Investor', role: 'investor' },
+            { id: 'INV002', code: 'BETA2025', name: 'Beta Investor', role: 'investor' },
+            { id: 'ADMIN', code: 'ADMIN2025', name: 'Administrator', role: 'admin' },
+            { id: 'GUEST', code: 'GUEST2025', name: 'Guest Access', role: 'guest' }
+        ];
+
+        // Check for QR invite parameters on page load
+        function checkQRInvite() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const inviteToken = urlParams.get('invite');
+            const source = urlParams.get('source');
+            
+            if (inviteToken && source === 'qr_invite') {
+                // Track QR scan
+                if (window.qrGenerator) {
+                    window.qrGenerator.trackQRScan(window.location.href, {
+                        inviteToken,
+                        source,
+                        type: 'invite_scan'
+                    });
+                }
+                
+                // Process QR invite
+                processQRInvite(inviteToken, urlParams);
+            } else if (source === 'qr_access') {
+                // Track platform access QR scan
+                if (window.qrGenerator) {
+                    window.qrGenerator.trackQRScan(window.location.href, {
+                        source,
+                        type: 'access_scan',
+                        accessType: urlParams.get('access_type'),
+                        location: urlParams.get('location')
+                    });
+                }
+                
+                // Show QR access message
+                showQRAccessMessage(urlParams);
+            }
+        }
+        
+        function processQRInvite(inviteToken, urlParams) {
+            const inviteRecords = JSON.parse(localStorage.getItem('qrInviteRecords')) || [];
+            const invite = inviteRecords.find(inv => inv.token === inviteToken);
+            
+            if (invite) {
+                // Check if invite is still valid
+                const now = new Date();
+                const expires = new Date(invite.expires);
+                
+                if (now > expires) {
+                    showInviteExpired(invite);
+                    return;
+                }
+                
+                // Pre-fill form and show invite message
+                showInviteMessage(invite);
+                
+                // Auto-fill if email is provided as investor ID
+                if (invite.email) {
+                    document.getElementById('investor-id').value = invite.email;
+                    document.getElementById('access-code').focus();
+                }
+                
+                // Update invite status
+                invite.status = 'viewed';
+                invite.viewedAt = new Date().toISOString();
+                localStorage.setItem('qrInviteRecords', JSON.stringify(inviteRecords));
+            } else {
+                showInvalidInvite();
+            }
+        }
+        
+        function showInviteMessage(invite) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'mb-4 p-4 bg-emerald-50 dark:bg-emerald-900 border border-emerald-200 dark:border-emerald-700 rounded-md';
+            messageDiv.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 text-emerald-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div>
+                        <h3 class="text-sm font-medium text-emerald-800 dark:text-emerald-200">
+                            Welcome, ${invite.name}!
+                        </h3>
+                        <p class="text-sm text-emerald-700 dark:text-emerald-300 mt-1">
+                            You've been invited to access SirsiNexus Investor Portal.
+                            ${invite.customMessage ? `<br><em>"${invite.customMessage}"</em>` : ''}
+                        </p>
+                        <p class="text-xs text-emerald-600 dark:text-emerald-400 mt-2">
+                            Access Level: ${invite.accessLevel} | Expires: ${new Date(invite.expires).toLocaleDateString()}
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            const form = document.getElementById('loginForm');
+            form.parentNode.insertBefore(messageDiv, form);
+        }
+        
+        function showQRAccessMessage(urlParams) {
+            const accessType = urlParams.get('access_type') || 'login';
+            const location = urlParams.get('location');
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'mb-4 p-4 bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 rounded-md';
+            messageDiv.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                    </svg>
+                    <div>
+                        <h3 class="text-sm font-medium text-blue-800 dark:text-blue-200">
+                            QR Access Point
+                        </h3>
+                        <p class="text-sm text-blue-700 dark:text-blue-300 mt-1">
+                            You've accessed the platform via QR code${location ? ` from ${location}` : ''}.
+                            Please login to continue to ${accessType.replace('-', ' ')}.
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            const form = document.getElementById('loginForm');
+            form.parentNode.insertBefore(messageDiv, form);
+        }
+        
+        function showInviteExpired(invite) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'mb-4 p-4 bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-700 rounded-md';
+            messageDiv.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div>
+                        <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
+                            Invite Expired
+                        </h3>
+                        <p class="text-sm text-red-700 dark:text-red-300 mt-1">
+                            This invitation for ${invite.name} expired on ${new Date(invite.expires).toLocaleDateString()}.
+                            Please contact the administrator for a new invitation.
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            const form = document.getElementById('loginForm');
+            form.parentNode.insertBefore(messageDiv, form);
+        }
+        
+        function showInvalidInvite() {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'mb-4 p-4 bg-yellow-50 dark:bg-yellow-900 border border-yellow-200 dark:border-yellow-700 rounded-md';
+            messageDiv.innerHTML = `
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 text-yellow-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div>
+                        <h3 class="text-sm font-medium text-yellow-800 dark:text-yellow-200">
+                            Invalid Invitation
+                        </h3>
+                        <p class="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
+                            This invitation link is not valid or has been revoked.
+                            Please contact the administrator for assistance.
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            const form = document.getElementById('loginForm');
+            form.parentNode.insertBefore(messageDiv, form);
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const investorId = document.getElementById('investor-id').value.trim();
+            const accessCode = document.getElementById('access-code').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            const submitButton = document.getElementById('submitButton');
+            const buttonText = document.getElementById('buttonText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            
+            // Hide error message
+            errorMessage.classList.add('hidden');
+            
+            // Show loading state
+            submitButton.disabled = true;
+            buttonText.textContent = 'Verifying...';
+            loadingSpinner.classList.remove('hidden');
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Check credentials against demo accounts
+                let validCredential = VALID_CREDENTIALS.find(cred => 
+                    cred.id === investorId && cred.code === accessCode
+                );
+                
+                // Also check approved investors (using email as ID and a default code)
+                if (!validCredential) {
+                    const approvedInvestors = getApprovedInvestors();
+                    const approvedInvestor = approvedInvestors.find(inv => 
+                        inv.email === investorId && accessCode === 'investor2025'
+                    );
+                    
+                    if (approvedInvestor) {
+                        validCredential = {
+                            id: approvedInvestor.id,
+                            name: approvedInvestor.name,
+                            role: 'investor'
+                        };
+                    }
+                }
+                
+                if (validCredential) {
+                    // Update invite status if this was from a QR invite
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const inviteToken = urlParams.get('invite');
+                    if (inviteToken) {
+                        const inviteRecords = JSON.parse(localStorage.getItem('qrInviteRecords')) || [];
+                        const inviteIndex = inviteRecords.findIndex(inv => inv.token === inviteToken);
+                        if (inviteIndex !== -1) {
+                            inviteRecords[inviteIndex].status = 'accepted';
+                            inviteRecords[inviteIndex].acceptedAt = new Date().toISOString();
+                            localStorage.setItem('qrInviteRecords', JSON.stringify(inviteRecords));
+                        }
+                    }
+                    
+                    // Store session data (matching what portal expects)
+                    sessionStorage.setItem('investorAuth', JSON.stringify({
+                        id: validCredential.id,
+                        name: validCredential.name,
+                        role: validCredential.role,
+                        loginTime: new Date().toISOString(),
+                        qrInvite: inviteToken ? true : false
+                    }));
+                    
+                    // Success - redirect appropriately based on role
+                    buttonText.textContent = 'Access Granted!';
+                    
+                    // Add success message with link
+                    const successDiv = document.createElement('div');
+                    successDiv.className = 'mt-4 p-3 bg-green-50 dark:bg-green-900 rounded-md text-xs text-green-700 dark:text-green-300';
+                    
+                    if (validCredential.role === 'admin') {
+                        successDiv.innerHTML = `
+                            <strong>✅ Admin Login Successful!</strong><br>
+                            Redirecting to <a href="admin/" class="underline" target="_blank">Admin Dashboard</a><br>
+                            <em>If redirect fails, click the link above</em>
+                        `;
+                    } else {
+                        successDiv.innerHTML = `
+                            <strong>✅ Login Successful!</strong><br>
+                            Redirecting to <a href="/investor-portal/index.html" class="underline" target="_blank">Investor Portal</a><br>
+                            <em>If redirect fails, click the link above</em>
+                        `;
+                    }
+                    
+                    document.querySelector('.bg-white.dark\\:bg-gray-800').appendChild(successDiv);
+                    
+                    setTimeout(() => {
+                        console.log('Attempting redirect...');
+                        try {
+                            if (validCredential.role === 'admin') {
+                                window.location.href = 'admin/';
+                            } else {
+                                window.location.href = '/investor-portal/index.html';
+                            }
+                        } catch (error) {
+                            console.error('Redirect failed:', error);
+                            // Fallback: open in new tab
+                            if (validCredential.role === 'admin') {
+                                window.open('admin/', '_blank');
+                            } else {
+                                window.open('investor-portal/index.html', '_blank');
+                            }
+                        }
+                    }, 2000);
+                } else {
+                    // Show error
+                    errorMessage.classList.remove('hidden');
+                    
+                    // Reset form
+                    submitButton.disabled = false;
+                    buttonText.textContent = 'Access Portal';
+                    loadingSpinner.classList.add('hidden');
+                    
+                    // Clear fields
+                    document.getElementById('investor-id').value = '';
+                    document.getElementById('access-code').value = '';
+                    document.getElementById('investor-id').focus();
+                }
+            }, 1500); // 1.5 second delay to simulate server processing
+        });
+        
+        // Initialize QR tracking and check for invites
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize QR generator for tracking
+            if (typeof QRGenerator !== 'undefined') {
+                window.qrGenerator = new QRGenerator();
+            }
+            
+            // Check for QR invite parameters
+            checkQRInvite();
+            
+            // Get approved investors count
+            const approvedInvestors = getApprovedInvestors();
+            
+            // Add demo credentials info (for development)
+            const demoInfo = document.createElement('div');
+            demoInfo.className = 'mt-4 p-3 bg-blue-50 dark:bg-blue-900 rounded-md text-xs text-blue-700 dark:text-blue-300';
+            demoInfo.innerHTML = `
+                <strong>Demo Credentials:</strong><br>
+                • ID: <code>INV001</code> Code: <code>DEMO2025</code><br>
+                • ID: <code>GUEST</code> Code: <code>GUEST2025</code><br>
+                • ID: <code>ADMIN</code> Code: <code>ADMIN2025</code> (Admin Dashboard)<br>
+                ${approvedInvestors.length > 0 ? `<br><strong>Approved Investors:</strong><br>• Use your email and code: <code>investor2025</code>` : ''}
+            `;
+            document.querySelector('.bg-white.dark\\:bg-gray-800').appendChild(demoInfo);
+        });
+    </script>
+<script src="js/telemetry.js"></script>
+</body>
+</html>

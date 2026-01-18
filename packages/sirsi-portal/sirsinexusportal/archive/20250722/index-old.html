@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Management - SirsiNexus Admin</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'dark-bg': '#0f1419',
+                        'dark-card': '#1a1f29',
+                        'dark-border': '#2a2f3a',
+                        'dark-text': '#e1e8ed',
+                        'dark-text-secondary': '#8b98a5',
+                        'emerald': {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            300: '#6ee7b7',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS for toggle switches and other components -->
+    <style>
+        /* Toggle Switch Styles */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e0;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #10b981;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        
+        .dark .slider {
+            background-color: #4b5563;
+        }
+        
+        .dark input:checked + .slider {
+            background-color: #34d399;
+        }
+        
+        /* Smooth transitions for dark mode */
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-colors duration-300">
+    <!-- Skip Links for Accessibility -->
+    <div id="skip-links"></div>
+
+    <!-- Admin Header -->
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-slate-700 fixed top-0 left-0 right-0 z-50">
+        <div class="px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-6">
+                    <!-- Logo/Brand -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">S</span>
+                        </div>
+                        <div>
+                            <h1 class="text-base font-semibold text-gray-900 dark:text-white">SirsiNexus</h1>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">ADMIN CONSOLE</p>
+                        </div>
+                    </div>
+                    <!-- Status Indicator -->
+                    <span class="inline-flex items-center text-xs text-green-600 dark:text-green-400">
+                        <span class="w-2 h-2 bg-green-600 rounded-full mr-1 animate-pulse"></span>
+                        Live
+                    </span>
+                </div>
+                <!-- Right Section -->
+                <div class="flex items-center space-x-6">
+                    <!-- Platform/Page Info -->
+                    <nav class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                        <span>Platform</span>
+                        <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                        <span class="text-gray-900 dark:text-white font-medium">Security</span>
+                    </nav>
+                    <!-- Clock -->
+                    <span id="clock" class="text-sm font-mono text-gray-600 dark:text-gray-300">--:--</span>
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-md bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <svg class="w-5 h-5 text-gray-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <!-- Exit/Logout Button -->
+                    <button class="p-2 rounded-md bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors" onclick="handleLogout()">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                    </button>
+                    <!-- User Info -->
+                    <div class="flex items-center space-x-3">
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-200">ADMIN</span>
+                        <div class="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 fixed left-0 top-16 bottom-0 w-64 z-40 overflow-y-auto">
+        <div class="p-4">
+            <div class="space-y-1">
+                <a href="/sirsinexusportal/admin/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="/sirsinexusportal/admin/users/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                    User Management
+                </a>
+                <a href="/sirsinexusportal/admin/data-room.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Data Room
+                </a>
+                <a href="/sirsinexusportal/admin/dashboard/telemetry.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"/>
+                    </svg>
+                    Telemetry
+                </a>
+                <a href="/sirsinexusportal/admin/site-settings.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                    </svg>
+                    Site Settings
+                </a>
+                <a href="/sirsinexusportal/admin/security/" class="flex items-center px-3 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Security
+                </a>
+                <a href="/sirsinexusportal/admin/dashboard/system-logs.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                    </svg>
+                    System Logs
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 pt-16 min-h-screen bg-gray-50 dark:bg-slate-900 p-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Security Management</h1>
+
+            <!-- Threat Level Indicator -->
+            <div class="bg-green-100 dark:bg-green-900 rounded-lg p-6 mb-8 flex items-center gap-4">
+                <i class="fas fa-shield-alt text-5xl text-green-700 dark:text-green-300"></i>
+                <div>
+                    <h4 class="text-xl font-semibold text-green-900 dark:text-green-100">Current Threat Level: Low</h4>
+                    <p class="text-green-700 dark:text-green-300">No immediate security threats detected. System is secure.</p>
+                </div>
+            </div>
+
+            <!-- Security Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 text-center">
+                    <i class="fas fa-ban text-3xl text-red-500 mb-3"></i>
+                    <h3 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">23</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Blocked Attempts Today</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 text-center">
+                    <i class="fas fa-user-shield text-3xl text-green-500 mb-3"></i>
+                    <h3 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">100%</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Users with 2FA</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 text-center">
+                    <i class="fas fa-lock text-3xl text-blue-500 mb-3"></i>
+                    <h3 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">SSL A+</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Security Rating</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 text-center">
+                    <i class="fas fa-clock text-3xl text-yellow-500 mb-3"></i>
+                    <h3 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">2 days</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Since Last Incident</p>
+                </div>
+            </div>
+
+            <!-- Access Control -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Access Control</h3>
+
+                <div class="mb-6">
+                    <h5 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Active Sessions</h5>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">User</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">IP Address</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Location</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Login Time</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">admin@sirsinexus.com</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">192.168.1.100</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">New York, US</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">2 hours ago</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm" onclick="terminateSession(1)">
+                                            <i class="fas fa-times"></i> Terminate
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">john.doe@example.com</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">192.168.1.101</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">Los Angeles, US</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300">30 minutes ago</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm" onclick="terminateSession(2)">
+                                            <i class="fas fa-times"></i> Terminate
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Access Rules</h5>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white">Admin Panel Access</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Restrict admin panel to specific IPs</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white">API Access</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Require API key for all requests</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white">File Download Restrictions</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Limit downloads per user per day</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Firewall Settings -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Firewall & IP Management</h3>
+
+                <div class="mb-6">
+                    <h5 class="text-lg font-medium text-gray-900 dark:text-white mb-4">IP Whitelist</h5>
+                    <div id="ipWhitelist" class="space-y-2 mb-4">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded">
+                            <span class="text-gray-900 dark:text-gray-300">192.168.1.100 - Admin Office</span>
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm" onclick="removeIP(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded">
+                            <span class="text-gray-900 dark:text-gray-300">10.0.0.0/24 - Corporate Network</span>
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm" onclick="removeIP(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white" id="newIP" placeholder="Enter IP address or range">
+                        <button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md" onclick="addIP()">
+                            <i class="fas fa-plus"></i> Add IP
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <h5 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Firewall Rules</h5>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border-2 border-green-500">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white">Block SQL Injection Attempts</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Detect and block SQL injection patterns</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border-2 border-green-500">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white">DDoS Protection</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Rate limiting and traffic analysis</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg opacity-60">
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white">Geographic Restrictions</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Block access from specific countries</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Audit Log -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Security Audit Log</h3>
+                <div class="mb-4">
+                    <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white" placeholder="Search security logs..." id="logSearch">
+                </div>
+                <div id="securityLogs" class="space-y-4">
+                    <div class="border-l-4 border-red-500 p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h6 class="font-semibold text-gray-900 dark:text-white">Failed Login Attempt</h6>
+                                <p class="text-gray-600 dark:text-gray-400">Multiple failed login attempts from IP 45.142.182.112</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-500">10 minutes ago • IP: 45.142.182.112</p>
+                            </div>
+                            <span class="px-2 py-1 text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded">High Risk</span>
+                        </div>
+                    </div>
+                    <div class="border-l-4 border-yellow-500 p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h6 class="font-semibold text-gray-900 dark:text-white">Suspicious API Request</h6>
+                                <p class="text-gray-600 dark:text-gray-400">Unusual API request pattern detected</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-500">1 hour ago • User: unknown</p>
+                            </div>
+                            <span class="px-2 py-1 text-xs font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 rounded">Medium Risk</span>
+                        </div>
+                    </div>
+                    <div class="border-l-4 border-green-500 p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h6 class="font-semibold text-gray-900 dark:text-white">Security Update Applied</h6>
+                                <p class="text-gray-600 dark:text-gray-400">SSL certificate renewed successfully</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-500">2 hours ago • System</p>
+                            </div>
+                            <span class="px-2 py-1 text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded">Info</span>
+                        </div>
+                    </div>
+                    <div class="border-l-4 border-gray-300 p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h6 class="font-semibold text-gray-900 dark:text-white">New Admin User Added</h6>
+                                <p class="text-gray-600 dark:text-gray-400">Admin privileges granted to jane.smith@example.com</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-500">3 hours ago • By: admin@sirsinexus.com</p>
+                            </div>
+                            <span class="px-2 py-1 text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Info</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-6">
+                    <button class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md" onclick="loadMoreLogs()">
+                        <i class="fas fa-plus"></i> Load More Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Security Settings -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Security Settings</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="sessionTimeout" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Session Timeout (minutes)</label>
+                        <input type="number" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white" id="sessionTimeout" value="30">
+                    </div>
+                    <div>
+                        <label for="maxLoginAttempts" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Max Login Attempts</label>
+                        <input type="number" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white" id="maxLoginAttempts" value="5">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="passwordPolicy" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password Policy</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white" id="passwordPolicy">
+                            <option value="strong" selected>Strong (12+ chars, mixed case, numbers, symbols)</option>
+                            <option value="medium">Medium (8+ chars, mixed case, numbers)</option>
+                            <option value="basic">Basic (6+ chars)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="passwordExpiry" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password Expiry (days)</label>
+                        <input type="number" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 dark:bg-gray-700 dark:text-white" id="passwordExpiry" value="90">
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <h5 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Security Headers</h5>
+                    <div class="space-y-3">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="mr-2 rounded" id="hsts" checked>
+                            <span class="text-gray-700 dark:text-gray-300">Enable HSTS (HTTP Strict Transport Security)</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="mr-2 rounded" id="csp" checked>
+                            <span class="text-gray-700 dark:text-gray-300">Enable CSP (Content Security Policy)</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" class="mr-2 rounded" id="xframe" checked>
+                            <span class="text-gray-700 dark:text-gray-300">Enable X-Frame-Options</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-md" onclick="saveSecuritySettings()">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Initialize theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+
+        // Clock function
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const clockElement = document.getElementById('clock');
+            if (clockElement) {
+                clockElement.textContent = `${hours}:${minutes}`;
+            }
+        }
+
+        // Update clock every second
+        setInterval(updateClock, 1000);
+        updateClock();
+        
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle?.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        });
+
+        // Add logout functionality
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/sirsinexusportal/index.html';
+            }
+        }
+        
+        // Security page specific functions
+        function terminateSession(sessionId) {
+            if (confirm('Are you sure you want to terminate this session?')) {
+                alert('Session terminated successfully');
+                // In a real app, this would make an API call
+            }
+        }
+        
+        function removeIP(element) {
+            if (confirm('Remove this IP from whitelist?')) {
+                element.closest('.flex').remove();
+            }
+        }
+        
+        function addIP() {
+            const ipInput = document.getElementById('newIP');
+            const ip = ipInput.value.trim();
+            if (ip) {
+                const ipList = document.getElementById('ipWhitelist');
+                const newIP = document.createElement('div');
+                newIP.className = 'flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded';
+                newIP.innerHTML = `
+                    <span class="text-gray-900 dark:text-gray-300">${ip}</span>
+                    <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm" onclick="removeIP(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                ipList.appendChild(newIP);
+                ipInput.value = '';
+            }
+        }
+        
+        function loadMoreLogs() {
+            const logsContainer = document.getElementById('securityLogs');
+            // Simulate loading more logs
+            const newLog = document.createElement('div');
+            newLog.className = 'border-l-4 border-blue-500 p-4 hover:bg-gray-50 dark:hover:bg-gray-700';
+            newLog.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h6 class="font-semibold text-gray-900 dark:text-white">New Log Entry</h6>
+                        <p class="text-gray-600 dark:text-gray-400">Additional security log loaded</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-500">Just now • System</p>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Info</span>
+                </div>
+            `;
+            logsContainer.appendChild(newLog);
+        }
+        
+        function saveSecuritySettings() {
+            alert('Security settings saved successfully!');
+            // In a real app, this would save to backend
+        }
+        
+        // Initialize search functionality
+        document.getElementById('logSearch')?.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const logs = document.querySelectorAll('#securityLogs > div');
+            logs.forEach(log => {
+                const text = log.textContent.toLowerCase();
+                log.style.display = text.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+    </script>
+<script src="../../js/telemetry.js"></script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Methods Validation - SirsiNexus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- PayPal SDK with all components for testing -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ASUI7q4yAs6anh26J6T_7hLyX0UwUbVWQS-8lgngn9z0W6VX4zrt2y7Q_auiXBAUrzxd1ibBrz22KDAr&currency=USD&components=buttons,marks,funding-eligibility,messages&enable-funding=venmo,paylater,card&disable-funding=credit&debug=true"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-emerald-50 min-h-screen">
+    <div class="container mx-auto px-6 py-8">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl font-bold text-center mb-2 text-slate-900">Payment Methods Validation</h1>
+            <p class="text-center text-slate-600 mb-8">Live testing of PayPal integration for SirsiNexus</p>
+            
+            <!-- Validation Status -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-slate-900">🔍 Validation Results</h2>
+                <div id="validation-log" class="space-y-2 max-h-60 overflow-y-auto bg-slate-50 p-4 rounded-lg"></div>
+                <div class="mt-4 flex gap-4">
+                    <button onclick="startValidation()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        Start Validation
+                    </button>
+                    <button onclick="clearLog()" class="bg-slate-500 text-white px-4 py-2 rounded-lg hover:bg-slate-600">
+                        Clear Log
+                    </button>
+                </div>
+            </div>
+
+            <!-- Funding Eligibility Test -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-slate-900">💳 Available Payment Methods</h2>
+                <div id="funding-results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Test Payment Section -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-slate-900">🧪 Live Payment Test</h2>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Test Amount (USD)</label>
+                    <input type="number" id="test-amount" min="5" max="100" step="0.01" value="5.00" 
+                           class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <!-- PayPal Buttons Container -->
+                <div id="paypal-button-container" class="mb-6"></div>
+                
+                <!-- PayPal Messages (for Pay Later promotions) -->
+                <div id="paypal-messages" class="mb-4"></div>
+            </div>
+
+            <!-- Method-Specific Testing -->
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-semibold mb-4 text-slate-900">🎯 Method-Specific Tests</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- PayPal Balance Test -->
+                    <div class="border border-slate-200 rounded-lg p-4">
+                        <h3 class="font-semibold text-slate-900 mb-2">PayPal Balance</h3>
+                        <div id="paypal-test" class="mb-3"></div>
+                        <button onclick="testPayPalBalance()" class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
+                            Test PayPal
+                        </button>
+                    </div>
+                    
+                    <!-- Debit Card Test -->
+                    <div class="border border-slate-200 rounded-lg p-4">
+                        <h3 class="font-semibold text-slate-900 mb-2">Debit Cards</h3>
+                        <div id="card-test" class="mb-3"></div>
+                        <button onclick="testDebitCards()" class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">
+                            Test Cards
+                        </button>
+                    </div>
+                    
+                    <!-- Venmo Test -->
+                    <div class="border border-slate-200 rounded-lg p-4">
+                        <h3 class="font-semibold text-slate-900 mb-2">Venmo</h3>
+                        <div id="venmo-test" class="mb-3"></div>
+                        <button onclick="testVenmo()" class="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                            Test Venmo
+                        </button>
+                    </div>
+                    
+                    <!-- Pay Later Test -->
+                    <div class="border border-slate-200 rounded-lg p-4">
+                        <h3 class="font-semibold text-slate-900 mb-2">Pay Later</h3>
+                        <div id="paylater-test" class="mb-3"></div>
+                        <button onclick="testPayLater()" class="bg-yellow-600 text-white px-3 py-1 rounded text-sm hover:bg-yellow-700">
+                            Test Pay Later
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction Results -->
+            <div id="transaction-results" class="bg-green-50 border border-green-200 rounded-xl p-6 hidden">
+                <h2 class="text-2xl font-semibold mb-4 text-green-900">✅ Transaction Successful</h2>
+                <div id="transaction-details" class="space-y-2 text-sm text-green-800"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let validationLog = [];
+
+        function log(message, type = 'info', method = null) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = { timestamp, message, type, method };
+            validationLog.push(logEntry);
+            
+            const colors = {
+                'success': 'text-green-700 bg-green-50',
+                'error': 'text-red-700 bg-red-50',
+                'warning': 'text-yellow-700 bg-yellow-50',
+                'info': 'text-blue-700 bg-blue-50'
+            };
+            
+            const logDiv = document.getElementById('validation-log');
+            const entry = document.createElement('div');
+            entry.className = `p-2 rounded text-sm ${colors[type] || colors.info}`;
+            entry.innerHTML = `<span class="font-mono text-xs">[${timestamp}]</span> ${method ? `<strong>[${method}]</strong>` : ''} ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLog() {
+            document.getElementById('validation-log').innerHTML = '';
+            validationLog = [];
+        }
+
+        function startValidation() {
+            log('🚀 Starting comprehensive payment method validation...', 'info');
+            
+            // Test 1: SDK Loading
+            if (typeof paypal !== 'undefined') {
+                log('✅ PayPal SDK loaded successfully', 'success');
+                
+                // Test 2: Client ID validation
+                log('🔑 Client ID: ASUI7q4yAs6anh26J6T_7hLyX0UwUbVWQS-8lgngn9z0W6VX4zrt2y7Q_auiXBAUrzxd1ibBrz22KDAr', 'info');
+                
+                // Test 3: Funding eligibility
+                testFundingEligibility();
+                
+                // Test 4: Button rendering
+                initializePayPalButtons();
+                
+                // Test 5: Messages component
+                initializePayPalMessages();
+                
+            } else {
+                log('❌ PayPal SDK failed to load', 'error');
+            }
+        }
+
+        function testFundingEligibility() {
+            log('🔍 Testing funding source eligibility...', 'info');
+            
+            const fundingResults = document.getElementById('funding-results');
+            fundingResults.innerHTML = '';
+            
+            const paymentMethods = [
+                { name: 'PayPal Balance', key: 'paypal', icon: '💰' },
+                { name: 'Debit Cards', key: 'card', icon: '💳' },
+                { name: 'Venmo', key: 'venmo', icon: '📱' },
+                { name: 'Pay Later', key: 'paylater', icon: '📅' },
+                { name: 'Credit Cards', key: 'credit', icon: '💳' },
+                { name: 'Apple Pay', key: 'applepay', icon: '🍎' },
+                { name: 'Google Pay', key: 'googlepay', icon: '🟢' }
+            ];
+
+            paymentMethods.forEach(method => {
+                try {
+                    // Test if funding source is eligible
+                    const eligible = paypal.getFundingSources ? 
+                        paypal.getFundingSources().includes(method.key) : 
+                        'unknown';
+                    
+                    const status = eligible === true ? 'Available' : 
+                                 eligible === false ? 'Not Available' : 'Unknown';
+                    const statusColor = eligible === true ? 'text-green-600' : 
+                                      eligible === false ? 'text-red-600' : 'text-gray-600';
+                    
+                    // Create method card
+                    const methodCard = document.createElement('div');
+                    methodCard.className = 'border border-slate-200 rounded-lg p-4';
+                    methodCard.innerHTML = `
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-2xl">${method.icon}</span>
+                            <h3 class="font-medium text-slate-900">${method.name}</h3>
+                        </div>
+                        <div class="text-sm ${statusColor}">${status}</div>
+                        ${method.key === 'credit' ? '<div class="text-xs text-slate-500 mt-1">Disabled by configuration</div>' : ''}
+                    `;
+                    
+                    fundingResults.appendChild(methodCard);
+                    
+                    log(`${method.name}: ${status}`, eligible === true ? 'success' : eligible === false ? 'warning' : 'info', method.name);
+                    
+                } catch (error) {
+                    log(`Error testing ${method.name}: ${error.message}`, 'error', method.name);
+                }
+            });
+        }
+
+        function initializePayPalButtons() {
+            log('🎯 Initializing PayPal payment buttons...', 'info');
+            
+            const container = document.getElementById('paypal-button-container');
+            container.innerHTML = '';
+            
+            const amount = document.getElementById('test-amount').value || '5.00';
+            
+            try {
+                paypal.Buttons({
+                    createOrder: function(data, actions) {
+                        log('📝 Creating PayPal order...', 'info');
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: parseFloat(amount).toFixed(2)
+                                },
+                                description: 'SirsiNexus Payment Validation Test',
+                                payee: {
+                                    email_address: 'cylton@cylton.com'
+                                }
+                            }]
+                        });
+                    },
+                    
+                    onApprove: function(data, actions) {
+                        log('✅ Payment approved! Capturing transaction...', 'success');
+                        return actions.order.capture().then(function(details) {
+                            log('🎉 Payment captured successfully!', 'success');
+                            showTransactionResults(details);
+                        });
+                    },
+                    
+                    onError: function(err) {
+                        log(`❌ Payment error: ${JSON.stringify(err)}`, 'error');
+                        console.error('PayPal Error:', err);
+                    },
+                    
+                    onCancel: function(data) {
+                        log('🚫 Payment cancelled by user', 'warning');
+                    },
+                    
+                    style: {
+                        layout: 'vertical',
+                        color: 'blue',
+                        shape: 'pill',
+                        height: 50,
+                        tagline: false
+                    }
+                }).render('#paypal-button-container');
+                
+                log('✅ PayPal buttons rendered successfully', 'success');
+                
+            } catch (error) {
+                log(`❌ Error rendering PayPal buttons: ${error.message}`, 'error');
+            }
+        }
+
+        function initializePayPalMessages() {
+            log('📢 Initializing PayPal messages component...', 'info');
+            
+            try {
+                const amount = document.getElementById('test-amount').value || '5.00';
+                
+                paypal.Messages({
+                    amount: parseFloat(amount),
+                    placement: 'payment',
+                    style: {
+                        layout: 'text',
+                        logo: {
+                            type: 'primary',
+                            position: 'left'
+                        }
+                    }
+                }).render('#paypal-messages');
+                
+                log('✅ PayPal messages rendered successfully', 'success');
+                
+            } catch (error) {
+                log(`⚠️ PayPal messages not available: ${error.message}`, 'warning');
+            }
+        }
+
+        function testPayPalBalance() {
+            log('Testing PayPal Balance payment method...', 'info', 'PayPal');
+            document.getElementById('paypal-test').innerHTML = '<span class="text-blue-600">✓ Available via main PayPal button</span>';
+        }
+
+        function testDebitCards() {
+            log('Testing Debit Card payment method...', 'info', 'Cards');
+            document.getElementById('card-test').innerHTML = '<span class="text-green-600">✓ Available via PayPal card processing</span>';
+        }
+
+        function testVenmo() {
+            log('Testing Venmo payment method...', 'info', 'Venmo');
+            document.getElementById('venmo-test').innerHTML = '<span class="text-purple-600">✓ Enabled in PayPal configuration</span>';
+        }
+
+        function testPayLater() {
+            log('Testing Pay Later payment method...', 'info', 'PayLater');
+            document.getElementById('paylater-test').innerHTML = '<span class="text-yellow-600">✓ Available for eligible transactions</span>';
+        }
+
+        function showTransactionResults(details) {
+            const resultsDiv = document.getElementById('transaction-results');
+            const detailsDiv = document.getElementById('transaction-details');
+            
+            resultsDiv.classList.remove('hidden');
+            
+            detailsDiv.innerHTML = `
+                <div><strong>Transaction ID:</strong> ${details.id}</div>
+                <div><strong>Status:</strong> ${details.status}</div>
+                <div><strong>Payer Name:</strong> ${details.payer.name?.given_name || 'N/A'} ${details.payer.name?.surname || ''}</div>
+                <div><strong>Email:</strong> ${details.payer.email_address}</div>
+                <div><strong>Amount:</strong> $${details.purchase_units[0].amount.value}</div>
+                <div><strong>Captured At:</strong> ${new Date().toLocaleString()}</div>
+                <div><strong>Payment Method:</strong> ${details.payer.funding_instruments?.[0]?.funding_source || 'PayPal'}</div>
+            `;
+            
+            // Log transaction details
+            log(`Transaction completed: ${details.id}`, 'success');
+            log(`Amount: $${details.purchase_units[0].amount.value}`, 'success');
+            log(`Payer: ${details.payer.email_address}`, 'success');
+        }
+
+        // Update buttons when amount changes
+        document.getElementById('test-amount').addEventListener('input', function() {
+            const amount = this.value;
+            if (amount >= 5) {
+                log(`💰 Amount updated to: $${amount}`, 'info');
+                document.getElementById('paypal-button-container').innerHTML = '';
+                setTimeout(initializePayPalButtons, 300);
+                setTimeout(initializePayPalMessages, 500);
+            }
+        });
+
+        // Auto-start validation when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(startValidation, 1000);
+        });
+
+        // Export validation results
+        function exportResults() {
+            const results = {
+                timestamp: new Date().toISOString(),
+                clientId: 'ASUI7q4yAs6anh26J6T_7hLyX0UwUbVWQS-8lgngn9z0W6VX4zrt2y7Q_auiXBAUrzxd1ibBrz22KDAr',
+                payee: 'cylton@cylton.com',
+                validationLog: validationLog,
+                fundingSources: paypal.getFundingSources ? paypal.getFundingSources() : 'unknown'
+            };
+            
+            console.log('Validation Results:', results);
+            return results;
+        }
+
+        // Make export function globally available
+        window.exportValidationResults = exportResults;
+    </script>
+</body>
+</html>

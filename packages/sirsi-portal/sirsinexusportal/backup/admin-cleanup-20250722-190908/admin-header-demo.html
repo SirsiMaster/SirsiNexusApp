@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>Admin Header Demo - SirsiNexus</title>
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="assets/css/shared.css">
+    <link rel="stylesheet" href="assets/css/common-styles.css">
+    
+    <!-- Theme Toggle Script -->
+    <script src="assets/js/fresh-theme-toggle.js"></script>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <!-- Professional Admin Header -->
+    <admin-header 
+        breadcrumbs="Header Demo"
+        user-name="John Administrator"
+        user-email="john.admin@sirsinexus.com">
+    </admin-header>
+    
+    <!-- Demo Content -->
+    <main class="content-wrapper py-8">
+        <div class="card mb-8">
+            <h1>Professional Admin Header Demo</h1>
+            <p class="mb-6">This page demonstrates the enterprise-grade admin header component with all requested features.</p>
+            
+            <!-- Feature Showcase -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Company Logo & Title -->
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-content center text-white font-bold text-sm">✓</div>
+                        <h3 class="text-lg font-semibold">Company Logo & Title</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">Stylized "SN" logo with "Admin Console" title and subtitle for professional branding.</p>
+                </div>
+                
+                <!-- Live Status Indicator -->
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">✓</div>
+                        <h3 class="text-lg font-semibold">Live Status Indicator</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">Animated green dot showing "System Operational" with live status monitoring capability.</p>
+                    
+                    <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <button onclick="updateSystemStatus()" class="btn text-sm py-1 px-3">
+                            Toggle System Status
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Real-time Clock -->
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">✓</div>
+                        <h3 class="text-lg font-semibold">Real-time Clock</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">Live updating clock displaying current time and date with professional styling.</p>
+                </div>
+                
+                <!-- Breadcrumb Navigation -->
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">✓</div>
+                        <h3 class="text-lg font-semibold">Breadcrumb Navigation</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">Professional breadcrumb trail with interactive links and current page highlighting.</p>
+                    
+                    <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <button onclick="updateBreadcrumbs()" class="btn text-sm py-1 px-3">
+                            Update Breadcrumbs
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Theme Toggle -->
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">✓</div>
+                        <h3 class="text-lg font-semibold">Theme Toggle</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">Beautiful light/dark mode toggle with line art icons and smooth animations.</p>
+                    
+                    <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Click the theme button in header to test</p>
+                    </div>
+                </div>
+                
+                <!-- Admin User Dropdown -->
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">✓</div>
+                        <h3 class="text-lg font-semibold">User Dropdown Menu</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">User avatar with dropdown including profile, preferences, help, and logout options.</p>
+                    
+                    <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Click the user avatar in header to test</p>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Toggle -->
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">✓</div>
+                        <h3 class="text-lg font-semibold">Mobile Menu Toggle</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">Responsive hamburger menu button for mobile navigation (visible on smaller screens).</p>
+                    
+                    <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Resize window to see mobile version</p>
+                    </div>
+                </div>
+                
+                <!-- Responsive Design -->
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">✓</div>
+                        <h3 class="text-lg font-semibold">Responsive Design</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">Fully responsive layout that adapts beautifully to all screen sizes and devices.</p>
+                </div>
+                
+                <!-- Professional Styling -->
+                <div class="card">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">✓</div>
+                        <h3 class="text-lg font-semibold">Enterprise Styling</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400">Investment-ready design with professional typography, colors, and animations.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Interactive Controls -->
+        <div class="card">
+            <h2>Interactive Demo Controls</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div>
+                    <h3 class="mb-3">System Status Controls</h3>
+                    <div class="space-y-2">
+                        <button onclick="setSystemStatus('operational', 'System Operational')" class="btn bg-green-600 hover:bg-green-700 text-sm">
+                            Set Status: Operational
+                        </button>
+                        <button onclick="setSystemStatus('warning', 'System Warning')" class="btn bg-yellow-600 hover:bg-yellow-700 text-sm">
+                            Set Status: Warning
+                        </button>
+                        <button onclick="setSystemStatus('error', 'System Error')" class="btn bg-red-600 hover:bg-red-700 text-sm">
+                            Set Status: Error
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="mb-3">Breadcrumb Controls</h3>
+                    <div class="space-y-2">
+                        <button onclick="setBreadcrumbs('simple')" class="btn text-sm">
+                            Simple Breadcrumb
+                        </button>
+                        <button onclick="setBreadcrumbs('complex')" class="btn text-sm">
+                            Complex Breadcrumb
+                        </button>
+                        <button onclick="setBreadcrumbs('deep')" class="btn text-sm">
+                            Deep Navigation
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Technical Details -->
+        <div class="card">
+            <h2>Technical Implementation</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                <div>
+                    <h3 class="mb-3">Web Components</h3>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-400">
+                        <li>• Custom Web Component using Shadow DOM</li>
+                        <li>• Encapsulated styling with CSS-in-JS approach</li>
+                        <li>• Event-driven architecture for interactivity</li>
+                        <li>• Configurable attributes for customization</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="mb-3">Features</h3>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-400">
+                        <li>• Real-time clock with automatic updates</li>
+                        <li>• Theme persistence with localStorage</li>
+                        <li>• Accessible dropdown menus</li>
+                        <li>• Responsive breakpoints for mobile</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Load Admin Header Component -->
+    <script src="components/admin-header.js"></script>
+    
+    <!-- Demo JavaScript -->
+    <script>
+        let statusToggle = true;
+        
+        // Demo functions
+        function updateSystemStatus() {
+            const header = document.querySelector('admin-header');
+            if (header) {
+                if (statusToggle) {
+                    header.updateSystemStatus('warning', 'System Maintenance');
+                } else {
+                    header.updateSystemStatus('operational', 'System Operational');
+                }
+                statusToggle = !statusToggle;
+            }
+        }
+        
+        function setSystemStatus(status, text) {
+            const header = document.querySelector('admin-header');
+            if (header) {
+                header.updateSystemStatus(status, text);
+            }
+        }
+        
+        function updateBreadcrumbs() {
+            const header = document.querySelector('admin-header');
+            if (header) {
+                header.updateBreadcrumbs([
+                    { text: 'Home', href: 'index.html' },
+                    { text: 'Admin', href: 'admin-dashboard.html' },
+                    { text: 'Components', href: '#' },
+                    { text: 'Header Demo' }
+                ]);
+            }
+        }
+        
+        function setBreadcrumbs(type) {
+            const header = document.querySelector('admin-header');
+            if (header) {
+                switch (type) {
+                    case 'simple':
+                        header.updateBreadcrumbs([
+                            { text: 'Home', href: 'index.html' },
+                            { text: 'Dashboard' }
+                        ]);
+                        break;
+                    case 'complex':
+                        header.updateBreadcrumbs([
+                            { text: 'Home', href: 'index.html' },
+                            { text: 'Admin', href: '#' },
+                            { text: 'Users', href: '#' },
+                            { text: 'Permissions' }
+                        ]);
+                        break;
+                    case 'deep':
+                        header.updateBreadcrumbs([
+                            { text: 'Home', href: 'index.html' },
+                            { text: 'System', href: '#' },
+                            { text: 'Config', href: '#' },
+                            { text: 'Database', href: '#' },
+                            { text: 'Schema', href: '#' },
+                            { text: 'Tables' }
+                        ]);
+                        break;
+                }
+            }
+        }
+        
+        // Handle Admin Header Events
+        document.addEventListener('admin-action', function(e) {
+            console.log('Admin action:', e.detail.action);
+            
+            // Show notification for demo
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+            notification.textContent = `Action: ${e.detail.action}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        });
+        
+        document.addEventListener('logout', function(e) {
+            if (confirm('This is a demo. Logout functionality would redirect to login page.')) {
+                console.log('Logout confirmed');
+            }
+        });
+        
+        document.addEventListener('mobile-menu-toggle', function(e) {
+            console.log('Mobile menu toggle requested');
+            
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-purple-600 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+            notification.textContent = 'Mobile menu toggle clicked!';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        });
+        
+        // Auto-demo breadcrumbs after page load
+        setTimeout(() => {
+            updateBreadcrumbs();
+        }, 1500);
+        
+        // Auto-demo status change
+        setTimeout(() => {
+            updateSystemStatus();
+            setTimeout(() => {
+                updateSystemStatus();
+            }, 3000);
+        }, 5000);
+    </script>
+<script src="../../js/telemetry.js"></script>
+</body>
+</html>

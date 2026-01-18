@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- Cache buster: v1737679000 -->
+    <title>SirsiNexus - Investment Committee Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Authentication check - redirect if not authenticated
+      (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+          window.location.href = '/investor-login.html';
+          return;
+        }
+        
+        try {
+          const authData = JSON.parse(auth);
+          const loginTime = new Date(authData.loginTime);
+          const now = new Date();
+          const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+          
+          // Check if session expired (24 hours)
+          if (hoursSinceLogin > 24) {
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '/investor-login.html';
+            return;
+          }
+          
+          console.log('✅ Authentication verified for committee dashboard:', authData.id);
+        } catch (error) {
+          console.error('❌ Authentication error:', error);
+          sessionStorage.removeItem('investorAuth');
+          window.location.href = '/investor-login.html';
+          return;
+        }
+      })();
+    </script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                200: '#bbf7d0',
+                300: '#86efac',
+                400: '#4ade80',
+                500: '#22c55e',
+                600: '#16a34a',
+                700: '#15803d',
+                800: '#166534',
+                900: '#14532d'
+              },
+              secondary: {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a'
+              }
+            },
+          },
+        },
+      }
+    </script>
+    <script>
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          if (persistedColorPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          if (mql.matches) {
+            return 'dark';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+    
+    <style>
+      /* Professional Investment Committee Styling */
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        position: relative;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+      
+      /* Dark mode support */
+      .dark body {
+        background-color: #0f172a;
+        color: #e2e8f0;
+      }
+      
+      /* Prominent Geometric Accents */
+      .geometric-accent {
+        position: absolute;
+        pointer-events: none;
+      }
+      
+      .geometric-accent-1 {
+        top: 10%;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: linear-gradient(45deg, #10b981 0%, #3b82f6 50%, transparent 70%);
+        transform: rotate(45deg);
+        opacity: 0.3;
+        filter: blur(40px);
+      }
+      
+      .geometric-accent-2 {
+        bottom: 20%;
+        left: -30px;
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, transparent 70%);
+        border-radius: 50%;
+        opacity: 0.25;
+        filter: blur(30px);
+      }
+      
+      .geometric-accent-3 {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, rgba(59, 130, 246, 0.05) 50%, transparent 70%);
+        opacity: 0.5;
+      }
+      
+      .dark .geometric-accent-1 {
+        background: linear-gradient(45deg, #22c55e 0%, #60a5fa 50%, transparent 70%);
+        opacity: 0.2;
+      }
+      
+      .dark .geometric-accent-2 {
+        background: linear-gradient(135deg, #a78bfa 0%, #f472b6 50%, transparent 70%);
+        opacity: 0.15;
+      }
+      
+      .dark .geometric-accent-3 {
+        background: radial-gradient(circle, rgba(52, 211, 153, 0.15) 0%, rgba(96, 165, 250, 0.1) 50%, transparent 70%);
+      }
+      
+      /* Modern Card Styling */
+      .committee-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+        border-radius: 20px;
+        padding: 1.5rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e5e7eb;
+      }
+      
+      .committee-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--card-color, #10b981) 0%, var(--card-color-end, #059669) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      .committee-card:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+        border-color: var(--card-color, #10b981);
+        border-width: 2px;
+      }
+      
+      .committee-card:hover::before {
+        opacity: 1;
+      }
+      
+      .dark .committee-card {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        border: 1px solid #374151;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      }
+      
+      /* Compact Layout Styles */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      
+      @media (max-width: 768px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      
+      .stat-card {
+        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%);
+        border-radius: 20px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        border: 3px solid #10b981;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px -5px rgba(16, 185, 129, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      }
+      
+      .stat-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 60%);
+        transform: scale(2);
+        animation: pulse 3s ease-in-out infinite;
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 0.3; transform: scale(2); }
+        50% { opacity: 0.6; transform: scale(2.2); }
+      }
+      
+      .stat-card:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 20px 40px -10px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        border-color: #059669;
+      }
+      
+      .dark .stat-card {
+        background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+        border-color: #34d399;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      }
+      
+      .stat-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 1;
+      }
+      
+      .dark .stat-value {
+        color: #34d399;
+      }
+      
+      .stat-label {
+        font-size: 0.75rem;
+        color: #6b7280;
+        margin-top: 0.25rem;
+      }
+      
+      .dark .stat-label {
+        color: #9ca3af;
+      }
+      
+      /* Document Grid */
+      .document-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+      }
+      
+      @media (max-width: 1024px) {
+        .document-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      
+      @media (max-width: 640px) {
+        .document-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      
+      /* Icon containers with subtle gradients */
+      .icon-container {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      
+      .icon-container::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        transform: rotate(45deg);
+        transition: transform 0.6s;
+      }
+      
+      .committee-card:hover .icon-container::after {
+        transform: rotate(45deg) translate(50%, 50%);
+      }
+      
+      /* Subtle hover effects */
+      .hover-lift {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .hover-lift:hover {
+        transform: translateY(-2px);
+      }
+      
+      /* Clean section styling */
+      .section-header {
+        position: relative;
+        padding-bottom: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .section-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #10b981 0%, transparent 100%);
+        border-radius: 3px;
+      }
+      
+      .dark .section-header::after {
+        background: linear-gradient(90deg, #34d399 0%, transparent 100%);
+      }
+    </style>
+</head>
+<body class="h-full bg-gradient-to-br from-slate-50 via-emerald-50/10 to-blue-50/10 dark:from-slate-900 dark:via-emerald-950/20 dark:to-blue-950/20">
+<!-- Navigation and Layout Header -->
+<div id="unified-header"></div>
+
+<!-- Page Scripts -->
+<script src="/components/universal-navigation.js"></script>
+<script src="/components/navigation-customizer.js"></script>
+<script src="/assets/js/shared-theme-toggle.js"></script>
+
+<!-- Authentication Check -->
+<script>
+    (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+            window.location.href = '/investor-login.html';
+            return;
+        }
+        
+        try {
+            const authData = JSON.parse(auth);
+            const loginTime = new Date(authData.loginTime);
+            const now = new Date();
+            const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+            
+            if (hoursSinceLogin > 24) {
+                sessionStorage.removeItem('investorAuth');
+                window.location.href = '/investor-login.html';
+                return;
+            }
+        } catch (error) {
+            console.error('Authentication error:', error);
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '/investor-login.html';
+            return;
+        }
+    })();
+</script>
+
+<!-- Page-specific customization -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Get the current page from URL
+        const path = window.location.pathname;
+        const pageName = path.split('/').pop().replace('.html', '');
+        
+        // Add committee menu if we're in the committee section
+        if (path.includes('/committee/')) {
+            navCustomizer.addCommitteeMenu(pageName);
+        }
+        
+        // Add action buttons based on page
+        switch(pageName) {
+            case 'data-room':
+                navCustomizer.addActionButtons([{
+                    label: 'Upload Document',
+                    className: 'bg-emerald-600 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-700 transition-colors',
+                    onClick: () => showUploadModal()
+                }]);
+                break;
+            case 'kpi-metrics':
+                navCustomizer.addActionButtons([{
+                    label: 'Export Report',
+                    className: 'bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors',
+                    onClick: () => exportMetrics()
+                }]);
+                break;
+        }
+    });
+</script>
+
+    <!-- Header -->
+    <div id="unified-header"></div>
+    <!-- Sidebar Navigation -->
+    <aside class="fixed left-0 top-16 bottom-0 w-52 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 overflow-y-auto hidden lg:block">
+        <div class="p-4">
+            <div class="space-y-1">
+                <a href="/investor-portal/index.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                    </svg>
+                    Investor Dashboard
+                </a>
+                <a href="/investor-portal/data-room.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Data Room
+                </a>
+                <a href="/investor-portal/kpi-unit-metrics.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                    </svg>
+                    KPI Metrics
+                </a>
+            </div>
+            
+            <div class="mt-8">
+                <h3 class="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Committee Documents</h3>
+                <div class="mt-2 space-y-1">
+                    <a href="index.html" class="flex items-center px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+                        <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 1 1 0 000 2H6a2 2 0 00-2 2v6a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-1a1 1 0 100-2h1a4 4 0 014 4v6a4 4 0 01-4 4H6a4 4 0 01-4-4V7a4 4 0 014-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Committee Overview
+                    </a>
+                    <a href="market-analysis.html" class="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                        <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                        </svg>
+                        Market Analysis
+                    </a>
+                    <a href="product-roadmap.html" class="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                        <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                        </svg>
+                        Product Roadmap
+                    </a>
+                    <a href="sales-strategy.html" class="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                        <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd"/>
+                        </svg>
+                        Sales Strategy
+                    </a>
+                    <a href="go-to-market.html" class="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                        <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 16v-2a2 2 0 00-2-2 2 2 0 01-2-2 2 2 0 00-1.668-1.973z" clip-rule="evenodd"/>
+                        </svg>
+                        Go-to-Market
+                    </a>
+                    <a href="kpi-metrics.html" class="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                        <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm9 4a1 1 0 10-2 0v6a1 1 0 102 0V7zm-3 2a1 1 0 10-2 0v4a1 1 0 102 0V9zm-3 3a1 1 0 10-2 0v1a1 1 0 102 0v-1z" clip-rule="evenodd"/>
+                        </svg>
+                        KPI Metrics
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-8">
+                <h3 class="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Resources</h3>
+                <div class="mt-2 space-y-1">
+                    <a href="#" class="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                        <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                        Download Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile menu button -->
+    <button class="lg:hidden fixed bottom-4 right-4 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg" onclick="toggleMobileSidebar()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
+    
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+        <!-- Prominent geometric accents -->
+        <div class="geometric-accent geometric-accent-1"></div>
+        <div class="geometric-accent geometric-accent-2"></div>
+        <div class="geometric-accent geometric-accent-3"></div>
+        
+        <!-- Enhanced background pattern -->
+        <div class="absolute inset-0 -z-10 overflow-hidden">
+            <div class="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-emerald-300 to-blue-400 dark:from-emerald-800 dark:to-blue-900 opacity-30 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-purple-300 to-pink-400 dark:from-purple-800 dark:to-pink-900 opacity-30 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 dark:from-indigo-900 dark:via-purple-900 dark:to-pink-900 opacity-20 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="space-y-6">
+            <!-- Compact Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Investment Committee Dashboard</h1>
+                <p class="text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                    Strategic documentation for Pre-Seed and Seed funding • $1.5M + $4.5M target Q3 2025
+                </p>
+            </div>
+            
+            <!-- Key Metrics Bar -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">$6M</div>
+                    <div class="stat-label">Target Raise</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">$78.8B</div>
+                    <div class="stat-label">TAM</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">Q3 2025</div>
+                    <div class="stat-label">Target Close</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Strategic Partners</div>
+                </div>
+            </div>
+            
+            <!-- Compact Summary Section -->
+            <div class="relative bg-gradient-to-r from-emerald-50 via-emerald-50/50 to-blue-50 dark:from-slate-800 dark:via-slate-800/70 dark:to-slate-800 rounded-2xl p-8 mb-8 border border-emerald-200 dark:border-emerald-800 shadow-lg overflow-hidden">
+                <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-emerald-300 to-blue-300 dark:from-emerald-700 dark:to-blue-700 opacity-10 rounded-full -mr-20 -mt-20 blur-2xl"></div>
+                <h2 class="section-header text-xl font-semibold text-slate-900 dark:text-slate-100 relative z-10">Executive Summary</h2>
+                <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed relative z-10">
+                    SirsiNexus leverages a proprietary AI architecture unifying Large Language Models with Knowledge Graphs based on 
+                    the Hedera Hashgraph architecture to deliver autonomous cloud infrastructure optimization. Strategic partnerships 
+                    with NVIDIA Inception, AWS MAP, and Techstars Universe create unfair competitive advantages in the $78.8B cloud 
+                    optimization market.
+                </p>
+                <div class="mt-4 flex flex-wrap gap-3 relative z-10">
+                    <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold bg-emerald-200 text-emerald-900 dark:bg-emerald-900/50 dark:text-emerald-300 shadow-sm hover:shadow-md transition-shadow cursor-default">
+                        <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        Proprietary AI Tech
+                    </span>
+                    <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold bg-blue-200 text-blue-900 dark:bg-blue-900/50 dark:text-blue-300 shadow-sm hover:shadow-md transition-shadow cursor-default">
+                        <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        $78.8B TAM
+                    </span>
+                    <span class="inline-flex items-center px-4 py-2 rounded-full text-xs font-semibold bg-purple-200 text-purple-900 dark:bg-purple-900/50 dark:text-purple-300 shadow-sm hover:shadow-md transition-shadow cursor-default">
+                        <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        </svg>
+                        Strategic Partnerships
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Strategic Documents Grid -->
+            <div class="space-y-4">
+                <h2 class="section-header text-xl font-semibold text-slate-900 dark:text-white">Strategic Documents</h2>
+                
+                <div class="document-grid">
+                    <div class="committee-card group cursor-pointer hover-lift" style="--card-color: #3b82f6; --card-color-end: #2563eb;" onclick="window.location.href='market-analysis.html'">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-blue-600/20 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="icon-container bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg shadow-blue-500/25">
+                                <svg class="w-6 h-6 text-white relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Market Analysis</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">$78.8B TAM Research</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                            Comprehensive market research and competitive positioning analysis.
+                        </p>
+                        <div class="flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300">
+                            <span>View Analysis</span>
+                            <svg class="w-3 h-3 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="committee-card group cursor-pointer" onclick="window.location.href='product-roadmap.html'">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Product Roadmap</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">Strategic Development Timeline</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4">
+                            Detailed product development roadmap showcasing Graph of Thought AI enhancements, 
+                            Hedera Hashgraph integration, and strategic milestones through 2025 and beyond.
+                        </p>
+                        <div class="flex items-center text-primary-600 dark:text-primary-400 font-medium group-hover:text-primary-700 dark:group-hover:text-primary-300">
+                            <span>View Roadmap</span>
+                            <svg class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="committee-card group cursor-pointer" onclick="window.location.href='sales-strategy.html'">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Sales Strategy</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">Revenue Growth Strategy</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4">
+                            Comprehensive sales strategy with enterprise customer acquisition framework, 
+                            pricing models, and revenue optimization tactics for market penetration.
+                        </p>
+                        <div class="flex items-center text-primary-600 dark:text-primary-400 font-medium group-hover:text-primary-700 dark:group-hover:text-primary-300">
+                            <span>View Strategy</span>
+                            <svg class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="committee-card group cursor-pointer" onclick="window.location.href='kpi-metrics.html'">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">KPI & Unit Metrics</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">Performance Analytics</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4">
+                            Comprehensive performance indicators, unit economics, and strategic traction metrics 
+                            demonstrating operational excellence and growth trajectory.
+                        </p>
+                        <div class="flex items-center text-primary-600 dark:text-primary-400 font-medium group-hover:text-primary-700 dark:group-hover:text-primary-300">
+                            <span>View Metrics</span>
+                            <svg class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="committee-card group cursor-pointer" onclick="window.location.href='go-to-market.html'">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9 3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">Go-to-Market</h3>
+                                <p class="text-sm text-slate-500 dark:text-slate-400">Market Expansion Strategy</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 mb-4">
+                            Comprehensive go-to-market strategy with channel partnerships, distribution models, 
+                            and strategic market entry tactics for accelerated growth.
+                        </p>
+                        <div class="flex items-center text-primary-600 dark:text-primary-400 font-medium group-hover:text-primary-700 dark:group-hover:text-primary-300">
+                            <span>View Strategy</span>
+                            <svg class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Resources -->
+                <div class="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-6 mt-8">
+                    <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">Additional Resources</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <a href="../kpi-unit-metrics.html" class="flex items-center gap-3 p-3 bg-white dark:bg-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                            <div class="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
+                                <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium text-slate-900 dark:text-slate-100">KPI & Unit Metrics</span>
+                        </a>
+                        <a href="../data-room.html" class="flex items-center gap-3 p-3 bg-white dark:bg-slate-800 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                            <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm font-medium text-slate-900 dark:text-slate-100">Data Room</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-8">
+                    <a href="/investor-portal/index.html" 
+                       class="inline-flex items-center gap-2 px-6 py-3 border border-primary-600 text-primary-600 dark:text-primary-400 bg-transparent hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-all duration-200 font-medium">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Back to Investor Portal
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        function toggleTheme() {
+            console.log('Theme toggle clicked');
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                console.log('Switched to light mode');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                console.log('Switched to dark mode');
+            }
+        }
+        
+        function logout() {
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '/investor-login.html';
+        }
+        
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            console.log('Theme initialized:', theme);
+        }
+        
+        // Initialize immediately
+        initTheme();
+        
+        // Make functions available globally
+        window.toggleTheme = toggleTheme;
+        window.logout = logout;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+        });
+    </script>
+<script src="../../js/telemetry.js"></script>
+
+    
+    <script>
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('aside');
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('block');
+        }
+        
+        // Highlight active page
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const sidebarLinks = document.querySelectorAll('aside a');
+            
+            sidebarLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || (currentPage === 'index.html' && href === 'index.html')) {
+                    link.classList.remove('text-gray-700', 'dark:text-gray-300');
+                    link.classList.add('text-blue-600', 'dark:text-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
+                }
+            });
+        });
+    </script>
+
+<!-- Theme Toggle and Navigation Scripts -->
+    
+    
+</body>
+</html>

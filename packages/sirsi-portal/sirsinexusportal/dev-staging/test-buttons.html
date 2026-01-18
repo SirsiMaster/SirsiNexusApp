@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+        }
+    </style>
+</head>
+<body class="p-8">
+    <h1 class="text-2xl font-bold mb-4">Dashboard Button Test</h1>
+    
+    <div class="space-y-4">
+        <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="testClick('Button 1')">Test Button 1</button>
+        <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="openModal('testModal')">Open Modal</button>
+        <button class="bg-purple-500 text-white px-4 py-2 rounded" data-action="test-action">Data Action Button</button>
+    </div>
+    
+    <!-- Test Modal -->
+    <div id="testModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-xl font-bold mb-4">Test Modal</h2>
+            <p>Modal is working!</p>
+            <button class="bg-red-500 text-white px-4 py-2 rounded mt-4" onclick="closeModal('testModal')">Close</button>
+        </div>
+    </div>
+    
+    <script>
+        // Test functions
+        function testClick(name) {
+            console.log(`${name} clicked!`);
+            alert(`${name} clicked!`);
+        }
+        
+        function openModal(modalId) {
+            console.log(`Opening modal: ${modalId}`);
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('show');
+            } else {
+                console.error(`Modal not found: ${modalId}`);
+            }
+        }
+        
+        function closeModal(modalId) {
+            console.log(`Closing modal: ${modalId}`);
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        }
+        
+        // Test data-action buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const actionButtons = document.querySelectorAll('[data-action]');
+            actionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const action = this.getAttribute('data-action');
+                    console.log(`Data action: ${action}`);
+                    alert(`Data action: ${action}`);
+                });
+            });
+        });
+    </script>
+<script src="../js/telemetry.js"></script>
+</body>
+</html>

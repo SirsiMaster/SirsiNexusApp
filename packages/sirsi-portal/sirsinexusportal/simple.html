@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Layout Test</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            line-height: 1.6;
+        }
+        
+        /* Container with consistent max-width */
+        .container {
+            max-width: 896px; /* max-w-4xl in Tailwind */
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 4rem;
+        }
+        
+        .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        
+        .nav {
+            color: #64748b;
+        }
+        
+        /* Main section */
+        .main {
+            padding: 2rem 0;
+        }
+        
+        .title-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .main-title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            max-width: 672px;
+            margin: 0 auto;
+        }
+        
+        /* Progress indicator */
+        .progress-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 4rem;
+        }
+        
+        .progress {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .step-circle {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: #059669;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+        
+        .step-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #1e293b;
+        }
+        
+        .step-line {
+            width: 4rem;
+            height: 2px;
+            background: #cbd5e1;
+        }
+        
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+        }
+        
+        .card-content {
+            padding: 2rem;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-icon {
+            width: 3rem;
+            height: 3rem;
+            background: #059669;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.125rem;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        
+        .card-text {
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+        
+        .form-area {
+            background: #f1f5f9;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 640px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .progress {
+                gap: 0.5rem;
+            }
+            
+            .step-circle {
+                width: 2rem;
+                height: 2rem;
+                font-size: 0.75rem;
+            }
+            
+            .step-text {
+                font-size: 0.75rem;
+            }
+            
+            .step-line {
+                width: 2rem;
+            }
+        }
+        
+        @media (min-width: 640px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .container {
+                padding: 0 2rem;
+            }
+        }
+        
+        /* Debug info */
+        .debug-info {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: black;
+            color: white;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-family: monospace;
+        }
+        
+        .debug-border {
+            border: 2px dashed red;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="container debug-border">
+            <div class="header-content">
+                <div class="logo">SirsiNexus Payment Portal</div>
+                <div class="nav">Navigation</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container debug-border">
+            
+            <!-- Title -->
+            <div class="title-section">
+                <h1 class="main-title">Simple Layout Test</h1>
+                <p class="subtitle">Testing if the basic layout structure works correctly</p>
+            </div>
+            
+            <!-- Progress Indicator -->
+            <div class="progress-container">
+                <div class="progress">
+                    <div class="step">
+                        <div class="step-circle">1</div>
+                        <div class="step-text">Account</div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step">
+                        <div class="step-circle">2</div>
+                        <div class="step-text">Details</div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step">
+                        <div class="step-circle">3</div>
+                        <div class="step-text">Payment</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cards -->
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="card-icon">1</div>
+                        <h2 class="card-title">Account Information</h2>
+                    </div>
+                    <p class="card-text">This card should align perfectly with the header and progress indicator above.</p>
+                    <div class="form-area">
+                        <p>Form content area - should be contained within the same max-width as other elements</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="card-icon">2</div>
+                        <h2 class="card-title">Payment Details</h2>
+                    </div>
+                    <p class="card-text">All containers should be perfectly aligned with consistent spacing.</p>
+                    <div class="form-area">
+                        <p>Form content area - consistent container width throughout</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-header">
+                        <div class="card-icon">3</div>
+                        <h2 class="card-title">Payment Methods</h2>
+                    </div>
+                    <p class="card-text">Final step with consistent layout alignment.</p>
+                    <div class="form-area">
+                        <p>Payment buttons and options would go here</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    
+    <!-- Debug Info -->
+    <div class="debug-info">
+        <div>Viewport: <span id="viewport"></span></div>
+        <div>Container: 896px max</div>
+        <div>Layout: Pure CSS</div>
+    </div>
+
+    <script>
+        function updateDebugInfo() {
+            const viewport = `${window.innerWidth}x${window.innerHeight}`;
+            document.getElementById('viewport').textContent = viewport;
+            
+            console.log('Simple Layout Debug:', {
+                viewport: viewport,
+                maxWidth: '896px (max-w-4xl)',
+                approach: 'Pure CSS - no Tailwind',
+                containers: document.querySelectorAll('.container').length
+            });
+        }
+        
+        updateDebugInfo();
+        window.addEventListener('resize', updateDebugInfo);
+        
+        // Test alignment on load
+        window.addEventListener('load', function() {
+            const containers = document.querySelectorAll('.container');
+            console.log('Container alignment test:');
+            
+            containers.forEach((container, i) => {
+                const rect = container.getBoundingClientRect();
+                console.log(`Container ${i + 1}:`, {
+                    width: Math.round(rect.width),
+                    left: Math.round(rect.left),
+                    right: Math.round(rect.right),
+                    centered: Math.abs(rect.left - (window.innerWidth - rect.right)) < 5
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>

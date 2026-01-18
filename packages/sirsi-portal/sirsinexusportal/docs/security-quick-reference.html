@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Quick Reference - SirsiNexus</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .code-block {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            margin: 0.5rem 0;
+        }
+        
+        .dark .code-block {
+            background: #111827;
+        }
+        
+        .cmd {
+            color: #60a5fa;
+            font-weight: bold;
+        }
+        
+        .comment {
+            color: #6b7280;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-colors duration-300">
+    <!-- Header -->
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-slate-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/admin/documentation.html" class="flex items-center space-x-2">
+                        <svg class="w-6 h-6 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Back to Documentation</span>
+                    </a>
+                </div>
+                <h1 class="text-xl font-bold text-gray-900 dark:text-white">Security Quick Reference</h1>
+                <button id="theme-toggle" class="p-2 rounded-md bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
+                    <svg class="w-5 h-5 text-gray-600 dark:text-gray-300 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 818 0z"></path>
+                    </svg>
+                    <svg class="w-5 h-5 text-gray-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Quick Start -->
+        <section class="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-emerald-600 dark:text-emerald-400">🚀 Quick Start</h2>
+            
+            <div class="space-y-4">
+                <div>
+                    <h3 class="font-semibold mb-2">1. Add Security Scripts</h3>
+                    <div class="code-block">
+<span class="comment">&lt;!-- Add to your HTML &lt;head&gt; --&gt;</span>
+&lt;script src="/assets/js/secure-auth.js"&gt;&lt;/script&gt;
+&lt;script src="/assets/js/auth-integration.js"&gt;&lt;/script&gt;
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-2">2. Initialize on Page Load</h3>
+                    <div class="code-block">
+<span class="cmd">document</span>.addEventListener('DOMContentLoaded', <span class="cmd">async</span> () => {
+    <span class="cmd">await</span> SecureAuth.init();
+});
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-2">3. Add to Forms</h3>
+                    <div class="code-block">
+&lt;form <span class="cmd">data-secure-form="login"</span>&gt;
+    <span class="comment">&lt;!-- Your form fields --&gt;</span>
+&lt;/form&gt;
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Console Commands -->
+        <section class="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400">🔧 Console Commands</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold mb-3">Authentication</h3>
+                    <div class="space-y-2">
+                        <div class="code-block">
+<span class="comment">// Check authentication status</span>
+<span class="cmd">SecureAuth</span>.isAuthenticated()
+                        </div>
+                        <div class="code-block">
+<span class="comment">// Get current user</span>
+<span class="cmd">SecureAuth</span>.getCurrentUser()
+                        </div>
+                        <div class="code-block">
+<span class="comment">// Force logout</span>
+<span class="cmd">SecureAuth</span>.logout()
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-3">Session Management</h3>
+                    <div class="space-y-2">
+                        <div class="code-block">
+<span class="comment">// Check session validity</span>
+<span class="cmd">SecureAuth</span>.validateSession()
+                        </div>
+                        <div class="code-block">
+<span class="comment">// Extend session</span>
+<span class="cmd">SecureAuth</span>.extendSession()
+                        </div>
+                        <div class="code-block">
+<span class="comment">// Get session info</span>
+<span class="cmd">SecureAuth</span>.getSessionInfo()
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-3">Security Checks</h3>
+                    <div class="space-y-2">
+                        <div class="code-block">
+<span class="comment">// Check permission</span>
+<span class="cmd">SecureAuth</span>.checkPermission('resource', 'action')
+                        </div>
+                        <div class="code-block">
+<span class="comment">// Verify CSRF token</span>
+<span class="cmd">SecureAuth</span>.validateCSRFToken()
+                        </div>
+                        <div class="code-block">
+<span class="comment">// Get security status</span>
+<span class="cmd">SecureAuth</span>.getSecurityStatus()
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-3">Debugging</h3>
+                    <div class="space-y-2">
+                        <div class="code-block">
+<span class="comment">// Enable debug mode</span>
+<span class="cmd">SecureAuth</span>.debug = true
+                        </div>
+                        <div class="code-block">
+<span class="comment">// View audit logs</span>
+<span class="cmd">SecureAuth</span>.getAuditLogs()
+                        </div>
+                        <div class="code-block">
+<span class="comment">// Clear all data</span>
+<span class="cmd">SecureAuth</span>.clearAllData()
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testing Procedures -->
+        <section class="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-purple-600 dark:text-purple-400">🧪 Testing Procedures</h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <h3 class="font-semibold mb-3">Test Login Flow</h3>
+                    <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+                        <ol class="list-decimal list-inside space-y-2 text-sm">
+                            <li>Open browser console (F12)</li>
+                            <li>Navigate to login page</li>
+                            <li>Run: <code class="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">SecureAuth.debug = true</code></li>
+                            <li>Fill and submit login form</li>
+                            <li>Check console for security events</li>
+                            <li>Verify: <code class="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">SecureAuth.isAuthenticated()</code> returns true</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-3">Test Session Timeout</h3>
+                    <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+                        <div class="code-block">
+<span class="comment">// Set short timeout for testing (5 seconds)</span>
+<span class="cmd">SecureAuth</span>.init({ sessionTimeout: 5000 })
+
+<span class="comment">// Login and wait</span>
+<span class="cmd">await</span> SecureAuth.login({ email: 'test@example.com', password: 'test' })
+
+<span class="comment">// Check after timeout</span>
+<span class="cmd">setTimeout</span>(() => {
+    console.log('Session valid:', SecureAuth.isAuthenticated())
+}, 6000)
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-3">Test CSRF Protection</h3>
+                    <div class="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+                        <div class="code-block">
+<span class="comment">// Get current CSRF token</span>
+<span class="cmd">const</span> token = SecureAuth.getCSRFToken()
+console.log('CSRF Token:', token)
+
+<span class="comment">// Verify form has token</span>
+<span class="cmd">const</span> form = document.querySelector('[data-secure-form]')
+<span class="cmd">const</span> csrfInput = form.querySelector('input[name="csrf_token"]')
+console.log('Token in form:', csrfInput?.value === token)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Common Issues -->
+        <section class="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-red-600 dark:text-red-400">⚠️ Common Issues & Solutions</h2>
+            
+            <div class="space-y-4">
+                <div class="border-l-4 border-yellow-500 pl-4">
+                    <h3 class="font-semibold">HTTPS Required Error</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">For local development only:</p>
+                    <div class="code-block">
+<span class="cmd">SecureAuth</span>.init({ <span class="cmd">requireHttps</span>: false })
+                    </div>
+                </div>
+                
+                <div class="border-l-4 border-yellow-500 pl-4">
+                    <h3 class="font-semibold">IndexedDB Not Available</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Check if running in private mode:</p>
+                    <div class="code-block">
+<span class="cmd">if</span> (!window.indexedDB) {
+    console.warn('IndexedDB not available, using fallback')
+}
+                    </div>
+                </div>
+                
+                <div class="border-l-4 border-yellow-500 pl-4">
+                    <h3 class="font-semibold">Session Expired Unexpectedly</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Listen for expiry events:</p>
+                    <div class="code-block">
+<span class="cmd">window</span>.addEventListener('auth:session:expired', (e) => {
+    console.log('Session expired:', e.detail)
+    <span class="comment">// Handle gracefully</span>
+})
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Event Reference -->
+        <section class="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-orange-600 dark:text-orange-400">📡 Event Reference</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-slate-700">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Event</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Description</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-gray-700">
+                        <tr>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm font-mono">auth:init</td>
+                            <td class="px-4 py-3 text-sm">Security service initialized</td>
+                            <td class="px-4 py-3 text-sm font-mono">{ config }</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm font-mono">auth:login:success</td>
+                            <td class="px-4 py-3 text-sm">User logged in successfully</td>
+                            <td class="px-4 py-3 text-sm font-mono">{ user, session }</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm font-mono">auth:login:failed</td>
+                            <td class="px-4 py-3 text-sm">Login attempt failed</td>
+                            <td class="px-4 py-3 text-sm font-mono">{ error, attempts }</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm font-mono">auth:logout</td>
+                            <td class="px-4 py-3 text-sm">User logged out</td>
+                            <td class="px-4 py-3 text-sm font-mono">{ userId }</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm font-mono">auth:session:expired</td>
+                            <td class="px-4 py-3 text-sm">Session timeout reached</td>
+                            <td class="px-4 py-3 text-sm font-mono">{ sessionId }</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm font-mono">auth:security:threat</td>
+                            <td class="px-4 py-3 text-sm">Security threat detected</td>
+                            <td class="px-4 py-3 text-sm font-mono">{ type, details }</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Cheat Sheet -->
+        <section class="bg-white dark:bg-slate-800 rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold mb-4 text-green-600 dark:text-green-400">📋 Cheat Sheet</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-4">
+                    <h3 class="font-semibold mb-2">Must Have</h3>
+                    <ul class="text-sm space-y-1">
+                        <li>✓ HTTPS in production</li>
+                        <li>✓ Initialize on page load</li>
+                        <li>✓ Handle session expiry</li>
+                        <li>✓ Secure all forms</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                    <h3 class="font-semibold mb-2">Best Practices</h3>
+                    <ul class="text-sm space-y-1">
+                        <li>→ Monitor audit logs</li>
+                        <li>→ Set appropriate timeouts</li>
+                        <li>→ Use permission checks</li>
+                        <li>→ Test edge cases</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
+                    <h3 class="font-semibold mb-2">Quick Links</h3>
+                    <ul class="text-sm space-y-1">
+                        <li><a href="/docs/security-integration-guide.html" class="text-purple-600 hover:underline">Full Guide →</a></li>
+                        <li><a href="/admin/documentation.html" class="text-purple-600 hover:underline">Admin Docs →</a></li>
+                        <li><a href="mailto:security@sirsinexus.com" class="text-purple-600 hover:underline">Get Help →</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <p class="text-center text-sm text-gray-500 dark:text-gray-400">
+                © 2024 SirsiNexus. Security Quick Reference v1.0
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/fresh-theme-toggle.js"></script>
+</body>
+</html>

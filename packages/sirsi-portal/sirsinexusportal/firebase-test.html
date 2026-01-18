@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Connection Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow p-6">
+        <h1 class="text-2xl font-bold mb-4">Firebase Connection Test</h1>
+        
+        <div id="status" class="space-y-2">
+            <p>Testing Firebase connection...</p>
+        </div>
+        
+        <div class="mt-6">
+            <h2 class="text-lg font-semibold mb-2">Quick Test</h2>
+            <button onclick="testAuth()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Test Authentication
+            </button>
+            <button onclick="testFirestore()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 ml-2">
+                Test Firestore
+            </button>
+        </div>
+        
+        <div id="results" class="mt-4 p-4 bg-gray-50 rounded hidden">
+            <pre id="resultText" class="text-sm"></pre>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFd4RAvVZWy3G1geLudrq4KgDDsGr-jb8",
+            authDomain: "sirsi-nexus-live.firebaseapp.com",
+            projectId: "sirsi-nexus-live",
+            storageBucket: "sirsi-nexus-live.firebasestorage.app",
+            messagingSenderId: "210890802638",
+            appId: "1:210890802638:web:9b721753a295620422179f"
+        };
+
+        let app, auth, db;
+        const statusDiv = document.getElementById('status');
+        const resultsDiv = document.getElementById('results');
+        const resultText = document.getElementById('resultText');
+        
+        try {
+            // Initialize Firebase
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            
+            statusDiv.innerHTML = `
+                <p class="text-green-600">✅ Firebase App initialized</p>
+                <p class="text-green-600">✅ Auth service connected</p>
+                <p class="text-green-600">✅ Firestore connected</p>
+                <p class="text-blue-600 mt-2">Project: ${firebaseConfig.projectId}</p>
+            `;
+            
+            // Make functions global
+            window.auth = auth;
+            window.db = db;
+            
+        } catch (error) {
+            statusDiv.innerHTML = `
+                <p class="text-red-600">❌ Firebase initialization failed</p>
+                <p class="text-red-500 text-sm">${error.message}</p>
+            `;
+        }
+        
+        window.testAuth = async function() {
+            resultsDiv.classList.remove('hidden');
+            resultText.textContent = 'Testing authentication...';
+            
+            try {
+                // Try to create a test user
+                const testEmail = `test${Date.now()}@test.com`;
+                const testPassword = 'testpass123';
+                
+                const userCredential = await createUserWithEmailAndPassword(auth, testEmail, testPassword);
+                
+                resultText.textContent = `✅ Authentication working!\n\nTest user created:\nUID: ${userCredential.user.uid}\nEmail: ${testEmail}\n\nEmail/Password authentication is enabled and working.`;
+                
+                // Clean up - delete the test user
+                await userCredential.user.delete();
+                resultText.textContent += '\n\nTest user deleted.';
+                
+            } catch (error) {
+                if (error.code === 'auth/operation-not-allowed') {
+                    resultText.textContent = `❌ Email/Password authentication is NOT enabled!\n\nPlease enable it in Firebase Console:\n1. Go to Authentication > Sign-in method\n2. Click Email/Password\n3. Toggle Enable\n4. Click Save`;
+                } else {
+                    resultText.textContent = `Error: ${error.code}\n${error.message}`;
+                }
+            }
+        }
+        
+        window.testFirestore = async function() {
+            resultsDiv.classList.remove('hidden');
+            resultText.textContent = 'Testing Firestore...';
+            
+            try {
+                // Try to write a test document
+                const testDoc = {
+                    test: true,
+                    timestamp: new Date().toISOString(),
+                    message: 'Test document'
+                };
+                
+                await setDoc(doc(db, 'test', 'test-doc'), testDoc);
+                
+                // Read it back
+                const docSnap = await getDoc(doc(db, 'test', 'test-doc'));
+                
+                if (docSnap.exists()) {
+                    resultText.textContent = `✅ Firestore working!\n\nSuccessfully wrote and read document:\n${JSON.stringify(docSnap.data(), null, 2)}`;
+                } else {
+                    resultText.textContent = '❌ Could not read back test document';
+                }
+                
+            } catch (error) {
+                resultText.textContent = `Firestore Error: ${error.code}\n${error.message}\n\nThis might be a permissions issue. Check Firestore rules.`;
+            }
+        }
+    </script>
+</body>
+</html>

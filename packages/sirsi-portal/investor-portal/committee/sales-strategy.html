@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="cache-bust" content="1752718800">
+    <meta name="description" content="SirsiNexus Sales Strategy - Comprehensive go-to-market strategy and sales execution plan for our AI-powered cloud infrastructure management platform">
+    <title>Sales Strategy - SirsiNexus Investor Portal</title>
+    
+    <!-- Core Dependencies -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../components/ui-library.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    
+    <!-- Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                200: '#bbf7d0',
+                300: '#86efac',
+                400: '#4ade80',
+                500: '#22c55e',
+                600: '#16a34a',
+                700: '#15803d',
+                800: '#166534',
+                900: '#14532d'
+              },
+              secondary: {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a'
+              }
+            },
+          },
+        },
+      }
+    </script>
+    <script>
+      // Check authentication first
+      (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+          window.location.href = '../../investor-login.html';
+          return;
+        }
+        
+        try {
+          const authData = JSON.parse(auth);
+          const loginTime = new Date(authData.loginTime);
+          const now = new Date();
+          const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+          
+          if (hoursSinceLogin > 24) {
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '../../investor-login.html';
+            return;
+          }
+          
+          console.log('✅ Authentication verified for:', authData.id);
+        } catch (error) {
+          console.error('❌ Authentication error:', error);
+          sessionStorage.removeItem('investorAuth');
+          window.location.href = '../../investor-login.html';
+          return;
+        }
+      })();
+      
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          const hasPersistedPreference = typeof persistedColorPreference === 'string';
+          if (hasPersistedPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+          if (hasMediaQueryPreference) {
+            return mql.matches ? 'dark' : 'light';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+    <style>
+      /* Professional Investment-Ready Styling */
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+      
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+      
+      html {
+          scroll-behavior: smooth;
+          font-size: 16px;
+          line-height: 1.5;
+      }
+      
+      body {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          color: #1a1a1a;
+          background-color: #ffffff;
+          overflow-x: hidden;
+      }
+      
+      .dark body {
+          background-color: #0f172a;
+          color: #e2e8f0;
+      }
+      
+      .content-section {
+          max-width: 1200px;
+          margin: 2rem auto;
+          padding: 2rem;
+          background: #ffffff;
+          border-radius: 16px;
+          border: 1px solid #e5e7eb;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .content-section:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      }
+      
+      .dark .content-section {
+          background: #1e293b;
+          border-color: #334155;
+          color: #f1f5f9;
+      }
+      
+      .metric-card {
+          background: #ffffff;
+          padding: 2rem;
+          border-radius: 12px;
+          text-align: center;
+          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+          border: 1px solid #e5e7eb;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .metric-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      }
+      
+      .dark .metric-card {
+          background: #1e293b;
+          border-color: #334155;
+      }
+      
+      .metric-value {
+          font-size: 2.5rem;
+          font-weight: 800;
+          color: #059669;
+          display: block;
+          margin-bottom: 0.5rem;
+          line-height: 1;
+      }
+      
+      .metric-label {
+          font-size: 0.875rem;
+          color: #64748b;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          line-height: 1.4;
+      }
+      
+      .dark .metric-label {
+          color: #94a3b8;
+      }
+      
+      .strategy-pillar {
+          background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+          padding: 2rem;
+          border-radius: 12px;
+          border-left: 4px solid #059669;
+          margin-bottom: 1.5rem;
+          transition: all 0.3s ease;
+      }
+      
+      .strategy-pillar:hover {
+          transform: translateX(4px);
+          box-shadow: 0 8px 25px rgba(5, 150, 105, 0.15);
+      }
+      
+      .dark .strategy-pillar {
+          background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
+          color: #f0fdf4;
+          border-left-color: #10b981;
+      }
+      
+      .competitive-advantage {
+          background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+          padding: 1.5rem;
+          border-radius: 12px;
+          border-left: 4px solid #3b82f6;
+          margin-bottom: 1rem;
+      }
+      
+      .dark .competitive-advantage {
+          background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+          color: #dbeafe;
+          border-left-color: #60a5fa;
+      }
+      
+      @media (max-width: 768px) {
+          .content-section {
+              padding: 1.5rem;
+          }
+      }
+    </style>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+<!-- Navigation and Layout Header -->
+<div id="unified-header"></div>
+
+<!-- Page Scripts -->
+<script src="/components/universal-navigation.js"></script>
+<script src="/components/navigation-customizer.js"></script>
+<script src="/assets/js/shared-theme-toggle.js"></script>
+
+<!-- Authentication Check -->
+<script>
+    (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+            window.location.href = '/investor-login.html';
+            return;
+        }
+        
+        try {
+            const authData = JSON.parse(auth);
+            const loginTime = new Date(authData.loginTime);
+            const now = new Date();
+            const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+            
+            if (hoursSinceLogin > 24) {
+                sessionStorage.removeItem('investorAuth');
+                window.location.href = '/investor-login.html';
+                return;
+            }
+        } catch (error) {
+            console.error('Authentication error:', error);
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '/investor-login.html';
+            return;
+        }
+    })();
+</script>
+
+<!-- Page-specific customization -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Get the current page from URL
+        const path = window.location.pathname;
+        const pageName = path.split('/').pop().replace('.html', '');
+        
+        // Add committee menu if we're in the committee section
+        if (path.includes('/committee/')) {
+            navCustomizer.addCommitteeMenu(pageName);
+        }
+        
+        // Add action buttons based on page
+        switch(pageName) {
+            case 'data-room':
+                navCustomizer.addActionButtons([{
+                    label: 'Upload Document',
+                    className: 'bg-emerald-600 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-700 transition-colors',
+                    onClick: () => showUploadModal()
+                }]);
+                break;
+            case 'kpi-metrics':
+                navCustomizer.addActionButtons([{
+                    label: 'Export Report',
+                    className: 'bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors',
+                    onClick: () => exportMetrics()
+                }]);
+                break;
+        }
+    });
+</script>
+
+    <!-- Header -->
+    <div id="unified-header"></div>
+    <!-- Sidebar Navigation -->
+    <aside class="fixed left-0 top-16 bottom-0 w-52 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 overflow-y-auto hidden lg:block">
+        <div class="p-4">
+            <div class="space-y-1">
+                <a href="index.html" class="flex items-center px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="data-room.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Data Room
+                </a>
+                <a href="kpi-unit-metrics.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+                    </svg>
+                    KPI Metrics
+                </a>
+                <a href="committee/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                    Committee
+                </a>
+            </div>
+            
+            <div class="mt-8">
+                <h3 class="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Resources</h3>
+                <div class="mt-2 space-y-1">
+                    <a href="#" class="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                        <svg class="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                        Download Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile menu button -->
+    <button class="lg:hidden fixed bottom-4 right-4 z-50 bg-blue-600 text-white p-3 rounded-full shadow-lg" onclick="toggleMobileSidebar()">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
+
+    
+    <!-- Main Content -->
+    <main class="min-h-screen py-8">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-primary-50 via-white to-primary-100/50 dark:from-primary-900/10 dark:via-secondary-900 dark:to-primary-800/5 py-12">
+            <div class="max-w-7xl mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+                    Sales Strategy
+                </h1>
+                <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 max-w-3xl mx-auto">
+                    Comprehensive go-to-market strategy driving enterprise adoption through strategic partnerships, 
+                    targeted sales initiatives, and competitive positioning in the $78.8B cloud optimization market.
+                </p>
+<div class="flex flex-wrap justify-center gap-4 mb-8" data-aos="fade-up">
+                    <div class="bg-white dark:bg-slate-800 px-6 py-3 rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-2xl font-bold text-emerald-600">$33M</div>
+                        <div class="text-sm text-slate-600 dark:text-slate-400">ARR Target Y3</div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 px-6 py-3 rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-2xl font-bold text-blue-600">280</div>
+                        <div class="text-sm text-slate-600 dark:text-slate-400">Enterprise Customers</div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 px-6 py-3 rounded-lg shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="text-2xl font-bold text-purple-600">125K</div>
+                        <div class="text-sm text-slate-600 dark:text-slate-400">Avg Contract Value</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategic Overview -->
+        <section class="content-section">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">Strategic Overview</h2>
+            <p class="text-lg text-slate-700 dark:text-slate-300 mb-8">
+                Our sales strategy leverages exclusive partnerships with NVIDIA's Inception Program, AWS Migration Acceleration Program, 
+                and Hedera Hashgraph ecosystem to create an unfair advantage in enterprise cloud optimization. Through strategic traction 
+                with tier-1 universities and direct VC portfolio mandates, we've built a pre-qualified pipeline that delivers 35% cost 
+                reductions with 87% AI prediction accuracy.
+            </p>
+            
+<div class="grid md:grid-cols-3 gap-6">
+                <div class="strategy-pillar" data-aos="fade-right" data-aos-delay="100">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center text-emerald-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5m5 5v-5"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100">Enterprise-First Approach</h3>
+                    </div>
+                    <p class="text-slate-700 dark:text-slate-300">
+                        Targeting Fortune 500 companies with $125K average contract values and 96% logo retention through our 
+                        Graph of Thought AI architecture. Focus on high-value enterprise accounts with complex cloud infrastructure needs.
+                    </p>
+                </div>
+                <div class="strategy-pillar" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center text-blue-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100">Strategic Partnerships</h3>
+                    </div>
+                    <p class="text-slate-700 dark:text-slate-300">
+                        Exclusive access to NVIDIA Inception Program and AWS Migration Acceleration Program, plus Hedera Hashgraph strategic 
+                        investment creates powerful ecosystem for enterprise adoption and technical validation.
+                    </p>
+                </div>
+                <div class="strategy-pillar" data-aos="fade-left" data-aos-delay="300">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center text-purple-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100">Market Positioning</h3>
+                    </div>
+                    <p class="text-slate-700 dark:text-slate-300">
+                        Leading position in $78.8B cloud optimization market with 28.5% CAGR growth through 
+                        proprietary Graph of Thought AI technology and proven enterprise traction with tier-1 logos.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sales Performance Metrics -->
+        <section class="content-section">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">Sales Performance Metrics</h2>
+            
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8">
+<div class="metric-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center text-emerald-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
+                        </div>
+                        <span class="metric-value">$5.6M</span>
+                    </div>
+                    <div class="metric-label">Revenue Y1 (2025)</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mt-2">92% of target achieved</div>
+                </div>
+                <div class="metric-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center text-blue-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="metric-value">92%</span>
+                    </div>
+                    <div class="metric-label">Target Achievement</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mt-2">Consistently exceeding goals</div>
+                </div>
+                <div class="metric-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center text-green-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <span class="metric-value">2%</span>
+                    </div>
+                    <div class="metric-label">Churn Rate</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mt-2">Industry-leading retention</div>
+                </div>
+                <div class="metric-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center text-purple-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="metric-value">150</span>
+                    </div>
+                    <div class="metric-label">New Accounts Q3</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mt-2">125% QoQ growth</div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
+                <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Revenue Growth Trajectory</h3>
+<div class="relative h-60 md:h-80">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Go-to-Market Strategy -->
+        <section class="content-section">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">Go-to-Market Strategy</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Market Penetration</h3>
+                    <div class="space-y-4">
+<div class="competitive-advantage" data-aos="fade-right" data-aos-delay="100">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Strategic Partnerships</h4>
+                            <p class="text-slate-700 dark:text-slate-300">
+                                Leverage NVIDIA Inception Program and AWS Migration Acceleration Program for direct enterprise access
+                            </p>
+                        </div>
+<div class="competitive-advantage" data-aos="fade-right" data-aos-delay="200">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">University Networks</h4>
+                            <p class="text-slate-700 dark:text-slate-300">
+                                Tier-1 university partnerships (Chicago Booth, Howard, UT Austin, Brown) for talent and research
+                            </p>
+                        </div>
+<div class="competitive-advantage" data-aos="fade-right" data-aos-delay="300">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">VC Portfolio Access</h4>
+                            <p class="text-slate-700 dark:text-slate-300">
+                                Direct optimization mandates through Techstars Universe and VC portfolio companies
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Sales Execution</h3>
+                    <div class="space-y-4">
+<div class="competitive-advantage" data-aos="fade-left" data-aos-delay="100">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Enterprise Sales Team</h4>
+                            <p class="text-slate-700 dark:text-slate-300">
+                                35% of funding allocated to enterprise sales expansion with proven track record
+                            </p>
+                        </div>
+<div class="competitive-advantage" data-aos="fade-left" data-aos-delay="200">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Pre-Qualified Pipeline</h4>
+                            <p class="text-slate-700 dark:text-slate-300">
+                                Strategic traction creates qualified leads through partner ecosystem and referrals
+                            </p>
+                        </div>
+<div class="competitive-advantage" data-aos="fade-left" data-aos-delay="300">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Value-Based Selling</h4>
+                            <p class="text-slate-700 dark:text-slate-300">
+                                Focus on 35% cost reduction ROI with 87% AI prediction accuracy metrics
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Competitive Landscape -->
+        <section class="content-section">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">Competitive Landscape</h2>
+            
+<div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-red-50 dark:bg-red-900/20 p-6 rounded-xl border border-red-200 dark:border-red-800" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-lg font-semibold text-red-700 dark:text-red-400 mb-3">Traditional Cloud Providers</h3>
+                    <p class="text-slate-700 dark:text-slate-300 mb-4">
+                        AWS, Azure, GCP offer basic optimization tools but lack AI-driven predictive capabilities
+                    </p>
+                    <div class="text-sm text-red-600 dark:text-red-400 font-medium">
+                        Our Advantage: Graph of Thought AI + Hedera integration
+                    </div>
+                </div>
+                
+<div class="bg-amber-50 dark:bg-amber-900/20 p-6 rounded-xl border border-amber-200 dark:border-amber-800" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-lg font-semibold text-amber-700 dark:text-amber-400 mb-3">Cost Management Tools</h3>
+                    <p class="text-slate-700 dark:text-slate-300 mb-4">
+                        CloudHealth, Cloudability focus on monitoring without predictive optimization
+                    </p>
+                    <div class="text-sm text-amber-600 dark:text-amber-400 font-medium">
+                        Our Advantage: 87% prediction accuracy with proactive optimization
+                    </div>
+                </div>
+                
+<div class="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800" data-aos="fade-up" data-aos-delay="300">
+                    <h3 class="text-lg font-semibold text-blue-700 dark:text-blue-400 mb-3">AI Infrastructure Startups</h3>
+                    <p class="text-slate-700 dark:text-slate-300 mb-4">
+                        Emerging players lack enterprise partnerships and proven track record
+                    </p>
+                    <div class="text-sm text-blue-600 dark:text-blue-400 font-medium">
+                        Our Advantage: Strategic partnerships + TEDCO investment validation
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 p-6 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Competitive Differentiation</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Technology Leadership</h4>
+                        <ul class="text-slate-700 dark:text-slate-300 space-y-1">
+                            <li>• Graph of Thought AI architecture</li>
+                            <li>• Hedera Hashgraph integration</li>
+                            <li>• 87% prediction accuracy</li>
+                            <li>• 35% cost reduction guarantee</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Strategic Moats</h4>
+                        <ul class="text-slate-700 dark:text-slate-300 space-y-1">
+                            <li>• NVIDIA Inception Program access</li>
+                            <li>• AWS Migration Acceleration Program</li>
+                            <li>• Tier-1 university partnerships</li>
+                            <li>• Pre-qualified enterprise pipeline</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Expansion Strategy -->
+        <section class="content-section">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">Market Expansion Strategy</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Geographic Expansion</h3>
+                    <div class="space-y-4">
+<div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700" data-aos="fade-right" data-aos-delay="100">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">EMEA Region (2026)</h4>
+                            <p class="text-slate-700 dark:text-slate-300">
+                                Target: €15M ARR through London and Frankfurt offices, leveraging GDPR compliance advantages
+                            </p>
+                        </div>
+<div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700" data-aos="fade-right" data-aos-delay="200">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">APAC Region (2027)</h4>
+                            <p class="text-slate-700 dark:text-slate-300">
+                                Target: $20M ARR through Singapore hub, focusing on enterprise cloud adoption growth
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-semibold text-slate-900 dark:text-slate-100 mb-4">Vertical Expansion</h3>
+                    <div class="space-y-4">
+<div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700" data-aos="fade-left" data-aos-delay="100">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Financial Services</h4>
+                            <p class="text-slate-700 dark:text-slate-300">
+                                Regulatory compliance + cost optimization for banking and fintech sectors
+                            </p>
+                        </div>
+<div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700" data-aos="fade-left" data-aos-delay="200">
+                            <h4 class="font-semibold text-slate-900 dark:text-slate-100 mb-2">Healthcare & Life Sciences</h4>
+                            <p class="text-slate-700 dark:text-slate-300">
+                                HIPAA-compliant cloud optimization for healthcare data processing
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Risk Management -->
+        <section class="content-section">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">Risk Management & Mitigation</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+<div class="bg-red-50 dark:bg-red-900/20 p-6 rounded-xl border border-red-200 dark:border-red-800" data-aos="fade-right" data-aos-delay="100">
+                    <h3 class="text-lg font-semibold text-red-700 dark:text-red-400 mb-4">Market Risks</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-medium text-slate-900 dark:text-slate-100">Economic Downturn</h4>
+                            <p class="text-sm text-slate-700 dark:text-slate-300">
+                                Mitigation: Focus on cost-saving value proposition during budget constraints
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-900 dark:text-slate-100">Competition Intensification</h4>
+                            <p class="text-sm text-slate-700 dark:text-slate-300">
+                                Mitigation: Strengthen strategic partnerships and IP protection
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+<div class="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-xl border border-blue-200 dark:border-blue-800" data-aos="fade-left" data-aos-delay="100">
+                    <h3 class="text-lg font-semibold text-blue-700 dark:text-blue-400 mb-4">Operational Risks</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-medium text-slate-900 dark:text-slate-100">Key Personnel Dependency</h4>
+                            <p class="text-sm text-slate-700 dark:text-slate-300">
+                                Mitigation: Equity incentives and knowledge documentation systems
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-slate-900 dark:text-slate-100">Technology Scalability</h4>
+                            <p class="text-sm text-slate-700 dark:text-slate-300">
+                                Mitigation: Cloud-native architecture and auto-scaling infrastructure
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <!-- Quick Actions -->
+        <section class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+            <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                </svg>
+                <span class="absolute right-full mr-2 bg-slate-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">Print Document</span>
+            </button>
+            <button onclick="scrollToTop()" class="bg-slate-700 hover:bg-slate-800 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+                </svg>
+                <span class="absolute right-full mr-2 bg-slate-800 text-white px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">Back to Top</span>
+            </button>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-white dark:bg-slate-900 text-slate-600 dark:text-white py-12">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid md:grid-cols-4 gap-8">
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <img src="/assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-8 h-8 object-contain dark:hidden">
+                                <img src="/assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-8 h-8 object-contain hidden dark:block">
+                            </div>
+                            <span class="text-xl font-semibold">SirsiNexus</span>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400">Agent-embedded infrastructure platform for enterprise cloud operations.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-4">Platform</h4>
+                        <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                            <li><a href="#features" class="hover:text-slate-900 dark:hover:text-white transition-colors">Features</a></li>
+                            <li><a href="#platform" class="hover:text-slate-900 dark:hover:text-white transition-colors">Architecture</a></li>
+                            <li><a href="#docs" class="hover:text-slate-900 dark:hover:text-white transition-colors">Documentation</a></li>
+                            <li><a href="#pricing" class="hover:text-slate-900 dark:hover:text-white transition-colors">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-4">Investor Resources</h4>
+                        <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                            <li><a href="/investor-portal/index.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Investor Portal</a></li>
+                            <li><a href="market-analysis.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Market Analysis</a></li>
+                            <li><span class="text-emerald-600 dark:text-emerald-400 font-medium">Sales Strategy</span></li>
+                            <li><a href="kpi-metrics.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">KPI & Metrics</a></li>
+                            <li><a href="/investor-portal/committee/index.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Committee Access</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-4">Legal</h4>
+                        <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                            <li><a href="/privacy-policy.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy Policy</a></li>
+                            <li><a href="/terms-of-service.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Terms of Service</a></li>
+                            <li><a href="/documentation.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Security</a></li>
+                            <li><a href="/investor-login.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Investor Relations</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8 text-center text-slate-600 dark:text-slate-400">
+                    <p>&copy; 2025 Sirsi Technologies Inc. All rights reserved.</p>
+                    <p class="text-sm mt-2">SirsiNexus is a product of Sirsi Technologies Inc.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+<script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            easing: 'ease-out-cubic'
+        });
+
+        // Progress bar on scroll
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Initialize Chart.js
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025', 'Q1 2026', 'Q2 2026', 'Q3 2026', 'Q4 2026', 'Q1 2027'],
+                    datasets: [{
+                        label: 'Revenue Growth ($M)',
+                        data: [1.2, 2.1, 3.5, 5.6, 8.2, 12.5, 18.3, 25.4, 33.0],
+                        borderColor: 'rgb(5, 150, 105)',
+                        backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                        tension: 0.4,
+                        yAxisID: 'y',
+                    }, {
+                        label: 'Market Share (%)',
+                        data: [0.5, 0.8, 1.2, 1.8, 2.5, 3.2, 4.1, 5.0, 6.2],
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        yAxisID: 'y1',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Revenue Growth & Market Share Trajectory'
+                        },
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Revenue ($M)'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Market Share (%)'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        }
+                    }
+                }
+            });
+        });
+
+        // Theme toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const wasDark = html.classList.contains('dark');
+            
+            if (wasDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Scroll to top function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Logout function
+        function logout() {
+            sessionStorage.removeItem('investorAuth');
+            localStorage.removeItem('investor-authenticated');
+            localStorage.removeItem('investor-id');
+            localStorage.removeItem('user-role');
+            window.location.href = '../../investor-login.html';
+        }
+    </script>
+<script src="../../js/telemetry.js"></script>
+
+    
+    <script>
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('aside');
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('block');
+        }
+        
+        // Highlight active page
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const sidebarLinks = document.querySelectorAll('aside a');
+            
+            sidebarLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === currentPage || (currentPage === 'index.html' && href === 'index.html')) {
+                    link.classList.remove('text-gray-700', 'dark:text-gray-300');
+                    link.classList.add('text-blue-600', 'dark:text-blue-400', 'bg-blue-50', 'dark:bg-blue-900/20');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

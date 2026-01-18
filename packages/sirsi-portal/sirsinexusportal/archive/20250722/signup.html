@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Suppress Tailwind CDN production warnings
+        const originalConsole = console.warn;
+        console.warn = function(message, ...args) {
+            if (typeof message === 'string' && message.includes('should not be used in production')) {
+                return; // Suppress this specific warning
+            }
+            originalConsole.apply(console, [message, ...args]);
+        };
+    </script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              emerald: {
+                600: '#059669',
+                700: '#047857',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <title>Sign Up - Sirsi Nexus</title>
+    <meta name="description" content="Sign up for SirsiNexus updates and early access" />
+    <!-- Cache buster: v1752543000 -->
+    <script>
+      (function() {
+        function getInitialColorMode() {
+          const persistedColorPreference = window.localStorage.getItem('theme');
+          const hasPersistedPreference = typeof persistedColorPreference === 'string';
+          if (hasPersistedPreference) {
+            return persistedColorPreference;
+          }
+          const mql = window.matchMedia('(prefers-color-scheme: dark)');
+          const hasMediaQueryPreference = typeof mql.matches === 'boolean';
+          if (hasMediaQueryPreference) {
+            return mql.matches ? 'dark' : 'light';
+          }
+          return 'light';
+        }
+        const colorMode = getInitialColorMode();
+        if (colorMode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+  
+<style>
+/* Professional Investment-Ready Styling */
+
+/* Typography & Font Loading */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Global Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #1a1a1a;
+    background-color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* Professional Typography Scale */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #0a0a0a;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+h3 {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+h4 {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 600;
+}
+
+p {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #4a4a4a;
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+}
+
+/* Professional Container System */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.section {
+    padding: 5rem 0;
+}
+
+.section-sm {
+    padding: 3rem 0;
+}
+
+/* Enhanced Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+}
+
+th {
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+    color: #ffffff;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #374151;
+}
+
+td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #374151;
+}
+
+tr:hover {
+    background-color: #f8fafc;
+    transition: background-color 0.2s ease;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Professional Lists */
+ul, ol {
+    margin: 1.5rem 0;
+    padding-left: 0;
+}
+
+li {
+    position: relative;
+    padding: 0.75rem 0 0.75rem 2.5rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+    color: #374151;
+    font-size: 1.05rem;
+}
+
+ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1.2rem;
+    width: 6px;
+    height: 6px;
+    background: #059669;
+    border-radius: 50%;
+    transform: translateY(-50%);
+}
+
+/* Enhanced Cards */
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 2rem;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Professional Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #059669;
+    border-color: #059669;
+}
+
+.btn-secondary:hover {
+    background: #059669;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* Professional Spacing */
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+.mb-5 { margin-bottom: 2.5rem; }
+.mb-6 { margin-bottom: 3rem; }
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+.mt-5 { margin-top: 2.5rem; }
+.mt-6 { margin-top: 3rem; }
+
+/* Professional Colors */
+.text-primary { color: #059669; }
+.text-secondary { color: #6b7280; }
+.text-muted { color: #9ca3af; }
+.text-dark { color: #1f2937; }
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .section {
+        padding: 3rem 0;
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    h2 {
+        font-size: 2rem;
+    }
+    
+    h3 {
+        font-size: 1.5rem;
+    }
+    
+    p {
+        font-size: 1rem;
+    }
+    
+    .card {
+        padding: 1.5rem;
+    }
+    
+    table {
+        font-size: 0.875rem;
+    }
+    
+    th, td {
+        padding: 1rem;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #0f172a;
+        color: #e2e8f0;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: #f1f5f9;
+    }
+    
+    p {
+        color: #cbd5e1;
+    }
+    
+    .card {
+        background: #1e293b;
+        border-color: #334155;
+    }
+    
+    table {
+        background: #1e293b;
+        border-color: #334155;
+    }
+    
+    td {
+        color: #e2e8f0;
+        border-color: #374151;
+    }
+    
+    tr:hover {
+        background-color: #334155;
+    }
+}
+
+/* Print Styles */
+@media print {
+    * {
+        background: transparent !important;
+        color: black !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    
+    .card {
+        border: 1px solid #ccc;
+        page-break-inside: avoid;
+    }
+    
+    table {
+        border-collapse: collapse;
+        page-break-inside: avoid;
+    }
+    
+    h1, h2, h3 {
+        page-break-after: avoid;
+    }
+}
+</style>
+
+</head>
+  <body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex h-16 items-center justify-between">
+          <div class="flex items-center gap-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 flex items-center justify-center">
+                <img src="/sirsinexusportal/assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
+                <img src="/sirsinexusportal/assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+              </div>
+              <div>
+                <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                  <a href="/sirsinexusportal/index.html">SirsiNexus</a>
+                </h1>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+                    v0.7.9-alpha
+                  </span>
+                  <div class="flex items-center gap-1">
+                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                    <span class="text-xs text-slate-600 dark:text-slate-300">Live</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <nav class="hidden md:flex items-center gap-6">
+            <a href="/sirsinexusportal/index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Home</a>
+            <a href="/sirsinexusportal/investor-login.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Investor Portal</a>
+<a href="https://sirsimaster.github.io/sirsinexusportal/" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Live App</a>
+            <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors border border-slate-300 dark:border-slate-600 ml-4" style="min-width: 40px; min-height: 40px;">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+            </button>
+          </nav>
+          <button class="md:hidden text-slate-600 dark:text-slate-400" onclick="toggleMobileMenu()">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50 dark:from-slate-900 dark:via-blue-900 dark:to-emerald-900 py-20">
+      <div class="max-w-md mx-auto px-6">
+        <div class="card">
+          <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Stay Updated</h2>
+            <p class="text-slate-600 dark:text-slate-400">Get notified about new features, updates, and early access opportunities</p>
+          </div>
+          
+          <form id="signupForm" class="space-y-6">
+            <div>
+              <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Full Name</label>
+              <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                required 
+                class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white"
+                placeholder="Enter your full name"
+              />
+            </div>
+            
+            <div>
+              <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email Address</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                required 
+                class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white"
+                placeholder="Enter your email address"
+              />
+            </div>
+            
+            <div>
+              <label for="company" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Company (Optional)</label>
+              <input 
+                type="text" 
+                id="company" 
+                name="company" 
+                class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white"
+                placeholder="Enter your company name"
+              />
+            </div>
+            
+            <div>
+              <label for="role" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Role</label>
+              <select 
+                id="role" 
+                name="role" 
+                class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white"
+              >
+                <option value="">Select your role</option>
+                <option value="developer">Developer</option>
+                <option value="devops">DevOps Engineer</option>
+                <option value="architect">Solutions Architect</option>
+                <option value="manager">Engineering Manager</option>
+                <option value="cto">CTO</option>
+                <option value="investor">Investor</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <!-- Investor-specific fields (shown conditionally) -->
+            <div id="investorFields" class="hidden space-y-6">
+              <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <div class="flex items-center mb-2">
+                  <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <h4 class="text-sm font-medium text-blue-900 dark:text-blue-100">Investor Information</h4>
+                </div>
+                <p class="text-sm text-blue-700 dark:text-blue-300">Please provide your professional profiles for verification purposes.</p>
+              </div>
+              
+              <div>
+                <label for="linkedinUrl" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  LinkedIn Profile URL <span class="text-red-500">*</span>
+                </label>
+                <input 
+                  type="url" 
+                  id="linkedinUrl" 
+                  name="linkedinUrl" 
+                  class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white"
+                  placeholder="https://www.linkedin.com/in/your-profile"
+                />
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Your professional LinkedIn profile for verification</p>
+              </div>
+              
+              <div>
+                <label for="businessUrl" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                  Business Website or Company LinkedIn <span class="text-red-500">*</span>
+                </label>
+                <input 
+                  type="url" 
+                  id="businessUrl" 
+                  name="businessUrl" 
+                  class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white"
+                  placeholder="https://www.yourcompany.com or https://www.linkedin.com/company/..."
+                />
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Your business website or company LinkedIn page</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                id="newsletter" 
+                name="newsletter" 
+                class="w-4 h-4 text-emerald-600 bg-white border-slate-300 rounded focus:ring-emerald-500 dark:bg-slate-700 dark:border-slate-600"
+              />
+              <label for="newsletter" class="ml-2 text-sm text-slate-600 dark:text-slate-400">
+                I want to receive product updates and newsletters
+              </label>
+            </div>
+            
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                id="beta" 
+                name="beta" 
+                class="w-4 h-4 text-emerald-600 bg-white border-slate-300 rounded focus:ring-emerald-500 dark:bg-slate-700 dark:border-slate-600"
+              />
+              <label for="beta" class="ml-2 text-sm text-slate-600 dark:text-slate-400">
+                I'm interested in beta testing opportunities
+              </label>
+            </div>
+            
+            <button 
+              type="submit" 
+              class="w-full bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-colors font-medium"
+            >
+              Sign Up for Updates
+            </button>
+          </form>
+          
+          <div class="mt-6 text-center">
+            <p class="text-sm text-slate-500 dark:text-slate-400">
+Already signed up? <a href="https://sirsimaster.github.io/sirsinexusportal/" class="text-emerald-600 hover:text-emerald-700 font-medium">Access the platform</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Success Message -->
+    <div id="successMessage" class="fixed top-4 right-4 bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out">
+      <div class="flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        Thank you for signing up! We'll be in touch soon.
+      </div>
+    </div>
+
+    <script>
+      function initTheme() {
+        try {
+          const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.classList.toggle('dark', theme === 'dark');
+          console.log('Theme initialized:', theme);
+        } catch (error) {
+          console.error('Error initializing theme:', error);
+        }
+      }
+
+      function toggleTheme() {
+        try {
+          console.log('Toggle theme clicked');
+          const html = document.documentElement;
+          const wasDark = html.classList.contains('dark');
+          
+          if (wasDark) {
+            html.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+            console.log('Switched to light mode');
+          } else {
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+            console.log('Switched to dark mode');
+          }
+        } catch (error) {
+          console.error('Error toggling theme:', error);
+        }
+      }
+
+      // Initialize theme immediately
+      initTheme();
+      
+      // Also initialize on DOMContentLoaded as backup
+      document.addEventListener('DOMContentLoaded', initTheme);
+      
+      // Make sure toggleTheme is available globally
+      window.toggleTheme = toggleTheme;
+
+      // Role change handler to show/hide investor fields
+      document.getElementById('role').addEventListener('change', function(e) {
+        const investorFields = document.getElementById('investorFields');
+        const linkedinUrl = document.getElementById('linkedinUrl');
+        const businessUrl = document.getElementById('businessUrl');
+        
+        if (e.target.value === 'investor') {
+          investorFields.classList.remove('hidden');
+          linkedinUrl.setAttribute('required', 'true');
+          businessUrl.setAttribute('required', 'true');
+        } else {
+          investorFields.classList.add('hidden');
+          linkedinUrl.removeAttribute('required');
+          businessUrl.removeAttribute('required');
+          linkedinUrl.value = '';
+          businessUrl.value = '';
+        }
+      });
+      
+      // URL validation function
+      function isValidURL(string) {
+        try {
+          const url = new URL(string);
+          return url.protocol === 'http:' || url.protocol === 'https:';
+        } catch (_) {
+          return false;
+        }
+      }
+      
+      // LinkedIn URL validation
+      function isValidLinkedInURL(url) {
+        const linkedinPattern = /^https?:\/\/(www\.)?linkedin\.com\/(in|company)\/.+/;
+        return linkedinPattern.test(url);
+      }
+      
+      document.getElementById('signupForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const role = document.getElementById('role').value;
+        const linkedinUrl = document.getElementById('linkedinUrl').value.trim();
+        const businessUrl = document.getElementById('businessUrl').value.trim();
+        
+        // Validate investor fields if role is investor
+        if (role === 'investor') {
+          if (!linkedinUrl || !businessUrl) {
+            alert('Please fill in both LinkedIn profile URL and business website URL for investor registration.');
+            return;
+          }
+          
+          if (!isValidURL(linkedinUrl)) {
+            alert('Please enter a valid LinkedIn profile URL.');
+            document.getElementById('linkedinUrl').focus();
+            return;
+          }
+          
+          if (!isValidLinkedInURL(linkedinUrl)) {
+            alert('Please enter a valid LinkedIn profile URL (should contain linkedin.com/in/ or linkedin.com/company/).');
+            document.getElementById('linkedinUrl').focus();
+            return;
+          }
+          
+          if (!isValidURL(businessUrl)) {
+            alert('Please enter a valid business website URL.');
+            document.getElementById('businessUrl').focus();
+            return;
+          }
+        }
+        
+        // Show success message
+        const successMessage = document.getElementById('successMessage');
+        successMessage.classList.remove('translate-x-full');
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          successMessage.classList.add('translate-x-full');
+        }, 5000);
+        
+        // Prepare form data
+        const formData = {
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          company: document.getElementById('company').value,
+          role: document.getElementById('role').value,
+          newsletter: document.getElementById('newsletter').checked,
+          beta: document.getElementById('beta').checked
+        };
+        
+        // Add investor-specific fields if role is investor
+        if (role === 'investor') {
+          formData.linkedinUrl = linkedinUrl;
+          formData.businessUrl = businessUrl;
+        }
+        
+        // Store investor application if role is investor
+        if (role === 'investor') {
+          storeInvestorApplication(formData);
+        }
+        
+        // Here you would typically send the form data to your backend
+        console.log('Form submitted:', formData);
+        
+        // Reset form
+        this.reset();
+        
+        // Hide investor fields after reset
+        document.getElementById('investorFields').classList.add('hidden');
+      });
+      
+      // Store investor application for admin review
+      function storeInvestorApplication(formData) {
+        // Generate unique investor ID
+        const investorId = 'INV' + Date.now().toString().slice(-6);
+        
+        // Create investor application object
+        const investorApplication = {
+          id: investorId,
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          linkedinUrl: formData.linkedinUrl,
+          businessUrl: formData.businessUrl,
+          status: 'pending',
+          appliedDate: new Date().toISOString(),
+          newsletter: formData.newsletter,
+          beta: formData.beta
+        };
+        
+        // Get existing applications
+        const existingApplications = JSON.parse(localStorage.getItem('investorApplications') || '[]');
+        
+        // Check if email already exists
+        const existingApplication = existingApplications.find(app => app.email === formData.email);
+        if (existingApplication) {
+          alert('An application with this email already exists. Please contact support if you need to update your application.');
+          return;
+        }
+        
+        // Add new application
+        existingApplications.push(investorApplication);
+        
+        // Save to localStorage
+        localStorage.setItem('investorApplications', JSON.stringify(existingApplications));
+        
+        // Log for debugging
+        console.log('✅ Investor application stored:', investorApplication);
+        
+        // Update success message for investors
+        const successMessage = document.getElementById('successMessage');
+        const messageContent = successMessage.querySelector('div');
+        messageContent.innerHTML = `
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          <div>
+            <div class="font-medium">Investor application submitted successfully!</div>
+            <div class="text-sm opacity-90 mt-1">Your application (ID: ${investorId}) is under review. You'll receive an email notification once approved.</div>
+          </div>
+        `;
+        
+        // Send notification email (simulated)
+        console.log(`📧 Notification email sent to admin about new investor application from ${formData.name}`);
+      }
+      
+      function toggleMobileMenu() {
+        // Mobile menu toggle functionality
+        console.log('Mobile menu toggle clicked');
+        // Add mobile menu implementation here
+      }
+    </script>
+  <script src="js/telemetry.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+name: Deploy to Firebase
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        npm ci
+        npm install -g firebase-tools
+    
+    - name: Build TailwindCSS
+      run: |
+        cd sirsinexusportal
+        npm ci
+        npm run build-css
+      continue-on-error: true
+    
+    - name: Deploy to Firebase Hosting
+      run: |
+        firebase use ${{ secrets.FIREBASE_PROJECT_ID || 'sirsi-nexus-live' }}
+        firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }}
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID || 'sirsi-nexus-live' }}
+    
+    - name: Deploy Firestore Rules
+      run: firebase deploy --only firestore:rules --token ${{ secrets.FIREBASE_TOKEN }}
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    
+    - name: Deploy Storage Rules
+      run: firebase deploy --only storage:rules --token ${{ secrets.FIREBASE_TOKEN }}
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    
+    - name: Deploy Cloud Functions
+      run: |
+        if [ -d "functions" ]; then
+          firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }}
+        fi
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      if: github.ref == 'refs/heads/main'
+      continue-on-error: true
+    
+    - name: Update deployment status
+      run: |
+        echo "Deployment completed at $(date)" >> deployment.log
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add deployment.log || true
+        git commit -m "Update deployment log [skip ci]" || true
+        git push || true
+      continue-on-error: true

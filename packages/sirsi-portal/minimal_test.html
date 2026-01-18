@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minimal PayPal Test</title>
+</head>
+<body>
+    <h1>Minimal PayPal Button Test</h1>
+    <div id="paypal-button-container"></div>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=ASUI7q4yAs6anh26J6T_7hLyX0UwUbVWQS-8lgngn9z0W6VX4zrt2y7Q_auiXBAUrzxd1ibBrz22KDAr&currency=USD"></script>
+    <script>
+        paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: { value: '1.00' }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                alert('Payment approved: ' + data.orderID);
+            }
+        }).render('#paypal-button-container');
+    </script>
+</body>
+</html>

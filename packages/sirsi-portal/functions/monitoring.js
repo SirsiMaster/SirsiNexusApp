@@ -10,13 +10,11 @@ if (!admin.apps.length) {
 const db = admin.firestore();
 
 // Configure email transporter for alerts
-// Prefer environment variables via dotenv; fallback to functions.config() for legacy
-require('dotenv').config();
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.GMAIL_EMAIL || functions.config().gmail?.email,
-        pass: process.env.GMAIL_PASSWORD || functions.config().gmail?.password
+        user: functions.config().gmail?.email || process.env.GMAIL_EMAIL,
+        pass: functions.config().gmail?.password || process.env.GMAIL_PASSWORD
     }
 });
 
@@ -259,7 +257,7 @@ async function updateErrorMetrics(error) {
 async function sendErrorAlert(error) {
     const mailOptions = {
         from: 'SirsiNexus Monitoring <monitoring@sirsi.ai>',
-to: process.env.ALERTS_EMAIL || functions.config().alerts?.email || 'admin@sirsi.ai',
+        to: functions.config().alerts?.email || 'admin@sirsi.ai',
         subject: `[CRITICAL] Error Alert - ${error.type}`,
         html: `
             <h2>Critical Error Detected</h2>
@@ -297,7 +295,7 @@ async function checkErrorRateThreshold() {
 async function sendHighErrorRateAlert(errorCount, timeWindow) {
     const mailOptions = {
         from: 'SirsiNexus Monitoring <monitoring@sirsi.ai>',
-to: process.env.ALERTS_EMAIL || functions.config().alerts?.email || 'admin@sirsi.ai',
+        to: functions.config().alerts?.email || 'admin@sirsi.ai',
         subject: '[ALERT] High Error Rate Detected',
         html: `
             <h2>High Error Rate Alert</h2>
@@ -368,7 +366,7 @@ function generateRecommendations(metrics) {
 async function sendPerformanceReport(report) {
     const mailOptions = {
         from: 'SirsiNexus Monitoring <monitoring@sirsi.ai>',
-to: process.env.REPORTS_EMAIL || functions.config().reports?.email || 'admin@sirsi.ai',
+        to: functions.config().reports?.email || 'admin@sirsi.ai',
         subject: `Daily Performance Report - ${new Date().toDateString()}`,
         html: `
             <h2>${report.summary}</h2>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Diagnostic</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        .warning { color: orange; }
+        #log {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>SirsiNexus Dashboard Diagnostic</h1>
+    <div id="log"></div>
+    
+    <script>
+        const log = document.getElementById('log');
+        
+        function addLog(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = type;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            log.appendChild(entry);
+            console.log(message);
+        }
+        
+        // Test 1: Check if running on GitHub Pages
+        addLog('=== Starting Dashboard Diagnostic ===');
+        addLog(`URL: ${window.location.href}`);
+        addLog(`Hostname: ${window.location.hostname}`);
+        addLog(`Is GitHub Pages: ${window.location.hostname.includes('github.io')}`);
+        
+        // Test 2: Check if Inter font can be loaded
+        addLog('Checking Google Fonts...');
+        const fontLink = document.createElement('link');
+        fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
+        fontLink.rel = 'stylesheet';
+        fontLink.onload = () => addLog('✓ Google Fonts loaded', 'success');
+        fontLink.onerror = () => addLog('✗ Google Fonts failed to load', 'error');
+        document.head.appendChild(fontLink);
+        
+        // Test 3: Check if Tailwind CSS loads
+        addLog('Checking Tailwind CSS...');
+        const tailwindLink = document.createElement('link');
+        tailwindLink.href = 'https://unpkg.com/tailwindcss@^3/dist/tailwind.min.css';
+        tailwindLink.rel = 'stylesheet';
+        tailwindLink.onload = () => addLog('✓ Tailwind CSS loaded', 'success');
+        tailwindLink.onerror = () => addLog('✗ Tailwind CSS failed to load', 'error');
+        document.head.appendChild(tailwindLink);
+        
+        // Test 4: Check each script file
+        const scripts = [
+            { path: '/assets/js/fresh-theme-toggle.js', name: 'Theme Toggle' },
+            { path: '/assets/js/rbac-system.js', name: 'RBAC System' },
+            { path: '/assets/js/session-manager.js', name: 'Session Manager' },
+            { path: '/assets/js/api-service.js', name: 'API Service' },
+            { path: '/assets/js/dashboard-api.js', name: 'Dashboard API' },
+            { path: '/assets/js/mock-backend.js', name: 'Mock Backend' },
+            { path: '/assets/js/websocket-client.js', name: 'WebSocket Client' },
+            { path: '/assets/js/mock-websocket.js', name: 'Mock WebSocket' },
+            { path: '/components/admin-header.js', name: 'Admin Header' },
+            { path: '/components/admin-sidebar.js', name: 'Admin Sidebar' }
+        ];
+        
+        let loadedScripts = 0;
+        const totalScripts = scripts.length;
+        
+        addLog(`\nTesting ${totalScripts} script files...`);
+        
+        scripts.forEach(({path, name}, index) => {
+            const script = document.createElement('script');
+            script.src = path;
+            script.onload = () => {
+                loadedScripts++;
+                addLog(`✓ [${loadedScripts}/${totalScripts}] ${name} loaded`, 'success');
+                
+                if (loadedScripts === totalScripts) {
+                    setTimeout(checkClasses, 100);
+                }
+            };
+            script.onerror = () => {
+                loadedScripts++;
+                addLog(`✗ [${loadedScripts}/${totalScripts}] ${name} FAILED`, 'error');
+                
+                if (loadedScripts === totalScripts) {
+                    setTimeout(checkClasses, 100);
+                }
+            };
+            
+            // Stagger script loading
+            setTimeout(() => {
+                document.body.appendChild(script);
+            }, index * 100);
+        });
+        
+        function checkClasses() {
+            addLog('\n=== Checking Available Classes ===');
+            const expectedClasses = [
+                'SessionManager',
+                'APIService', 
+                'DashboardAPI',
+                'MockBackend',
+                'RBACSystem',
+                'WebSocketClient',
+                'MockWebSocketClient'
+            ];
+            
+            let classesFound = 0;
+            expectedClasses.forEach(className => {
+                if (typeof window[className] !== 'undefined') {
+                    classesFound++;
+                    addLog(`✓ ${className} is available`, 'success');
+                } else {
+                    addLog(`✗ ${className} is NOT available`, 'error');
+                }
+            });
+            
+            // Check for any JavaScript errors
+            addLog('\n=== Checking for Errors ===');
+            if (window.errorMessages && window.errorMessages.length > 0) {
+                window.errorMessages.forEach(err => {
+                    addLog(`Error: ${err}`, 'error');
+                });
+            } else {
+                addLog('No JavaScript errors detected', 'success');
+            }
+            
+            // Summary
+            addLog('\n=== Summary ===');
+            addLog(`Scripts loaded: ${loadedScripts}/${totalScripts}`);
+            addLog(`Classes available: ${classesFound}/${expectedClasses.length}`);
+            
+            if (loadedScripts === totalScripts && classesFound === expectedClasses.length) {
+                addLog('✓ All systems operational! Dashboard should work.', 'success');
+                
+                // Try to instantiate DashboardAPI
+                try {
+                    const api = new DashboardAPI();
+                    addLog('✓ DashboardAPI instance created successfully', 'success');
+                } catch (e) {
+                    addLog(`✗ Failed to create DashboardAPI: ${e.message}`, 'error');
+                }
+            } else {
+                addLog('✗ Some components failed to load properly', 'error');
+                addLog('The dashboard may not function correctly', 'warning');
+            }
+        }
+        
+        // Capture any errors
+        window.errorMessages = [];
+        window.addEventListener('error', (e) => {
+            const errorMsg = `${e.message} at ${e.filename}:${e.lineno}`;
+            window.errorMessages.push(errorMsg);
+            addLog(`Runtime error: ${errorMsg}`, 'error');
+        });
+    </script>
+<script src="js/telemetry.js"></script>
+</body>
+</html>

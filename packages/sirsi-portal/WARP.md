@@ -209,20 +209,6 @@ This repository (SirsiMaster.github.io) will be merging with the main applicatio
 - **Target State**: Single unified repository with modular architecture
 - **Execution Window**: ONE NIGHT (8-hour window)
 - **Migration Plan**: See `/docs/CRITICAL_MIGRATION_PLAN.md`
-- Playbook (step-by-step): `/docs/CRITICAL_MIGRATION_PLAYBOOK.md`
-- Orchestrator script (restartable): `scripts/migration_orchestrator.sh`
-
-### Quick Start (Migration)
-```bash
-# List phases
-scripts/migration_orchestrator.sh --list
-
-# Run from a specific phase (example: preflight)
-scripts/migration_orchestrator.sh --phase preflight --yes
-
-# Resume from last saved phase
-scripts/migration_orchestrator.sh --resume --yes
-```
 
 ## IMPORTANT DEVELOPMENT GUIDELINES
 
