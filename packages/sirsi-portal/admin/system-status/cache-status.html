@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cache Status - System Status</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-100 min-h-full">
+    <!-- Header -->
+    <header class="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Cache Status</h1>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Monitor cache performance and memory usage</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="clearCache()" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                    <i data-lucide="trash-2" class="w-4 h-4 inline mr-2"></i>
+                    Clear Cache
+                </button>
+                <button onclick="refreshData()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
+                    <i data-lucide="refresh-cw" class="w-4 h-4 inline mr-2"></i>
+                    Refresh
+                </button>
+                <a href="/admin/system-status/index.html" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-6">
+        <!-- Overview Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Hit Rate</span>
+                    <i data-lucide="target" class="w-5 h-5 text-emerald-600"></i>
+                </div>
+                <p class="text-3xl font-bold text-emerald-600">94.2%</p>
+                <p class="text-xs text-gray-500 mt-1">+2.1% from last hour</p>
+            </div>
+            
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Memory Used</span>
+                    <i data-lucide="hard-drive" class="w-5 h-5 text-blue-600"></i>
+                </div>
+                <p class="text-3xl font-bold text-blue-600">3.2 GB</p>
+                <p class="text-xs text-gray-500 mt-1">of 8 GB allocated</p>
+            </div>
+            
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Keys</span>
+                    <i data-lucide="key" class="w-5 h-5 text-purple-600"></i>
+                </div>
+                <p class="text-3xl font-bold text-purple-600">45.8K</p>
+                <p class="text-xs text-gray-500 mt-1">Active cache entries</p>
+            </div>
+            
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Evictions</span>
+                    <i data-lucide="alert-circle" class="w-5 h-5 text-amber-600"></i>
+                </div>
+                <p class="text-3xl font-bold text-amber-600">127</p>
+                <p class="text-xs text-gray-500 mt-1">Last 24 hours</p>
+            </div>
+        </div>
+
+        <!-- Cache Types -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Cache Distribution -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold mb-4">Cache Distribution</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Session Cache</span>
+                            <span class="font-medium">1.2 GB (37.5%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-emerald-600 h-2 rounded-full" style="width: 37.5%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Query Cache</span>
+                            <span class="font-medium">896 MB (28%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 28%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Static Assets</span>
+                            <span class="font-medium">640 MB (20%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-purple-600 h-2 rounded-full" style="width: 20%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">API Responses</span>
+                            <span class="font-medium">464 MB (14.5%)</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-amber-600 h-2 rounded-full" style="width: 14.5%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold mb-4">Performance Metrics</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Avg Read Time</p>
+                        <p class="text-2xl font-bold">0.8ms</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Avg Write Time</p>
+                        <p class="text-2xl font-bold">1.2ms</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Hit/Miss Ratio</p>
+                        <p class="text-2xl font-bold">16:1</p>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">TTL Avg</p>
+                        <p class="text-2xl font-bold">45min</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cache Entries -->
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Top Cache Entries</h3>
+                <select class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-sm">
+                    <option>By Size</option>
+                    <option>By Hits</option>
+                    <option>By Age</option>
+                </select>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Key</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Type</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Size</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Hits</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">TTL</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cache-entries">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mock data for cache entries
+        const cacheEntries = [
+            { key: 'user:session:abc123', type: 'Session', size: '2.4 KB', hits: '1,234', ttl: '25 min' },
+            { key: 'api:users:list:page1', type: 'API', size: '156 KB', hits: '892', ttl: '10 min' },
+            { key: 'static:logo.png', type: 'Static', size: '45 KB', hits: '5,678', ttl: 'Permanent' },
+            { key: 'query:select_all_documents', type: 'Query', size: '234 KB', hits: '456', ttl: '5 min' },
+            { key: 'user:profile:12345', type: 'Session', size: '8.2 KB', hits: '234', ttl: '30 min' },
+            { key: 'api:dashboard:metrics', type: 'API', size: '12 KB', hits: '3,456', ttl: '2 min' }
+        ];
+
+        function renderCacheEntries() {
+            const tbody = document.getElementById('cache-entries');
+            tbody.innerHTML = cacheEntries.map(entry => `
+                <tr class="border-b border-gray-100 dark:border-gray-700/50">
+                    <td class="py-3 px-4 text-sm font-mono">${entry.key}</td>
+                    <td class="py-3 px-4">
+                        <span class="text-xs px-2 py-1 rounded-full ${
+                            entry.type === 'Session' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300' :
+                            entry.type === 'API' ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300' :
+                            entry.type === 'Static' ? 'bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300' :
+                            'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300'
+                        }">
+                            ${entry.type}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 text-sm">${entry.size}</td>
+                    <td class="py-3 px-4 text-sm">${entry.hits}</td>
+                    <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">${entry.ttl}</td>
+                    <td class="py-3 px-4">
+                        <button onclick="invalidateEntry('${entry.key}')" class="text-red-600 hover:text-red-700 text-sm">
+                            Invalidate
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function refreshData() {
+            const refreshBtn = document.querySelector('button[onclick="refreshData()"]');
+            refreshBtn.disabled = true;
+            refreshBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 inline mr-2 animate-spin"></i> Refreshing...';
+            
+            setTimeout(() => {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = '<i data-lucide="refresh-cw" class="w-4 h-4 inline mr-2"></i> Refresh';
+                lucide.createIcons();
+            }, 1500);
+        }
+
+        function clearCache() {
+            if (confirm('Are you sure you want to clear all cache? This action cannot be undone.')) {
+                const clearBtn = document.querySelector('button[onclick="clearCache()"]');
+                clearBtn.disabled = true;
+                clearBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 inline mr-2 animate-spin"></i> Clearing...';
+                
+                setTimeout(() => {
+                    clearBtn.disabled = false;
+                    clearBtn.innerHTML = '<i data-lucide="trash-2" class="w-4 h-4 inline mr-2"></i> Clear Cache';
+                    lucide.createIcons();
+                    alert('Cache cleared successfully!');
+                }, 2000);
+            }
+        }
+
+        function invalidateEntry(key) {
+            console.log('Invalidating cache entry:', key);
+            // In a real implementation, this would call an API
+        }
+
+        // Initial render
+        renderCacheEntries();
+    </script>
+</body>
+</html>

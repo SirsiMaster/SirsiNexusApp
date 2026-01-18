@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Room - SirsiNexus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Authentication check - redirect if not authenticated
+      (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+          window.location.href = '../investor-login.html';
+          return;
+        }
+        
+        try {
+          const authData = JSON.parse(auth);
+          const loginTime = new Date(authData.loginTime);
+          const now = new Date();
+          const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+          
+          if (hoursSinceLogin > 24) {
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '../investor-login.html';
+            return;
+          }
+          
+          console.log('✅ Authentication verified:', authData.id);
+        } catch (error) {
+          console.error('❌ Authentication error:', error);
+          sessionStorage.removeItem('investorAuth');
+          window.location.href = '../investor-login.html';
+          return;
+        }
+      })();
+    </script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                200: '#bbf7d0',
+                300: '#86efac',
+                400: '#4ade80',
+                500: '#22c55e',
+                600: '#16a34a',
+                700: '#15803d',
+                800: '#166534',
+                900: '#14532d'
+              },
+              secondary: {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a'
+              }
+            },
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex h-16 items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 flex items-center justify-center">
+                            <img src="../assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
+                            <img src="../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">SirsiNexus</h1>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">Data Room</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav class="flex items-center gap-6">
+                    <a href="../index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">← Back to Home</a>
+                    <a href="index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">← Back to Portal</a>
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-primary-50 via-white to-primary-100/50 dark:from-primary-900/10 dark:via-secondary-900 dark:to-primary-800/5 py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+                    Data <span class="text-primary-600">Room</span>
+                </h1>
+                <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
+                    Access a full spectrum of in-depth financial reports, detailed analytics, and vital corporate documents. 
+                    Our data room is designed to empower investors with key insights and comprehensive perspectives 
+                    informed by market-leading analysis. Experience the intersection of financial prowess and strategic 
+                    foresight with SirsiNexus.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Core Investment Documents -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-primary-600">Core Investment Documents</h2>
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <ul class="space-y-4">
+                    <li>
+                        <a href="committee/market-analysis.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Market Analysis</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Comprehensive market research and competitive positioning</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="committee/product-roadmap.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Product Roadmap</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Strategic product vision and development timeline</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="kpi-unit-metrics.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">KPI & Unit Metrics</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Detailed performance metrics and unit economics</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Growth & Projections -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-primary-600">Growth & Projections</h2>
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                </div>
+                <ul class="space-y-4">
+                    <li>
+                        <a href="financials/projections.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Financial Projections</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">5-year revenue and growth forecasts</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="financials/metrics.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Growth Metrics</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Key growth and expansion metrics</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="financials/tam-analysis.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">TAM Analysis</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Total addressable market analysis</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Technical Documentation -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-primary-600">Technical Documentation</h2>
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <ul class="space-y-4">
+                    <li>
+                        <a href="tech/architecture.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">System Architecture</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Technical infrastructure details</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tech/ai-capabilities.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">AI/ML Capabilities</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Uncover the cutting-edge AI/ML capabilities powering the SirsiNexus platform, offering detailed technical specifications and exceptional performance insights.</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tech/security.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Security Overview</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Security architecture & compliance</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-10 h-10 object-contain">
+                        <div>
+                            <h3 class="text-lg font-semibold">SirsiNexus</h3>
+                            <p class="text-sm text-slate-400">AI-Powered Cloud Infrastructure</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Revolutionizing cloud infrastructure management with cutting-edge AI technology and enterprise-grade solutions.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Investor Resources</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Investor Portal</a></li>
+                        <li><a href="committee/market-analysis.html" class="hover:text-white transition-colors">Market Analysis</a></li>
+                        <li><a href="committee/product-roadmap.html" class="hover:text-white transition-colors">Product Roadmap</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Legal & Support</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="../contact.html" class="hover:text-white transition-colors">Contact Support</a></li>
+                        <li><a href="../privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="../terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-8 pt-8 text-center text-sm text-slate-400">
+                <p>&copy; 2025 Sirsi Technologies Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+        }
+        
+        // Initialize immediately
+        initTheme();
+        
+        // Make toggleTheme available globally
+        window.toggleTheme = toggleTheme;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+        });
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Room - SirsiNexus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Authentication check - redirect if not authenticated
+      (function() {
+        const auth = sessionStorage.getItem('investorAuth');
+        if (!auth) {
+          window.location.href = '../investor-login.html';
+          return;
+        }
+        
+        try {
+          const authData = JSON.parse(auth);
+          const loginTime = new Date(authData.loginTime);
+          const now = new Date();
+          const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+          
+          if (hoursSinceLogin > 24) {
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = '../investor-login.html';
+            return;
+          }
+          
+          console.log('✅ Authentication verified:', authData.id);
+        } catch (error) {
+          console.error('❌ Authentication error:', error);
+          sessionStorage.removeItem('investorAuth');
+          window.location.href = '../investor-login.html';
+          return;
+        }
+      })();
+    </script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                200: '#bbf7d0',
+                300: '#86efac',
+                400: '#4ade80',
+                500: '#22c55e',
+                600: '#16a34a',
+                700: '#15803d',
+                800: '#166534',
+                900: '#14532d'
+              },
+              secondary: {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a'
+              }
+            },
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex h-16 items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 flex items-center justify-center">
+                            <img src="../assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
+                            <img src="../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">SirsiNexus</h1>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">Data Room</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav class="flex items-center gap-6">
+                    <a href="../index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">← Back to Home</a>
+                    <a href="index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">← Back to Portal</a>
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-primary-50 via-white to-primary-100/50 dark:from-primary-900/10 dark:via-secondary-900 dark:to-primary-800/5 py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+                    Data <span class="text-primary-600">Room</span>
+                </h1>
+                <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
+                    Access comprehensive financial reports, analytics, and corporate documentation
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div class="mb-8 p-6 bg-white dark:bg-slate-800 rounded-xl shadow-lg">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-primary-600">Executive Summary Dashboard</h2>
+                <div class="flex space-x-2">
+                    <span class="px-3 py-1 text-sm bg-emerald-100 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-200 rounded-full">Last Updated: July 2025</span>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-4 gap-4 mb-6">
+                <div class="p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                    <div class="text-2xl font-bold text-primary-600">$33M</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400">Annual Revenue Run Rate</div>
+                </div>
+                <div class="p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                    <div class="text-2xl font-bold text-primary-600">280</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400">Enterprise Customers</div>
+                </div>
+                <div class="p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                    <div class="text-2xl font-bold text-primary-600">142%</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400">YoY Growth</div>
+                </div>
+                <div class="p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                    <div class="text-2xl font-bold text-primary-600">87%</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400">Gross Margin</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Strategic Documents -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-primary-600">Strategic Documents</h2>
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <ul class="space-y-4">
+                    <li>
+                        <a href="committee/index.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Committee Portal</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Central access to all strategic documents</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="committee/market-analysis.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Market Analysis</h3>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400">In-depth market research demonstrating Sirsi's competitive positioning and market trends analysis in the expansive AI and infrastructure landscape.</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="committee/product-roadmap.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Product Roadmap</h3>
+                                    <p class="text-sm text-slate-600 dark:text-slate-400">Insight into SirsiNexus' strategic product roadmap illustrating visionary development timelines and innovative integration milestones.</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-primary-600">Committee Documents</h2>
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <ul class="space-y-4">
+                    <li>
+                        <a href="committee/index.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Committee Portal</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Access all committee documents</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="committee/market-analysis.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Market Analysis</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Market positioning and opportunity</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Financial Documents -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-primary-600">Financial Documents</h2>
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <ul class="space-y-4">
+                    <li>
+                        <a href="kpi-unit-metrics.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">KPI & Unit Metrics</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Comprehensive performance metrics</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="financials/quarterly-reports.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Quarterly Reports</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Detailed financial statements</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="financials/projections.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Financial Projections</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">5-year growth forecasts</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="financials/metrics.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">SaaS Metrics</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Key SaaS performance indicators</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Technical Documentation -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-primary-600">Technical Documentation</h2>
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <ul class="space-y-4">
+                    <li>
+                        <a href="tech/architecture.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">System Architecture</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Technical infrastructure details</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tech/ai-capabilities.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">AI/ML Capabilities</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">AI engine specifications</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tech/security.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Security Overview</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Security architecture & compliance</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tech/performance.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Performance Metrics</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">System performance benchmarks</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Legal & Compliance -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-primary-600">Legal & Compliance</h2>
+                    <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path>
+                    </svg>
+                </div>
+                <ul class="space-y-4">
+                    <li>
+                        <a href="legal/corp-docs.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Corporate Documents</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Company formation & structure</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="legal/compliance.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Compliance Reports</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Regulatory compliance status</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../privacy.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Privacy Policy</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Data protection guidelines</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../terms.html" class="block p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                            <h3 class="font-semibold mb-1">Terms of Service</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400">Service terms and conditions</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-10 h-10 object-contain">
+                        <div>
+                            <h3 class="text-lg font-semibold">SirsiNexus</h3>
+                            <p class="text-sm text-slate-400">AI-Powered Cloud Infrastructure</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Revolutionizing cloud infrastructure management with cutting-edge AI technology and enterprise-grade solutions.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Investor Resources</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Investor Portal</a></li>
+                        <li><a href="committee/market-analysis.html" class="hover:text-white transition-colors">Market Analysis</a></li>
+                        <li><a href="committee/product-roadmap.html" class="hover:text-white transition-colors">Product Roadmap</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Committee Access</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="committee/index.html" class="hover:text-white transition-colors">Committee Dashboard</a></li>
+                        <li><a href="../contact.html" class="hover:text-white transition-colors">Contact Support</a></li>
+                        <li><a href="../privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="../terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-8 pt-8 text-center text-sm text-slate-400">
+                <p>&copy; 2025 Sirsi Technologies Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+        }
+        
+        // Initialize immediately
+        initTheme();
+        
+        // Make toggleTheme available globally
+        window.toggleTheme = toggleTheme;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+        });
+    </script>
+</body>
+</html>

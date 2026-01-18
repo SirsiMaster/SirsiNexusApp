@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Test - Sirsi Nexus</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .status.authenticated {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.unauthenticated {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        button {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #6d28d9;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .test-section h3 {
+            margin-top: 0;
+            color: #555;
+        }
+        .log {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .log-entry {
+            margin: 2px 0;
+        }
+        .success { color: #0f0; }
+        .error { color: #f00; }
+        .info { color: #0ff; }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Authentication Test</h1>
+        
+        <div id="status" class="status unauthenticated">
+            Loading authentication status...
+        </div>
+
+        <div class="test-section">
+            <h3>Quick Test Login</h3>
+            <p>Use these test credentials or enter your own:</p>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" id="email" value="admin@sirsi.ai" />
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" id="password" value="Admin123!@#" />
+            </div>
+            <button onclick="testLogin()">Test Login</button>
+            <button onclick="createAdmin()">Create Admin Account</button>
+            <button onclick="signOut()">Sign Out</button>
+        </div>
+
+        <div class="test-section">
+            <h3>Firebase Status</h3>
+            <button onclick="checkFirebase()">Check Firebase</button>
+            <button onclick="checkAuth()">Check Auth</button>
+            <button onclick="checkFirestore()">Check Firestore</button>
+            <button onclick="testFirestoreWrite()">Test Firestore Write</button>
+        </div>
+
+        <div class="test-section">
+            <h3>Advanced Tests</h3>
+            <button onclick="getCurrentUser()">Get Current User</button>
+            <button onclick="getUserRole()">Get User Role</button>
+            <button onclick="seedContent()">Seed Content</button>
+        </div>
+
+        <div class="log" id="log">
+            <div class="log-entry info">Console log initialized...</div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // Logging function
+        function log(message, type = 'info') {
+            const logEl = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString();
+            entry.textContent = `[${timestamp}] ${message}`;
+            logEl.appendChild(entry);
+            logEl.scrollTop = logEl.scrollHeight;
+            console.log(message);
+        }
+
+        // Firebase configuration - Using correct project
+        const firebaseConfig = {
+            apiKey: "AIzaSyDkgS2Fp3wO5FRtF0KUwH_vWZfMKy-f68M",
+            authDomain: "sirsinexusportal.firebaseapp.com",
+            projectId: "sirsinexusportal",
+            storageBucket: "sirsinexusportal.appspot.com",
+            messagingSenderId: "681441360881",
+            appId: "1:681441360881:web:ccd1f8c6ad0c23a1c3e9c7",
+            measurementId: "G-XW8VJZ56JP"
+        };
+
+        // Initialize Firebase
+        let auth, db;
+        
+        try {
+            firebase.initializeApp(firebaseConfig);
+            auth = firebase.auth();
+            db = firebase.firestore();
+            log('Firebase initialized successfully', 'success');
+        } catch (error) {
+            log(`Firebase init error: ${error.message}`, 'error');
+        }
+
+        // Auth state observer
+        auth.onAuthStateChanged(user => {
+            const statusEl = document.getElementById('status');
+            if (user) {
+                statusEl.className = 'status authenticated';
+                statusEl.textContent = `Authenticated as: ${user.email} (UID: ${user.uid})`;
+                log(`User authenticated: ${user.email}`, 'success');
+            } else {
+                statusEl.className = 'status unauthenticated';
+                statusEl.textContent = 'Not authenticated';
+                log('User not authenticated', 'info');
+            }
+        });
+
+        // Test functions
+        async function testLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                log(`Attempting login with: ${email}`, 'info');
+                const result = await auth.signInWithEmailAndPassword(email, password);
+                log(`Login successful! UID: ${result.user.uid}`, 'success');
+                
+                // Update user document
+                await db.collection('users').doc(result.user.uid).set({
+                    email: result.user.email,
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                
+                log('User document updated', 'success');
+            } catch (error) {
+                log(`Login error: ${error.code} - ${error.message}`, 'error');
+                
+                if (error.code === 'auth/user-not-found') {
+                    if (confirm('User not found. Create account?')) {
+                        await createAdmin();
+                    }
+                }
+            }
+        }
+
+        async function createAdmin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                log(`Creating admin account: ${email}`, 'info');
+                const result = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Create admin user document
+                await db.collection('users').doc(result.user.uid).set({
+                    email: result.user.email,
+                    role: 'admin',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    uid: result.user.uid
+                });
+                
+                log(`Admin account created! UID: ${result.user.uid}`, 'success');
+            } catch (error) {
+                log(`Create account error: ${error.code} - ${error.message}`, 'error');
+            }
+        }
+
+        async function signOut() {
+            try {
+                await auth.signOut();
+                log('Signed out successfully', 'success');
+            } catch (error) {
+                log(`Sign out error: ${error.message}`, 'error');
+            }
+        }
+
+        function checkFirebase() {
+            try {
+                log(`Firebase SDK loaded: ${typeof firebase !== 'undefined'}`, 'info');
+                log(`Firebase apps: ${firebase.apps.length}`, 'info');
+                if (firebase.apps[0]) {
+                    log(`App name: ${firebase.apps[0].name}`, 'info');
+                    log(`Project ID: ${firebase.apps[0].options.projectId}`, 'info');
+                }
+            } catch (error) {
+                log(`Firebase check error: ${error.message}`, 'error');
+            }
+        }
+
+        function checkAuth() {
+            try {
+                log(`Auth initialized: ${auth !== undefined}`, 'info');
+                log(`Current user: ${auth.currentUser ? auth.currentUser.email : 'None'}`, 'info');
+            } catch (error) {
+                log(`Auth check error: ${error.message}`, 'error');
+            }
+        }
+
+        function checkFirestore() {
+            try {
+                log(`Firestore initialized: ${db !== undefined}`, 'info');
+                log(`Firestore settings: ${JSON.stringify(db._settings)}`, 'info');
+            } catch (error) {
+                log(`Firestore check error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testFirestoreWrite() {
+            try {
+                log('Testing Firestore write...', 'info');
+                const testDoc = {
+                    test: true,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    message: 'Test write from auth test page'
+                };
+                
+                await db.collection('test').add(testDoc);
+                log('Firestore write successful!', 'success');
+            } catch (error) {
+                log(`Firestore write error: ${error.message}`, 'error');
+            }
+        }
+
+        function getCurrentUser() {
+            const user = auth.currentUser;
+            if (user) {
+                log(`Current user: ${user.email}`, 'info');
+                log(`UID: ${user.uid}`, 'info');
+                log(`Email verified: ${user.emailVerified}`, 'info');
+                log(`Created: ${user.metadata.creationTime}`, 'info');
+                log(`Last sign in: ${user.metadata.lastSignInTime}`, 'info');
+            } else {
+                log('No user currently signed in', 'info');
+            }
+        }
+
+        async function getUserRole() {
+            const user = auth.currentUser;
+            if (!user) {
+                log('No user signed in', 'error');
+                return;
+            }
+            
+            try {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists) {
+                    const data = userDoc.data();
+                    log(`User role: ${data.role || 'user'}`, 'info');
+                    log(`User data: ${JSON.stringify(data)}`, 'info');
+                } else {
+                    log('User document not found', 'error');
+                }
+            } catch (error) {
+                log(`Get role error: ${error.message}`, 'error');
+            }
+        }
+
+        async function seedContent() {
+            if (!auth.currentUser) {
+                log('Please login first', 'error');
+                return;
+            }
+            
+            try {
+                log('Seeding test content...', 'info');
+                
+                // Add a test blog post
+                await db.collection('blog-posts').add({
+                    title: 'Test Blog Post',
+                    content: 'This is a test blog post content.',
+                    author: auth.currentUser.email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    published: true
+                });
+                
+                log('Content seeded successfully!', 'success');
+            } catch (error) {
+                log(`Seed error: ${error.message}`, 'error');
+            }
+        }
+
+        // Load auth fix if available
+        setTimeout(() => {
+            const script = document.createElement('script');
+            script.src = '../assets/js/auth-fix.js';
+            script.onload = () => log('Auth fix loaded', 'success');
+            script.onerror = () => log('Auth fix not found', 'info');
+            document.head.appendChild(script);
+        }, 1000);
+    </script>
+</body>
+</html>

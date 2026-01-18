@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Telemetry Analytics - SirsiNexus Admin</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Chart.js removed for performance -->
+    
+    <!-- Heatmap.js -->
+    <script src="https://cdn.jsdelivr.net/npm/heatmap.js@2.0.5/build/heatmap.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom styles */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .dark .metric-card {
+            background: #1f2937;
+        }
+        
+        .metric-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .heatmap-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: #f9fafb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .dark .heatmap-container {
+            background: #1f2937;
+        }
+        
+        .user-journey-node {
+            padding: 8px 16px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-block;
+            margin: 4px;
+        }
+        
+        .dark .user-journey-node {
+            background: #374151;
+        }
+        
+        .session-timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            left: 0;
+            width: 12px;
+            height: 12px;
+            background: #10b981;
+            border-radius: 50%;
+            top: 6px;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 5px;
+            top: 18px;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+        }
+        
+        .dark .timeline-line {
+            background: #374151;
+        }
+        
+        /* Animated counter */
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .counter-animate {
+            animation: countUp 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-colors duration-300 h-full overflow-hidden">
+    <!-- Admin Header -->
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-slate-700 fixed top-0 left-0 right-0 z-50">
+        <div class="px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-6">
+                    <!-- Logo/Brand -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">S</span>
+                        </div>
+                        <div>
+                            <h1 class="text-base font-semibold text-gray-900 dark:text-white">SirsiNexus</h1>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">ADMIN CONSOLE</p>
+                        </div>
+                    </div>
+                    <!-- Status Indicator -->
+                    <span class="inline-flex items-center text-xs text-green-600 dark:text-green-400">
+                        <span class="w-2 h-2 bg-green-600 rounded-full mr-1 animate-pulse"></span>
+                        Live Tracking
+                    </span>
+                </div>
+                <!-- Right Section -->
+                <div class="flex items-center space-x-6">
+                    <!-- Platform/Page Info -->
+                    <nav class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                    <a href="../../../index.html" class="hover:text-gray-900 dark:hover:text-white">SirsiNexusPortal</a>
+                    <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <a href="../../index.html" class="hover:text-gray-900 dark:hover:text-white">Admin Portal</a>
+                    <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <a href="../index.html" class="hover:text-gray-900 dark:hover:text-white">Dashboard</a>
+                    <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <span class="text-gray-900 dark:text-white font-medium">Telemetry</span>
+                </nav>
+                    <!-- Clock -->
+                    <span id="clock" class="text-sm font-mono text-gray-600 dark:text-gray-300">--:--</span>
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-md bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 818 0z"></path>
+                        </svg>
+                        <svg class="w-5 h-5 text-gray-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+    <!-- Exit/Logout Button -->
+                    <button class="p-2 rounded-md bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors" onclick="handleLogout()">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                    </button>
+                    <!-- User Info -->
+                    <div class="flex items-center space-x-3">
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-200">ADMIN</span>
+                        <div class="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 818 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 fixed left-0 top-16 bottom-0 w-64 z-40 overflow-y-auto">
+        <div class="p-4">
+            <div class="space-y-1">
+                <a href="/admin/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="/admin/users/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                    User Management
+                </a>
+                <a href="/admin/data-room.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Data Room
+                </a>
+                <a href="/admin/dashboard/telemetry.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"/>
+                    </svg>
+                    Telemetry
+                </a>
+                <a href="/admin/dashboard/telemetry-enhanced.html" class="flex items-center px-3 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Enhanced Analytics
+                </a>
+                <a href="/admin/site-settings.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                    </svg>
+                    Site Settings
+                </a>
+                <a href="/admin/security/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Security
+                </a>
+                <a href="/admin/dashboard/system-logs.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                    </svg>
+                    System Logs
+                </a>
+                <a href="/admin/documentation.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
+                    </svg>
+                    Documentation
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 pt-16 h-full overflow-y-auto bg-gray-50 dark:bg-slate-900 p-6">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-3xl font-bold mb-8">Enhanced Telemetry Analytics</h1>
+            
+            <!-- Real-time Metrics Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="metric-card cursor-pointer hover:shadow-lg transition-shadow" onclick="showMetricDetails('users')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+                            <i class="fas fa-users text-blue-600 dark:text-blue-400 text-xl"></i>
+                        </div>
+                        <span class="text-xs text-green-600">+12.5%</span>
+                    </div>
+                    <h3 class="text-2xl font-bold" id="active-users">247</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Active Users Now</p>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <span id="user-locations">Across 12 countries</span>
+                    </div>
+                </div>
+                
+                <div class="metric-card cursor-pointer hover:shadow-lg transition-shadow" onclick="showMetricDetails('pageviews')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-green-100 dark:bg-green-900/20 rounded-lg">
+                            <i class="fas fa-eye text-green-600 dark:text-green-400 text-xl"></i>
+                        </div>
+                        <span class="text-xs text-green-600">+8.3%</span>
+                    </div>
+                    <h3 class="text-2xl font-bold" id="page-views">15,832</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Page Views Today</p>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <span id="avg-session">Avg. session: 12m 34s</span>
+                    </div>
+                </div>
+                
+                <div class="metric-card cursor-pointer hover:shadow-lg transition-shadow" onclick="showMetricDetails('interactions')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg">
+                            <i class="fas fa-mouse-pointer text-yellow-600 dark:text-yellow-400 text-xl"></i>
+                        </div>
+                        <span class="text-xs text-red-600">-3.2%</span>
+                    </div>
+                    <h3 class="text-2xl font-bold" id="total-clicks">9,421</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Total Interactions</p>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <span id="click-rate">CTR: 4.2%</span>
+                    </div>
+                </div>
+                
+                <div class="metric-card cursor-pointer hover:shadow-lg transition-shadow" onclick="showMetricDetails('downloads')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
+                            <i class="fas fa-download text-purple-600 dark:text-purple-400 text-xl"></i>
+                        </div>
+                        <span class="text-xs text-green-600">+22.1%</span>
+                    </div>
+                    <h3 class="text-2xl font-bold" id="downloads">523</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Downloads Today</p>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <span id="popular-file">Top: Report_Q4.pdf</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Behavior Heatmap -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="metric-card">
+                    <h2 class="text-lg font-semibold mb-4">Click Heatmap</h2>
+                    <div id="click-heatmap" class="heatmap-container"></div>
+                    <div class="mt-4 flex items-center justify-between text-sm">
+                        <span class="text-gray-500">Hot zones indicate high interaction areas</span>
+                        <button class="text-blue-600 hover:text-blue-700">View Full Report</button>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <h2 class="text-lg font-semibold mb-4">Scroll Depth Analysis</h2>
+                    <div class="space-y-3">
+                        <div class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 p-3 rounded-lg transition-colors" onclick="showScrollDepthDetails('25')">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium">0-25% Page Depth</span>
+                                <span class="text-2xl font-bold text-green-600">82%</span>
+                            </div>
+                            <div class="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 82%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Users reached this depth</p>
+                        </div>
+                        <div class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 p-3 rounded-lg transition-colors" onclick="showScrollDepthDetails('50')">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium">25-50% Page Depth</span>
+                                <span class="text-2xl font-bold text-blue-600">64%</span>
+                            </div>
+                            <div class="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 64%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Users reached this depth</p>
+                        </div>
+                        <div class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 p-3 rounded-lg transition-colors" onclick="showScrollDepthDetails('75')">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium">50-75% Page Depth</span>
+                                <span class="text-2xl font-bold text-yellow-600">41%</span>
+                            </div>
+                            <div class="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 41%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Users reached this depth</p>
+                        </div>
+                        <div class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 p-3 rounded-lg transition-colors" onclick="showScrollDepthDetails('100')">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium">75-100% Page Depth</span>
+                                <span class="text-2xl font-bold text-red-600">23%</span>
+                            </div>
+                            <div class="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-red-500 h-2 rounded-full" style="width: 23%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Users reached this depth</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Journey Analysis -->
+            <div class="metric-card mb-8">
+                <h2 class="text-lg font-semibold mb-4">User Journey Paths</h2>
+                <div class="space-y-4">
+                    <div class="border-l-4 border-green-500 pl-4">
+                        <h3 class="font-medium">Most Common Path (42% of users)</h3>
+                        <div class="mt-2 flex flex-wrap items-center">
+                            <span class="user-journey-node">Landing Page</span>
+                            <i class="fas fa-arrow-right text-gray-400 mx-2"></i>
+                            <span class="user-journey-node">Data Room</span>
+                            <i class="fas fa-arrow-right text-gray-400 mx-2"></i>
+                            <span class="user-journey-node">Download File</span>
+                            <i class="fas fa-arrow-right text-gray-400 mx-2"></i>
+                            <span class="user-journey-node bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200">Success</span>
+                        </div>
+                    </div>
+                    
+                    <div class="border-l-4 border-yellow-500 pl-4">
+                        <h3 class="font-medium">High Drop-off Path (18% of users)</h3>
+                        <div class="mt-2 flex flex-wrap items-center">
+                            <span class="user-journey-node">Landing Page</span>
+                            <i class="fas fa-arrow-right text-gray-400 mx-2"></i>
+                            <span class="user-journey-node">Login</span>
+                            <i class="fas fa-arrow-right text-gray-400 mx-2"></i>
+                            <span class="user-journey-node bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200">Exit</span>
+                            <span class="ml-4 text-sm text-gray-500">Avg. time: 45s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Session Analysis -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="lg:col-span-2 metric-card">
+                    <h2 class="text-lg font-semibold mb-4">Live Session Activity</h2>
+                    <div class="space-y-3 max-h-96 overflow-y-auto">
+                        <div class="session-timeline">
+                            <div class="timeline-marker bg-green-500"></div>
+                            <div class="timeline-line"></div>
+                            <div class="pl-2">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium">User #4521 - john.doe@example.com</p>
+                                        <p class="text-sm text-gray-500">Started session • New York, US</p>
+                                    </div>
+                                    <span class="text-xs text-gray-400">Just now</span>
+                                </div>
+                                <div class="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                    <p>• Viewed Dashboard (12s)</p>
+                                    <p>• Clicked on "Financial Reports" link</p>
+                                    <p>• Downloaded Q4_Report.pdf (2.3MB)</p>
+                                    <p>• Scrolled to 75% of page</p>
+                                    <p class="text-green-600">• Currently viewing: Data Room</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="session-timeline">
+                            <div class="timeline-marker bg-yellow-500"></div>
+                            <div class="timeline-line"></div>
+                            <div class="pl-2">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="font-medium">User #4520 - jane.smith@example.com</p>
+                                        <p class="text-sm text-gray-500">Active session • London, UK</p>
+                                    </div>
+                                    <span class="text-xs text-gray-400">2 min ago</span>
+                                </div>
+                                <div class="mt-2 space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                                    <p>• Uploaded presentation.pptx (15.2MB)</p>
+                                    <p>• Filled out metadata form (took 45s)</p>
+                                    <p>• Navigated to user settings</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <h2 class="text-lg font-semibold mb-4">Engagement Metrics</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm text-gray-600">Page Load Time</span>
+                                <span class="text-sm font-medium">1.2s</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm text-gray-600">Bounce Rate</span>
+                                <span class="text-sm font-medium">32%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 32%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm text-gray-600">Form Completion</span>
+                                <span class="text-sm font-medium">78%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 78%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm text-gray-600">Error Rate</span>
+                                <span class="text-sm font-medium">2.1%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div class="bg-red-500 h-2 rounded-full" style="width: 2.1%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Performance -->
+            <div class="metric-card">
+                <h2 class="text-lg font-semibold mb-4">Content Performance</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-left text-sm text-gray-600 dark:text-gray-400">
+                                <th class="pb-3">Page/Content</th>
+                                <th class="pb-3">Views</th>
+                                <th class="pb-3">Avg. Time</th>
+                                <th class="pb-3">Interactions</th>
+                                <th class="pb-3">Exit Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr class="border-t border-gray-200 dark:border-gray-700">
+                                <td class="py-3">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                        Q4 Financial Report.pdf
+                                    </div>
+                                </td>
+                                <td class="py-3">1,234</td>
+                                <td class="py-3">3:45</td>
+                                <td class="py-3">
+                                    <span class="text-green-600">842 downloads</span>
+                                </td>
+                                <td class="py-3">12%</td>
+                            </tr>
+                            <tr class="border-t border-gray-200 dark:border-gray-700">
+                                <td class="py-3">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-folder text-blue-500 mr-2"></i>
+                                        /data-room/investments
+                                    </div>
+                                </td>
+                                <td class="py-3">892</td>
+                                <td class="py-3">5:12</td>
+                                <td class="py-3">
+                                    <span class="text-blue-600">423 clicks</span>
+                                </td>
+                                <td class="py-3">28%</td>
+                            </tr>
+                            <tr class="border-t border-gray-200 dark:border-gray-700">
+                                <td class="py-3">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-video text-purple-500 mr-2"></i>
+                                        Company Overview.mp4
+                                    </div>
+                                </td>
+                                <td class="py-3">654</td>
+                                <td class="py-3">8:32</td>
+                                <td class="py-3">
+                                    <span class="text-purple-600">89% watched</span>
+                                </td>
+                                <td class="py-3">5%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Click handlers for metric drill-downs
+        function showMetricDetails(metric) {
+            let details = '';
+            switch(metric) {
+                case 'users':
+                    details = 'Active Users by Location:\n\n' +
+                             'United States: 89 users\n' +
+                             'United Kingdom: 45 users\n' +
+                             'Canada: 31 users\n' +
+                             'Germany: 28 users\n' +
+                             'France: 22 users\n' +
+                             'Japan: 18 users\n' +
+                             'Australia: 14 users\n\n' +
+                             'Device Types:\n' +
+                             'Desktop: 68%\n' +
+                             'Mobile: 24%\n' +
+                             'Tablet: 8%';
+                    break;
+                case 'pageviews':
+                    details = 'Page Views Breakdown:\n\n' +
+                             'Dashboard: 4,521 views\n' +
+                             'Data Room: 3,892 views\n' +
+                             'Reports Section: 2,134 views\n' +
+                             'User Profile: 1,823 views\n' +
+                             'Settings: 1,462 views\n' +
+                             'Help Center: 1,000 views\n\n' +
+                             'Peak Hours:\n' +
+                             '9-10 AM: 2,341 views\n' +
+                             '2-3 PM: 2,189 views\n' +
+                             '4-5 PM: 1,892 views';
+                    break;
+                case 'interactions':
+                    details = 'User Interactions Detail:\n\n' +
+                             'Button Clicks: 3,421\n' +
+                             'Form Submissions: 1,892\n' +
+                             'File Downloads: 1,654\n' +
+                             'Link Clicks: 1,234\n' +
+                             'Video Plays: 876\n' +
+                             'Share Actions: 344\n\n' +
+                             'Most Clicked Elements:\n' +
+                             '1. Download Report Button\n' +
+                             '2. View Details Link\n' +
+                             '3. Export Data Button';
+                    break;
+                case 'downloads':
+                    details = 'Download Statistics:\n\n' +
+                             'Top Downloads Today:\n' +
+                             '1. Q4_Financial_Report.pdf - 142 downloads\n' +
+                             '2. Investment_Summary.xlsx - 98 downloads\n' +
+                             '3. Board_Presentation.pptx - 87 downloads\n' +
+                             '4. Market_Analysis.pdf - 76 downloads\n' +
+                             '5. Due_Diligence_Checklist.docx - 65 downloads\n\n' +
+                             'File Types:\n' +
+                             'PDF: 298 (57%)\n' +
+                             'Excel: 134 (26%)\n' +
+                             'PowerPoint: 67 (13%)\n' +
+                             'Other: 24 (4%)';
+                    break;
+            }
+            alert(details);
+        }
+
+        // Click handler for scroll depth details
+        function showScrollDepthDetails(depth) {
+            let details = '';
+            switch(depth) {
+                case '25':
+                    details = 'Users Reaching 0-25% Depth:\n\n' +
+                             'Total: 82% of all users\n' +
+                             'Average time to reach: 2.3 seconds\n' +
+                             'Most common exit point: Hero section\n\n' +
+                             'User Behavior:\n' +
+                             '- 68% continue scrolling\n' +
+                             '- 14% click navigation\n' +
+                             '- 18% exit page';
+                    break;
+                case '50':
+                    details = 'Users Reaching 25-50% Depth:\n\n' +
+                             'Total: 64% of all users\n' +
+                             'Average time to reach: 8.7 seconds\n' +
+                             'Most engaged content: Feature overview\n\n' +
+                             'Actions at this depth:\n' +
+                             '- 42% click on features\n' +
+                             '- 31% read testimonials\n' +
+                             '- 27% continue scrolling';
+                    break;
+                case '75':
+                    details = 'Users Reaching 50-75% Depth:\n\n' +
+                             'Total: 41% of all users\n' +
+                             'Average time to reach: 24.5 seconds\n' +
+                             'High engagement zone\n\n' +
+                             'Common actions:\n' +
+                             '- 56% view pricing\n' +
+                             '- 28% click CTA buttons\n' +
+                             '- 16% fill contact forms';
+                    break;
+                case '100':
+                    details = 'Users Reaching 75-100% Depth:\n\n' +
+                             'Total: 23% of all users\n' +
+                             'Average time to reach: 45.2 seconds\n' +
+                             'Highly engaged users\n\n' +
+                             'Footer interactions:\n' +
+                             '- 67% click footer links\n' +
+                             '- 43% subscribe to newsletter\n' +
+                             '- 31% share content';
+                    break;
+            }
+            alert(details);
+        }
+
+        // Initialize heatmap
+        function initHeatmap() {
+            const heatmapInstance = h337.create({
+                container: document.getElementById('click-heatmap'),
+                radius: 40,
+                maxOpacity: 0.6
+            });
+
+            // Generate static heatmap data
+            const points = [];
+            // Simulate click concentrations
+            // Top navigation area
+            for (let i = 0; i < 50; i++) {
+                points.push({
+                    x: Math.floor(Math.random() * 100) + 20,
+                    y: Math.floor(Math.random() * 30) + 10,
+                    value: Math.floor(Math.random() * 50) + 50
+                });
+            }
+            // Main CTA area
+            for (let i = 0; i < 80; i++) {
+                points.push({
+                    x: Math.floor(Math.random() * 150) + 125,
+                    y: Math.floor(Math.random() * 100) + 150,
+                    value: Math.floor(Math.random() * 70) + 30
+                });
+            }
+            // Secondary interaction zones
+            for (let i = 0; i < 40; i++) {
+                points.push({
+                    x: Math.floor(Math.random() * 100) + 250,
+                    y: Math.floor(Math.random() * 80) + 200,
+                    value: Math.floor(Math.random() * 40) + 20
+                });
+            }
+
+            heatmapInstance.setData({
+                max: 100,
+                data: points
+            });
+        }
+
+        // Clock update
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
+        }
+
+        // Theme toggle
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        });
+
+        // Initialize theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Logout function
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/index.html';
+            }
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            initHeatmap();
+            setInterval(updateClock, 1000);
+            updateClock();
+        });
+    </script>
+<script src="../../js/telemetry.js"></script>
+</body>
+</html>

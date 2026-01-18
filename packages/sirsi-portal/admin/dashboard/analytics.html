@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>SirsiNexus Analytics Dashboard</title>
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/common-styles.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Theme Toggle Script -->
+    <script src="../assets/js/fresh-theme-toggle.js"></script>
+    
+    <style>
+        /* Analytics-specific styles with emerald accents */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .analytics-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dark .analytics-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-color: #475569;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .analytics-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #059669, #10b981, #34d399);
+        }
+        
+        .analytics-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(5, 150, 105, 0.15);
+        }
+        
+        .metric-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .metric-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #059669, #10b981);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .metric-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .trend-up {
+            color: #10b981;
+        }
+        
+        .trend-down {
+            color: #ef4444;
+        }
+        
+        .metric-main-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #059669;
+            margin: 0.5rem 0;
+            line-height: 1;
+        }
+        
+        .dark .metric-main-value {
+            color: #10b981;
+        }
+        
+        .metric-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .dark .metric-label {
+            color: #94a3b8;
+        }
+        
+        .metric-subtitle {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+        
+        .dark .metric-subtitle {
+            color: #94a3b8;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 350px;
+            margin-top: 1rem;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0;
+        }
+        
+        .dark .chart-title {
+            color: #f1f5f9;
+        }
+        
+        .real-time-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #10b981;
+        }
+        
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .activity-feed {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: background-color 0.2s ease;
+        }
+        
+        .dark .activity-item {
+            border-bottom-color: #475569;
+        }
+        
+        .activity-item:hover {
+            background-color: #f8fafc;
+        }
+        
+        .dark .activity-item:hover {
+            background-color: #334155;
+        }
+        
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #059669, #10b981);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin: 0 0 0.25rem 0;
+        }
+        
+        .dark .activity-title {
+            color: #f1f5f9;
+        }
+        
+        .activity-time {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .dark .activity-time {
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <!-- Admin Sidebar Navigation -->
+    <admin-sidebar></admin-sidebar>
+    
+    <!-- Professional Admin Header -->
+    <admin-header 
+        breadcrumbs="Analytics Dashboard"
+        user-name="Administrator"
+        user-email="admin@sirsinexus.com">
+    </admin-header>
+    
+    <!-- Main Analytics Content -->
+    <main class="sidebar-content content-wrapper py-8">
+        <!-- Real-time Status -->
+        <div class="mb-6">
+            <div class="real-time-indicator">
+                <div class="pulse-dot"></div>
+                <span>Real-time data • Last updated: <span id="lastUpdated">Just now</span></span>
+            </div>
+        </div>
+        
+        <!-- Key Metrics Cards -->
+        <div class="analytics-grid">
+            <!-- Total Users -->
+            <div class="analytics-card">
+                <div class="metric-header">
+                    <div class="metric-icon">👥</div>
+                    <div class="metric-trend trend-up">
+                        <span>↗</span>
+                        <span id="usersGrowth">+12.5%</span>
+                    </div>
+                </div>
+                <div class="metric-main-value" id="totalUsers">24,567</div>
+                <div class="metric-label">Total Users</div>
+                <div class="metric-subtitle">Active across all platforms</div>
+            </div>
+            
+            <!-- Active Investors -->
+            <div class="analytics-card">
+                <div class="metric-header">
+                    <div class="metric-icon">💼</div>
+                    <div class="metric-trend trend-up">
+                        <span>↗</span>
+                        <span id="investorsGrowth">+8.3%</span>
+                    </div>
+                </div>
+                <div class="metric-main-value" id="activeInvestors">1,429</div>
+                <div class="metric-label">Active Investors</div>
+                <div class="metric-subtitle">Verified and engaged</div>
+            </div>
+            
+            <!-- Documents -->
+            <div class="analytics-card">
+                <div class="metric-header">
+                    <div class="metric-icon">📄</div>
+                    <div class="metric-trend trend-up">
+                        <span>↗</span>
+                        <span id="documentsGrowth">+15.7%</span>
+                    </div>
+                </div>
+                <div class="metric-main-value" id="totalDocuments">8,932</div>
+                <div class="metric-label">Documents</div>
+                <div class="metric-subtitle">Processed and indexed</div>
+            </div>
+            
+            <!-- Revenue -->
+            <div class="analytics-card">
+                <div class="metric-header">
+                    <div class="metric-icon">💰</div>
+                    <div class="metric-trend trend-up">
+                        <span>↗</span>
+                        <span id="revenueGrowth">+24.1%</span>
+                    </div>
+                </div>
+                <div class="metric-main-value" id="totalRevenue">$2.4M</div>
+                <div class="metric-label">Total Revenue</div>
+                <div class="metric-subtitle">Current fiscal year</div>
+            </div>
+        </div>
+        
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- User Growth Line Chart -->
+            <div class="analytics-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">User Growth Trends</h3>
+                    <div class="real-time-indicator">
+                        <div class="pulse-dot"></div>
+                        <span>Live</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="userGrowthChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Activity Distribution Pie Chart -->
+            <div class="analytics-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Activity Distribution</h3>
+                    <div class="real-time-indicator">
+                        <div class="pulse-dot"></div>
+                        <span>Live</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Monthly Engagement Bar Chart -->
+        <div class="analytics-card mb-8">
+            <div class="chart-header">
+                <h3 class="chart-title">Monthly Engagement Metrics</h3>
+                <div class="real-time-indicator">
+                    <div class="pulse-dot"></div>
+                    <span>Live</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="engagementChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Recent Activity Feed -->
+        <div class="analytics-card">
+            <h3 class="chart-title mb-4">Recent Activity</h3>
+            <div class="activity-feed" id="activityFeed">
+                <!-- Activity items will be populated by JavaScript -->
+            </div>
+        </div>
+    </main>
+    
+    <!-- Load Admin Components -->
+    <script src="../components/admin-header.js"></script>
+    <script src="../components/admin-sidebar.js"></script>
+    
+    <!-- Analytics Dashboard JavaScript -->
+    <script src="../components/analytics-dashboard.js"></script>
+<script src="../../js/telemetry.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "version": "0.7.9-alpha",
+  "build": "20250717",
+  "status": "Live",
+  "release_date": "2025-07-17",
+  "release_notes": "Enhanced investor portal with dynamic version system and improved UI consistency",
+  "environment": "production",
+  "commit_hash": "latest",
+  "features": {
+    "investor_portal": true,
+    "committee_access": true,
+    "kpi_metrics": true,
+    "sales_strategy": true,
+    "product_roadmap": true,
+    "market_analysis": true
+  },
+  "metadata": {
+    "last_updated": "2025-07-17T02:21:00Z",
+    "auto_update": true,
+    "cache_duration": 60
+  }
+}

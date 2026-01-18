@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus - Revenue Dashboard</title>
+    <meta name="description" content="Revenue and transaction tracking - SirsiNexus Business Analytics">
+    <meta name="theme-color" content="#059669">
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              emerald: {
+                600: '#059669',
+                700: '#047857',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Fresh Theme Toggle -->
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const shouldBeDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+        
+        if (shouldBeDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+
+    <style>
+      .hex-pattern {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          url('data:image/svg+xml,<svg width="100" height="86.6" xmlns="http://www.w3.org/2000/svg"><polygon points="50,0 100,25 100,61.6 50,86.6 0,61.6 0,25" fill="none" stroke="rgba(16,185,129,0.3)" stroke-width="1"/></svg>');
+        background-size: 100px 86.6px;
+        opacity: 0.6;
+      }
+    </style>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- Header -->
+    <header class="bg-white dark:bg-slate-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex h-16 items-center justify-between">
+          <div class="flex items-center gap-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 flex items-center justify-center">
+                <img src="/assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
+                <img src="/assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+              </div>
+              <div>
+                <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                  SirsiNexus
+                </h1>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+                    Revenue Dashboard
+                  </span>
+                  <div class="flex items-center gap-1">
+                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                    <span class="text-xs text-slate-600 dark:text-slate-300">Live</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <nav class="flex items-center gap-4">
+            <a href="/index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Home</a>
+            <a href="/admin/create-invoice.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Invoice Creator</a>
+            <a href="/pay.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Payment Portal</a>
+            <a href="/admin/index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Admin Dashboard</a>
+            <button id="theme-toggle" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors border border-slate-300 dark:border-slate-600" title="Toggle theme">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 818 0z"></path>
+              </svg>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <div class="min-h-screen py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Dashboard Header -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Revenue & Tax Tracking</h2>
+                <p class="text-gray-600 dark:text-gray-300">Track payments, invoices, and prepare data for tax software</p>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-green-100 dark:bg-green-900">
+                            <i class="fas fa-dollar-sign text-green-600 dark:text-green-400"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Revenue</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white" id="total-revenue">$0.00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900">
+                            <i class="fas fa-file-invoice text-blue-600 dark:text-blue-400"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Business Revenue</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white" id="business-revenue">$0.00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-purple-100 dark:bg-purple-900">
+                            <i class="fas fa-user text-purple-600 dark:text-purple-400"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Collymore Consulting</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white" id="personal-revenue">$0.00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-orange-100 dark:bg-orange-900">
+                            <i class="fas fa-receipt text-orange-600 dark:text-orange-400"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Transactions</p>
+                            <p class="text-2xl font-bold text-gray-900 dark:text-white" id="total-transactions">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Options -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Export for Tax Software</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <button onclick="exportToCSV()" class="flex items-center justify-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors">
+                        <i class="fas fa-file-csv mr-2"></i>
+                        Export CSV
+                    </button>
+                    <button onclick="exportToQuickBooks()" class="flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors">
+                        <i class="fas fa-calculator mr-2"></i>
+                        QuickBooks Format
+                    </button>
+                    <button onclick="exportTaxSummary()" class="flex items-center justify-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors">
+                        <i class="fas fa-file-alt mr-2"></i>
+                        Tax Summary
+                    </button>
+                </div>
+            </div>
+
+            <!-- Transactions Table -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Recent Transactions</h3>
+                        <div class="flex space-x-2">
+                            <select id="filter-type" class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md text-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white">
+                                <option value="all">All Transactions</option>
+                                <option value="business">Business Only</option>
+                            <option value="personal">Collymore Consulting</option>
+                            </select>
+                            <button onclick="refreshData()" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm transition-colors">
+                                <i class="fas fa-refresh mr-1"></i>Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-900">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Transaction ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Description</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-tbody" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Transactions will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Invoices Section -->
+            <div class="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Invoice Requests</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead class="bg-gray-50 dark:bg-gray-900">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Invoice #</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Client</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Service</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoices-tbody" class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Invoices will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const html = document.documentElement;
+                    const isDark = html.classList.contains('dark');
+                    
+                    if (isDark) {
+                        html.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                    } else {
+                        html.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <script>
+        // Load and display data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardData();
+        });
+
+        function loadDashboardData() {
+            const transactions = getAllTransactions();
+            const invoices = getAllInvoices();
+
+            updateSummaryCards(transactions);
+            populateTransactionsTable(transactions);
+            populateInvoicesTable(invoices);
+        }
+
+        function getAllTransactions() {
+            const transactions = [];
+            
+            // Get business transactions
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('transaction-')) {
+                    const transaction = JSON.parse(localStorage.getItem(key));
+                    transaction.category = 'business';
+                    transactions.push(transaction);
+                }
+            }
+            
+            // Get personal transactions
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('personal-transaction-')) {
+                    const transaction = JSON.parse(localStorage.getItem(key));
+                    transaction.category = 'personal';
+                    transactions.push(transaction);
+                }
+            }
+            
+            return transactions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        }
+
+        function getAllInvoices() {
+            const invoices = [];
+            
+            // Get business invoice requests
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('invoice-request-')) {
+                    const invoice = JSON.parse(localStorage.getItem(key));
+                    invoice.category = 'business';
+                    invoices.push(invoice);
+                }
+            }
+            
+            // Get personal invoice requests
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('personal-invoice-')) {
+                    const invoice = JSON.parse(localStorage.getItem(key));
+                    invoice.category = 'personal';
+                    invoices.push(invoice);
+                }
+            }
+            
+            return invoices.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        }
+
+        function updateSummaryCards(transactions) {
+            let totalRevenue = 0;
+            let businessRevenue = 0;
+            let collymorRevenue = 0;
+
+            transactions.forEach(transaction => {
+                const amount = parseFloat(transaction.amount);
+                totalRevenue += amount;
+                
+                if (transaction.category === 'business') {
+                    businessRevenue += amount;
+                } else {
+                    collymorRevenue += amount;
+                }
+            });
+
+            document.getElementById('total-revenue').textContent = `$${totalRevenue.toFixed(2)}`;
+            document.getElementById('business-revenue').textContent = `$${businessRevenue.toFixed(2)}`;
+            document.getElementById('personal-revenue').textContent = `$${collymorRevenue.toFixed(2)}`;
+            document.getElementById('total-transactions').textContent = transactions.length.toString();
+        }
+
+        function populateTransactionsTable(transactions) {
+            const tbody = document.getElementById('transactions-tbody');
+            tbody.innerHTML = '';
+
+            if (transactions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">No transactions found</td></tr>';
+                return;
+            }
+
+            transactions.forEach(transaction => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                        ${new Date(transaction.timestamp).toLocaleDateString()}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-900 dark:text-gray-100">
+                        ${transaction.transactionId}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                        ${transaction.description}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full ${
+                            transaction.category === 'business' 
+                                ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' 
+                                : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                        }">
+                            ${transaction.category === 'business' ? 'Sirsi' : 'Collymore'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-gray-100">
+                        $${parseFloat(transaction.amount).toFixed(2)}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                            ${transaction.status || 'Completed'}
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function populateInvoicesTable(invoices) {
+            const tbody = document.getElementById('invoices-tbody');
+            tbody.innerHTML = '';
+
+            if (invoices.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">No invoices found</td></tr>';
+                return;
+            }
+
+            invoices.forEach(invoice => {
+                const row = document.createElement('tr');
+                const clientName = invoice.companyName || invoice.clientName || 'N/A';
+                const amount = invoice.amount || 0;
+                
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                        ${new Date(invoice.timestamp).toLocaleDateString()}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-900 dark:text-gray-100">
+                        ${invoice.invoiceNumber}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                        ${clientName}
+                    </td>
+                    <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                        ${invoice.service}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900 dark:text-gray-100">
+                        $${parseFloat(amount).toFixed(2)}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full ${
+                            invoice.category === 'business' 
+                                ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' 
+                                : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                        }">
+                            ${invoice.category === 'business' ? 'Sirsi' : 'Collymore'}
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function refreshData() {
+            loadDashboardData();
+            alert('Data refreshed!');
+        }
+
+        function exportToCSV() {
+            const transactions = getAllTransactions();
+            const invoices = getAllInvoices();
+            
+            let csvContent = "Type,Date,ID,Description,Category,Amount,Status,Client,Service\n";
+            
+            transactions.forEach(transaction => {
+                csvContent += `Transaction,"${new Date(transaction.timestamp).toLocaleDateString()}","${transaction.transactionId}","${transaction.description}","${transaction.category}","${transaction.amount}","${transaction.status || 'Completed'}","${transaction.payerName || ''}",""\n`;
+            });
+            
+            invoices.forEach(invoice => {
+                const clientName = invoice.companyName || invoice.clientName || '';
+                csvContent += `Invoice,"${new Date(invoice.timestamp).toLocaleDateString()}","${invoice.invoiceNumber}","${invoice.description || ''}","${invoice.category}","${invoice.amount}","Pending","${clientName}","${invoice.service}"\n`;
+            });
+            
+            downloadCSV(csvContent, 'sirsinexus-revenue-export.csv');
+        }
+
+        function exportToQuickBooks() {
+            const transactions = getAllTransactions();
+            
+            let qbContent = "Date,Description,Account,Amount,Customer,Class\n";
+            
+            transactions.forEach(transaction => {
+                const account = transaction.category === 'business' ? 'Sirsi Business Income' : 'Collymore Consulting Income';
+                qbContent += `"${new Date(transaction.timestamp).toLocaleDateString()}","${transaction.description}","${account}","${transaction.amount}","${transaction.payerName || ''}","${transaction.category}"\n`;
+            });
+            
+            downloadCSV(qbContent, 'quickbooks-import.csv');
+        }
+
+        function exportTaxSummary() {
+            const transactions = getAllTransactions();
+            const currentYear = new Date().getFullYear();
+            
+            let businessTotal = 0;
+            let collymorTotal = 0;
+            let totalTransactions = 0;
+            
+            const summary = {
+                year: currentYear,
+                businessRevenue: 0,
+                collymorRevenue: 0,
+                totalRevenue: 0,
+                transactionCount: transactions.length,
+                quarterlyBreakdown: {
+                    Q1: { business: 0, collymore: 0 },
+                    Q2: { business: 0, collymore: 0 },
+                    Q3: { business: 0, collymore: 0 },
+                    Q4: { business: 0, collymore: 0 }
+                }
+            };
+            
+            transactions.forEach(transaction => {
+                const amount = parseFloat(transaction.amount);
+                const date = new Date(transaction.timestamp);
+                const month = date.getMonth() + 1;
+                const quarter = Math.ceil(month / 3);
+                const quarterKey = `Q${quarter}`;
+                
+                if (transaction.category === 'business') {
+                    businessTotal += amount;
+                    summary.quarterlyBreakdown[quarterKey].business += amount;
+                } else {
+                    collymorTotal += amount;
+                    summary.quarterlyBreakdown[quarterKey].collymore += amount;
+                }
+            });
+            
+            summary.businessRevenue = businessTotal;
+            summary.collymorRevenue = collymorTotal;
+            summary.totalRevenue = businessTotal + collymorTotal;
+            
+            const summaryText = `SIRSI & COLLYMORE CONSULTING TAX SUMMARY - ${currentYear}
+==================================================
+
+REVENUE SUMMARY:
+- Total Revenue: $${summary.totalRevenue.toFixed(2)}
+- Sirsi Business Revenue: $${summary.businessRevenue.toFixed(2)}
+- Collymore Consulting Revenue: $${summary.collymorRevenue.toFixed(2)}
+- Total Transactions: ${summary.transactionCount}
+
+QUARTERLY BREAKDOWN:
+Q1: Sirsi $${summary.quarterlyBreakdown.Q1.business.toFixed(2)} | Collymore $${summary.quarterlyBreakdown.Q1.collymore.toFixed(2)}
+Q2: Sirsi $${summary.quarterlyBreakdown.Q2.business.toFixed(2)} | Collymore $${summary.quarterlyBreakdown.Q2.collymore.toFixed(2)}
+Q3: Sirsi $${summary.quarterlyBreakdown.Q3.business.toFixed(2)} | Collymore $${summary.quarterlyBreakdown.Q3.collymore.toFixed(2)}
+Q4: Sirsi $${summary.quarterlyBreakdown.Q4.business.toFixed(2)} | Collymore $${summary.quarterlyBreakdown.Q4.collymore.toFixed(2)}
+
+Generated on: ${new Date().toLocaleDateString()}
+`;
+            
+            downloadTextFile(summaryText, `sirsi-collymore-tax-summary-${currentYear}.txt`);
+        }
+
+        function downloadCSV(content, filename) {
+            const blob = new Blob([content], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function downloadTextFile(content, filename) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Filter functionality
+        document.getElementById('filter-type').addEventListener('change', function() {
+            const filterValue = this.value;
+            const transactions = getAllTransactions().filter(transaction => {
+                if (filterValue === 'all') return true;
+                return transaction.category === filterValue;
+            });
+            populateTransactionsTable(transactions);
+        });
+    </script>
+</body>
+</html>

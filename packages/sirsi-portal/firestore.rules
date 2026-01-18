@@ -1,0 +1,344 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ============================================
+    // HELPER FUNCTIONS
+    // ============================================
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    function hasRole(role) {
+      return isSignedIn() && request.auth.token.role == role;
+    }
+    
+    function isAdmin() {
+      return hasRole('admin') || 
+        (isSignedIn() && request.auth.token.admin == true);
+    }
+    
+    function isDeveloper() {
+      return hasRole('developer') || isAdmin();
+    }
+    
+    function isInvestor() {
+      return hasRole('investor') || hasRole('committee') || isAdmin();
+    }
+    
+    function isCommittee() {
+      return hasRole('committee') || isAdmin();
+    }
+    
+    function isValidUser() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+    
+    // ============================================
+    // USER MANAGEMENT
+    // ============================================
+    
+    // User profiles collection
+    match /users/{userId} {
+      // Users can read their own profile, admins can read all
+      allow read: if isOwner(userId) || isAdmin();
+      
+      // Users can update their own profile (except protected fields)
+      allow update: if isOwner(userId) && 
+        !request.resource.data.diff(resource.data).affectedKeys()
+          .hasAny(['role', 'admin', 'permissions', 'investorAccess', 'verified']);
+      
+      // Allow user creation during signup
+      allow create: if isOwner(userId) || 
+        !exists(/databases/$(database)/documents/users/$(userId));
+      
+      // Only admins can delete users
+      allow delete: if isAdmin();
+    }
+    
+    // ============================================
+    // DEVELOPER PLATFORM
+    // ============================================
+    
+    // Projects collection
+    match /projects/{projectId} {
+      allow read: if isDeveloper() && 
+        (resource.data.owner == request.auth.uid || 
+         request.auth.uid in resource.data.collaborators ||
+         isAdmin());
+      
+      allow create: if isDeveloper() && 
+        request.resource.data.owner == request.auth.uid;
+      
+      allow update: if isDeveloper() && 
+        (resource.data.owner == request.auth.uid || 
+         request.auth.uid in resource.data.collaborators);
+      
+      allow delete: if (isDeveloper() && resource.data.owner == request.auth.uid) || 
+        isAdmin();
+    }
+    
+    // API Keys
+    match /api_keys/{keyId} {
+      allow read: if isDeveloper() && 
+        (get(/databases/$(database)/documents/projects/$(resource.data.projectId)).data.owner == request.auth.uid ||
+         isAdmin());
+      
+      allow create, update: if false; // Only Cloud Functions
+      
+      allow delete: if isDeveloper() && 
+        (get(/databases/$(database)/documents/projects/$(resource.data.projectId)).data.owner == request.auth.uid ||
+         isAdmin());
+    }
+    
+    // ============================================
+    // INVESTOR PORTAL
+    // ============================================
+    
+    // Investor documents
+    match /investor_documents/{documentId} {
+      allow read: if isInvestor() && 
+        (resource.data.visibility == 'public' || 
+         resource.data.visibility == 'investor' ||
+         (resource.data.visibility == 'committee' && isCommittee()));
+      
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // Investor metrics
+    match /investorMetrics/{metricId} {
+      allow read: if isInvestor();
+      allow write: if isAdmin();
+    }
+    
+    // Document access logs (compliance)
+    match /document_access_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn(); // Track all access
+      allow update, delete: if false; // Immutable
+    }
+    
+    // Investors collection
+    match /investors/{investorId} {
+      allow read: if isOwner(investorId) || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // ============================================
+    // ANALYTICS & MONITORING
+    // ============================================
+    
+    // Analytics events
+    match /analytics_events/{eventId} {
+      allow read: if isAdmin();
+      allow create: if true; // Allow anonymous tracking
+      allow update, delete: if false; // Immutable
+    }
+    
+    // Analytics reports
+    match /analytics_reports/{reportId} {
+      allow read: if isAdmin();
+      allow create, update, delete: if false; // Only Cloud Functions
+    }
+    
+    // Activity logs
+    match /activity_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn();
+      allow update, delete: if false; // Immutable
+    }
+    
+    // Audit logs
+    match /auditLogs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn();
+      allow update, delete: if false; // Immutable
+    }
+    
+    // ============================================
+    // SESSIONS & AUTH
+    // ============================================
+    
+    match /sessions/{sessionId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow create: if isSignedIn() && 
+        request.resource.data.userId == request.auth.uid;
+      allow update: if isOwner(resource.data.userId);
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+    
+    // ============================================
+    // TRANSACTIONS & PAYMENTS
+    // ============================================
+    
+    match /transactions/{transactionId} {
+      allow read: if isAdmin() || 
+        (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isSignedIn() && 
+        request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin();
+      allow delete: if false; // Never delete transactions
+    }
+    
+    match /subscriptions/{subscriptionId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow create, update, delete: if false; // Only Cloud Functions
+    }
+    
+    // ============================================
+    // CONTENT MANAGEMENT
+    // ============================================
+    
+    // Blog posts
+    match /blog_posts/{postId} {
+      allow read: if resource.data.status == 'published' || isAdmin();
+      allow create, update, delete: if isAdmin();
+      
+      // Blog comments
+      match /comments/{commentId} {
+        allow read: if resource.data.approved == true || isAdmin();
+        allow create: if isValidUser() && 
+          request.resource.data.userId == request.auth.uid &&
+          request.resource.data.approved == false;
+        allow update: if isOwner(resource.data.userId) && 
+          resource.data.approved == false;
+        allow delete: if isOwner(resource.data.userId) || isAdmin();
+      }
+    }
+    
+    // Public content
+    match /public_content/{contentId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+    
+    // KPIs (public metrics)
+    match /kpis/{kpiId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // Dashboards
+    match /dashboards/{dashboardId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+    
+    // ============================================
+    // COMMUNICATIONS
+    // ============================================
+    
+    // Contact form submissions
+    match /contact_submissions/{submissionId} {
+      allow read: if isAdmin();
+      allow create: if true; // Anyone can submit
+      allow update, delete: if false; // Immutable
+    }
+    
+    // Newsletter subscriptions
+    match /newsletter_subscribers/{subscriberId} {
+      allow read: if isAdmin();
+      allow create: if true; // Anyone can subscribe
+      allow update: if request.resource.data.email == resource.data.email;
+      allow delete: if request.resource.data.email == resource.data.email || isAdmin();
+    }
+    
+    // Notifications
+    match /notifications/{userId}/messages/{messageId} {
+      allow read: if isOwner(userId);
+      allow create: if isAdmin();
+      allow update: if isOwner(userId) && 
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['read', 'readAt']);
+      allow delete: if isOwner(userId) || isAdmin();
+    }
+    
+    // Support tickets
+    match /support_tickets/{ticketId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow create: if isSignedIn() && 
+        request.resource.data.userId == request.auth.uid;
+      allow update: if isOwner(resource.data.userId) && 
+        resource.data.status == 'open';
+      allow delete: if isAdmin();
+      
+      // Ticket messages
+      match /messages/{messageId} {
+        allow read: if isOwner(get(/databases/$(database)/documents/support_tickets/$(ticketId)).data.userId) || 
+          isAdmin();
+        allow create: if isSignedIn() && 
+          (isOwner(get(/databases/$(database)/documents/support_tickets/$(ticketId)).data.userId) || 
+           isAdmin());
+        allow update, delete: if false; // Immutable
+      }
+    }
+    
+    // ============================================
+    // WAITLIST & EARLY ACCESS
+    // ============================================
+    
+    match /waitlist/{entryId} {
+      allow read: if isAdmin();
+      allow create: if true; // Anyone can join
+      allow update: if false;
+      allow delete: if isAdmin();
+    }
+    
+    // ============================================
+    // DOCUMENTS & FILES
+    // ============================================
+    
+    match /documents/{documentId} {
+      allow read: if isInvestor() && 
+        (resource.data.visibility == 'public' || 
+         resource.data.visibility == 'investor' ||
+         (resource.data.visibility == 'committee' && isCommittee()));
+      allow write: if isAdmin();
+    }
+    
+    // ============================================
+    // TEMPORARY: Test collection for debugging
+    // ============================================
+    
+    match /test/{document} {
+      allow read, write: if true;
+    }
+    
+    // ============================================
+    // TEMPORARY: Content seeding collections
+    // REMOVE THESE AFTER INITIAL SEEDING!
+    // ============================================
+    
+    // Team members
+    match /team_members/{memberId} {
+      allow read: if true;  // Public read
+      allow write: if true; // TEMPORARY: Remove after seeding
+    }
+    
+    // Job listings
+    match /jobListings/{jobId} {
+      allow read: if true;  // Public read
+      allow write: if true; // TEMPORARY: Remove after seeding
+    }
+    
+    // Pricing tiers
+    match /pricingTiers/{tierId} {
+      allow read: if true;  // Public read
+      allow write: if true; // TEMPORARY: Remove after seeding
+    }
+    
+    // ============================================
+    // DEFAULT DENY RULE
+    // ============================================
+    
+    // Catch-all: Deny access to any document not explicitly allowed above
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,129 @@
+/* Print styles for Product Roadmap */
+@media print {
+    /* Page setup */
+    @page {
+        size: A4;
+        margin: 2cm;
+    }
+
+    /* Hide non-printable elements */
+    nav,
+    .sirsi-header button,
+    .theme-toggle,
+    .sirsi-footer,
+    .print-button {
+        display: none !important;
+    }
+
+    /* Reset colors for print */
+    body {
+        background: white !important;
+        color: black !important;
+        font-size: 12pt;
+    }
+
+    /* Ensure dark mode elements are visible */
+    .dark\:text-slate-100,
+    .dark\:text-slate-400,
+    .dark\:text-slate-300 {
+        color: #1a1a1a !important;
+    }
+
+    .dark\:bg-slate-800,
+    .dark\:bg-slate-900 {
+        background: white !important;
+    }
+
+    /* Improve chart readability */
+    .chart-container {
+        page-break-inside: avoid;
+        margin: 20pt 0;
+    }
+
+    /* Enhance section spacing */
+    section {
+        page-break-inside: avoid;
+        margin-bottom: 30pt;
+    }
+
+    /* Ensure headings stay with content */
+    h1, h2, h3, h4 {
+        page-break-after: avoid;
+    }
+
+    /* Enhance list readability */
+    ul, ol {
+        page-break-inside: avoid;
+    }
+
+    li {
+        page-break-inside: avoid;
+    }
+
+    /* Print-friendly grid layouts */
+    .grid {
+        display: block !important;
+    }
+
+    .grid > * {
+        margin-bottom: 20pt;
+    }
+
+    /* Ensure text readability */
+    p, li {
+        orphans: 3;
+        widows: 3;
+    }
+
+    /* Enhance link visibility */
+    a {
+        text-decoration: underline;
+        color: #000 !important;
+    }
+
+    a[href^="http"]:after {
+        content: " (" attr(href) ")";
+        font-size: 90%;
+    }
+
+    /* Clean borders and shadows */
+    .shadow-lg,
+    .shadow-sm {
+        box-shadow: none !important;
+    }
+
+    .border {
+        border: 1px solid #ddd !important;
+    }
+
+    /* Ensure metrics are readable */
+    .sirsi-metric {
+        border: 1px solid #ddd;
+        padding: 10pt;
+        margin: 5pt 0;
+    }
+
+    .text-emerald-600,
+    .text-blue-600,
+    .text-purple-600 {
+        color: #000 !important;
+    }
+
+    /* Add header and footer */
+    body::before {
+        content: "SirsiNexus Product Roadmap";
+        display: block;
+        text-align: center;
+        font-size: 14pt;
+        font-weight: bold;
+        margin-bottom: 20pt;
+    }
+
+    body::after {
+        content: "Confidential - Page " counter(page) " of " counter(pages);
+        display: block;
+        text-align: center;
+        font-size: 10pt;
+        margin-top: 20pt;
+    }
+}

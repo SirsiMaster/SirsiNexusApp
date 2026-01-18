@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Logs - SirsiNexus Admin</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom styles for system logs */
+        .log-entry {
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 13px;
+        }
+        
+        .log-level-info { color: #3b82f6; }
+        .log-level-warning { color: #f59e0b; }
+        .log-level-error { color: #ef4444; }
+        .log-level-debug { color: #6b7280; }
+        .log-level-success { color: #10b981; }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark .card {
+            background: #1f2937;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .dark .stat-card {
+            background: #1f2937;
+        }
+        
+        /* Real-time indicator */
+        .realtime-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* Log container scrollbar */
+        .log-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .log-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        
+        .log-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .log-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        .dark .log-container::-webkit-scrollbar-track {
+            background: #374151;
+        }
+        
+        .dark .log-container::-webkit-scrollbar-thumb {
+            background: #4b5563;
+        }
+        
+        .dark .log-container::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-colors duration-300">
+    <!-- Admin Header -->
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-slate-700 fixed top-0 left-0 right-0 z-50">
+        <div class="px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-6">
+                    <!-- Logo/Brand -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">S</span>
+                        </div>
+                        <div>
+                            <h1 class="text-base font-semibold text-gray-900 dark:text-white">SirsiNexus</h1>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">ADMIN CONSOLE</p>
+                        </div>
+                    </div>
+                    <!-- Status Indicator -->
+                    <span class="inline-flex items-center text-xs text-green-600 dark:text-green-400">
+                        <span class="w-2 h-2 bg-green-600 rounded-full mr-1 animate-pulse"></span>
+                        Live
+                    </span>
+                </div>
+                <!-- Right Section -->
+                <div class="flex items-center space-x-6">
+                    <!-- Platform/Page Info -->
+                    <nav class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                    <a href="../../../index.html" class="hover:text-gray-900 dark:hover:text-white">SirsiNexusPortal</a>
+                    <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <a href="../../index.html" class="hover:text-gray-900 dark:hover:text-white">Admin Portal</a>
+                    <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <a href="../index.html" class="hover:text-gray-900 dark:hover:text-white">Dashboard</a>
+                    <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <span class="text-gray-900 dark:text-white font-medium">System Logs</span>
+                </nav>
+                    <!-- Clock -->
+                    <span id="clock" class="text-sm font-mono text-gray-600 dark:text-gray-300">--:--</span>
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-md bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 818 0z"></path>
+                        </svg>
+                        <svg class="w-5 h-5 text-gray-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <!-- Exit/Logout Button -->
+                    <button class="p-2 rounded-md bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors" onclick="handleLogout()">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                    </button>
+                    <!-- User Info -->
+                    <div class="flex items-center space-x-3">
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-200">ADMIN</span>
+                        <div class="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 818 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 fixed left-0 top-16 bottom-0 w-64 z-40 overflow-y-auto">
+        <div class="p-4">
+            <div class="space-y-1">
+                <a href="/admin/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="/admin/users/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                    User Management
+                </a>
+                <a href="/admin/data-room.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Data Room
+                </a>
+                <a href="/admin/dashboard/telemetry.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"/>
+                    </svg>
+                    Telemetry
+                </a>
+                <a href="/admin/site-settings.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                    </svg>
+                    Site Settings
+                </a>
+                <a href="/admin/security/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Security
+                </a>
+                <a href="/admin/dashboard/system-logs.html" class="flex items-center px-3 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                    </svg>
+                    System Logs
+                </a>
+                <a href="/admin/documentation.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
+                    </svg>
+                    Documentation
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 pt-16 min-h-screen bg-gray-50 dark:bg-slate-900 p-6">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-2xl font-bold mb-6">System Logs</h1>
+            
+            <!-- Log Statistics -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+                <div class="stat-card">
+                    <i class="fas fa-info-circle text-3xl text-blue-500 mb-2"></i>
+                    <h3 class="text-2xl font-bold" id="info-count">2</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Info</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-exclamation-triangle text-3xl text-yellow-500 mb-2"></i>
+                    <h3 class="text-2xl font-bold" id="warning-count">1</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Warnings</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-times-circle text-3xl text-red-500 mb-2"></i>
+                    <h3 class="text-2xl font-bold" id="error-count">3</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Errors</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-bug text-3xl text-gray-500 mb-2"></i>
+                    <h3 class="text-2xl font-bold" id="debug-count">1</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Debug</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-check-circle text-3xl text-green-500 mb-2"></i>
+                    <h3 class="text-2xl font-bold" id="success-count">3</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Success</p>
+                </div>
+            </div>
+
+            <!-- Filters and Controls -->
+            <div class="card mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Log Level</label>
+                        <select id="logLevel" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            <option value="all">All Levels</option>
+                            <option value="info">Info</option>
+                            <option value="warning">Warning</option>
+                            <option value="error">Error</option>
+                            <option value="debug">Debug</option>
+                            <option value="success">Success</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Source</label>
+                        <select id="logSource" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            <option value="all">All Sources</option>
+                            <option value="system">System</option>
+                            <option value="application">Application</option>
+                            <option value="api">API</option>
+                            <option value="database">Database</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">From Date</label>
+                        <input type="datetime-local" id="fromDate" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">To Date</label>
+                        <input type="datetime-local" id="toDate" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    </div>
+                </div>
+
+                <!-- Search and Actions -->
+                <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <div class="relative flex-1 max-w-md">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="logSearch" class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Search logs...">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="realtime" class="mr-2" checked>
+                            <span class="flex items-center text-sm">
+                                <span class="realtime-indicator"></span>
+                                Real-time
+                            </span>
+                        </label>
+                        <button onclick="pauseLogs()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+                            <i class="fas fa-pause mr-2"></i>Pause
+                        </button>
+                        <button onclick="clearLogs()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+                            <i class="fas fa-trash mr-2"></i>Clear
+                        </button>
+                        <button onclick="refreshLogs()" class="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600">
+                            <i class="fas fa-sync-alt mr-2"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Log Entries -->
+            <div class="card">
+                <div class="log-container bg-gray-50 dark:bg-gray-800 rounded-lg p-4 max-h-96 overflow-y-auto" id="logContainer">
+                    <!-- Log entries will be populated here -->
+                </div>
+                
+                <!-- Export Options -->
+                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">
+                            Showing <span id="logCount">0</span> entries
+                        </span>
+                        <div class="flex gap-2">
+                            <button onclick="exportLogs('csv')" class="px-4 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+                                <i class="fas fa-file-csv mr-2"></i>Export CSV
+                            </button>
+                            <button onclick="exportLogs('json')" class="px-4 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+                                <i class="fas fa-file-code mr-2"></i>Export JSON
+                            </button>
+                            <button onclick="exportLogs('txt')" class="px-4 py-2 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">
+                                <i class="fas fa-file-alt mr-2"></i>Export TXT
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Sample log data
+        const sampleLogs = [
+            { timestamp: '7/22/2025, 8:09:34 PM', level: 'SUCCESS', message: 'Email sent successfully [system]', source: 'system' },
+            { timestamp: '7/22/2025, 8:09:29 PM', level: 'ERROR', message: 'Email sent successfully [application]', source: 'application' },
+            { timestamp: '7/22/2025, 8:09:24 PM', level: 'SUCCESS', message: 'Background job completed [api]', source: 'api' },
+            { timestamp: '7/22/2025, 8:09:19 PM', level: 'INFO', message: 'User login attempt from IP 192.168.1.100', source: 'system' },
+            { timestamp: '7/22/2025, 8:09:14 PM', level: 'WARNING', message: 'High memory usage detected: 85%', source: 'system' },
+            { timestamp: '7/22/2025, 8:09:09 PM', level: 'ERROR', message: 'Database connection timeout', source: 'database' },
+            { timestamp: '7/22/2025, 8:09:04 PM', level: 'DEBUG', message: 'Cache cleared successfully', source: 'system' },
+            { timestamp: '7/22/2025, 8:08:59 PM', level: 'INFO', message: 'API request: GET /api/users', source: 'api' },
+            { timestamp: '7/22/2025, 8:08:54 PM', level: 'SUCCESS', message: 'Backup completed successfully', source: 'system' },
+            { timestamp: '7/22/2025, 8:08:49 PM', level: 'ERROR', message: 'Failed to send notification email', source: 'application' }
+        ];
+
+        let logs = [...sampleLogs];
+        let isRealtime = true;
+        let isPaused = false;
+
+        // Clock function
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const clockElement = document.getElementById('clock');
+            if (clockElement) {
+                clockElement.textContent = `${hours}:${minutes}`;
+            }
+        }
+
+        // Update clock every second
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Set current datetime for filters
+        const now = new Date();
+        const localDateTime = now.toISOString().slice(0, 16);
+        document.getElementById('toDate').value = localDateTime;
+        
+        const yesterday = new Date(now);
+        yesterday.setDate(yesterday.getDate() - 1);
+        document.getElementById('fromDate').value = yesterday.toISOString().slice(0, 16);
+
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle?.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        });
+
+        // Initialize theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Logout function
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/index.html';
+            }
+        }
+
+        // Render logs
+        function renderLogs() {
+            const container = document.getElementById('logContainer');
+            const level = document.getElementById('logLevel').value;
+            const source = document.getElementById('logSource').value;
+            const searchTerm = document.getElementById('logSearch').value.toLowerCase();
+            
+            let filteredLogs = logs;
+            
+            // Apply filters
+            if (level !== 'all') {
+                filteredLogs = filteredLogs.filter(log => log.level.toLowerCase() === level);
+            }
+            
+            if (source !== 'all') {
+                filteredLogs = filteredLogs.filter(log => log.source === source);
+            }
+            
+            if (searchTerm) {
+                filteredLogs = filteredLogs.filter(log => 
+                    log.message.toLowerCase().includes(searchTerm) ||
+                    log.level.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Render
+            container.innerHTML = filteredLogs.map(log => `
+                <div class="log-entry flex items-start gap-3 py-2 border-b border-gray-200 dark:border-gray-700 last:border-0">
+                    <span class="text-gray-500 dark:text-gray-400 min-w-[180px]">${log.timestamp}</span>
+                    <span class="log-level-${log.level.toLowerCase()} font-bold min-w-[80px]">${log.level}</span>
+                    <span class="flex-1 text-gray-700 dark:text-gray-300">${log.message}</span>
+                </div>
+            `).join('');
+            
+            // Update count
+            document.getElementById('logCount').textContent = filteredLogs.length;
+            updateStatistics();
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            const counts = {
+                info: 0,
+                warning: 0,
+                error: 0,
+                debug: 0,
+                success: 0
+            };
+            
+            logs.forEach(log => {
+                const level = log.level.toLowerCase();
+                if (counts.hasOwnProperty(level)) {
+                    counts[level]++;
+                }
+            });
+            
+            document.getElementById('info-count').textContent = counts.info;
+            document.getElementById('warning-count').textContent = counts.warning;
+            document.getElementById('error-count').textContent = counts.error;
+            document.getElementById('debug-count').textContent = counts.debug;
+            document.getElementById('success-count').textContent = counts.success;
+        }
+
+        // Event listeners
+        document.getElementById('logLevel').addEventListener('change', renderLogs);
+        document.getElementById('logSource').addEventListener('change', renderLogs);
+        document.getElementById('logSearch').addEventListener('input', renderLogs);
+        
+        document.getElementById('realtime').addEventListener('change', (e) => {
+            isRealtime = e.target.checked;
+            if (isRealtime && !isPaused) {
+                simulateRealtimeLogs();
+            }
+        });
+
+        // Log actions
+        function pauseLogs() {
+            isPaused = !isPaused;
+            event.target.innerHTML = isPaused ? '<i class="fas fa-play mr-2"></i>Resume' : '<i class="fas fa-pause mr-2"></i>Pause';
+        }
+
+        function clearLogs() {
+            if (confirm('Are you sure you want to clear all logs?')) {
+                logs = [];
+                renderLogs();
+            }
+        }
+
+        function refreshLogs() {
+            logs = [...sampleLogs];
+            renderLogs();
+        }
+
+        // Export functionality
+        function exportLogs(format) {
+            const level = document.getElementById('logLevel').value;
+            const source = document.getElementById('logSource').value;
+            
+            let exportData = logs;
+            if (level !== 'all') {
+                exportData = exportData.filter(log => log.level.toLowerCase() === level);
+            }
+            if (source !== 'all') {
+                exportData = exportData.filter(log => log.source === source);
+            }
+            
+            let content = '';
+            let filename = `system-logs-${new Date().toISOString().slice(0, 10)}`;
+            let mimeType = '';
+            
+            switch (format) {
+                case 'csv':
+                    content = 'Timestamp,Level,Message,Source\n';
+                    content += exportData.map(log => 
+                        `"${log.timestamp}","${log.level}","${log.message}","${log.source}"`
+                    ).join('\n');
+                    mimeType = 'text/csv';
+                    filename += '.csv';
+                    break;
+                case 'json':
+                    content = JSON.stringify(exportData, null, 2);
+                    mimeType = 'application/json';
+                    filename += '.json';
+                    break;
+                case 'txt':
+                    content = exportData.map(log => 
+                        `[${log.timestamp}] ${log.level}: ${log.message} (${log.source})`
+                    ).join('\n');
+                    mimeType = 'text/plain';
+                    filename += '.txt';
+                    break;
+            }
+            
+            const blob = new Blob([content], { type: mimeType });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Simulate realtime logs
+        function simulateRealtimeLogs() {
+            if (isRealtime && !isPaused) {
+                const levels = ['INFO', 'WARNING', 'ERROR', 'DEBUG', 'SUCCESS'];
+                const sources = ['system', 'application', 'api', 'database'];
+                const messages = [
+                    'New user registration',
+                    'API rate limit warning',
+                    'Database query executed',
+                    'Cache invalidated',
+                    'File uploaded successfully',
+                    'Background job started',
+                    'Email notification sent',
+                    'Security scan completed',
+                    'Configuration updated',
+                    'Memory usage threshold reached'
+                ];
+                
+                const randomLog = {
+                    timestamp: new Date().toLocaleString(),
+                    level: levels[Math.floor(Math.random() * levels.length)],
+                    message: messages[Math.floor(Math.random() * messages.length)],
+                    source: sources[Math.floor(Math.random() * sources.length)]
+                };
+                
+                logs.unshift(randomLog);
+                if (logs.length > 100) {
+                    logs.pop();
+                }
+                
+                renderLogs();
+                
+                // Scroll to top of log container
+                document.getElementById('logContainer').scrollTop = 0;
+            }
+        }
+
+        // Simulate realtime logs every 3-7 seconds
+        setInterval(() => {
+            simulateRealtimeLogs();
+        }, 3000 + Math.random() * 4000);
+
+        // Initial render
+        renderLogs();
+    </script>
+<script src="../../js/telemetry.js"></script>
+</body>
+</html>

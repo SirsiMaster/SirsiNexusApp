@@ -1,0 +1,11 @@
+# Clean URLs (legacy explicit entries removed; catch-all remains)
+
+# Redirect old URLs to new structure
+/investor-portal/  /investor-portal/  301
+/investor-login.html  /investor-login/  301
+
+# Redirect from old uppercase directory to new lowercase
+/SirsiNexusPortal/*  /:splat  301
+
+# Catch-all legacy redirect for sirsinexusportal
+/sirsinexusportal/*  /:splat  301

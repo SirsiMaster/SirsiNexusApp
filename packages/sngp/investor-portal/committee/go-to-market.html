@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go To Market Strategy - SirsiNexus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../components/ui-library.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Authentication Check -->
+    <script>
+        (function() {
+            const auth = sessionStorage.getItem('investorAuth');
+            if (!auth) {
+                window.location.href = '../../investor-login.html';
+                return;
+            }
+            
+            try {
+                const authData = JSON.parse(auth);
+                const loginTime = new Date(authData.loginTime);
+                const now = new Date();
+                const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+                
+                if (hoursSinceLogin > 24) {
+                    sessionStorage.removeItem('investorAuth');
+                    window.location.href = '../../investor-login.html';
+                    return;
+                }
+            } catch (error) {
+                console.error('Authentication error:', error);
+                sessionStorage.removeItem('investorAuth');
+                window.location.href = '../../investor-login.html';
+                return;
+            }
+        })();
+    </script>
+
+    <!-- Theme Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d'
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a'
+                        }
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- AOS for scroll animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <style>
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 400px;
+            width: 100%;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #10b981;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .timeline-line {
+            width: 2px;
+            background: linear-gradient(to bottom, #10b981, #059669);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            bottom: 0;
+        }
+
+        .strategy-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .strategy-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark .strategy-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .metric-progress {
+            transition: width 1s ease-in-out;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex h-16 items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 flex items-center justify-center">
+                            <img src="../../assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
+                            <img src="../../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">SirsiNexus</h1>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">v0.5.0-alpha</span>
+                                <div class="flex items-center gap-1">
+                                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                                    <span class="text-xs text-slate-600 dark:text-slate-300">Live</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav class="flex items-center gap-6">
+                    <a href="../../index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">← Back to Home</a>
+                    <a href="../index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">← Back to Portal</a>
+                    <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <!-- Hero Section -->
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+                Go To Market <span class="text-emerald-600">Strategy</span>
+            </h1>
+            <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
+                Our comprehensive approach to market entry and growth, leveraging AI-driven insights and strategic partnerships.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <span class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-lg border border-slate-200 dark:border-slate-700">
+                    <svg class="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    Phase 5 Active
+                </span>
+                <span class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-lg border border-slate-200 dark:border-slate-700">
+                    <svg class="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    35% Cost Reduction
+                </span>
+                <span class="inline-flex items-center px-4 py-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium rounded-lg border border-slate-200 dark:border-slate-700">
+                    <svg class="w-4 h-4 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    280 Enterprise Customers
+                </span>
+            </div>
+        </div>
+
+        <!-- Strategic Overview Section -->
+        <section id="strategic-overview" class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 mb-12">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Strategic Overview</h2>
+            <div class="prose prose-lg max-w-none text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p class="mb-6">
+                    SirsiNexus's go-to-market strategy centers on a phased enterprise-first approach, leveraging our unique Graph of Thought AI architecture and Hedera Hashgraph integration to disrupt the $78.8B cloud infrastructure market. Our strategy focuses on three key pillars:
+                </p>
+                
+                <div class="grid md:grid-cols-3 gap-8 mt-8">
+                    <div class="bg-slate-50 dark:bg-slate-700/50 p-6 rounded-xl border border-slate-200 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">Enterprise Focus</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">
+                            Targeting Fortune 500 companies through strategic partnerships with NVIDIA, AWS, and Hedera, delivering 35% cost reduction and AI-driven optimization.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-700/50 p-6 rounded-xl border border-slate-200 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">Land & Expand</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">
+                            Initial deployment in cloud cost optimization, expanding to full infrastructure management with proven 92% customer retention rate.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-700/50 p-6 rounded-xl border border-slate-200 dark:border-slate-600">
+                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10h1m-1-4h1m4 4h1m-1-4h1"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">Channel Strategy</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">
+                            Multi-channel approach combining direct enterprise sales, cloud marketplace integrations, and strategic partner network.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Go To Market Metrics -->
+        <section id="gtm-metrics" class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 mb-12">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Key Metrics & Growth</h2>
+            
+            <!-- Chart -->
+            <div class="mb-8">
+                <div class="chart-container">
+                    <canvas id="gtm-line-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Key Performance Indicators -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-slate-50 dark:bg-slate-700/50 p-6 rounded-xl border border-slate-200 dark:border-slate-600">
+                    <div class="text-2xl font-bold text-emerald-600 mb-1">$125K</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400">Average Contract Value</div>
+                    <div class="mt-2 text-xs text-emerald-600">↑ 15% QoQ</div>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-700/50 p-6 rounded-xl border border-slate-200 dark:border-slate-600">
+                    <div class="text-2xl font-bold text-emerald-600 mb-1">92%</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400">Logo Retention</div>
+                    <div class="mt-2 text-xs text-emerald-600">↑ 3% QoQ</div>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-700/50 p-6 rounded-xl border border-slate-200 dark:border-slate-600">
+                    <div class="text-2xl font-bold text-emerald-600 mb-1">45</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400">Days Sales Cycle</div>
+                    <div class="mt-2 text-xs text-emerald-600">↓ 10 days QoQ</div>
+                </div>
+                <div class="bg-slate-50 dark:bg-slate-700/50 p-6 rounded-xl border border-slate-200 dark:border-slate-600">
+                    <div class="text-2xl font-bold text-emerald-600 mb-1">280%</div>
+                    <div class="text-sm text-slate-600 dark:text-slate-400">Net Revenue Retention</div>
+                    <div class="mt-2 text-xs text-emerald-600">↑ 30% QoQ</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Competitive Advantage -->
+        <section id="competitive-advantage" class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 mb-12">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Competitive Advantage</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Key Differentiators</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="mt-1 w-6 h-6 flex-shrink-0 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center">
+                                <span class="text-emerald-600">1</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-slate-900 dark:text-slate-100">Graph of Thought AI</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">
+                                    Proprietary AI architecture delivers 3.5x faster deployments and 35% cost savings compared to traditional IaC solutions.
+                                </p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="mt-1 w-6 h-6 flex-shrink-0 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center">
+                                <span class="text-emerald-600">2</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-slate-900 dark:text-slate-100">Hedera Integration</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">
+                                    Enterprise-grade distributed consensus enables secure, scalable infrastructure management.
+                                </p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="mt-1 w-6 h-6 flex-shrink-0 bg-emerald-100 dark:bg-emerald-900/20 rounded-full flex items-center justify-center">
+                                <span class="text-emerald-600">3</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-slate-900 dark:text-slate-100">Strategic Partners</h4>
+                                <p class="text-sm text-slate-600 dark:text-slate-400">
+                                    Exclusive access to NVIDIA's Inception Program and AWS Migration Acceleration Program.
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="space-y-6">
+                    <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Market Position</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-gradient-to-r from-emerald-50 to-emerald-100/50 dark:from-emerald-900/10 dark:to-emerald-800/5 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                            <h4 class="font-medium text-emerald-800 dark:text-emerald-200 mb-2">TAM Opportunity</h4>
+                            <p class="text-sm text-emerald-700 dark:text-emerald-300">
+                                $78.8B addressable market growing at 22% CAGR, with focus on $12.8B cloud optimization segment.
+                            </p>
+                        </div>
+                        <div class="p-4 bg-gradient-to-r from-blue-50 to-blue-100/50 dark:from-blue-900/10 dark:to-blue-800/5 rounded-lg border border-blue-200 dark:border-blue-800">
+                            <h4 class="font-medium text-blue-800 dark:text-blue-200 mb-2">Enterprise Validation</h4>
+                            <p class="text-sm text-blue-700 dark:text-blue-300">
+                                Beta customers reporting 35% cost reduction and 60% faster deployments compared to legacy solutions.
+                            </p>
+                        </div>
+                        <div class="p-4 bg-gradient-to-r from-purple-50 to-purple-100/50 dark:from-purple-900/10 dark:to-purple-800/5 rounded-lg border border-purple-200 dark:border-purple-800">
+                            <h4 class="font-medium text-purple-800 dark:text-purple-200 mb-2">First-Mover Advantage</h4>
+                            <p class="text-sm text-purple-700 dark:text-purple-300">
+                                Creating new category of AI-powered infrastructure assistants with patent-pending technology.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Go To Market Timeline -->
+        <section id="gtm-timeline" class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">Market Entry Timeline</h2>
+            
+            <div class="relative">
+                <div class="absolute left-1/2 -ml-0.5 w-0.5 h-full bg-gradient-to-b from-emerald-600 to-emerald-200 dark:from-emerald-500 dark:to-emerald-900"></div>
+                
+                <div class="space-y-12 relative">
+                    <!-- Phase 1: Launch -->
+                    <div class="flex items-center gap-8" data-aos="fade-up">
+                        <div class="w-1/2 text-right pr-8">
+                            <h3 class="text-lg font-semibold text-emerald-600">Q3 2025: Launch</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+                                • Initial enterprise beta release<br>
+                                • NVIDIA partnership activation<br>
+                                • First 50 enterprise customers
+                            </p>
+                        </div>
+                        <div class="w-4 h-4 bg-emerald-600 rounded-full relative z-10"></div>
+                        <div class="w-1/2"></div>
+                    </div>
+
+                    <!-- Phase 2: Growth -->
+                    <div class="flex items-center gap-8" data-aos="fade-up" data-aos-delay="100">
+                        <div class="w-1/2"></div>
+                        <div class="w-4 h-4 bg-emerald-600 rounded-full relative z-10"></div>
+                        <div class="w-1/2 pl-8">
+                            <h3 class="text-lg font-semibold text-emerald-600">Q4 2025: Growth</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+                                • AWS Marketplace launch<br>
+                                • Channel partner program<br>
+                                • 150+ enterprise customers
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3: Scale -->
+                    <div class="flex items-center gap-8" data-aos="fade-up" data-aos-delay="200">
+                        <div class="w-1/2 text-right pr-8">
+                            <h3 class="text-lg font-semibold text-emerald-600">Q1-Q2 2026: Scale</h3>
+                            <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">
+                                • International expansion<br>
+                                • Enterprise integrations<br>
+                                • 280+ enterprise customers
+                            </p>
+                        </div>
+                        <div class="w-4 h-4 bg-emerald-600 rounded-full relative z-10"></div>
+                        <div class="w-1/2"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="../../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-10 h-10 object-contain">
+                        <div>
+                            <h3 class="text-lg font-semibold">SirsiNexus</h3>
+                            <p class="text-sm text-slate-400">Go To Market Strategy</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Enterprise-focused cloud infrastructure optimization powered by Graph of Thought AI architecture.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="index.html" class="hover:text-white transition-colors">Committee Dashboard</a></li>
+                        <li><a href="market-analysis.html" class="hover:text-white transition-colors">Market Analysis</a></li>
+                        <li><a href="product-roadmap.html" class="hover:text-white transition-colors">Product Roadmap</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="../index.html" class="hover:text-white transition-colors">Investor Portal</a></li>
+                        <li><a href="../../contact.html" class="hover:text-white transition-colors">Contact Support</a></li>
+                        <li><a href="../../privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 mt-8 pt-8 text-center text-sm text-slate-400">
+                <p>© 2025 Sirsi Technologies Inc. All rights reserved. | Go To Market Strategy Documentation</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize theme toggle and AOS
+            AOS.init();
+
+            // GSAP Animation
+            gsap.fromTo('#strategic-overview', {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 1, scrollTrigger: {
+                trigger: '#strategic-overview',
+                start: 'top 80%',
+                toggleActions: 'play none none none'
+            }});
+
+            // Line Chart for Go To Market Strategy
+            const ctxLine = document.getElementById('gtm-line-chart').getContext('2d');
+            new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: ['Launch', 'Growth', 'Mature'],
+                    datasets: [{
+                        label: 'Customer Acquisition',
+                        data: [10, 30, 60],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        yAxisID: 'y',
+                    }, {
+                        label: 'Market Penetration',
+                        data: [5, 15, 40],
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        yAxisID: 'y1',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        }
+                    }
+                }
+            });
+
+            // Hover effects
+            gsap.utils.toArray('.content-box').forEach(box => {
+                gsap.fromTo(box, {scale: 0.95}, {
+                    scale: 1,
+                    duration: 0.5,
+                    ease: 'ease-in-out',
+                    scrollTrigger: {
+                        trigger: box,
+                        start: 'top 95%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

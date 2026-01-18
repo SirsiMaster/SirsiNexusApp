@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus - Invoice Creator</title>
+    <meta name="description" content="Create professional invoices - SirsiNexus Business Tools">
+    <meta name="theme-color" content="#059669">
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              emerald: {
+                600: '#059669',
+                700: '#047857',
+              },
+            },
+          },
+        },
+      }
+    </script>
+    
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <!-- Fresh Theme Toggle -->
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const shouldBeDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+        
+        if (shouldBeDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
+
+    <style>
+      /* SirsiNexus geometric patterns */
+      .geometric-pattern {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      
+      .hex-pattern {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: 
+          url('data:image/svg+xml,<svg width="100" height="86.6" xmlns="http://www.w3.org/2000/svg"><polygon points="50,0 100,25 100,61.6 50,86.6 0,61.6 0,25" fill="none" stroke="rgba(16,185,129,0.1)" stroke-width="1"/></svg>');
+        background-size: 100px 86.6px;
+        opacity: 0.3;
+      }
+
+      .invoice-glow {
+        box-shadow: 0 0 40px rgba(16, 185, 129, 0.1);
+      }
+
+      .invoice-glow:hover {
+        box-shadow: 0 0 60px rgba(16, 185, 129, 0.15);
+      }
+    </style>
+</head>
+<body class="font-inter bg-gradient-to-br from-slate-50 via-emerald-50/30 to-slate-50 dark:from-slate-900 dark:via-emerald-900/20 dark:to-slate-900 text-slate-900 dark:text-slate-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex h-16 items-center justify-between">
+          <div class="flex items-center gap-6">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 flex items-center justify-center">
+                <img src="/assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
+                <img src="/assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
+              </div>
+              <div>
+                <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                  SirsiNexus
+                </h1>
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+                    Invoice Creator
+                  </span>
+                  <div class="flex items-center gap-1">
+                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                    <span class="text-xs text-slate-600 dark:text-slate-300">Live</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <nav class="flex items-center gap-4">
+            <a href="/index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Home</a>
+            <a href="/pay.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Payment Portal</a>
+            <a href="/admin/revenue-dashboard.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Revenue Dashboard</a>
+            <a href="/admin/index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Admin Dashboard</a>
+            <button id="theme-toggle" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors border border-slate-300 dark:border-slate-600" title="Toggle theme">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900 dark:to-emerald-800 py-24 overflow-hidden">
+      <div class="hex-pattern"></div>
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center">
+          <div class="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 px-4 py-2 rounded-full mb-6">
+            <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+            <span class="text-sm font-medium text-emerald-700 dark:text-emerald-300">Professional Business Tools</span>
+          </div>
+          <h1 class="text-5xl md:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
+            Invoice <span class="text-emerald-600">Creator</span>
+          </h1>
+          <p class="text-2xl text-slate-600 dark:text-slate-400 mb-4 max-w-4xl mx-auto font-light">
+            Create professional invoices with <span class="font-semibold text-emerald-600">multi-channel distribution</span>
+          </p>
+        </div>
+      </div>
+      <div class="absolute top-10 left-10 w-20 h-20 bg-emerald-200 dark:bg-emerald-800 rounded-full opacity-30 animate-pulse"></div>
+      <div class="absolute bottom-10 right-10 w-32 h-32 bg-blue-200 dark:bg-blue-800 rounded-full opacity-20 animate-pulse" style="animation-delay: 1s;"></div>
+    </section>
+
+    <!-- Invoice Form -->
+    <section class="relative py-12 min-h-screen overflow-hidden">
+      <!-- Hexagonal Pattern Background -->
+      <div class="hex-pattern"></div>
+      
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl invoice-glow border border-slate-200 dark:border-slate-700">
+          <div class="p-8 lg:p-12">
+          
+            <div class="text-center mb-10">
+              <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">Create Professional Invoice</h2>
+              <p class="text-lg text-slate-600 dark:text-slate-400">Fill out the form below to generate your invoice</p>
+            </div>
+
+            <form id="invoice-form" class="space-y-8">
+              <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Invoice Number</label>
+                  <input type="text" id="invoice-number" required
+                         class="w-full px-4 py-4 text-base border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white transition-all"
+                         placeholder="SIRSI-2025-001">
+                </div>
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Amount ($USD)</label>
+                <input type="number" id="invoice-amount" min="5" max="50000" step="0.01" required
+                       class="w-full px-4 py-4 text-base border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white transition-all"
+                       placeholder="150.00">
+              
+              <!-- Fee Preview Section -->
+              <div id="fee-preview" class="mt-3 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg hidden">
+                <div class="text-sm text-amber-700 dark:text-amber-300 mb-2 font-medium">Processing Fee Preview:</div>
+                <div class="grid grid-cols-2 gap-2 text-xs text-amber-600 dark:text-amber-400">
+                  <div>Client pays: <span id="client-pays-amount">$0.00</span></div>
+                  <div>Processing fee: <span id="processing-fee-amount">$0.00</span></div>
+                  <div>You receive: <span id="you-receive-amount">$0.00</span></div>
+                  <div>Fee rate: <span id="fee-rate">3.49% + $0.49</span></div>
+                </div>
+                <div class="text-xs text-amber-600 dark:text-amber-400 mt-2 italic">
+                  *Processing fees will be added to the invoice total when client pays
+                </div>
+              </div>
+              </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Client Name</label>
+                <input type="text" id="client-name" required
+                       class="w-full px-4 py-4 text-base border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white transition-all"
+                       placeholder="John Smith or ABC Corporation">
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Client Email</label>
+                <input type="email" id="client-email" required
+                       class="w-full px-4 py-4 text-base border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white transition-all"
+                       placeholder="client@example.com">
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Service Description</label>
+                <textarea id="service-description" rows="4" required
+                          class="w-full px-4 py-4 text-base border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white transition-all"
+                          placeholder="AI Infrastructure Consultation - Strategic planning and implementation guidance"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Due Date</label>
+                <input type="date" id="due-date" required
+                       class="w-full px-4 py-4 text-base border border-slate-300 dark:border-slate-600 rounded-xl shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 dark:bg-slate-700 dark:text-white transition-all">
+              </div>
+
+              <!-- Distribution Channels -->
+              <div class="border-t border-slate-200 dark:border-slate-600 pt-8 mt-8">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-6">Distribution Channels</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                <label class="flex items-center p-3 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">
+                  <input type="checkbox" id="enable-email" checked class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500">
+                  <div class="ml-3">
+                    <div class="text-sm font-medium text-slate-900 dark:text-slate-100">📧 Email</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">Professional HTML email</div>
+                  </div>
+                </label>
+                
+                <label class="flex items-center p-3 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">
+                  <input type="checkbox" id="enable-qr" checked class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500">
+                  <div class="ml-3">
+                    <div class="text-sm font-medium text-slate-900 dark:text-slate-100">📱 QR Code</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">Scannable payment code</div>
+                  </div>
+                </label>
+                
+                <label class="flex items-center p-3 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">
+                  <input type="checkbox" id="enable-sms" class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500">
+                  <div class="ml-3">
+                    <div class="text-sm font-medium text-slate-900 dark:text-slate-100">💬 SMS</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">Text message notification</div>
+                  </div>
+                </label>
+                
+                <label class="flex items-center p-3 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer">
+                  <input type="checkbox" id="enable-social" class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500">
+                  <div class="ml-3">
+                    <div class="text-sm font-medium text-slate-900 dark:text-slate-100">🌐 Social</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400">WhatsApp, LinkedIn, etc.</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+              <div class="flex flex-col sm:flex-row gap-4 pt-8">
+                <button type="button" onclick="generateInvoice()" 
+                        class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
+                  <svg class="w-5 h-5 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                  </svg>
+                  Create Invoice
+                </button>
+                <button type="button" onclick="previewInvoice()" 
+                        class="bg-slate-200 dark:bg-slate-600 text-slate-800 dark:text-slate-200 font-semibold py-4 px-8 rounded-xl hover:bg-slate-300 dark:hover:bg-slate-500 transition-all">
+                  Preview
+                </button>
+              </div>
+            </form>
+
+            <!-- Results Section -->
+            <div id="results-section" class="hidden mt-10 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-8">
+              <h3 class="text-2xl font-bold text-emerald-900 dark:text-emerald-100 mb-6">Invoice Created Successfully!</h3>
+            
+            <!-- Distribution Status -->
+            <div class="mb-4">
+              <h4 class="text-sm font-semibold text-emerald-800 dark:text-emerald-200 mb-2">Distribution Status</h4>
+              <div id="distribution-status" class="grid grid-cols-2 gap-2 text-xs">
+                <!-- Status will be populated by JavaScript -->
+              </div>
+              </div>
+              
+              <div class="bg-white dark:bg-emerald-800/30 p-6 rounded-xl border mb-6">
+                <p class="text-base text-slate-600 dark:text-slate-300 mb-3 font-medium">Payment Link:</p>
+                <div class="flex items-center space-x-3">
+                  <input type="text" id="generated-link" readonly
+                         class="flex-1 px-4 py-3 text-base border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700 dark:text-white">
+                  <button onclick="copyLink()" class="px-4 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 text-base font-medium transition-colors">
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <div class="space-y-4">
+                <button onclick="executeDistribution()" class="w-full bg-emerald-600 text-white py-3 px-6 rounded-xl hover:bg-emerald-700 transition-colors font-semibold">
+                  🚀 Execute Distribution
+                </button>
+                <button onclick="emailInvoice()" class="w-full bg-blue-600 text-white py-3 px-6 rounded-xl hover:bg-blue-700 transition-colors font-medium">
+                  📧 Email to Client
+                </button>
+                <button onclick="generateQR()" class="w-full bg-orange-600 text-white py-3 px-6 rounded-xl hover:bg-orange-700 transition-colors font-medium">
+                  📱 Generate QR Code
+                </button>
+                <button onclick="showZelleInfo()" class="w-full bg-purple-600 text-white py-3 px-6 rounded-xl hover:bg-purple-700 transition-colors font-medium">
+                  💜 Show Zelle Payment Info
+                </button>
+              </div>
+            </div>
+
+            <!-- QR Code Section -->
+            <div id="qr-section" class="hidden mt-8 text-center bg-slate-50 dark:bg-slate-700 rounded-xl p-8">
+              <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-6">QR Code</h3>
+              <div id="qr-code-container" class="mb-6 flex justify-center"></div>
+              <p class="text-base text-slate-600 dark:text-slate-300">Client can scan this QR code to pay</p>
+            </div>
+
+            <!-- Zelle QR Code Section -->
+            <div id="zelle-qr-section" class="hidden mt-8 bg-purple-50 dark:bg-purple-900/20 rounded-xl p-8 border border-purple-200 dark:border-purple-700">
+            <div class="text-center mb-4">
+              <h3 class="text-lg font-bold text-purple-900 dark:text-purple-100 mb-2">💜 Zelle® Payment - No Fees!</h3>
+              <p class="text-sm text-purple-700 dark:text-purple-200">Share this information with your client for instant, fee-free payment</p>
+            </div>
+            
+            <div class="flex items-center justify-center gap-6 mb-6">
+              <div class="flex-shrink-0">
+                <img src="../assets/images/zelle-qr.png" alt="Zelle QR Code" class="w-32 h-32 object-contain rounded-lg border border-purple-300 shadow-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="w-32 h-32 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center text-white shadow-lg" style="display:none;">
+                  <div class="text-center">
+                    <div class="text-3xl font-bold mb-1">Z</div>
+                    <div class="text-sm opacity-90">QR</div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-1 text-left">
+                <div class="bg-white dark:bg-slate-800/50 rounded-lg p-4 border border-purple-200 dark:border-purple-600">
+                  <h4 class="font-bold text-purple-900 dark:text-purple-100 mb-2">Payment Instructions</h4>
+                  <p class="text-sm text-purple-700 dark:text-purple-200 mb-2">
+                    <strong>Scan QR code</strong> with Zelle® app or send payment to:
+                  </p>
+                  <div class="bg-purple-100 dark:bg-purple-900/50 rounded-lg p-3 mb-2">
+                    <p class="font-mono font-bold text-purple-900 dark:text-purple-100 text-center">cylton@cylton.com</p>
+                  </div>
+                  <div class="text-xs text-green-700 dark:text-green-300 space-y-1">
+                    <div>✓ Instant transfer</div>
+                    <div>✓ Bank-level security</div>
+                    <div>✓ Zero processing fees</div>
+                    <div>✓ Available 24/7</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="text-center">
+              <button onclick="copyZelleInfo()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors shadow-lg">
+                📋 Copy Zelle Payment Info
+              </button>
+              <p class="text-xs text-purple-600 dark:text-purple-300 mt-2">Copies payment email and instructions for easy sharing</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Support Section -->
+        <div class="mt-12 text-center">
+          <div class="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 rounded-2xl p-8 lg:p-10 shadow-lg border border-slate-200 dark:border-slate-600">
+            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-6">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">Need Help?</h3>
+            <p class="text-slate-600 dark:text-slate-400 text-lg mb-6 max-w-2xl mx-auto">
+              Our support team is here to assist you with invoice creation, distribution setup, or any technical questions.
+            </p>
+            <a href="mailto:cylton@cylton.com" class="inline-flex items-center gap-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-4 px-8 rounded-xl transition-all shadow-lg hover:shadow-xl">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+              Contact Support
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Background Effects -->
+      <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div class="absolute top-20 left-20 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
+      </div>
+    </section>
+
+    <script>
+      // Theme toggle functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+          themeToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            
+            if (isDark) {
+              html.classList.remove('dark');
+              localStorage.setItem('theme', 'light');
+            } else {
+              html.classList.add('dark');
+              localStorage.setItem('theme', 'dark');
+            }
+          });
+        }
+      });
+
+      // Set default due date and invoice number
+      document.addEventListener('DOMContentLoaded', () => {
+        const defaultDueDate = new Date();
+        defaultDueDate.setDate(defaultDueDate.getDate() + 30);
+        document.getElementById('due-date').value = defaultDueDate.toISOString().split('T')[0];
+        
+        const invoiceNumber = 'SIRSI-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-3);
+        document.getElementById('invoice-number').value = invoiceNumber;
+        
+        // Add fee calculation listener
+        const amountInput = document.getElementById('invoice-amount');
+        if (amountInput) {
+          amountInput.addEventListener('input', updateFeePreview);
+        }
+      });
+      
+      // PayPal Fee Calculation Functions
+      function calculatePayPalFees(amount) {
+        // PayPal standard commercial transaction rate: 3.49% + $0.49
+        const rate = 0.0349;
+        const fixedFee = 0.49;
+        const percentageFee = amount * rate;
+        const totalFee = percentageFee + fixedFee;
+        const totalAmount = amount + totalFee;
+        
+        return {
+          rate: rate,
+          fixedFee: fixedFee,
+          percentageFee: Math.round(percentageFee * 100) / 100,
+          totalFee: Math.round(totalFee * 100) / 100,
+          totalAmount: Math.round(totalAmount * 100) / 100,
+          description: '3.49% + $0.49'
+        };
+      }
+      
+      function updateFeePreview() {
+        const amountInput = document.getElementById('invoice-amount');
+        const feePreview = document.getElementById('fee-preview');
+        const amount = parseFloat(amountInput.value) || 0;
+        
+        if (amount > 0) {
+          const feeData = calculatePayPalFees(amount);
+          
+          // Show fee preview
+          feePreview.classList.remove('hidden');
+          
+          // Update fee preview values
+          document.getElementById('client-pays-amount').textContent = `$${feeData.totalAmount.toFixed(2)}`;
+          document.getElementById('processing-fee-amount').textContent = `$${feeData.totalFee.toFixed(2)}`;
+          document.getElementById('you-receive-amount').textContent = `$${amount.toFixed(2)}`;
+          document.getElementById('fee-rate').textContent = feeData.description;
+        } else {
+          // Hide fee preview
+          feePreview.classList.add('hidden');
+        }
+      }
+
+      let currentInvoice = null;
+
+      function generateInvoice() {
+        const invoice = {
+          number: document.getElementById('invoice-number').value,
+          amount: parseFloat(document.getElementById('invoice-amount').value),
+          client: document.getElementById('client-name').value,
+          email: document.getElementById('client-email').value,
+          service: document.getElementById('service-description').value,
+          date: new Date().toISOString(),
+          dueDate: document.getElementById('due-date').value
+        };
+
+        if (!invoice.number || !invoice.amount || !invoice.client || !invoice.service || !invoice.email) {
+          alert('Please fill in all required fields.');
+          return;
+        }
+
+        currentInvoice = invoice;
+        
+        const invoiceData = encodeURIComponent(JSON.stringify(invoice));
+        // Handle both local development and GitHub Pages deployment
+        let baseUrl;
+        if (window.location.hostname === 'sirsimaster.github.io') {
+          baseUrl = window.location.origin + '/pay.html';
+        } else {
+          // For local development or other deployments
+          baseUrl = window.location.origin + '/pay.html';
+        }
+        const paymentLink = `${baseUrl}?invoice=${invoiceData}`;
+        
+        document.getElementById('generated-link').value = paymentLink;
+        document.getElementById('results-section').classList.remove('hidden');
+        
+        // Update distribution status
+        updateDistributionStatus();
+        
+        // Store invoice for records
+        localStorage.setItem('invoice-' + invoice.number, JSON.stringify({
+          ...invoice,
+          type: 'sirsi-invoice',
+          status: 'created',
+          paymentLink: paymentLink,
+          createdAt: new Date().toISOString()
+        }));
+      }
+
+      function copyLink() {
+        const linkInput = document.getElementById('generated-link');
+        linkInput.select();
+        navigator.clipboard.writeText(linkInput.value);
+        
+        const button = event.target;
+        const originalText = button.innerHTML;
+        button.innerHTML = 'Copied!';
+        button.classList.add('bg-green-600');
+        
+        setTimeout(() => {
+          button.innerHTML = originalText;
+          button.classList.remove('bg-green-600');
+        }, 2000);
+      }
+
+      function previewInvoice() {
+        if (!currentInvoice) {
+          alert('Please create an invoice first.');
+          return;
+        }
+        
+        console.log('Current invoice data:', currentInvoice);
+        const invoiceData = encodeURIComponent(JSON.stringify(currentInvoice));
+        console.log('Encoded invoice data:', invoiceData);
+        
+        // Handle both local development and GitHub Pages deployment
+        let previewUrl;
+        if (window.location.hostname === 'sirsimaster.github.io') {
+          previewUrl = `/pay.html?invoice=${invoiceData}`;
+        } else {
+          // For local development or other deployments
+          previewUrl = `/pay.html?invoice=${invoiceData}`;
+        }
+        
+        console.log('Preview URL:', previewUrl);
+        console.log('Current hostname:', window.location.hostname);
+        console.log('Current origin:', window.location.origin);
+        
+        // Try to open the preview
+        const newWindow = window.open(previewUrl, '_blank');
+        if (!newWindow) {
+          alert('Please allow popups for this site to use the preview function.');
+        } else {
+          console.log('Preview window opened successfully');
+        }
+      }
+
+      function emailInvoice() {
+        if (!currentInvoice) {
+          alert('Please create an invoice first.');
+          return;
+        }
+        
+        const subject = `Invoice ${currentInvoice.number} - SirsiNexus`;
+        const body = `Dear ${currentInvoice.client},
+
+Thank you for choosing SirsiNexus for your AI infrastructure needs.
+
+Invoice Details:
+- Invoice #: ${currentInvoice.number}
+- Service: ${currentInvoice.service}
+- Amount: $${currentInvoice.amount.toFixed(2)} USD
+- Due Date: ${new Date(currentInvoice.dueDate).toLocaleDateString()}
+
+Please pay securely using this link:
+${document.getElementById('generated-link').value}
+
+We accept all major payment methods including:
+• Credit/Debit Cards • PayPal • Apple Pay • Google Pay
+• Bank Transfers and more
+
+Thank you for your business!
+
+Best regards,
+SirsiNexus Team
+Leading AI Infrastructure Solutions`;
+
+        const mailtoLink = `mailto:${currentInvoice.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.open(mailtoLink);
+      }
+
+      function generateQR() {
+        if (!currentInvoice) {
+          alert('Please create an invoice first.');
+          return;
+        }
+        
+        const link = document.getElementById('generated-link').value;
+        const qrContainer = document.getElementById('qr-code-container');
+        qrContainer.innerHTML = '';
+        
+        QRCode.toCanvas(qrContainer, link, {
+          width: 200,
+          height: 200,
+          colorDark: '#059669',
+          colorLight: '#ffffff'
+        }, function (error) {
+          if (error) console.error(error);
+        });
+        
+        document.getElementById('qr-section').classList.remove('hidden');
+      }
+
+      function updateDistributionStatus() {
+        const statusContainer = document.getElementById('distribution-status');
+        const channels = {
+          'enable-email': { name: '📧 Email', color: 'blue' },
+          'enable-qr': { name: '📱 QR Code', color: 'orange' },
+          'enable-sms': { name: '💬 SMS', color: 'green' },
+          'enable-social': { name: '🌐 Social', color: 'purple' }
+        };
+
+        statusContainer.innerHTML = '';
+        
+        Object.keys(channels).forEach(id => {
+          const checkbox = document.getElementById(id);
+          const channel = channels[id];
+          const status = checkbox.checked ? 'Ready' : 'Disabled';
+          const statusColor = checkbox.checked ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400';
+          
+          const statusItem = document.createElement('div');
+          statusItem.className = `flex items-center justify-between p-2 bg-white dark:bg-slate-700 rounded border`;
+          statusItem.innerHTML = `
+            <span class="font-medium">${channel.name}</span>
+            <span class="${statusColor}">${status}</span>
+          `;
+          statusContainer.appendChild(statusItem);
+        });
+      }
+
+      function executeDistribution() {
+        if (!currentInvoice) {
+          alert('Please create an invoice first.');
+          return;
+        }
+
+        const enabledChannels = [];
+        const channels = {
+          'enable-email': '📧 Email',
+          'enable-qr': '📱 QR Code',
+          'enable-sms': '💬 SMS',
+          'enable-social': '🌐 Social'
+        };
+
+        // Check which channels are enabled
+        Object.keys(channels).forEach(id => {
+          if (document.getElementById(id).checked) {
+            enabledChannels.push(channels[id]);
+          }
+        });
+
+        if (enabledChannels.length === 0) {
+          alert('Please select at least one distribution channel.');
+          return;
+        }
+
+        // Execute distribution
+        const button = event.target;
+        const originalText = button.innerHTML;
+        button.innerHTML = '⏳ Distributing...';
+        button.disabled = true;
+
+        // Simulate distribution process
+        setTimeout(() => {
+          // Execute enabled channels
+          if (document.getElementById('enable-email').checked) {
+            emailInvoice();
+          }
+          if (document.getElementById('enable-qr').checked) {
+            generateQR();
+          }
+          if (document.getElementById('enable-sms').checked) {
+            // SMS would require additional setup
+            alert('SMS distribution requires additional setup. Please contact support.');
+          }
+          if (document.getElementById('enable-social').checked) {
+            // Generate social sharing links
+            generateSocialSharing();
+          }
+
+          // Update status to completed
+          updateDistributionStatusToCompleted(enabledChannels);
+          
+          button.innerHTML = '✅ Distribution Complete';
+          button.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+          button.classList.add('bg-green-600');
+          
+          setTimeout(() => {
+            button.innerHTML = originalText;
+            button.disabled = false;
+            button.classList.remove('bg-green-600');
+            button.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+          }, 3000);
+        }, 1500);
+      }
+
+      function updateDistributionStatusToCompleted(channels) {
+        const statusContainer = document.getElementById('distribution-status');
+        const items = statusContainer.children;
+        
+        for (let item of items) {
+          const statusSpan = item.querySelector('span:last-child');
+          if (statusSpan.textContent === 'Ready') {
+            statusSpan.textContent = 'Sent';
+            statusSpan.className = 'text-green-600 dark:text-green-400';
+          }
+        }
+      }
+
+      function generateSocialSharing() {
+        if (!currentInvoice) return;
+        
+        const link = document.getElementById('generated-link').value;
+        const message = `Invoice ${currentInvoice.number} from SirsiNexus - Secure payment required`;
+        
+        const platforms = {
+          whatsapp: `https://wa.me/?text=${encodeURIComponent(message + ': ' + link)}`,
+          twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}&url=${encodeURIComponent(link)}`,
+          linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(link)}`,
+          facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}`
+        };
+        
+        // Open WhatsApp by default (most commonly used for business)
+        window.open(platforms.whatsapp, '_blank');
+        
+        // Store all platform links in localStorage for user access
+        localStorage.setItem('social-links-' + currentInvoice.number, JSON.stringify(platforms));
+      }
+
+      // Zelle Payment Functions
+      function showZelleInfo() {
+        if (!currentInvoice) {
+          alert('Please create an invoice first.');
+          return;
+        }
+        
+        document.getElementById('zelle-qr-section').classList.remove('hidden');
+        
+        // Scroll to the Zelle section
+        document.getElementById('zelle-qr-section').scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+
+      function copyZelleInfo() {
+        if (!currentInvoice) {
+          alert('Please create an invoice first.');
+          return;
+        }
+        
+        const amount = currentInvoice.amount.toFixed(2);
+        const invoiceNumber = currentInvoice.number;
+        
+        const zelleInfo = `💜 ZELLE PAYMENT - NO FEES!
+
+Payment Details:
+• Amount: $${amount} USD
+• Invoice: ${invoiceNumber}
+• Recipient: cylton@cylton.com
+
+Instructions:
+1. Open your bank's mobile app or Zelle® app
+2. Send money to: cylton@cylton.com
+3. Enter amount: $${amount}
+4. Add note: "Invoice ${invoiceNumber}"
+
+Benefits:
+✓ Instant transfer (usually within minutes)
+✓ Bank-level security and encryption
+✓ Zero processing fees
+✓ Available 24/7
+✓ No account setup required
+
+Questions? Contact: cylton@cylton.com
+
+SirsiNexus - AI Infrastructure Solutions`;
+        
+        navigator.clipboard.writeText(zelleInfo).then(() => {
+          const button = event.target;
+          const originalText = button.innerHTML;
+          button.innerHTML = '✅ Copied!';
+          button.classList.remove('bg-purple-600', 'hover:bg-purple-700');
+          button.classList.add('bg-green-600');
+          
+          setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('bg-green-600');
+            button.classList.add('bg-purple-600', 'hover:bg-purple-700');
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy Zelle info: ', err);
+          alert('Failed to copy. Please try again.');
+        });
+      }
+    </script>
+</body>
+</html>

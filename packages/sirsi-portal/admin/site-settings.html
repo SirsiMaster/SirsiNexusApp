@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Administration - SirsiNexus Admin</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'dark-bg': '#0f1419',
+                        'dark-card': '#1a1f29',
+                        'dark-border': '#2a2f3a',
+                        'dark-text': '#e1e8ed',
+                        'dark-text-secondary': '#8b98a5',
+                        'emerald': {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            300: '#6ee7b7',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Theme Toggle Script -->
+    <script src="assets/js/fresh-theme-toggle.js"></script>
+    
+    <!-- Override conflicting styles -->
+    <link rel="stylesheet" href="assets/css/admin-styles.css">
+    
+    <!-- Custom Styles -->
+    <style>
+        /* Override Bootstrap and admin-styles.css conflicts */
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: rgb(249 250 251) !important;
+            color: rgb(17 24 39) !important;
+            min-height: 100vh;
+            padding-top: 0;
+            margin: 0;
+        }
+        
+        .dark body {
+            background-color: rgb(15 23 42) !important;
+            color: rgb(241 245 249) !important;
+        }
+        
+        /* Fix main content layout */
+        main {
+            margin-left: 16rem !important;
+            padding-top: 5rem !important;
+            min-height: 100vh;
+        }
+        
+        @media (max-width: 768px) {
+            main {
+                margin-left: 0 !important;
+            }
+            
+            /* Hide sidebar on mobile */
+            aside {
+                display: none;
+            }
+            
+            aside.show {
+                display: block;
+            }
+        }
+        
+        /* Settings section */
+        .settings-section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .dark .settings-section {
+            background: #1a1f29;
+            border-color: #2a2f3a;
+        }
+        
+        .setting-item {
+            padding: 20px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .dark .setting-item {
+            border-bottom-color: #2a2f3a;
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Toggle switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 30px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #10b981;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+        
+        /* Integration cards */
+        .integration-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: white;
+        }
+        
+        .dark .integration-card {
+            background: #1a1f29;
+            border-color: #2a2f3a;
+        }
+        
+        .integration-card:hover {
+            border-color: #10b981;
+            transform: translateY(-5px);
+        }
+        
+        .integration-card.active {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .integration-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #10b981;
+        }
+        
+        /* Config code */
+        .config-code {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        
+        .dark .config-code {
+            background: #1a1f29;
+            border-color: #2a2f3a;
+        }
+        
+        /* Maintenance banner */
+        .maintenance-banner {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .maintenance-banner.active {
+            display: block;
+        }
+        
+        /* Backup items */
+        .backup-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: white;
+        }
+        
+        .dark .backup-item {
+            background: #1a1f29;
+            border-color: #2a2f3a;
+        }
+        
+        /* Stat cards */
+        .stat-card {
+            background: white;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+        
+        .dark .stat-card {
+            background: #1a1f29;
+            border-color: #2a2f3a;
+        }
+        
+        .stat-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .stat-content h3 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .stat-content p {
+            color: #6b7280;
+            margin: 0;
+        }
+        
+        .dark .stat-content p {
+            color: #9ca3af;
+        }
+        
+        /* Animation styles */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-colors duration-300">
+    <!-- Skip Links for Accessibility -->
+    <div id="skip-links"></div>
+    
+    <!-- Admin Header -->
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-slate-700 fixed top-0 left-0 right-0 z-50">
+        <div class="px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-6">
+                    <!-- Logo/Brand -->
+                    <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">S</span>
+                    </div>
+                        <div>
+                            <h1 class="text-base font-semibold text-gray-900 dark:text-white">SirsiNexus</h1>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">ADMIN CONSOLE</p>
+                        </div>
+                    </div>
+                    <!-- Status Indicator -->
+                    <span class="inline-flex items-center text-xs text-green-600 dark:text-green-400">
+                        <span class="w-2 h-2 bg-green-600 rounded-full mr-1 animate-pulse"></span>
+                        Live
+                    </span>
+                </div>
+                <!-- Right Section -->
+                <div class="flex items-center space-x-6">
+                    <!-- Platform/Page Info -->
+                    <nav class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                    <a href="../index.html" class="hover:text-gray-900 dark:hover:text-white">SirsiNexusPortal</a>
+                    <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                    <span class="text-gray-900 dark:text-white font-medium">Admin Portal</span>
+                </nav>
+                    <!-- Clock -->
+                    <span id="clock" class="text-sm font-mono text-gray-600 dark:text-gray-300">--:--</span>
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-md bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <svg class="w-5 h-5 text-gray-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <!-- Exit/Logout Button -->
+                    <button class="p-2 rounded-md bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors" onclick="handleLogout()">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                    </button>
+                    <!-- User Info -->
+                    <div class="flex items-center space-x-3">
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-200">ADMIN</span>
+                        <div class="w-8 h-8 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 fixed left-0 top-16 bottom-0 w-64 z-40 overflow-y-auto">
+        <div class="p-4">
+            <div class="space-y-1">
+                <a href="index.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="users/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                    User Management
+                </a>
+                <a href="data-room.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Data Room
+                </a>
+                <a href="dashboard/telemetry.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h10a1 1 0 01.8 1.6L14.25 8l2.55 3.4A1 1 0 0116 13H6a1 1 0 00-1 1v3a1 1 0 11-2 0V6z" clip-rule="evenodd"/>
+                    </svg>
+                    Telemetry
+                </a>
+                <a href="site-settings.html" class="flex items-center px-3 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+                    </svg>
+                    Site Admin
+                </a>
+                <a href="security/" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Security
+                </a>
+                <a href="dashboard/system-logs.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                    </svg>
+                    System Logs
+                </a>
+                <a href="/admin/documentation.html" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-md">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/>
+                    </svg>
+                    Documentation
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="ml-64 pt-16 min-h-screen bg-gray-50 dark:bg-slate-900 p-6">
+        <!-- Page Header -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Site Administration</h1>
+            
+            <!-- Maintenance Mode Banner -->
+            <div class="maintenance-banner" id="maintenanceBanner">
+                <i class="fas fa-exclamation-triangle"></i> <strong>Maintenance Mode Active:</strong> The site is currently in maintenance mode. Only administrators can access it.
+            </div>
+                
+            <!-- Quick Actions -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="stat-card">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-emerald-100 dark:bg-emerald-900/20 mr-4">
+                            <i class="fas fa-server text-emerald-600 dark:text-emerald-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Active</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">System Status</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900/20 mr-4">
+                            <i class="fas fa-database text-blue-600 dark:text-blue-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">98.5%</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Database Health</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-green-100 dark:bg-green-900/20 mr-4">
+                            <i class="fas fa-shield-alt text-green-600 dark:text-green-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Secure</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Security Status</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-purple-100 dark:bg-purple-900/20 mr-4">
+                            <i class="fas fa-clock text-purple-600 dark:text-purple-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">99.9%</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Uptime</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <!-- General Settings -->
+                <div class="settings-section">
+                    <h3 class="mb-4">General Settings</h3>
+                    
+                    <div class="setting-item">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1 mr-4">
+                                <h5 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Site Name</h5>
+                                <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" id="siteName" value="SirsiNexus Investor Portal">
+                            </div>
+                            <div>
+                                <button class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-md transition-colors duration-200" onclick="saveSetting('siteName')">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <h5 class="text-lg font-semibold text-gray-900 dark:text-white">Maintenance Mode</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Enable maintenance mode to prevent non-admin access</p>
+                            </div>
+                            <div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="maintenanceMode" onchange="toggleMaintenance()">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <h5 class="text-lg font-semibold text-gray-900 dark:text-white">Registration</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Allow new users to register</p>
+                            </div>
+                            <div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="allowRegistration" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <h5 class="text-lg font-semibold text-gray-900 dark:text-white">Two-Factor Authentication</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Require 2FA for all users</p>
+                            </div>
+                            <div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="require2FA">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email Configuration -->
+                <div class="settings-section">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Email Configuration</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="smtpHost" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SMTP Host</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" id="smtpHost" value="smtp.gmail.com">
+                        </div>
+                        <div>
+                            <label for="smtpPort" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SMTP Port</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" id="smtpPort" value="587">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label for="smtpUser" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SMTP Username</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" id="smtpUser" value="noreply@sirsinexus.com">
+                        </div>
+                        <div>
+                            <label for="smtpPass" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SMTP Password</label>
+                            <input type="password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" id="smtpPass" placeholder="••••••••">
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-6 space-x-3">
+                        <button class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition-colors duration-200" onclick="testEmail()">Send Test Email</button>
+                        <button class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-md transition-colors duration-200" onclick="saveEmailConfig()">Save Configuration</button>
+                    </div>
+                </div>
+
+                <!-- Integrations -->
+                <div class="settings-section">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Integrations</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="integration-card" onclick="configureIntegration('slack')">
+                            <i class="fab fa-slack integration-icon"></i>
+                            <h5 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Slack</h5>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Send notifications to Slack</p>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">Connected</span>
+                        </div>
+                        <div class="integration-card" onclick="configureIntegration('google')">
+                            <i class="fab fa-google integration-icon"></i>
+                            <h5 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Google OAuth</h5>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Sign in with Google</p>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">Not Connected</span>
+                        </div>
+                        <div class="integration-card" onclick="configureIntegration('stripe')">
+                            <i class="fab fa-stripe integration-icon"></i>
+                            <h5 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Stripe</h5>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Payment processing</p>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">Not Connected</span>
+                        </div>
+                        <div class="integration-card" onclick="configureIntegration('analytics')">
+                            <i class="fas fa-chart-line integration-icon"></i>
+                            <h5 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Analytics</h5>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Google Analytics</p>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">Connected</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Configuration -->
+                <div class="settings-section">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">API Configuration</h3>
+                    
+                    <div class="mb-6">
+                        <label for="apiKey" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">API Key</label>
+                        <div class="flex">
+                            <input type="text" class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white" id="apiKey" value="sk_live_••••••••••••••••••••••••" readonly>
+                            <button class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-r-md transition-colors duration-200 flex items-center space-x-2" onclick="regenerateAPIKey()">
+                                <i class="fas fa-sync"></i>
+                                <span>Regenerate</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">API Endpoints</label>
+                        <div class="config-code">
+                            <pre>Base URL: https://api.sirsinexus.com/v1/
+                            
+Endpoints:
+- GET /users
+- GET /users/{id}
+- POST /users
+- PUT /users/{id}
+- DELETE /users/{id}
+- GET /files
+- POST /files/upload
+- GET /analytics/events</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="rateLimits" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Rate Limits (requests per hour)</label>
+                        <input type="number" class="w-full md:w-1/3 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white" id="rateLimits" value="1000">
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <button class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-md transition-colors duration-200" onclick="saveAPIConfig()">Save API Configuration</button>
+                    </div>
+                </div>
+
+                <!-- Backup & Restore -->
+                <div class="settings-section">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Backup & Restore</h3>
+                    
+                    <div class="mb-6">
+                        <h5 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Automated Backups</h5>
+                        <div class="flex items-center justify-between">
+                            <p class="text-gray-600 dark:text-gray-400">Enable automated daily backups</p>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoBackup" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h5 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Recent Backups</h5>
+                        <div id="backupList">
+                            <div class="backup-item">
+                                <div>
+                                    <p class="font-semibold text-gray-900 dark:text-white">Full Backup - January 16, 2024</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Size: 2.3 GB • Status: Complete</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded transition-colors duration-200" onclick="downloadBackup(1)">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                    <button class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded transition-colors duration-200" onclick="restoreBackup(1)">
+                                        <i class="fas fa-undo"></i> Restore
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="backup-item">
+                                <div>
+                                    <p class="font-semibold text-gray-900 dark:text-white">Full Backup - January 15, 2024</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Size: 2.2 GB • Status: Complete</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded transition-colors duration-200" onclick="downloadBackup(2)">
+                                        <i class="fas fa-download"></i> Download
+                                    </button>
+                                    <button class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded transition-colors duration-200" onclick="restoreBackup(2)">
+                                        <i class="fas fa-undo"></i> Restore
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-md transition-colors duration-200" onclick="createBackup()">
+                            <i class="fas fa-plus"></i> Create New Backup
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Advanced Settings -->
+                <div class="settings-section">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Advanced Settings</h3>
+                    
+                    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md p-4 mb-6">
+                        <p class="text-yellow-800 dark:text-yellow-200">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>Warning: These settings can affect system stability. Proceed with caution.
+                        </p>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h5 class="text-lg font-semibold text-gray-900 dark:text-white">Debug Mode</h5>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Enable detailed error logging</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="debugMode">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <h5 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Database Connection</h5>
+                        <div class="config-code mb-4">
+                            <pre>Host: localhost
+Port: 5432
+Database: sirsinexus_prod
+Username: admin
+Status: Connected</pre>
+                        </div>
+                        <button class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-md transition-colors duration-200" onclick="testDatabase()">Test Connection</button>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <h5 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Clear Cache</h5>
+                        <p class="text-gray-600 dark:text-gray-400 mb-4">Clear all system caches to free up space and resolve issues</p>
+                        <button class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors duration-200" onclick="clearCache()">
+                            <i class="fas fa-trash"></i> Clear All Caches
+                        </button>
+                    </div>
+        </div>
+    </main>
+
+    <!-- Integration Modal -->
+    <div id="integrationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
+            <div class="mt-3">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="integrationTitle">Configure Integration</h3>
+                    <button type="button" class="text-gray-400 hover:text-gray-500" onclick="closeModal()">
+                        <span class="sr-only">Close</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-2 px-1">
+                    <div id="integrationForm">
+                        <!-- Form will be populated based on selected integration -->
+                    </div>
+                </div>
+                <div class="flex justify-end mt-4 space-x-3">
+                    <button type="button" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="px-4 py-2 bg-emerald-500 text-white rounded hover:bg-emerald-600" onclick="saveIntegration()">Save Configuration</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/fresh-theme-toggle.js"></script>
+    <script>
+        function init() {
+            // Check maintenance mode
+            const maintenanceMode = localStorage.getItem('maintenanceMode') === 'true';
+            document.getElementById('maintenanceMode').checked = maintenanceMode;
+            document.getElementById('maintenanceBanner').classList.toggle('active', maintenanceMode);
+        }
+
+        function toggleMaintenance() {
+            const isEnabled = document.getElementById('maintenanceMode').checked;
+            localStorage.setItem('maintenanceMode', isEnabled);
+            document.getElementById('maintenanceBanner').classList.toggle('active', isEnabled);
+            showNotification(`Maintenance mode ${isEnabled ? 'enabled' : 'disabled'}`, 'success');
+        }
+
+        function saveSetting(settingName) {
+            const value = document.getElementById(settingName).value;
+            // Save to backend
+            showNotification(`${settingName} updated successfully!`, 'success');
+        }
+
+        function saveEmailConfig() {
+            // Collect email configuration
+            const config = {
+                host: document.getElementById('smtpHost').value,
+                port: document.getElementById('smtpPort').value,
+                user: document.getElementById('smtpUser').value,
+                pass: document.getElementById('smtpPass').value
+            };
+            
+            // Save to backend
+            showNotification('Email configuration saved successfully!', 'success');
+        }
+
+        function testEmail() {
+            showNotification('Sending test email...', 'info');
+            
+            // Simulate sending test email
+            setTimeout(() => {
+                showNotification('Test email sent successfully!', 'success');
+            }, 2000);
+        }
+
+        function configureIntegration(integration) {
+            const integrationTitle = document.getElementById('integrationTitle');
+            const integrationForm = document.getElementById('integrationForm');
+            
+            // Set title
+            const titles = {
+                'slack': 'Configure Slack Integration',
+                'google': 'Configure Google OAuth',
+                'stripe': 'Configure Stripe',
+                'analytics': 'Configure Google Analytics'
+            };
+            integrationTitle.textContent = titles[integration];
+            
+            // Build form based on integration type
+            let formHTML = '';
+            
+            switch(integration) {
+                case 'slack':
+                    formHTML = `
+                        <div class="mb-4">
+                            <label for="slackWebhook" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Webhook URL</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-700 dark:text-white" id="slackWebhook" placeholder="https://hooks.slack.com/services/...">
+                        </div>
+                        <div class="mb-4">
+                            <label for="slackChannel" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Default Channel</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-700 dark:text-white" id="slackChannel" value="#notifications">
+                        </div>
+                    `;
+                    break;
+                    
+                case 'google':
+                    formHTML = `
+                        <div class="mb-4">
+                            <label for="googleClientId" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Client ID</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-700 dark:text-white" id="googleClientId" placeholder="1234567890.apps.googleusercontent.com">
+                        </div>
+                        <div class="mb-4">
+                            <label for="googleClientSecret" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Client Secret</label>
+                            <input type="password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-700 dark:text-white" id="googleClientSecret" placeholder="••••••••">
+                        </div>
+                    `;
+                    break;
+                    
+                case 'stripe':
+                    formHTML = `
+                        <div class="mb-4">
+                            <label for="stripePublicKey" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Publishable Key</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-700 dark:text-white" id="stripePublicKey" placeholder="pk_test_...">
+                        </div>
+                        <div class="mb-4">
+                            <label for="stripeSecretKey" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Secret Key</label>
+                            <input type="password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-700 dark:text-white" id="stripeSecretKey" placeholder="sk_test_...">
+                        </div>
+                    `;
+                    break;
+                    
+                case 'analytics':
+                    formHTML = `
+                        <div class="mb-4">
+                            <label for="gaTrackingId" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tracking ID</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:bg-gray-700 dark:text-white" id="gaTrackingId" value="UA-123456789-1">
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <input class="mr-2 rounded" type="checkbox" id="gaEnhancedEcommerce" checked>
+                            <label class="text-sm text-gray-700 dark:text-gray-300" for="gaEnhancedEcommerce">
+                                Enable Enhanced Ecommerce
+                            </label>
+                        </div>
+                    `;
+                    break;
+            }
+            
+            integrationForm.innerHTML = formHTML;
+            
+            // Show modal
+            document.getElementById('integrationModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('integrationModal').classList.add('hidden');
+        }
+
+        function saveIntegration() {
+            // Save integration configuration
+            closeModal();
+            showNotification('Integration configured successfully!', 'success');
+        }
+
+        function regenerateAPIKey() {
+            if (confirm('Are you sure you want to regenerate the API key? This will invalidate the current key.')) {
+                // Generate new API key
+                const newKey = 'sk_live_' + Math.random().toString(36).substring(2, 15);
+                document.getElementById('apiKey').value = 'sk_live_••••••••••••••••••••••••';
+                showNotification('API key regenerated successfully!', 'success');
+            }
+        }
+
+        function saveAPIConfig() {
+            // Save API configuration
+            showNotification('API configuration saved successfully!', 'success');
+        }
+
+        function createBackup() {
+            showNotification('Creating backup...', 'info');
+            
+            // Simulate backup creation
+            setTimeout(() => {
+                // Add new backup to list
+                const backupList = document.getElementById('backupList');
+                const newBackup = document.createElement('div');
+                newBackup.className = 'backup-item';
+                newBackup.innerHTML = `
+                    <div>
+                        <p class="font-semibold text-gray-900 dark:text-white">Full Backup - ${new Date().toLocaleDateString()}</p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Size: 2.4 GB • Status: Complete</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded transition-colors duration-200" onclick="downloadBackup(0)">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                        <button class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded transition-colors duration-200" onclick="restoreBackup(0)">
+                            <i class="fas fa-undo"></i> Restore
+                        </button>
+                    </div>
+                `;
+                backupList.insertBefore(newBackup, backupList.firstChild);
+                
+                showNotification('Backup created successfully!', 'success');
+            }, 3000);
+        }
+
+        function downloadBackup(backupId) {
+            showNotification('Preparing backup download...', 'info');
+        }
+
+        function restoreBackup(backupId) {
+            if (confirm('Are you sure you want to restore this backup? This will overwrite current data.')) {
+                showNotification('Restoring backup...', 'info');
+                
+                setTimeout(() => {
+                    showNotification('Backup restored successfully!', 'success');
+                }, 3000);
+            }
+        }
+
+        function testDatabase() {
+            showNotification('Testing database connection...', 'info');
+            
+            setTimeout(() => {
+                showNotification('Database connection successful!', 'success');
+            }, 1500);
+        }
+
+        function clearCache() {
+            if (confirm('Are you sure you want to clear all caches?')) {
+                showNotification('Clearing caches...', 'info');
+                
+                setTimeout(() => {
+                    showNotification('All caches cleared successfully!', 'success');
+                }, 2000);
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-emerald-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+            notification.className = `${bgColor} text-white px-6 py-3 rounded-lg shadow-lg`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function logout() {
+            localStorage.removeItem('adminToken');
+            window.location.href = 'login.html';
+        }
+
+        // Clock function
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const clockElement = document.getElementById('clock');
+            if (clockElement) {
+                clockElement.textContent = `${hours}:${minutes}`;
+            }
+        }
+
+        // Update clock every second
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Theme toggle functionality
+        function setupThemeToggle() {
+            const toggle = document.getElementById('theme-toggle');
+            if (toggle) {
+                toggle.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.classList.contains('dark');
+                    if (currentTheme) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                    }
+                });
+            }
+        }
+
+        // Initialize theme from localStorage
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || 'light';
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        // Add logout functionality
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '../index.html';
+            }
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            setupThemeToggle();
+            init();
+        });
+    </script>
+<script src="../js/telemetry.js"></script>
+</body>
+</html>

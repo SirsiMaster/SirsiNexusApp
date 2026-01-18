@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Status Dashboard - SirsiNexus Admin</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Card Styling */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark .card {
+            background: #1f2937;
+        }
+        
+        /* Status indicator animation */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        .status-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-colors duration-300">
+    <!-- Admin Header -->
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-slate-700 fixed top-0 left-0 right-0 z-50">
+        <div class="px-6 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-6">
+                    <!-- Logo/Brand -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">S</span>
+                        </div>
+                        <div>
+                            <h1 class="text-base font-semibold text-gray-900 dark:text-white">SirsiNexus</h1>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">SYSTEM STATUS</p>
+                        </div>
+                    </div>
+                    <!-- Status Indicator -->
+                    <span class="inline-flex items-center text-xs text-green-600 dark:text-green-400">
+                        <span class="w-2 h-2 bg-green-600 rounded-full mr-1 animate-pulse"></span>
+                        Live Monitoring
+                    </span>
+                </div>
+                <!-- Right Section -->
+                <div class="flex items-center space-x-6">
+                    <!-- Navigation -->
+                    <nav class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                        <a href="/admin/" class="hover:text-gray-900 dark:hover:text-white">Admin Dashboard</a>
+                        <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                        <span class="text-gray-900 dark:text-white font-medium">System Status</span>
+                    </nav>
+                    <!-- Clock -->
+                    <span id="clock" class="text-sm font-mono text-gray-600 dark:text-gray-300">--:--</span>
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-md bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 818 0z"></path>
+                        </svg>
+                        <svg class="w-5 h-5 text-gray-300 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                    <!-- Back Button -->
+                    <a href="/admin/" class="p-2 rounded-md bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
+                        <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-20 p-6">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">System Status Dashboard</h1>
+            <p class="text-gray-600 dark:text-gray-400 mt-1">Monitor all system components and services in real-time</p>
+        </div>
+
+        <!-- Overall System Health -->
+        <div class="card mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-semibold">Overall System Health</h2>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-500">Last updated:</span>
+                    <span class="text-sm font-mono text-gray-700 dark:text-gray-300" id="lastUpdate">--:--:--</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto mb-3 relative">
+                        <svg class="w-24 h-24 transform -rotate-90">
+                            <circle cx="48" cy="48" r="40" stroke="#e5e7eb" stroke-width="8" fill="none" />
+                            <circle cx="48" cy="48" r="40" stroke="#10b981" stroke-width="8" fill="none" 
+                                    stroke-dasharray="251.2" stroke-dashoffset="25.12" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-2xl font-bold text-green-600">90%</span>
+                        </div>
+                    </div>
+                    <h3 class="font-semibold">System Uptime</h3>
+                    <p class="text-sm text-gray-500">30 days average</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto mb-3 relative">
+                        <svg class="w-24 h-24 transform -rotate-90">
+                            <circle cx="48" cy="48" r="40" stroke="#e5e7eb" stroke-width="8" fill="none" />
+                            <circle cx="48" cy="48" r="40" stroke="#3b82f6" stroke-width="8" fill="none" 
+                                    stroke-dasharray="251.2" stroke-dashoffset="62.8" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-2xl font-bold text-blue-600">75%</span>
+                        </div>
+                    </div>
+                    <h3 class="font-semibold">Performance Score</h3>
+                    <p class="text-sm text-gray-500">Response time metrics</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto mb-3 relative">
+                        <svg class="w-24 h-24 transform -rotate-90">
+                            <circle cx="48" cy="48" r="40" stroke="#e5e7eb" stroke-width="8" fill="none" />
+                            <circle cx="48" cy="48" r="40" stroke="#f59e0b" stroke-width="8" fill="none" 
+                                    stroke-dasharray="251.2" stroke-dashoffset="37.68" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-2xl font-bold text-amber-600">85%</span>
+                        </div>
+                    </div>
+                    <h3 class="font-semibold">Security Status</h3>
+                    <p class="text-sm text-gray-500">Threat detection active</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto mb-3 relative">
+                        <svg class="w-24 h-24 transform -rotate-90">
+                            <circle cx="48" cy="48" r="40" stroke="#e5e7eb" stroke-width="8" fill="none" />
+                            <circle cx="48" cy="48" r="40" stroke="#8b5cf6" stroke-width="8" fill="none" 
+                                    stroke-dasharray="251.2" stroke-dashoffset="12.56" />
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-2xl font-bold text-purple-600">95%</span>
+                        </div>
+                    </div>
+                    <h3 class="font-semibold">Resource Usage</h3>
+                    <p class="text-sm text-gray-500">CPU, Memory, Disk</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service Status Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Core Services -->
+            <div class="card">
+                <h3 class="text-lg font-semibold mb-4">Core Services</h3>
+                <div class="space-y-3">
+                    <a href="api-server.html" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-server text-green-600 dark:text-green-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium group-hover:text-emerald-600 dark:group-hover:text-emerald-400">API Server</h4>
+                                <p class="text-xs text-gray-500">Response time: 45ms</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2 status-pulse"></span>
+                            <span class="text-sm text-green-600 dark:text-green-400 mr-2">Operational</span>
+                            <svg class="w-4 h-4 text-gray-400 group-hover:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </a>
+                    
+                    <a href="database.html" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-database text-green-600 dark:text-green-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium group-hover:text-emerald-600 dark:group-hover:text-emerald-400">Database Cluster</h4>
+                                <p class="text-xs text-gray-500">3 nodes active</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2 status-pulse"></span>
+                            <span class="text-sm text-green-600 dark:text-green-400 mr-2">Healthy</span>
+                            <svg class="w-4 h-4 text-gray-400 group-hover:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </a>
+                    
+                    <a href="cache.html" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-memory text-green-600 dark:text-green-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium group-hover:text-emerald-600 dark:group-hover:text-emerald-400">Cache Layer</h4>
+                                <p class="text-xs text-gray-500">Hit rate: 94%</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2 status-pulse"></span>
+                            <span class="text-sm text-green-600 dark:text-green-400 mr-2">Optimal</span>
+                            <svg class="w-4 h-4 text-gray-400 group-hover:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </a>
+                    
+                    <a href="queue.html" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-stream text-yellow-600 dark:text-yellow-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium group-hover:text-emerald-600 dark:group-hover:text-emerald-400">Message Queue</h4>
+                                <p class="text-xs text-gray-500">245 messages/sec</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 bg-yellow-500 rounded-full mr-2 status-pulse"></span>
+                            <span class="text-sm text-yellow-600 dark:text-yellow-400 mr-2">High Load</span>
+                            <svg class="w-4 h-4 text-gray-400 group-hover:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- External Services -->
+            <div class="card">
+                <h3 class="text-lg font-semibold mb-4">External Services</h3>
+                <div class="space-y-3">
+                    <a href="cdn.html" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-globe text-yellow-600 dark:text-yellow-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium group-hover:text-emerald-600 dark:group-hover:text-emerald-400">CDN</h4>
+                                <p class="text-xs text-gray-500">98% cache hit ratio</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 bg-yellow-500 rounded-full mr-2 status-pulse"></span>
+                            <span class="text-sm text-yellow-600 dark:text-yellow-400 mr-2">Minor Issues</span>
+                            <svg class="w-4 h-4 text-gray-400 group-hover:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </a>
+                    
+                    <a href="email-service.html" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-envelope text-green-600 dark:text-green-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium group-hover:text-emerald-600 dark:group-hover:text-emerald-400">Email Service</h4>
+                                <p class="text-xs text-gray-500">1,234 sent today</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2 status-pulse"></span>
+                            <span class="text-sm text-green-600 dark:text-green-400 mr-2">Operational</span>
+                            <svg class="w-4 h-4 text-gray-400 group-hover:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </a>
+                    
+                    <a href="payment.html" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-credit-card text-green-600 dark:text-green-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium group-hover:text-emerald-600 dark:group-hover:text-emerald-400">Payment Gateway</h4>
+                                <p class="text-xs text-gray-500">99.9% success rate</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2 status-pulse"></span>
+                            <span class="text-sm text-green-600 dark:text-green-400 mr-2">Active</span>
+                            <svg class="w-4 h-4 text-gray-400 group-hover:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </a>
+                    
+                    <a href="analytics.html" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors group">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-chart-line text-green-600 dark:text-green-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium group-hover:text-emerald-600 dark:group-hover:text-emerald-400">Analytics Engine</h4>
+                                <p class="text-xs text-gray-500">Processing normally</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2 status-pulse"></span>
+                            <span class="text-sm text-green-600 dark:text-green-400 mr-2">Running</span>
+                            <svg class="w-4 h-4 text-gray-400 group-hover:text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="card">
+                <h3 class="text-lg font-semibold mb-4">Response Time (Last 24h)</h3>
+                <div class="h-64">
+                    <canvas id="responseTimeChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="text-lg font-semibold mb-4">Error Rate (Last 24h)</h3>
+                <div class="h-64">
+                    <canvas id="errorRateChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Incidents -->
+        <div class="card">
+            <h3 class="text-lg font-semibold mb-4">Recent Incidents & Maintenance</h3>
+            <div class="space-y-4">
+                <div class="border-l-4 border-yellow-500 pl-4">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h4 class="font-medium">CDN Performance Degradation</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Some users may experience slower load times in EU region</p>
+                            <p class="text-xs text-gray-500 mt-2">Started: 2 hours ago | Status: Investigating</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">In Progress</span>
+                    </div>
+                </div>
+                
+                <div class="border-l-4 border-green-500 pl-4">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h4 class="font-medium">Database Maintenance Completed</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Successfully upgraded to latest version with improved performance</p>
+                            <p class="text-xs text-gray-500 mt-2">Completed: 6 hours ago | Duration: 45 minutes</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Resolved</span>
+                    </div>
+                </div>
+                
+                <div class="border-l-4 border-blue-500 pl-4">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <h4 class="font-medium">Scheduled Maintenance: API Server Update</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">API services will be unavailable for approximately 30 minutes</p>
+                            <p class="text-xs text-gray-500 mt-2">Scheduled: Tomorrow 3:00 AM UTC</p>
+                        </div>
+                        <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Scheduled</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Clock functionality
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
+        }
+        
+        function updateLastUpdate() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('lastUpdate').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        
+        updateClock();
+        updateLastUpdate();
+        setInterval(updateClock, 1000);
+        setInterval(updateLastUpdate, 5000); // Update every 5 seconds
+        
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle?.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            updateChartColors();
+        });
+
+        // Initialize theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        // Charts
+        const isDarkMode = () => document.documentElement.classList.contains('dark');
+        
+        // Response Time Chart
+        const responseTimeCtx = document.getElementById('responseTimeChart').getContext('2d');
+        const responseTimeChart = new Chart(responseTimeCtx, {
+            type: 'line',
+            data: {
+                labels: Array.from({length: 24}, (_, i) => `${i}:00`),
+                datasets: [{
+                    label: 'Response Time (ms)',
+                    data: Array.from({length: 24}, () => Math.floor(Math.random() * 50) + 30),
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value + 'ms';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Error Rate Chart
+        const errorRateCtx = document.getElementById('errorRateChart').getContext('2d');
+        const errorRateChart = new Chart(errorRateCtx, {
+            type: 'bar',
+            data: {
+                labels: Array.from({length: 24}, (_, i) => `${i}:00`),
+                datasets: [{
+                    label: 'Errors',
+                    data: Array.from({length: 24}, () => Math.floor(Math.random() * 10)),
+                    backgroundColor: '#ef4444'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+
+        // Update chart colors on theme change
+        function updateChartColors() {
+            const isDark = isDarkMode();
+            const textColor = isDark ? '#e5e7eb' : '#374151';
+            const gridColor = isDark ? '#374151' : '#e5e7eb';
+            
+            [responseTimeChart, errorRateChart].forEach(chart => {
+                chart.options.scales.x.ticks.color = textColor;
+                chart.options.scales.y.ticks.color = textColor;
+                chart.options.scales.x.grid.color = gridColor;
+                chart.options.scales.y.grid.color = gridColor;
+                chart.update();
+            });
+        }
+
+        updateChartColors();
+    </script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Analysis - SirsiNexus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../../components/ui-library.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Authentication Check -->
+    <script>
+        (function() {
+            const auth = sessionStorage.getItem('investorAuth');
+            if (!auth) {
+                window.location.href = '../../investor-login.html';
+                return;
+            }
+            
+            try {
+                const authData = JSON.parse(auth);
+                const loginTime = new Date(authData.loginTime);
+                const now = new Date();
+                const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+                
+                if (hoursSinceLogin > 24) {
+                    sessionStorage.removeItem('investorAuth');
+                    window.location.href = '../../investor-login.html';
+                    return;
+                }
+            } catch (error) {
+                console.error('Authentication error:', error);
+                sessionStorage.removeItem('investorAuth');
+                window.location.href = '../../investor-login.html';
+                return;
+            }
+        })();
+    </script>
+
+    <!-- Theme Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d'
+                        },
+                        secondary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a'
+                        }
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- AOS for scroll animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <style>
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 400px;
+            width: 100%;
+        }
+
+        .market-stat {
+            transition: all 0.3s ease;
+        }
+
+        .market-stat:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark .market-stat:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .competitor-card {
+            transition: all 0.3s ease;
+        }
+
+        .competitor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark .competitor-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-50 dark:bg-slate-900">
+    <sirsi-header>
+        <nav slot="nav-items">
+            <a href="../../index.html" class="sirsi-nav-item">← Back to Home</a>
+            <a href="../index.html" class="sirsi-nav-item">← Back to Portal</a>
+        </nav>
+    </sirsi-header>
+
+    <main class="sirsi-container py-12">
+        <!-- Hero Section -->
+        <div class="sirsi-section text-center">
+            <h1 class="sirsi-heading-1 mb-6">Market Analysis & Opportunity</h1>
+            <p class="sirsi-text max-w-3xl mx-auto">
+                Comprehensive analysis of the $78.8B cloud infrastructure optimization market, 
+                with focus on AI-driven automation and the transition from traditional IaC to 
+                intelligent infrastructure management.
+            </p>
+        </div>
+
+        <!-- Key Market Metrics -->
+        <div class="sirsi-metric-grid mb-12">
+            <sirsi-metric value="$78.8B" label="Total Addressable Market"></sirsi-metric>
+            <sirsi-metric value="28.5%" label="CAGR (2025-2030)"></sirsi-metric>
+            <sirsi-metric value="35%" label="Average Cost Reduction"></sirsi-metric>
+            <sirsi-metric value="99.99%" label="AI Prediction Accuracy"></sirsi-metric>
+        </div>
+
+        <!-- Market Overview -->
+        <div class="sirsi-card mb-12">
+            <h2 class="sirsi-heading-2 mb-6">Market Overview</h2>
+            <div class="sirsi-text space-y-4">
+                <p>
+                    The cloud infrastructure optimization market is undergoing a paradigm shift from 
+                    traditional Infrastructure as Code (IaC) solutions to AI-driven autonomous infrastructure 
+                    management. This transition is driven by increasing complexity in cloud operations, 
+                    rising costs, and the need for predictive optimization.
+                </p>
+                <p>
+                    Key market drivers include:
+                </p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Rising cloud infrastructure costs (projected 22% increase in 2025)</li>
+                    <li>Increasing complexity of multi-cloud environments</li>
+                    <li>Growing demand for autonomous operations</li>
+                    <li>Shift towards predictive optimization</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Competitive Analysis -->
+        <div class="sirsi-card mb-12">
+            <h2 class="sirsi-heading-2 mb-6">Competitive Landscape</h2>
+            <div class="overflow-x-auto">
+                <table class="sirsi-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Traditional IaC</th>
+                            <th>Cloud-Native Tools</th>
+                            <th>SirsiNexus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Automation Level</td>
+                            <td>Manual/Script-based</td>
+                            <td>Rule-based</td>
+                            <td class="font-semibold text-primary-600">Full AI Autonomy</td>
+                        </tr>
+                        <tr>
+                            <td>Cost Optimization</td>
+                            <td>Basic</td>
+                            <td>Reactive</td>
+                            <td class="font-semibold text-primary-600">Predictive (35% savings)</td>
+                        </tr>
+                        <tr>
+                            <td>Multi-Cloud Support</td>
+                            <td>Limited</td>
+                            <td>Provider-specific</td>
+                            <td class="font-semibold text-primary-600">Universal + Hedera</td>
+                        </tr>
+                        <tr>
+                            <td>AI/ML Integration</td>
+                            <td>None</td>
+                            <td>Basic Analytics</td>
+                            <td class="font-semibold text-primary-600">Graph of Thought Architecture</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Market Size & Growth -->
+        <div class="sirsi-card mb-12">
+            <h2 class="sirsi-heading-2 mb-6">Market Size & Growth Trajectory</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <sirsi-chart title="Market Size Projection (2025-2030)">
+                        <canvas id="marketSizeChart"></canvas>
+                    </sirsi-chart>
+                </div>
+                <div class="sirsi-text space-y-4">
+                    <p>
+                        The cloud infrastructure optimization market is projected to grow from $78.8B in 2025 
+                        to $276.5B by 2030, representing a CAGR of 28.5%. This growth is primarily driven by:
+                    </p>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li>Enterprise digital transformation initiatives</li>
+                        <li>Adoption of AI-driven infrastructure management</li>
+                        <li>Increasing focus on cost optimization</li>
+                        <li>Growing complexity of cloud architectures</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SirsiNexus Advantage -->
+        <div class="sirsi-card mb-12">
+            <h2 class="sirsi-heading-2 mb-6">Strategic Advantage</h2>
+            <div class="sirsi-feature-list">
+                <sirsi-feature 
+                    title="Graph of Thought Architecture" 
+                    description="Proprietary AI architecture combining LLMs with Knowledge Graphs for superior infrastructure optimization"
+                    icon="🧠">
+                </sirsi-feature>
+                <sirsi-feature 
+                    title="Hedera Hashgraph Integration" 
+                    description="First-mover advantage in leveraging Hedera for secure, scalable infrastructure management"
+                    icon="⚡">
+                </sirsi-feature>
+                <sirsi-feature 
+                    title="Multi-Cloud Optimization" 
+                    description="Universal compatibility across AWS, Azure, GCP with 35% average cost reduction"
+                    icon="☁️">
+                </sirsi-feature>
+                <sirsi-feature 
+                    title="Strategic Partnerships" 
+                    description="Exclusive access to NVIDIA Inception, AWS Migration Acceleration Program, and Techstars Universe"
+                    icon="🤝">
+                </sirsi-feature>
+            </div>
+        </div>
+
+        <!-- Growth Strategy -->
+        <div class="sirsi-card">
+            <h2 class="sirsi-heading-2 mb-6">Market Entry & Growth Strategy</h2>
+            <div class="sirsi-timeline">
+                <div class="sirsi-timeline-item">
+                    <div class="sirsi-timeline-dot"></div>
+                    <h3 class="font-semibold mb-2">Phase 1: Market Entry (2025)</h3>
+                    <p class="sirsi-text">Initial funding of $1.5M (Pre-Seed) enabling core product development and early customer acquisition</p>
+                </div>
+                <div class="sirsi-timeline-item">
+                    <div class="sirsi-timeline-dot"></div>
+                    <h3 class="font-semibold mb-2">Phase 2: Market Expansion (2025-2026)</h3>
+                    <p class="sirsi-text">Seed round of $6M to accelerate growth and enhance AI capabilities</p>
+                </div>
+                <div class="sirsi-timeline-item">
+                    <div class="sirsi-timeline-dot"></div>
+                    <h3 class="font-semibold mb-2">Phase 3: Market Leadership (2026-2027)</h3>
+                    <p class="sirsi-text">Series A funding of $15M to establish market leadership and global expansion</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <sirsi-footer>
+        <div slot="footer-content">
+            <h4 class="font-semibold mb-4">Market Resources</h4>
+            <ul class="space-y-2 text-sm text-slate-400">
+                <li><a href="../index.html" class="hover:text-white transition-colors">Investor Portal</a></li>
+                <li><a href="product-roadmap.html" class="hover:text-white transition-colors">Product Roadmap</a></li>
+                <li><a href="../kpi-unit-metrics.html" class="hover:text-white transition-colors">KPI Metrics</a></li>
+            </ul>
+        </div>
+    </sirsi-footer>
+
+    <script>
+        // Market Size Chart
+        const ctx = document.getElementById('marketSizeChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['2025', '2026', '2027', '2028', '2029', '2030'],
+                datasets: [{
+                    label: 'Market Size (Billions USD)',
+                    data: [78.8, 101.3, 130.2, 167.4, 215.1, 276.5],
+                    borderColor: '#16a34a',
+                    backgroundColor: 'rgba(22, 163, 74, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value + 'B';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

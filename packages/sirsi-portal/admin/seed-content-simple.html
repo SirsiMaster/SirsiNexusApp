@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SirsiNexus Content Seeder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">SirsiNexus Content Seeder</h1>
+        
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">Quick Setup (No Auth Required)</h2>
+            <p class="text-gray-600 mb-4">
+                This tool will populate your Firestore database with sample content.
+                For security, this should be removed after initial setup.
+            </p>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                <p class="text-yellow-700">
+                    ⚠️ <strong>Important:</strong> Make sure your Firestore rules temporarily allow writes, or use this with an authenticated admin account.
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold mb-4">Seed Content</h2>
+            
+            <div class="space-y-3">
+                <button onclick="seedTeam()" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                    🧑‍💼 Seed Team Members (4 members)
+                </button>
+                
+                <button onclick="seedBlog()" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                    📝 Seed Blog Posts (3 posts)
+                </button>
+                
+                <button onclick="seedJobs()" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                    💼 Seed Job Listings (3 jobs)
+                </button>
+                
+                <button onclick="seedPricing()" class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                    💰 Seed Pricing Tiers (3 tiers)
+                </button>
+                
+                <hr class="my-4">
+                
+                <button onclick="seedAll()" class="w-full bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 font-bold">
+                    🚀 Seed All Content
+                </button>
+            </div>
+            
+            <div id="status" class="mt-6 p-4 bg-gray-50 rounded text-sm font-mono h-48 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFd4RAvVZWy3G1geLudrq4KgDDsGr-jb8",
+            authDomain: "sirsi-nexus-live.firebaseapp.com",
+            projectId: "sirsi-nexus-live",
+            storageBucket: "sirsi-nexus-live.firebasestorage.app",
+            messagingSenderId: "210890802638",
+            appId: "1:210890802638:web:9b721753a295620422179f"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Content data
+        const teamMembers = [
+            {
+                id: 'alex-chen',
+                name: 'Alex Chen',
+                role: 'Founder & CEO',
+                bio: 'Former Google Cloud architect with 15+ years building scalable infrastructure. Led teams at AWS and Microsoft Azure.',
+                image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
+                linkedin: 'https://linkedin.com/in/alexchen',
+                github: 'https://github.com/alexchen',
+                order: 1
+            },
+            {
+                id: 'sarah-martinez',
+                name: 'Sarah Martinez',
+                role: 'Chief Technology Officer',
+                bio: 'AI/ML expert with PhD from MIT. Previously built autonomous systems at Tesla and DeepMind.',
+                image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
+                linkedin: 'https://linkedin.com/in/sarahmartinez',
+                github: 'https://github.com/sarahm',
+                order: 2
+            },
+            {
+                id: 'james-wilson',
+                name: 'James Wilson',
+                role: 'Head of Engineering',
+                bio: 'Full-stack architect with expertise in Rust, Go, and distributed systems. Built infrastructure at Uber and Stripe.',
+                image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=James',
+                linkedin: 'https://linkedin.com/in/jameswilson',
+                github: 'https://github.com/jwilson',
+                order: 3
+            },
+            {
+                id: 'emily-zhang',
+                name: 'Emily Zhang',
+                role: 'Head of Product',
+                bio: 'Product visionary who launched enterprise products at Salesforce and Oracle. Stanford MBA.',
+                image: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Emily',
+                linkedin: 'https://linkedin.com/in/emilyzhang',
+                order: 4
+            }
+        ];
+
+        const blogPosts = [
+            {
+                id: 'introducing-sirsinexus',
+                title: 'Introducing SirsiNexus: The Future of Intelligent Infrastructure',
+                slug: 'introducing-sirsinexus',
+                excerpt: 'Today, we\'re excited to announce SirsiNexus, a revolutionary AI-powered infrastructure platform that thinks, learns, and evolves with your business.',
+                content: `Today marks a significant milestone in the evolution of cloud infrastructure management. We're thrilled to introduce SirsiNexus, an AI-powered platform that fundamentally reimagines how enterprises manage their cloud resources.
+
+Modern enterprises struggle with complexity, reactive operations, cost overruns, and skill gaps. SirsiNexus embeds AI agents directly into your infrastructure that predict and prevent failures, self-heal when issues arise, and optimize continuously.
+
+Our platform offers zero-touch operations, natural language control, multi-cloud native support, and enterprise-grade security. Join the infrastructure revolution at sirsi.ai.`,
+                author: 'Alex Chen',
+                category: 'Announcement',
+                tags: ['launch', 'ai', 'infrastructure', 'cloud'],
+                publishedAt: new Date('2024-12-01').toISOString(),
+                readTime: 5,
+                featured: true,
+                image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=600&fit=crop',
+                views: 1250,
+                likes: 89
+            },
+            {
+                id: 'ai-agents-infrastructure',
+                title: 'How AI Agents Are Revolutionizing Infrastructure Management',
+                slug: 'ai-agents-infrastructure',
+                excerpt: 'Explore how autonomous AI agents can manage, optimize, and heal your infrastructure without human intervention.',
+                content: `The era of manual infrastructure management is ending. AI agents are taking over, and they're doing a better job than humans ever could.
+
+Infrastructure AI agents are autonomous software entities that monitor system health in real-time, make decisions based on learned patterns, execute changes without human approval, and learn from outcomes to improve over time.
+
+Our agents have achieved 73% reduction in infrastructure incidents, 47% decrease in cloud costs, 99.99% uptime, and 6x faster deployment times. The future is autonomous.`,
+                author: 'Sarah Martinez',
+                category: 'Technology',
+                tags: ['ai', 'agents', 'automation', 'devops'],
+                publishedAt: new Date('2024-12-05').toISOString(),
+                readTime: 7,
+                featured: true,
+                image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&h=600&fit=crop',
+                views: 987,
+                likes: 67
+            },
+            {
+                id: 'cost-optimization-guide',
+                title: 'The Ultimate Guide to Cloud Cost Optimization with AI',
+                slug: 'cost-optimization-guide',
+                excerpt: 'Learn how AI-driven optimization can reduce your cloud costs by up to 60% while improving performance.',
+                content: `Cloud costs are spiraling out of control for most enterprises. Most organizations are overspending on cloud by 35-45% due to overprovisioned resources, idle instances, inefficient architectures, and lack of visibility.
+
+AI changes the game with predictive resource management, intelligent workload placement, and continuous architecture optimization. A Fortune 500 client achieved $2.8M annual savings with better performance, zero manual intervention, and ROI in 3 months.
+
+Start your cost optimization journey today with SirsiNexus.`,
+                author: 'James Wilson',
+                category: 'Best Practices',
+                tags: ['cost-optimization', 'cloud', 'savings', 'efficiency'],
+                publishedAt: new Date('2024-12-10').toISOString(),
+                readTime: 10,
+                featured: false,
+                image: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1200&h=600&fit=crop',
+                views: 654,
+                likes: 45
+            }
+        ];
+
+        const jobListings = [
+            {
+                id: 'senior-rust-engineer',
+                title: 'Senior Rust Engineer',
+                department: 'Engineering',
+                location: 'Remote (US/EU)',
+                type: 'Full-time',
+                experience: 'Senior',
+                salary: '$180k - $250k + equity',
+                description: 'We\'re looking for a Senior Rust Engineer to build the core infrastructure engine of SirsiNexus. You\'ll design and implement high-performance systems, build distributed systems that scale to millions of operations, and optimize for sub-millisecond latency.',
+                responsibilities: [
+                    'Design and implement core infrastructure engine',
+                    'Optimize system performance and reliability',
+                    'Mentor junior engineers',
+                    'Contribute to technical architecture decisions'
+                ],
+                requirements: [
+                    '5+ years systems programming',
+                    '2+ years Rust in production',
+                    'Distributed systems expertise',
+                    'Strong CS fundamentals'
+                ],
+                benefits: [
+                    'Competitive salary + equity',
+                    'Full remote flexibility',
+                    'Unlimited PTO',
+                    'Top-tier health insurance',
+                    '$5k learning budget'
+                ],
+                publishedAt: new Date('2024-12-08').toISOString(),
+                active: true,
+                applications: 0,
+                views: 0
+            },
+            {
+                id: 'ml-engineer',
+                title: 'Machine Learning Engineer',
+                department: 'AI/ML',
+                location: 'Remote (Global)',
+                type: 'Full-time',
+                experience: 'Senior',
+                salary: '$200k - $300k + equity',
+                description: 'Join us in building the AI brain of SirsiNexus. We need an ML Engineer who can create autonomous systems that learn and adapt.',
+                responsibilities: [
+                    'Develop and deploy ML models',
+                    'Research new AI techniques',
+                    'Optimize model performance',
+                    'Build ML infrastructure'
+                ],
+                requirements: [
+                    'Advanced degree in ML/CS',
+                    '3+ years ML in production',
+                    'PyTorch/TensorFlow expertise',
+                    'MLOps experience'
+                ],
+                benefits: [
+                    'Top-tier compensation',
+                    'Conference attendance',
+                    'GPU resources for research',
+                    'Publication opportunities',
+                    'Flexible hours'
+                ],
+                publishedAt: new Date('2024-12-09').toISOString(),
+                active: true,
+                applications: 0,
+                views: 0
+            },
+            {
+                id: 'developer-advocate',
+                title: 'Developer Advocate',
+                department: 'Developer Relations',
+                location: 'Remote (US)',
+                type: 'Full-time',
+                experience: 'Mid-Senior',
+                salary: '$140k - $180k + equity',
+                description: 'Be the voice of SirsiNexus in the developer community. We need someone who loves teaching, writing, and building.',
+                responsibilities: [
+                    'Create technical content',
+                    'Speak at events',
+                    'Build community',
+                    'Gather developer feedback'
+                ],
+                requirements: [
+                    '3+ years DevRel/Engineering',
+                    'Strong communication skills',
+                    'Cloud platform knowledge',
+                    'Community engagement'
+                ],
+                benefits: [
+                    'Conference travel budget',
+                    'Content creation tools',
+                    'Flexible schedule',
+                    'Remote work',
+                    'Learning opportunities'
+                ],
+                publishedAt: new Date('2024-12-10').toISOString(),
+                active: true,
+                applications: 0,
+                views: 0
+            }
+        ];
+
+        const pricingTiers = [
+            {
+                id: 'starter',
+                name: 'Starter',
+                price: 99,
+                period: 'month',
+                description: 'Perfect for small teams and projects',
+                features: [
+                    'Up to 50 resources',
+                    'Basic AI optimization',
+                    'Email support',
+                    'Single cloud provider',
+                    'Daily backups',
+                    'Basic monitoring'
+                ],
+                limitations: [
+                    'No custom integrations',
+                    'Limited to 1 user',
+                    'No SLA'
+                ],
+                cta: 'Start Free Trial',
+                popular: false,
+                order: 1
+            },
+            {
+                id: 'professional',
+                name: 'Professional',
+                price: 499,
+                period: 'month',
+                description: 'For growing businesses and teams',
+                features: [
+                    'Up to 500 resources',
+                    'Advanced AI optimization',
+                    'Priority support',
+                    'Multi-cloud support',
+                    'Real-time monitoring',
+                    'Custom dashboards',
+                    'API access',
+                    'Team collaboration',
+                    '99.9% SLA'
+                ],
+                limitations: [
+                    'Limited to 10 users'
+                ],
+                cta: 'Start Free Trial',
+                popular: true,
+                order: 2
+            },
+            {
+                id: 'enterprise',
+                name: 'Enterprise',
+                price: null,
+                period: 'custom',
+                description: 'For large organizations with complex needs',
+                features: [
+                    'Unlimited resources',
+                    'Full AI capabilities',
+                    'Dedicated support team',
+                    'All cloud providers',
+                    'Custom integrations',
+                    'Advanced security',
+                    'Compliance tools',
+                    'Unlimited users',
+                    'Training included',
+                    '99.99% SLA',
+                    'Custom contracts'
+                ],
+                limitations: [],
+                cta: 'Contact Sales',
+                popular: false,
+                order: 3
+            }
+        ];
+
+        // Status display
+        function addStatus(message, type = 'info') {
+            const status = document.getElementById('status');
+            const time = new Date().toLocaleTimeString();
+            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : '🔄';
+            status.innerHTML += `<div>[${time}] ${icon} ${message}</div>`;
+            status.scrollTop = status.scrollHeight;
+        }
+
+        // Seeding functions
+        async function seedTeam() {
+            try {
+                addStatus('Seeding team members...');
+                const batch = db.batch();
+                
+                teamMembers.forEach(member => {
+                    const ref = db.collection('team').doc(member.id);
+                    batch.set(ref, {
+                        ...member,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+                
+                await batch.commit();
+                addStatus(`Added ${teamMembers.length} team members`, 'success');
+            } catch (error) {
+                addStatus(`Error seeding team: ${error.message}`, 'error');
+                console.error('Error:', error);
+            }
+        }
+
+        async function seedBlog() {
+            try {
+                addStatus('Seeding blog posts...');
+                const batch = db.batch();
+                
+                blogPosts.forEach(post => {
+                    const ref = db.collection('blog').doc(post.id);
+                    batch.set(ref, {
+                        ...post,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+                
+                await batch.commit();
+                addStatus(`Added ${blogPosts.length} blog posts`, 'success');
+            } catch (error) {
+                addStatus(`Error seeding blog: ${error.message}`, 'error');
+                console.error('Error:', error);
+            }
+        }
+
+        async function seedJobs() {
+            try {
+                addStatus('Seeding job listings...');
+                const batch = db.batch();
+                
+                jobListings.forEach(job => {
+                    const ref = db.collection('jobs').doc(job.id);
+                    batch.set(ref, {
+                        ...job,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+                
+                await batch.commit();
+                addStatus(`Added ${jobListings.length} job listings`, 'success');
+            } catch (error) {
+                addStatus(`Error seeding jobs: ${error.message}`, 'error');
+                console.error('Error:', error);
+            }
+        }
+
+        async function seedPricing() {
+            try {
+                addStatus('Seeding pricing tiers...');
+                const batch = db.batch();
+                
+                pricingTiers.forEach(tier => {
+                    const ref = db.collection('pricing').doc(tier.id);
+                    batch.set(ref, {
+                        ...tier,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+                
+                await batch.commit();
+                addStatus(`Added ${pricingTiers.length} pricing tiers`, 'success');
+            } catch (error) {
+                addStatus(`Error seeding pricing: ${error.message}`, 'error');
+                console.error('Error:', error);
+            }
+        }
+
+        async function seedAll() {
+            addStatus('🌱 Starting complete content seed...');
+            await seedTeam();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            await seedBlog();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            await seedJobs();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            await seedPricing();
+            addStatus('🎉 All content seeded successfully!', 'success');
+            addStatus('Visit https://sirsi.ai to see the content live', 'success');
+        }
+
+        // Show initialization message
+        addStatus('Content seeder ready. Click buttons above to populate database.');
+        addStatus('Note: If you get permission errors, temporarily update Firestore rules to allow writes.');
+    </script>
+</body>
+</html>

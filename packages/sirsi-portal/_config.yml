@@ -1,0 +1,13 @@
+# GitHub Pages Configuration for SirsiNexus
+# Include .well-known directory for Apple Pay domain verification
+
+include:
+  - .well-known
+
+# Exclude development files
+exclude:
+  - debug_paypal.html
+  - minimal_test.html
+  - test_methods.html
+  - validate_payments.html
+  - validate_paypal_api.js

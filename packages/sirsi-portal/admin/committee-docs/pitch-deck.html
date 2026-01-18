@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sirsi - AI Infrastructure Platform</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #10B981;
+            --primary-dark: #059669;
+            --secondary: #6366F1;
+            --accent: #00FF88;
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --bg-light: #F9FAFB;
+            --bg-white: #FFFFFF;
+            --gradient: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            --gradient-hero: linear-gradient(135deg, #10B981 0%, #00FF88 100%);
+            --gradient-secondary: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: clamp(2.8rem, 4.5vw, 3.8rem);
+            margin-bottom: 0;
+            margin-top: 0;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+        }
+
+        h3 {
+            font-size: clamp(1.4rem, 3vw, 1.9rem);
+            margin-bottom: 12px;
+        }
+
+        /* Slides */
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(100%) scale(0.95);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--bg-light);
+            overflow-y: auto;
+            padding: 40px;
+        }
+
+        .slide.active { 
+            opacity: 1; 
+            transform: translateX(0) scale(1);
+        }
+        
+        .slide.active .card,
+        .slide.active .problem-card {
+            animation: slideUpFade 0.8s ease-out forwards;
+        }
+        
+        .slide.active .card:nth-child(1) { animation-delay: 0.1s; }
+        .slide.active .card:nth-child(2) { animation-delay: 0.2s; }
+        .slide.active .card:nth-child(3) { animation-delay: 0.3s; }
+        
+        .slide.active .badge {
+            animation: bounceIn 0.6s ease-out;
+        }
+        
+        .slide.active h1, 
+        .slide.active h2 {
+            animation: fadeInDown 0.7s ease-out;
+        }
+        
+        .slide.prev { 
+            transform: translateX(-100%) scale(0.95);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(40px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from { 
+                opacity: 0; 
+                transform: translateY(-30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        @keyframes slideUpFade {
+            0% { 
+                opacity: 0; 
+                transform: translateY(50px) scale(0.95); 
+            }
+            60% {
+                opacity: 1;
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.3); 
+            }
+            50% { 
+                transform: scale(1.05); 
+            }
+            70% { 
+                transform: scale(0.95); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1); 
+                opacity: 0.2;
+            }
+            50% { 
+                transform: scale(1.1); 
+                opacity: 0.3;
+            }
+        }
+        
+        @keyframes shimmer {
+            0% { 
+                background-position: -1000px 0; 
+            }
+            100% { 
+                background-position: 1000px 0; 
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        /* Enhanced slide backgrounds */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .slide.active::before {
+            opacity: 1;
+        }
+
+        /* Navigation */
+        .nav-controls { 
+            position: fixed; 
+            bottom: 15px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            z-index: 1000; 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(8px); 
+            padding: 4px 12px; 
+            border-radius: 30px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            border: 1px solid rgba(229, 231, 235, 0.2);
+        }
+        
+        .nav-btn { 
+            width: 29px; 
+            height: 29px; 
+            border: none; 
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(0, 255, 136, 0.03)); 
+            color: var(--primary); 
+            border-radius: 50%; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 12px; 
+            transition: all 0.2s ease;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+        
+        .nav-btn:hover:not(:disabled) { 
+            background: var(--gradient);
+            color: white;
+            transform: scale(1.08); 
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+        }
+        
+        .nav-btn:disabled { 
+            opacity: 0.25; 
+            cursor: not-allowed;
+            border-color: rgba(229, 231, 235, 0.2);
+        }
+
+        .slide-counter {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            min-width: 54px;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        /* Progress Bar */
+        .progress-bar { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 2px; 
+            background: rgba(229, 231, 235, 0.3); 
+            z-index: 1001;
+        }
+        
+        .progress-fill { 
+            height: 100%; 
+            background: var(--gradient-hero); 
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Content Container */
+        .content { 
+            max-width: 1200px; 
+            width: 100%; 
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+            position: relative;
+            padding: 60px 40px;
+        }
+        
+        /* Slide Header */
+        .slide-header {
+            text-align: center;
+            margin-bottom: 40px;
+            margin-top: 90px;
+            position: relative;
+        }
+        
+        /* Compact header for table slides */
+        .slide-header-compact {
+            text-align: center;
+            margin-bottom: 10px;
+            padding-top: 10px;
+        }
+
+        /* Cards */
+        .card { 
+            background: linear-gradient(135deg, #FFFFFF 0%, #FAFBFC 100%);
+            border-radius: 24px; 
+            padding: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 10px 25px rgba(0,0,0,0.05); 
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+        }
+        
+        .card p {
+            font-size: 18px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.12), 0 15px 35px rgba(0,0,0,0.08);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .grid { 
+            display: grid; 
+            gap: 24px;
+        }
+
+        .grid-2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+        /* Typography */
+        .hero-title { 
+            font-size: clamp(3rem, 6vw, 4.6rem); 
+            line-height: 1.1; 
+            margin-bottom: 24px;
+            font-weight: 800;
+        }
+        
+        .hero-subtitle { 
+            font-size: clamp(1.2rem, 2.4vw, 1.7rem); 
+            color: var(--text-secondary); 
+            max-width: 900px; 
+            margin: 0 auto 30px;
+            line-height: 1.4;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 42px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 100px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 17px 38px;
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 100px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Badges */
+        .badge { 
+            display: inline-block; 
+            padding: 20px 60px; 
+            background: var(--gradient); 
+            color: white; 
+            border-radius: 100px; 
+            font-size: 38px; 
+            font-weight: 800; 
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin: 0;
+            border: none;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4);
+            white-space: nowrap;
+        }
+        
+        .badge::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+
+        /* Stats */
+        .stat-number {
+            font-size: clamp(2.4rem, 4.2vw, 3.4rem);
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        /* Icon Boxes */
+        .icon-box {
+            width: 72px;
+            height: 72px;
+            background: var(--gradient);
+            border-radius: 19px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 34px;
+            margin-bottom: 24px;
+            box-shadow: 0 12px 40px rgba(16, 185, 129, 0.35);
+            position: relative;
+        }
+        
+        .icon-box::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 22px;
+            background: var(--gradient);
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        /* Problem Cards */
+        .problem-card { 
+            background: linear-gradient(135deg, #FFFFFF 0%, rgba(255, 255, 255, 0.95) 100%);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            padding: 35px 30px; 
+            text-align: center; 
+            border-radius: 28px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.05),
+                0 20px 40px rgba(0, 0, 0, 0.08),
+                0 0 0 1px rgba(239, 68, 68, 0.08),
+                inset 0 -60px 60px -30px rgba(239, 68, 68, 0.03);
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                #EF4444 20%, 
+                #F87171 50%, 
+                #EF4444 80%, 
+                transparent 100%);
+            opacity: 0.9;
+            transform: scaleX(0.8);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .problem-card::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+        
+        .problem-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.05),
+                0 30px 60px rgba(239, 68, 68, 0.15),
+                0 0 0 2px rgba(239, 68, 68, 0.2),
+                inset 0 -60px 60px -30px rgba(239, 68, 68, 0.06);
+            background: linear-gradient(135deg, #FFFFFF 0%, rgba(255, 240, 240, 0.98) 100%);
+        }
+
+        .problem-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .problem-card .number { 
+            font-size: clamp(2.5rem, 4vw, 3.2rem); 
+            font-weight: 800; 
+            background: linear-gradient(135deg, #DC2626, #EF4444, #F87171);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 18px;
+            filter: drop-shadow(0 2px 4px rgba(239, 68, 68, 0.15));
+            letter-spacing: -0.02em;
+        }
+
+        .problem-card .label {
+            color: var(--text-primary);
+            font-size: 17px;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .problem-card p:last-child {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        /* Comparison Table */
+        .comparison-table { 
+            width: 100%; 
+            max-width: 950px;
+            margin: 10px auto;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            font-size: 16px;
+        }
+        
+        .comparison-table th, 
+        .comparison-table td { 
+            padding: 6px; 
+            text-align: center; 
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+            border-right: 1px solid rgba(229, 231, 235, 0.3);
+        }
+        
+        .comparison-table th:last-child,
+        .comparison-table td:last-child {
+            border-right: none;
+        }
+        
+        .comparison-table th { 
+            font-size: 16px; 
+            font-weight: 700;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, rgba(249, 250, 251, 0.95), rgba(229, 231, 235, 0.4));
+            border-bottom: 2px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .comparison-table td {
+            font-size: 20px;
+            background: rgba(255, 255, 255, 0.6);
+        }
+        
+        .comparison-table tbody tr:nth-child(odd) td {
+            background: rgba(249, 250, 251, 0.4);
+        }
+        
+        .comparison-table .feature { 
+            text-align: left; 
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-primary);
+            padding-left: 12px;
+            background: rgba(255, 255, 255, 0.8) !important;
+            border-right: 2px solid rgba(16, 185, 129, 0.15) !important;
+        }
+        
+        .comparison-table .sirsi-col { 
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(0, 255, 136, 0.08)) !important;
+            font-weight: 700;
+            color: var(--primary-dark);
+            border-left: 2px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Founder Card */
+        .founder-card { 
+            display: grid; 
+            grid-template-columns: 220px 1fr; 
+            gap: 40px; 
+            align-items: center;
+            padding: 30px;
+        }
+        
+        .founder-avatar { 
+            width: 220px; 
+            height: 220px; 
+            border-radius: 50%; 
+            background: var(--gradient-hero); 
+            margin: 0 auto; 
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 80px; 
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
+            position: relative;
+        }
+
+        .founder-avatar::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: var(--gradient-hero);
+            opacity: 0.2;
+            z-index: -1;
+            animation: pulse 2s infinite;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 60px 0;
+            padding: 0 20px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            z-index: 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            text-align: center;
+            flex: 1;
+            z-index: 1;
+        }
+
+        .timeline-dot {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 240px;
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+        }
+
+        /* Utilities */
+        .text-green { color: var(--primary); }
+        .text-center { text-align: center; }
+        .mb-20 { margin-bottom: 20px; }
+        .mb-30 { margin-bottom: 30px; }
+        .mb-40 { margin-bottom: 40px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .founder-card { grid-template-columns: 1fr; text-align: center; }
+            .timeline { flex-direction: column; gap: 30px; }
+            .timeline::before { display: none; }
+            .comparison-table { font-size: 12px; }
+            .comparison-table th, .comparison-table td { padding: 10px 8px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+    <!-- Navigation -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn"><i class="fas fa-arrow-left"></i></button>
+        <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">10</span></span>
+        <button class="nav-btn" id="nextBtn"><i class="fas fa-arrow-right"></i></button>
+    </div>
+
+    <!-- Slides -->
+    <div class="slide active" data-slide="1">
+        <div class="content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+            <div style="text-align: center;">
+                <img src="assets/sirsi-logo.png" alt="Sirsi Logo" style="height: 225px; width: auto; margin: 0 auto 60px; display: block; filter: drop-shadow(0 12px 32px rgba(0,0,0,0.18));">
+                <h1 class="hero-title" style="font-size: clamp(3rem, 6vw, 4.5rem); margin-bottom: 30px;">Turn <span style="background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Conversation to Code</span></h1>
+                <p class="hero-subtitle" style="font-size: clamp(1.2rem, 2.5vw, 1.6rem); max-width: 700px;">The AI that builds your infrastructure, so you can focus on building your business.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="2">
+        <div class="content" style="display: flex; flex-direction: column; padding: 40px; height: 100vh; position: relative;">
+            <!-- Badge at top -->
+            <div style="position: absolute; top: 40px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10;">
+                <div class="badge">THE PROBLEM</div>
+            </div>
+            
+            <!-- Main content centered -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <!-- Title with cards -->
+                <h2 style="text-align: center; margin-bottom: 50px;">Code Complexity Kills Innovation</h2>
+                <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1000px; margin: 0 auto;">
+                    <div class="problem-card" style="min-height: 200px; padding: 40px 30px;">
+                        <div class="number" style="font-size: 3.5rem; margin-bottom: 20px;">$250K+</div>
+                        <p class="label" style="font-size: 18px;">Annual DevOps cost</p>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px; line-height: 1.4;">Per engineer for enterprise teams</p>
+                    </div>
+                    <div class="problem-card" style="min-height: 200px; padding: 40px 30px;">
+                        <div class="number" style="font-size: 3.5rem; margin-bottom: 20px;">68%</div>
+                        <p class="label" style="font-size: 18px;">Time wasted on config</p>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px; line-height: 1.4;">Instead of building features</p>
+                    </div>
+                    <div class="problem-card" style="min-height: 200px; padding: 40px 30px;">
+                        <div class="number" style="font-size: 3.5rem; margin-bottom: 20px;">90%</div>
+                        <p class="label" style="font-size: 18px;">Can't afford AI infrastructure</p>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-top: 8px; line-height: 1.4;">Small teams locked out</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="3">
+        <div class="content" style="display: flex; flex-direction: column; padding: 40px; height: 100vh; position: relative;">
+            <!-- Badge at top -->
+            <div style="position: absolute; top: 40px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10;">
+                <div class="badge">THE SOLUTION</div>
+            </div>
+            
+            <!-- Main content centered -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <!-- Title with cards -->
+                <h2 style="text-align: center; margin-bottom: 50px;">Simple, Powerful, Proven</h2>
+                <div class="grid grid-3" style="gap: 30px; max-width: 1100px; margin: 0 auto;">
+                    <div class="card" style="text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center; padding: 35px 25px;">
+                        <div class="stat-number" style="font-size: 3.5rem;">Zero</div>
+                        <p style="font-size: 20px; font-weight: 700; margin-top: 15px;">Code Required</p>
+                        <p style="font-size: 16px; color: var(--text-secondary); margin-top: 5px;">Natural language to infrastructure</p>
+                    </div>
+                    <div class="card" style="text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center; padding: 35px 25px;">
+                        <div class="stat-number" style="font-size: 3.5rem;">56%</div>
+                        <p style="font-size: 20px; font-weight: 700; margin-top: 15px;">Faster Development</p>
+                        <p style="font-size: 16px; color: var(--text-secondary); margin-top: 5px;">9 weeks → 4 weeks</p>
+                    </div>
+                    <div class="card" style="text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center; padding: 35px 25px;">
+                        <div class="stat-number" style="font-size: 3.5rem;">63%</div>
+                        <p style="font-size: 20px; font-weight: 700; margin-top: 15px;">Cost Reduction</p>
+                        <p style="font-size: 16px; color: var(--text-secondary); margin-top: 5px;">$12k → $4.5k</p>
+                    </div>
+                </div>
+                <div style="max-width: 800px; margin: 30px auto 0; text-align: center;">
+                    <p style="font-style: italic; font-size: 1.3rem; line-height: 1.5; color: var(--text-secondary); margin-bottom: 15px; font-weight: 500;">"Sirsi let us build our AI platform with one developer, saving us months and thousands."</p>
+                    <p style="font-weight: 800; font-size: 1.1rem;" class="text-green">— CEO, Assiduous Realty</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="4">
+        <div class="content" style="display: flex; flex-direction: column; padding: 40px; height: 100vh; position: relative;">
+            <!-- Badge at top -->
+            <div style="position: absolute; top: 40px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10;">
+                <div class="badge">COMPETITIVE LANDSCAPE</div>
+            </div>
+            
+            <!-- Main content centered -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <!-- Title with table -->
+                <h2 style="text-align: center; margin-bottom: 50px;">Why We Win</h2>
+                <table class="comparison-table card" style="padding: 12px; max-width: 800px; margin: 0 auto;">
+                <thead>
+                    <tr>
+                        <th style="font-size: 15px; padding: 8px; width: 180px;"></th>
+                        <th style="font-size: 15px; padding: 8px;">Dr. Migrate</th>
+                        <th style="font-size: 15px; padding: 8px;">Pulumi</th>
+                        <th style="font-size: 15px; padding: 8px;">GitHub Spark</th>
+                        <th class="sirsi-col" style="font-size: 15px; padding: 8px;">Sirsi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="feature" style="font-size: 15px; padding: 6px 12px;">Natural Language</td><td style="font-size: 20px; padding: 6px;">❌</td><td style="font-size: 20px; padding: 6px;">❌</td><td style="font-size: 20px; padding: 6px;">✅</td><td class="sirsi-col" style="font-size: 20px; padding: 6px;">✅</td></tr>
+                    <tr><td class="feature" style="font-size: 15px; padding: 6px 12px;">Full Deployment</td><td style="font-size: 20px; padding: 6px;">❌</td><td style="font-size: 20px; padding: 6px;">✅</td><td style="font-size: 15px; padding: 6px;">Partial</td><td class="sirsi-col" style="font-size: 20px; padding: 6px;">✅</td></tr>
+                    <tr><td class="feature" style="font-size: 15px; padding: 6px 12px;">Multi-Cloud</td><td style="font-size: 20px; padding: 6px;">✅</td><td style="font-size: 20px; padding: 6px;">✅</td><td style="font-size: 20px; padding: 6px;">✅</td><td class="sirsi-col" style="font-size: 20px; padding: 6px;">✅</td></tr>
+                    <tr><td class="feature" style="font-size: 15px; padding: 6px 12px;">AI Optimization</td><td style="font-size: 20px; padding: 6px;">❌</td><td style="font-size: 20px; padding: 6px;">❌</td><td style="font-size: 15px; padding: 6px;">Partial</td><td class="sirsi-col" style="font-size: 20px; padding: 6px;">✅</td></tr>
+                    <tr><td class="feature" style="font-size: 15px; padding: 6px 12px;">Infrastructure as Code</td><td style="font-size: 20px; padding: 6px;">✅</td><td style="font-size: 20px; padding: 6px;">✅</td><td style="font-size: 20px; padding: 6px;">❌</td><td class="sirsi-col" style="font-size: 20px; padding: 6px;">✅</td></tr>
+                    <tr><td class="feature" style="font-size: 15px; padding: 6px 12px;">For Non-Devs</td><td style="font-size: 20px; padding: 6px;">❌</td><td style="font-size: 20px; padding: 6px;">❌</td><td style="font-size: 20px; padding: 6px;">✅</td><td class="sirsi-col" style="font-size: 20px; padding: 6px;">✅</td></tr>
+                    <tr><td class="feature" style="font-size: 15px; padding: 6px 12px;">Enterprise Ready</td><td style="font-size: 20px; padding: 6px;">✅</td><td style="font-size: 20px; padding: 6px;">✅</td><td style="font-size: 20px; padding: 6px;">❌</td><td class="sirsi-col" style="font-size: 20px; padding: 6px;">✅</td></tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="5">
+        <div class="content" style="display: flex; flex-direction: column; padding: 40px; height: 100vh; position: relative;">
+            <!-- Badge at top -->
+            <div style="position: absolute; top: 40px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10;">
+                <div class="badge">MARKET OPPORTUNITY</div>
+            </div>
+            
+            <!-- Main content centered -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <!-- Title with cards -->
+                <h2 style="text-align: center; margin-bottom: 50px;">Massive & Untapped</h2>
+                <div class="grid grid-3" style="gap: 30px; max-width: 1100px; margin: 0 auto;">
+                <div class="card" style="text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center; padding: 35px 25px;">
+                    <div class="stat-number" style="font-size: 3.5rem;">$547B</div>
+                    <p style="font-size: 20px; font-weight: 700; margin-top: 15px;">TAM</p>
+                    <p style="font-size: 16px; color: var(--text-secondary); margin-top: 5px;">Cloud Infrastructure Market</p>
+                </div>
+                <div class="card" style="text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center; padding: 35px 25px;">
+                    <div class="stat-number" style="font-size: 3.5rem;">$89B</div>
+                    <p style="font-size: 20px; font-weight: 700; margin-top: 15px;">SAM</p>
+                    <p style="font-size: 16px; color: var(--text-secondary); margin-top: 5px;">Infrastructure Automation</p>
+                </div>
+                <div class="card" style="text-align: center; min-height: 200px; display: flex; flex-direction: column; justify-content: center; padding: 35px 25px;">
+                    <div class="stat-number" style="font-size: 3.5rem;">$12B</div>
+                    <p style="font-size: 20px; font-weight: 700; margin-top: 15px;">SOM</p>
+                    <p style="font-size: 16px; color: var(--text-secondary); margin-top: 5px;">AI-Driven Infrastructure</p>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="6">
+        <div class="content" style="display: flex; flex-direction: column; padding: 40px; height: 100vh; position: relative;">
+            <!-- Badge at top -->
+            <div style="position: absolute; top: 40px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10;">
+                <div class="badge">THE FOUNDER</div>
+            </div>
+            
+            <!-- Main content centered -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <!-- Title with founder card -->
+                <h2 style="text-align: center; margin-bottom: 50px;">Cylton Collymore</h2>
+                <div class="founder-card card" style="max-width: 1200px; margin: 0 auto; padding: 25px 35px;">
+                <div class="founder-avatar" style="width: 180px; height: 180px; font-size: 70px;">CC</div>
+                <div>
+                    <p style="color: var(--primary); font-weight: 700; font-size: 1.3rem; margin: 0 0 15px;">Solo Founder, CEO & Lead Developer</p>
+                    <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 15px;">
+                        <li style="display: flex; align-items: flex-start; gap: 10px;">
+                            <i class="fas fa-check-circle text-green" style="min-width: 20px; font-size: 20px; margin-top: 1px;"></i>
+                            <span style="font-size: 1rem; line-height: 1.3;"><strong>20+ Years DevOps Management</strong> - Built & scaled infrastructure for enterprises</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 10px;">
+                            <i class="fas fa-check-circle text-green" style="min-width: 20px; font-size: 20px; margin-top: 1px;"></i>
+                            <span style="font-size: 1rem; line-height: 1.3;"><strong>MIT xPro Full Stack Developer</strong> (2022-2023) - MERN Stack Specialization</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 10px;">
+                            <i class="fas fa-check-circle text-green" style="min-width: 20px; font-size: 20px; margin-top: 1px;"></i>
+                            <span style="font-size: 1rem; line-height: 1.3;"><strong>Cybersecurity Architect</strong> - Led security for travel.state.gov</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 10px;">
+                            <i class="fas fa-check-circle text-green" style="min-width: 20px; font-size: 20px; margin-top: 1px;"></i>
+                            <span style="font-size: 1rem; line-height: 1.3;"><strong>Oracle Vault Lead Architect</strong> - Protected US Passport & Visa database</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 10px;">
+                            <i class="fas fa-check-circle text-green" style="min-width: 20px; font-size: 20px; margin-top: 1px;"></i>
+                            <span style="font-size: 1rem; line-height: 1.3;"><strong>2x Founder</strong> - Raised $1M for Zimbali Networks, backed by Techstars, Visa, Hedera</span>
+                        </li>
+                    </ul>
+                    <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(0, 255, 136, 0.03)); padding: 14px 18px; border-radius: 10px; border-left: 3px solid var(--primary);">
+                        <p style="font-style: italic; color: var(--text-primary); line-height: 1.4; font-size: 0.95rem; margin: 0;">
+                            "I've lived the pain of infrastructure complexity at the highest levels. Sirsi is my solution to democratize technology for every entrepreneur."
+                        </p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="7">
+        <div class="content" style="display: flex; flex-direction: column; padding: 40px; height: 100vh; position: relative;">
+            <!-- Badge at top -->
+            <div style="position: absolute; top: 40px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10;">
+                <div class="badge">TRACTION & PARTNERSHIPS</div>
+            </div>
+            
+            <!-- Main content centered -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <!-- Title with content -->
+                <h2 style="text-align: center; margin-bottom: 50px;">Strong Momentum Building</h2>
+                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 30px; max-width: 1100px; margin: 0 auto;">
+                <div>
+                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 1.4rem;">Key Milestones</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div class="card" style="display: flex; align-items: center; gap: 15px; padding: 15px 20px;">
+                            <div style="min-width: 45px; height: 45px; background: var(--gradient); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 18px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);">Q3</div>
+                            <div>
+                                <h4 style="margin: 0; font-size: 1.05rem; font-weight: 700;">Alpha Launch - Sept 2025</h4>
+                                <p style="margin: 3px 0 0; color: var(--text-secondary); font-size: 0.85rem;">Platform ready for early adopters</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="display: flex; align-items: center; gap: 15px; padding: 15px 20px;">
+                            <div style="min-width: 45px; height: 45px; background: var(--gradient); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 20px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);">3</div>
+                            <div>
+                                <h4 style="margin: 0; font-size: 1.05rem; font-weight: 700;">Customers in Pipeline</h4>
+                                <p style="margin: 3px 0 0; color: var(--text-secondary); font-size: 0.85rem;">Including Assiduous Realty (signed LOI)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="display: flex; align-items: center; gap: 15px; padding: 15px 20px;">
+                            <div style="min-width: 45px; height: 45px; background: var(--gradient); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 20px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);">3</div>
+                            <div>
+                                <h4 style="margin: 0; font-size: 1.05rem; font-weight: 700;">Patents Pending</h4>
+                                <p style="margin: 3px 0 0; color: var(--text-secondary); font-size: 0.85rem;">AI-driven infrastructure generation technology</p>
+                            </div>
+                        </div>
+
+                        <div class="card" style="display: flex; align-items: center; gap: 15px; padding: 15px 20px;">
+                            <div style="min-width: 45px; height: 45px; background: var(--gradient); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 20px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);">2</div>
+                            <div>
+                                <h4 style="margin: 0; font-size: 1.05rem; font-weight: 700;">Investors Engaged</h4>
+                                <p style="margin: 3px 0 0; color: var(--text-secondary); font-size: 0.85rem;">$100K+ each indicated interest</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 1.4rem;">Strategic Partnerships</h3>
+                    <div class="card" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(0, 255, 136, 0.03)); padding: 20px;">
+                        <h4 style="margin-bottom: 15px; font-size: 1.15rem; text-align: center; font-weight: 600;">$1.5M Unlocks Strategic Support From:</h4>
+                        
+                        <div style="display: grid; gap: 12px;">
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 14px; background: white; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.15); box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                                <i class="fab fa-aws" style="font-size: 32px; color: #FF9900; min-width: 32px;"></i>
+                                <div>
+                                    <h5 style="margin: 0; font-size: 1rem; font-weight: 700;">Amazon Web Services</h5>
+                                    <p style="margin: 2px 0 0; color: var(--text-secondary); font-size: 0.8rem;">Credits, technical support, go-to-market</p>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 14px; background: white; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.15); box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="#76B900" style="min-width: 32px;">
+                                    <path d="M8.615 1.337v5.477c0 .15.115.28.28.28h10.772c.149 0 .28-.115.28-.28V1.336c0-.15-.131-.28-.28-.28H8.894c-.164.001-.28.131-.28.28zM6.513 2.413v5.461c0 .15.115.28.264.28h.576c.15 0 .28-.13.28-.28V2.412c0-.164-.13-.28-.28-.28h-.576c-.149.001-.264.116-.264.28zm-2.102 1.67v3.791c0 .15.115.28.28.28h.593c.148 0 .263-.13.263-.28V4.084c0-.15-.115-.28-.263-.28h-.593c-.165 0-.28.13-.28.28zm11.363 6.32c-.361 0-.675.197-.822.51l-1.467 2.953-1.467-2.952a.887.887 0 00-.821-.51.901.901 0 00-.904.903c0 .164.049.313.115.444l2.238 4.385v4.384a.893.893 0 00.887.904c.493 0 .903-.41.903-.904v-4.384l2.238-4.385a.98.98 0 00.115-.444c0-.51-.41-.904-.92-.904h.005zm-12.033.526l2.255 6.666v3.252c0 .493.395.903.888.903a.893.893 0 00.903-.903v-3.252l2.238-6.666a.869.869 0 00.115-.444.901.901 0 00-.903-.903c-.362 0-.674.197-.822.51l-1.467 3.542-1.466-3.543a.887.887 0 00-.822-.51.892.892 0 00-.904.904c0 .164.033.313.099.444h-.114zm17.556.788h-.427c-.345 0-.642.23-.642.576v8.106c0 1.223.936 2.238 2.14 2.238.345 0 .64-.23.64-.576v-.444c0-.345-.295-.575-.64-.575-.526 0-.97-.46-.97-1.04v-2.388h1.316c.346 0 .642-.23.642-.576v-.444c0-.345-.296-.576-.642-.576H20.37v-3.725c0-.345-.297-.576-.642-.576h-.43z"/>
+                                </svg>
+                                <div>
+                                    <h5 style="margin: 0; font-size: 1rem; font-weight: 700;">NVIDIA</h5>
+                                    <p style="margin: 2px 0 0; color: var(--text-secondary); font-size: 0.8rem;">AI infrastructure, GPU resources</p>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 14px; background: white; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.15); box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                                <span style="font-size: 32px; color: #8D5FD3; font-weight: 700; min-width: 32px; text-align: center; line-height: 1;">Ħ</span>
+                                <div>
+                                    <h5 style="margin: 0; font-size: 1rem; font-weight: 700;">Hedera</h5>
+                                    <p style="margin: 2px 0 0; color: var(--text-secondary); font-size: 0.8rem;">Web3 infrastructure, enterprise partnerships</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="8">
+        <div class="content" style="display: flex; flex-direction: column; padding: 40px; height: 100vh; position: relative;">
+            <!-- Badge at top -->
+            <div style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10;">
+                <div class="badge">FINANCIALS</div>
+            </div>
+            
+            <!-- Main content centered -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 60px;">
+                <!-- Title with financial content -->
+                <h2 style="text-align: center; margin-bottom: 50px;">Path to $73M ARR</h2>
+                <div style="width: 100%; max-width: 1100px;">
+            
+            <!-- Key Metrics Row -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 900px; margin: 0 auto 30px;">
+                <div class="card text-center" style="padding: 20px;">
+                    <div class="stat-number" style="font-size: 2.6rem;">$299</div>
+                    <p style="font-weight: 700; font-size: 17px; margin: 6px 0 0;">Avg Monthly</p>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin: 0;">Per Customer</p>
+                </div>
+                <div class="card text-center" style="padding: 20px;">
+                    <div class="stat-number" style="font-size: 2.6rem;">$50</div>
+                    <p style="font-weight: 700; font-size: 17px; margin: 6px 0 0;">CAC</p>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin: 0;">Acquisition Cost</p>
+                </div>
+                <div class="card text-center" style="padding: 20px;">
+                    <div class="stat-number" style="font-size: 2.6rem;">6:1</div>
+                    <p style="font-weight: 700; font-size: 17px; margin: 6px 0 0;">LTV/CAC</p>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin: 0;">Best in Class</p>
+                </div>
+                <div class="card text-center" style="padding: 20px;">
+                    <div class="stat-number" style="font-size: 2.6rem;">85%</div>
+                    <p style="font-weight: 700; font-size: 17px; margin: 6px 0 0;">Gross Margin</p>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin: 0;">At Scale</p>
+                </div>
+            </div>
+            
+            <!-- Revenue Growth Chart -->
+            <div style="max-width: 900px; margin: 0 auto;">
+                <div class="chart-container" style="height: 264px; margin-bottom: 30px;"><canvas id="revenueChart"></canvas></div>
+                
+                <!-- 5-Year Growth Timeline -->
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px;">
+                    <div class="card" style="padding: 15px; text-align: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.03));">
+                        <h4 style="color: var(--primary); font-size: 14px; margin: 0; text-transform: uppercase; letter-spacing: 1px;">Year 1</h4>
+                        <p style="font-size: 2.2rem; font-weight: 800; margin: 6px 0; color: var(--primary);">$2M</p>
+                        <p style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin: 0;">600</p>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">customers</p>
+                    </div>
+                    <div class="card" style="padding: 15px; text-align: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.04));">
+                        <h4 style="color: var(--primary); font-size: 14px; margin: 0; text-transform: uppercase; letter-spacing: 1px;">Year 2</h4>
+                        <p style="font-size: 2.2rem; font-weight: 800; margin: 6px 0; color: var(--primary);">$8M</p>
+                        <p style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin: 0;">2,500</p>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">customers</p>
+                    </div>
+                    <div class="card" style="padding: 15px; text-align: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0.05));">
+                        <h4 style="color: var(--primary); font-size: 14px; margin: 0; text-transform: uppercase; letter-spacing: 1px;">Year 3</h4>
+                        <p style="font-size: 2.2rem; font-weight: 800; margin: 6px 0; color: var(--primary);">$18M</p>
+                        <p style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin: 0;">5,500</p>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">customers</p>
+                    </div>
+                    <div class="card" style="padding: 15px; text-align: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(16, 185, 129, 0.06));">
+                        <h4 style="color: var(--primary); font-size: 14px; margin: 0; text-transform: uppercase; letter-spacing: 1px;">Year 4</h4>
+                        <p style="font-size: 2.2rem; font-weight: 800; margin: 6px 0; color: var(--primary);">$38M</p>
+                        <p style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin: 0;">12,000</p>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">customers</p>
+                    </div>
+                    <div class="card" style="padding: 15px; text-align: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(16, 185, 129, 0.07)); border: 2px solid var(--primary);">
+                        <h4 style="color: var(--primary); font-size: 14px; margin: 0; text-transform: uppercase; letter-spacing: 1px;">Year 5</h4>
+                        <p style="font-size: 2.2rem; font-weight: 800; margin: 6px 0; color: var(--primary);">$73M</p>
+                        <p style="font-size: 16px; font-weight: 600; color: var(--text-primary); margin: 0;">20,000</p>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">customers</p>
+                    </div>
+                </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="9">
+        <div class="content" style="display: flex; flex-direction: column; padding: 40px; height: 100vh; position: relative;">
+            <!-- Badge at top -->
+            <div style="position: absolute; top: 40px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10;">
+                <div class="badge">INVESTMENT</div>
+            </div>
+            
+            <!-- Main content centered -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <!-- Title with investment card -->
+                <h2 style="text-align: center; margin-bottom: 50px;">Join the AI Infrastructure Revolution</h2>
+                <div class="card" style="max-width: 780px; margin: 0 auto; text-align: center; background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(0, 255, 136, 0.02)); border: 2px solid var(--primary); padding: 20px;">
+                <h2 style="font-size: 2.3rem; margin-bottom: 10px;">Raising <span class="text-green">$1.5M</span> Pre-Seed</h2>
+                <p style="font-size: 1rem; color: var(--text-secondary); margin-bottom: 15px;">Early investor interest: <strong>$200K+ in discussions</strong></p>
+                
+                <div style="padding: 15px; background: white; border-radius: 12px; margin-top: 15px;">
+                    <h3 style="margin-bottom: 15px; color: var(--primary); font-size: 1.3rem;">What $1.5M Unlocks</h3>
+                    <div class="grid" style="grid-template-columns: repeat(2, 1fr); gap: 20px; text-align: left;">
+                        <div>
+                            <h4 style="margin-bottom: 10px; font-size: 1rem;"><i class="fas fa-rocket text-green" style="margin-right: 6px;"></i> Product</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-bottom: 6px; font-size: 0.9rem;"><i class="fas fa-check" style="color: var(--primary); margin-right: 6px; font-size: 0.8rem;"></i> Complete alpha platform</li>
+                                <li style="margin-bottom: 6px; font-size: 0.9rem;"><i class="fas fa-check" style="color: var(--primary); margin-right: 6px; font-size: 0.8rem;"></i> Multi-cloud support</li>
+                                <li style="margin-bottom: 6px; font-size: 0.9rem;"><i class="fas fa-check" style="color: var(--primary); margin-right: 6px; font-size: 0.8rem;"></i> Enterprise security</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 10px; font-size: 1rem;"><i class="fas fa-users text-green" style="margin-right: 6px;"></i> Growth</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-bottom: 6px; font-size: 0.9rem;"><i class="fas fa-check" style="color: var(--primary); margin-right: 6px; font-size: 0.8rem;"></i> 1,000+ customers Month 18</li>
+                                <li style="margin-bottom: 6px; font-size: 0.9rem;"><i class="fas fa-check" style="color: var(--primary); margin-right: 6px; font-size: 0.8rem;"></i> AWS & NVIDIA partners</li>
+                                <li style="margin-bottom: 6px; font-size: 0.9rem;"><i class="fas fa-check" style="color: var(--primary); margin-right: 6px; font-size: 0.8rem;"></i> Series A ready 18 months</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 15px; padding: 12px; background: rgba(99, 102, 241, 0.1); border-radius: 12px;">
+                    <h4 style="margin-bottom: 8px; font-size: 1rem;">Use of Funds</h4>
+                    <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 10px; font-size: 0.85rem;">
+                        <div><strong>40%</strong> Product Dev</div>
+                        <div><strong>30%</strong> Go-to-Market</div>
+                        <div><strong>20%</strong> Infrastructure</div>
+                        <div><strong>10%</strong> Operations</div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" data-slide="10">
+        <div class="content" style="display: flex; flex-direction: column; padding: 40px; height: 100vh; position: relative;">
+            <!-- Badge at top -->
+            <div style="position: absolute; top: 40px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 10;">
+                <div class="badge">CONTACT</div>
+            </div>
+            
+            <!-- Main content centered -->
+            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <!-- Title with contact info -->
+                <h1 style="font-size: 3.8rem; margin: 0 0 50px 0; text-align: center;">Let's Build Together</h1>
+                <div class="text-center">
+                <p style="font-size: 1.3rem; color: var(--text-secondary); margin: 20px 0 30px;">Cylton Collymore</p>
+                <a href="mailto:cylton@sirsi.ai" class="btn-primary" style="margin-bottom: 40px;">cylton@sirsi.ai</a>
+                
+                <div style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
+                    <a href="https://github.com/SirsiNexus" target="_blank" class="btn-secondary"><i class="fab fa-github" style="margin-right: 8px;"></i>GitHub</a>
+                    <a href="https://sirsi.ai" target="_blank" class="btn-secondary"><i class="fas fa-globe" style="margin-right: 8px;"></i>Website</a>
+                    <a href="https://linkedin.com/company/sirsi-ai" target="_blank" class="btn-secondary"><i class="fab fa-linkedin" style="margin-right: 8px;"></i>LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Deck Navigation
+        let currentSlide = 1; const totalSlides = 10;
+        const slides = document.querySelectorAll('.slide');
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function updateSlides() {
+            slides.forEach((s, i) => {
+                s.classList.remove('active', 'prev');
+                if(i + 1 === currentSlide) s.classList.add('active');
+                else if (i + 1 < currentSlide) s.classList.add('prev');
+            });
+            document.getElementById('currentSlide').textContent = currentSlide;
+            document.getElementById('progress').style.width = `${(currentSlide -1) / (totalSlides - 1) * 100}%`;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+            if(currentSlide === 8) setTimeout(drawChart, 400);
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => { if(currentSlide < totalSlides) { currentSlide++; updateSlides(); } });
+        document.getElementById('prevBtn').addEventListener('click', () => { if(currentSlide > 1) { currentSlide--; updateSlides(); } });
+        document.addEventListener('keydown', e => {
+            if(e.key === 'ArrowRight' && currentSlide < totalSlides) { currentSlide++; updateSlides(); }
+            if(e.key === 'ArrowLeft' && currentSlide > 1) { currentSlide--; updateSlides(); }
+        });
+
+        // Financial Chart
+        let chart;
+        function drawChart() {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            if(chart) chart.destroy();
+            const data = {
+                labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                datasets: [{
+                    label: 'Revenue ($M)',
+                    data: [2, 8, 18, 38, 73],
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                }]
+            };
+            chart = new Chart(ctx, { type: 'line', data: data, options: { responsive: true, maintainAspectRatio: false } });
+        }
+
+        updateSlides();
+    </script>
+</body>
+</html>

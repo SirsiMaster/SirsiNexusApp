@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Health - System Status</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-100 min-h-full">
+    <!-- Header -->
+    <header class="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Database Health</h1>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Monitor database performance and health metrics</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="refreshData()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
+                    <i data-lucide="refresh-cw" class="w-4 h-4 inline mr-2"></i>
+                    Refresh
+                </button>
+                <a href="/admin/system-status/index.html" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-6">
+        <!-- Connection Status -->
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6 mb-6">
+            <h2 class="text-lg font-semibold mb-4">Connection Status</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Primary DB</span>
+                        <span class="text-xs px-2 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full">Connected</span>
+                    </div>
+                    <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-2">Healthy</p>
+                </div>
+                <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Replicas</span>
+                        <span class="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full">3/3 Active</span>
+                    </div>
+                    <p class="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-2">Synced</p>
+                </div>
+                <div class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Connections</span>
+                        <span class="text-xs text-gray-500">Pool Size: 100</span>
+                    </div>
+                    <p class="text-2xl font-bold text-purple-600 dark:text-purple-400 mt-2">47/100</p>
+                </div>
+                <div class="p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600 dark:text-gray-400">Query Queue</span>
+                        <span class="text-xs text-gray-500">Max: 1000</span>
+                    </div>
+                    <p class="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-2">12</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Query Performance -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold mb-4">Query Performance</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Average Response Time</span>
+                            <span class="font-medium">45ms</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-emerald-600 h-2 rounded-full" style="width: 45%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Slow Queries (>100ms)</span>
+                            <span class="font-medium">3%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-amber-600 h-2 rounded-full" style="width: 3%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Cache Hit Rate</span>
+                            <span class="font-medium">94%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 94%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Storage Usage -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold mb-4">Storage Usage</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Data Size</span>
+                            <span class="font-medium">245 GB / 500 GB</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-purple-600 h-2 rounded-full" style="width: 49%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Index Size</span>
+                            <span class="font-medium">32 GB</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-indigo-600 h-2 rounded-full" style="width: 6.4%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Backup Storage</span>
+                            <span class="font-medium">180 GB / 1 TB</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-cyan-600 h-2 rounded-full" style="width: 18%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Operations -->
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+            <h3 class="text-lg font-semibold mb-4">Recent Database Operations</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Operation</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Table</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Duration</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Status</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id="operations-table">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mock data for operations
+        const operations = [
+            { operation: 'SELECT', table: 'users', duration: '12ms', status: 'success', time: '2 min ago' },
+            { operation: 'UPDATE', table: 'sessions', duration: '45ms', status: 'success', time: '5 min ago' },
+            { operation: 'INSERT', table: 'audit_logs', duration: '8ms', status: 'success', time: '7 min ago' },
+            { operation: 'DELETE', table: 'temp_cache', duration: '156ms', status: 'warning', time: '10 min ago' },
+            { operation: 'INDEX', table: 'documents', duration: '2.3s', status: 'success', time: '15 min ago' },
+            { operation: 'BACKUP', table: 'all', duration: '45s', status: 'success', time: '1 hour ago' }
+        ];
+
+        function renderOperations() {
+            const tbody = document.getElementById('operations-table');
+            tbody.innerHTML = operations.map(op => `
+                <tr class="border-b border-gray-100 dark:border-gray-700/50">
+                    <td class="py-3 px-4 text-sm">${op.operation}</td>
+                    <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">${op.table}</td>
+                    <td class="py-3 px-4 text-sm">${op.duration}</td>
+                    <td class="py-3 px-4">
+                        <span class="text-xs px-2 py-1 rounded-full ${
+                            op.status === 'success' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300' :
+                            op.status === 'warning' ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300' :
+                            'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300'
+                        }">
+                            ${op.status}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">${op.time}</td>
+                </tr>
+            `).join('');
+        }
+
+        function refreshData() {
+            // Simulate data refresh
+            const refreshBtn = document.querySelector('button[onclick="refreshData()"]');
+            refreshBtn.disabled = true;
+            refreshBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 inline mr-2 animate-spin"></i> Refreshing...';
+            
+            setTimeout(() => {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = '<i data-lucide="refresh-cw" class="w-4 h-4 inline mr-2"></i> Refresh';
+                lucide.createIcons();
+            }, 1500);
+        }
+
+        // Initial render
+        renderOperations();
+    </script>
+</body>
+</html>

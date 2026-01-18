@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup Status - System Status</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-inter bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-gray-100 min-h-full">
+    <!-- Header -->
+    <header class="bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Backup Status</h1>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Monitor backup schedules and restore points</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="triggerBackup()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <i data-lucide="database" class="w-4 h-4 inline mr-2"></i>
+                    Trigger Backup
+                </button>
+                <button onclick="refreshData()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
+                    <i data-lucide="refresh-cw" class="w-4 h-4 inline mr-2"></i>
+                    Refresh
+                </button>
+                <a href="/admin/system-status/index.html" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-6">
+        <!-- Backup Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Last Backup</span>
+                    <i data-lucide="clock" class="w-5 h-5 text-emerald-600"></i>
+                </div>
+                <p class="text-2xl font-bold text-emerald-600">2h ago</p>
+                <p class="text-xs text-gray-500 mt-1">Completed successfully</p>
+            </div>
+            
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Next Scheduled</span>
+                    <i data-lucide="calendar" class="w-5 h-5 text-blue-600"></i>
+                </div>
+                <p class="text-2xl font-bold text-blue-600">4h</p>
+                <p class="text-xs text-gray-500 mt-1">Daily at 2:00 AM</p>
+            </div>
+            
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Backups</span>
+                    <i data-lucide="archive" class="w-5 h-5 text-purple-600"></i>
+                </div>
+                <p class="text-2xl font-bold text-purple-600">247</p>
+                <p class="text-xs text-gray-500 mt-1">30 days retention</p>
+            </div>
+            
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Storage Used</span>
+                    <i data-lucide="hard-drive" class="w-5 h-5 text-amber-600"></i>
+                </div>
+                <p class="text-2xl font-bold text-amber-600">1.2 TB</p>
+                <p class="text-xs text-gray-500 mt-1">of 5 TB allocated</p>
+            </div>
+        </div>
+
+        <!-- Backup Schedule -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Active Schedules -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold mb-4">Active Backup Schedules</h3>
+                <div class="space-y-3">
+                    <div class="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-medium text-emerald-900 dark:text-emerald-100">Full Database Backup</h4>
+                                <p class="text-sm text-emerald-700 dark:text-emerald-300 mt-1">Daily at 2:00 AM UTC</p>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-full">Active</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-medium text-blue-900 dark:text-blue-100">Incremental Backup</h4>
+                                <p class="text-sm text-blue-700 dark:text-blue-300 mt-1">Every 6 hours</p>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full">Active</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-medium text-purple-900 dark:text-purple-100">File System Backup</h4>
+                                <p class="text-sm text-purple-700 dark:text-purple-300 mt-1">Weekly on Sunday</p>
+                            </div>
+                            <span class="text-xs px-2 py-1 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 rounded-full">Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backup Health -->
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+                <h3 class="text-lg font-semibold mb-4">Backup Health Metrics</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Success Rate (30 days)</span>
+                            <span class="font-medium">98.5%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-emerald-600 h-2 rounded-full" style="width: 98.5%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Average Backup Duration</span>
+                            <span class="font-medium">12 min</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 40%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Compression Ratio</span>
+                            <span class="font-medium">68%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-purple-600 h-2 rounded-full" style="width: 68%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="text-gray-600 dark:text-gray-400">Storage Efficiency</span>
+                            <span class="font-medium">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                            <div class="bg-amber-600 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Backups -->
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Recent Backup History</h3>
+                <select class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-slate-700 text-sm">
+                    <option>All Types</option>
+                    <option>Full Backup</option>
+                    <option>Incremental</option>
+                    <option>File System</option>
+                </select>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200 dark:border-gray-700">
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Type</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Started</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Duration</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Size</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Status</th>
+                            <th class="text-left py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="backup-history">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mock data for backup history
+        const backupHistory = [
+            { type: 'Full', started: '2024-01-22 02:00:00', duration: '15 min', size: '45.2 GB', status: 'success' },
+            { type: 'Incremental', started: '2024-01-22 08:00:00', duration: '3 min', size: '2.1 GB', status: 'success' },
+            { type: 'Incremental', started: '2024-01-22 14:00:00', duration: '4 min', size: '3.4 GB', status: 'success' },
+            { type: 'Full', started: '2024-01-21 02:00:00', duration: '16 min', size: '44.8 GB', status: 'success' },
+            { type: 'File System', started: '2024-01-21 00:00:00', duration: '45 min', size: '156 GB', status: 'warning' },
+            { type: 'Incremental', started: '2024-01-21 20:00:00', duration: '3 min', size: '1.9 GB', status: 'failed' }
+        ];
+
+        function renderBackupHistory() {
+            const tbody = document.getElementById('backup-history');
+            tbody.innerHTML = backupHistory.map(backup => `
+                <tr class="border-b border-gray-100 dark:border-gray-700/50">
+                    <td class="py-3 px-4">
+                        <span class="text-sm font-medium">${backup.type}</span>
+                    </td>
+                    <td class="py-3 px-4 text-sm text-gray-600 dark:text-gray-400">${backup.started}</td>
+                    <td class="py-3 px-4 text-sm">${backup.duration}</td>
+                    <td class="py-3 px-4 text-sm">${backup.size}</td>
+                    <td class="py-3 px-4">
+                        <span class="text-xs px-2 py-1 rounded-full ${
+                            backup.status === 'success' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300' :
+                            backup.status === 'warning' ? 'bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300' :
+                            'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300'
+                        }">
+                            ${backup.status}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4">
+                        <div class="flex gap-2">
+                            <button onclick="restoreBackup('${backup.started}')" class="text-blue-600 hover:text-blue-700 text-sm">
+                                Restore
+                            </button>
+                            <button onclick="downloadBackup('${backup.started}')" class="text-gray-600 hover:text-gray-700 text-sm">
+                                Download
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function refreshData() {
+            const refreshBtn = document.querySelector('button[onclick="refreshData()"]');
+            refreshBtn.disabled = true;
+            refreshBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 inline mr-2 animate-spin"></i> Refreshing...';
+            
+            setTimeout(() => {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = '<i data-lucide="refresh-cw" class="w-4 h-4 inline mr-2"></i> Refresh';
+                lucide.createIcons();
+            }, 1500);
+        }
+
+        function triggerBackup() {
+            if (confirm('Are you sure you want to trigger a manual backup? This may impact system performance.')) {
+                const backupBtn = document.querySelector('button[onclick="triggerBackup()"]');
+                backupBtn.disabled = true;
+                backupBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 inline mr-2 animate-spin"></i> Starting Backup...';
+                
+                setTimeout(() => {
+                    backupBtn.disabled = false;
+                    backupBtn.innerHTML = '<i data-lucide="database" class="w-4 h-4 inline mr-2"></i> Trigger Backup';
+                    lucide.createIcons();
+                    alert('Backup initiated successfully! Check the history for progress.');
+                }, 3000);
+            }
+        }
+
+        function restoreBackup(timestamp) {
+            if (confirm(`Are you sure you want to restore from backup ${timestamp}? This will replace current data.`)) {
+                console.log('Restoring backup from:', timestamp);
+                // In a real implementation, this would trigger a restore process
+            }
+        }
+
+        function downloadBackup(timestamp) {
+            console.log('Downloading backup from:', timestamp);
+            // In a real implementation, this would initiate a download
+        }
+
+        // Initial render
+        renderBackupHistory();
+    </script>
+</body>
+</html>
