@@ -205,12 +205,20 @@
       --print-body-padding: 40px;
     }
   </style>
-  }
-  }
-  </style>
   <style>
     /* Google Fonts for Signatures */
-    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&display=swap');
+  </style>
+  <style>
+    /* Styling for dynamic sections */
+    .dynamic-addon-row td {
+      border-top: 1px dashed #eee;
+    }
+
+    .total-row td {
+      border-top: 2px solid #000;
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -354,7 +362,8 @@
   <h2 id="compensation-and-payment">4. COMPENSATION AND PAYMENT</h2>
   <h3 id="total-contract-value">4.1 Total Contract Value</h3>
   <p>The total fixed price for the Services described in Exhibit A is
-    <strong>$95,000.00 USD</strong>. This pricing reflects a "Unified Platform" investment and the use of the Sirsi
+    <strong id="total-price-text">$95,000.00 USD</strong>. This pricing reflects a "Unified Platform" investment and the
+    use of the Sirsi
     component library, as detailed
     in <strong>Exhibit B (Cost &amp; Valuation Analysis)</strong>.
   </p>
@@ -362,27 +371,29 @@
   <p>Client shall select <strong>ONE</strong> of the following payment
     plans for the disbursement of fees. Selection must be made upon
     execution of this Agreement.</p>
-  <h4 id="plan-1-header">☐ PLAN 1: 2 Payments</h4>
-  <ul>
-    <li><strong>Payment 1:</strong> $47,500.00 due upon Effective Date.</li>
-    <li><strong>Payment 2:</strong> $47,500.00 due upon Final Delivery.</li>
-    <li><strong>Total:</strong> $95,000.</li>
-  </ul>
-  <h4 id="plan-2-header">☐ PLAN 2: 3 Monthly Payments</h4>
-  <ul>
-    <li><strong>Payment 1:</strong> $31,666.00 due upon Effective Date.</li>
-    <li><strong>Payment 2:</strong> $31,666.00 due Month 2.</li>
-    <li><strong>Payment 3:</strong> $31,668.00 due Month 3.</li>
-    <li><strong>Total:</strong> $95,000.</li>
-  </ul>
-  <h4 id="plan-3-header">☐ PLAN 3: 4 Monthly Payments</h4>
-  <ul>
-    <li><strong>Payment 1:</strong> $23,750.00 due upon Effective Date.</li>
-    <li><strong>Payment 2:</strong> $23,750.00 due Month 2.</li>
-    <li><strong>Payment 3:</strong> $23,750.00 due Month 3.</li>
-    <li><strong>Payment 4:</strong> $23,750.00 due Month 4.</li>
-    <li><strong>Total:</strong> $95,000.</li>
-  </ul>
+  <div id="payment-plans-container">
+    <h4 id="plan-1-header">☐ PLAN 1: 2 Payments</h4>
+    <ul>
+      <li><strong>Payment 1:</strong> <span id="plan-1-p1">$47,500.00</span> due upon Effective Date.</li>
+      <li><strong>Payment 2:</strong> <span id="plan-1-p2">$47,500.00</span> due upon Final Delivery.</li>
+      <li><strong>Total:</strong> <span id="plan-1-total">$95,000</span>.</li>
+    </ul>
+    <h4 id="plan-2-header">☐ PLAN 2: 3 Monthly Payments</h4>
+    <ul>
+      <li><strong>Payment 1:</strong> <span id="plan-2-p1">$31,666.00</span> due upon Effective Date.</li>
+      <li><strong>Payment 2:</strong> <span id="plan-2-p2">$31,666.00</span> due Month 2.</li>
+      <li><strong>Payment 3:</strong> <span id="plan-2-p3">$31,668.00</span> due Month 3.</li>
+      <li><strong>Total:</strong> <span id="plan-2-total">$95,000</span>.</li>
+    </ul>
+    <h4 id="plan-3-header">☐ PLAN 3: 4 Monthly Payments</h4>
+    <ul>
+      <li><strong>Payment 1:</strong> <span id="plan-3-p1">$23,750.00</span> due upon Effective Date.</li>
+      <li><strong>Payment 2:</strong> <span id="plan-2-p2">$23,750.00</span> due Month 2.</li>
+      <li><strong>Payment 3:</strong> <span id="plan-3-p3">$23,750.00</span> due Month 3.</li>
+      <li><strong>Payment 4:</strong> <span id="plan-3-p4">$23,750.00</span> due Month 4.</li>
+      <li><strong>Total:</strong> <span id="plan-3-total">$95,000</span>.</li>
+    </ul>
+  </div>
   <h3 id="expenses">4.3 Expenses</h3>
   <p>Client shall reimburse Provider for reasonable, documented
     “Pass-Through Expenses” incurred in connection with the Services (e.g.,
@@ -681,7 +692,7 @@
       sharing core business logic.</li>
   </ul>
   <h2 id="deliverables-schedule">3. Deliverables &amp; Schedule</h2>
-  <table>
+  <table id="deliverables-table">
     <colgroup>
       <col style="width: 30%" />
       <col style="width: 20%" />
@@ -694,7 +705,7 @@
         <th style="text-align: left;">Deliverables & Fees</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="deliverables-body">
       <tr>
         <td style="text-align: left;"><strong>1. Foundation & Cloud Infrastructure</strong></td>
         <td style="text-align: left;">Weeks 1-4</td>
@@ -770,27 +781,28 @@
     </tbody>
   </table>
   <h2 id="discount-realization">2. Discount Realization</h2>
-  <p>How we arrive at the <strong>$95,000</strong> partnership price:</p>
-  <ol type="1">
-    <li><strong>Gross Development Value:</strong> <strong>$250,000</strong>
+  <p>How we arrive at the <strong id="discount-net-price">$95,000</strong> partnership price:</p>
+  <ol type="1" id="discount-list">
+    <li><strong>Gross Development Value:</strong> <strong id="discount-market-value">$250,000</strong>
       <ul>
         <li><em>Based on ~1,000 hours @ $250/hr blended market rate for multi-platform build.</em></li>
       </ul>
     </li>
     <li><strong>Less: SirsiNexus Efficiency:</strong>
-      <strong>($105,000)</strong>
+      <strong id="discount-efficiency-value">($105,000)</strong>
       <ul>
         <li><em>Savings from using pre-built Sirsi auth, vault, and UI
             components.</em></li>
       </ul>
     </li>
     <li><strong>Less: Strategic Partnership Discount:</strong>
-      <strong>($50,000)</strong>
+      <strong id="discount-strategic-value">($50,000)</strong>
       <ul>
         <li><em>Direct partnership reduction for shared risk/reward.</em></li>
       </ul>
     </li>
-    <li><strong>NET CONTRACT PRICE:</strong> <strong>$95,000</strong></li>
+    <li id="dynamic-addons-discount-placeholder"></li>
+    <li><strong>NET CONTRACT PRICE:</strong> <strong id="discount-final-price">$95,000</strong></li>
   </ol>
   <h2 id="infrastructure-estimates-opex">3. Infrastructure Estimates
     (OpEx)</h2>
@@ -798,6 +810,9 @@
       Cloud:</strong> ~$60/mo (Scales with usage) - <strong>Cloud
       Messaging:</strong> Native push alerts - <strong>OpenSign:</strong> $20/mo - <strong>Vertex AI:</strong> ~$5 per
     1M tokens</p>
+
+  <div id="dynamic-legal-sections"></div>
+
   <hr />
   <h1 id="signature-page">SIGNATURE PAGE</h1>
   <p><strong>IN WITNESS WHEREOF</strong>, the Parties have executed this
@@ -1153,87 +1168,224 @@
     </div>
   </div>
 
+  <script src="../../lib/offerings/catalog-data.js"></script>
+  <script src="../../lib/offerings/pricing-engine.js"></script>
+  <script src="../../lib/offerings/cart-manager.js"></script>
+  <script src="../../lib/offerings/offerings-engine.js"></script>
+
   <script>
     /**
-     * Populate document from URL parameters
-     * Examples: 
-     * ?plan=A&client=John%20Doe&date=Jan%206,%202026&address=123%20Main%20St
+     * INITIALIZE FROM PARENT WINDOW
+     * This allows index.html to pass the exact state of the contract
      */
-    function populateFromParams() {
-      const params = new URLSearchParams(window.location.search);
+    window.initializeMSAPrint = function (state) {
+      console.log('[MSA Print] Initializing with state:', state);
+      if (!state) return;
 
-      // 1. Populate Text Fields
-      const clientName = params.get('client');
-      const clientAddress = params.get('address');
-      const effectiveDate = params.get('date');
-      const isSigned = params.get('signed') === 'true';
-
-      if (clientName) {
-        // Update all client name occurrences
-        const nameEls = document.querySelectorAll('#client-name, #client-name-display');
-        nameEls.forEach(el => el.textContent = clientName);
+      // 1. Basic Metadata
+      if (state.clientName) {
+        const nameEls = document.querySelectorAll('#client-name, #client-name-display, #sow-client-sig');
+        nameEls.forEach(el => el.textContent = state.clientName);
+      }
+      if (state.effectiveDate) {
+        document.getElementById('effective-date').textContent = state.effectiveDate;
+        const dateEls = document.querySelectorAll('#client-date-display, #sow-client-date, #provider-date-display, #sow-provider-date');
+        dateEls.forEach(el => el.textContent = state.effectiveDate);
       }
 
-      if (clientAddress) document.getElementById('client-address').textContent = clientAddress;
-      if (effectiveDate) document.getElementById('effective-date').textContent = effectiveDate;
+      // 2. Offerings Engine Integration
+      const engine = initOfferingsEngine('sirsi-engineering');
 
-      // 2. Handle Signatures if 'signed=true'
-      if (isSigned) {
-        // Client Signature
+      // Sync cart from state
+      if (state.selectedAddons) {
+        state.selectedAddons.forEach(id => engine.addToCart(id));
+      }
+
+      // Add core if needed
+      if (!engine.isInCart('finalwishes-core')) {
+        engine.addToCart('finalwishes-core');
+      }
+
+      const pricing = engine.getCartPricing();
+      const items = engine.cart.getItemsWithDetails(engine.catalog);
+
+      // 3. Update Pricing Text
+      document.getElementById('total-price-text').textContent = '$' + pricing.total.toLocaleString() + '.00 USD';
+      document.getElementById('discount-net-price').textContent = '$' + pricing.total.toLocaleString();
+      document.getElementById('discount-final-price').textContent = '$' + pricing.total.toLocaleString();
+
+      // 4. Update Payment Plans
+      updatePaymentPlansUI(pricing.total, state.selectedPlan);
+
+      // 5. Update SOW (Exhibit A)
+      updateSOWDeliverables(engine, items);
+
+      // 6. Update Exhibit B (Cost)
+      updateExhibitBDiscounts(engine, pricing);
+
+      // 7. Update Dynamic Legal Sections
+      updateLegalSections(engine, state.selectedAddons);
+
+      // 8. Handle Signatures if state says signed
+      if (state.isSigned) {
         const clientSigDisplay = document.getElementById('client-signature-display');
-        if (clientSigDisplay && clientName) clientSigDisplay.textContent = clientName;
+        if (clientSigDisplay) clientSigDisplay.textContent = state.clientName || 'Tameeka Lockhart';
 
-        const clientDateDisplay = document.getElementById('client-date-display');
-        if (clientDateDisplay && effectiveDate) clientDateDisplay.textContent = effectiveDate;
-
-        // Provider Signature (Auto-execute for Sirsi)
         const providerSigDisplay = document.getElementById('provider-signature-display');
         if (providerSigDisplay) providerSigDisplay.textContent = 'Cylton Collymore';
 
-        const providerDateDisplay = document.getElementById('provider-date-display');
-        if (providerDateDisplay && effectiveDate) providerDateDisplay.textContent = effectiveDate;
-
-        // SOW Signatures
-        document.getElementById('sow-client-sig').textContent = clientName || '_______________________';
-        document.getElementById('sow-client-date').textContent = effectiveDate || '___________';
-        document.getElementById('sow-provider-sig').textContent = 'Cylton Collymore';
-        document.getElementById('sow-provider-date').textContent = effectiveDate || '___________';
-
-        // Show Audit Trail
         const auditBlock = document.getElementById('audit-trail');
         if (auditBlock) {
           auditBlock.style.display = 'block';
-
-          // Generate Mock Data for Visuals
-          const uuid = 'SIRSI-' + Math.random().toString(36).substr(2, 9).toUpperCase() + '-' + Date.now().toString(36).toUpperCase();
-          const hash = Array.from(crypto.getRandomValues(new Uint8Array(16)))
-            .map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
-
-          document.getElementById('audit-envelope-id').textContent = uuid;
-          document.getElementById('audit-timestamp').textContent = new Date().toISOString().replace('T', ' ').split('.')[0] + ' UTC';
-          document.getElementById('audit-checksum').textContent = hash;
+          // Mock audit trail
+          document.getElementById('audit-envelope-id').textContent = 'SIRSI-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+          document.getElementById('audit-timestamp').textContent = new Date().toISOString();
+          document.getElementById('audit-checksum').textContent = 'SHA256-' + Math.random().toString(36).substr(2, 16).toUpperCase();
         }
       }
+    };
 
-      // 3. Mark Selected Plan
-      const selectedPlan = params.get('plan'); // '1', '2', or '3'
+    function updatePaymentPlansUI(total, selectedPlan) {
+      const p1Amt = Math.round(total / 2);
+      const p1Remaining = total - p1Amt;
+      document.getElementById('plan-1-p1').textContent = '$' + p1Amt.toLocaleString();
+      document.getElementById('plan-1-p2').textContent = '$' + p1Remaining.toLocaleString();
+      document.getElementById('plan-1-total').textContent = '$' + total.toLocaleString();
+
+      const p2Amt = Math.floor(total / 3);
+      const p2Last = total - (p2Amt * 2);
+      document.getElementById('plan-2-p1').textContent = '$' + p2Amt.toLocaleString();
+      document.getElementById('plan-2-p2').textContent = '$' + p2Amt.toLocaleString();
+      document.getElementById('plan-2-p3').textContent = '$' + p2Last.toLocaleString();
+      document.getElementById('plan-2-total').textContent = '$' + total.toLocaleString();
+
+      const p3Amt = Math.round(total / 4);
+      const p3Last = total - (p3Amt * 3);
+      document.getElementById('plan-3-p1').textContent = '$' + p3Amt.toLocaleString();
+      document.getElementById('plan-3-p3').textContent = '$' + p3Amt.toLocaleString();
+      document.getElementById('plan-3-p4').textContent = '$' + p3Last.toLocaleString();
+      document.getElementById('plan-3-total').textContent = '$' + total.toLocaleString();
 
       if (selectedPlan) {
-        const planKey = selectedPlan.toUpperCase();
-        const headerId = `plan-${planKey.toLowerCase()}-header`;
+        const planKey = selectedPlan.match(/\d/) ? selectedPlan.match(/\d/)[0] : '1';
+        const headerId = `plan-${planKey}-header`;
         const headerEl = document.getElementById(headerId);
-
         if (headerEl) {
-          // Replace ☐ with ☑
           headerEl.textContent = headerEl.textContent.replace('☐', '☑');
-          // Add a class for styling if needed
           headerEl.style.fontWeight = 'bold';
-          headerEl.style.color = '#000';
         }
       }
     }
 
-    // Run on load
+    function updateSOWDeliverables(engine, items) {
+      const body = document.getElementById('deliverables-body');
+      const coreBundle = engine.catalog.bundles['finalwishes-core'];
+      let html = '';
+      coreBundle.wbs.forEach(phase => {
+        html += `
+          <tr>
+            <td style="text-align: left;"><strong>${phase.phaseNum}. ${phase.name}</strong></td>
+            <td style="text-align: left;">${phase.weeks.includes('-') ? 'Weeks ' + phase.weeks : phase.weeks}</td>
+            <td style="text-align: left;">${phase.activities.map(a => a.name).join(', ')}. ($${phase.cost.toLocaleString()})</td>
+          </tr>
+        `;
+      });
+
+      let phaseNum = coreBundle.wbs.length + 1;
+      items.forEach(item => {
+        if (item.id === 'finalwishes-core') return;
+        if (item.wbs) {
+          item.wbs.forEach(phase => {
+            html += `
+              <tr class="dynamic-addon-row">
+                <td style="text-align: left;"><strong>${phaseNum}. ${item.name}: ${phase.name}</strong></td>
+                <td style="text-align: left;">${phase.weeks.includes('-') ? 'Weeks ' + phase.weeks : phase.weeks}</td>
+                <td style="text-align: left;">${phase.activities.map(a => a.name).join(', ')}. ($${phase.cost.toLocaleString()})</td>
+              </tr>
+            `;
+            phaseNum++;
+          });
+        }
+      });
+      body.innerHTML = html;
+    }
+
+    function updateExhibitBDiscounts(engine, pricing) {
+      const project = engine.catalog.projectConfig['finalwishes'];
+      const vr = project.valueRealization;
+      const addonsTotal = pricing.items.filter(i => i.id !== 'finalwishes-core').reduce((sum, i) => sum + i.price, 0);
+
+      const marketRate = vr.marketBase + (addonsTotal * vr.marketMultiplier);
+      const googleSavings = vr.googleBase + Math.round(addonsTotal * vr.googleMultiplier);
+      const sirsiSavings = vr.sirsiBase + Math.round(addonsTotal * vr.sirsiMultiplier);
+
+      document.getElementById('discount-market-value').textContent = '$' + marketRate.toLocaleString();
+      document.getElementById('discount-efficiency-value').textContent = '($' + googleSavings.toLocaleString() + ')';
+      document.getElementById('discount-strategic-value').textContent = '($' + sirsiSavings.toLocaleString() + ')';
+
+      const addonsPlaceholder = document.getElementById('dynamic-addons-discount-placeholder');
+      if (addonsTotal > 0) {
+        addonsPlaceholder.innerHTML = `<strong>Selected Add-on Engineering:</strong> <strong>+$${addonsTotal.toLocaleString()}</strong>
+          <ul><li><em>Cumulative value of ${pricing.items.length - 1} strategic modules.</em></li></ul>`;
+      } else {
+        addonsPlaceholder.innerHTML = '';
+      }
+    }
+
+    function updateLegalSections(engine, selectedAddonsSet) {
+      const container = document.getElementById('dynamic-legal-sections');
+      if (!container) return;
+
+      const project = engine.catalog.projectConfig['finalwishes'];
+      const selectedIds = selectedAddonsSet || [];
+      const hasAI = selectedIds.includes('probate-ai') || project.legalMetadata.disclosureAI;
+      const hasFinancial = selectedIds.includes('financial') || project.legalMetadata.disclosureFinancial;
+
+      let html = '';
+
+      if (hasAI) {
+        html += `
+          <div class="legal-addon-block" style="margin-bottom: 20px;">
+            <h3>AI Usage Disclosure</h3>
+            <p>This engagement includes AI-powered features using Google Vertex AI (Gemini). Client acknowledges that AI outputs are provided as guidance only and should be verified by qualified professionals. Provider makes no warranty regarding the accuracy or suitability of AI-generated content for specific legal or financial outcomes.</p>
+          </div>
+        `;
+      }
+
+      if (hasFinancial) {
+        html += `
+          <div class="legal-addon-block" style="margin-bottom: 20px;">
+            <h3>Financial Data Security Addendum</h3>
+            <p>The Services may include modules that connect to third-party financial institutions via Plaid or similar aggregators. Provider acts as a data processor for such information. All financial credentials are tokenized and never stored in plain text by Provider. Client is responsible for maintaining the security of their own institution-level credentials.</p>
+          </div>
+        `;
+      }
+
+      if (project.legalMetadata.jurisdiction) {
+        html += `
+            <div class="legal-addon-block" style="margin-bottom: 20px;">
+              <h3>Governing Law & Jurisdiction</h3>
+              <p>This Agreement and all matters arising out of or relating to this Agreement shall be governed by and construed in accordance with the laws of the State of ${project.legalMetadata.jurisdiction}, without regard to its conflict of law principles.</p>
+            </div>
+          `;
+      }
+
+      container.innerHTML = html;
+    }
+
+    function populateFromParams() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('client') || params.has('plan')) {
+        const state = {
+          clientName: params.get('client'),
+          effectiveDate: params.get('date') || new Date().toLocaleDateString(),
+          selectedPlan: params.get('plan'),
+          isSigned: params.get('signed') === 'true'
+        };
+        window.initializeMSAPrint(state);
+      }
+    }
+
     window.onload = populateFromParams;
   </script>
 </body>
