@@ -128,3 +128,11 @@ backups/
 *.swo
 .DS_Store
 Thumbs.db
+
+# Agent/IDE Workspaces
+.gemini/
+.cursor/
+
+# Firebase
+.firebase/
+**/.firebase/
