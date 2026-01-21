@@ -1,27 +1,74 @@
-/**
- * AdminHeader Component
- * Exact migration from the original HTML - white header bar with search
- */
+interface AdminHeaderProps {
+    isLightTheme: boolean;
+    onToggleTheme: () => void;
+}
 
-export function AdminHeader() {
+export function AdminHeader({ isLightTheme, onToggleTheme }: AdminHeaderProps) {
     return (
-        <header className="admin-header">
+        <header className="admin-header" style={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 1000,
+            background: isLightTheme ? '#fff' : '#0f172a',
+            borderBottom: `1px solid ${isLightTheme ? '#e2e8f0' : 'rgba(255,255,255,0.1)'}`,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '1rem 2rem',
+            height: '80px'
+        }}>
             <div className="header-left">
-                <h1>Partnership Agreement</h1>
-                <p>Sirsi Engineering • Strategic Partnership</p>
+                <h1 style={{
+                    fontSize: '1.25rem',
+                    fontFamily: 'Cinzel, serif',
+                    margin: 0,
+                    color: isLightTheme ? '#0f172a' : '#C8A951'
+                }}>Partnership Agreement</h1>
+                <p style={{
+                    fontSize: '0.75rem',
+                    margin: 0,
+                    color: isLightTheme ? '#64748b' : 'rgba(255,255,255,0.5)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em'
+                }}>Sirsi Engineering • Strategic Partnership</p>
             </div>
 
-            <div className="search-bar">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="11" cy="11" r="8" />
-                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                </svg>
-                <input type="text" placeholder="Search contract terms..." />
-            </div>
+            <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                {/* Theme Toggle */}
+                <button
+                    onClick={onToggleTheme}
+                    style={{
+                        background: 'transparent',
+                        border: `1px solid ${isLightTheme ? '#e2e8f0' : 'rgba(255,255,255,0.2)'}`,
+                        borderRadius: '8px',
+                        padding: '8px 12px',
+                        color: isLightTheme ? '#0f172a' : '#fff',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontSize: '14px',
+                        fontWeight: 500,
+                        transition: 'all 0.2s ease'
+                    }}
+                >
+                    {isLightTheme ? '🌙 Dark Mode' : '☀️ Light Mode'}
+                </button>
 
-            <div className="header-right">
-                <div className="avatar">AD</div>
+                <div className="avatar" style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    background: '#C8A951',
+                    color: '#000',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 'bold',
+                    fontSize: '14px'
+                }}>AD</div>
             </div>
         </header>
     )
 }
+

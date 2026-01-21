@@ -36,7 +36,7 @@ const initialState = {
     clientEmail: '',
     currentTab: 'summary' as TabId,
     visitedTabs: ['summary'] as TabId[],
-    selectedBundle: 'finalwishes-core',
+    selectedBundle: null,
     selectedAddons: [],
 }
 

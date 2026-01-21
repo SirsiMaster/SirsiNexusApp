@@ -77,28 +77,27 @@
 .contract-main-heading {
     color: #C8A951;
     margin-bottom: 24px;
-    font-size: 34px;
+    font-size: 4.5rem;
     line-height: 1.2;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Cinzel', serif;
     font-weight: 800;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
-    max-width: 100%;
-    white-space: nowrap;
+    text-align: center;
+    width: 100%;
     text-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .contract-gold-divider {
-    height: 1px;
-    width: 128px;
+    height: 4px;
+    width: 100px;
     background: #C8A951;
-    margin: 24px auto;
-    opacity: 0.5;
+    margin: 2rem auto;
 }
 
 .contract-subtitle {
     font-size: 16px;
-    color: white;
+    color: rgba(255, 255, 255, 0.7);
     text-transform: uppercase;
     letter-spacing: 0.25em;
     font-weight: 600;
@@ -180,7 +179,7 @@
    TAB CONTENT
    ============================================ */
 .tab-content {
-    padding: 1rem 5rem 5rem !important;
+    padding: 0;
     animation: fadeIn 0.5s ease;
     display: flex;
     flex-direction: column;
@@ -208,42 +207,40 @@
 
 /* Level 2: Section Headers */
 .contract-immersive-wrapper h2 {
-    font-family: 'Inter', sans-serif !important;
-    color: #C8A951 !important;
-    font-size: 2.25rem !important;
-    font-weight: 600 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    margin-top: 4rem !important;
-    margin-bottom: 2rem !important;
-    border: none !important;
-    line-height: 2.5rem !important;
-    text-align: center !important;
+    font-family: 'Cinzel', serif;
+    color: #C8A951;
+    font-size: 2.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+    text-align: center;
 }
 
 /* Level 3: Subsections */
 .contract-immersive-wrapper h3 {
-    font-family: 'Inter', sans-serif !important;
-    color: #93c5fd !important;
-    font-size: 1.375rem !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.15em !important;
-    margin-top: 3rem !important;
-    margin-bottom: 1.5rem !important;
-    padding-bottom: 0.5rem !important;
+    font-family: 'Cinzel', serif;
+    color: #C8A951;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
 }
 
 /* Level 4: Item Groups */
 .contract-immersive-wrapper h4 {
-    font-family: 'Inter', sans-serif !important;
-    color: #C8A951 !important;
-    font-size: 1.125rem !important;
-    font-weight: 700 !important;
-    margin-top: 1.5rem !important;
-    margin-bottom: 0.5rem !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
+    font-family: 'Inter', sans-serif;
+    color: #C8A951;
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 /* Body Text */
@@ -251,10 +248,10 @@
 .contract-immersive-wrapper li,
 .contract-immersive-wrapper td,
 .contract-immersive-wrapper th,
-.contract-immersive-wrapper span:not(.neo-text-gold) {
-    font-size: 1.125rem !important;
-    line-height: 1.75 !important;
-    color: rgba(255, 255, 255, 0.9) !important;
+.contract-immersive-wrapper span:not(.neo-text-gold):not(.tab-line1):not(.tab-line2) {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .contract-immersive-wrapper p {

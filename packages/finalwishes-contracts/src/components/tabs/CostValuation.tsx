@@ -16,81 +16,64 @@ export function CostValuation() {
     // Market Value logic (approx 1.5x - 2x the bundled cost)
     const marketValue = totalInvestment * 1.6
     const savingsAmount = marketValue - totalInvestment
-    const savingsPercent = Math.round((savingsAmount / marketValue) * 100)
 
     const bundle = selectedBundle ? BUNDLES[selectedBundle] : null
 
     return (
-        <div style={{ paddingTop: '1rem', position: 'relative' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
             {/* PACKAGE OVERVIEW */}
-            <div style={{ maxWidth: '1000px', margin: '0 auto 48px auto' }}>
+            <div style={{ marginBottom: '48px' }}>
                 {/* Header */}
-                <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+                <div style={{ textAlign: 'center', marginBottom: '32px', marginTop: '2rem' }}>
                     <h2 style={{
-                        fontSize: '28px',
+                        fontSize: '3.5rem',
                         fontFamily: "'Cinzel', serif",
                         color: '#C8A951',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.15em'
+                        letterSpacing: '0.15em',
+                        marginBottom: '1rem'
                     }}>
                         Project Valuation
                     </h2>
-                    <p style={{ fontSize: '16px', color: 'rgba(255,255,255,0.7)' }}>
-                        Transparent pricing and deliverables allocation
+                    <p style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.7)' }}>
+                        Transparent fixed-bid investment and deliverables allocation
                     </p>
                 </div>
 
                 {/* Package Card */}
                 <div className="neo-glass-panel" style={{
-                    padding: '32px',
+                    padding: '48px',
                     background: 'rgba(200,169,81,0.05)',
                     border: '2px solid #C8A951',
-                    boxShadow: '0 0 40px rgba(200,169,81,0.15)',
-                    position: 'relative'
+                    boxShadow: '0 0 60px rgba(200,169,81,0.15)',
+                    position: 'relative',
+                    borderRadius: '12px'
                 }}>
-                    {/* Selected Badge */}
-                    <div style={{
-                        position: 'absolute',
-                        top: '-12px',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        background: '#10b981',
-                        color: 'white',
-                        fontSize: '11px',
-                        fontWeight: 700,
-                        padding: '4px 16px',
-                        borderRadius: '20px',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.1em'
-                    }}>
-                        Selected
-                    </div>
-
                     <div style={{ textAlign: 'center' }}>
                         <p style={{
-                            fontSize: '12px',
+                            fontSize: '14px',
                             color: '#C8A951',
                             textTransform: 'uppercase',
-                            letterSpacing: '0.2em',
-                            marginBottom: '8px'
+                            letterSpacing: '0.25em',
+                            marginBottom: '12px'
                         }}>
                             {bundle ? 'Unified Platform' : 'Custom Service Stack'}
                         </p>
                         <h3 style={{
                             fontFamily: "'Cinzel', serif",
-                            fontSize: '28px',
+                            fontSize: '36px',
                             color: 'white',
-                            marginBottom: '8px'
+                            marginBottom: '12px'
                         }}>
                             {bundle ? bundle.name : 'Standalone Solutions'}
                         </h3>
 
                         <div style={{
                             fontFamily: "'Cinzel', serif",
-                            fontSize: '56px',
+                            fontSize: '72px',
                             color: '#C8A951',
                             fontWeight: 600,
-                            margin: '16px 0'
+                            margin: '24px 0'
                         }}>
                             ${totalInvestment.toLocaleString()}
                         </div>
@@ -98,30 +81,30 @@ export function CostValuation() {
                         <div style={{
                             display: 'flex',
                             justifyContent: 'center',
-                            gap: '24px',
-                            marginBottom: '24px',
-                            fontSize: '14px',
+                            gap: '32px',
+                            marginBottom: '32px',
+                            fontSize: '16px',
                             color: 'rgba(255,255,255,0.8)'
                         }}>
                             <span>📱 iOS + Android + Web</span>
-                            <span>⏱ {totalTimeline} Weeks</span>
+                            <span>⏱ {totalTimeline} Weeks Delivery</span>
                         </div>
 
                         <div style={{
                             borderTop: '1px solid rgba(255,255,255,0.1)',
-                            paddingTop: '20px',
+                            paddingTop: '32px',
                             textAlign: 'left',
-                            maxWidth: '600px',
+                            maxWidth: '700px',
                             margin: '0 auto'
                         }}>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
                                 <ul style={{
-                                    fontSize: '14px',
+                                    fontSize: '15px',
                                     color: 'rgba(255,255,255,0.9)',
                                     listStyle: 'none',
                                     padding: 0,
                                     margin: 0,
-                                    lineHeight: 2
+                                    lineHeight: 2.2
                                 }}>
                                     {bundle ? bundle.features.slice(0, 4).map((f, i) => (
                                         <li key={i}>✓ {f}</li>
@@ -130,12 +113,12 @@ export function CostValuation() {
                                     ))}
                                 </ul>
                                 <ul style={{
-                                    fontSize: '14px',
+                                    fontSize: '15px',
                                     color: 'rgba(255,255,255,0.9)',
                                     listStyle: 'none',
                                     padding: 0,
                                     margin: 0,
-                                    lineHeight: 2
+                                    lineHeight: 2.2
                                 }}>
                                     {bundle ? bundle.features.slice(4, 8).map((f, i) => (
                                         <li key={i}>✓ {f}</li>
@@ -152,212 +135,177 @@ export function CostValuation() {
             {/* STATS GRID */}
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: '24px',
-                marginBottom: '48px',
-                maxWidth: '1200px',
-                marginLeft: 'auto',
-                marginRight: 'auto'
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: '32px',
+                marginBottom: '64px',
+                width: '100%'
             }}>
                 {/* True Market Value */}
                 <div style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                    borderRadius: '8px',
-                    padding: '32px 24px',
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '12px',
+                    padding: '40px 32px',
                     textAlign: 'center'
                 }}>
                     <div style={{
                         fontSize: '14px',
-                        color: '#C8A951',
+                        color: '#94a3b8',
                         textTransform: 'uppercase',
                         letterSpacing: '0.2em',
-                        marginBottom: '12px',
+                        marginBottom: '16px',
                         fontWeight: 500
                     }}>
-                        True Market Value
+                        Market Valuation
                     </div>
                     <div style={{
-                        fontSize: '32px',
+                        fontSize: '36px',
                         fontFamily: "'Cinzel', serif",
-                        color: '#94a3b8',
+                        color: 'rgba(255,255,255,0.3)',
                         textDecoration: 'line-through',
                         fontWeight: 400
                     }}>
                         ${marketValue.toLocaleString()}+
                     </div>
-                    <div style={{
-                        fontSize: '12px',
-                        color: 'white',
+                    <p style={{
+                        fontSize: '11px',
+                        color: 'rgba(255,255,255,0.5)',
+                        marginTop: '12px',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.15em',
-                        marginTop: '8px'
+                        letterSpacing: '0.1em'
                     }}>
-                        Custom Agency Dev
-                    </div>
+                        Custom Agency Development
+                    </p>
                 </div>
 
                 {/* Fixed Bid Price */}
                 <div style={{
                     background: 'rgba(200,169,81,0.08)',
                     border: '2px solid #C8A951',
-                    borderRadius: '8px',
-                    padding: '32px 24px',
+                    borderRadius: '12px',
+                    padding: '40px 32px',
                     textAlign: 'center',
-                    boxShadow: '0 0 40px rgba(200,169,81,0.15)'
+                    boxShadow: '0 0 40px rgba(200,169,81,0.1)'
                 }}>
                     <div style={{
                         fontSize: '16px',
                         color: '#C8A951',
                         textTransform: 'uppercase',
                         letterSpacing: '0.25em',
-                        marginBottom: '12px',
+                        marginBottom: '16px',
                         fontWeight: 600
                     }}>
-                        Fixed Bid Price
+                        Sirsi Fixed Price
                     </div>
                     <div style={{
-                        fontSize: '32px',
+                        fontSize: '40px',
                         fontFamily: "'Cinzel', serif",
                         color: 'white',
                         fontWeight: 600
                     }}>
                         ${totalInvestment.toLocaleString()}
                     </div>
+                    <p style={{
+                        fontSize: '11px',
+                        color: '#C8A951',
+                        marginTop: '12px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em'
+                    }}>
+                        End-to-End Delivery
+                    </p>
                 </div>
 
-                {/* Savings */}
-                <div style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                    borderRadius: '8px',
-                    padding: '32px 24px',
-                    textAlign: 'center'
-                }}>
-                    <div style={{
-                        fontSize: '14px',
-                        color: '#C8A951',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.2em',
-                        marginBottom: '12px',
-                        fontWeight: 500
-                    }}>
-                        Your Savings
-                    </div>
-                    <div style={{
-                        fontSize: '32px',
-                        fontFamily: "'Cinzel', serif",
-                        color: '#10b981',
-                        fontWeight: 400
-                    }}>
-                        {savingsPercent}%
-                    </div>
-                    <div style={{
-                        fontSize: '12px',
-                        color: 'white',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.15em',
-                        marginTop: '8px'
-                    }}>
-                        Asset Leverage
-                    </div>
-                </div>
 
                 {/* Timeline */}
                 <div style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                    borderRadius: '8px',
-                    padding: '32px 24px',
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '12px',
+                    padding: '40px 32px',
                     textAlign: 'center'
                 }}>
                     <div style={{
                         fontSize: '14px',
-                        color: '#C8A951',
+                        color: '#94a3b8',
                         textTransform: 'uppercase',
                         letterSpacing: '0.2em',
-                        marginBottom: '12px',
+                        marginBottom: '16px',
                         fontWeight: 500
                     }}>
-                        Delivery
+                        Strategic Timeline
                     </div>
                     <div style={{
-                        fontSize: '32px',
+                        fontSize: '36px',
                         fontFamily: "'Cinzel', serif",
                         color: 'white',
                         fontWeight: 400
                     }}>
                         {totalTimeline} Weeks
                     </div>
-                    <div style={{
-                        fontSize: '12px',
-                        color: 'white',
+                    <p style={{
+                        fontSize: '11px',
+                        color: 'rgba(255,255,255,0.5)',
+                        marginTop: '12px',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.15em',
-                        marginTop: '8px'
+                        letterSpacing: '0.1em'
                     }}>
-                        Full Deployment
-                    </div>
+                        Accelerated Launch
+                    </p>
                 </div>
             </div>
 
             {/* 1. COMPARATIVE MARKET ANALYSIS */}
             <div style={{ marginBottom: '80px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '32px' }}>
-                    <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', flex: 1 }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginBottom: '48px' }}>
+                    <div style={{ height: '1px', background: 'rgba(200, 169, 81, 0.2)', flex: 1 }} />
                     <h2 style={{
-                        fontSize: '28px',
+                        fontSize: '2rem',
                         fontFamily: "'Cinzel', serif",
                         color: '#C8A951',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.15em',
+                        letterSpacing: '0.2em',
                         whiteSpace: 'nowrap'
                     }}>
-                        1. Comparative Market Analysis
+                        1. Market Comparison
                     </h2>
-                    <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', flex: 1 }} />
+                    <div style={{ height: '1px', background: 'rgba(200, 169, 81, 0.2)', flex: 1 }} />
                 </div>
 
-                <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <div style={{ width: '100%' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid rgba(255,255,255,0.05)' }}>
                         <thead>
-                            <tr style={{ background: 'rgba(0,0,0,0.3)' }}>
-                                <th style={{ padding: '16px', textAlign: 'left', color: '#C8A951', fontFamily: "'Cinzel', serif" }}>Metric</th>
-                                <th style={{ padding: '16px', textAlign: 'center', color: 'white', fontFamily: "'Cinzel', serif" }}>FinalWishes Platform</th>
-                                <th style={{ padding: '16px', textAlign: 'center', color: '#94a3b8', fontFamily: "'Cinzel', serif" }}>Typical Agency</th>
-                                <th style={{ padding: '16px', textAlign: 'center', color: '#94a3b8', fontFamily: "'Cinzel', serif" }}>Freelance Team</th>
+                            <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
+                                <th style={{ padding: '24px', textAlign: 'left', color: '#C8A951', fontFamily: "'Cinzel', serif", textTransform: 'uppercase', fontSize: '12px' }}>Value Metric</th>
+                                <th style={{ padding: '24px', textAlign: 'center', color: 'white', fontFamily: "'Cinzel', serif", textTransform: 'uppercase', fontSize: '12px' }}>Sirsi Platform</th>
+                                <th style={{ padding: '24px', textAlign: 'center', color: '#94a3b8', fontFamily: "'Cinzel', serif", textTransform: 'uppercase', fontSize: '12px' }}>Traditional Agency</th>
+                                <th style={{ padding: '24px', textAlign: 'center', color: '#94a3b8', fontFamily: "'Cinzel', serif", textTransform: 'uppercase', fontSize: '12px' }}>Freelance Cloud</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                <td style={{ padding: '16px', color: 'white' }}>Total Investment</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: '#10b981', fontWeight: 600 }}>${totalInvestment.toLocaleString()} (Fixed)</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>${(totalInvestment * 2).toLocaleString()}</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>${(totalInvestment * 1.5).toLocaleString()}</td>
+                                <td style={{ padding: '24px', color: 'rgba(255,255,255,0.7)', fontWeight: 500 }}>Investment Structure</td>
+                                <td style={{ padding: '24px', textAlign: 'center', color: '#10b981', fontWeight: 600 }}>Fixed Bid</td>
+                                <td style={{ padding: '24px', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>Estimates Only</td>
+                                <td style={{ padding: '24px', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>Hourly/Variable</td>
                             </tr>
                             <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                <td style={{ padding: '16px', color: 'white' }}>Platforms</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: '#C8A951', fontWeight: 600 }}>iOS + Android + Web</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>iOS Only (Initial)</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>Variable</td>
+                                <td style={{ padding: '24px', color: 'rgba(255,255,255,0.7)', fontWeight: 500 }}>Technical Stack</td>
+                                <td style={{ padding: '24px', textAlign: 'center', color: '#C8A951', fontWeight: 600 }}>Nexus V4 Core</td>
+                                <td style={{ padding: '24px', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>From Scratch</td>
+                                <td style={{ padding: '24px', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>Third-party</td>
                             </tr>
                             <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                <td style={{ padding: '16px', color: 'white' }}>Time to Market</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: '#C8A951', fontWeight: 600 }}>{totalTimeline} Weeks</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>{Math.round(totalTimeline * 1.5)}-{totalTimeline * 2} Weeks</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>{Math.round(totalTimeline * 1.3)}-{Math.round(totalTimeline * 1.8)} Weeks</td>
-                            </tr>
-                            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                <td style={{ padding: '16px', color: 'white' }}>IP Ownership</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: '#10b981', fontWeight: 600 }}>100% Client Owned</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>Restrictive</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>Risky</td>
+                                <td style={{ padding: '24px', color: 'rgba(255,255,255,0.7)', fontWeight: 500 }}>Intelligence Integration</td>
+                                <td style={{ padding: '24px', textAlign: 'center', color: '#C8A951', fontWeight: 600 }}>Gemini Native</td>
+                                <td style={{ padding: '24px', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>External APIs</td>
+                                <td style={{ padding: '24px', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>Limited</td>
                             </tr>
                             <tr>
-                                <td style={{ padding: '16px', color: 'white' }}>AI Capability</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: '#C8A951', fontWeight: 600 }}>Gemini 3.5 Native</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>Add-on Cost (High)</td>
-                                <td style={{ padding: '16px', textAlign: 'center', color: 'rgba(255,255,255,0.7)' }}>Limited Expertise</td>
+                                <td style={{ padding: '24px', color: 'rgba(255,255,255,0.7)', fontWeight: 500 }}>Intellectual Property</td>
+                                <td style={{ padding: '24px', textAlign: 'center', color: '#10b981', fontWeight: 600 }}>Full Client Ownership</td>
+                                <td style={{ padding: '24px', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>Restricted Use</td>
+                                <td style={{ padding: '24px', textAlign: 'center', color: 'rgba(255,255,255,0.5)' }}>Uncertain</td>
                             </tr>
                         </tbody>
                     </table>
@@ -369,22 +317,22 @@ export function CostValuation() {
                 <h2 style={{
                     textAlign: 'center',
                     marginBottom: '48px',
-                    fontSize: '28px',
+                    fontSize: '2rem',
                     fontFamily: "'Cinzel', serif",
                     color: '#C8A951',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.15em'
+                    letterSpacing: '0.2em'
                 }}>
-                    2. Value Realization
+                    2. Strategic Scaling
                 </h2>
 
                 <div style={{
                     maxWidth: '800px',
                     margin: '0 auto',
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(200,169,81,0.4)',
-                    padding: '32px',
-                    borderRadius: '8px'
+                    background: 'rgba(255,255,255,0.02)',
+                    border: '1px solid rgba(200,169,81,0.3)',
+                    padding: '48px',
+                    borderRadius: '12px'
                 }}>
                     {/* Market Standard */}
                     <div style={{
@@ -392,38 +340,30 @@ export function CostValuation() {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         padding: '16px 0',
-                        borderBottom: '1px solid rgba(255,255,255,0.1)'
+                        borderBottom: '1px solid rgba(255,255,255,0.05)'
                     }}>
-                        <span style={{ fontSize: '20px', color: 'white' }}>Standard Agency (Estimated)</span>
+                        <span style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.6)' }}>Market Infrastructure Cost</span>
                         <span style={{
-                            fontSize: '24px',
+                            fontSize: '1.5rem',
                             fontFamily: "'Cinzel', serif",
-                            color: '#94a3b8',
+                            color: 'rgba(255,255,255,0.3)',
                             textDecoration: 'line-through'
                         }}>${marketValue.toLocaleString()}</span>
                     </div>
 
-                    {/* Google Stack Acceleration */}
+                    {/* Sirsi Efficiencies */}
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        padding: '16px 0'
+                        padding: '24px 0',
+                        borderBottom: '1px solid rgba(255,255,255,0.05)'
                     }}>
-                        <span style={{ fontSize: '20px', color: 'white' }}>Google Stack Acceleration</span>
-                        <span style={{ fontSize: '24px', fontFamily: "'Cinzel', serif", color: '#10b981' }}>−${Math.round(savingsAmount * 0.7).toLocaleString()}</span>
-                    </div>
-
-                    {/* Sirsi Value Components */}
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        padding: '16px 0',
-                        borderBottom: '1px solid rgba(255,255,255,0.1)'
-                    }}>
-                        <span style={{ fontSize: '20px', color: 'white' }}>Sirsi Value Components</span>
-                        <span style={{ fontSize: '24px', fontFamily: "'Cinzel', serif", color: '#10b981' }}>−${Math.round(savingsAmount * 0.3).toLocaleString()}</span>
+                        <div>
+                            <div style={{ fontSize: '1.25rem', color: 'white' }}>Sirsi Accelerated Delivery</div>
+                            <div style={{ fontSize: '0.75rem', color: '#10b981', marginTop: '4px' }}>Nexus V4 Shared Libraries & Engine</div>
+                        </div>
+                        <span style={{ fontSize: '1.5rem', fontFamily: "'Cinzel', serif", color: '#10b981' }}>−${Math.round(savingsAmount).toLocaleString()}</span>
                     </div>
 
                     {/* Final Total */}
@@ -431,11 +371,11 @@ export function CostValuation() {
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        padding: '24px 0 12px 0'
+                        padding: '32px 0 0 0'
                     }}>
-                        <span style={{ fontSize: '20px', fontWeight: 600, color: '#C8A951' }}>Your Fixed Price</span>
+                        <span style={{ fontSize: '1.5rem', fontWeight: 600, color: '#C8A951', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Partnership Investment</span>
                         <span style={{
-                            fontSize: '28px',
+                            fontSize: '2.5rem',
                             fontFamily: "'Cinzel', serif",
                             fontWeight: 600,
                             color: '#C8A951'
@@ -448,29 +388,22 @@ export function CostValuation() {
             <div style={{
                 width: '100%',
                 marginTop: '4rem',
-                marginBottom: '3rem',
+                marginBottom: '6rem',
                 display: 'flex',
-                justifyContent: 'flex-end',
-                maxWidth: '1000px',
-                marginLeft: 'auto',
-                marginRight: 'auto'
+                justifyContent: 'center'
             }}>
                 <button
                     onClick={() => setTab('msa')}
                     className="select-plan-btn"
                     style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        padding: '12px 24px'
+                        padding: '16px 40px',
+                        fontSize: '18px'
                     }}
                 >
-                    <span>Review Master Agreement</span>
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                    </svg>
+                    Review Master Agreement →
                 </button>
             </div>
         </div>
+
     )
 }

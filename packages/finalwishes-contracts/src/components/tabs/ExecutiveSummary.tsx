@@ -8,25 +8,43 @@ export function ExecutiveSummary() {
     const setTab = useSetTab()
 
     return (
-        <div style={{ maxWidth: '60rem', margin: '0 auto', padding: '3rem 1.5rem' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
             {/* PRIMARY OBJECTIVE BOX */}
+            <div style={{ textAlign: 'center', marginBottom: '4rem', marginTop: '2rem' }}>
+                <h2 style={{
+                    fontFamily: "'Cinzel', serif",
+                    color: '#C8A951',
+                    fontSize: '3.5rem',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.15em',
+                    marginBottom: '1.5rem',
+                    lineHeight: '1.2'
+                }}>
+                    Executive Summary
+                </h2>
+            </div>
+
             <div
                 className="neo-card-gold"
                 style={{
                     background: 'rgba(200, 169, 81, 0.05)',
                     marginBottom: '4rem',
-                    cursor: 'default'
+                    cursor: 'default',
+                    padding: '48px',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(200, 169, 81, 0.3)'
                 }}
             >
                 <div style={{
                     display: 'inline-block',
                     background: '#C8A951',
                     color: '#000',
-                    padding: '4px 12px',
+                    padding: '6px 16px',
                     borderRadius: '4px',
                     fontWeight: 'bold',
                     fontSize: '11px',
-                    marginBottom: '16px',
+                    marginBottom: '24px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.2em'
                 }}>
@@ -34,13 +52,13 @@ export function ExecutiveSummary() {
                 </div>
                 <h3 style={{
                     fontFamily: "'Cinzel', serif",
-                    fontSize: '32px',
+                    fontSize: '36px',
                     color: 'white',
                     marginBottom: '24px'
                 }}>
                     The Living Legacy Platform
                 </h3>
-                <p style={{ fontSize: '18px', lineHeight: 1.8, color: 'rgba(255,255,255,0.9)' }}>
+                <p style={{ fontSize: '20px', lineHeight: 1.8, color: 'rgba(255,255,255,0.9)' }}>
                     To architect and deploy a secure, multi-tenant digital preservation engine that
                     allows Principals to curate their "Final Wishes"—including digital assets, legal
                     instructions, and emotional legacies—using AI-driven guidance and a "Vault-Grade"
@@ -52,21 +70,21 @@ export function ExecutiveSummary() {
             <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(2, 1fr)',
-                gap: '3rem',
-                marginBottom: '4rem'
+                gap: '4rem',
+                marginBottom: '5rem'
             }}>
                 <div>
                     <h4 style={{
                         color: '#C8A951',
                         fontWeight: 'bold',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                        marginBottom: '1rem',
-                        fontSize: '0.875rem'
+                        letterSpacing: '0.15em',
+                        marginBottom: '1.5rem',
+                        fontSize: '14px'
                     }}>
                         Strategic Position
                     </h4>
-                    <p style={{ lineHeight: 1.7, opacity: 0.8, fontSize: '1.125rem' }}>
+                    <p style={{ lineHeight: 1.8, opacity: 0.9, fontSize: '1.25rem' }}>
                         Sirsi acts as the Technical Lead, leveraging the <strong>Nexus V4 Core</strong> to
                         accelerate 0-to-1 development by 60%. We are not just building an app; we are
                         deploying a private, permanent infrastructure for estate management.
@@ -77,9 +95,9 @@ export function ExecutiveSummary() {
                         color: '#C8A951',
                         fontWeight: 'bold',
                         textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                        marginBottom: '1rem',
-                        fontSize: '0.875rem'
+                        letterSpacing: '0.15em',
+                        marginBottom: '1.5rem',
+                        fontSize: '14px'
                     }}>
                         Technology Stack
                     </h4>
@@ -89,26 +107,28 @@ export function ExecutiveSummary() {
                         margin: 0,
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '0.5rem',
-                        opacity: 0.8
+                        gap: '1rem',
+                        opacity: 0.9
                     }}>
-                        <li style={{ fontSize: '1.125rem' }}>• <strong>Logic:</strong> Go (Golang) / Cloud Run</li>
-                        <li style={{ fontSize: '1.125rem' }}>• <strong>Intelligence:</strong> Google Vertex AI (Gemini)</li>
-                        <li style={{ fontSize: '1.125rem' }}>• <strong>Vault:</strong> Cloud SQL + KMS Encryption</li>
-                        <li style={{ fontSize: '1.125rem' }}>• <strong>Mobile:</strong> React Native Expo</li>
+                        <li style={{ fontSize: '1.25rem' }}>• <strong>Logic:</strong> Go (Golang) / Cloud Run</li>
+                        <li style={{ fontSize: '1.25rem' }}>• <strong>Intelligence:</strong> Google Vertex AI (Gemini)</li>
+                        <li style={{ fontSize: '1.25rem' }}>• <strong>Vault:</strong> Cloud SQL + KMS Encryption</li>
+                        <li style={{ fontSize: '1.25rem' }}>• <strong>Mobile:</strong> React Native Expo</li>
                     </ul>
                 </div>
             </div>
 
             {/* CTA BUTTON */}
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: 'center', marginBottom: '6rem' }}>
                 <button
                     onClick={() => setTab('configure')}
                     className="select-plan-btn"
+                    style={{ padding: '16px 40px', fontSize: '18px' }}
                 >
                     Configure Your Solution →
                 </button>
             </div>
         </div>
+
     )
 }

@@ -1,0 +1,80 @@
+/* themes.css */
+
+/* Light Theme Overrides */
+.theme-light {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --card-border: rgba(15, 23, 42, 0.1);
+}
+
+body.theme-light {
+    background: #fdfdfd !important;
+    color: #333 !important;
+}
+
+body.theme-light .admin-wrapper {
+    background: #fdfdfd !important;
+}
+
+body.theme-light .sidebar {
+    background: #f1f5f9 !important;
+    border-right: 1px solid #e2e8f0 !important;
+}
+
+body.theme-light .nav-link {
+    color: #475569 !important;
+}
+
+body.theme-light .nav-link:hover,
+body.theme-light .nav-link.active {
+    background: rgba(200, 169, 81, 0.1) !important;
+    color: #C8A951 !important;
+}
+
+body.theme-light .main-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.theme-light .neo-glass-panel {
+    background: rgba(255, 255, 255, 0.8) !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #334155 !important;
+}
+
+body.theme-light .contract-main-heading {
+    color: #0f172a !important;
+}
+
+body.theme-light .contract-subtitle {
+    color: #64748b !important;
+}
+
+body.theme-light .tab-link {
+    color: #64748b !important;
+}
+
+body.theme-light .tab-link.active {
+    color: #C8A951 !important;
+    border-bottom-color: #C8A951 !important;
+}
+
+body.theme-light h1,
+body.theme-light h2,
+body.theme-light h3,
+body.theme-light h4 {
+    color: #1e293b !important;
+}
+
+body.theme-light p {
+    color: #475569 !important;
+}
+
+body.theme-light .neo-card-gold {
+    background: #ffffff !important;
+    color: #1e293b !important;
+}

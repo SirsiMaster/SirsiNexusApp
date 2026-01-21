@@ -31,22 +31,34 @@ export function StatementOfWork() {
     })
 
     return (
-        <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 24px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
             {/* SOW HEADER */}
             <div style={{
-                borderBottom: '1px solid rgba(255,255,255,0.1)',
-                paddingBottom: '24px',
-                marginBottom: '32px',
-                textAlign: 'center'
+                textAlign: 'center',
+                marginBottom: '4rem',
+                marginTop: '2rem'
             }}>
+                <div style={{
+                    display: 'inline-block',
+                    background: 'rgba(200,169,81,0.1)',
+                    border: '1px solid rgba(200,169,81,0.3)',
+                    borderRadius: '20px',
+                    padding: '6px 20px',
+                    marginBottom: '1.5rem'
+                }}>
+                    <span style={{ color: '#C8A951', fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+                        Project Documentation
+                    </span>
+                </div>
                 <h2 style={{
-                    fontSize: '3rem',
-                    color: '#C8A951',
-                    marginBottom: '16px',
+                    fontSize: '3.5rem',
                     fontFamily: "'Cinzel', serif",
+                    color: '#C8A951',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.1em',
-                    fontWeight: 700
+                    letterSpacing: '0.15em',
+                    marginBottom: '1.5rem',
+                    fontWeight: 700,
+                    lineHeight: '1.2'
                 }}>
                     Statement of Work
                 </h2>
@@ -54,10 +66,11 @@ export function StatementOfWork() {
                     display: 'flex',
                     flexWrap: 'wrap',
                     justifyContent: 'center',
-                    gap: '32px',
-                    fontSize: '13px',
+                    gap: '40px',
+                    fontSize: '14px',
                     fontFamily: 'monospace',
-                    color: '#93c5fd'
+                    color: '#93c5fd',
+                    opacity: 0.8
                 }}>
                     <div><strong style={{ color: 'white' }}>Project:</strong> FinalWishes Platform</div>
                     <div><strong style={{ color: 'white' }}>Date:</strong> {currentDate}</div>

@@ -21,28 +21,34 @@ export function MasterAgreement() {
     const totalInvestment = calculateTotal(selectedBundle, selectedAddons)
 
     return (
-        <div style={{ paddingTop: '1rem', position: 'relative' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
             {/* MSA HEADER */}
-            <div style={{ maxWidth: '900px', margin: '0 auto 48px auto', textAlign: 'center' }}>
+            <div style={{
+                textAlign: 'center',
+                marginBottom: '4rem',
+                marginTop: '2rem'
+            }}>
                 <div style={{
                     display: 'inline-block',
                     background: 'rgba(200,169,81,0.1)',
                     border: '1px solid rgba(200,169,81,0.3)',
                     borderRadius: '20px',
-                    padding: '4px 16px',
-                    marginBottom: '16px'
+                    padding: '6px 20px',
+                    marginBottom: '1.5rem'
                 }}>
-                    <span style={{ color: '#C8A951', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    <span style={{ color: '#C8A951', fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
                         Governing Legal Framework
                     </span>
                 </div>
                 <h2 style={{
-                    fontSize: '2.5rem',
+                    fontSize: '3.5rem',
                     fontFamily: "'Cinzel', serif",
                     color: '#C8A951',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.1em',
-                    marginBottom: '16px'
+                    letterSpacing: '0.15em',
+                    marginBottom: '1.5rem',
+                    fontWeight: 700,
+                    lineHeight: '1.2'
                 }}>
                     Master Service Agreement
                 </h2>
@@ -50,10 +56,11 @@ export function MasterAgreement() {
                     display: 'flex',
                     flexWrap: 'wrap',
                     justifyContent: 'center',
-                    gap: '24px',
-                    fontSize: '13px',
+                    gap: '40px',
+                    fontSize: '14px',
                     fontFamily: 'monospace',
-                    color: '#93c5fd'
+                    color: '#93c5fd',
+                    opacity: 0.8
                 }}>
                     <div><strong style={{ color: 'white' }}>Document:</strong> MSA-{currentYear}-111-FW</div>
                     <div><strong style={{ color: 'white' }}>Effective Date:</strong> {currentDate}</div>
@@ -63,7 +70,7 @@ export function MasterAgreement() {
 
             {/* LEGAL DOCUMENT VIEWER */}
             <div className="legal-viewer" style={{
-                maxWidth: '900px',
+                maxWidth: '1200px',
                 margin: '0 auto',
                 background: 'rgba(0,0,0,0.2)',
                 padding: '60px',
@@ -162,7 +169,7 @@ export function MasterAgreement() {
 
             {/* ACKNOWLEDGMENT SECTION */}
             <div style={{
-                maxWidth: '900px',
+                maxWidth: '1200px',
                 margin: '48px auto',
                 background: 'rgba(200,169,81,0.08)',
                 border: '1px solid rgba(200,169,81,0.3)',
@@ -207,7 +214,7 @@ export function MasterAgreement() {
                 marginBottom: '3rem',
                 display: 'flex',
                 justifyContent: 'flex-end',
-                maxWidth: '900px',
+                maxWidth: '1200px',
                 marginLeft: 'auto',
                 marginRight: 'auto'
             }}>
