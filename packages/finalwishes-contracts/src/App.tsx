@@ -12,8 +12,10 @@ function App() {
         <Route path="/" element={<LandingPage />} />
 
         {/* Partnership Agreement Workflow */}
-        <Route path="/partnership" element={<AgreementWorkflow />} />
-        <Route path="/payment/success" element={<AgreementWorkflow />} />
+        {/* Partnership Agreement Workflow */}
+        <Route path="/partnership" element={<Navigate to="/partnership/finalwishes" replace />} />
+        <Route path="/partnership/:projectId" element={<AgreementWorkflow />} />
+        <Route path="/partnership/:projectId/payment/success" element={<AgreementWorkflow />} />
 
         {/* Vault Dashboard */}
         <Route path="/vault" element={<VaultDashboard />} />

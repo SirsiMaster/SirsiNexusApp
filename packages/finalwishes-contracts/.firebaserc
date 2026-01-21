@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "sirsi-nexus-live"
+  },
+  "targets": {
+    "sirsi-nexus-live": {
+      "hosting": {
+        "sign": [
+          "sirsi-sign"
+        ]
+      }
+    }
+  }
+}

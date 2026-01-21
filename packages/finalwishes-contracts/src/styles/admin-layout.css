@@ -197,6 +197,22 @@
     padding: 0 32px;
 }
 
+/* Contract View Dark Header Override */
+.contract-view .admin-header {
+    background: rgba(15, 23, 42, 0.95) !important;
+    border-bottom: 1px solid rgba(200, 169, 81, 0.3) !important;
+    backdrop-filter: blur(12px) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+.contract-view .admin-header .header-left h1 {
+    color: #C8A951 !important;
+}
+
+.contract-view .admin-header .header-left p {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
 .header-left {
     flex-shrink: 0;
     min-width: fit-content;

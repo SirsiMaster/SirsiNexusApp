@@ -101,15 +101,35 @@ export const BUNDLES: Record<string, Bundle> = {
                     { name: 'System Architecture & Technical Design', role: 'Sr. Architect', hours: 30, cost: 6000 },
                     { name: 'Google Cloud Project Setup', role: 'DevOps Eng', hours: 20, cost: 4000 },
                     { name: 'Database Schema Design', role: 'Backend Eng', hours: 20, cost: 4000 },
-                    { name: 'Authentication System', role: 'Security Eng', hours: 20, cost: 4000 }
+                    { name: 'Authentication System', role: 'Security Eng', hours: 20, cost: 4000 },
+                    { name: 'CI/CD Pipeline & DevOps', role: 'DevOps Eng', hours: 30, cost: 6000 }
                 ]
             },
             {
-                phaseNum: 2, name: 'Core Application Development', weeks: '5-8', hours: 140, cost: 28000,
+                phaseNum: 2, name: 'Core Application Development', weeks: '5-8', hours: 160, cost: 32000,
                 activities: [
-                    { name: 'Web Application Shell', role: 'Frontend Eng', hours: 30, cost: 6000 },
-                    { name: 'Mobile Application Shell', role: 'Mobile Eng', hours: 35, cost: 7000 },
-                    { name: '"The Shepherd" AI Foundation', role: 'AI Engineer', hours: 30, cost: 6000 }
+                    { name: 'Web Application Shell', role: 'Frontend Eng', hours: 40, cost: 8000 },
+                    { name: 'Mobile Application Shell (iOS/Android)', role: 'Mobile Eng', hours: 50, cost: 10000 },
+                    { name: '"The Shepherd" AI Foundation', role: 'AI Engineer', hours: 40, cost: 8000 },
+                    { name: 'API Gateway & Backend Services', role: 'Backend Eng', hours: 30, cost: 6000 }
+                ]
+            },
+            {
+                phaseNum: 3, name: 'Feature Integration & Vault', weeks: '9-12', hours: 140, cost: 28000,
+                activities: [
+                    { name: 'Legacy Media Vault Implementation', role: 'Backend Eng', hours: 35, cost: 7000 },
+                    { name: 'Digital Lockbox & Encryption', role: 'Security Eng', hours: 35, cost: 7000 },
+                    { name: 'Beneficiary Management Portal', role: 'Frontend Eng', hours: 35, cost: 7000 },
+                    { name: 'Final Directives Module', role: 'Full Stack', hours: 35, cost: 7000 }
+                ]
+            },
+            {
+                phaseNum: 4, name: 'Testing, QA & Launch', weeks: '13-16', hours: 100, cost: 20000,
+                activities: [
+                    { name: 'End-to-End Testing & Bug Fixes', role: 'QA Engineer', hours: 30, cost: 6000 },
+                    { name: 'Security Audit & Penetration Testing', role: 'Security Eng', hours: 25, cost: 5000 },
+                    { name: 'Performance Optimization', role: 'DevOps Eng', hours: 20, cost: 4000 },
+                    { name: 'Launch Preparation & Deployment', role: 'Sr. Architect', hours: 25, cost: 5000 }
                 ]
             }
         ]
@@ -580,27 +600,221 @@ export function calculateTimeline(bundleId: string | null, addonIds: string[]): 
         const product = PRODUCTS[id]
         if (product && product.timelineUnit === 'weeks') addonTime += product.timeline
     })
-    return maxTimeline + Math.ceil(addonTime * 0.3)
+    // 50% parallelization factor - realistic for small agency with integration overhead
+    return maxTimeline + Math.ceil(addonTime * 0.5)
 }
 
-export function getAggregatedWBS(bundleId: string | null, addonIds: string[]): WBSPhase[] {
+// ============================================
+// DYNAMIC WBS GENERATOR (Sirsi Reusable Logic)
+// ============================================
+
+const HOURLY_RATE = 200 // $/hour for labor calculations
+
+// Role distribution for auto-generated activities
+const ROLE_DISTRIBUTION = [
+    { role: 'Sr. Architect', percentage: 0.15 },
+    { role: 'Backend Eng', percentage: 0.25 },
+    { role: 'Frontend Eng', percentage: 0.25 },
+    { role: 'DevOps Eng', percentage: 0.15 },
+    { role: 'QA Engineer', percentage: 0.10 },
+    { role: 'Security Eng', percentage: 0.10 }
+]
+
+/**
+ * Generate WBS phases dynamically from product metadata
+ * This is the Sirsi-reusable engine logic
+ */
+function generateProductWBS(product: Product | Bundle, startWeek: number = 1): WBSPhase[] {
+    const timeline = 'timeline' in product ? product.timeline : 16
+    const price = 'price' in product ? product.price : ('bundledPrice' in product ? product.bundledPrice : 0)
+    const name = product.name
+    const scope = product.detailedScope || []
+
+    // Calculate total hours from price (at $200/hour rate)
+    const totalHours = Math.round(price / HOURLY_RATE)
+
+    // Determine number of phases based on timeline
+    const numPhases = Math.max(1, Math.ceil(timeline / 4)) // ~4 weeks per phase
+    const weeksPerPhase = Math.ceil(timeline / numPhases)
+    const hoursPerPhase = Math.ceil(totalHours / numPhases)
+    const costPerPhase = Math.round(price / numPhases)
+
     const phases: WBSPhase[] = []
-    if (bundleId && BUNDLES[bundleId]?.wbs) phases.push(...JSON.parse(JSON.stringify(BUNDLES[bundleId]!.wbs)))
-    addonIds.forEach(id => {
-        const product = PRODUCTS[id]
-        if (product && product.wbs) {
-            product.wbs.forEach(ap => {
-                const existing = phases.find(p => p.name === ap.name)
-                if (existing) {
-                    existing.hours += ap.hours
-                    existing.cost += ap.cost
-                    existing.activities.push(...ap.activities)
-                } else {
-                    phases.push({ ...ap, phaseNum: phases.length + 1 })
-                }
+
+    // Generate phases based on detailed scope or default structure
+    if (scope.length >= numPhases) {
+        // Use scope items as phase guides
+        for (let i = 0; i < numPhases; i++) {
+            const phaseStart = startWeek + (i * weeksPerPhase)
+            const phaseEnd = phaseStart + weeksPerPhase - 1
+            const scopeItem = scope[i] || scope[scope.length - 1]
+
+            phases.push({
+                phaseNum: i + 1,
+                name: scopeItem.title,
+                weeks: `${phaseStart}-${phaseEnd}`,
+                hours: hoursPerPhase,
+                cost: costPerPhase,
+                activities: generateActivities(scopeItem, hoursPerPhase, costPerPhase)
             })
         }
+    } else {
+        // Generate default phases
+        const defaultPhaseNames = [
+            'Foundation & Architecture',
+            'Core Development',
+            'Integration & Features',
+            'Testing & Launch'
+        ]
+
+        for (let i = 0; i < numPhases; i++) {
+            const phaseStart = startWeek + (i * weeksPerPhase)
+            const phaseEnd = phaseStart + weeksPerPhase - 1
+            const phaseName = i < defaultPhaseNames.length
+                ? `${name}: ${defaultPhaseNames[i]}`
+                : `${name}: Phase ${i + 1}`
+
+            phases.push({
+                phaseNum: i + 1,
+                name: phaseName,
+                weeks: `${phaseStart}-${phaseEnd}`,
+                hours: hoursPerPhase,
+                cost: costPerPhase,
+                activities: generateDefaultActivities(name, hoursPerPhase, costPerPhase, i)
+            })
+        }
+    }
+
+    return phases
+}
+
+function generateActivities(scope: DetailedScopeItem, totalHours: number, totalCost: number): WBSActivity[] {
+    const activities: WBSActivity[] = []
+    const numActivities = Math.min(scope.subItems.length, 4) || 1
+    const hoursPerActivity = Math.ceil(totalHours / numActivities)
+    const costPerActivity = Math.round(totalCost / numActivities)
+
+    for (let i = 0; i < numActivities; i++) {
+        const activityName = scope.subItems[i] || scope.title
+        const role = ROLE_DISTRIBUTION[i % ROLE_DISTRIBUTION.length].role
+
+        activities.push({
+            name: activityName,
+            role,
+            hours: hoursPerActivity,
+            cost: costPerActivity
+        })
+    }
+
+    return activities
+}
+
+function generateDefaultActivities(_productName: string, totalHours: number, totalCost: number, phaseIndex: number): WBSActivity[] {
+    const phaseActivities = [
+        ['System Architecture', 'Infrastructure Setup', 'Database Design'],
+        ['Backend Development', 'Frontend Development', 'API Integration'],
+        ['Feature Implementation', 'Third-Party Integration', 'Security Hardening'],
+        ['End-to-End Testing', 'Performance Optimization', 'Deployment']
+    ]
+
+    const activities: WBSActivity[] = []
+    const activityNames = phaseActivities[phaseIndex % phaseActivities.length]
+    const hoursPerActivity = Math.ceil(totalHours / activityNames.length)
+    const costPerActivity = Math.round(totalCost / activityNames.length)
+
+    activityNames.forEach((actName, i) => {
+        activities.push({
+            name: actName,
+            role: ROLE_DISTRIBUTION[i % ROLE_DISTRIBUTION.length].role,
+            hours: hoursPerActivity,
+            cost: costPerActivity
+        })
     })
+
+    return activities
+}
+
+/**
+ * Aggregate WBS from bundle + add-ons with proper timeline extension
+ * Add-ons are inserted BEFORE Testing & Launch phase
+ */
+export function getAggregatedWBS(bundleId: string | null, addonIds: string[]): WBSPhase[] {
+    const phases: WBSPhase[] = []
+
+    // Generate bundle phases dynamically (or use override if defined)
+    if (bundleId && BUNDLES[bundleId]) {
+        const bundle = BUNDLES[bundleId]
+        if (bundle.wbs && bundle.wbs.length > 0) {
+            phases.push(...JSON.parse(JSON.stringify(bundle.wbs)))
+        } else {
+            phases.push(...generateProductWBS(bundle, 1))
+        }
+    }
+
+    // Find Testing & Launch phase to insert add-ons before it
+    const testingPhaseIndex = phases.findIndex(p =>
+        p.name.toLowerCase().includes('testing') ||
+        p.name.toLowerCase().includes('launch') ||
+        p.name.toLowerCase().includes('qa')
+    )
+
+    // Determine where add-on development starts (week 9 = after Foundation & Core Dev)
+    const addonStartWeek = bundleId ? 9 : 1
+    let currentWeekStart = addonStartWeek
+
+    // Collect add-on phases
+    const addonPhases: WBSPhase[] = []
+
+    addonIds.forEach(id => {
+        const product = PRODUCTS[id]
+        if (!product) return
+
+        // Skip recurring/support products
+        if (product.recurring || product.timelineUnit !== 'weeks') return
+
+        const parallelizedWeeks = Math.ceil(product.timeline * 0.5)
+        const weekEnd = currentWeekStart + parallelizedWeeks - 1
+
+        addonPhases.push({
+            phaseNum: 0,
+            name: product.name,
+            weeks: `${currentWeekStart}-${weekEnd}`,
+            hours: Math.round(product.bundledPrice / HOURLY_RATE),
+            cost: Math.round(product.bundledPrice * 0.4),
+            activities: product.detailedScope?.slice(0, 3).map((scope, i) => ({
+                name: scope.title,
+                role: ROLE_DISTRIBUTION[i % ROLE_DISTRIBUTION.length].role,
+                hours: Math.round((product.bundledPrice / HOURLY_RATE) / 3),
+                cost: Math.round(product.bundledPrice * 0.4 / 3)
+            })) || [{
+                name: `${product.name} Implementation`,
+                role: 'Full Stack',
+                hours: Math.round(product.bundledPrice / HOURLY_RATE),
+                cost: Math.round(product.bundledPrice * 0.4)
+            }]
+        })
+
+        currentWeekStart = weekEnd + 1
+    })
+
+    // Insert add-on phases before Testing & Launch
+    const insertIndex = testingPhaseIndex !== -1 ? testingPhaseIndex : phases.length
+    phases.splice(insertIndex, 0, ...addonPhases)
+
+    // Update Testing phase weeks if add-ons extend the timeline
+    if (addonPhases.length > 0 && testingPhaseIndex !== -1) {
+        const testingPhase = phases[insertIndex + addonPhases.length]
+        if (testingPhase && currentWeekStart > 13) {
+            const testingDuration = 4
+            testingPhase.weeks = `${currentWeekStart}-${currentWeekStart + testingDuration - 1}`
+        }
+    }
+
+    // Renumber all phases
+    phases.forEach((phase, idx) => {
+        phase.phaseNum = idx + 1
+    })
+
     return phases
 }
 

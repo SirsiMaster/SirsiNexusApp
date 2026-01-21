@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import '../../styles/admin-layout.css'
 import '../../styles/contract.css'
 import './styles/themes.css'
@@ -6,7 +7,7 @@ import './styles/themes.css'
 import { Sidebar } from '../layout/Sidebar'
 import { AdminHeader } from '../layout/AdminHeader'
 import { ContractTabs } from '../layout/ContractTabs'
-import { useCurrentTab } from '../../store/useConfigStore'
+import { useConfigStore, useCurrentTab } from '../../store/useConfigStore'
 
 // Tab Components
 import { ExecutiveSummary } from '../tabs/ExecutiveSummary'
@@ -17,9 +18,19 @@ import { MasterAgreement } from '../tabs/MasterAgreement'
 import { SirsiVault } from '../tabs/SirsiVault'
 
 export function AgreementWorkflow() {
+  const { projectId } = useParams()
   const currentTab = useCurrentTab()
+  const setProjectId = useConfigStore(state => state.setProjectId)
+  const storeProjectId = useConfigStore(state => state.projectId)
+
   const searchParams = new URLSearchParams(window.location.search)
-  const isSuccess = searchParams.get('session_id') !== null && window.location.pathname.includes('/payment/success')
+  const isSuccess = searchParams.get('session_id') !== null && window.location.pathname.endsWith('/payment/success')
+
+  useEffect(() => {
+    if (projectId) {
+      setProjectId(projectId)
+    }
+  }, [projectId, setProjectId])
 
   const [isLightTheme, setIsLightTheme] = useState(false)
 
@@ -61,8 +72,7 @@ export function AgreementWorkflow() {
       <main className="main-content contract-view" style={{
         height: '100vh',
         overflowY: 'auto',
-        position: 'relative',
-        background: isLightTheme ? '#f8fafc' : 'transparent'
+        position: 'relative'
       }}>
         {/* Header */}
         <AdminHeader isLightTheme={isLightTheme} onToggleTheme={() => setIsLightTheme(!isLightTheme)} />
@@ -72,24 +82,21 @@ export function AgreementWorkflow() {
           paddingBottom: '12rem',
           maxWidth: '1500px',
           margin: '0 auto',
-          width: '100%',
-          background: 'transparent' // Allow main-content to show through if needed, but we want the gradient
+          width: '100%'
         }}>
-          {/* Contract Header - ALWAYS DARK HERO DESIGN */}
-          <div style={{
+          {/* Contract Header */}
+          <div className="contract-hero" style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            marginBottom: '4rem',
-            paddingTop: '6rem',
-            paddingBottom: '4rem',
-            paddingLeft: '2rem',
-            paddingRight: '2rem',
+            marginBottom: '2rem',
+            paddingTop: '2rem',
+            paddingBottom: '1.5rem',
+            paddingLeft: '1rem',
+            paddingRight: '1rem',
             position: 'relative',
-            width: '100%',
-            background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%)',
-            borderBottom: '1px solid rgba(200, 169, 81, 0.2)'
+            width: '100%'
           }}>
             <div className="contract-title-wrapper" style={{
               textAlign: 'center',
@@ -100,29 +107,27 @@ export function AgreementWorkflow() {
               alignItems: 'center'
             }}>
               <h1 className="contract-main-heading" style={{
-                fontSize: '5rem',
-                letterSpacing: '0.15em',
-                marginBottom: '1rem',
-                marginTop: '1rem',
-                color: '#FFFFFF',
-                textShadow: '0 4px 30px rgba(0,0,0,0.8), 0 0 20px rgba(200, 169, 81, 0.2)'
+                fontSize: '3rem',
+                letterSpacing: '0.08em',
+                marginBottom: '0.5rem',
+                marginTop: '0',
+                whiteSpace: 'nowrap'
               }}>
                 Technical Partnership Agreement
               </h1>
               <div className="contract-gold-divider" style={{
-                width: '160px',
-                height: '4px',
+                width: '120px',
+                height: '3px',
                 background: '#C8A951',
-                margin: '2rem 0',
+                margin: '1rem 0',
                 boxShadow: '0 0 15px rgba(200, 169, 81, 0.5)'
               }} />
               <p className="contract-subtitle" style={{
-                color: '#FFFFFF',
-                fontSize: '1.25rem',
-                letterSpacing: '0.4em',
-                opacity: 0.9,
+                fontSize: '1rem',
+                letterSpacing: '0.3em',
                 fontWeight: 600,
-                textTransform: 'uppercase'
+                textTransform: 'uppercase',
+                margin: '0'
               }}>
                 Prepared for Tameeka Lockhart • <span id="date-proposal">{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
               </p>
@@ -134,9 +139,6 @@ export function AgreementWorkflow() {
             maxWidth: '1500px',
             margin: '-2rem auto 0 auto',
             width: '95%',
-            background: isLightTheme ? '#fff' : 'rgba(15, 23, 42, 0.8)',
-            border: isLightTheme ? '1px solid #e2e8f0' : '1px solid rgba(200, 169, 81, 0.3)',
-            boxShadow: isLightTheme ? '0 20px 40px rgba(0, 0, 0, 0.1)' : '0 30px 60px rgba(0,0,0,0.7)',
             backdropFilter: 'blur(20px)',
             zIndex: 10
           }}>
@@ -156,7 +158,7 @@ export function AgreementWorkflow() {
                   fontSize: '18px',
                   color: 'rgba(255,255,255,0.7)',
                   marginBottom: '2rem'
-                }}>Your Technical Partnership with FinalWishes is now ACTIVE.</p>
+                }}>Your Technical Partnership with {storeProjectId === 'finalwishes' ? 'FinalWishes' : storeProjectId} is now ACTIVE.</p>
                 <button
                   onClick={() => window.location.href = '/vault'}
                   className="select-plan-btn"

@@ -1,86 +1,389 @@
-/* themes.css */
+/* themes.css - Royal Neo-Deco Dual Theme System */
 
-/* Light Theme Overrides */
+/* ============================================
+   DARK THEME (Default)
+   Deep Royal Blue with Gold Accents
+   ============================================ */
+
+/* Dark theme is the default - no class needed */
+:root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.85);
+    --text-muted: rgba(255, 255, 255, 0.6);
+    --gold: #C8A951;
+    --gold-dim: rgba(200, 169, 81, 0.3);
+    --card-bg: rgba(15, 23, 42, 0.8);
+    --card-border: rgba(200, 169, 81, 0.3);
+    --card-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+    --header-bg: #0f172a;
+    --header-border: rgba(255, 255, 255, 0.1);
+    --input-bg: rgba(255, 255, 255, 0.05);
+    --input-border: rgba(255, 255, 255, 0.2);
+}
+
+/* Dark Theme explicit element colors (default state without .theme-light) */
+.admin-wrapper:not(.theme-light) .contract-main-heading {
+    color: #FFFFFF !important;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(200, 169, 81, 0.2) !important;
+}
+
+.admin-wrapper:not(.theme-light) .contract-subtitle {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.admin-wrapper:not(.theme-light) .contract-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%) !important;
+}
+
+.admin-wrapper:not(.theme-light) .main-card {
+    background: rgba(15, 23, 42, 0.95) !important;
+    border: 1px solid rgba(200, 169, 81, 0.3) !important;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7) !important;
+}
+
+.admin-wrapper:not(.theme-light) .main-content {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%) !important;
+}
+
+.admin-wrapper:not(.theme-light) h2,
+.admin-wrapper:not(.theme-light) h3,
+.admin-wrapper:not(.theme-light) h4 {
+    color: #FFFFFF !important;
+}
+
+.admin-wrapper:not(.theme-light) p,
+.admin-wrapper:not(.theme-light) li,
+.admin-wrapper:not(.theme-light) span:not(.gold-text) {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* ============================================
+   LIGHT THEME
+   Clean White/Gray with Gold Accents
+   ============================================ */
+
 .theme-light {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #f8fafc 100%);
     --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --card-border: rgba(15, 23, 42, 0.1);
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --gold: #B8962A;
+    /* Slightly darker gold for light backgrounds */
+    --gold-dim: rgba(200, 169, 81, 0.2);
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    --header-bg: #ffffff;
+    --header-border: #e2e8f0;
+    --input-bg: #f1f5f9;
+    --input-border: #cbd5e1;
+}
+
+/* ============================================
+   BODY & WRAPPER STYLES
+   ============================================ */
+
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 body.theme-light {
-    background: #fdfdfd !important;
-    color: #333 !important;
+    background: var(--bg-primary);
+}
+
+.admin-wrapper {
+    background: var(--bg-primary);
 }
 
 body.theme-light .admin-wrapper {
-    background: #fdfdfd !important;
+    background: var(--bg-primary);
 }
 
-body.theme-light .sidebar {
-    background: #f1f5f9 !important;
-    border-right: 1px solid #e2e8f0 !important;
+/* Main Content Area */
+.main-content {
+    background: var(--bg-gradient) !important;
 }
 
-body.theme-light .nav-link {
-    color: #475569 !important;
+body.theme-light .main-content {
+    background: var(--bg-gradient) !important;
 }
 
-body.theme-light .nav-link:hover,
-body.theme-light .nav-link.active {
-    background: rgba(200, 169, 81, 0.1) !important;
-    color: #C8A951 !important;
+/* Contract Hero Section */
+.contract-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%) !important;
+    border-bottom: 1px solid rgba(200, 169, 81, 0.2);
 }
 
-body.theme-light .main-card {
-    background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+body.theme-light .contract-hero {
+    background: var(--bg-gradient) !important;
+    border-bottom: 1px solid var(--card-border);
 }
 
-body.theme-light .neo-glass-panel {
-    background: rgba(255, 255, 255, 0.8) !important;
-    border: 1px solid #e2e8f0 !important;
-    color: #334155 !important;
+/* Contract Main Heading - always uses theme colors */
+.contract-main-heading {
+    color: var(--text-primary) !important;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.contract-subtitle {
+    color: var(--text-secondary) !important;
+}
+
+/* ============================================
+   HEADER STYLES
+   ============================================ */
+
+.admin-header {
+    background: var(--header-bg) !important;
+    border-bottom: 1px solid var(--header-border) !important;
 }
 
 body.theme-light .admin-header {
-    background: #ffffff !important;
-    border-bottom: 1px solid #e2e8f0 !important;
+    background: var(--header-bg) !important;
+    border-bottom: 1px solid var(--header-border) !important;
+}
+
+body.theme-light .admin-header h1 {
+    color: var(--gold) !important;
+}
+
+body.theme-light .admin-header p {
+    color: var(--text-muted) !important;
+}
+
+/* ============================================
+   MAIN CARD & CONTENT AREA
+   ============================================ */
+
+.main-card {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    box-shadow: var(--card-shadow) !important;
+}
+
+body.theme-light .main-card {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    box-shadow: var(--card-shadow) !important;
+}
+
+/* Hero Section - Stays consistent in both themes */
+.contract-main-heading {
+    color: var(--text-primary) !important;
 }
 
 body.theme-light .contract-main-heading {
-    color: #FFFFFF !important;
-    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    color: var(--text-primary) !important;
+}
+
+.contract-subtitle {
+    color: var(--text-secondary) !important;
 }
 
 body.theme-light .contract-subtitle {
-    color: #64748b !important;
+    color: var(--text-muted) !important;
 }
 
-body.theme-light .tab-link {
-    color: #64748b !important;
+/* ============================================
+   SIDEBAR STYLES
+   ============================================ */
+
+.sidebar {
+    background: #1e3a8a !important;
 }
 
-body.theme-light .tab-link.active {
-    color: #C8A951 !important;
-    border-bottom-color: #C8A951 !important;
+body.theme-light .sidebar {
+    background: #1e3a8a !important;
+    /* Keep sidebar dark even in light mode for brand consistency */
 }
+
+/* ============================================
+   TABS
+   ============================================ */
+
+.nav-tabs {
+    background: var(--input-bg) !important;
+    border-bottom: 1px solid var(--card-border) !important;
+}
+
+body.theme-light .nav-tabs {
+    background: var(--input-bg) !important;
+}
+
+.tab-btn {
+    color: var(--text-muted) !important;
+}
+
+.tab-btn:hover {
+    color: var(--gold) !important;
+}
+
+.tab-btn.active {
+    color: var(--gold) !important;
+    border-bottom-color: var(--gold) !important;
+}
+
+body.theme-light .tab-btn {
+    color: var(--text-muted) !important;
+}
+
+body.theme-light .tab-btn.active {
+    color: var(--gold) !important;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
 
 body.theme-light h1,
 body.theme-light h2,
 body.theme-light h3,
 body.theme-light h4 {
-    color: #1e293b !important;
+    color: var(--text-primary) !important;
 }
 
-body.theme-light p {
-    color: #475569 !important;
+body.theme-light p,
+body.theme-light li,
+body.theme-light span {
+    color: var(--text-secondary) !important;
+}
+
+/* Gold text stays gold in both themes */
+body.theme-light .gold-text,
+body.theme-light .u-text-gold {
+    color: var(--gold) !important;
+}
+
+/* ============================================
+   CARDS & PANELS
+   ============================================ */
+
+.neo-glass-panel {
+    background: var(--input-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    color: var(--text-secondary) !important;
+}
+
+body.theme-light .neo-glass-panel {
+    background: var(--input-bg) !important;
+    border: 1px solid var(--card-border) !important;
+}
+
+.neo-card-gold {
+    background: var(--card-bg) !important;
+    border: 2px solid var(--gold-dim) !important;
 }
 
 body.theme-light .neo-card-gold {
-    background: #ffffff !important;
-    color: #1e293b !important;
+    background: var(--card-bg) !important;
+    border: 2px solid var(--gold-dim) !important;
+}
+
+body.theme-light .neo-card-gold h3,
+body.theme-light .neo-card-gold h4 {
+    color: var(--text-primary) !important;
+}
+
+body.theme-light .neo-card-gold p,
+body.theme-light .neo-card-gold li {
+    color: var(--text-secondary) !important;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.select-plan-btn {
+    background: linear-gradient(to right, #C8A951, #E2C76B) !important;
+    color: #000 !important;
+}
+
+/* ============================================
+   LEGAL VIEWER
+   ============================================ */
+
+.legal-viewer,
+.legal-scroll-box {
+    background: var(--input-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    color: var(--text-secondary) !important;
+}
+
+body.theme-light .legal-viewer,
+body.theme-light .legal-scroll-box {
+    background: var(--input-bg) !important;
+}
+
+body.theme-light .legal-viewer h2,
+body.theme-light .legal-viewer h3 {
+    color: var(--gold) !important;
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+
+body.theme-light table th {
+    background: var(--bg-secondary) !important;
+    color: var(--gold) !important;
+    border-bottom: 1px solid var(--card-border) !important;
+}
+
+body.theme-light table td {
+    color: var(--text-secondary) !important;
+    border-bottom: 1px solid var(--card-border) !important;
+}
+
+body.theme-light table tr:hover td {
+    background: var(--input-bg) !important;
+}
+
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+
+body.theme-light input,
+body.theme-light textarea,
+body.theme-light select {
+    background: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    color: var(--text-primary) !important;
+}
+
+body.theme-light input::placeholder {
+    color: var(--text-muted) !important;
+}
+
+/* ============================================
+   ADDON CARDS
+   ============================================ */
+
+.addon-card {
+    background: var(--input-bg) !important;
+    border: 1px solid var(--card-border) !important;
+}
+
+body.theme-light .addon-card {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+}
+
+body.theme-light .addon-card h4 {
+    color: var(--text-primary) !important;
+}
+
+body.theme-light .addon-card p {
+    color: var(--text-secondary) !important;
+}
+
+.addon-card.selected {
+    border-color: #10B981 !important;
+    background: rgba(16, 185, 129, 0.08) !important;
 }

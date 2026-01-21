@@ -13,6 +13,8 @@ export function SirsiVault() {
     const [step, setStep] = useState(1)
     const selectedBundle = useConfigStore(state => state.selectedBundle)
     const selectedAddons = useConfigStore(state => state.selectedAddons)
+    const storeProjectId = useConfigStore(state => state.projectId)
+    const projectName = useConfigStore(state => state.projectName)
     const setClientInfo = useConfigStore(state => state.setClientInfo)
 
     const [signatureData, setSignatureData] = useState({
@@ -38,8 +40,8 @@ export function SirsiVault() {
         setError(null);
         try {
             const contract = await contractsClient.createContract({
-                projectId: 'finalwishes',
-                projectName: 'FinalWishes Platform',
+                projectId: storeProjectId,
+                projectName: `${projectName} Platform`,
                 clientName: signatureData.name,
                 clientEmail: signatureData.email,
                 totalAmount: BigInt(totalInvestment * 100),
@@ -87,7 +89,7 @@ export function SirsiVault() {
             const session = await contractsClient.createCheckoutSession({
                 contractId: contractId,
                 planId: 'deposit',
-                successUrl: window.location.origin + '/payment/success?session_id={CHECKOUT_SESSION_ID}',
+                successUrl: window.location.origin + `/partnership/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
                 cancelUrl: window.location.href
             })
 
@@ -314,7 +316,7 @@ export function SirsiVault() {
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                         <span style={{ color: '#C8A951' }}>📄</span>
-                                        <span style={{ color: 'white' }}>FinalWishes Master Agreement</span>
+                                        <span style={{ color: 'white' }}>{projectName} Master Agreement</span>
                                     </div>
                                     <span style={{ color: '#10b981', fontSize: '12px' }}>READY</span>
                                 </div>

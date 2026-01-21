@@ -12,6 +12,8 @@
   "type": "commonjs",
   "dependencies": {
     "jsdom": "^26.1.0",
-    "pptxgenjs": "^4.0.1"
+    "pdf-lib": "^1.17.1",
+    "pptxgenjs": "^4.0.1",
+    "puppeteer": "^24.35.0"
   }
 }

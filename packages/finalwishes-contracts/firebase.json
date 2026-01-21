@@ -1,5 +1,6 @@
 {
     "hosting": {
+        "site": "sirsi-sign",
         "public": "dist",
         "ignore": [
             "firebase.json",

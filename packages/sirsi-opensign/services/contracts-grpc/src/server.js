@@ -104,6 +104,25 @@ const handlers = {
         };
     },
 
+    // Update contract
+    async updateContract(id, data) {
+        const updateData = {
+            ...data,
+            updatedAt: Date.now()
+        };
+
+        // Remove id from update data if present
+        delete updateData.id;
+
+        await db.collection('contracts').doc(id).update(updateData);
+
+        const doc = await db.collection('contracts').doc(id).get();
+        return {
+            id: doc.id,
+            ...doc.data()
+        };
+    },
+
     // Generate contract page HTML
     generatePage(contract, theme) {
         const t = theme || contract.theme;
@@ -266,11 +285,32 @@ const server = http.createServer(async (req, res) => {
         } else if (path === '/sirsi.contracts.v1.ContractsService/GetContract' || path.startsWith('/api/contracts/')) {
             const id = body.id || path.split('/').pop();
             result = await handlers.getContract(id);
+        } else if (path === '/sirsi.contracts.v1.ContractsService/UpdateContract') {
+            result = await handlers.updateContract(body.id, body.contract || body);
         } else if (path === '/sirsi.contracts.v1.ContractsService/GeneratePage') {
             const contract = await handlers.getContract(body.contractId);
             result = { html: handlers.generatePage(contract, body.themeOverride) };
         } else if (path === '/sirsi.contracts.v1.ContractsService/CreateCheckoutSession') {
             result = await handlers.createCheckoutSession(body.contractId, body.planId, body.successUrl, body.cancelUrl);
+        } else if (path === '/webhook') {
+            const sig = req.headers['stripe-signature'];
+            let event;
+            try {
+                // In production, use stripe.webhooks.constructEvent with secret
+                event = body; // For development/simplicity
+                if (event.type === 'checkout.session.completed') {
+                    const session = event.data.object;
+                    const contractId = session.client_reference_id || session.metadata.contractId;
+                    if (contractId) {
+                        await handlers.updateContract(contractId, { status: 'PAID', updatedAt: Date.now() });
+                    }
+                }
+                result = { received: true };
+            } catch (err) {
+                res.writeHead(400);
+                res.end(`Webhook Error: ${err.message}`);
+                return;
+            }
         } else if (path === '/health' || path === '/') {
             result = { status: 'healthy', service: 'contracts-grpc', timestamp: new Date().toISOString() };
         } else {

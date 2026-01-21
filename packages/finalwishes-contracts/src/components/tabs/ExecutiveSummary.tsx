@@ -26,35 +26,38 @@ export function ExecutiveSummary() {
             </div>
 
             <div
-                className="neo-card-gold"
                 style={{
-                    background: 'rgba(200, 169, 81, 0.05)',
-                    marginBottom: '4rem',
+                    background: 'linear-gradient(145deg, #141e3c, #0a0f1e)',
+                    marginBottom: '3rem',
                     cursor: 'default',
-                    padding: '48px',
+                    padding: '28px',
                     borderRadius: '12px',
-                    border: '1px solid rgba(200, 169, 81, 0.3)'
+                    border: '2px solid rgba(200, 169, 81, 0.5)',
+                    backdropFilter: 'blur(12px)',
+                    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)'
                 }}
             >
                 <div style={{
                     display: 'inline-block',
-                    background: '#C8A951',
+                    background: 'linear-gradient(135deg, #C8A951, #E2C76B)',
                     color: '#000',
-                    padding: '6px 16px',
+                    padding: '8px 20px',
                     borderRadius: '4px',
                     fontWeight: 'bold',
-                    fontSize: '11px',
-                    marginBottom: '24px',
+                    fontSize: '12px',
+                    marginBottom: '28px',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.2em'
+                    letterSpacing: '0.15em',
+                    boxShadow: '0 4px 15px rgba(200, 169, 81, 0.3)'
                 }}>
                     Primary Objective
                 </div>
                 <h3 style={{
                     fontFamily: "'Cinzel', serif",
                     fontSize: '36px',
-                    color: 'white',
-                    marginBottom: '24px'
+                    color: '#FFFFFF',
+                    marginBottom: '24px',
+                    textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)'
                 }}>
                     The Living Legacy Platform
                 </h3>

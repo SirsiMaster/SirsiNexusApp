@@ -1,0 +1,89 @@
+{
+    "name": "html-to-pdf-converter",
+    "version": "1.0.0",
+    "description": "Configuration and metadata for HTML slide deck to PDF conversion",
+    "created": "2026-01-21",
+    "author": "Antigravity Agent",
+    "dependencies": {
+        "puppeteer": "latest",
+        "pdf-lib": "latest"
+    },
+    "scripts": {
+        "convert": "node scripts/html-to-pdf.js",
+        "convert:default": "node scripts/html-to-pdf.js sirsipitchdecknov.html sirsipitchdecknov-multipage.pdf",
+        "convert:nvidia": "node scripts/html-to-pdf.js sirsi-nvidia-deck.html sirsi-nvidia-deck-multipage.pdf"
+    },
+    "conversionSettings": {
+        "viewport": {
+            "width": 1920,
+            "height": 1080,
+            "aspectRatio": "16:9"
+        },
+        "output": {
+            "format": "PDF",
+            "preserveAspectRatio": true,
+            "printBackground": true
+        },
+        "slideDetection": {
+            "selector": ".slide",
+            "activeClass": "active",
+            "skipHidden": true
+        },
+        "hiddenElements": [
+            ".slide-header",
+            ".nav-footer",
+            ".progress",
+            ".nav-buttons",
+            ".slide-badge",
+            ".logo-badge"
+        ]
+    },
+    "files": {
+        "conversionScript": "scripts/html-to-pdf.js",
+        "printableScript": "scripts/make_printable.py",
+        "documentation": "HTML_TO_PDF_GUIDE.md"
+    },
+    "knownInputFiles": [
+        {
+            "name": "sirsipitchdecknov.html",
+            "slides": 13,
+            "description": "Sirsi November Pitch Deck"
+        },
+        {
+            "name": "sirsi-nvidia-deck.html",
+            "slides": 12,
+            "description": "Sirsi NVIDIA Partnership Deck"
+        },
+        {
+            "name": "sirsi-pitch-deck.html",
+            "description": "Main Sirsi Pitch Deck"
+        },
+        {
+            "name": "sirsi-pitch-deck-infrastructure.html",
+            "description": "Infrastructure-focused Pitch Deck"
+        }
+    ],
+    "usage": {
+        "basic": "node scripts/html-to-pdf.js <input.html> <output.pdf>",
+        "examples": [
+            "node scripts/html-to-pdf.js sirsipitchdecknov.html sirsipitchdecknov-multipage.pdf",
+            "node scripts/html-to-pdf.js sirsi-nvidia-deck.html sirsi-nvidia-deck-multipage.pdf"
+        ]
+    },
+    "troubleshooting": {
+        "slidesSplitAcrossPages": "Ensure using the updated script that captures each slide individually at viewport size",
+        "pdfWontOpen": "Use 'open -R /path/to/file.pdf' to reveal in Finder",
+        "missingFonts": "Ensure internet connectivity for CDN-hosted fonts"
+    },
+    "alternativeMethods": {
+        "chromeHeadless": {
+            "command": "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --headless=new --no-sandbox --disable-gpu --print-to-pdf=\"output.pdf\" --print-to-pdf-no-header \"file:///path/to/input.html\"",
+            "limitation": "Only captures first visible slide for interactive decks"
+        },
+        "pythonPrintable": {
+            "script": "scripts/make_printable.py",
+            "output": "all-slides.html",
+            "limitation": "Requires manual print-to-PDF after generation"
+        }
+    }
+}

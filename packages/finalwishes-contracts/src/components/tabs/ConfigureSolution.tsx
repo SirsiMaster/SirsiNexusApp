@@ -70,15 +70,18 @@ export function ConfigureSolution() {
 
                     {/* OPTION 1: Core Platform Bundle */}
                     <div
-                        className={`neo-card-gold ${bundleSelected ? 'selected' : ''}`}
                         onClick={() => setSelectedBundle('finalwishes-core')}
                         style={{
                             cursor: 'pointer',
                             border: `2px solid ${bundleSelected ? '#10B981' : '#C8A951'}`,
-                            background: bundleSelected ? 'rgba(16, 185, 129, 0.08)' : 'rgba(200, 169, 81, 0.05)',
+                            background: bundleSelected
+                                ? 'linear-gradient(145deg, #0f3d2e, #0a2820)'
+                                : 'linear-gradient(145deg, #141e3c, #0a0f1e)',
                             position: 'relative',
                             transition: 'all 0.3s ease',
-                            padding: '32px'
+                            padding: '20px',
+                            borderRadius: '12px',
+                            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)'
                         }}
                     >
                         {/* Selection Indicator */}
@@ -139,15 +142,18 @@ export function ConfigureSolution() {
 
                     {/* OPTION 2: Standalone Services */}
                     <div
-                        className={`neo-card-gold ${standaloneSelected ? 'selected' : ''}`}
                         onClick={() => setSelectedBundle(null)}
                         style={{
                             cursor: 'pointer',
-                            border: `2px solid ${standaloneSelected ? '#10B981' : 'rgba(255,255,255,0.2)'}`,
-                            background: standaloneSelected ? 'rgba(16, 185, 129, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+                            border: `2px solid ${standaloneSelected ? '#10B981' : 'rgba(255,255,255,0.3)'}`,
+                            background: standaloneSelected
+                                ? 'linear-gradient(145deg, #0f3d2e, #0a2820)'
+                                : 'linear-gradient(145deg, #0f172a, #080c16)',
                             position: 'relative',
                             transition: 'all 0.3s ease',
-                            padding: '32px'
+                            padding: '20px',
+                            borderRadius: '12px',
+                            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)'
                         }}
                     >
                         {/* Selection Indicator */}
@@ -256,7 +262,6 @@ export function ConfigureSolution() {
                         return (
                             <div
                                 key={item.id}
-                                className={`addon-card ${inCart ? 'selected' : ''}`}
                                 style={{
                                     perspective: '1000px',
                                     height: '380px',
@@ -280,12 +285,15 @@ export function ConfigureSolution() {
                                             width: '100%',
                                             height: '100%',
                                             backfaceVisibility: 'hidden',
-                                            background: 'rgba(255, 255, 255, 0.05)',
-                                            border: `1px solid ${inCart ? '#10B981' : 'rgba(255, 255, 255, 0.1)'}`,
+                                            background: inCart
+                                                ? 'linear-gradient(145deg, #0f3d2e, #0a2820)'
+                                                : 'linear-gradient(145deg, #0f172a, #080c16)',
+                                            border: `2px solid ${inCart ? '#10B981' : 'rgba(255, 255, 255, 0.15)'}`,
                                             borderRadius: '12px',
-                                            padding: '2rem',
+                                            padding: '1.25rem',
                                             display: 'flex',
-                                            flexDirection: 'column'
+                                            flexDirection: 'column',
+                                            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.4)'
                                         }}
                                     >
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>

@@ -7,6 +7,7 @@ interface ConfigState {
     // Project info
     projectName: string
     companyName: string
+    projectId: string
 
     // Client info
     clientName: string
@@ -22,6 +23,7 @@ interface ConfigState {
 
     // Actions
     setCurrentTab: (tab: TabId) => void
+    setProjectId: (id: string) => void
     setClientInfo: (name: string, email: string) => void
     setSelectedBundle: (id: string | null) => void
     toggleAddon: (id: string) => void
@@ -32,6 +34,7 @@ interface ConfigState {
 const initialState = {
     projectName: 'FinalWishes',
     companyName: '111 Venture Studio',
+    projectId: 'finalwishes',
     clientName: '',
     clientEmail: '',
     currentTab: 'summary' as TabId,
@@ -52,7 +55,17 @@ export const useConfigStore = create<ConfigState>()(
                 if (!visited.includes(tab)) {
                     set({ visitedTabs: [...visited, tab] })
                 }
+                // Scroll to top of content
+                setTimeout(() => {
+                    const mainContent = document.querySelector('.main-content')
+                    if (mainContent) {
+                        mainContent.scrollTo({ top: 0, behavior: 'smooth' })
+                    }
+                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                }, 50)
             },
+
+            setProjectId: (id) => set({ projectId: id }),
 
             setClientInfo: (name, email) => set({
                 clientName: name,
