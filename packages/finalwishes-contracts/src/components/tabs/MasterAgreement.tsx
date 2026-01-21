@@ -97,8 +97,8 @@ export function MasterAgreement() {
                             This <strong>Master Services Agreement</strong> (this "Agreement") is entered into by and between:
                         </p>
                         <p>
-                            <strong>FinalWishes Inc.</strong>, a Delaware Corporation with its principal place of business at [Address] ("Client"), acting as CEO <strong>{clientName}</strong>, and
-                            <strong>Sirsi Technologies, Inc.</strong>, a Delaware corporation (FEIN: 93-1696269), with its principal place of business at 909 Rose Avenue, Suite 400, North Bethesda MD 20852 ("Provider" or "Sirsi").
+                            <strong>FinalWishes Inc.</strong>, a Delaware Corporation with its principal place of business at [Address] ("Client"), represented by <strong>{clientName}</strong>, CEO, and
+                            {" "}<strong>Sirsi Technologies, Inc.</strong>, a Delaware corporation (FEIN: 93-1696269), with its principal place of business at 909 Rose Avenue, Suite 400, North Bethesda MD 20852 ("Provider" or "Sirsi"), represented by <strong>Cylton Collymore</strong>, CEO.
                         </p>
                         <p>Client and Provider may be referred to individually as a "Party" and collectively as the "Parties."</p>
 
