@@ -8,7 +8,7 @@ export function ExecutiveSummary() {
     const setTab = useSetTab()
 
     return (
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+        <div style={{ maxWidth: '100%', margin: '0 auto', padding: '0 4rem' }}>
             {/* PRIMARY OBJECTIVE BOX */}
             <div style={{ textAlign: 'center', marginBottom: '4rem', marginTop: '2rem' }}>
                 <h2 style={{

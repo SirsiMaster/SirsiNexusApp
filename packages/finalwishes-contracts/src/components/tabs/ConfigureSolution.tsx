@@ -23,7 +23,7 @@ export function ConfigureSolution() {
     const standaloneSelected = !bundleSelected && selectedAddons.length > 0
 
     return (
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+        <div style={{ maxWidth: '100%', margin: '0 auto', padding: '0 4rem' }}>
             {/* SECTION HEADER - CONFIGURE YOUR SOLUTION */}
             <div style={{ textAlign: 'center', marginBottom: '3rem', marginTop: '2rem' }}>
                 <h2 style={{

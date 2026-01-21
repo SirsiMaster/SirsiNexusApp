@@ -31,7 +31,7 @@ export function StatementOfWork() {
     })
 
     return (
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+        <div style={{ maxWidth: '100%', margin: '0 auto', padding: '0 4rem' }}>
             {/* SOW HEADER */}
             <div style={{
                 textAlign: 'center',

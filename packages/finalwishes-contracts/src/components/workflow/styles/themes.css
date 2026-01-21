@@ -46,8 +46,14 @@ body.theme-light .neo-glass-panel {
     color: #334155 !important;
 }
 
+body.theme-light .admin-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
 body.theme-light .contract-main-heading {
-    color: #0f172a !important;
+    color: #FFFFFF !important;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 body.theme-light .contract-subtitle {

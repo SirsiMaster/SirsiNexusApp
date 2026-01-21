@@ -65,7 +65,7 @@
     box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(16px);
     border-radius: 4px;
-    max-width: 1400px;
+    max-width: 1440px;
     margin: 0 auto;
     position: relative;
     overflow: visible;
@@ -75,7 +75,7 @@
    CONTRACT HEADER STYLES
    ============================================ */
 .contract-main-heading {
-    color: #C8A951;
+    color: #FFFFFF;
     margin-bottom: 24px;
     font-size: 4.5rem;
     line-height: 1.2;
@@ -85,7 +85,7 @@
     text-transform: uppercase;
     text-align: center;
     width: 100%;
-    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 .contract-gold-divider {

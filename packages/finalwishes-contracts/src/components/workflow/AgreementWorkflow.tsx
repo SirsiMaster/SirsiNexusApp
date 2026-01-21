@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import './styles/admin-layout.css'
-import './styles/contract.css'
+import '../../styles/admin-layout.css'
+import '../../styles/contract.css'
 import './styles/themes.css'
 
 import { Sidebar } from '../layout/Sidebar'
@@ -70,22 +70,26 @@ export function AgreementWorkflow() {
         {/* Contract Immersive Wrapper */}
         <div className="contract-immersive-wrapper" style={{
           paddingBottom: '12rem',
-          maxWidth: '1200px',
+          maxWidth: '1500px',
           margin: '0 auto',
-          width: '100%'
+          width: '100%',
+          background: 'transparent' // Allow main-content to show through if needed, but we want the gradient
         }}>
-          {/* Contract Header */}
+          {/* Contract Header - ALWAYS DARK HERO DESIGN */}
           <div style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            marginBottom: '5rem',
-            paddingTop: '5rem',
-            paddingLeft: '1rem',
-            paddingRight: '1rem',
+            marginBottom: '4rem',
+            paddingTop: '6rem',
+            paddingBottom: '4rem',
+            paddingLeft: '2rem',
+            paddingRight: '2rem',
             position: 'relative',
-            width: '100%'
+            width: '100%',
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%)',
+            borderBottom: '1px solid rgba(200, 169, 81, 0.2)'
           }}>
             <div className="contract-title-wrapper" style={{
               textAlign: 'center',
@@ -96,22 +100,29 @@ export function AgreementWorkflow() {
               alignItems: 'center'
             }}>
               <h1 className="contract-main-heading" style={{
-                fontSize: '4.5rem',
-                letterSpacing: '0.25em',
+                fontSize: '5rem',
+                letterSpacing: '0.15em',
                 marginBottom: '1rem',
                 marginTop: '1rem',
-                color: isLightTheme ? '#0f172a' : '#C8A951'
+                color: '#FFFFFF',
+                textShadow: '0 4px 30px rgba(0,0,0,0.8), 0 0 20px rgba(200, 169, 81, 0.2)'
               }}>
                 Technical Partnership Agreement
               </h1>
               <div className="contract-gold-divider" style={{
-                width: '100px',
+                width: '160px',
                 height: '4px',
                 background: '#C8A951',
-                margin: '2rem 0'
+                margin: '2rem 0',
+                boxShadow: '0 0 15px rgba(200, 169, 81, 0.5)'
               }} />
               <p className="contract-subtitle" style={{
-                color: isLightTheme ? '#64748b' : 'rgba(255,255,255,0.7)'
+                color: '#FFFFFF',
+                fontSize: '1.25rem',
+                letterSpacing: '0.4em',
+                opacity: 0.9,
+                fontWeight: 600,
+                textTransform: 'uppercase'
               }}>
                 Prepared for Tameeka Lockhart • <span id="date-proposal">{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
               </p>
@@ -120,12 +131,14 @@ export function AgreementWorkflow() {
 
           {/* Main Card with Tabs */}
           <div className="main-card" style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-            width: '100%',
-            background: isLightTheme ? '#fff' : 'rgba(255,255,255,0.02)',
-            border: isLightTheme ? '1px solid #e2e8f0' : '1px solid rgba(255,255,255,0.1)',
-            boxShadow: isLightTheme ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)' : 'none'
+            maxWidth: '1500px',
+            margin: '-2rem auto 0 auto',
+            width: '95%',
+            background: isLightTheme ? '#fff' : 'rgba(15, 23, 42, 0.8)',
+            border: isLightTheme ? '1px solid #e2e8f0' : '1px solid rgba(200, 169, 81, 0.3)',
+            boxShadow: isLightTheme ? '0 20px 40px rgba(0, 0, 0, 0.1)' : '0 30px 60px rgba(0,0,0,0.7)',
+            backdropFilter: 'blur(20px)',
+            zIndex: 10
           }}>
             {isSuccess ? (
               <div style={{ padding: '4rem', textAlign: 'center' }}>
