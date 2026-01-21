@@ -1,6 +1,11 @@
 /**
  * Master Agreement (MSA) Tab
  * Full legal agreement with terms and conditions
+ * 
+ * CANONICAL NOTICE: FULL-FIDELITY ENFORCEMENT
+ * This component MUST maintain absolute parity with CONTRACT.md.
+ * PER RULE 9: Under no circumstances shall the legal language herein be truncated, 
+ * summarized, or shortened. All 11 articles must be presented in full.
  */
 import { useState } from 'react'
 import { useConfigStore, useSetTab } from '../../store/useConfigStore'
