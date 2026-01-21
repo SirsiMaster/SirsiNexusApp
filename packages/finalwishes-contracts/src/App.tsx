@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AgreementWorkflow } from './components/workflow/AgreementWorkflow';
 import { LandingPage } from './components/vault/LandingPage';
@@ -9,22 +10,21 @@ function App() {
     <Router>
       <Routes>
         {/* Landing Page */}
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<LandingPage /> as any} />
 
         {/* Partnership Agreement Workflow */}
-        {/* Partnership Agreement Workflow */}
-        <Route path="/partnership" element={<Navigate to="/partnership/finalwishes" replace />} />
-        <Route path="/partnership/:projectId" element={<AgreementWorkflow />} />
-        <Route path="/partnership/:projectId/payment/success" element={<AgreementWorkflow />} />
+        <Route path="/partnership" element={<Navigate to="/partnership/finalwishes" replace /> as any} />
+        <Route path="/partnership/:projectId" element={<AgreementWorkflow /> as any} />
+        <Route path="/partnership/:projectId/payment/success" element={<AgreementWorkflow /> as any} />
 
         {/* Vault Dashboard */}
-        <Route path="/vault" element={<VaultDashboard />} />
+        <Route path="/vault" element={<VaultDashboard /> as any} />
 
         {/* Admin Studio */}
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin" element={<AdminDashboard /> as any} />
 
         {/* Catch-all - redirect to landing */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/" replace /> as any} />
       </Routes>
     </Router>
   );

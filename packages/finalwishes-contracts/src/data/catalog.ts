@@ -594,7 +594,7 @@ export function calculateTotal(bundleId: string | null, addonIds: string[]): num
 }
 
 export function calculateTimeline(bundleId: string | null, addonIds: string[]): number {
-    let maxTimeline = bundleId ? BUNDLES[bundleId].timeline : 0
+    const maxTimeline = bundleId ? BUNDLES[bundleId].timeline : 0
     let addonTime = 0
     addonIds.forEach(id => {
         const product = PRODUCTS[id]

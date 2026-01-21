@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BUNDLES, PRODUCTS } from '../../data/catalog';
-import { contractsClient } from '../../lib/grpc';
 
 export function AdminDashboard() {
-    const [selectedTenant, setSelectedTenant] = useState('finalwishes');
     const [selectedBundle, setSelectedBundle] = useState<string | null>(null);
     const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
     const [clientName, setClientName] = useState('');

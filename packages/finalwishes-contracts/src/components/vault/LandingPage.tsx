@@ -1,5 +1,4 @@
-import React from 'react';
-import { useConfigStore } from '../../store/useConfigStore';
+// Removed unused imports
 
 export function LandingPage() {
     return (

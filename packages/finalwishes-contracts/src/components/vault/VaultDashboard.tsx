@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { contractsClient } from '../../lib/grpc';
 
 interface Contract {
