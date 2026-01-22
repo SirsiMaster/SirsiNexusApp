@@ -9,7 +9,7 @@
  */
 import { useState } from 'react'
 import { useConfigStore, useSetTab } from '../../store/useConfigStore'
-import { PRODUCTS, BUNDLES, calculateTotal } from '../../data/catalog'
+import { calculateTotal } from '../../data/catalog'
 
 export function MasterAgreement() {
     const [agreed, setAgreed] = useState(false)
@@ -20,7 +20,7 @@ export function MasterAgreement() {
     const currentYear = new Date().getFullYear()
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
-    const bundle = selectedBundle ? BUNDLES[selectedBundle] : null
+
     // FinalWishes Client is ALWAYS Tameeka Lockhart - not the logged-in user
     // This is a specific contract between Provider (Sirsi/Cylton) and Client (Tameeka)
     const clientName = "Tameeka Lockhart"
@@ -213,42 +213,119 @@ export function MasterAgreement() {
                     <h4 style={{ textAlign: 'center', color: 'rgba(255,255,255,0.7)', marginTop: '8px', marginBottom: '40px' }}>Summary of Selected Software Modules</h4>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '60px' }}>
-                    {bundle && (
-                        <div style={{ padding: '24px', background: 'rgba(200,169,81,0.05)', border: '1px solid #C8A951', borderRadius: '4px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                                <strong style={{ color: 'white', fontSize: '16px' }}>{bundle.name} (Core Platform)</strong>
-                                <span style={{ color: '#C8A951', fontWeight: 700 }}>INCLUDED</span>
-                            </div>
-                            <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', margin: 0, lineHeight: 1.6 }}>
-                                Full platform foundation including iOS, Android, and Web applications. Includes the "The Shepherd" logic engine, Vault security architecture, and foundational support for future multi-state expansion.
-                            </p>
-                        </div>
-                    )}
+                <div style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.8', fontSize: '15px' }}>
+                    <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.6)', fontStyle: 'italic', marginBottom: '40px' }}>
+                        Project Name: FinalWishes Platform Development • SOW Reference: SOW-2025-001 • Date: January 6, 2026
+                    </p>
 
-                    {selectedAddons.map(id => {
-                        const product = PRODUCTS[id]
-                        if (!product) return null
-                        return (
-                            <div key={id} style={{ padding: '20px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.02)', borderRadius: '4px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                                    <span style={{ color: 'white', fontWeight: 600 }}>{product.name}</span>
-                                    <span style={{ color: '#94a3b8', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase' }}>Add-on Module</span>
-                                </div>
-                                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.5)', margin: 0 }}>
-                                    {product.shortDescription}
-                                </p>
-                            </div>
-                        )
-                    })}
+                    <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>1. EXECUTIVE OVERVIEW</h3>
+                    <p>This Statement of Work (“SOW”) defines the comprehensive scope for the <strong>FinalWishes Legacy Management System</strong>. This project aims to build foundational legacy management infrastructure with foundational support for future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota.</p>
+                    <p><strong>Objective:</strong> deliver a “Vault-Grade” secure platform that guides users through the 18+ month probate process, automating form generation, asset discovery, and stakeholder communication.</p>
 
-                    {selectedAddons.length === 0 && !bundle && (
-                        <div style={{ padding: '40px', textAlign: 'center', border: '1px dashed rgba(255,255,255,0.2)', borderRadius: '8px' }}>
-                            <p style={{ color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', margin: 0 }}>
-                                No modules selected yet. Please return to the configuration tab to build your solution.
-                            </p>
+                    <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', marginTop: '40px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>2. DETAILED SCOPE OF SERVICES</h3>
+
+                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.1 Core Vault & Data Architecture</h4>
+                    <p>Provider shall implement a <strong>Multi-Tenant, Zero-Knowledge</strong> architecture to ensure total data privacy.</p>
+                    <ul style={{ paddingLeft: '20px', marginBottom: '20px' }}>
+                        <li><strong>Storage Layer:</strong> Hybrid approach using <strong>Cloud SQL (PostgreSQL)</strong> for structured PII (Encrypted) and <strong>Firestore</strong> for real-time document metadata.</li>
+                        <li><strong>File Vault:</strong> <strong>Cloud Storage</strong> buckets with per-tenant isolation boundaries. All files encrypted at rest using <strong>Cloud KMS</strong> (AES-256).</li>
+                        <li><strong>Security:</strong> Implementation of <strong>SOC 2 Type II</strong> controls, including strict IAM roles, audit logging, and encryption in transit (TLS 1.3).</li>
+                    </ul>
+
+                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.2 Technology Stack (SirsiNexus V4)</h4>
+                    <ul style={{ paddingLeft: '20px', marginBottom: '20px' }}>
+                        <li><strong>Frontend:</strong> <strong>React 18</strong> (Vite), <strong>Tanstack</strong> (Query, Router, Table), <strong>shadcn/ui</strong> (Radix Primitives + Tailwind).</li>
+                        <li><strong>Backend:</strong> <strong>Go (Golang)</strong> on <strong>Cloud Run</strong> (Serverless), <strong>Firebase Auth</strong>.</li>
+                        <li><strong>Database:</strong> <strong>Cloud SQL</strong> (PostgreSQL) + <strong>Firestore</strong> (Real-time).</li>
+                        <li><strong>Mobile:</strong> <strong>React Native</strong> (Expo) sharing core business logic.</li>
+                    </ul>
+
+                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.3 Document Inventory & Automation Scope</h4>
+                    <p>Provider will build automation or manual guidance paths for the following specific document categories:</p>
+                    <p><strong>A. Identity & Vital Records:</strong> Death Certificate (Manual upload/OCR processing); Social Security/Gov ID (Secure entry & validation).</p>
+                    <p><strong>B. Future State Engine Framework (Expansion):</strong> Maryland/Illinois/Minnesota: Foundational logic mapping for future expansion into MDEC (Maryland), eCourt (Illinois), and MNCIS (Minnesota) e-filing guidance. <em>Note: Active development of direct court filing automation is reserved for future statement(s) of work.</em></p>
+                    <p><strong>C. Financial & Asset Documents:</strong> Asset Discovery (Plaid integration for 12,000+ institutions); Life Insurance/Retirement (Standard claim letter generation); Real Estate (Manual tracking + valuation APIs).</p>
+
+                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.4 System Integrations</h4>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
+                        <thead>
+                            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                                <th style={{ textAlign: 'left', padding: '12px' }}>Service</th>
+                                <th style={{ textAlign: 'left', padding: '12px' }}>Purpose</th>
+                                <th style={{ textAlign: 'left', padding: '12px' }}>Integration Level</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                <td style={{ padding: '12px' }}><strong>Plaid</strong></td>
+                                <td style={{ padding: '12px' }}>Financial Account Linking</td>
+                                <td style={{ padding: '12px' }}>Deep Integration</td>
+                            </tr>
+                            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                <td style={{ padding: '12px' }}><strong>OpenSign</strong></td>
+                                <td style={{ padding: '12px' }}>E-Signatures</td>
+                                <td style={{ padding: '12px' }}>Self-Hosted API</td>
+                            </tr>
+                            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                <td style={{ padding: '12px' }}><strong>Lob</strong></td>
+                                <td style={{ padding: '12px' }}>Physical Mail</td>
+                                <td style={{ padding: '12px' }}>API Triggered</td>
+                            </tr>
+                            <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                <td style={{ padding: '12px' }}><strong>Vertex AI</strong></td>
+                                <td style={{ padding: '12px' }}>Process Guidance</td>
+                                <td style={{ padding: '12px' }}>RAG Pipeline</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', marginTop: '40px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>3. WORK BREAKDOWN STRUCTURE (WBS)</h3>
+                    <div style={{ display: 'grid', gap: '24px' }}>
+                        <div>
+                            <h4 style={{ color: 'white', marginBottom: '8px' }}>PHASE 1: FOUNDATION & VAULT ARCHITECTURE (Weeks 1-4)</h4>
+                            <ul style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
+                                <li>GCP Infrastructure provisioning (Run, SQL, Firestore)</li>
+                                <li>Firebase Auth + MFA implementation</li>
+                                <li>AES-256 Vault crypto service implementation</li>
+                                <li>React 18 Component System & CI/CD Setup</li>
+                            </ul>
                         </div>
-                    )}
+                        <div>
+                            <h4 style={{ color: 'white', marginBottom: '8px' }}>PHASE 2: CORE LOGIC & FOUNDATIONAL ENGINES (Weeks 5-10)</h4>
+                            <ul style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
+                                <li>Plaid Link integration & Asset Module</li>
+                                <li>"The Shepherd" Engine & Future State Framework mapping</li>
+                                <li>Gemini RAG pipeline for legal context</li>
+                                <li>Go-based PDF form stamper service</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style={{ color: 'white', marginBottom: '8px' }}>PHASE 3: MOBILE & DEEP INTEGRATIONS (Weeks 11-16)</h4>
+                            <ul style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
+                                <li>React Native Expo development (iOS/Android)</li>
+                                <li>Biometric Auth & Native Camera modules</li>
+                                <li>Full Webhook handling for Plaid/Stripe/Lob</li>
+                                <li>Offline sync engine for mobile resilience</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style={{ color: 'white', marginBottom: '8px' }}>PHASE 4: AUDIT, SECURITY & LAUNCH (Weeks 17-20)</h4>
+                            <ul style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
+                                <li>Internal security audit & SOC 2 evidence collection</li>
+                                <li>Load testing (k6) to 1,000 concurrent users</li>
+                                <li>App Store & Play Store submission</li>
+                                <li>Production migration & DNS switchover</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', marginTop: '40px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>4. ASSUMPTIONS</h3>
+                    <ol style={{ paddingLeft: '20px', fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
+                        <li><strong>Future Expansion Support:</strong> Logic is focused on foundational legacy management, with future support planned for Maryland, Illinois, and Minnesota.</li>
+                        <li><strong>No Legal Advice:</strong> The “Shepherd” provides procedural guidance, not legal advice.</li>
+                        <li><strong>Third-Party Costs:</strong> Client pays direct consumption costs for Stripe, Plaid, Lob, and Google Cloud.</li>
+                        <li><strong>Content:</strong> Client is responsible for final validation of court form templates.</li>
+                    </ol>
                 </div>
             </div>
 
