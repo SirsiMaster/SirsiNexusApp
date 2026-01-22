@@ -479,7 +479,7 @@
   <h2 id="compensation-and-payment">4. COMPENSATION AND PAYMENT</h2>
   <h3 id="total-contract-value">4.1 Total Contract Value</h3>
   <p id="contract-value">The total fixed price for the Services described in Exhibit A is
-    <strong>$200,000.00 USD</strong>. This pricing reflects a “Friends &amp;
+    <strong class="dynamic-contract-value">$...</strong>. This pricing reflects a “Friends &amp;
     Family” discount and the use of the SirsiNexus accelerator, as detailed
     in <strong>Exhibit B (Cost &amp; Valuation Analysis)</strong>.
   </p>
@@ -922,32 +922,32 @@
             <td style="text-align: left;"><strong>TOTAL MARKET VALUE</strong></td>
             <td style="text-align: left;"><strong><span id="agency-market-value">$400,000+</span></strong></td>
             <td style="text-align: left;"><strong><span id="biglaw-market-value">$1,000,000+</span></strong></td>
-            <td style="text-align: left;"><strong><span id="sirsi-contract-value">$200,000</span></strong></td>
+            <td style="text-align: left;"><strong><span id="sirsi-contract-value">$...</span></strong></td>
           </tr>
         </tbody>
       </table>
       <h2 id="discount-realization">2. Discount Realization</h2>
-      <p>How we arrive at the <strong><span id="partnership-price">$200,000</span></strong> agreement value:</p>
+      <p>How we arrive at the <strong><span id="partnership-price">$...</span></strong> agreement value:</p>
       <ol type="1">
-        <li><strong>Gross Development Value:</strong> <strong><span id="gross-dev-value">$450,000</span></strong>
+        <li><strong>Gross Development Value:</strong> <strong><span id="gross-dev-value">$...</span></strong>
           <ul>
-            <li><em>Based on <span id="dev-hours">~1,800</span> hours @ $250/hr blended market rate.</em></li>
+            <li><em>Based on <span id="dev-hours">~...</span> hours @ $250/hr blended market rate.</em></li>
           </ul>
         </li>
         <li><strong>Less: SirsiNexus Efficiency:</strong>
-          <strong><span id="efficiency-discount">($150,000)</span></strong>
+          <strong><span id="efficiency-discount">($...)</span></strong>
           <ul>
             <li><em>Savings from using pre-built Sirsi auth, vault, and UI
                 components.</em></li>
           </ul>
         </li>
         <li><strong>Less: Friends &amp; Family Discount:</strong>
-          <strong><span id="family-discount">($100,000)</span></strong>
+          <strong><span id="family-discount">($...)</span></strong>
           <ul>
             <li><em>Strategic service reduction for shared risk/reward.</em></li>
           </ul>
         </li>
-        <li><strong>NET CONTRACT PRICE:</strong> <strong><span id="net-contract-price">$200,000</span></strong></li>
+        <li><strong>NET CONTRACT PRICE:</strong> <strong><span id="net-contract-price">$...</span></strong></li>
       </ol>
       <h2 id="infrastructure-estimates-opex">3. Infrastructure Estimates
         (OpEx)</h2>
@@ -1384,14 +1384,14 @@
 
           // 5. Update Exhibit B: Cost & Valuation Analysis (Dynamic Financials)
           // Use actual hours if provided, otherwise calculate based on amount
-          const devHours = totalHours > 0 ? totalHours : Math.round(totalAmount / 150); // ~$150/hr internal rate
+          const devHours = totalHours > 0 ? totalHours : Math.round(totalAmount / 125); // ~$125/hr internal rate
           const grossDevValue = devHours * 250; // $250/hr blended market rate
           const efficiencyDiscount = Math.round(grossDevValue * 0.25); // ~25% efficiency from Sirsi
           const familyDiscount = grossDevValue - efficiencyDiscount - totalAmount; // Remainder as F&F discount
-          const agencyPlatformCost = Math.round(totalAmount * 1.5); // Agency typically 1.5x
-          const biglawPlatformCost = Math.round(totalAmount * 3); // Big law typically 3x
-          const agencyMarketValue = Math.round(totalAmount * 1.75); // Agency market value
-          const biglawMarketValue = Math.round(totalAmount * 5); // Big law market value
+          const agencyPlatformCost = Math.round(totalAmount * 2.0); // Agency typically 1.5x
+          const biglawPlatformCost = Math.round(totalAmount * 4); // Big law typically 3x
+          const agencyMarketValue = Math.round(totalAmount * 2.0); // Agency market value
+          const biglawMarketValue = Math.round(totalAmount * 6); // Big law market value
 
           // Helper function to format currency
           const formatCurrency = (val, showNegative = false) => {
@@ -1403,7 +1403,7 @@
           // NOTE: sirsi-contract-value shows GROSS DEV VALUE (true market rate)
           // to demonstrate the full value we provide - discounts are explained in section 2
           const updates = {
-            'sirsi-contract-value': formatCurrency(grossDevValue), // Show full market value, not discounted price
+            'sirsi-contract-value': formatCurrency(totalAmount), // Final Price in Section 1
             'partnership-price': formatCurrency(totalAmount),
             'net-contract-price': formatCurrency(totalAmount),
             'gross-dev-value': formatCurrency(grossDevValue),

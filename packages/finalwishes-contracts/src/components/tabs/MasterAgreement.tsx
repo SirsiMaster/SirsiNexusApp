@@ -24,7 +24,13 @@ export function MasterAgreement() {
     // FinalWishes Client is ALWAYS Tameeka Lockhart - not the logged-in user
     // This is a specific contract between Provider (Sirsi/Cylton) and Client (Tameeka)
     const clientName = "Tameeka Lockhart"
-    const totalInvestment = calculateTotal(selectedBundle, selectedAddons)
+    // Dynamic Financial Calculations
+    const totalAmount = calculateTotal(selectedBundle, selectedAddons);
+    const devHours = Math.round(totalAmount / 125); // ~$125/hr internal boutique rate
+    const grossDevValue = devHours * 250; // $250/hr blended market rate
+    const efficiencyDiscount = Math.round(grossDevValue * 0.25); // ~25% efficiency from Sirsi
+    const familyDiscount = grossDevValue - efficiencyDiscount - totalAmount; // Remainder as Strategic F&F discount
+
 
     return (
         <div style={{ maxWidth: '100%', margin: '0 auto', padding: '0 4rem' }}>
@@ -326,7 +332,35 @@ export function MasterAgreement() {
                         <li><strong>Third-Party Costs:</strong> Client pays direct consumption costs for Stripe, Plaid, Lob, and Google Cloud.</li>
                         <li><strong>Content:</strong> Client is responsible for final validation of court form templates.</li>
                     </ol>
-                </div>
+                    </div>
+                    <div style={{ margin: '80px 0 40px 0', borderTop: '2px solid #C8A951', paddingTop: '40px' }}>
+                        <h2 style={{ color: '#C8A951', textAlign: 'center', fontFamily: "'Cinzel', serif", fontSize: '24px' }}>EXHIBIT B: COST & VALUATION ANALYSIS</h2>
+                    </div>
+                    <div style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.8', fontSize: '15px' }}>
+                        <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>1. DISCOUNT & VALUATION REALIZATION</h3>
+                        <p>The FinalWishes project leverages the <strong>Sirsi Nexus V4 Framework</strong> to achieve enterprise-grade results at a fraction of typical market costs. By utilizing pre-validated logic engines and infrastructure-as-code deployments, we realize significant savings.</p>
+                        
+                        <div style={{ background: 'rgba(255,255,255,0.05)', padding: '24px', borderRadius: '12px', border: '1px solid rgba(200,169,81,0.2)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                                <span>Gross Development Value (Market Valuation)</span>
+                                <span style={{ color: 'white' }}>${grossDevValue.toLocaleString()}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', color: '#10B981' }}>
+                                <span>SirsiNexus Efficiency Discount (25%)</span>
+                                <span>-${efficiencyDiscount.toLocaleString()}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', color: '#C8A951' }}>
+                                <span>Strategic Partnership Discount (Discount Realization)</span>
+                                <span>-${familyDiscount.toLocaleString()}</span>
+                            </div>
+                            <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', marginTop: '12px', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 'bold' }}>
+                                <span style={{ color: '#C8A951' }}>TOTAL PROJECT INVESTMENT</span>
+                                <span style={{ color: 'white' }}>${totalAmount.toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', marginTop: '16px', fontStyle: 'italic' }}>* Valuations based on standard $250/hr agency blended rates. Strategic partnership discount includes shared venture risk/reward alignment.</p>
+                    </div>
+
             </div>
 
             {/* ACKNOWLEDGMENT SECTION */}
@@ -364,7 +398,7 @@ export function MasterAgreement() {
                     <span>
                         I, <strong style={{ color: '#C8A951' }}>{clientName}</strong>, have read, understand, and agree to be bound by the terms and conditions of this
                         Master Service Agreement. I acknowledge that this Agreement, together with the attached
-                        Statement of Work, constitutes a binding legal contract for a total investment of <strong style={{ color: '#C8A951' }}>${totalInvestment.toLocaleString()}</strong>.
+                        Statement of Work, constitutes a binding legal contract for a total investment of <strong style={{ color: '#C8A951' }}>${totalAmount.toLocaleString()}</strong>.
                     </span>
                 </label>
             </div>

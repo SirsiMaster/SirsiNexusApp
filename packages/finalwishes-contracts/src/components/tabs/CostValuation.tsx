@@ -14,8 +14,9 @@ export function CostValuation() {
     const totalTimeline = calculateTimeline(selectedBundle, selectedAddons)
 
     // Market Value logic (approx 1.5x - 2x the bundled cost)
-    const marketValue = totalInvestment * 1.6
-    const savingsAmount = marketValue - totalInvestment
+    const marketValue = (totalInvestment / 125) * 250
+    const efficiencyDiscount = Math.round(marketValue * 0.25);
+    const familyDiscount = marketValue - efficiencyDiscount - totalInvestment;
 
     const bundle = selectedBundle ? BUNDLES[selectedBundle] : null
 
@@ -360,10 +361,10 @@ export function CostValuation() {
                         borderBottom: '1px solid rgba(255,255,255,0.05)'
                     }}>
                         <div>
-                            <div style={{ fontSize: '1.25rem', color: 'white' }}>Sirsi Accelerated Delivery</div>
+                            <div style={{ fontSize: '1.25rem', color: 'white' }}>Sirsi Efficiency & Strategic Discounts</div>
                             <div style={{ fontSize: '0.75rem', color: '#10b981', marginTop: '4px' }}>Nexus V4 Shared Libraries & Engine</div>
                         </div>
-                        <span style={{ fontSize: '1.5rem', fontFamily: "'Cinzel', serif", color: '#10b981' }}>−${Math.round(savingsAmount).toLocaleString()}</span>
+                        <span style={{ fontSize: '1.5rem', fontFamily: "'Cinzel', serif", color: '#10b981' }}>−${(efficiencyDiscount + familyDiscount).toLocaleString()}</span>
                     </div>
 
                     {/* Final Total */}

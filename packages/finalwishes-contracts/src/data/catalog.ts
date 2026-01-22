@@ -608,7 +608,7 @@ export function calculateTimeline(bundleId: string | null, addonIds: string[]): 
 // DYNAMIC WBS GENERATOR (Sirsi Reusable Logic)
 // ============================================
 
-const HOURLY_RATE = 200 // $/hour for labor calculations
+const HOURLY_RATE = 125 // $/hour for labor calculations
 
 // Role distribution for auto-generated activities
 const ROLE_DISTRIBUTION = [
