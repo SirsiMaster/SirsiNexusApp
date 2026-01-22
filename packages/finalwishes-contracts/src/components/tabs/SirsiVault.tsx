@@ -33,11 +33,10 @@ export function SirsiVault() {
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     const totalInvestment = calculateTotal(selectedBundle, selectedAddons)
 
-    // Open printable MSA in new window for PDF download
     const openPrintableMSA = () => {
         const timeline = calculateTimeline(selectedBundle, selectedAddons) // weeks
         const hours = calculateTotalHours(selectedBundle, selectedAddons) // total dev hours
-        const msaUrl = `/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}`
+        const msaUrl = `/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}`
         window.open(msaUrl, '_blank', 'width=900,height=800,scrollbars=yes,resizable=yes')
     }
 

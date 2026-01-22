@@ -291,12 +291,14 @@ export function MasterAgreement() {
                             </ul>
                         </div>
                         <div>
-                            <h4 style={{ color: 'white', marginBottom: '8px' }}>PHASE 2: CORE LOGIC & FOUNDATIONAL ENGINES (Weeks 5-10)</h4>
+                            <h4 style={{ color: 'white', marginBottom: '8px' }}>PHASE 2: LEGACY LOGIC & ASSET FRAMEWORK (Weeks 5-10)</h4>
                             <ul style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
-                                <li>Plaid Link integration & Asset Module</li>
-                                <li>"The Shepherd" Legacy Guidance Engine & Asset Framework</li>
-                                <li>Gemini RAG pipeline for legal context</li>
-                                <li>Go-based PDF form stamper service</li>
+                                <li>Plaid Integration & Legacy Inventory</li>
+                                <li>Beneficiary Logic & Secure Access Delegation</li>
+                                <li>Instruction Engine & Digital Inheritance Protocols</li>
+                                <li>Document Management & Metadata Mapping</li>
+                                <li>Gemini RAG: Legacy Framework Context & Guidance</li>
+                                <li>Notification System: Life-Event Triggering Logic</li>
                             </ul>
                         </div>
                         <div>

@@ -1024,6 +1024,11 @@
         <li><strong>Mobile:</strong> <strong>React Native</strong> (Expo)
           sharing core business logic.</li>
       </ul>
+      <h3 id="selected-service-modules">2.2 Selected Service Modules</h3>
+      <div id="selected-addons-container" style="background: #f9fafb; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 24px;">
+        <p style="color: #64748b; font-style: italic; margin: 0;">Loading selected modules...</p>
+      </div>
+
       <h3 id="document-inventory-automation-scope">2.3 Document Inventory
         &amp; Automation Scope</h3>
       <p>Provider will build automation or manual guidance paths for the
@@ -1120,7 +1125,7 @@
           SQL, Firestore, VPC, Cloud Armor.</li>
         <li><strong>1.2 Ops:</strong> Setup GitHub Actions CI/CD.</li>
         <li><strong>1.3 Auth:</strong> Firebase Auth + MFA + Custom Claims.</li>
-        <li><strong>1.4 Schema:</strong> Design Relational (Heirs) vs Document
+        <li><strong>1.4 Schema:</strong> Design Relational (Beneficiaries) vs Document
           (Metadata) schemas.</li>
         <li><strong>1.5 Vault:</strong> Implement AES-256 crypto service and
           Signed URL logic.</li>
@@ -1130,21 +1135,14 @@
         </li>
         <li><strong>1.7 E-Sign:</strong> Deploy Self-Hosted OpenSign.</li>
       </ul>
-      <h3 id="phase-2-core-logic-state-engines-weeks-5-10"><strong>PHASE 2:
-          CORE LOGIC &amp; STATE ENGINES (Weeks 5-10)</strong></h3>
+      <h3 id="phase-2-legacy-logic-asset-framework-weeks-5-10"><strong>PHASE 2: LEGACY LOGIC & ASSET FRAMEWORK (Weeks 5-10)</strong></h3>
       <ul>
-        <li><strong>2.1 Asset Module:</strong> Plaid Link integration &amp;
-          manual asset overrides.</li>
-        <li><strong>2.2 Maryland Engine:</strong> Encode MD Register of Wills
-          rules &amp; forms.</li>
-        <li><strong>2.3 Illinois Engine:</strong> Encode IL Probate Division
-          rules.</li>
-        <li><strong>2.4 Minnesota Engine:</strong> Encode MN District Court
-          rules.</li>
-        <li><strong>2.5 Gemini RAG:</strong> Build vector store for legal
-          context.</li>
-        <li><strong>2.6 PDF Service:</strong> Go-based PDF stamper for court
-          forms.</li>
+        <li><strong>2.1 Asset Module:</strong> Plaid Integration & Legacy Inventory.</li>
+        <li><strong>2.2 Beneficiary Logic:</strong> Secure Access Delegation & Instruction Engine.</li>
+        <li><strong>2.3 Instruction Engine:</strong> Digital Inheritance Protocols.</li>
+        <li><strong>2.4 Document Management:</strong> Secure File Organization & Metadata Mapping.</li>
+        <li><strong>2.5 Gemini RAG:</strong> Legacy Framework Context & Guidance.</li>
+        <li><strong>2.6 Notification System:</strong> Life-Event Triggering Logic.</li>
       </ul>
       <h3 id="phase-3-mobile-deep-integrations-weeks-11-16"><strong>PHASE 3:
           MOBILE &amp; DEEP INTEGRATIONS (Weeks 11-16)</strong></h3>
@@ -1196,8 +1194,8 @@
             <td style="text-align: left;">Staging URL</td>
           </tr>
           <tr>
-            <td style="text-align: left;"><strong>D2: Legacy Framework</strong></td>
-            <td style="text-align: left;">Form generation for MD, IL, MN</td>
+            <td style="text-align: left;"><strong>D2: Legacy Platform Core</strong></td>
+            <td style="text-align: left;">Legacy Inventory & Beneficiary Management</td>
             <td style="text-align: left;">API + UI</td>
           </tr>
           <tr>
@@ -1407,7 +1405,42 @@
             if (el) el.textContent = value;
           });
 
-          // 4. Handle Signatures if 'signed=true'
+          
+          // 4. Handle Addons
+          const addonParam = params.get('addons');
+          if (addonParam) {
+            const addons = addonParam.split(',');
+            const container = document.getElementById('selected-addons-container');
+            if (container) {
+              container.innerHTML = '';
+              const list = document.createElement('ul');
+              list.style.margin = '0';
+              list.style.paddingLeft = '20px';
+              
+              const PRODUCTS_MOCK = {
+                'vault': { name: 'The Vault (Security Architecture)', desc: 'Zero-knowledge encryption for all documents.' },
+                'shepherd': { name: 'The Shepherd (Legacy Engine)', desc: 'Dynamic instruction engine for estates.' },
+                'plaid': { name: 'Plaid Asset Sync', desc: 'Real-time financial account synchronization.' },
+                'signing': { name: 'OpenSign Integration', desc: 'Embedded legal signature management.' },
+                'mobile': { name: 'Native iOS/Android Apps', desc: 'Full mobile accessibility for legacy data.' },
+                'lob': { name: 'Physical Mail Integration', desc: 'Automated physical letter generation.' }
+              };
+              
+              addons.forEach(id => {
+                const product = PRODUCTS_MOCK[id] || { name: id, desc: 'Selected add-on module.' };
+                const li = document.createElement('li');
+                li.style.marginBottom = '10px';
+                li.innerHTML = `<strong>${product.name}:</strong> ${product.desc}`;
+                list.appendChild(li);
+              });
+              container.appendChild(list);
+            }
+          } else {
+             const container = document.getElementById('selected-addons-container');
+             if (container) container.innerHTML = '<p>Core Legacy Management Platform (Standard Bundle)</p>';
+          }
+
+// 4. Handle Signatures if 'signed=true'
           if (isSigned) {
             // Client Signature
             const clientSigDisplay = document.getElementById('client-signature-display');
