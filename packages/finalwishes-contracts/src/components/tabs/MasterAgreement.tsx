@@ -210,7 +210,7 @@ export function MasterAgreement() {
                 {/* Appendix A Header */}
                 <div style={{ margin: '80px 0 40px 0', borderTop: '2px solid #C8A951', paddingTop: '40px' }}>
                     <h2 style={{ color: '#C8A951', textAlign: 'center', fontFamily: "'Cinzel', serif", fontSize: '24px' }}>EXHIBIT A: STATEMENT OF WORK (SOW)</h2>
-                    <h4 style={{ textAlign: 'center', color: 'rgba(255,255,255,0.7)', marginTop: '8px', marginBottom: '40px' }}>Summary of Selected Software Modules</h4>
+                    <h4 style={{ textAlign: 'center', color: 'rgba(255,255,255,0.7)', marginTop: '8px', marginBottom: '40px' }}>Full Execution Details and Technical Specifications</h4>
                 </div>
 
                 <div style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.8', fontSize: '15px' }}>
