@@ -1,0 +1,157 @@
+{
+    "adr": {
+        "id": "ADR-005",
+        "title": "Printable MSA Viewer Component",
+        "status": "Accepted",
+        "date": "2026-01-21",
+        "author": "Antigravity (AI Agent)",
+        "supersedes": null
+    },
+    "component": {
+        "name": "Printable MSA Viewer",
+        "type": "Static HTML Document",
+        "location": "packages/finalwishes-contracts/public/printable-msa.html",
+        "purpose": "Professional, printable Master Services Agreement and Statement of Work document viewer"
+    },
+    "integration": {
+        "caller": "packages/finalwishes-contracts/src/components/tabs/SirsiVault.tsx",
+        "method": "openPrintableMSA()",
+        "windowSpec": "width=900,height=800,scrollbars=yes,resizable=yes"
+    },
+    "urlParameters": [
+        {
+            "name": "client",
+            "type": "string",
+            "required": true,
+            "description": "Client name (URL encoded)"
+        },
+        {
+            "name": "date",
+            "type": "string",
+            "required": true,
+            "description": "Effective date (e.g., 'January 21, 2026')"
+        },
+        {
+            "name": "plan",
+            "type": "number",
+            "required": true,
+            "default": 2,
+            "description": "Payment plan months (2, 3, or 4)"
+        },
+        {
+            "name": "total",
+            "type": "number",
+            "required": true,
+            "default": 200000,
+            "description": "Total contract value in USD"
+        },
+        {
+            "name": "weeks",
+            "type": "number",
+            "required": true,
+            "default": 16,
+            "description": "Project timeline in weeks"
+        },
+        {
+            "name": "hours",
+            "type": "number",
+            "required": false,
+            "default": "calculated",
+            "description": "Total WBS hours (for accurate Exhibit B)"
+        },
+        {
+            "name": "signed",
+            "type": "boolean",
+            "required": false,
+            "default": false,
+            "description": "Whether to display signatures"
+        },
+        {
+            "name": "address",
+            "type": "string",
+            "required": false,
+            "description": "Client address"
+        }
+    ],
+    "dynamicCalculations": {
+        "exhibitB": {
+            "devHours": "totalHours > 0 ? totalHours : Math.round(totalAmount / 110)",
+            "grossDevValue": "devHours * 250",
+            "efficiencyDiscount": "Math.round(grossDevValue * 0.33)",
+            "familyDiscount": "grossDevValue - efficiencyDiscount - totalAmount",
+            "agencyPlatformCost": "Math.round(totalAmount * 1.75)",
+            "biglawPlatformCost": "Math.round(totalAmount * 4)",
+            "agencyMarketValue": "Math.round(totalAmount * 2)",
+            "biglawMarketValue": "Math.round(totalAmount * 5)"
+        },
+        "timeline": {
+            "timelineMonths": "Math.ceil(timelineWeeks / 4)",
+            "targetDate": "effectiveDate + (timelineWeeks * 7 days)"
+        }
+    },
+    "domElements": {
+        "paymentStructure": [
+            "#contract-value",
+            "#payment-plans-container"
+        ],
+        "sowHeader": [
+            "#sow-timeline",
+            "#sow-target-date"
+        ],
+        "exhibitB": [
+            "#sirsi-contract-value",
+            "#partnership-price",
+            "#net-contract-price",
+            "#gross-dev-value",
+            "#dev-hours",
+            "#efficiency-discount",
+            "#family-discount",
+            "#agency-platform-cost",
+            "#biglaw-platform-cost",
+            "#agency-market-value",
+            "#biglaw-market-value"
+        ],
+        "signaturePage": [
+            "#client-signature-display",
+            "#client-name-display",
+            "#client-date-display",
+            "#provider-signature-display",
+            "#provider-date-display"
+        ]
+    },
+    "styling": {
+        "designSystem": "Royal Neo-Deco",
+        "printUIBar": {
+            "background": "linear-gradient(135deg, #1a2a3a 0%, #0d1520 100%)",
+            "borderColor": "#C8A951",
+            "buttonStyle": "text-only (no icons)",
+            "hiddenOnPrint": true
+        },
+        "document": {
+            "bodyFont": "Merriweather",
+            "headingFont": "Cinzel",
+            "pageSize": "US Letter",
+            "margins": "1 inch all sides",
+            "colorScheme": "Black & white for print"
+        },
+        "googleFonts": [
+            "Cinzel (400, 700)",
+            "Inter (400, 500, 600)",
+            "Merriweather (300, 400, 700, 400i)",
+            "Dancing Script (700)"
+        ]
+    },
+    "valueProposition": {
+        "description": "The TOTAL MARKET VALUE row in Exhibit B displays grossDevValue (not discounted price) to demonstrate the true value Sirsi provides. The Discount Realization section explains how the client receives this value at the lower net price.",
+        "formula": {
+            "marketValue": "hours × $250/hr",
+            "netPrice": "marketValue - efficiencyDiscount - familyDiscount"
+        }
+    },
+    "relatedDocuments": [
+        "proposals/CONTRACT.md",
+        "proposals/SOW.md",
+        "docs/sirsi-platform/ADR-004-CONTRACTS-GRPC-SERVICE.md",
+        "docs/sirsi-platform/ADR-003-HMAC-SECURITY-LAYER.md"
+    ]
+}

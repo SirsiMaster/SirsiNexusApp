@@ -90,8 +90,8 @@ export function MasterAgreement() {
                     <section style={{ marginBottom: '48px' }}>
                         <h2 style={{ marginTop: 0, color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '28px', textAlign: 'center', letterSpacing: '0.1em' }}>MASTER SERVICES AGREEMENT (MSA)</h2>
                         <p style={{ marginTop: '24px' }}>
-                            <strong>AGREEMENT NUMBER:</strong> MSA-2026-111-FW<br />
-                            <strong>EFFECTIVE DATE:</strong> January 6, 2026
+                            <strong>AGREEMENT NUMBER:</strong> MSA-{currentYear}-111-FW<br />
+                            <strong>EFFECTIVE DATE:</strong> {currentDate}
                         </p>
                         <p>
                             This <strong>Master Services Agreement</strong> (this "Agreement") is entered into by and between:

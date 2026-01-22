@@ -4,10 +4,10 @@
  */
 import { useState } from 'react'
 import { useConfigStore } from '../../store/useConfigStore'
-import { BUNDLES, calculateTotal } from '../../data/catalog'
+import { BUNDLES, calculateTotal, calculateTimeline, calculateTotalHours } from '../../data/catalog'
 import { contractsClient } from '../../lib/grpc'
 import { getStripe } from '../../lib/stripe'
-import { downloadContractPdf } from '../../lib/pdf'
+import { SignatureCapture } from '../vault/SignatureCapture'
 
 export function SirsiVault() {
     const [step, setStep] = useState(1)
@@ -23,12 +23,23 @@ export function SirsiVault() {
         title: '',
         agreed: false
     })
+    const [hasSignature, setHasSignature] = useState(false)
+    const [signatureImageData, setSignatureImageData] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [contractId, setContractId] = useState<string | null>(null)
+    const [selectedPaymentPlan, setSelectedPaymentPlan] = useState<2 | 3 | 4>(2)
 
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     const totalInvestment = calculateTotal(selectedBundle, selectedAddons)
+
+    // Open printable MSA in new window for PDF download
+    const openPrintableMSA = () => {
+        const timeline = calculateTimeline(selectedBundle, selectedAddons) // weeks
+        const hours = calculateTotalHours(selectedBundle, selectedAddons) // total dev hours
+        const msaUrl = `/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}`
+        window.open(msaUrl, '_blank', 'width=900,height=800,scrollbars=yes,resizable=yes')
+    }
 
     const handleInputChange = (field: string, value: string | boolean) => {
         setSignatureData(prev => ({ ...prev, [field]: value }))
@@ -39,22 +50,27 @@ export function SirsiVault() {
         setLoading(true);
         setError(null);
         try {
+            // Calculate payment amounts in cents (Stripe uses cents)
+            const totalAmountCents = totalInvestment * 100
+            const monthlyAmountCents = Math.round(totalAmountCents / selectedPaymentPlan)
+
+            // Generate payment plans based on selection (2, 3, or 4 months)
+            const paymentPlans = Array.from({ length: selectedPaymentPlan }, (_, i) => ({
+                id: `payment-${i + 1}`,
+                name: i === 0 ? 'First Payment' : `Payment ${i + 1}`,
+                description: i === 0 ? 'Due upon execution' : `Due Month ${i + 1}`,
+                paymentCount: 1,
+                monthlyAmount: monthlyAmountCents.toString(),
+                totalAmount: monthlyAmountCents.toString()
+            }))
+
             const contract = await contractsClient.createContract({
                 projectId: storeProjectId,
                 projectName: `${projectName} Platform`,
                 clientName: signatureData.name,
                 clientEmail: signatureData.email,
-                totalAmount: BigInt(totalInvestment * 100),
-                paymentPlans: [
-                    {
-                        id: 'deposit',
-                        name: 'Initial Deposit',
-                        description: '10% Commencement Deposit',
-                        paymentCount: 1,
-                        monthlyAmount: BigInt(Math.round(totalInvestment * 0.1 * 100)),
-                        totalAmount: BigInt(Math.round(totalInvestment * 0.1 * 100))
-                    }
-                ],
+                totalAmount: totalAmountCents.toString() as any,
+                paymentPlans: paymentPlans as any,
                 theme: {
                     primaryColor: '#C8A951',
                     secondaryColor: '#0f172a',
@@ -66,45 +82,80 @@ export function SirsiVault() {
             setContractId(contract.id);
         } catch (err: any) {
             console.error('Failed to create draft:', err);
-            setError('Failed to initialize contract session.');
+            // Show more detailed error
+            const errorMsg = err?.message || err?.toString() || 'Failed to initialize contract session.'
+            setError(typeof errorMsg === 'string' ? errorMsg : JSON.stringify(errorMsg));
         } finally {
             setLoading(false);
         }
     };
 
     const handleExecute = async () => {
-        if (!contractId) return;
         setLoading(true)
         setError(null)
-        try {
-            // 1. Update status to SIGNED
-            await contractsClient.updateContract({
-                id: contractId,
-                contract: {
-                    status: 3 // SIGNED
-                } as any
-            });
 
-            // 2. Create the checkout session for the deposit
-            const session = await contractsClient.createCheckoutSession({
-                contractId: contractId,
-                planId: 'deposit',
-                successUrl: window.location.origin + `/partnership/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-                cancelUrl: window.location.href
+        try {
+            // Calculate the first payment amount based on selected plan
+            const firstPayment = Math.round(totalInvestment / selectedPaymentPlan)
+
+            // Use gRPC flow if we have a contractId
+            if (contractId) {
+                // 1. Update status to SIGNED
+                await contractsClient.updateContract({
+                    id: contractId,
+                    contract: {
+                        status: 'SIGNED' as any // Use string enum
+                    }
+                });
+
+                // 2. Create the checkout session for the first payment
+                const session = await contractsClient.createCheckoutSession({
+                    contractId: contractId,
+                    planId: 'payment-1', // First payment plan
+                    successUrl: window.location.origin + `/partnership/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+                    cancelUrl: window.location.href
+                })
+
+                // 3. Redirect to Stripe
+                if (session.checkoutUrl) {
+                    window.location.href = session.checkoutUrl
+                    return
+                } else if (session.sessionId) {
+                    const stripe = await getStripe()
+                    if (stripe) {
+                        await (stripe as any).redirectToCheckout({ sessionId: session.sessionId })
+                        return
+                    }
+                }
+
+                // If no checkout URL returned, show error
+                throw new Error('No checkout session URL returned from server')
+            } else {
+                // No contractId - shouldn't happen but use fallback
+                console.warn('No contractId, using fallback payment flow')
+            }
+
+            // Fallback: Redirect to payment.html with parameters (legacy flow)
+            const paymentParams = new URLSearchParams({
+                amount: String(firstPayment),
+                total: String(totalInvestment),
+                plan: String(selectedPaymentPlan),
+                client: signatureData.name,
+                email: signatureData.email,
+                project: projectName || 'FinalWishes',
+                ref: `MSA-${new Date().getFullYear()}-111-FW`
             })
 
-            // 3. Redirect to Stripe
-            if (session.checkoutUrl) {
-                window.location.href = session.checkoutUrl
-            } else if (session.sessionId) {
-                const stripe = await getStripe()
-                if (stripe) {
-                    await (stripe as any).redirectToCheckout({ sessionId: session.sessionId })
-                }
-            }
+            window.location.href = `/payment.html?${paymentParams.toString()}`
+
         } catch (err: any) {
             console.error('Execution failed:', err)
-            setError(err.message || 'Failed to execute contract. Please try again.')
+            const errorMessage = typeof err === 'string'
+                ? err
+                : err?.message
+                    ? (typeof err.message === 'string' ? err.message : 'Payment initialization failed')
+                    : 'Failed to execute contract. Please try again.'
+            setError(errorMessage)
         } finally {
             setLoading(false)
         }
@@ -158,7 +209,8 @@ export function SirsiVault() {
                 {[
                     { num: 1, label: 'Verify Identity' },
                     { num: 2, label: 'Review Documents' },
-                    { num: 3, label: 'Execute Agreement' }
+                    { num: 3, label: 'Sign Agreement' },
+                    { num: 4, label: 'Execute Agreement' }
                 ].map((s) => (
                     <div key={s.num} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                         <div style={{
@@ -342,8 +394,7 @@ export function SirsiVault() {
                             </div>
 
                             <button
-                                onClick={() => contractId && downloadContractPdf(contractId)}
-                                disabled={!contractId}
+                                onClick={openPrintableMSA}
                                 style={{
                                     display: 'flex',
                                     alignItems: 'center',
@@ -354,8 +405,7 @@ export function SirsiVault() {
                                     borderRadius: '4px',
                                     color: '#C8A951',
                                     fontSize: '12px',
-                                    cursor: contractId ? 'pointer' : 'not-allowed',
-                                    opacity: contractId ? 1 : 0.5,
+                                    cursor: 'pointer',
                                     width: '100%',
                                     justifyContent: 'center',
                                     marginTop: '16px'
@@ -427,36 +477,145 @@ export function SirsiVault() {
                             marginBottom: '24px',
                             textAlign: 'center'
                         }}>
-                            Step 3: Execute Agreement
+                            Step 3: Sign Agreement
                         </h3>
 
-                        {/* Signature Preview */}
+                        {/* Signer Info Display */}
+                        <div style={{
+                            padding: '16px',
+                            background: 'rgba(255,255,255,0.03)',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            borderRadius: '8px',
+                            marginBottom: '24px',
+                            textAlign: 'center'
+                        }}>
+                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '10px', textTransform: 'uppercase', marginBottom: '4px' }}>Signing as</div>
+                            <div style={{ color: '#C8A951', fontSize: '18px', fontWeight: 600 }}>{signatureData.name}</div>
+                            <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>{signatureData.email}</div>
+                        </div>
+
+                        {/* Signature Capture Component */}
+                        <div style={{ marginBottom: '24px' }}>
+                            <SignatureCapture
+                                signerName={signatureData.name}
+                                onSignatureChange={(hasSig, sigData) => {
+                                    setHasSignature(hasSig)
+                                    setSignatureImageData(sigData)
+                                }}
+                            />
+                        </div>
+
+                        {/* Legal Acknowledgment */}
+                        <label style={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            gap: '12px',
+                            marginBottom: '24px',
+                            cursor: 'pointer',
+                            padding: '16px',
+                            background: 'rgba(255,255,255,0.03)',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            borderRadius: '8px'
+                        }}>
+                            <input
+                                type="checkbox"
+                                id="legal-ack"
+                                style={{ width: '20px', height: '20px', marginTop: '2px', accentColor: '#C8A951' }}
+                            />
+                            <span style={{ color: 'rgba(255,255,255,0.9)', fontSize: '13px', lineHeight: 1.6 }}>
+                                I acknowledge that by signing above, I am executing a legally binding electronic signature
+                                pursuant to the ESIGN Act and UETA, equivalent to a handwritten signature.
+                            </span>
+                        </label>
+
+                        <div style={{ display: 'flex', gap: '16px' }}>
+                            <button
+                                onClick={() => setStep(2)}
+                                style={{
+                                    flex: 1,
+                                    padding: '14px',
+                                    background: 'transparent',
+                                    border: '1px solid rgba(255,255,255,0.3)',
+                                    borderRadius: '8px',
+                                    color: 'white',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Back
+                            </button>
+                            <button
+                                onClick={() => setStep(4)}
+                                disabled={!hasSignature}
+                                className="select-plan-btn"
+                                style={{
+                                    flex: 2,
+                                    padding: '14px',
+                                    opacity: hasSignature ? 1 : 0.5,
+                                    cursor: hasSignature ? 'pointer' : 'not-allowed'
+                                }}
+                            >
+                                Continue to Execution
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {step === 4 && (
+                    <div className="neo-glass-panel" style={{ padding: '32px' }}>
+                        <h3 style={{
+                            fontFamily: "'Cinzel', serif",
+                            fontSize: '20px',
+                            color: '#C8A951',
+                            marginBottom: '24px',
+                            textAlign: 'center'
+                        }}>
+                            Step 4: Execute Agreement
+                        </h3>
+
+                        {/* Signature Preview - Show actual captured signature */}
                         <div style={{
                             background: 'rgba(200,169,81,0.08)',
                             border: '2px solid #C8A951',
                             borderRadius: '12px',
-                            padding: '32px',
+                            padding: '24px',
                             marginBottom: '24px',
                             textAlign: 'center',
                             position: 'relative',
                             overflow: 'hidden'
                         }}>
-                            {/* Decorative line */}
-                            <div style={{ position: 'absolute', bottom: '40px', left: '40px', right: '40px', height: '1px', background: 'rgba(200,169,81,0.3)' }} />
-
-                            <div style={{
-                                fontFamily: "'Cinzel', serif",
-                                fontSize: '36px',
-                                color: '#C8A951',
-                                marginBottom: '8px',
-                                fontStyle: 'italic',
-                                position: 'relative',
-                                zIndex: 1
-                            }}>
-                                {signatureData.name}
+                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '16px' }}>
+                                Your Signature
                             </div>
-                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.2em' }}>
-                                Cryptographic Electronic Signature
+                            {signatureImageData ? (
+                                <img
+                                    src={signatureImageData}
+                                    alt="Your signature"
+                                    style={{
+                                        maxWidth: '100%',
+                                        maxHeight: '120px',
+                                        margin: '0 auto',
+                                        display: 'block',
+                                        borderRadius: '4px'
+                                    }}
+                                />
+                            ) : (
+                                <div style={{
+                                    fontFamily: "'Cinzel', serif",
+                                    fontSize: '36px',
+                                    color: '#C8A951',
+                                    fontStyle: 'italic'
+                                }}>
+                                    {signatureData.name}
+                                </div>
+                            )}
+                            <div style={{
+                                color: 'rgba(255,255,255,0.5)',
+                                fontSize: '10px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.2em',
+                                marginTop: '12px'
+                            }}>
+                                Electronic Signature • Legally Binding
                             </div>
                         </div>
 
@@ -478,7 +637,142 @@ export function SirsiVault() {
                             </div>
                             <div style={{ gridColumn: 'span 2' }}>
                                 <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', textTransform: 'uppercase', marginBottom: '4px' }}>Platform Certificate ID</div>
-                                <div style={{ color: '#10b981', fontFamily: 'monospace' }}>SIRSI-VAULT-{(Math.random() * 1000000).toFixed(0)}-EXEC</div>
+                                <div style={{ color: '#10b981', fontFamily: 'monospace' }}>SIRSI-VAULT-{contractId || 'PENDING'}-EXEC</div>
+                            </div>
+                        </div>
+
+                        {/* Payment Plan Selection - Royal Neo-Deco */}
+                        <div style={{ marginBottom: '32px' }}>
+                            <h4 style={{
+                                fontFamily: "'Cinzel', serif",
+                                fontSize: '18px',
+                                color: '#C8A951',
+                                marginBottom: '20px',
+                                textAlign: 'center',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.15em'
+                            }}>
+                                Select Payment Plan
+                            </h4>
+                            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+                                {([2, 3, 4] as const).map((months) => {
+                                    const monthly = Math.round(totalInvestment / months)
+                                    const isSelected = selectedPaymentPlan === months
+                                    return (
+                                        <button
+                                            key={months}
+                                            type="button"
+                                            onClick={() => setSelectedPaymentPlan(months)}
+                                            style={{
+                                                flex: '1 1 0',
+                                                maxWidth: '180px',
+                                                padding: '24px 16px',
+                                                borderRadius: '16px',
+                                                border: isSelected
+                                                    ? '2px solid #C8A951'
+                                                    : '1px solid rgba(255,255,255,0.1)',
+                                                background: isSelected
+                                                    ? 'linear-gradient(145deg, rgba(200,169,81,0.2), rgba(200,169,81,0.05))'
+                                                    : 'linear-gradient(145deg, rgba(20,30,60,0.8), rgba(10,15,30,0.9))',
+                                                backdropFilter: 'blur(10px)',
+                                                cursor: 'pointer',
+                                                transition: 'all 0.3s ease',
+                                                textAlign: 'center',
+                                                boxShadow: isSelected
+                                                    ? '0 0 30px rgba(200,169,81,0.3), inset 0 1px 0 rgba(255,255,255,0.1)'
+                                                    : '0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)',
+                                                transform: isSelected ? 'translateY(-4px)' : 'translateY(0)'
+                                            }}
+                                        >
+                                            {/* Number Badge */}
+                                            <div style={{
+                                                width: '56px',
+                                                height: '56px',
+                                                margin: '0 auto 12px',
+                                                borderRadius: '50%',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                background: isSelected
+                                                    ? 'linear-gradient(135deg, #C8A951, #D4AF37)'
+                                                    : 'rgba(255,255,255,0.05)',
+                                                border: isSelected
+                                                    ? 'none'
+                                                    : '1px solid rgba(255,255,255,0.1)',
+                                                boxShadow: isSelected
+                                                    ? '0 0 20px rgba(200,169,81,0.5)'
+                                                    : 'none'
+                                            }}>
+                                                <span style={{
+                                                    fontFamily: "'Cinzel', serif",
+                                                    fontSize: '24px',
+                                                    fontWeight: 700,
+                                                    color: isSelected ? '#0f172a' : 'rgba(255,255,255,0.7)'
+                                                }}>
+                                                    {months}
+                                                </span>
+                                            </div>
+
+                                            {/* Label */}
+                                            <div style={{
+                                                fontSize: '10px',
+                                                color: isSelected ? '#C8A951' : 'rgba(255,255,255,0.4)',
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.15em',
+                                                marginBottom: '8px',
+                                                fontWeight: 600
+                                            }}>
+                                                Monthly Payments
+                                            </div>
+
+                                            {/* Price */}
+                                            <div style={{
+                                                fontSize: '20px',
+                                                color: isSelected ? '#C8A951' : 'white',
+                                                fontWeight: 700,
+                                                fontFamily: "'Inter', sans-serif"
+                                            }}>
+                                                ${monthly.toLocaleString()}
+                                                <span style={{
+                                                    fontSize: '12px',
+                                                    fontWeight: 400,
+                                                    opacity: 0.7,
+                                                    marginLeft: '2px'
+                                                }}>/mo</span>
+                                            </div>
+                                        </button>
+                                    )
+                                })}
+                            </div>
+
+                            {/* Total Summary */}
+                            <div style={{
+                                textAlign: 'center',
+                                marginTop: '20px',
+                                padding: '12px 20px',
+                                background: 'rgba(200,169,81,0.05)',
+                                borderRadius: '8px',
+                                border: '1px solid rgba(200,169,81,0.2)'
+                            }}>
+                                <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px' }}>
+                                    Total Investment:
+                                </span>
+                                <span style={{
+                                    color: '#C8A951',
+                                    fontWeight: 700,
+                                    fontSize: '18px',
+                                    marginLeft: '8px',
+                                    fontFamily: "'Cinzel', serif"
+                                }}>
+                                    ${totalInvestment.toLocaleString()}
+                                </span>
+                                <span style={{
+                                    color: 'rgba(255,255,255,0.4)',
+                                    fontSize: '11px',
+                                    marginLeft: '12px'
+                                }}>
+                                    • First payment due upon execution
+                                </span>
                             </div>
                         </div>
 
@@ -497,50 +791,65 @@ export function SirsiVault() {
                             </div>
                         )}
 
-                        <button
-                            onClick={handleExecute}
-                            disabled={loading}
-                            className="select-plan-btn"
-                            style={{
-                                width: '100%',
-                                padding: '16px',
-                                fontSize: '16px',
-                                letterSpacing: '0.1em',
-                                opacity: loading ? 0.7 : 1,
-                                cursor: loading ? 'wait' : 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '12px'
-                            }}
-                        >
-                            {loading ? (
-                                <>
-                                    <div className="spinner" style={{
-                                        width: '20px',
-                                        height: '20px',
-                                        border: '2px solid rgba(0,0,0,0.1)',
-                                        borderTop: '2px solid #000',
-                                        borderRadius: '50%',
-                                        animation: 'spin 1s linear infinite'
-                                    }} />
-                                    <span>Processing...</span>
-                                </>
-                            ) : (
-                                <>
-                                    <span>🔐 Execute & Deploy Platform</span>
-                                </>
-                            )}
-                        </button>
+                        <div style={{ display: 'flex', gap: '16px', marginBottom: '20px' }}>
+                            <button
+                                onClick={() => setStep(3)}
+                                style={{
+                                    flex: 1,
+                                    padding: '14px',
+                                    background: 'transparent',
+                                    border: '1px solid rgba(255,255,255,0.3)',
+                                    borderRadius: '8px',
+                                    color: 'white',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Back
+                            </button>
+                            <button
+                                onClick={handleExecute}
+                                disabled={loading}
+                                className="select-plan-btn"
+                                style={{
+                                    flex: 2,
+                                    padding: '16px',
+                                    fontSize: '16px',
+                                    letterSpacing: '0.1em',
+                                    opacity: loading ? 0.7 : 1,
+                                    cursor: loading ? 'wait' : 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '12px'
+                                }}
+                            >
+                                {loading ? (
+                                    <>
+                                        <div className="spinner" style={{
+                                            width: '20px',
+                                            height: '20px',
+                                            border: '2px solid rgba(0,0,0,0.1)',
+                                            borderTop: '2px solid #000',
+                                            borderRadius: '50%',
+                                            animation: 'spin 1s linear infinite'
+                                        }} />
+                                        <span>Processing...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span>🔐 Execute & Deploy Platform</span>
+                                    </>
+                                )}
+                            </button>
+                        </div>
 
                         <p style={{
                             textAlign: 'center',
                             color: 'rgba(255,255,255,0.4)',
                             fontSize: '11px',
-                            marginTop: '20px',
                             lineHeight: 1.6
                         }}>
-                            By clicking "Execute & Deploy Platform", you are applying your electronic signature
+                            By clicking "Execute & Deploy Platform", you are finalizing your electronic signature
                             and authorizing the commencement of development as per the Project Timeline.
                         </p>
                     </div>
