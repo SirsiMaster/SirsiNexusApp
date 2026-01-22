@@ -106,7 +106,7 @@ export function MasterAgreement() {
                         <div style={{ margin: '40px 0', borderTop: '1px solid rgba(200,169,81,0.2)' }}></div>
 
                         <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px' }}>1. RECITALS</h3>
-                        <p><strong>WHEREAS</strong>, Client desires to engage Provider to design, develop, and implement a <strong>legacy management system</strong> known as <strong>FinalWishes</strong> (the "Platform"), with sufficient foundational infrastructure to allow for future expansion into estate settlement capabilities starting with Maryland, Illinois, and Minnesota; and</p>
+                        <p><strong>WHEREAS</strong>, Client desires to engage Provider to design, develop, and implement a <strong>legacy management system</strong> known as <strong>FinalWishes</strong> (the "Platform"), with sufficient foundational infrastructure to support future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota; and</p>
                         <p><strong>WHEREAS</strong>, Provider (Sirsi Technologies, Inc) possesses the requisite technical expertise, personnel, and infrastructure, including expertise in artificial intelligence, cloud architecture, and secure software development, to perform the Services; and</p>
                         <p><strong>WHEREAS</strong>, the Platform is to be constructed utilizing Provider's proprietary <strong>Sirsi Nexus V4 Framework</strong> as the foundational architectural layer; and</p>
                         <p><strong>WHEREAS</strong>, the Parties desire to set forth the terms and conditions under which Provider will provide such services and license certain technologies to Client.</p>
@@ -221,7 +221,7 @@ export function MasterAgreement() {
                                 <span style={{ color: '#C8A951', fontWeight: 700 }}>INCLUDED</span>
                             </div>
                             <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', margin: 0, lineHeight: 1.6 }}>
-                                Full platform foundation including iOS, Android, and Web applications. Includes the "The Shepherd" logic engine, Vault security architecture, and multi-state probate support.
+                                Full platform foundation including iOS, Android, and Web applications. Includes the "The Shepherd" logic engine, Vault security architecture, and foundational support for future multi-state expansion.
                             </p>
                         </div>
                     )}
