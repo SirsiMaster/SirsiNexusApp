@@ -104,7 +104,7 @@ export function VaultDashboard() {
                                     <div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
                                             <span style={{ color: '#C8A951', fontSize: '20px' }}>📄</span>
-                                            <span style={{ color: 'white', fontWeight: 600, fontSize: '18px' }}>{contract.projectName} Technical Partnership</span>
+                                            <span style={{ color: 'white', fontWeight: 600, fontSize: '18px' }}>{contract.projectName} Service Agreement</span>
                                         </div>
                                         <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px', paddingLeft: '32px' }}>
                                             Created: {new Date(Number(contract.createdAt)).toLocaleDateString()} • ID: {contract.id}

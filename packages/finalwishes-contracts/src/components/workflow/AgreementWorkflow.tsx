@@ -113,7 +113,7 @@ export function AgreementWorkflow() {
                 marginTop: '0',
                 whiteSpace: 'nowrap'
               }}>
-                Technical Partnership Agreement
+                Master Service Agreement
               </h1>
               <div className="contract-gold-divider" style={{
                 width: '120px',
@@ -158,7 +158,7 @@ export function AgreementWorkflow() {
                   fontSize: '18px',
                   color: 'rgba(255,255,255,0.7)',
                   marginBottom: '2rem'
-                }}>Your Technical Partnership with {storeProjectId === 'finalwishes' ? 'FinalWishes' : storeProjectId} is now ACTIVE.</p>
+                }}>Your Master Service Agreement with {storeProjectId === 'finalwishes' ? 'FinalWishes' : storeProjectId} is now ACTIVE.</p>
                 <button
                   onClick={() => window.location.href = '/vault'}
                   className="select-plan-btn"

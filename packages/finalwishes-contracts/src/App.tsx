@@ -12,7 +12,7 @@ function App() {
         {/* Landing Page */}
         <Route path="/" element={<LandingPage /> as any} />
 
-        {/* Partnership Agreement Workflow */}
+        {/* Service Agreement Workflow */}
         <Route path="/partnership" element={<Navigate to="/partnership/finalwishes" replace /> as any} />
         <Route path="/partnership/:projectId" element={<AgreementWorkflow /> as any} />
         <Route path="/partnership/:projectId/payment/success" element={<AgreementWorkflow /> as any} />

@@ -56,7 +56,7 @@ export function LandingPage() {
                     margin: '0 auto 3rem auto',
                     lineHeight: 1.6
                 }}>
-                    Securely review, execute, and archive your technical partnership agreements
+                    Securely review, execute, and archive your master service agreements
                     within the Sirsi ecosystem.
                 </p>
 

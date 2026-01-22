@@ -373,7 +373,7 @@ export function CostValuation() {
                         alignItems: 'center',
                         padding: '32px 0 0 0'
                     }}>
-                        <span style={{ fontSize: '1.5rem', fontWeight: 600, color: '#C8A951', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Partnership Investment</span>
+                        <span style={{ fontSize: '1.5rem', fontWeight: 600, color: '#C8A951', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Service Investment</span>
                         <span style={{
                             fontSize: '2.5rem',
                             fontFamily: "'Cinzel', serif",

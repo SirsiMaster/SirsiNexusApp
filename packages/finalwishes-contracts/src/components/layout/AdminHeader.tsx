@@ -23,14 +23,14 @@ export function AdminHeader({ isLightTheme, onToggleTheme }: AdminHeaderProps) {
                     fontFamily: 'Cinzel, serif',
                     margin: 0,
                     color: isLightTheme ? '#0f172a' : '#C8A951'
-                }}>Partnership Agreement</h1>
+                }}>Master Service Agreement</h1>
                 <p style={{
                     fontSize: '0.75rem',
                     margin: 0,
                     color: isLightTheme ? '#64748b' : 'rgba(255,255,255,0.5)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em'
-                }}>Sirsi Engineering • Strategic Partnership</p>
+                }}>Sirsi Engineering • Professional Services</p>
             </div>
 
             <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>

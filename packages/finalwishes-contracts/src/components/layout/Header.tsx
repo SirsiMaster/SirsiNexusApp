@@ -10,10 +10,10 @@ export function Header() {
                     {/* Left: Logo and Title */}
                     <div className="flex items-center gap-4">
                         <div className="text-gold font-serif text-xl tracking-wider">
-                            PARTNERSHIP AGREEMENT
+                            MASTER SERVICE AGREEMENT
                         </div>
                         <div className="hidden md:block text-white/40 text-sm">
-                            {companyName} × {projectName} Partnership
+                            {companyName} × {projectName} Agreement
                         </div>
                     </div>
 
