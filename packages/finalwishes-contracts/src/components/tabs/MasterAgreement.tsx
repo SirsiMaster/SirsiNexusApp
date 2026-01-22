@@ -21,8 +21,9 @@ export function MasterAgreement() {
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
     const bundle = selectedBundle ? BUNDLES[selectedBundle] : null
-    const storeClientName = useConfigStore(state => state.clientName)
-    const clientName = storeClientName || "Tameeka Lockhart" // Default client for FinalWishes proposal
+    // FinalWishes Client is ALWAYS Tameeka Lockhart - not the logged-in user
+    // This is a specific contract between Provider (Sirsi/Cylton) and Client (Tameeka)
+    const clientName = "Tameeka Lockhart"
     const totalInvestment = calculateTotal(selectedBundle, selectedAddons)
 
     return (
