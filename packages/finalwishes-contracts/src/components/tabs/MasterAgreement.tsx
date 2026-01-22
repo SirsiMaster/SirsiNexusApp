@@ -97,7 +97,7 @@ export function MasterAgreement() {
                             This <strong>Master Services Agreement</strong> (this "Agreement") is entered into by and between:
                         </p>
                         <p>
-                            <strong>FinalWishes Inc.</strong>, a Delaware Corporation with its principal place of business at [Address] ("Client"), represented by <strong>{clientName}</strong>, CEO, and
+                            <strong>{clientName}</strong>, an individual with principal place of business at [Address] ("Client"), and
                             {" "}<strong>Sirsi Technologies, Inc.</strong>, a Delaware corporation (FEIN: 93-1696269), with its principal place of business at 909 Rose Avenue, Suite 400, North Bethesda MD 20852 ("Provider" or "Sirsi"), represented by <strong>Cylton Collymore</strong>, CEO.
                         </p>
                         <p>Client and Provider may be referred to individually as a "Party" and collectively as the "Parties."</p>
@@ -105,7 +105,7 @@ export function MasterAgreement() {
                         <div style={{ margin: '40px 0', borderTop: '1px solid rgba(200,169,81,0.2)' }}></div>
 
                         <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px' }}>1. RECITALS</h3>
-                        <p><strong>WHEREAS</strong>, Client desires to engage Provider to design, develop, and implement a comprehensive estate settlement software platform known as <strong>FinalWishes</strong> (the "Platform"); and</p>
+                        <p><strong>WHEREAS</strong>, Client desires to engage Provider to design, develop, and implement a <strong>legacy management system</strong> known as <strong>FinalWishes</strong> (the "Platform"), with sufficient foundational infrastructure to allow for future expansion into estate settlement capabilities starting with Maryland, Illinois, and Minnesota; and</p>
                         <p><strong>WHEREAS</strong>, Provider (Sirsi Technologies, Inc) possesses the requisite technical expertise, personnel, and infrastructure, including expertise in artificial intelligence, cloud architecture, and secure software development, to perform the Services; and</p>
                         <p><strong>WHEREAS</strong>, the Platform is to be constructed utilizing Provider's proprietary <strong>Sirsi Nexus V4 Framework</strong> as the foundational architectural layer; and</p>
                         <p><strong>WHEREAS</strong>, the Parties desire to set forth the terms and conditions under which Provider will provide such services and license certain technologies to Client.</p>
@@ -142,6 +142,9 @@ export function MasterAgreement() {
                         <p><strong>4.3 Payment Terms.</strong> Provider shall submit invoices to Client upon completion of Milestones. Invoices are due and payable <strong>Net Fifteen (15)</strong> days from the invoice date via the Sirsi Vault payment gateway.</p>
                         <p><strong>4.4 Late Payments.</strong> Undisputed payments not received by the due date shall accrue interest at the lesser of one and one-half percent (1.5%) per month or the maximum rate permitted by law, calculated from the due date until paid in full.</p>
                         <p><strong>4.5 Taxes.</strong> Fees do not include any sales, use, value-added, or similar taxes. Client shall be responsible for paying all such taxes properly levied on the Services, excluding taxes based on Provider’s net income, property, or employees.</p>
+                        <p><strong>4.6 Sirsi Backend Services.</strong> As part of Provider's Background Technology, the Platform shall integrate with third-party services including but not limited to <strong>OpenSign</strong> (e-signatures), <strong>Plaid</strong> (financial account linking), and <strong>Stripe</strong> (payment processing) through the <strong>Sirsi Backend Service Architecture</strong>. These integrations shall route through Provider's infrastructure to reduce cost complexity and time to market, unless otherwise indicated in writing or upon termination of any maintenance contract between the Parties.</p>
+                        <p><strong>4.7 Merchant Fees.</strong> Provider does not pay merchant fees for making payment processing available to the Platform. All payment processing fees (including but not limited to Stripe transaction fees, chargeback fees, and related merchant service charges) shall be <strong>passed through to Client</strong>. Provider shall not pass through any other costs related to infrastructure maintenance and availability.</p>
+                        <p><strong>4.8 Future Migration.</strong> If at some time in the future Client opts for its own full signatory and payments integrations independent of Provider's Payment Backend Service Architecture, Provider shall migrate a working implementation to Client for a <strong>nominal fee not to exceed One Thousand Dollars ($1,000.00)</strong>.</p>
                     </section>
 
                     <section style={{ marginBottom: '48px' }}>
