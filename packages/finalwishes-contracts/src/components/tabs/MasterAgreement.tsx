@@ -215,12 +215,12 @@ export function MasterAgreement() {
 
                 <div style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.8', fontSize: '15px' }}>
                     <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.6)', fontStyle: 'italic', marginBottom: '40px' }}>
-                        Project Name: FinalWishes Platform Development • SOW Reference: SOW-2025-001 • Date: January 6, 2026
+                        Project Name: FinalWishes Platform Development • SOW Reference: SOW-2026-001 • Date: January 22, 2026
                     </p>
 
                     <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>1. EXECUTIVE OVERVIEW</h3>
                     <p>This Statement of Work (“SOW”) defines the comprehensive scope for the <strong>FinalWishes Legacy Management System</strong>. This project aims to build foundational legacy management infrastructure with foundational support for future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota.</p>
-                    <p><strong>Objective:</strong> deliver a “Vault-Grade” secure platform that guides users through the 18+ month probate process, automating form generation, asset discovery, and stakeholder communication.</p>
+                    <p><strong>Objective:</strong> deliver a “Vault-Grade” secure platform that allows users to securely organize, document, and manage their legacy assets and final wishes, providing a permanent, cryptographically-secure repository for digital inheritance and beneficiary instructions.</p>
 
                     <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', marginTop: '40px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>2. DETAILED SCOPE OF SERVICES</h3>
 
@@ -294,7 +294,7 @@ export function MasterAgreement() {
                             <h4 style={{ color: 'white', marginBottom: '8px' }}>PHASE 2: CORE LOGIC & FOUNDATIONAL ENGINES (Weeks 5-10)</h4>
                             <ul style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
                                 <li>Plaid Link integration & Asset Module</li>
-                                <li>"The Shepherd" Engine & Future State Framework mapping</li>
+                                <li>"The Shepherd" Legacy Guidance Engine & Asset Framework</li>
                                 <li>Gemini RAG pipeline for legal context</li>
                                 <li>Go-based PDF form stamper service</li>
                             </ul>
