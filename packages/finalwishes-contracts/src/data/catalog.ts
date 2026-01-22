@@ -1,6 +1,8 @@
 // FinalWishes Product Catalog
 // This is the single source of truth for all products and pricing
 // Ported from the SIRSI Universal Offerings Engine (catalog-data.js)
+// CRITICAL: PER GEMINI.MD RULE 12, all pricing must be dynamic. No hardcoded
+// dollar amounts should exist in the UI or templates outside of this catalog.
 
 export interface WBSActivity {
     name: string
