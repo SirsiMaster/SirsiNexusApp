@@ -297,19 +297,20 @@
   <p><strong>This Master Services Agreement (“Agreement”) is entered into
       as of <span id="effective-date">January 6, 2026</span> (the “Effective Date”) by and
       between:</strong></p>
-  <p><strong>FinalWishes Inc.</strong>, a Delaware Corporation with its principal place of business at [Address]
-    (“Client”), represented by <strong>Tameeka Lockhart</strong>, CEO, and
+  <p><strong><span id="client-name">Tameeka Lockhart</span></strong>, an individual with principal place of business at
+    <span id="client-address">[Address]</span>
+    ("Client"), and
     <strong>Sirsi Technologies, Inc.</strong>, a Delaware corporation (FEIN: 93-1696269), with its principal place of
-    business at 909 Rose Avenue, Suite 400, North Bethesda MD 20852 (“Provider” or “Sirsi”), represented by
+    business at 909 Rose Avenue, Suite 400, North Bethesda MD 20852 ("Provider" or "Sirsi"), represented by
     <strong>Cylton Collymore</strong>, CEO.
   </p>
-  <p>Client and Provider may be referred to individually as a “Party” and collectively as the “Parties.”</p>
+  <p>Client and Provider may be referred to individually as a "Party" and collectively as the "Parties."</p>
   <hr />
   <h2 id="recitals">1. RECITALS</h2>
   <p><strong>WHEREAS</strong>, Client desires to engage Provider to
-    design, develop, and implement a comprehensive estate settlement
-    software platform known as <strong>FinalWishes</strong> (the
-    “Platform”); and</p>
+    design, develop, and implement a <strong>legacy management system</strong>
+    known as <strong>FinalWishes</strong> (the "Platform"), with sufficient foundational infrastructure to allow for
+    future expansion into estate settlement capabilities starting with Maryland, Illinois, and Minnesota; and</p>
   <p><strong>WHEREAS</strong>, Provider (Sirsi Technologies, Inc)
     possesses the requisite technical expertise, personnel, and
     infrastructure, including expertise in artificial intelligence, cloud
@@ -474,6 +475,23 @@
     Client shall be responsible for paying all such taxes properly levied on
     the Services, excluding taxes based on Provider’s net income, property,
     or employees.</p>
+  <h3 id="backend-services">4.7 Sirsi Backend Services</h3>
+  <p>As part of Provider's Background Technology, the Platform shall integrate with third-party services
+    including but not limited to <strong>OpenSign</strong> (e-signatures), <strong>Plaid</strong> (financial account
+    linking),
+    and <strong>Stripe</strong> (payment processing) through the <strong>Sirsi Backend Service Architecture</strong>.
+    These integrations shall route through Provider's infrastructure to reduce cost complexity and time to market,
+    unless otherwise indicated in writing or upon termination of any maintenance contract between the Parties.</p>
+  <h3 id="merchant-fees">4.8 Merchant Fees</h3>
+  <p>Provider does not pay merchant fees for making payment processing available to the Platform.
+    All payment processing fees (including but not limited to Stripe transaction fees, chargeback fees, and
+    related merchant service charges) shall be <strong>passed through to Client</strong>. Provider shall not pass
+    through
+    any other costs related to infrastructure maintenance and availability.</p>
+  <h3 id="future-migration">4.9 Future Migration</h3>
+  <p>If at some time in the future Client opts for its own full signatory and payments integrations
+    independent of Provider's Payment Backend Service Architecture, Provider shall migrate a working
+    implementation to Client for a <strong>nominal fee not to exceed One Thousand Dollars ($1,000.00)</strong>.</p>
   <hr />
   <h2 id="intellectual-property-rights">5. INTELLECTUAL PROPERTY
     RIGHTS</h2>
@@ -710,7 +728,7 @@
   <hr />
   <h1 id="exhibit-a-statement-of-work-sow">EXHIBIT A: STATEMENT OF WORK
     (SOW)</h1>
-  <p><strong>Project Name:</strong> FinalWishes Estate Operating System
+  <p><strong>Project Name:</strong> FinalWishes Legacy Management System
     <strong>Timeline:</strong> <span id="sow-timeline">6 Months</span> (Target Completion: <span
       id="sow-target-date">June 2026</span>)
   </p>
@@ -782,7 +800,7 @@
             <tr>
               <td style="text-align: left;"><strong>4. Testing & Launch</strong></td>
               <td style="text-align: left;">Weeks 13-16</td>
-              <td style="text-align: left;">Pen Testing, Auditor Review, App Store
+              <td style="text-align: left;">Security Review, QA Testing, App Store
                 Submission, Go-Live.</td>
             </tr>
           </tbody>
@@ -977,13 +995,14 @@
       <p><strong>Project Name:</strong> FinalWishes Platform Development
         <strong>SOW Reference:</strong> SOW-2025-001<br />
         <strong>Associated MSA:</strong> MSA-2025-111-FW<br />
-        <strong>Date:</strong> January 6, 2026
+        <strong>Date:</strong> <span id="sow-effective-date">January 6, 2026</span>
       </p>
       <hr />
       <h2 id="executive-overview">1. Executive Overview</h2>
       <p>This Statement of Work (“SOW”) defines the comprehensive scope for
-        the <strong>FinalWishes Estate Operating System</strong>. This project
-        aims to digitize and automate the estate settlement process, focusing on
+        the <strong>FinalWishes Legacy Management System</strong>. This project
+        aims to build foundational legacy management infrastructure with future expansion capabilities into estate
+        settlement, focusing on
         “Launch States” (Maryland, Illinois, Minnesota) where electronic filing
         or substantial digitization is possible.</p>
       <p><strong>Objective:</strong> deliver a “Vault-Grade” secure platform
@@ -1166,7 +1185,7 @@
       <h3 id="phase-4-audit-security-launch-weeks-17-20"><strong>PHASE 4:
           AUDIT, SECURITY &amp; LAUNCH (Weeks 17-20)</strong></h3>
       <ul>
-        <li><strong>4.1 Pen Test:</strong> Third-party security audit &amp;
+        <li><strong>4.1 Security Review:</strong> Internal security audit &
           remediation.</li>
         <li><strong>4.2 Compliance:</strong> SOC 2 evidence collection (logging,
           access controls).</li>
@@ -1318,7 +1337,12 @@
           }
 
           if (clientAddress) document.getElementById('client-address').textContent = clientAddress;
-          if (effectiveDate) document.getElementById('effective-date').textContent = effectiveDate;
+          if (effectiveDate) {
+            document.getElementById('effective-date').textContent = effectiveDate;
+            // Also update SOW effective date
+            const sowEffectiveDateEl = document.getElementById('sow-effective-date');
+            if (sowEffectiveDateEl) sowEffectiveDateEl.textContent = effectiveDate;
+          }
 
           // 2. Update Contract Value dynamically
           const contractValueEl = document.getElementById('contract-value');
@@ -1361,13 +1385,13 @@
 
           // 5. Update Exhibit B: Cost & Valuation Analysis (Dynamic Financials)
           // Use actual hours if provided, otherwise calculate based on amount
-          const devHours = totalHours > 0 ? totalHours : Math.round(totalAmount / 110); // ~$110/hr internal rate
+          const devHours = totalHours > 0 ? totalHours : Math.round(totalAmount / 150); // ~$150/hr internal rate
           const grossDevValue = devHours * 250; // $250/hr blended market rate
-          const efficiencyDiscount = Math.round(grossDevValue * 0.33); // ~33% efficiency from Sirsi
+          const efficiencyDiscount = Math.round(grossDevValue * 0.25); // ~25% efficiency from Sirsi
           const familyDiscount = grossDevValue - efficiencyDiscount - totalAmount; // Remainder as F&F discount
-          const agencyPlatformCost = Math.round(totalAmount * 1.75); // Agency typically 1.75x
-          const biglawPlatformCost = Math.round(totalAmount * 4); // Big law typically 4x
-          const agencyMarketValue = Math.round(totalAmount * 2); // Agency market value
+          const agencyPlatformCost = Math.round(totalAmount * 1.5); // Agency typically 1.5x
+          const biglawPlatformCost = Math.round(totalAmount * 3); // Big law typically 3x
+          const agencyMarketValue = Math.round(totalAmount * 1.75); // Agency market value
           const biglawMarketValue = Math.round(totalAmount * 5); // Big law market value
 
           // Helper function to format currency
