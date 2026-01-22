@@ -294,9 +294,7 @@ export function MasterAgreement() {
                             <h4 style={{ color: 'white', marginBottom: '8px' }}>PHASE 2: LEGACY LOGIC & ASSET FRAMEWORK (Weeks 5-10)</h4>
                             <ul style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
                                 <li>Plaid Integration & Legacy Inventory</li>
-                                <li>Beneficiary Logic & Secure Access Delegation</li>
-                                <li>Instruction Engine & Digital Inheritance Protocols</li>
-                                <li>Document Management & Metadata Mapping</li>
+                                <li>The Shepherd: Site & Application Logic Guidance</li>
                                 <li>Gemini RAG: Legacy Framework Context & Guidance</li>
                                 <li>Notification System: Life-Event Triggering Logic</li>
                             </ul>
@@ -324,7 +322,7 @@ export function MasterAgreement() {
                     <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', marginTop: '40px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>4. ASSUMPTIONS</h3>
                     <ol style={{ paddingLeft: '20px', fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
                         <li><strong>Future Expansion Support:</strong> Logic is focused on foundational legacy management, with future support planned for Maryland, Illinois, and Minnesota.</li>
-                        <li><strong>No Legal Advice:</strong> The “Shepherd” provides procedural guidance, not legal advice.</li>
+                        <li><strong>No Legal Advice:</strong> The “Shepherd” guides users through site and application logic and provides procedural guidance, not legal advice.</li>
                         <li><strong>Third-Party Costs:</strong> Client pays direct consumption costs for Stripe, Plaid, Lob, and Google Cloud.</li>
                         <li><strong>Content:</strong> Client is responsible for final validation of court form templates.</li>
                     </ol>

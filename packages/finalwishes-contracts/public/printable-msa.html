@@ -148,41 +148,47 @@
         line-height: 1.5;
       }
 
-      /* Every H1 (Exhibits) starts on new page */
+      /* Start major exhibits on new page */
       h1 {
-        page-break-before: always;
+        break-before: page;
         font-size: 18pt;
-        margin-top: 0;
+        margin-top: 1em;
       }
 
       /* First H1 should NOT have page break */
       h1:first-of-type {
-        page-break-before: auto;
+        break-before: auto;
+        margin-top: 0;
       }
 
-      /* Every H2 (Section) starts on new page */
+      /* Sections within the contract should NOT force a page break if they fit */
       h2 {
-        page-break-before: always;
+        break-before: auto;
+        break-after: avoid;
         font-size: 13pt;
-        margin-top: 0;
+        margin-top: 1.5em;
         padding-top: 0;
       }
 
-      /* Prevent headers from being orphaned at bottom of page */
+      /* Keep headings with their following content */
       h1,
       h2,
       h3,
       h4 {
-        page-break-after: avoid;
+        break-after: avoid;
       }
 
       /* Tables stay together */
       table {
-        page-break-inside: avoid;
+        break-inside: avoid;
       }
 
-      .signature-block {
-        page-break-inside: avoid;
+      /* Avoid breaking in the middle of lists or small sections */
+      li,
+      p,
+      .signature-block,
+      section {
+        break-inside: avoid;
       }
 
       a {
@@ -271,12 +277,13 @@
         display: none !important;
       }
     }
-  
+
     /* Signature Page Table Font Adjustment */
-    .signature-table td, .signature-table th {
+    .signature-table td,
+    .signature-table th {
       font-size: 14pt !important;
     }
-    
+
     .audit-trail {
       margin-top: 40px;
       padding: 20px;
@@ -287,6 +294,7 @@
       color: #64748b;
       display: none;
     }
+
     .audit-row {
       display: flex;
       justify-content: space-between;
@@ -294,17 +302,21 @@
       border-bottom: 1px dashed #e2e8f0;
       padding-bottom: 4px;
     }
+
     .audit-row:last-child {
       border-bottom: none;
     }
+
     .audit-label {
       font-weight: 600;
       text-transform: uppercase;
       font-size: 8pt;
     }
+
     .audit-value {
       font-family: 'Courier New', monospace;
     }
+
     .verified-badge {
       display: inline-flex;
       align-items: center;
@@ -315,7 +327,6 @@
       letter-spacing: 0.05em;
       margin-bottom: 12px;
     }
-
   </style>
 </head>
 
@@ -354,7 +365,9 @@
   <h2 id="recitals">1. RECITALS</h2>
   <p><strong>WHEREAS</strong>, Client desires to engage Provider to
     design, develop, and implement a <strong>legacy management system</strong>
-    known as <strong>FinalWishes</strong> (the "Platform"), with sufficient foundational infrastructure to support future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota; and</p>
+    known as <strong>FinalWishes</strong> (the "Platform"), with sufficient foundational infrastructure to support
+    future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota; and
+  </p>
   <p><strong>WHEREAS</strong>, Provider (Sirsi Technologies, Inc)
     possesses the requisite technical expertise, personnel, and
     infrastructure, including expertise in artificial intelligence, cloud
@@ -712,7 +725,8 @@
   <h3 id="market-vertical-non-competition">11.2 Market Vertical Non-Competition</h3>
   <p>Provider agrees that during the term of this Agreement and for a period of <strong>three (3) years</strong>
     thereafter, Provider shall not directly develop, market, or provide services for a competing <strong>Estate
-      Settlement, Legacy Management Automation, or Legacy Planning</strong> platform. This does not restrict Provider from using
+      Settlement, Legacy Management Automation, or Legacy Planning</strong> platform. This does not restrict Provider
+    from using
     its foundational tech in unrelated market verticals.</p>
   <h3 id="force-majeure">11.3 Force Majeure</h3>
   <p>Neither Party shall be liable for any delay or failure to perform
@@ -777,12 +791,14 @@
       id="sow-target-date">June 2026</span>)
   </p>
   <h2 id="scope-of-work">1. Scope of Work</h2>
-  <p>Provider to deliver a “Vault-Grade” legacy management system, designed with foundational infrastructure to support future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota.</p>
+  <p>Provider to deliver a “Vault-Grade” legacy management system, designed with foundational infrastructure to support
+    future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota.</p>
   <h3 id="core-modules">Core Modules</h3>
   <ol type="1">
     <li><strong>Vault Architecture</strong>: Zero-knowledge encryption
       (Cloud KMS + AES-256) for all documents.</li>
-    <li><strong>Future State Engine Framework</strong>: Foundational support for future expansion into Maryland, Illinois, and Minnesota legacy management automation (“The Shepherd” logic engine).</li>
+    <li><strong>Future State Engine Framework</strong>: Foundational support for future expansion into Maryland,
+      Illinois, and Minnesota legacy management automation (The “Shepherd” guidance engine).</li>
     <li><strong>Financial Integration</strong>: Deep integration with
       <strong>Stripe</strong> (payments) and <strong>Plaid</strong> (asset
       discovery).
@@ -849,7 +865,8 @@
       <h2 id="assumptions">4. Assumptions</h2>
       <ul>
         <li>Client pays for direct cloud/API usage costs.</li>
-        <li>“The Shepherd” provides procedural guidance, not legal advice.</li>
+        <li>The “Shepherd” guides users through site and application logic and provides procedural guidance, not legal
+          advice.</li>
       </ul>
       <hr />
       <h1 id="exhibit-b-cost-valuation-analysis">EXHIBIT B: COST &amp;
@@ -988,9 +1005,11 @@
       <h2 id="executive-overview">1. Executive Overview</h2>
       <p>This Statement of Work (“SOW”) defines the comprehensive scope for
         the <strong>FinalWishes Legacy Management System</strong>. This project
-        aims to build foundational legacy management infrastructure with foundational support for future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota.</p>
+        aims to build foundational legacy management infrastructure with foundational support for future expansion into
+        estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota.</p>
       <p><strong>Objective:</strong> deliver a “Vault-Grade” secure platform
-        that allows users to securely organize, document, and manage their legacy assets and final wishes, providing a permanent, cryptographically-secure repository for digital inheritance and beneficiary instructions.</p>
+        that allows users to securely organize, document, and manage their legacy assets and final wishes, providing a
+        permanent, cryptographically-secure repository for digital inheritance and beneficiary instructions.</p>
       <hr />
       <h2 id="detailed-scope-of-services">2. Detailed Scope of Services</h2>
       <h3 id="core-vault-data-architecture">2.1 Core Vault &amp; Data
@@ -1025,7 +1044,8 @@
           sharing core business logic.</li>
       </ul>
       <h3 id="selected-service-modules">2.2 Selected Service Modules</h3>
-      <div id="selected-addons-container" style="background: #f9fafb; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 24px;">
+      <div id="selected-addons-container"
+        style="background: #f9fafb; padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 24px;">
         <p style="color: #64748b; font-style: italic; margin: 0;">Loading selected modules...</p>
       </div>
 
@@ -1037,10 +1057,12 @@
           Certificate:</strong> Manual upload/OCR processing (No State API
         exists). * <strong>Social Security/Gov ID:</strong> Secure entry &amp;
         validation.</p>
-      <p><strong>B. Future State Engine Framework (Expansion)</strong> * 
-        <strong>Maryland/Illinois/Minnesota:</strong> Foundational logic mapping for future expansion into 
-        <strong>MDEC</strong> (Maryland), <strong>eCourt</strong> (Illinois), and <strong>MNCIS</strong> (Minnesota) e-filing guidance. * 
-        <em>Note: Active development of direct court filing automation is reserved for future statement(s) of work.</em></p>
+      <p><strong>B. Future State Engine Framework (Expansion)</strong> *
+        <strong>Maryland/Illinois/Minnesota:</strong> Foundational logic mapping for future expansion into
+        <strong>MDEC</strong> (Maryland), <strong>eCourt</strong> (Illinois), and <strong>MNCIS</strong> (Minnesota)
+        e-filing guidance. *
+        <em>Note: Active development of direct court filing automation is reserved for future statement(s) of work.</em>
+      </p>
       <p><strong>C. Financial &amp; Asset Documents</strong> * <strong>Asset
           Discovery:</strong> Integration of <strong>Plaid</strong> for retrieving
         balances, transactions, and liabilities from 12,000+ financial
@@ -1106,15 +1128,9 @@
       </table>
       <h3 id="the-shepherd-guidance-engine">2.4 “The Shepherd” Guidance
         Engine</h3>
-      <p>Provider shall build a logic engine (“The Shepherd”) that: 1.
-        <strong>Ingests State Laws:</strong> Encodes legacy timeline rules for
-        MD, IL, and MN. 2. <strong>Generates Timeline:</strong> Creates a
-        dynamic, 18-month Gantt chart for the Executor. 3. <strong>Proactive
-          Alerts:</strong> Notifies users of upcoming court deadlines (Inventory
-        due in 90 days, Taxes due in 9 mo). 4. <strong>AI Assistance:</strong>
-        Uses Gemini 3.0 to answer context-specific questions (e.g., “Is this
-        expense deductible in Maryland?”).
-      </p>
+      <p>Provider shall build a logic engine (“The Shepherd”) that guides users through core site navigation, secure
+        vault management, and overall application logic. The engine provides procedural assistance for platform
+        engagement and assists users in navigating the legacy organization framework.</p>
       <hr />
       <h2 id="work-breakdown-structure-wbs">3. Work Breakdown Structure
         (WBS)</h2>
@@ -1135,14 +1151,13 @@
         </li>
         <li><strong>1.7 E-Sign:</strong> Deploy Self-Hosted OpenSign.</li>
       </ul>
-      <h3 id="phase-2-legacy-logic-asset-framework-weeks-5-10"><strong>PHASE 2: LEGACY LOGIC & ASSET FRAMEWORK (Weeks 5-10)</strong></h3>
+      <h3 id="phase-2-legacy-logic-asset-framework-weeks-5-10"><strong>PHASE 2: LEGACY LOGIC & ASSET FRAMEWORK (Weeks
+          5-10)</strong></h3>
       <ul>
         <li><strong>2.1 Asset Module:</strong> Plaid Integration & Legacy Inventory.</li>
-        <li><strong>2.2 Beneficiary Logic:</strong> Secure Access Delegation & Instruction Engine.</li>
-        <li><strong>2.3 Instruction Engine:</strong> Digital Inheritance Protocols.</li>
-        <li><strong>2.4 Document Management:</strong> Secure File Organization & Metadata Mapping.</li>
-        <li><strong>2.5 Gemini RAG:</strong> Legacy Framework Context & Guidance.</li>
-        <li><strong>2.6 Notification System:</strong> Life-Event Triggering Logic.</li>
+        <li><strong>2.2 The Shepherd:</strong> Site & Application Logic Guidance.</li>
+        <li><strong>2.3 Gemini RAG:</strong> Legacy Framework Context & Guidance.</li>
+        <li><strong>2.4 Notification System:</strong> Life-Event Triggering Logic.</li>
       </ul>
       <h3 id="phase-3-mobile-deep-integrations-weeks-11-16"><strong>PHASE 3:
           MOBILE &amp; DEEP INTEGRATIONS (Weeks 11-16)</strong></h3>
@@ -1219,7 +1234,8 @@
       <hr />
       <h2 id="assumptions-1">5. Assumptions</h2>
       <ol type="1">
-        <li><strong>Future Expansion Support:</strong> Logic is focused on foundational legacy management, with future support planned for Maryland, Illinois, and Minnesota.</li>
+        <li><strong>Future Expansion Support:</strong> Logic is focused on foundational legacy management, with future
+          support planned for Maryland, Illinois, and Minnesota.</li>
         <li><strong>No Legal Advice:</strong> The “Shepherd” provides procedural
           guidance, not legal advice. Disclaimer implementation is mandatory.</li>
         <li><strong>Third-Party Costs:</strong> Client pays direct consumption
@@ -1405,7 +1421,7 @@
             if (el) el.textContent = value;
           });
 
-          
+
           // 4. Handle Addons
           const addonParam = params.get('addons');
           if (addonParam) {
@@ -1416,16 +1432,16 @@
               const list = document.createElement('ul');
               list.style.margin = '0';
               list.style.paddingLeft = '20px';
-              
+
               const PRODUCTS_MOCK = {
                 'vault': { name: 'The Vault (Security Architecture)', desc: 'Zero-knowledge encryption for all documents.' },
-                'shepherd': { name: 'The Shepherd (Legacy Engine)', desc: 'Dynamic instruction engine for estates.' },
+                'shepherd': { name: 'The Shepherd (Legacy Engine)', desc: 'Site and application logic guidance engine.' },
                 'plaid': { name: 'Plaid Asset Sync', desc: 'Real-time financial account synchronization.' },
                 'signing': { name: 'OpenSign Integration', desc: 'Embedded legal signature management.' },
                 'mobile': { name: 'Native iOS/Android Apps', desc: 'Full mobile accessibility for legacy data.' },
                 'lob': { name: 'Physical Mail Integration', desc: 'Automated physical letter generation.' }
               };
-              
+
               addons.forEach(id => {
                 const product = PRODUCTS_MOCK[id] || { name: id, desc: 'Selected add-on module.' };
                 const li = document.createElement('li');
@@ -1436,11 +1452,11 @@
               container.appendChild(list);
             }
           } else {
-             const container = document.getElementById('selected-addons-container');
-             if (container) container.innerHTML = '<p>Core Legacy Management Platform (Standard Bundle)</p>';
+            const container = document.getElementById('selected-addons-container');
+            if (container) container.innerHTML = '<p>Core Legacy Management Platform (Standard Bundle)</p>';
           }
 
-// 4. Handle Signatures if 'signed=true'
+          // 4. Handle Signatures if 'signed=true'
           if (isSigned) {
             // Client Signature
             const clientSigDisplay = document.getElementById('client-signature-display');
