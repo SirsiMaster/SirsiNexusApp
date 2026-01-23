@@ -361,6 +361,20 @@ export function ConfigureSolution() {
                                         </div>
 
                                         {/* CEO Consulting Week Selector */}
+                                        {item.id === 'ceo-consulting' && !inCart && (
+                                            <div style={{
+                                                color: '#C8A951',
+                                                fontSize: '12px',
+                                                fontStyle: 'italic',
+                                                marginBottom: '12px',
+                                                padding: '8px 12px',
+                                                background: 'rgba(200, 169, 81, 0.05)',
+                                                borderRadius: '6px',
+                                                border: '1px dashed rgba(200, 169, 81, 0.3)'
+                                            }}>
+                                                ☑ Check box to select weeks
+                                            </div>
+                                        )}
                                         {item.id === 'ceo-consulting' && inCart && (
                                             <div
                                                 onClick={(e) => e.stopPropagation()}
