@@ -500,91 +500,98 @@ export function ConfigureSolution() {
                                             {item.shortDescription}
                                         </p>
 
-                                        {/* Probate Engine - Premium State Selector UI */}
-                                        {item.id === 'probate' && (
-                                            <div
-                                                onClick={(e) => e.stopPropagation()}
-                                                style={{ marginTop: 'auto', marginBottom: '12px' }}
-                                            >
-                                                {/* Selected States Pills */}
-                                                {probateStates.length > 0 && (
-                                                    <div style={{
-                                                        display: 'flex',
-                                                        flexWrap: 'wrap',
-                                                        gap: '6px',
-                                                        marginBottom: '12px',
-                                                        maxHeight: '44px',
-                                                        overflowY: 'auto',
-                                                        padding: '4px'
-                                                    }}>
-                                                        {probateStates.map(st => (
-                                                            <div key={st} style={{
-                                                                background: 'rgba(200, 169, 81, 0.15)',
-                                                                border: '1px solid rgba(200, 169, 81, 0.4)',
-                                                                borderRadius: '4px',
-                                                                padding: '2px 6px',
-                                                                fontSize: '10px',
-                                                                color: '#C8A951',
-                                                                fontWeight: 600,
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                gap: '4px'
-                                                            }}>
-                                                                {st}
-                                                                <span
-                                                                    onClick={() => toggleProbateState(st)}
-                                                                    style={{ cursor: 'pointer', opacity: 0.6 }}
-                                                                >×</span>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                )}
-
-                                                <button
-                                                    type="button"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        openStateSelector();
-                                                    }}
-                                                    style={{
-                                                        width: '100%',
-                                                        padding: '10px',
-                                                        background: 'linear-gradient(135deg, #C8A951 0%, #A08332 100%)',
-                                                        border: 'none',
-                                                        borderRadius: '6px',
-                                                        color: '#000',
-                                                        fontSize: '12px',
-                                                        fontWeight: 700,
-                                                        textTransform: 'uppercase',
-                                                        letterSpacing: '0.05em',
-                                                        cursor: 'pointer',
-                                                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center',
-                                                        gap: '8px'
-                                                    }}
+                                        {/* CARD FOOTER - Unified Selection & Configuration */}
+                                        <div style={{ marginTop: 'auto' }}>
+                                            {/* Probate Engine - Premium State Selector UI */}
+                                            {item.id === 'probate' && (
+                                                <div
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    style={{ marginBottom: '16px' }}
                                                 >
-                                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                                                        <path d="M12 5v14M5 12h14" />
-                                                    </svg>
-                                                    {probateStates.length > 0 ? 'Edit Jurisdictions' : 'Configure States'}
-                                                </button>
-                                            </div>
-                                        )}
+                                                    {/* Selected States Pills */}
+                                                    {probateStates.length > 0 && (
+                                                        <div style={{
+                                                            display: 'flex',
+                                                            flexWrap: 'wrap',
+                                                            gap: '6px',
+                                                            marginBottom: '12px',
+                                                            maxHeight: '44px',
+                                                            overflowY: 'auto',
+                                                            padding: '4px'
+                                                        }}>
+                                                            {probateStates.map(st => (
+                                                                <div key={st} style={{
+                                                                    background: 'rgba(200, 169, 81, 0.15)',
+                                                                    border: '1px solid rgba(200, 169, 81, 0.4)',
+                                                                    borderRadius: '4px',
+                                                                    padding: '2px 6px',
+                                                                    fontSize: '10px',
+                                                                    color: '#C8A951',
+                                                                    fontWeight: 600,
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    gap: '4px'
+                                                                }}>
+                                                                    {st}
+                                                                    <span
+                                                                        onClick={() => toggleProbateState(st)}
+                                                                        style={{ cursor: 'pointer', opacity: 0.6 }}
+                                                                    >×</span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
 
-                                        <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            {/* Caption for CEO Consulting when not selected */}
-                                            {item.id === 'ceo-consulting' && !inCart ? (
-                                                <span style={{ color: '#C8A951', fontSize: '11px', fontStyle: 'italic' }}>
-                                                    ☑ Check box to select weeks
-                                                </span>
-                                            ) : <span></span>}
-                                            <div style={{
-                                                width: '28px', height: '28px', borderRadius: '4px', border: inCart ? 'none' : '2px solid rgba(255,255,255,0.3)',
-                                                background: inCart ? '#10B981' : 'transparent', color: 'white', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center'
-                                            }}>
-                                                {inCart ? '✓' : ''}
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            openStateSelector();
+                                                        }}
+                                                        style={{
+                                                            width: '100%',
+                                                            padding: '10px',
+                                                            background: 'linear-gradient(135deg, #C8A951 0%, #A08332 100%)',
+                                                            border: 'none',
+                                                            borderRadius: '6px',
+                                                            color: '#000',
+                                                            fontSize: '12px',
+                                                            fontWeight: 700,
+                                                            textTransform: 'uppercase',
+                                                            letterSpacing: '0.05em',
+                                                            cursor: 'pointer',
+                                                            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                            gap: '8px'
+                                                        }}
+                                                    >
+                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                                                            <path d="M12 5v14M5 12h14" />
+                                                        </svg>
+                                                        {probateStates.length > 0 ? 'Edit Jurisdictions' : 'Configure States'}
+                                                    </button>
+                                                </div>
+                                            )}
+
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                {/* Caption for CEO Consulting when not selected */}
+                                                {item.id === 'ceo-consulting' && !inCart ? (
+                                                    <span style={{ color: '#C8A951', fontSize: '11px', fontStyle: 'italic' }}>
+                                                        ☑ Check box to select weeks
+                                                    </span>
+                                                ) : (
+                                                    <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>
+                                                        {inCart ? 'Module Selected' : 'Add to Solution'}
+                                                    </span>
+                                                )}
+                                                <div style={{
+                                                    width: '28px', height: '28px', borderRadius: '4px', border: inCart ? 'none' : '2px solid rgba(255,255,255,0.3)',
+                                                    background: inCart ? '#10B981' : 'transparent', color: 'white', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                                }}>
+                                                    {inCart ? '✓' : ''}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
