@@ -596,41 +596,87 @@ export function getBundle(id: string): Bundle | undefined {
     return BUNDLES[id]
 }
 
-export function getAddonPrice(id: string, hasBundle: boolean): number {
-    const product = PRODUCTS[id]
-    if (!product) return 0
-    return hasBundle ? product.bundledPrice : (product.standalonePrice || product.bundledPrice * 1.5)
+export interface CalculateTotalResult {
+    total: number
+    breakdown: {
+        bundle: number
+        addons: number
+        special: {
+            ceoConsulting: number
+            probateEngine: number
+        }
+    }
 }
 
-export function calculateTotal(bundleId: string | null, addonIds: string[], ceoConsultingWeeks: number = 1, probateStateCount: number = 1): number {
-    let total = 0
+export function calculateTotal(
+    bundleId: string | null,
+    addonIds: string[],
+    ceoConsultingWeeks: number = 1,
+    probateStateCount: number = 1
+): CalculateTotalResult {
+    let bundleTotal = 0
+    let addonsTotal = 0
+    let ceoConsultingTotal = 0
+    let probateEngineTotal = 0
+
     const hasBundle = bundleId !== null
-    if (bundleId && BUNDLES[bundleId]) total += BUNDLES[bundleId].price
+    if (bundleId && BUNDLES[bundleId]) {
+        bundleTotal = BUNDLES[bundleId].price
+    }
+
     addonIds.forEach(id => {
         const product = PRODUCTS[id]
         if (product) {
-            // CEO Consulting is priced per week
+            const standPrice = product.standalonePrice || Math.round(product.bundledPrice * 1.5)
+            const unitPrice = hasBundle ? product.bundledPrice : standPrice
+
             if (id === 'ceo-consulting') {
-                total += product.bundledPrice * ceoConsultingWeeks
-                // Probate Engine is priced per state
+                ceoConsultingTotal = unitPrice * Math.max(1, ceoConsultingWeeks)
             } else if (id === 'probate') {
-                const stateCount = Math.max(1, probateStateCount)
-                total += (hasBundle ? product.bundledPrice : (product.standalonePrice || product.bundledPrice * 1.5)) * stateCount
+                probateEngineTotal = unitPrice * probateStateCount
             } else {
-                total += hasBundle ? product.bundledPrice : (product.standalonePrice || product.bundledPrice * 1.5)
+                addonsTotal += unitPrice
             }
         }
     })
-    return total
+
+    return {
+        total: bundleTotal + addonsTotal + ceoConsultingTotal + probateEngineTotal,
+        breakdown: {
+            bundle: bundleTotal,
+            addons: addonsTotal,
+            special: {
+                ceoConsulting: ceoConsultingTotal,
+                probateEngine: probateEngineTotal
+            }
+        }
+    }
 }
 
-export function calculateTimeline(bundleId: string | null, addonIds: string[]): number {
+export function calculateTimeline(
+    bundleId: string | null,
+    addonIds: string[],
+    probateStateCount: number = 1
+): number {
     const maxTimeline = bundleId ? BUNDLES[bundleId].timeline : 0
     let addonTime = 0
+
     addonIds.forEach(id => {
         const product = PRODUCTS[id]
-        if (product && product.timelineUnit === 'weeks') addonTime += product.timeline
+        if (product && product.timelineUnit === 'weeks') {
+            if (id === 'probate') {
+                // First state is 10 weeks, each additional state adds 2 weeks of raw duration (1 week parallelized)
+                const stateCount = Math.max(1, probateStateCount)
+                addonTime += product.timeline + ((stateCount - 1) * 2)
+            } else if (id === 'ceo-consulting') {
+                // CEO Consulting runs in parallel, doesn't add to dev timeline directly
+                return
+            } else {
+                addonTime += product.timeline
+            }
+        }
     })
+
     // 50% parallelization factor - realistic for small agency with integration overhead
     return maxTimeline + Math.ceil(addonTime * 0.5)
 }
@@ -661,7 +707,7 @@ function generateProductWBS(product: Product | Bundle, startWeek: number = 1): W
     const name = product.name
     const scope = product.detailedScope || []
 
-    // Calculate total hours from price (at $200/hour rate)
+    // Calculate total hours from price (at $125/hour rate)
     const totalHours = Math.round(price / HOURLY_RATE)
 
     // Determine number of phases based on timeline
@@ -769,8 +815,14 @@ function generateDefaultActivities(_productName: string, totalHours: number, tot
  * Aggregate WBS from bundle + add-ons with proper timeline extension
  * Add-ons are inserted BEFORE Testing & Launch phase
  */
-export function getAggregatedWBS(bundleId: string | null, addonIds: string[]): WBSPhase[] {
+export function getAggregatedWBS(
+    bundleId: string | null,
+    addonIds: string[],
+    ceoConsultingWeeks: number = 1,
+    probateStateCount: number = 1
+): WBSPhase[] {
     const phases: WBSPhase[] = []
+    const hasBundle = bundleId !== null
 
     // Generate bundle phases dynamically (or use override if defined)
     if (bundleId && BUNDLES[bundleId]) {
@@ -800,32 +852,62 @@ export function getAggregatedWBS(bundleId: string | null, addonIds: string[]): W
         const product = PRODUCTS[id]
         if (!product) return
 
-        // Skip recurring/support products
-        if (product.recurring || product.timelineUnit !== 'weeks') return
+        // Skip recurring/support products for the main dev timeline, 
+        // but include them in WBS if they have hours (except maintenance which is yearly)
+        if (id === 'maintenance') return
 
-        const parallelizedWeeks = Math.ceil(product.timeline * 0.5)
-        const weekEnd = currentWeekStart + parallelizedWeeks - 1
+        let multiplier = 1
+        if (id === 'ceo-consulting') multiplier = Math.max(1, ceoConsultingWeeks)
+        if (id === 'probate') multiplier = Math.max(1, probateStateCount)
 
-        addonPhases.push({
-            phaseNum: 0,
-            name: product.name,
-            weeks: `${currentWeekStart}-${weekEnd}`,
-            hours: Math.round(product.bundledPrice / HOURLY_RATE),
-            cost: Math.round(product.bundledPrice * 0.4),
-            activities: product.detailedScope?.slice(0, 3).map((scope, i) => ({
-                name: scope.title,
-                role: ROLE_DISTRIBUTION[i % ROLE_DISTRIBUTION.length].role,
-                hours: Math.round((product.bundledPrice / HOURLY_RATE) / 3),
-                cost: Math.round(product.bundledPrice * 0.4 / 3)
-            })) || [{
-                name: `${product.name} Implementation`,
-                role: 'Full Stack',
-                hours: Math.round(product.bundledPrice / HOURLY_RATE),
-                cost: Math.round(product.bundledPrice * 0.4)
-            }]
-        })
+        const standPrice = product.standalonePrice || Math.round(product.bundledPrice * 1.5)
+        const unitPrice = hasBundle ? product.bundledPrice : standPrice
+        const totalAddonPrice = unitPrice * multiplier
+        const totalHours = Math.round(totalAddonPrice / HOURLY_RATE)
 
-        currentWeekStart = weekEnd + 1
+        // Only extend timeline for buildable features (weeks unit)
+        if (product.timelineUnit === 'weeks' && id !== 'ceo-consulting') {
+            const baseDuration = product.timeline
+            // Scaling duration: first state is base, each extra state adds 1 week of parallelized time
+            const duration = id === 'probate' ? (baseDuration + (multiplier - 1) * 2) : baseDuration
+            const parallelizedWeeks = Math.ceil(duration * 0.5)
+            const weekEnd = currentWeekStart + parallelizedWeeks - 1
+
+            addonPhases.push({
+                phaseNum: 0,
+                name: multiplier > 1 ? `${product.name} (${multiplier})` : product.name,
+                weeks: `${currentWeekStart}-${weekEnd}`,
+                hours: totalHours,
+                cost: Math.round(totalAddonPrice * 0.4), // Revenue-at-risk/labor cost factor
+                activities: product.detailedScope?.slice(0, 3).map((scope, i) => ({
+                    name: scope.title,
+                    role: ROLE_DISTRIBUTION[i % ROLE_DISTRIBUTION.length].role,
+                    hours: Math.round(totalHours / 3),
+                    cost: Math.round((totalAddonPrice * 0.4) / 3)
+                })) || [{
+                    name: `${product.name} Implementation`,
+                    role: 'Full Stack',
+                    hours: totalHours,
+                    cost: Math.round(totalAddonPrice * 0.4)
+                }]
+            })
+            currentWeekStart = weekEnd + 1
+        } else if (id === 'ceo-consulting') {
+            // CEO consulting doesn't extend timeline but is in WBS
+            addonPhases.push({
+                phaseNum: 0,
+                name: `${product.name} (${multiplier} weeks)`,
+                weeks: `1-${multiplier}`,
+                hours: totalHours,
+                cost: Math.round(totalAddonPrice * 0.4),
+                activities: [{
+                    name: 'Strategic Advisory',
+                    role: 'CEO',
+                    hours: totalHours,
+                    cost: Math.round(totalAddonPrice * 0.4)
+                }]
+            })
+        }
     })
 
     // Insert add-on phases before Testing & Launch
@@ -835,7 +917,7 @@ export function getAggregatedWBS(bundleId: string | null, addonIds: string[]): W
     // Update Testing phase weeks if add-ons extend the timeline
     if (addonPhases.length > 0 && testingPhaseIndex !== -1) {
         const testingPhase = phases[insertIndex + addonPhases.length]
-        if (testingPhase && currentWeekStart > 13) {
+        if (testingPhase) {
             const testingDuration = 4
             testingPhase.weeks = `${currentWeekStart}-${currentWeekStart + testingDuration - 1}`
         }
@@ -849,6 +931,12 @@ export function getAggregatedWBS(bundleId: string | null, addonIds: string[]): W
     return phases
 }
 
-export function calculateTotalHours(bundleId: string | null, addonIds: string[]): number {
-    return getAggregatedWBS(bundleId, addonIds).reduce((acc, p) => acc + p.hours, 0)
+export function calculateTotalHours(
+    bundleId: string | null,
+    addonIds: string[],
+    ceoConsultingWeeks: number = 1,
+    probateStateCount: number = 1
+): number {
+    return getAggregatedWBS(bundleId, addonIds, ceoConsultingWeeks, probateStateCount).reduce((acc, p) => acc + p.hours, 0)
 }
+
