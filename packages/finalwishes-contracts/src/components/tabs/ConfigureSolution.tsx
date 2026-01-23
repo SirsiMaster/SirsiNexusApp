@@ -6,6 +6,27 @@ import { useState } from 'react'
 import { useConfigStore, useSetTab } from '../../store/useConfigStore'
 import { PRODUCTS, calculateTotal, calculateTimeline } from '../../data/catalog'
 
+// All 50 US States + DC
+const US_STATES = [
+    { code: 'AL', name: 'Alabama' }, { code: 'AK', name: 'Alaska' }, { code: 'AZ', name: 'Arizona' },
+    { code: 'AR', name: 'Arkansas' }, { code: 'CA', name: 'California' }, { code: 'CO', name: 'Colorado' },
+    { code: 'CT', name: 'Connecticut' }, { code: 'DE', name: 'Delaware' }, { code: 'DC', name: 'Washington D.C.' },
+    { code: 'FL', name: 'Florida' }, { code: 'GA', name: 'Georgia' }, { code: 'HI', name: 'Hawaii' },
+    { code: 'ID', name: 'Idaho' }, { code: 'IL', name: 'Illinois' }, { code: 'IN', name: 'Indiana' },
+    { code: 'IA', name: 'Iowa' }, { code: 'KS', name: 'Kansas' }, { code: 'KY', name: 'Kentucky' },
+    { code: 'LA', name: 'Louisiana' }, { code: 'ME', name: 'Maine' }, { code: 'MD', name: 'Maryland' },
+    { code: 'MA', name: 'Massachusetts' }, { code: 'MI', name: 'Michigan' }, { code: 'MN', name: 'Minnesota' },
+    { code: 'MS', name: 'Mississippi' }, { code: 'MO', name: 'Missouri' }, { code: 'MT', name: 'Montana' },
+    { code: 'NE', name: 'Nebraska' }, { code: 'NV', name: 'Nevada' }, { code: 'NH', name: 'New Hampshire' },
+    { code: 'NJ', name: 'New Jersey' }, { code: 'NM', name: 'New Mexico' }, { code: 'NY', name: 'New York' },
+    { code: 'NC', name: 'North Carolina' }, { code: 'ND', name: 'North Dakota' }, { code: 'OH', name: 'Ohio' },
+    { code: 'OK', name: 'Oklahoma' }, { code: 'OR', name: 'Oregon' }, { code: 'PA', name: 'Pennsylvania' },
+    { code: 'RI', name: 'Rhode Island' }, { code: 'SC', name: 'South Carolina' }, { code: 'SD', name: 'South Dakota' },
+    { code: 'TN', name: 'Tennessee' }, { code: 'TX', name: 'Texas' }, { code: 'UT', name: 'Utah' },
+    { code: 'VT', name: 'Vermont' }, { code: 'VA', name: 'Virginia' }, { code: 'WA', name: 'Washington' },
+    { code: 'WV', name: 'West Virginia' }, { code: 'WI', name: 'Wisconsin' }, { code: 'WY', name: 'Wyoming' }
+]
+
 export function ConfigureSolution() {
     const setTab = useSetTab()
     const selectedBundle = useConfigStore(state => state.selectedBundle)
@@ -18,6 +39,9 @@ export function ConfigureSolution() {
     const toggleProbateState = useConfigStore(state => state.toggleProbateState)
 
     const [flippedCard, setFlippedCard] = useState<string | null>(null)
+    const [showStateSelector, setShowStateSelector] = useState(false)
+    const [stateSearchQuery, setStateSearchQuery] = useState('')
+    const [tempSelectedStates, setTempSelectedStates] = useState<string[]>([])
 
     const totalInvestment = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
     const estimatedTimeline = calculateTimeline(selectedBundle, selectedAddons)
@@ -25,6 +49,47 @@ export function ConfigureSolution() {
 
     const bundleSelected = selectedBundle === 'finalwishes-core'
     const standaloneSelected = !bundleSelected && selectedAddons.length > 0
+
+    // Filter states based on search query
+    const filteredStates = US_STATES.filter(state =>
+        state.name.toLowerCase().includes(stateSearchQuery.toLowerCase()) ||
+        state.code.toLowerCase().includes(stateSearchQuery.toLowerCase())
+    )
+
+    // Open state selector and initialize with current selections
+    const openStateSelector = () => {
+        setTempSelectedStates([...probateStates])
+        setStateSearchQuery('')
+        setShowStateSelector(true)
+    }
+
+    // Toggle state in temporary selection
+    const toggleTempState = (code: string) => {
+        setTempSelectedStates(prev =>
+            prev.includes(code) ? prev.filter(s => s !== code) : [...prev, code]
+        )
+    }
+
+    // Confirm selection - sync to store and keep Probate Engine selected
+    const confirmStateSelection = () => {
+        // Clear current states and set new ones
+        probateStates.forEach(s => {
+            if (!tempSelectedStates.includes(s)) toggleProbateState(s)
+        })
+        tempSelectedStates.forEach(s => {
+            if (!probateStates.includes(s)) toggleProbateState(s)
+        })
+        setShowStateSelector(false)
+
+        // Make sure Probate Engine is added if we have states selected
+        if (tempSelectedStates.length > 0 && !selectedAddons.includes('probate')) {
+            toggleAddon('probate')
+        }
+        // Remove Probate Engine if no states selected
+        if (tempSelectedStates.length === 0 && selectedAddons.includes('probate')) {
+            toggleAddon('probate')
+        }
+    }
 
     return (
         <div style={{ maxWidth: '100%', margin: '0 auto', padding: '0 4rem' }}>
@@ -424,62 +489,15 @@ export function ConfigureSolution() {
                                             {item.shortDescription}
                                         </p>
 
-                                        {/* Probate Engine State Selector */}
-                                        {item.id === 'probate' && inCart && (
+                                        {/* Probate Engine - Select States Button */}
+                                        {item.id === 'probate' && (
                                             <div
                                                 onClick={(e) => e.stopPropagation()}
-                                                style={{
-                                                    marginTop: '12px',
-                                                    padding: '12px',
-                                                    background: 'rgba(200, 169, 81, 0.1)',
-                                                    borderRadius: '8px',
-                                                    border: '1px solid rgba(200, 169, 81, 0.3)'
-                                                }}
+                                                style={{ marginTop: '12px' }}
                                             >
-                                                <div style={{ color: 'white', fontSize: '12px', marginBottom: '8px', fontWeight: 600 }}>
-                                                    Select States:
-                                                </div>
-                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                                    {[
-                                                        { code: 'MD', name: 'Maryland', priority: true },
-                                                        { code: 'IL', name: 'Illinois', priority: true },
-                                                        { code: 'MN', name: 'Minnesota', priority: true },
-                                                        { code: 'DC', name: 'D.C.', priority: false },
-                                                        { code: 'VA', name: 'Virginia', priority: false }
-                                                    ].map(state => (
-                                                        <button
-                                                            key={state.code}
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                e.preventDefault();
-                                                                toggleProbateState(state.code);
-                                                            }}
-                                                            type="button"
-                                                            style={{
-                                                                padding: '6px 10px',
-                                                                borderRadius: '4px',
-                                                                fontSize: '11px',
-                                                                fontWeight: 600,
-                                                                cursor: 'pointer',
-                                                                border: probateStates.includes(state.code)
-                                                                    ? '2px solid #10B981'
-                                                                    : '1px solid rgba(255,255,255,0.2)',
-                                                                background: probateStates.includes(state.code)
-                                                                    ? 'rgba(16, 185, 129, 0.3)'
-                                                                    : 'rgba(255,255,255,0.05)',
-                                                                color: probateStates.includes(state.code)
-                                                                    ? '#10B981'
-                                                                    : 'rgba(255,255,255,0.7)'
-                                                            }}
-                                                        >
-                                                            {probateStates.includes(state.code) ? '✓ ' : ''}{state.code}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                                {/* Selected States Summary */}
                                                 {probateStates.length > 0 && (
                                                     <div style={{
-                                                        marginTop: '10px',
+                                                        marginBottom: '8px',
                                                         padding: '8px 10px',
                                                         background: 'rgba(16, 185, 129, 0.1)',
                                                         borderRadius: '4px',
@@ -490,7 +508,32 @@ export function ConfigureSolution() {
                                                         </span>
                                                     </div>
                                                 )}
-                                                <div style={{ color: '#64748b', fontSize: '10px', marginTop: '8px' }}>
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        e.preventDefault();
+                                                        openStateSelector();
+                                                    }}
+                                                    style={{
+                                                        width: '100%',
+                                                        padding: '10px 16px',
+                                                        background: 'linear-gradient(135deg, rgba(200, 169, 81, 0.2), rgba(200, 169, 81, 0.1))',
+                                                        border: '1px solid #C8A951',
+                                                        borderRadius: '6px',
+                                                        color: '#C8A951',
+                                                        fontSize: '12px',
+                                                        fontWeight: 600,
+                                                        cursor: 'pointer',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        gap: '8px'
+                                                    }}
+                                                >
+                                                    🗺️ {probateStates.length > 0 ? 'Edit States' : 'Select States'}
+                                                </button>
+                                                <div style={{ color: '#64748b', fontSize: '10px', marginTop: '6px', textAlign: 'center' }}>
                                                     ${bundleSelected ? '24,500' : '35,000'}/state
                                                 </div>
                                             </div>
@@ -501,10 +544,6 @@ export function ConfigureSolution() {
                                             {item.id === 'ceo-consulting' && !inCart ? (
                                                 <span style={{ color: '#C8A951', fontSize: '11px', fontStyle: 'italic' }}>
                                                     ☑ Check box to select weeks
-                                                </span>
-                                            ) : item.id === 'probate' && !inCart ? (
-                                                <span style={{ color: '#C8A951', fontSize: '11px', fontStyle: 'italic' }}>
-                                                    ☑ Check box to select states
                                                 </span>
                                             ) : <span></span>}
                                             <div style={{
@@ -595,6 +634,197 @@ export function ConfigureSolution() {
                     Review Statement of Work →
                 </button>
             </div>
+
+            {/* STATE SELECTOR MODAL */}
+            {showStateSelector && (
+                <div
+                    onClick={() => setShowStateSelector(false)}
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'rgba(0, 0, 0, 0.85)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 9999,
+                        backdropFilter: 'blur(4px)'
+                    }}
+                >
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                            background: 'linear-gradient(145deg, #0f172a, #1e293b)',
+                            border: '2px solid #C8A951',
+                            borderRadius: '16px',
+                            padding: '24px',
+                            width: '90%',
+                            maxWidth: '500px',
+                            maxHeight: '80vh',
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}
+                    >
+                        {/* Modal Header */}
+                        <div style={{ marginBottom: '16px' }}>
+                            <h3 style={{
+                                fontFamily: "'Cinzel', serif",
+                                fontSize: '20px',
+                                color: '#C8A951',
+                                margin: 0,
+                                marginBottom: '8px'
+                            }}>
+                                Select Probate States
+                            </h3>
+                            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', margin: 0 }}>
+                                Choose the states where you need probate automation
+                            </p>
+                        </div>
+
+                        {/* Search Input */}
+                        <input
+                            type="text"
+                            placeholder="Search states..."
+                            value={stateSearchQuery}
+                            onChange={(e) => setStateSearchQuery(e.target.value)}
+                            style={{
+                                width: '100%',
+                                padding: '12px 16px',
+                                background: 'rgba(255,255,255,0.05)',
+                                border: '1px solid rgba(255,255,255,0.2)',
+                                borderRadius: '8px',
+                                color: 'white',
+                                fontSize: '14px',
+                                marginBottom: '16px',
+                                outline: 'none'
+                            }}
+                        />
+
+                        {/* States Grid - Scrollable */}
+                        <div style={{
+                            flex: 1,
+                            overflowY: 'auto',
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(3, 1fr)',
+                            gap: '8px',
+                            marginBottom: '16px',
+                            maxHeight: '300px',
+                            paddingRight: '8px'
+                        }}>
+                            {filteredStates.map(state => (
+                                <button
+                                    key={state.code}
+                                    type="button"
+                                    onClick={() => toggleTempState(state.code)}
+                                    style={{
+                                        padding: '10px 8px',
+                                        borderRadius: '6px',
+                                        fontSize: '12px',
+                                        fontWeight: 500,
+                                        cursor: 'pointer',
+                                        border: tempSelectedStates.includes(state.code)
+                                            ? '2px solid #10B981'
+                                            : '1px solid rgba(255,255,255,0.15)',
+                                        background: tempSelectedStates.includes(state.code)
+                                            ? 'rgba(16, 185, 129, 0.2)'
+                                            : 'rgba(255,255,255,0.03)',
+                                        color: tempSelectedStates.includes(state.code)
+                                            ? '#10B981'
+                                            : 'rgba(255,255,255,0.8)',
+                                        textAlign: 'left',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '6px'
+                                    }}
+                                >
+                                    <span style={{
+                                        width: '14px',
+                                        height: '14px',
+                                        borderRadius: '3px',
+                                        border: tempSelectedStates.includes(state.code)
+                                            ? '2px solid #10B981'
+                                            : '1px solid rgba(255,255,255,0.3)',
+                                        background: tempSelectedStates.includes(state.code)
+                                            ? '#10B981'
+                                            : 'transparent',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        fontSize: '10px',
+                                        color: 'white',
+                                        flexShrink: 0
+                                    }}>
+                                        {tempSelectedStates.includes(state.code) ? '✓' : ''}
+                                    </span>
+                                    {state.code}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Selection Summary */}
+                        <div style={{
+                            padding: '12px',
+                            background: 'rgba(200, 169, 81, 0.1)',
+                            borderRadius: '8px',
+                            marginBottom: '16px'
+                        }}>
+                            <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '11px', marginBottom: '4px' }}>
+                                {tempSelectedStates.length} state{tempSelectedStates.length !== 1 ? 's' : ''} selected
+                            </div>
+                            <div style={{ color: '#C8A951', fontSize: '18px', fontWeight: 700 }}>
+                                ${(tempSelectedStates.length * (bundleSelected ? 24500 : 35000)).toLocaleString()}
+                            </div>
+                            {tempSelectedStates.length > 0 && (
+                                <div style={{ color: '#10B981', fontSize: '11px', marginTop: '4px' }}>
+                                    {tempSelectedStates.join(', ')}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div style={{ display: 'flex', gap: '12px' }}>
+                            <button
+                                type="button"
+                                onClick={() => setShowStateSelector(false)}
+                                style={{
+                                    flex: 1,
+                                    padding: '12px',
+                                    background: 'transparent',
+                                    border: '1px solid rgba(255,255,255,0.3)',
+                                    borderRadius: '8px',
+                                    color: 'white',
+                                    fontSize: '14px',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                onClick={confirmStateSelection}
+                                disabled={tempSelectedStates.length === 0}
+                                style={{
+                                    flex: 2,
+                                    padding: '12px',
+                                    background: tempSelectedStates.length > 0
+                                        ? 'linear-gradient(135deg, #C8A951, #D4AF37)'
+                                        : 'rgba(255,255,255,0.1)',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    color: tempSelectedStates.length > 0 ? '#000' : 'rgba(255,255,255,0.4)',
+                                    fontSize: '14px',
+                                    fontWeight: 600,
+                                    cursor: tempSelectedStates.length > 0 ? 'pointer' : 'not-allowed'
+                                }}
+                            >
+                                ✓ Confirm Selection
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
 
     )
