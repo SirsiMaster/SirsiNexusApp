@@ -361,20 +361,6 @@ export function ConfigureSolution() {
                                         </div>
 
                                         {/* CEO Consulting Week Selector */}
-                                        {item.id === 'ceo-consulting' && !inCart && (
-                                            <div style={{
-                                                color: '#C8A951',
-                                                fontSize: '12px',
-                                                fontStyle: 'italic',
-                                                marginBottom: '12px',
-                                                padding: '8px 12px',
-                                                background: 'rgba(200, 169, 81, 0.05)',
-                                                borderRadius: '6px',
-                                                border: '1px dashed rgba(200, 169, 81, 0.3)'
-                                            }}>
-                                                ☑ Check box to select weeks
-                                            </div>
-                                        )}
                                         {item.id === 'ceo-consulting' && inCart && (
                                             <div
                                                 onClick={(e) => e.stopPropagation()}
@@ -428,7 +414,13 @@ export function ConfigureSolution() {
                                             {item.shortDescription}
                                         </p>
 
-                                        <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end' }}>
+                                        <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            {/* Caption for CEO Consulting when not selected */}
+                                            {item.id === 'ceo-consulting' && !inCart ? (
+                                                <span style={{ color: '#C8A951', fontSize: '11px', fontStyle: 'italic' }}>
+                                                    ☑ Check box to select weeks
+                                                </span>
+                                            ) : <span></span>}
                                             <div style={{
                                                 width: '28px', height: '28px', borderRadius: '4px', border: inCart ? 'none' : '2px solid rgba(255,255,255,0.3)',
                                                 background: inCart ? '#10B981' : 'transparent', color: 'white', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center'
