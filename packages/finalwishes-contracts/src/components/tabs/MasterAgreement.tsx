@@ -9,7 +9,7 @@
  */
 import { useState } from 'react'
 import { useConfigStore, useSetTab } from '../../store/useConfigStore'
-import { calculateTotal } from '../../data/catalog'
+import { PRODUCTS, calculateTotal } from '../../data/catalog'
 
 export function MasterAgreement() {
     const [agreed, setAgreed] = useState(false)
@@ -241,7 +241,25 @@ export function MasterAgreement() {
                         <li><strong>Security:</strong> Implementation of <strong>SOC 2 Type II</strong> controls, including strict IAM roles, audit logging, and encryption in transit (TLS 1.3).</li>
                     </ul>
 
-                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.2 Technology Stack (SirsiNexus V4)</h4>
+                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.2 Selected Service Modules</h4>
+                    <div style={{ background: 'rgba(255,255,255,0.05)', padding: '20px', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', marginBottom: '24px' }}>
+                        {selectedAddons.length > 0 ? (
+                            <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                                {selectedAddons.map(id => {
+                                    const product = PRODUCTS[id]
+                                    return (
+                                        <li key={id} style={{ marginBottom: '8px' }}>
+                                            <strong>{product?.name || id}:</strong> {product?.shortDescription || 'Strategic add-on module.'}
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        ) : (
+                            <p style={{ margin: 0, color: 'rgba(255,255,255,0.5)', fontStyle: 'italic' }}>Core Legacy Management Platform (Standard Bundle)</p>
+                        )}
+                    </div>
+
+                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.3 Technology Stack (SirsiNexus V4)</h4>
                     <ul style={{ paddingLeft: '20px', marginBottom: '20px' }}>
                         <li><strong>Frontend:</strong> <strong>React 18</strong> (Vite), <strong>Tanstack</strong> (Query, Router, Table), <strong>shadcn/ui</strong> (Radix Primitives + Tailwind).</li>
                         <li><strong>Backend:</strong> <strong>Go (Golang)</strong> on <strong>Cloud Run</strong> (Serverless), <strong>Firebase Auth</strong>.</li>
@@ -249,13 +267,13 @@ export function MasterAgreement() {
                         <li><strong>Mobile:</strong> <strong>React Native</strong> (Expo) sharing core business logic.</li>
                     </ul>
 
-                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.3 Document Inventory & Automation Scope</h4>
+                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.4 Document Inventory & Automation Scope</h4>
                     <p>Provider will build automation or manual guidance paths for the following specific document categories:</p>
                     <p><strong>A. Identity & Vital Records:</strong> Death Certificate (Manual upload/OCR processing); Social Security/Gov ID (Secure entry & validation).</p>
                     <p><strong>B. Future State Engine Framework (Expansion):</strong> Maryland/Illinois/Minnesota: Foundational logic mapping for future expansion into MDEC (Maryland), eCourt (Illinois), and MNCIS (Minnesota) e-filing guidance. <em>Note: Active development of direct court filing automation is reserved for future statement(s) of work.</em></p>
                     <p><strong>C. Financial & Asset Documents:</strong> Asset Discovery (Plaid integration for 12,000+ institutions); Life Insurance/Retirement (Standard claim letter generation); Real Estate (Manual tracking + valuation APIs).</p>
 
-                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.4 System Integrations</h4>
+                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.5 System Integrations</h4>
                     <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>

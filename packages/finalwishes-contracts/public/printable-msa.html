@@ -1026,7 +1026,7 @@
         strict IAM roles, audit logging, and encryption in transit (TLS
         1.3).
       </p>
-      <h3 id="technology-stack-sirsinexus-v4-1">2.2 Technology Stack
+      <h3 id="technology-stack-sirsinexus-v4-1">2.3 Technology Stack
         (SirsiNexus V4)</h3>
       <ul>
         <li><strong>Frontend:</strong> <strong>React 18</strong> (Vite),
@@ -1049,7 +1049,7 @@
         <p style="color: #64748b; font-style: italic; margin: 0;">Loading selected modules...</p>
       </div>
 
-      <h3 id="document-inventory-automation-scope">2.3 Document Inventory
+      <h3 id="document-inventory-automation-scope">2.4 Document Inventory
         &amp; Automation Scope</h3>
       <p>Provider will build automation or manual guidance paths for the
         following specific document categories:</p>
@@ -1071,7 +1071,7 @@
         (MetLife, Prudential, etc.). * <strong>Real Estate:</strong> Manual
         inventory tracking with integration to Zillow/Redfin APIs for valuation
         estimates (where available).</p>
-      <h3 id="system-integrations">2.4 System Integrations</h3>
+      <h3 id="system-integrations">2.5 System Integrations</h3>
       <p>Provider shall integrate the following third-party services to
         achieve automation:</p>
       <table>
@@ -1434,12 +1434,14 @@
               list.style.paddingLeft = '20px';
 
               const PRODUCTS_MOCK = {
-                'vault': { name: 'The Vault (Security Architecture)', desc: 'Zero-knowledge encryption for all documents.' },
-                'shepherd': { name: 'The Shepherd (Legacy Engine)', desc: 'Site and application logic guidance engine.' },
-                'plaid': { name: 'Plaid Asset Sync', desc: 'Real-time financial account synchronization.' },
-                'signing': { name: 'OpenSign Integration', desc: 'Embedded legal signature management.' },
-                'mobile': { name: 'Native iOS/Android Apps', desc: 'Full mobile accessibility for legacy data.' },
-                'lob': { name: 'Physical Mail Integration', desc: 'Automated physical letter generation.' }
+                'maintenance': { name: 'Maintenance & Support', desc: '12-month support (20 hrs/mo) and priority technical guardianship.' },
+                'ceo-consulting': { name: 'CEO Consulting', desc: 'Direct strategic partnership and executive advisory (20 hrs/week).' },
+                'branding': { name: 'Branding & Identity', desc: 'Complete brand identity system, logo, and UI kit.' },
+                'estate': { name: 'Estate Administration', desc: 'Executor tools and professional asset tracking.' },
+                'probate': { name: 'Probate Engine (Per State)', desc: 'State-specific probate form automation.' },
+                'comms': { name: 'Secure Comms Suite', desc: 'Encrypted legacy messaging and automated alerts.' },
+                'memorial': { name: 'Virtual Memorial Services', desc: 'Interactive permanent spaces for remembrance.' },
+                'financial': { name: 'Advanced Asset Discovery', desc: 'Deep financial integration and asset mapping.' }
               };
 
               addons.forEach(id => {
