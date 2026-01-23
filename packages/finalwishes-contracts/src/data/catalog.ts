@@ -64,7 +64,7 @@ export const BUNDLES: Record<string, Bundle> = {
         name: 'FinalWishes Core Platform',
         shortDescription: 'Complete Digital Legacy Solution',
         description: 'The complete FinalWishes platform including iOS, Android, and Web applications with AI-powered legacy management.',
-        price:  95000,
+        price: 95000,
         timeline: 16,
         timelineUnit: 'weeks',
         addonDiscount: 0,
@@ -139,13 +139,65 @@ export const BUNDLES: Record<string, Bundle> = {
 }
 
 export const PRODUCTS: Record<string, Product> = {
+    'maintenance': {
+        id: 'maintenance',
+        name: 'Maintenance & Support',
+        shortDescription: '12-month support (20 hrs/mo)',
+        description: 'Annual support contract.',
+        category: 'service',
+        bundledPrice: 18000,
+        standalonePrice: 27000,
+        timeline: 12,
+        timelineUnit: 'months',
+        recurring: true,
+        detailedScope: [
+            {
+                title: "Maintenance & Support",
+                content: "Ongoing technical guardianship.",
+                subItems: ["20 Hours monthly support", "Priority bug fixes", "Security patching", "Infrastructure audits"]
+            }
+        ]
+    },
+    'ceo-consulting': {
+        id: 'ceo-consulting',
+        name: 'CEO Consulting',
+        shortDescription: 'Direct strategic partnership (20 hrs/week)',
+        description: 'On-demand strategic consulting and executive partnership.',
+        category: 'service',
+        bundledPrice: 6000,
+        standalonePrice: 9000,
+        timeline: 1,
+        timelineUnit: 'weeks',
+        recurring: true,
+        detailedScope: [
+            {
+                title: "Executive Strategic Partnership",
+                content: "High-level strategic guidance and operational oversight.",
+                subItems: [
+                    "20 Hours weekly dedicated consulting",
+                    "Direct access to CEO-level strategy",
+                    "Product roadmap validation",
+                    "Strategic partnership development"
+                ]
+            }
+        ],
+        wbs: [
+            {
+                phaseNum: 1, name: 'Strategic Advisory', weeks: '1-1', hours: 20, cost: 6000,
+                activities: [
+                    { name: 'Strategic Planning Session', role: 'CEO', hours: 10, cost: 3000 },
+                    { name: 'Operational Oversight', role: 'CEO', hours: 10, cost: 3000 }
+                ]
+            }
+        ]
+    },
     'branding': {
         id: 'branding',
         name: 'Branding & Identity',
         shortDescription: 'Logo, voice guide, UI kit',
         description: 'Complete brand identity system.',
         category: 'service',
-        bundledPrice:  30000,
+        bundledPrice: 30000,
         standalonePrice: 45000,
         timeline: 8,
         timelineUnit: 'weeks',
@@ -163,25 +215,6 @@ export const PRODUCTS: Record<string, Product> = {
                     { name: 'Logo & Visual Identity', role: 'Art Director', hours: 20, cost: 4000 },
                     { name: 'UI/UX Design Kit', role: 'UI Designer', hours: 40, cost: 8000 }
                 ]
-            }
-        ]
-    },
-    'maintenance': {
-        id: 'maintenance',
-        name: 'Maintenance & Support',
-        shortDescription: '12-month support (20 hrs/mo)',
-        description: 'Annual support contract.',
-        category: 'service',
-        bundledPrice:  18000,
-        standalonePrice: 27000,
-        timeline: 12,
-        timelineUnit: 'months',
-        recurring: true,
-        detailedScope: [
-            {
-                title: "Maintenance & Support",
-                content: "Ongoing technical guardianship.",
-                subItems: ["20 Hours monthly support", "Priority bug fixes", "Security patching", "Infrastructure audits"]
             }
         ]
     },
@@ -204,7 +237,7 @@ export const PRODUCTS: Record<string, Product> = {
         ],
         wbs: [
             {
-                phaseNum: 3, name: 'Module Integration', weeks: '9-12', hours: 80, cost:  12000,
+                phaseNum: 3, name: 'Module Integration', weeks: '9-12', hours: 80, cost: 12000,
                 activities: [
                     { name: 'Estate Logic Integration', role: 'Backend Eng', hours: 40, cost: 11200 },
                     { name: 'Executor UI Components', role: 'Frontend Eng', hours: 40, cost: 11200 }
@@ -218,7 +251,7 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'State-specific form automation',
         description: 'State-specific probate automation.',
         category: 'feature',
-        bundledPrice:  35000,
+        bundledPrice: 35000,
         standalonePrice: 52500,
         timeline: 10,
         timelineUnit: 'weeks',
@@ -474,24 +507,7 @@ export const PRODUCTS: Record<string, Product> = {
             }
         ]
     },
-    'coaching': {
-        id: 'coaching',
-        name: 'Executor Professional Coaching',
-        shortDescription: 'Executor training & support',
-        description: 'Professional guidance for designated executors and trustees.',
-        category: 'service',
-        bundledPrice: 10500,
-        standalonePrice: 15749,
-        timeline: 12,
-        timelineUnit: 'weeks',
-        detailedScope: [
-            {
-                title: "Professional Executor Support",
-                content: "Ensuring the person you trust most is actually prepared for the role.",
-                subItems: ["Legal process orientation", "Platform administrative training", "Conflict resolution guidance", "Asset distribution checklists"]
-            }
-        ]
-    },
+
     'blockchain': {
         id: 'blockchain',
         name: 'Smart Contract Legacy Trust',
