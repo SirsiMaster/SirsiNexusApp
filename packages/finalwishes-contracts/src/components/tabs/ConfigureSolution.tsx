@@ -39,7 +39,8 @@ export function ConfigureSolution() {
     const toggleProbateState = useConfigStore(state => state.toggleProbateState)
 
     const [flippedCard, setFlippedCard] = useState<string | null>(null)
-    const [isStateModalOpen, setIsStateModalOpen] = useState(false)
+    const [isProbateModalOpen, setIsProbateModalOpen] = useState(false)
+    const [isCeoModalOpen, setIsCeoModalOpen] = useState(false)
     const [stateSearchQuery, setStateSearchQuery] = useState('')
     const [tempSelectedStates, setTempSelectedStates] = useState<string[]>([])
 
@@ -51,47 +52,49 @@ export function ConfigureSolution() {
     const bundleSelected = selectedBundle === 'finalwishes-core'
     const standaloneSelected = !bundleSelected && selectedAddons.length > 0
 
+    const toggleProbateModal = () => {
+        if (!isProbateModalOpen) {
+            setTempSelectedStates([...probateStates])
+            setStateSearchQuery('')
+        }
+        setIsProbateModalOpen(!isProbateModalOpen)
+    }
+    const toggleCeoModal = () => setIsCeoModalOpen(!isCeoModalOpen)
+
     // Filter states based on search query
     const filteredStates = US_STATES.filter(state =>
         state.name.toLowerCase().includes(stateSearchQuery.toLowerCase()) ||
         state.code.toLowerCase().includes(stateSearchQuery.toLowerCase())
     )
 
-    // Open state selector and initialize with current selections
-    const openStateSelector = () => {
-        setTempSelectedStates([...probateStates])
-        setStateSearchQuery('')
-        setIsStateModalOpen(true)
-    }
-
-    // Toggle state in temporary selection
     const toggleTempState = (code: string) => {
         setTempSelectedStates(prev =>
             prev.includes(code) ? prev.filter(s => s !== code) : [...prev, code]
         )
     }
 
-    // Confirm selection - sync to store and keep Probate Engine selected
     const confirmStateSelection = () => {
-        // Sync states to store
-        // We'll just replace the entire set to keep it clean
-        // The store currently has toggleProbateState, so we use it carefully
+        // Find what to add and remove
         const toAdd = tempSelectedStates.filter(s => !probateStates.includes(s))
         const toRemove = probateStates.filter(s => !tempSelectedStates.includes(s))
 
         toAdd.forEach(s => toggleProbateState(s))
         toRemove.forEach(s => toggleProbateState(s))
 
-        setIsStateModalOpen(false)
-
         // Ensure Probate Engine is in cart if states > 0
         if (tempSelectedStates.length > 0 && !selectedAddons.includes('probate')) {
             toggleAddon('probate')
         }
-        // Remove from cart if no states
+        // Remove from cart if no states selected
         if (tempSelectedStates.length === 0 && selectedAddons.includes('probate')) {
             toggleAddon('probate')
         }
+
+        setIsProbateModalOpen(false)
+    }
+
+    const clearAllStates = () => {
+        setTempSelectedStates([])
     }
 
     return (
@@ -379,7 +382,9 @@ export function ConfigureSolution() {
                                     <div
                                         onClick={() => {
                                             if (item.id === 'probate' && !inCart && probateStates.length === 0) {
-                                                openStateSelector();
+                                                toggleProbateModal();
+                                            } else if (item.id === 'ceo-consulting' && !inCart) {
+                                                toggleCeoModal();
                                             } else {
                                                 toggleAddon(item.id);
                                             }
@@ -442,50 +447,8 @@ export function ConfigureSolution() {
                                             </span>
                                         </div>
 
-                                        {/* CEO Consulting Week Selector */}
-                                        {item.id === 'ceo-consulting' && inCart && (
-                                            <div
-                                                onClick={(e) => e.stopPropagation()}
-                                                style={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    gap: '12px',
-                                                    marginBottom: '12px',
-                                                    padding: '8px 12px',
-                                                    background: 'rgba(200, 169, 81, 0.1)',
-                                                    borderRadius: '8px',
-                                                    border: '1px solid rgba(200, 169, 81, 0.3)'
-                                                }}
-                                            >
-                                                <span style={{ color: 'white', fontSize: '13px' }}>Weeks:</span>
-                                                <button
-                                                    onClick={() => setCeoConsultingWeeks(ceoConsultingWeeks - 1)}
-                                                    disabled={ceoConsultingWeeks <= 1}
-                                                    style={{
-                                                        width: '28px', height: '28px', borderRadius: '4px',
-                                                        background: 'rgba(255,255,255,0.1)', border: 'none',
-                                                        color: 'white', fontSize: '16px', cursor: 'pointer',
-                                                        opacity: ceoConsultingWeeks <= 1 ? 0.3 : 1
-                                                    }}
-                                                >−</button>
-                                                <span style={{ color: '#C8A951', fontWeight: 'bold', fontSize: '18px', minWidth: '32px', textAlign: 'center' }}>
-                                                    {ceoConsultingWeeks}
-                                                </span>
-                                                <button
-                                                    onClick={() => setCeoConsultingWeeks(ceoConsultingWeeks + 1)}
-                                                    disabled={ceoConsultingWeeks >= 52}
-                                                    style={{
-                                                        width: '28px', height: '28px', borderRadius: '4px',
-                                                        background: 'rgba(255,255,255,0.1)', border: 'none',
-                                                        color: 'white', fontSize: '16px', cursor: 'pointer',
-                                                        opacity: ceoConsultingWeeks >= 52 ? 0.3 : 1
-                                                    }}
-                                                >+</button>
-                                                <span style={{ color: '#64748b', fontSize: '11px', marginLeft: '4px' }}>
-                                                    @ $6K/week
-                                                </span>
-                                            </div>
-                                        )}
+                                        {/* Simplified Status Divider */}
+                                        <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', margin: '12px 0' }}></div>
 
                                         <div style={{ color: '#64748b', fontSize: '13px', marginBottom: '16px' }}>
                                             {item.id === 'ceo-consulting'
@@ -500,96 +463,58 @@ export function ConfigureSolution() {
                                             {item.shortDescription}
                                         </p>
 
-                                        {/* CARD FOOTER - Unified Selection & Configuration */}
-                                        <div style={{ marginTop: 'auto' }}>
-                                            {/* Probate Engine - Premium State Selector UI */}
-                                            {item.id === 'probate' && (
-                                                <div
-                                                    onClick={(e) => e.stopPropagation()}
-                                                    style={{ marginBottom: '16px' }}
-                                                >
-                                                    {/* Selected States Pills */}
-                                                    {probateStates.length > 0 && (
-                                                        <div style={{
-                                                            display: 'flex',
-                                                            flexWrap: 'wrap',
-                                                            gap: '6px',
-                                                            marginBottom: '12px',
-                                                            maxHeight: '44px',
-                                                            overflowY: 'auto',
-                                                            padding: '4px'
-                                                        }}>
-                                                            {probateStates.map(st => (
-                                                                <div key={st} style={{
-                                                                    background: 'rgba(200, 169, 81, 0.15)',
-                                                                    border: '1px solid rgba(200, 169, 81, 0.4)',
-                                                                    borderRadius: '4px',
-                                                                    padding: '2px 6px',
-                                                                    fontSize: '10px',
-                                                                    color: '#C8A951',
-                                                                    fontWeight: 600,
-                                                                    display: 'flex',
-                                                                    alignItems: 'center',
-                                                                    gap: '4px'
-                                                                }}>
-                                                                    {st}
-                                                                    <span
-                                                                        onClick={() => toggleProbateState(st)}
-                                                                        style={{ cursor: 'pointer', opacity: 0.6 }}
-                                                                    >×</span>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    )}
-
-                                                    <button
-                                                        type="button"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            openStateSelector();
-                                                        }}
-                                                        style={{
-                                                            width: '100%',
-                                                            padding: '10px',
-                                                            background: 'linear-gradient(135deg, #C8A951 0%, #A08332 100%)',
-                                                            border: 'none',
-                                                            borderRadius: '6px',
-                                                            color: '#000',
-                                                            fontSize: '12px',
-                                                            fontWeight: 700,
-                                                            textTransform: 'uppercase',
-                                                            letterSpacing: '0.05em',
-                                                            cursor: 'pointer',
-                                                            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'center',
-                                                            gap: '8px'
-                                                        }}
-                                                    >
-                                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                                                            <path d="M12 5v14M5 12h14" />
-                                                        </svg>
-                                                        {probateStates.length > 0 ? 'Edit Jurisdictions' : 'Configure States'}
-                                                    </button>
-                                                </div>
-                                            )}
-
+                                        {/* CARD FOOTER - Selection Bound Interaction */}
+                                        <div style={{ marginTop: 'auto', paddingTop: '12px' }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                {/* Caption for CEO Consulting when not selected */}
-                                                {item.id === 'ceo-consulting' && !inCart ? (
-                                                    <span style={{ color: '#C8A951', fontSize: '11px', fontStyle: 'italic' }}>
-                                                        ☑ Check box to select weeks
-                                                    </span>
-                                                ) : (
-                                                    <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>
-                                                        {inCart ? 'Module Selected' : 'Add to Solution'}
-                                                    </span>
-                                                )}
-                                                <div style={{
-                                                    width: '28px', height: '28px', borderRadius: '4px', border: inCart ? 'none' : '2px solid rgba(255,255,255,0.3)',
-                                                    background: inCart ? '#10B981' : 'transparent', color: 'white', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center'
-                                                }}>
+                                                <div style={{ flex: 1 }}>
+                                                    {inCart && (item.id === 'probate' || item.id === 'ceo-consulting') ? (
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                item.id === 'probate' ? toggleProbateModal() : toggleCeoModal();
+                                                            }}
+                                                            style={{
+                                                                background: 'rgba(200, 169, 81, 0.15)',
+                                                                border: '1px solid #C8A951',
+                                                                borderRadius: '4px',
+                                                                color: '#C8A951',
+                                                                fontSize: '10px',
+                                                                padding: '4px 8px',
+                                                                cursor: 'pointer',
+                                                                textTransform: 'uppercase',
+                                                                fontWeight: 600
+                                                            }}
+                                                        >
+                                                            Adjust Configuration
+                                                        </button>
+                                                    ) : (
+                                                        <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>
+                                                            {inCart ? 'Module Active' : 'Select to Configure'}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <div
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        if (!inCart) {
+                                                            if (item.id === 'probate') toggleProbateModal();
+                                                            else if (item.id === 'ceo-consulting') toggleCeoModal();
+                                                            else toggleAddon(item.id);
+                                                        } else {
+                                                            toggleAddon(item.id);
+                                                        }
+                                                    }}
+                                                    style={{
+                                                        width: '32px', height: '32px', borderRadius: '6px',
+                                                        border: inCart ? 'none' : '2px solid rgba(200, 169, 81, 0.4)',
+                                                        background: inCart ? '#10B981' : 'rgba(0,0,0,0.3)',
+                                                        color: 'white', fontWeight: 'bold', display: 'flex',
+                                                        alignItems: 'center', justifyContent: 'center',
+                                                        cursor: 'pointer',
+                                                        boxShadow: inCart ? '0 0 15px rgba(16, 185, 129, 0.3)' : 'none',
+                                                        transition: 'all 0.2s ease'
+                                                    }}
+                                                >
                                                     {inCart ? '✓' : ''}
                                                 </div>
                                             </div>
@@ -676,54 +601,66 @@ export function ConfigureSolution() {
                 </button>
             </div>
 
-            {/* STATE SELECTION MODAL */}
-            {isStateModalOpen && (
+            {/* PROBATE STATE SELECTION MODAL (DRUM PICKER) */}
+            {isProbateModalOpen && (
                 <div style={{
                     position: 'fixed', inset: 0, zIndex: 1000,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: 'rgba(0,0,10,0.85)', backdropFilter: 'blur(10px)'
+                    background: 'rgba(0,0,10,0.9)', backdropFilter: 'blur(15px)'
                 }}>
                     <div style={{
-                        width: '90%', maxWidth: '500px', background: '#0a0f1e',
-                        border: '2px solid #C8A951', borderRadius: '16px',
-                        overflow: 'hidden', boxShadow: '0 0 50px rgba(200,169,81,0.2)'
+                        width: '380px', height: '480px', background: '#0a0f1e',
+                        border: '2px solid #C8A951', borderRadius: '24px',
+                        overflow: 'hidden', boxShadow: '0 0 80px rgba(200,169,81,0.3)',
+                        display: 'flex', flexDirection: 'column'
                     }}>
-                        {/* Modal Header */}
-                        <div style={{
-                            padding: '24px', borderBottom: '1px solid rgba(200,169,81,0.2)',
-                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                            background: 'linear-gradient(to right, rgba(200,169,81,0.1), transparent)'
-                        }}>
-                            <h3 style={{ fontFamily: 'Cinzel, serif', color: '#C8A951', fontSize: '20px', margin: 0 }}>
-                                Select Jurisdictions
+                        <div style={{ padding: '32px 32px 20px 32px', textAlign: 'center' }}>
+                            <h3 style={{ fontFamily: 'Cinzel, serif', color: '#C8A951', fontSize: '24px', margin: '0 0 8px 0' }}>
+                                Probate Jurisdictions
                             </h3>
-                            <button
-                                onClick={() => setIsStateModalOpen(false)}
-                                style={{ background: 'transparent', border: 'none', color: '#64748b', fontSize: '24px', cursor: 'pointer' }}
-                            >
-                                ×
-                            </button>
+                            <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', margin: 0 }}>
+                                SCROLL AND CLICK TO SELECT STATES
+                            </p>
                         </div>
 
-                        {/* Modal Content */}
-                        <div style={{ padding: '24px' }}>
-                            <div style={{ marginBottom: '20px' }}>
+                        {/* DRUM PICKER UI */}
+                        <div style={{
+                            flex: 1, position: 'relative', overflow: 'hidden',
+                            background: 'linear-gradient(to bottom, #0a0f1e, rgba(200,169,81,0.05) 50%, #0a0f1e)'
+                        }}>
+                            {/* Overlay Graidents for Depth */}
+                            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '60px', background: 'linear-gradient(to bottom, #0a0f1e, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
+                            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '60px', background: 'linear-gradient(to top, #0a0f1e, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
+
+                            {/* Selection Lens */}
+                            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80%', height: '44px', borderTop: '1px solid rgba(200,169,81,0.3)', borderBottom: '1px solid rgba(200,169,81,0.3)', pointerEvents: 'none', zIndex: 1 }}></div>
+
+                            <div style={{ padding: '0 32px 10px 32px' }}>
                                 <input
                                     type="text"
-                                    placeholder="Search states (e.g. New York, CA)..."
+                                    placeholder="Search by state or code..."
                                     value={stateSearchQuery}
                                     onChange={(e) => setStateSearchQuery(e.target.value)}
                                     style={{
-                                        width: '100%', padding: '12px 16px',
-                                        background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-                                        borderRadius: '8px', color: 'white', fontSize: '14px', outline: 'none'
+                                        width: '100%',
+                                        background: 'rgba(255,255,255,0.05)',
+                                        border: '1px solid rgba(200,169,81,0.3)',
+                                        borderRadius: '8px',
+                                        padding: '10px 15px',
+                                        color: 'white',
+                                        fontSize: '14px',
+                                        outline: 'none',
+                                        transition: 'border-color 0.3s ease'
                                     }}
+                                    onFocus={(e) => e.target.style.borderColor = '#C8A951'}
+                                    onBlur={(e) => e.target.style.borderColor = 'rgba(200,169,81,0.3)'}
                                 />
                             </div>
 
                             <div style={{
-                                height: '300px', overflowY: 'auto', paddingRight: '12px',
-                                display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px'
+                                height: '200px', overflowY: 'auto',
+                                scrollSnapType: 'y mandatory', textAlign: 'center',
+                                padding: '0 40px'
                             }}>
                                 {filteredStates.map(state => {
                                     const isSelected = tempSelectedStates.includes(state.code)
@@ -732,46 +669,157 @@ export function ConfigureSolution() {
                                             key={state.code}
                                             onClick={() => toggleTempState(state.code)}
                                             style={{
-                                                padding: '10px 12px', cursor: 'pointer', borderRadius: '6px',
-                                                border: `1px solid ${isSelected ? '#C8A951' : 'rgba(255,255,255,0.05)'}`,
-                                                background: isSelected ? 'rgba(200,169,81,0.1)' : 'rgba(255,255,255,0.02)',
-                                                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                                transition: 'all 0.2s'
+                                                height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                color: isSelected ? '#C8A951' : 'rgba(255,255,255,0.3)',
+                                                fontSize: isSelected ? '20px' : '16px',
+                                                fontWeight: isSelected ? 700 : 400,
+                                                cursor: 'pointer', scrollSnapAlign: 'center',
+                                                transition: 'all 0.2s ease',
+                                                textTransform: 'uppercase', letterSpacing: '0.1em'
                                             }}
                                         >
-                                            <span style={{ fontSize: '13px', color: isSelected ? 'white' : 'rgba(255,255,255,0.6)' }}>
-                                                {state.name}
-                                            </span>
-                                            {isSelected && <span style={{ color: '#C8A951', fontWeight: 'bold' }}>✓</span>}
+                                            {state.name} {isSelected && '✓'}
+                                        </div>
+                                    )
+                                })}
+                                {filteredStates.length === 0 && (
+                                    <div style={{ padding: '20px', color: 'rgba(255,255,255,0.3)', fontSize: '14px' }}>
+                                        No states found matching "{stateSearchQuery}"
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        <div style={{ padding: '24px 32px 32px 32px', textAlign: 'center' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                                <div style={{ textAlign: 'left' }}>
+                                    <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', display: 'block', textTransform: 'uppercase' }}>Selected</span>
+                                    <span style={{ color: '#C8A951', fontSize: '24px', fontWeight: 800 }}>{tempSelectedStates.length}</span>
+                                </div>
+                                <button
+                                    onClick={clearAllStates}
+                                    style={{
+                                        background: 'transparent',
+                                        border: '1px solid rgba(255,255,255,0.2)',
+                                        color: 'rgba(255,255,255,0.6)',
+                                        padding: '4px 12px',
+                                        borderRadius: '4px',
+                                        fontSize: '11px',
+                                        cursor: 'pointer',
+                                        fontWeight: 600,
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                    onMouseOver={(e) => e.currentTarget.style.borderColor = '#ef4444'}
+                                    onMouseOut={(e) => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'}
+                                >
+                                    Clear All
+                                </button>
+                            </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                                <button
+                                    onClick={() => setIsProbateModalOpen(false)}
+                                    style={{
+                                        padding: '14px', borderRadius: '12px',
+                                        background: 'rgba(255,255,255,0.05)',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        color: 'white', fontWeight: 600, fontSize: '13px',
+                                        textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer'
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={confirmStateSelection}
+                                    style={{
+                                        padding: '14px', borderRadius: '12px',
+                                        background: 'linear-gradient(135deg, #C8A951 0%, #A08332 100%)',
+                                        border: 'none', color: '#000', fontWeight: 800, fontSize: '13px',
+                                        textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer',
+                                        boxShadow: '0 4px 15px rgba(200, 169, 81, 0.3)'
+                                    }}
+                                >
+                                    Confirm
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* CEO CONSULTING MODAL (DRUM PICKER) */}
+            {isCeoModalOpen && (
+                <div style={{
+                    position: 'fixed', inset: 0, zIndex: 1000,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: 'rgba(0,0,10,0.9)', backdropFilter: 'blur(15px)'
+                }}>
+                    <div style={{
+                        width: '380px', height: '480px', background: '#0a0f1e',
+                        border: '2px solid #C8A951', borderRadius: '24px',
+                        overflow: 'hidden', boxShadow: '0 0 80px rgba(200,169,81,0.3)',
+                        display: 'flex', flexDirection: 'column'
+                    }}>
+                        <div style={{ padding: '32px 32px 20px 32px', textAlign: 'center' }}>
+                            <h3 style={{ fontFamily: 'Cinzel, serif', color: '#C8A951', fontSize: '24px', margin: '0 0 8px 0' }}>
+                                Consulting Duration
+                            </h3>
+                            <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', margin: 0 }}>
+                                SCROLL TO SELECT WEEKS
+                            </p>
+                        </div>
+
+                        <div style={{
+                            flex: 1, position: 'relative', overflow: 'hidden',
+                            background: 'linear-gradient(to bottom, #0a0f1e, rgba(200,169,81,0.05) 50%, #0a0f1e)'
+                        }}>
+                            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '60px', background: 'linear-gradient(to bottom, #0a0f1e, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
+                            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '60px', background: 'linear-gradient(to top, #0a0f1e, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
+                            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '60%', height: '54px', borderTop: '1px solid rgba(200,169,81,0.3)', borderBottom: '1px solid rgba(200,169,81,0.3)', pointerEvents: 'none', zIndex: 1 }}></div>
+
+                            <div style={{
+                                height: '240px', marginTop: '40px', overflowY: 'auto',
+                                scrollSnapType: 'y mandatory', textAlign: 'center'
+                            }}>
+                                {Array.from({ length: 52 }, (_, i) => i + 1).map(week => {
+                                    const isSelected = ceoConsultingWeeks === week
+                                    return (
+                                        <div
+                                            key={week}
+                                            onClick={() => {
+                                                setCeoConsultingWeeks(week);
+                                                if (!selectedAddons.includes('ceo-consulting')) toggleAddon('ceo-consulting');
+                                            }}
+                                            style={{
+                                                height: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                color: isSelected ? '#C8A951' : 'rgba(255,255,255,0.2)',
+                                                fontSize: isSelected ? '32px' : '18px',
+                                                fontWeight: isSelected ? 800 : 400,
+                                                cursor: 'pointer', scrollSnapAlign: 'center',
+                                                transition: 'all 0.2s ease'
+                                            }}
+                                        >
+                                            {week} {week === 1 ? 'Week' : 'Weeks'}
                                         </div>
                                     )
                                 })}
                             </div>
                         </div>
 
-                        {/* Modal Footer */}
-                        <div style={{
-                            padding: '24px', background: 'rgba(0,0,0,0.3)',
-                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                            borderTop: '1px solid rgba(200,169,81,0.2)'
-                        }}>
-                            <div>
-                                <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase' }}>Current Selection</div>
-                                <div style={{ color: '#C8A951', fontWeight: 700, fontSize: '18px' }}>
-                                    ${(tempSelectedStates.length * (bundleSelected ? 24500 : 35000)).toLocaleString()}
-                                    <span style={{ fontSize: '12px', fontWeight: 400, color: '#64748b', marginLeft: '8px' }}>
-                                        ({tempSelectedStates.length} Estates)
-                                    </span>
-                                </div>
+                        <div style={{ padding: '32px', textAlign: 'center' }}>
+                            <div style={{ marginBottom: '20px' }}>
+                                <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', display: 'block' }}>ESTIMATED INVESTMENT</span>
+                                <span style={{ color: '#C8A951', fontSize: '28px', fontWeight: 800 }}>${(ceoConsultingWeeks * 6000).toLocaleString()}</span>
                             </div>
                             <button
-                                onClick={confirmStateSelection}
+                                onClick={() => setIsCeoModalOpen(false)}
                                 style={{
-                                    padding: '12px 24px', background: '#C8A951', border: 'none', borderRadius: '6px',
-                                    color: '#000', fontWeight: 700, cursor: 'pointer', textTransform: 'uppercase'
+                                    width: '100%', padding: '16px', borderRadius: '12px',
+                                    background: 'linear-gradient(135deg, #C8A951 0%, #A08332 100%)',
+                                    border: 'none', color: '#000', fontWeight: 800, fontSize: '14px',
+                                    textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer'
                                 }}
                             >
-                                Confirm Selection
+                                Confirm Engagement
                             </button>
                         </div>
                     </div>
