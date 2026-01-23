@@ -227,7 +227,7 @@ export function MasterAgreement() {
 
                 <div style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.8', fontSize: '15px' }}>
                     <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.6)', fontStyle: 'italic', marginBottom: '40px' }}>
-                        Project Name: FinalWishes Platform Development • SOW Reference: SOW-2026-001 • Date: January 22, 2026
+                        Project Name: FinalWishes Platform Development • SOW Reference: SOW-{currentYear}-001 • Date: {currentDate}
                     </p>
 
                     <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>1. EXECUTIVE OVERVIEW</h3>

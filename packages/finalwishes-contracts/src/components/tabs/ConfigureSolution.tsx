@@ -39,8 +39,6 @@ export function ConfigureSolution() {
     const toggleProbateState = useConfigStore(state => state.toggleProbateState)
 
     const [flippedCard, setFlippedCard] = useState<string | null>(null)
-    const [isProbateModalOpen, setIsProbateModalOpen] = useState(false)
-    const [isCeoModalOpen, setIsCeoModalOpen] = useState(false)
     const [stateSearchQuery, setStateSearchQuery] = useState('')
     const [tempSelectedStates, setTempSelectedStates] = useState<string[]>([])
     const [tempCeoWeeks, setTempCeoWeeks] = useState(ceoConsultingWeeks)
@@ -53,18 +51,23 @@ export function ConfigureSolution() {
     const bundleSelected = selectedBundle === 'finalwishes-core'
     const standaloneSelected = !bundleSelected && selectedAddons.length > 0
 
-    const toggleProbateModal = () => {
-        if (!isProbateModalOpen) {
+    const toggleProbateConfig = () => {
+        if (flippedCard !== 'probate') {
             setTempSelectedStates([...probateStates])
             setStateSearchQuery('')
+            setFlippedCard('probate')
+        } else {
+            setFlippedCard(null)
         }
-        setIsProbateModalOpen(!isProbateModalOpen)
     }
-    const toggleCeoModal = () => {
-        if (!isCeoModalOpen) {
+
+    const toggleCeoConfig = () => {
+        if (flippedCard !== 'ceo-consulting') {
             setTempCeoWeeks(ceoConsultingWeeks)
+            setFlippedCard('ceo-consulting')
+        } else {
+            setFlippedCard(null)
         }
-        setIsCeoModalOpen(!isCeoModalOpen)
     }
 
     // Filter states based on search query
@@ -84,8 +87,8 @@ export function ConfigureSolution() {
         const toAdd = tempSelectedStates.filter(s => !probateStates.includes(s))
         const toRemove = probateStates.filter(s => !tempSelectedStates.includes(s))
 
-        toAdd.forEach(s => toggleProbateState(s))
-        toRemove.forEach(s => toggleProbateState(s))
+        toAdd.forEach(code => toggleProbateState(code))
+        toRemove.forEach(code => toggleProbateState(code))
 
         // Ensure Probate Engine is in cart if states > 0
         if (tempSelectedStates.length > 0 && !selectedAddons.includes('probate')) {
@@ -96,7 +99,7 @@ export function ConfigureSolution() {
             toggleAddon('probate')
         }
 
-        setIsProbateModalOpen(false)
+        setFlippedCard(null)
     }
 
     const confirmCeoSelection = () => {
@@ -104,7 +107,7 @@ export function ConfigureSolution() {
         if (!selectedAddons.includes('ceo-consulting')) {
             toggleAddon('ceo-consulting')
         }
-        setIsCeoModalOpen(false)
+        setFlippedCard(null)
     }
 
     const clearAllStates = () => {
@@ -353,17 +356,13 @@ export function ConfigureSolution() {
                         'financial',
                         'ai-legacy',
                         'liquidator',
-                        'compliance',
                         'white-label',
                         'charity',
                         'genealogy',
-                        'multi-sig',
                         'publishing',
                         'crypto',
                         'blockchain',
-                        'documentary',
-                        'vault-guard',
-                        'analytics'
+                        'documentary'
                     ].map(id => {
                         const item = PRODUCTS[id]
                         if (!item) return null
@@ -379,7 +378,7 @@ export function ConfigureSolution() {
                                 key={item.id}
                                 style={{
                                     perspective: '1000px',
-                                    height: '380px',
+                                    height: '420px',
                                     cursor: 'pointer',
                                     position: 'relative'
                                 }}
@@ -396,9 +395,9 @@ export function ConfigureSolution() {
                                     <div
                                         onClick={() => {
                                             if (item.id === 'probate' && !inCart && probateStates.length === 0) {
-                                                toggleProbateModal();
+                                                toggleProbateConfig();
                                             } else if (item.id === 'ceo-consulting' && !inCart) {
-                                                toggleCeoModal();
+                                                toggleCeoConfig();
                                             } else {
                                                 toggleAddon(item.id);
                                             }
@@ -416,7 +415,8 @@ export function ConfigureSolution() {
                                             padding: '1.25rem',
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.4)'
+                                            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.4)',
+                                            boxSizing: 'border-box'
                                         }}
                                     >
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
@@ -470,7 +470,7 @@ export function ConfigureSolution() {
                                                     {ceoConsultingWeeks} week{ceoConsultingWeeks > 1 ? 's' : ''} engagement
                                                     {inCart && (
                                                         <span
-                                                            onClick={(e) => { e.stopPropagation(); toggleCeoModal(); }}
+                                                            onClick={(e) => { e.stopPropagation(); toggleCeoConfig(); }}
                                                             style={{ cursor: 'pointer', color: '#C8A951', fontSize: '12px' }}
                                                         >
                                                             (Edit)
@@ -484,7 +484,7 @@ export function ConfigureSolution() {
                                                         : 'Select coverage states'}
                                                     {inCart && (
                                                         <span
-                                                            onClick={(e) => { e.stopPropagation(); toggleProbateModal(); }}
+                                                            onClick={(e) => { e.stopPropagation(); toggleProbateConfig(); }}
                                                             style={{ cursor: 'pointer', color: '#C8A951', fontSize: '12px' }}
                                                         >
                                                             (Edit)
@@ -514,8 +514,8 @@ export function ConfigureSolution() {
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         if (!inCart) {
-                                                            if (item.id === 'probate') toggleProbateModal();
-                                                            else if (item.id === 'ceo-consulting') toggleCeoModal();
+                                                            if (item.id === 'probate') toggleProbateConfig();
+                                                            else if (item.id === 'ceo-consulting') toggleCeoConfig();
                                                             else toggleAddon(item.id);
                                                         } else {
                                                             toggleAddon(item.id);
@@ -540,45 +540,163 @@ export function ConfigureSolution() {
 
                                     {/* Back Side */}
                                     <div
-                                        onClick={() => setFlippedCard(null)}
                                         style={{
                                             position: 'absolute',
                                             width: '100%',
                                             height: '100%',
                                             backfaceVisibility: 'hidden',
-                                            background: 'rgba(15, 23, 42, 0.98)',
+                                            background: '#0a0f1e',
                                             border: '2px solid #C8A951',
                                             borderRadius: '12px',
-                                            padding: '2rem',
                                             transform: 'rotateY(180deg)',
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            overflowY: 'auto'
+                                            overflow: 'hidden',
+                                            boxSizing: 'border-box'
                                         }}
                                     >
-                                        <h4 style={{ color: '#C8A951', fontWeight: 'bold', fontSize: '18px', marginBottom: '16px' }}>
-                                            Scope of Services:
-                                        </h4>
-                                        <div style={{ color: 'white', fontSize: '14px', lineHeight: 1.6, flex: 1 }}>
-                                            {item.detailedScope?.map((scope, idx) => (
-                                                <div key={idx} style={{ marginBottom: '16px' }}>
-                                                    <div style={{ fontWeight: 'bold', color: '#93c5fd', marginBottom: '4px' }}>{scope.title}</div>
-                                                    <ul style={{ paddingLeft: '1.25rem', margin: 0 }}>
-                                                        {scope.subItems.map((si, sidx) => (
-                                                            <li key={sidx} style={{ marginBottom: '2px' }}>{si}</li>
-                                                        ))}
-                                                    </ul>
+                                        {(item.id === 'probate' || item.id === 'ceo-consulting') ? (
+                                            <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                                <div style={{ padding: '20px 20px 10px 20px', textAlign: 'center' }}>
+                                                    <h4 style={{ fontFamily: 'Cinzel, serif', color: '#C8A951', fontSize: '18px', margin: '0 0 4px 0' }}>
+                                                        {item.id === 'probate' ? 'Jurisdictions' : 'Engagement Duration'}
+                                                    </h4>
+                                                    <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)', margin: 0 }}>
+                                                        {item.id === 'probate' ? 'SCROLL & SELECT STATES' : 'SCROLL TO SELECT WEEKS'}
+                                                    </p>
                                                 </div>
-                                            ))}
-                                            {(!item.detailedScope || item.detailedScope.length === 0) && (
-                                                <p>Detailed architectural implementation and service integration.</p>
-                                            )}
-                                        </div>
-                                        <button
-                                            style={{ marginTop: '1rem', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', padding: '10px', borderRadius: '6px', fontSize: '13px', fontWeight: 600 }}
-                                        >
-                                            Return to Selection
-                                        </button>
+
+                                                <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+                                                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40px', background: 'linear-gradient(to bottom, #0a0f1e, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
+                                                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40px', background: 'linear-gradient(to top, #0a0f1e, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
+                                                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80%', height: '36px', borderTop: '1px solid rgba(200,169,81,0.3)', borderBottom: '1px solid rgba(200,169,81,0.3)', pointerEvents: 'none', zIndex: 1 }}></div>
+
+                                                    {item.id === 'probate' && (
+                                                        <div style={{ padding: '0 20px 8px 20px' }}>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Search..."
+                                                                value={stateSearchQuery}
+                                                                onClick={(e) => e.stopPropagation()}
+                                                                onChange={(e) => setStateSearchQuery(e.target.value)}
+                                                                style={{
+                                                                    width: '100%', background: 'rgba(255,255,255,0.05)',
+                                                                    border: '1px solid rgba(200, 169, 81, 0.3)', borderRadius: '6px',
+                                                                    padding: '6px 12px', color: 'white', fontSize: '12px', outline: 'none'
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    )}
+
+                                                    <div style={{
+                                                        height: item.id === 'probate' ? '140px' : '180px',
+                                                        overflowY: 'auto', scrollSnapType: 'y mandatory', textAlign: 'center'
+                                                    }}>
+                                                        {item.id === 'probate' ? (
+                                                            filteredStates.map(state => {
+                                                                const isSelected = tempSelectedStates.includes(state.code)
+                                                                return (
+                                                                    <div
+                                                                        key={state.code}
+                                                                        onClick={(e) => { e.stopPropagation(); toggleTempState(state.code); }}
+                                                                        style={{
+                                                                            height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                                            color: isSelected ? '#C8A951' : 'rgba(255,255,255,0.85)',
+                                                                            fontSize: isSelected ? '16px' : '14px',
+                                                                            fontWeight: isSelected ? 700 : 400,
+                                                                            cursor: 'pointer', scrollSnapAlign: 'center', transition: 'all 0.2s ease'
+                                                                        }}
+                                                                    >
+                                                                        {state.name} {isSelected && '✓'}
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        ) : (
+                                                            Array.from({ length: 52 }, (_, i) => i + 1).map(week => {
+                                                                const isSelected = tempCeoWeeks === week
+                                                                return (
+                                                                    <div
+                                                                        key={week}
+                                                                        onClick={(e) => { e.stopPropagation(); setTempCeoWeeks(week); }}
+                                                                        style={{
+                                                                            height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                                            color: isSelected ? '#C8A951' : 'rgba(255,255,255,0.85)',
+                                                                            fontSize: isSelected ? '20px' : '14px',
+                                                                            fontWeight: isSelected ? 800 : 400,
+                                                                            cursor: 'pointer', scrollSnapAlign: 'center', transition: 'all 0.2s ease'
+                                                                        }}
+                                                                    >
+                                                                        {week} {week === 1 ? 'Week' : 'Weeks'}
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <div style={{ padding: '16px 20px 20px 20px', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                                        <div style={{ textAlign: 'left' }}>
+                                                            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '9px', display: 'block', textTransform: 'uppercase' }}>
+                                                                {item.id === 'probate' ? 'Selected' : 'Investment'}
+                                                            </span>
+                                                            <span style={{ color: '#C8A951', fontSize: '18px', fontWeight: 800 }}>
+                                                                {item.id === 'probate' ? tempSelectedStates.length : `$${(tempCeoWeeks * 6000).toLocaleString()}`}
+                                                            </span>
+                                                        </div>
+                                                        {item.id === 'probate' && (
+                                                            <button
+                                                                onClick={(e) => { e.stopPropagation(); clearAllStates(); }}
+                                                                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.6)', padding: '2px 8px', borderRadius: '4px', fontSize: '10px', cursor: 'pointer' }}
+                                                            >
+                                                                Clear All
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); setFlippedCard(null); }}
+                                                            style={{ padding: '10px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontWeight: 600, fontSize: '11px', cursor: 'pointer' }}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); item.id === 'probate' ? confirmStateSelection() : confirmCeoSelection(); }}
+                                                            style={{ padding: '10px', borderRadius: '8px', background: 'linear-gradient(135deg, #C8A951 0%, #A08332 100%)', border: 'none', color: '#000', fontWeight: 800, fontSize: '11px', cursor: 'pointer' }}
+                                                        >
+                                                            Confirm
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div onClick={(e) => e.stopPropagation()} style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: '1.5rem' }}>
+                                                <h4 style={{ color: '#C8A951', fontWeight: 'bold', fontSize: '18px', marginBottom: '16px' }}>
+                                                    Scope of Services:
+                                                </h4>
+                                                <div style={{ color: 'white', fontSize: '14px', lineHeight: 1.6, flex: 1, overflowY: 'auto' }}>
+                                                    {item.detailedScope?.map((scope, idx) => (
+                                                        <div key={idx} style={{ marginBottom: '16px' }}>
+                                                            <div style={{ fontWeight: 'bold', color: '#93c5fd', marginBottom: '4px' }}>{scope.title}</div>
+                                                            <ul style={{ paddingLeft: '1.25rem', margin: 0 }}>
+                                                                {scope.subItems.map((si, sidx) => (
+                                                                    <li key={sidx} style={{ marginBottom: '2px' }}>{si}</li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    ))}
+                                                    {(!item.detailedScope || item.detailedScope.length === 0) && (
+                                                        <p>Detailed architectural implementation and service integration.</p>
+                                                    )}
+                                                </div>
+                                                <button
+                                                    onClick={() => setFlippedCard(null)}
+                                                    style={{ marginTop: '1rem', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', padding: '10px', borderRadius: '6px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}
+                                                >
+                                                    Return to Selection
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -617,246 +735,6 @@ export function ConfigureSolution() {
                     Review Statement of Work →
                 </button>
             </div>
-
-            {/* PROBATE STATE SELECTION MODAL (DRUM PICKER) */}
-            {isProbateModalOpen && (
-                <div style={{
-                    position: 'fixed', inset: 0, zIndex: 1000,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: 'rgba(0,0,10,0.9)', backdropFilter: 'blur(15px)'
-                }}>
-                    <div style={{
-                        width: '380px', height: '480px', background: '#0a0f1e',
-                        border: '2px solid #C8A951', borderRadius: '24px',
-                        overflow: 'hidden', boxShadow: '0 0 80px rgba(200,169,81,0.3)',
-                        display: 'flex', flexDirection: 'column'
-                    }}>
-                        <div style={{ padding: '32px 32px 20px 32px', textAlign: 'center' }}>
-                            <h3 style={{ fontFamily: 'Cinzel, serif', color: '#C8A951', fontSize: '24px', margin: '0 0 8px 0' }}>
-                                Probate Jurisdictions
-                            </h3>
-                            <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', margin: 0 }}>
-                                SCROLL AND CLICK TO SELECT STATES
-                            </p>
-                        </div>
-
-                        {/* DRUM PICKER UI */}
-                        <div style={{
-                            flex: 1, position: 'relative', overflow: 'hidden',
-                            background: 'linear-gradient(to bottom, #0a0f1e, rgba(200,169,81,0.05) 50%, #0a0f1e)'
-                        }}>
-                            {/* Overlay Graidents for Depth */}
-                            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '60px', background: 'linear-gradient(to bottom, #0a0f1e, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
-                            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '60px', background: 'linear-gradient(to top, #0a0f1e, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
-
-                            {/* Selection Lens */}
-                            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80%', height: '44px', borderTop: '1px solid rgba(200,169,81,0.3)', borderBottom: '1px solid rgba(200,169,81,0.3)', pointerEvents: 'none', zIndex: 1 }}></div>
-
-                            <div style={{ padding: '0 32px 10px 32px' }}>
-                                <input
-                                    type="text"
-                                    placeholder="Search by state or code..."
-                                    value={stateSearchQuery}
-                                    onChange={(e) => setStateSearchQuery(e.target.value)}
-                                    style={{
-                                        width: '100%',
-                                        background: 'rgba(255,255,255,0.05)',
-                                        border: '1px solid rgba(200,169,81,0.3)',
-                                        borderRadius: '8px',
-                                        padding: '10px 15px',
-                                        color: 'white',
-                                        fontSize: '14px',
-                                        outline: 'none',
-                                        transition: 'border-color 0.3s ease'
-                                    }}
-                                    onFocus={(e) => e.target.style.borderColor = '#C8A951'}
-                                    onBlur={(e) => e.target.style.borderColor = 'rgba(200,169,81,0.3)'}
-                                />
-                            </div>
-
-                            <div style={{
-                                height: '200px', overflowY: 'auto',
-                                scrollSnapType: 'y mandatory', textAlign: 'center',
-                                padding: '0 40px'
-                            }}>
-                                {filteredStates.map(state => {
-                                    const isSelected = tempSelectedStates.includes(state.code)
-                                    return (
-                                        <div
-                                            key={state.code}
-                                            onClick={() => toggleTempState(state.code)}
-                                            style={{
-                                                height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                                color: isSelected ? '#C8A951' : 'rgba(255,255,255,0.3)',
-                                                fontSize: isSelected ? '20px' : '16px',
-                                                fontWeight: isSelected ? 700 : 400,
-                                                cursor: 'pointer', scrollSnapAlign: 'center',
-                                                transition: 'all 0.2s ease',
-                                                textTransform: 'uppercase', letterSpacing: '0.1em'
-                                            }}
-                                        >
-                                            {state.name} {isSelected && '✓'}
-                                        </div>
-                                    )
-                                })}
-                                {filteredStates.length === 0 && (
-                                    <div style={{ padding: '20px', color: 'rgba(255,255,255,0.3)', fontSize: '14px' }}>
-                                        No states found matching "{stateSearchQuery}"
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        <div style={{ padding: '24px 32px 32px 32px', textAlign: 'center' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                                <div style={{ textAlign: 'left' }}>
-                                    <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', display: 'block', textTransform: 'uppercase' }}>Selected</span>
-                                    <span style={{ color: '#C8A951', fontSize: '24px', fontWeight: 800 }}>{tempSelectedStates.length}</span>
-                                </div>
-                                <button
-                                    onClick={clearAllStates}
-                                    style={{
-                                        background: 'transparent',
-                                        border: '1px solid rgba(255,255,255,0.2)',
-                                        color: 'rgba(255,255,255,0.6)',
-                                        padding: '4px 12px',
-                                        borderRadius: '4px',
-                                        fontSize: '11px',
-                                        cursor: 'pointer',
-                                        fontWeight: 600,
-                                        transition: 'all 0.3s ease'
-                                    }}
-                                    onMouseOver={(e) => e.currentTarget.style.borderColor = '#ef4444'}
-                                    onMouseOut={(e) => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'}
-                                >
-                                    Clear All
-                                </button>
-                            </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                                <button
-                                    onClick={() => setIsProbateModalOpen(false)}
-                                    style={{
-                                        padding: '14px', borderRadius: '12px',
-                                        background: 'rgba(255,255,255,0.05)',
-                                        border: '1px solid rgba(255,255,255,0.1)',
-                                        color: 'white', fontWeight: 600, fontSize: '13px',
-                                        textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer'
-                                    }}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    onClick={confirmStateSelection}
-                                    style={{
-                                        padding: '14px', borderRadius: '12px',
-                                        background: 'linear-gradient(135deg, #C8A951 0%, #A08332 100%)',
-                                        border: 'none', color: '#000', fontWeight: 800, fontSize: '13px',
-                                        textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer',
-                                        boxShadow: '0 4px 15px rgba(200, 169, 81, 0.3)'
-                                    }}
-                                >
-                                    Confirm
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* CEO CONSULTING MODAL (DRUM PICKER) */}
-            {isCeoModalOpen && (
-                <div style={{
-                    position: 'fixed', inset: 0, zIndex: 1000,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    background: 'rgba(0,0,10,0.9)', backdropFilter: 'blur(15px)'
-                }}>
-                    <div style={{
-                        width: '380px', height: '480px', background: '#0a0f1e',
-                        border: '2px solid #C8A951', borderRadius: '24px',
-                        overflow: 'hidden', boxShadow: '0 0 80px rgba(200,169,81,0.3)',
-                        display: 'flex', flexDirection: 'column'
-                    }}>
-                        <div style={{ padding: '32px 32px 20px 32px', textAlign: 'center' }}>
-                            <h3 style={{ fontFamily: 'Cinzel, serif', color: '#C8A951', fontSize: '24px', margin: '0 0 8px 0' }}>
-                                Consulting Duration
-                            </h3>
-                            <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', margin: 0 }}>
-                                SCROLL TO SELECT WEEKS
-                            </p>
-                        </div>
-
-                        <div style={{
-                            flex: 1, position: 'relative', overflow: 'hidden',
-                            background: 'linear-gradient(to bottom, #0a0f1e, rgba(200,169,81,0.05) 50%, #0a0f1e)'
-                        }}>
-                            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '60px', background: 'linear-gradient(to bottom, #0a0f1e, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
-                            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '60px', background: 'linear-gradient(to top, #0a0f1e, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
-                            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '60%', height: '54px', borderTop: '1px solid rgba(200,169,81,0.3)', borderBottom: '1px solid rgba(200,169,81,0.3)', pointerEvents: 'none', zIndex: 1 }}></div>
-
-                            <div style={{
-                                height: '240px', marginTop: '40px', overflowY: 'auto',
-                                scrollSnapType: 'y mandatory', textAlign: 'center'
-                            }}>
-                                {Array.from({ length: 52 }, (_, i) => i + 1).map(week => {
-                                    const isSelected = tempCeoWeeks === week
-                                    return (
-                                        <div
-                                            key={week}
-                                            onClick={() => setTempCeoWeeks(week)}
-                                            style={{
-                                                height: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                                color: isSelected ? '#C8A951' : 'rgba(255,255,255,0.2)',
-                                                fontSize: isSelected ? '32px' : '18px',
-                                                fontWeight: isSelected ? 800 : 400,
-                                                cursor: 'pointer', scrollSnapAlign: 'center',
-                                                transition: 'all 0.2s ease'
-                                            }}
-                                        >
-                                            {week} {week === 1 ? 'Week' : 'Weeks'}
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        </div>
-
-                        <div style={{ padding: '24px 32px 32px 32px', textAlign: 'center' }}>
-                            <div style={{ marginBottom: '20px' }}>
-                                <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', display: 'block', textTransform: 'uppercase' }}>Estimated Investment</span>
-                                <span style={{ color: '#C8A951', fontSize: '28px', fontWeight: 800 }}>${(tempCeoWeeks * 6000).toLocaleString()}</span>
-                            </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                                <button
-                                    onClick={() => setIsCeoModalOpen(false)}
-                                    style={{
-                                        padding: '14px', borderRadius: '12px',
-                                        background: 'rgba(255,255,255,0.05)',
-                                        border: '1px solid rgba(255,255,255,0.1)',
-                                        color: 'white', fontWeight: 600, fontSize: '13px',
-                                        textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer'
-                                    }}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    onClick={confirmCeoSelection}
-                                    style={{
-                                        padding: '14px', borderRadius: '12px',
-                                        background: 'linear-gradient(135deg, #C8A951 0%, #A08332 100%)',
-                                        border: 'none', color: '#000', fontWeight: 800, fontSize: '13px',
-                                        textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer',
-                                        boxShadow: '0 4px 15px rgba(200, 169, 81, 0.3)'
-                                    }}
-                                >
-                                    Confirm
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-
         </div>
-
     )
 }

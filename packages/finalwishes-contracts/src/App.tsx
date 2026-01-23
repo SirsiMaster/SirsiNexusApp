@@ -4,6 +4,7 @@ import { AgreementWorkflow } from './components/workflow/AgreementWorkflow';
 import { LandingPage } from './components/vault/LandingPage';
 import { VaultDashboard } from './components/vault/VaultDashboard';
 import { AdminDashboard } from './components/vault/AdminDashboard';
+import { Login } from './components/auth/Login';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         {/* Landing Page */}
         <Route path="/" element={<LandingPage /> as any} />
+        <Route path="/login" element={<Login /> as any} />
 
         {/* Service Agreement Workflow */}
         <Route path="/partnership" element={<Navigate to="/partnership/finalwishes" replace /> as any} />

@@ -41,6 +41,7 @@ export function VaultDashboard() {
             case 2: return { label: 'ACTIVE', color: '#3b82f6' };
             case 3: return { label: 'SIGNED', color: '#10b981' };
             case 4: return { label: 'PAID', color: '#C8A951' };
+            case 6: return { label: 'WAITING FOR COUNTERSIGN', color: '#f59e0b' };
             default: return { label: 'UNKNOWN', color: '#64748b' };
         }
     };
@@ -121,18 +122,43 @@ export function VaultDashboard() {
                                                 marginTop: '4px'
                                             }}>{status.label}</div>
                                         </div>
-                                        <button style={{
-                                            background: 'white',
-                                            color: 'black',
-                                            border: 'none',
-                                            padding: '8px 16px',
-                                            borderRadius: '6px',
-                                            fontSize: '13px',
-                                            fontWeight: 600,
-                                            cursor: 'pointer'
-                                        }}>
-                                            View Details
-                                        </button>
+                                        <div style={{ display: 'flex', gap: '8px' }}>
+                                            {localStorage.getItem('sirsi_user_role') === 'provider' && contract.status === 6 && (
+                                                <button
+                                                    onClick={async () => {
+                                                        await contractsClient.updateContract({
+                                                            id: contract.id,
+                                                            contract: { status: 3 as any } // Transition to SIGNED (completed)
+                                                        });
+                                                        window.location.reload();
+                                                    }}
+                                                    style={{
+                                                        background: '#C8A951',
+                                                        color: '#000',
+                                                        border: 'none',
+                                                        padding: '8px 16px',
+                                                        borderRadius: '6px',
+                                                        fontSize: '13px',
+                                                        fontWeight: 700,
+                                                        cursor: 'pointer'
+                                                    }}
+                                                >
+                                                    Countersign
+                                                </button>
+                                            )}
+                                            <button style={{
+                                                background: 'white',
+                                                color: 'black',
+                                                border: 'none',
+                                                padding: '8px 16px',
+                                                borderRadius: '6px',
+                                                fontSize: '13px',
+                                                fontWeight: 600,
+                                                cursor: 'pointer'
+                                            }}>
+                                                View Details
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             );

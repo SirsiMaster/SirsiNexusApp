@@ -57,7 +57,11 @@ const handlers = {
             status: 'DRAFT',
             createdAt: Date.now(),
             updatedAt: Date.now(),
-            createdBy: 'system'
+            createdBy: 'system',
+            // Default Countersigner to Cylton Collymore per Studio Policy
+            countersignerName: data.countersignerName || 'Cylton Collymore',
+            countersignerEmail: data.countersignerEmail || 'cylton@sirsi.ai',
+            countersignedAt: null
         };
 
         const docRef = await db.collection('contracts').add(contractData);
@@ -110,6 +114,13 @@ const handlers = {
             ...data,
             updatedAt: Date.now()
         };
+
+        // If client signs, transition to WAITING_FOR_COUNTERSIGN instead of SIGNED
+        if (updateData.status === 'SIGNED') {
+            updateData.status = 'WAITING_FOR_COUNTERSIGN';
+            console.log(`📝 Contract ${id} signed by client. Now waiting for countersignature from Cylton Collymore.`);
+            // In production, trigger email to countersigner here
+        }
 
         // Remove id from update data if present
         delete updateData.id;

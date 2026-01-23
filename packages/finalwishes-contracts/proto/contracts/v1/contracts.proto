@@ -52,6 +52,11 @@ message Contract {
   int64 created_at = 10;
   int64 updated_at = 11;
   string created_by = 12;
+
+  // Countersigner (Dynamic Validation)
+  string countersigner_name = 13;
+  string countersigner_email = 14;
+  int64 countersigned_at = 15;
 }
 
 message PaymentPlan {
@@ -78,6 +83,7 @@ enum ContractStatus {
   CONTRACT_STATUS_SIGNED = 3;
   CONTRACT_STATUS_PAID = 4;
   CONTRACT_STATUS_ARCHIVED = 5;
+  CONTRACT_STATUS_WAITING_FOR_COUNTERSIGN = 6;
 }
 
 // ============================================
@@ -92,6 +98,8 @@ message CreateContractRequest {
   int64 total_amount = 5;
   repeated PaymentPlan payment_plans = 6;
   Theme theme = 7;
+  string countersigner_name = 8;
+  string countersigner_email = 9;
 }
 
 message GetContractRequest {

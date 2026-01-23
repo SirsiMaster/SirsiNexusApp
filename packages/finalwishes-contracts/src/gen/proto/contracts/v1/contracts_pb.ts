@@ -39,6 +39,11 @@ export enum ContractStatus {
    * @generated from enum value: CONTRACT_STATUS_ARCHIVED = 5;
    */
   ARCHIVED = 5,
+
+  /**
+   * @generated from enum value: CONTRACT_STATUS_WAITING_FOR_COUNTERSIGN = 6;
+   */
+  WAITING_FOR_COUNTERSIGN = 6,
 }
 // Retrieve enum metadata with: proto3.getEnumType(ContractStatus)
 proto3.util.setEnumType(ContractStatus, "sirsi.contracts.v1.ContractStatus", [
@@ -48,6 +53,7 @@ proto3.util.setEnumType(ContractStatus, "sirsi.contracts.v1.ContractStatus", [
   { no: 3, name: "CONTRACT_STATUS_SIGNED" },
   { no: 4, name: "CONTRACT_STATUS_PAID" },
   { no: 5, name: "CONTRACT_STATUS_ARCHIVED" },
+  { no: 6, name: "CONTRACT_STATUS_WAITING_FOR_COUNTERSIGN" },
 ]);
 
 /**
@@ -124,6 +130,23 @@ export class Contract extends Message<Contract> {
    */
   createdBy = "";
 
+  /**
+   * Countersigner (Dynamic Validation)
+   *
+   * @generated from field: string countersigner_name = 13;
+   */
+  countersignerName = "";
+
+  /**
+   * @generated from field: string countersigner_email = 14;
+   */
+  countersignerEmail = "";
+
+  /**
+   * @generated from field: int64 countersigned_at = 15;
+   */
+  countersignedAt = protoInt64.zero;
+
   constructor(data?: PartialMessage<Contract>) {
     super();
     proto3.util.initPartial(data, this);
@@ -144,6 +167,9 @@ export class Contract extends Message<Contract> {
     { no: 10, name: "created_at", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
     { no: 11, name: "updated_at", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
     { no: 12, name: "created_by", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 13, name: "countersigner_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 14, name: "countersigner_email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 15, name: "countersigned_at", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Contract {
@@ -344,6 +370,16 @@ export class CreateContractRequest extends Message<CreateContractRequest> {
    */
   theme?: Theme;
 
+  /**
+   * @generated from field: string countersigner_name = 8;
+   */
+  countersignerName = "";
+
+  /**
+   * @generated from field: string countersigner_email = 9;
+   */
+  countersignerEmail = "";
+
   constructor(data?: PartialMessage<CreateContractRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -359,6 +395,8 @@ export class CreateContractRequest extends Message<CreateContractRequest> {
     { no: 5, name: "total_amount", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
     { no: 6, name: "payment_plans", kind: "message", T: PaymentPlan, repeated: true },
     { no: 7, name: "theme", kind: "message", T: Theme },
+    { no: 8, name: "countersigner_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 9, name: "countersigner_email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreateContractRequest {

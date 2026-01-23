@@ -80,7 +80,9 @@ export function SirsiVault() {
                     accentColor: '#10B981',
                     fontHeading: 'Cinzel',
                     fontBody: 'Inter'
-                }
+                },
+                countersignerName: 'Cylton Collymore',
+                countersignerEmail: 'cylton@sirsi.ai'
             });
             setContractId(contract.id);
         } catch (err: any) {
@@ -103,11 +105,11 @@ export function SirsiVault() {
 
             // Use gRPC flow if we have a contractId
             if (contractId) {
-                // 1. Update status to SIGNED
+                // 1. Update status to SIGNED (Backend will intercept and change to WAITING_FOR_COUNTERSIGN)
                 await contractsClient.updateContract({
                     id: contractId,
                     contract: {
-                        status: 'SIGNED' as any // Use string enum
+                        status: 3 as any // Using numeric enum for compatibility
                     }
                 });
 
