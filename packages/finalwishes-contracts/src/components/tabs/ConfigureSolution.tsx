@@ -449,7 +449,12 @@ export function ConfigureSolution() {
                                                     ].map(state => (
                                                         <button
                                                             key={state.code}
-                                                            onClick={() => toggleProbateState(state.code)}
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                e.preventDefault();
+                                                                toggleProbateState(state.code);
+                                                            }}
+                                                            type="button"
                                                             style={{
                                                                 padding: '6px 10px',
                                                                 borderRadius: '4px',
@@ -457,20 +462,34 @@ export function ConfigureSolution() {
                                                                 fontWeight: 600,
                                                                 cursor: 'pointer',
                                                                 border: probateStates.includes(state.code)
-                                                                    ? '1px solid #10B981'
+                                                                    ? '2px solid #10B981'
                                                                     : '1px solid rgba(255,255,255,0.2)',
                                                                 background: probateStates.includes(state.code)
-                                                                    ? 'rgba(16, 185, 129, 0.2)'
+                                                                    ? 'rgba(16, 185, 129, 0.3)'
                                                                     : 'rgba(255,255,255,0.05)',
                                                                 color: probateStates.includes(state.code)
                                                                     ? '#10B981'
                                                                     : 'rgba(255,255,255,0.7)'
                                                             }}
                                                         >
-                                                            {state.code}
+                                                            {probateStates.includes(state.code) ? '✓ ' : ''}{state.code}
                                                         </button>
                                                     ))}
                                                 </div>
+                                                {/* Selected States Summary */}
+                                                {probateStates.length > 0 && (
+                                                    <div style={{
+                                                        marginTop: '10px',
+                                                        padding: '8px 10px',
+                                                        background: 'rgba(16, 185, 129, 0.1)',
+                                                        borderRadius: '4px',
+                                                        border: '1px solid rgba(16, 185, 129, 0.3)'
+                                                    }}>
+                                                        <span style={{ color: '#10B981', fontSize: '11px', fontWeight: 600 }}>
+                                                            ✓ Selected: {probateStates.join(', ')}
+                                                        </span>
+                                                    </div>
+                                                )}
                                                 <div style={{ color: '#64748b', fontSize: '10px', marginTop: '8px' }}>
                                                     ${bundleSelected ? '24,500' : '35,000'}/state
                                                 </div>
