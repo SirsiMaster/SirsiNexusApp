@@ -464,48 +464,51 @@ export function ConfigureSolution() {
                                         {/* Simplified Status Divider */}
                                         <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', margin: '12px 0' }}></div>
 
-                                        <div style={{ color: '#64748b', fontSize: '13px', marginBottom: '16px' }}>
-                                            {item.id === 'ceo-consulting'
-                                                ? `${ceoConsultingWeeks} week${ceoConsultingWeeks > 1 ? 's' : ''} engagement`
-                                                : item.id === 'probate'
-                                                    ? (probateStates.length > 0
+                                        <div style={{ color: '#64748b', fontSize: '13px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                            {item.id === 'ceo-consulting' ? (
+                                                <>
+                                                    {ceoConsultingWeeks} week{ceoConsultingWeeks > 1 ? 's' : ''} engagement
+                                                    {inCart && (
+                                                        <span
+                                                            onClick={(e) => { e.stopPropagation(); toggleCeoModal(); }}
+                                                            style={{ cursor: 'pointer', color: '#C8A951', fontSize: '12px' }}
+                                                        >
+                                                            (Edit)
+                                                        </span>
+                                                    )}
+                                                </>
+                                            ) : item.id === 'probate' ? (
+                                                <>
+                                                    {probateStates.length > 0
                                                         ? `${probateStates.length} State${probateStates.length > 1 ? 's' : ''} Licensed`
-                                                        : 'Select coverage states')
-                                                    : `${item.timeline} ${item.timelineUnit} Delivery`}
+                                                        : 'Select coverage states'}
+                                                    {inCart && (
+                                                        <span
+                                                            onClick={(e) => { e.stopPropagation(); toggleProbateModal(); }}
+                                                            style={{ cursor: 'pointer', color: '#C8A951', fontSize: '12px' }}
+                                                        >
+                                                            (Edit)
+                                                        </span>
+                                                    )}
+                                                </>
+                                            ) : (
+                                                `${item.timeline} ${item.timelineUnit} Delivery`
+                                            )}
                                         </div>
                                         <p style={{ fontSize: '1rem', color: 'rgba(147, 197, 253, 0.8)', lineHeight: 1.6, margin: 0 }}>
                                             {item.shortDescription}
                                         </p>
 
-                                        {/* CARD FOOTER - Selection Bound Interaction */}
-                                        <div style={{ marginTop: 'auto', paddingTop: '12px' }}>
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div style={{ marginTop: 'auto', paddingTop: '12px', minHeight: '44px', display: 'flex', alignItems: 'center' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                                                 <div style={{ flex: 1 }}>
-                                                    {inCart && (item.id === 'probate' || item.id === 'ceo-consulting') ? (
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                item.id === 'probate' ? toggleProbateModal() : toggleCeoModal();
-                                                            }}
-                                                            style={{
-                                                                background: 'rgba(200, 169, 81, 0.15)',
-                                                                border: '1px solid #C8A951',
-                                                                borderRadius: '4px',
-                                                                color: '#C8A951',
-                                                                fontSize: '10px',
-                                                                padding: '4px 8px',
-                                                                cursor: 'pointer',
-                                                                textTransform: 'uppercase',
-                                                                fontWeight: 600
-                                                            }}
-                                                        >
-                                                            Adjust Configuration
-                                                        </button>
-                                                    ) : (
-                                                        <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>
-                                                            {inCart ? 'Module Active' : 'Select to Configure'}
-                                                        </span>
-                                                    )}
+                                                    <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>
+                                                        {inCart ? (
+                                                            <span style={{ color: '#10B981', fontWeight: 600 }}>✓ Module Selected</span>
+                                                        ) : (
+                                                            'Add to Configuration'
+                                                        )}
+                                                    </span>
                                                 </div>
                                                 <div
                                                     onClick={(e) => {
