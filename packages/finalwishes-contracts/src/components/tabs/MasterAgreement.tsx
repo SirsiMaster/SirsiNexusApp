@@ -30,7 +30,8 @@ export function MasterAgreement() {
     // CRITICAL: PER GEMINI.MD RULE 12, all calculations MUST be dynamic.
     // Hardcoded financial values are strictly prohibited.
     // Dynamic Financial Calculations
-    const totalAmount = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length);
+    const totalAmountResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length);
+    const totalAmount = totalAmountResult.total;
     const devHours = Math.round(totalAmount / 125); // ~$125/hr internal boutique rate
     const grossDevValue = devHours * 250; // $250/hr blended market rate
     const efficiencyDiscount = Math.round(grossDevValue * 0.25); // ~25% efficiency from Sirsi
@@ -249,9 +250,12 @@ export function MasterAgreement() {
                             <ul style={{ margin: 0, paddingLeft: '20px' }}>
                                 {selectedAddons.map(id => {
                                     const product = PRODUCTS[id]
+                                    let displayName = product?.name || id
+                                    if (id === 'ceo-consulting') displayName += ` (${ceoConsultingWeeks} weeks)`
+                                    if (id === 'probate') displayName += ` (${probateStates.length} state${probateStates.length > 1 ? 's' : ''})`
                                     return (
                                         <li key={id} style={{ marginBottom: '8px' }}>
-                                            <strong>{product?.name || id}:</strong> {product?.shortDescription || 'Strategic add-on module.'}
+                                            <strong>{displayName}:</strong> {product?.shortDescription || 'Strategic add-on module.'}
                                         </li>
                                     )
                                 })}

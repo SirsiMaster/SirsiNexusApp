@@ -34,12 +34,13 @@ export function SirsiVault() {
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
     const probateStates = useConfigStore(state => state.probateStates)
 
-    const totalInvestment = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
+    const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
+    const totalInvestment = totalInvestmentResult.total
 
     const openPrintableMSA = () => {
-        const timeline = calculateTimeline(selectedBundle, selectedAddons) // weeks
-        const hours = calculateTotalHours(selectedBundle, selectedAddons) // total dev hours
-        const msaUrl = `/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}`
+        const timeline = calculateTimeline(selectedBundle, selectedAddons, probateStates.length) // weeks
+        const hours = calculateTotalHours(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length) // total dev hours
+        const msaUrl = `/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}`
         window.open(msaUrl, '_blank', 'width=900,height=800,scrollbars=yes,resizable=yes')
     }
 

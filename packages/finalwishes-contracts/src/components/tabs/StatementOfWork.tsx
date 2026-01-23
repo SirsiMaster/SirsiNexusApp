@@ -15,10 +15,11 @@ export function StatementOfWork() {
     const currentYear = new Date().getFullYear()
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
-    const totalInvestment = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
-    const totalTimeline = calculateTimeline(selectedBundle, selectedAddons)
-    const totalHours = calculateTotalHours(selectedBundle, selectedAddons)
-    const aggregatedPhases = getAggregatedWBS(selectedBundle, selectedAddons)
+    const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
+    const totalInvestment = totalInvestmentResult.total
+    const totalTimeline = calculateTimeline(selectedBundle, selectedAddons, probateStates.length)
+    const totalHours = calculateTotalHours(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
+    const aggregatedPhases = getAggregatedWBS(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
 
     // Aggregate all detailed scope items from selections
     const allScopeItems: any[] = []
