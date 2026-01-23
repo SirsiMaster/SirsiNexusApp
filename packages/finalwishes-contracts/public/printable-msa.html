@@ -1422,6 +1422,9 @@
           });
 
 
+          const ceoWeeks = parseInt(params.get('ceoWeeks')) || 1;
+          const probateCount = parseInt(params.get('probateCount')) || 0;
+
           // 4. Handle Addons
           const addonParam = params.get('addons');
           if (addonParam) {
@@ -1435,10 +1438,10 @@
 
               const PRODUCTS_MOCK = {
                 'maintenance': { name: 'Maintenance & Support', desc: '12-month support (20 hrs/mo) and priority technical guardianship.' },
-                'ceo-consulting': { name: 'CEO Consulting', desc: 'Direct strategic partnership and executive advisory (20 hrs/week).' },
+                'ceo-consulting': { name: `CEO Consulting (${ceoWeeks} weeks)`, desc: 'Direct strategic partnership and executive advisory (20 hrs/week).' },
                 'branding': { name: 'Branding & Identity', desc: 'Complete brand identity system, logo, and UI kit.' },
                 'estate': { name: 'Estate Administration', desc: 'Executor tools and professional asset tracking.' },
-                'probate': { name: 'Probate Engine (Per State)', desc: 'State-specific probate form automation.' },
+                'probate': { name: `Probate Engine (${probateCount} State${probateCount > 1 ? 's' : ''})`, desc: 'State-specific probate form automation.' },
                 'comms': { name: 'Secure Comms Suite', desc: 'Encrypted legacy messaging and automated alerts.' },
                 'memorial': { name: 'Virtual Memorial Services', desc: 'Interactive permanent spaces for remembrance.' },
                 'financial': { name: 'Advanced Asset Discovery', desc: 'Deep financial integration and asset mapping.' }
