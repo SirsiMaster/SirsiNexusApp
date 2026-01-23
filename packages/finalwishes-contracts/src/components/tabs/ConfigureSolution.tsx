@@ -43,6 +43,7 @@ export function ConfigureSolution() {
     const [isCeoModalOpen, setIsCeoModalOpen] = useState(false)
     const [stateSearchQuery, setStateSearchQuery] = useState('')
     const [tempSelectedStates, setTempSelectedStates] = useState<string[]>([])
+    const [tempCeoWeeks, setTempCeoWeeks] = useState(ceoConsultingWeeks)
 
     const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
     const totalInvestment = totalInvestmentResult.total
@@ -59,7 +60,12 @@ export function ConfigureSolution() {
         }
         setIsProbateModalOpen(!isProbateModalOpen)
     }
-    const toggleCeoModal = () => setIsCeoModalOpen(!isCeoModalOpen)
+    const toggleCeoModal = () => {
+        if (!isCeoModalOpen) {
+            setTempCeoWeeks(ceoConsultingWeeks)
+        }
+        setIsCeoModalOpen(!isCeoModalOpen)
+    }
 
     // Filter states based on search query
     const filteredStates = US_STATES.filter(state =>
@@ -91,6 +97,14 @@ export function ConfigureSolution() {
         }
 
         setIsProbateModalOpen(false)
+    }
+
+    const confirmCeoSelection = () => {
+        setCeoConsultingWeeks(tempCeoWeeks)
+        if (!selectedAddons.includes('ceo-consulting')) {
+            toggleAddon('ceo-consulting')
+        }
+        setIsCeoModalOpen(false)
     }
 
     const clearAllStates = () => {
@@ -781,14 +795,11 @@ export function ConfigureSolution() {
                                 scrollSnapType: 'y mandatory', textAlign: 'center'
                             }}>
                                 {Array.from({ length: 52 }, (_, i) => i + 1).map(week => {
-                                    const isSelected = ceoConsultingWeeks === week
+                                    const isSelected = tempCeoWeeks === week
                                     return (
                                         <div
                                             key={week}
-                                            onClick={() => {
-                                                setCeoConsultingWeeks(week);
-                                                if (!selectedAddons.includes('ceo-consulting')) toggleAddon('ceo-consulting');
-                                            }}
+                                            onClick={() => setTempCeoWeeks(week)}
                                             style={{
                                                 height: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                 color: isSelected ? '#C8A951' : 'rgba(255,255,255,0.2)',
@@ -805,22 +816,37 @@ export function ConfigureSolution() {
                             </div>
                         </div>
 
-                        <div style={{ padding: '32px', textAlign: 'center' }}>
+                        <div style={{ padding: '24px 32px 32px 32px', textAlign: 'center' }}>
                             <div style={{ marginBottom: '20px' }}>
-                                <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', display: 'block' }}>ESTIMATED INVESTMENT</span>
-                                <span style={{ color: '#C8A951', fontSize: '28px', fontWeight: 800 }}>${(ceoConsultingWeeks * 6000).toLocaleString()}</span>
+                                <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', display: 'block', textTransform: 'uppercase' }}>Estimated Investment</span>
+                                <span style={{ color: '#C8A951', fontSize: '28px', fontWeight: 800 }}>${(tempCeoWeeks * 6000).toLocaleString()}</span>
                             </div>
-                            <button
-                                onClick={() => setIsCeoModalOpen(false)}
-                                style={{
-                                    width: '100%', padding: '16px', borderRadius: '12px',
-                                    background: 'linear-gradient(135deg, #C8A951 0%, #A08332 100%)',
-                                    border: 'none', color: '#000', fontWeight: 800, fontSize: '14px',
-                                    textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer'
-                                }}
-                            >
-                                Confirm Engagement
-                            </button>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                                <button
+                                    onClick={() => setIsCeoModalOpen(false)}
+                                    style={{
+                                        padding: '14px', borderRadius: '12px',
+                                        background: 'rgba(255,255,255,0.05)',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        color: 'white', fontWeight: 600, fontSize: '13px',
+                                        textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer'
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={confirmCeoSelection}
+                                    style={{
+                                        padding: '14px', borderRadius: '12px',
+                                        background: 'linear-gradient(135deg, #C8A951 0%, #A08332 100%)',
+                                        border: 'none', color: '#000', fontWeight: 800, fontSize: '13px',
+                                        textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer',
+                                        boxShadow: '0 4px 15px rgba(200, 169, 81, 0.3)'
+                                    }}
+                                >
+                                    Confirm
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
