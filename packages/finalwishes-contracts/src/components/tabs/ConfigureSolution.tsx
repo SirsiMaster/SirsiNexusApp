@@ -489,53 +489,176 @@ export function ConfigureSolution() {
                                             {item.shortDescription}
                                         </p>
 
-                                        {/* Probate Engine - Select States Button */}
+                                        {/* Probate Engine - Inline State Selector */}
                                         {item.id === 'probate' && (
                                             <div
                                                 onClick={(e) => e.stopPropagation()}
-                                                style={{ marginTop: '12px' }}
+                                                style={{ marginTop: '12px', position: 'relative' }}
                                             >
-                                                {probateStates.length > 0 && (
+                                                {/* Selected States Badge */}
+                                                {probateStates.length > 0 && !showStateSelector && (
                                                     <div style={{
                                                         marginBottom: '8px',
-                                                        padding: '8px 10px',
+                                                        padding: '6px 10px',
                                                         background: 'rgba(16, 185, 129, 0.1)',
                                                         borderRadius: '4px',
                                                         border: '1px solid rgba(16, 185, 129, 0.3)'
                                                     }}>
                                                         <span style={{ color: '#10B981', fontSize: '11px', fontWeight: 600 }}>
-                                                            ✓ Selected: {probateStates.join(', ')}
+                                                            ✓ {probateStates.join(', ')}
                                                         </span>
                                                     </div>
                                                 )}
+
+                                                {/* Toggle Button */}
                                                 <button
                                                     type="button"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         e.preventDefault();
-                                                        openStateSelector();
+                                                        if (showStateSelector) {
+                                                            confirmStateSelection();
+                                                        } else {
+                                                            openStateSelector();
+                                                        }
                                                     }}
                                                     style={{
                                                         width: '100%',
-                                                        padding: '10px 16px',
-                                                        background: 'linear-gradient(135deg, rgba(200, 169, 81, 0.2), rgba(200, 169, 81, 0.1))',
+                                                        padding: '8px 12px',
+                                                        background: showStateSelector
+                                                            ? '#C8A951'
+                                                            : 'linear-gradient(135deg, rgba(200, 169, 81, 0.2), rgba(200, 169, 81, 0.1))',
                                                         border: '1px solid #C8A951',
-                                                        borderRadius: '6px',
-                                                        color: '#C8A951',
-                                                        fontSize: '12px',
+                                                        borderRadius: showStateSelector ? '6px 6px 0 0' : '6px',
+                                                        color: showStateSelector ? '#000' : '#C8A951',
+                                                        fontSize: '11px',
                                                         fontWeight: 600,
                                                         cursor: 'pointer',
                                                         display: 'flex',
                                                         alignItems: 'center',
-                                                        justifyContent: 'center',
-                                                        gap: '8px'
+                                                        justifyContent: 'space-between'
                                                     }}
                                                 >
-                                                    🗺️ {probateStates.length > 0 ? 'Edit States' : 'Select States'}
+                                                    <span>
+                                                        {showStateSelector
+                                                            ? `✓ Confirm (${tempSelectedStates.length})`
+                                                            : probateStates.length > 0
+                                                                ? `Edit States (${probateStates.length})`
+                                                                : 'Select States'}
+                                                    </span>
+                                                    <span style={{ fontSize: '10px' }}>
+                                                        {showStateSelector ? '▲' : '▼'}
+                                                    </span>
                                                 </button>
-                                                <div style={{ color: '#64748b', fontSize: '10px', marginTop: '6px', textAlign: 'center' }}>
-                                                    ${bundleSelected ? '24,500' : '35,000'}/state
-                                                </div>
+
+                                                {/* Inline Scroll Wheel */}
+                                                {showStateSelector && (
+                                                    <div style={{
+                                                        background: '#0a0f1e',
+                                                        border: '1px solid #C8A951',
+                                                        borderTop: 'none',
+                                                        borderRadius: '0 0 6px 6px',
+                                                        overflow: 'hidden'
+                                                    }}>
+                                                        {/* Mini Search */}
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Search..."
+                                                            value={stateSearchQuery}
+                                                            onChange={(e) => setStateSearchQuery(e.target.value)}
+                                                            onClick={(e) => e.stopPropagation()}
+                                                            style={{
+                                                                width: '100%',
+                                                                padding: '6px 10px',
+                                                                background: 'rgba(255,255,255,0.05)',
+                                                                border: 'none',
+                                                                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                                                                color: 'white',
+                                                                fontSize: '11px',
+                                                                outline: 'none'
+                                                            }}
+                                                        />
+
+                                                        {/* Scroll Wheel - iOS style picker */}
+                                                        <div style={{
+                                                            height: '120px',
+                                                            overflowY: 'auto',
+                                                            background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.3) 100%)'
+                                                        }}>
+                                                            {filteredStates.map(state => {
+                                                                const isSelected = tempSelectedStates.includes(state.code)
+                                                                return (
+                                                                    <div
+                                                                        key={state.code}
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            toggleTempState(state.code);
+                                                                        }}
+                                                                        style={{
+                                                                            display: 'flex',
+                                                                            alignItems: 'center',
+                                                                            justifyContent: 'space-between',
+                                                                            padding: '6px 10px',
+                                                                            cursor: 'pointer',
+                                                                            background: isSelected ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
+                                                                            transition: 'background 0.1s'
+                                                                        }}
+                                                                    >
+                                                                        <span style={{
+                                                                            color: isSelected ? '#10B981' : 'rgba(255,255,255,0.7)',
+                                                                            fontSize: '12px',
+                                                                            fontWeight: isSelected ? 600 : 400
+                                                                        }}>
+                                                                            {state.code} - {state.name}
+                                                                        </span>
+                                                                        {isSelected && (
+                                                                            <span style={{ color: '#10B981', fontSize: '12px' }}>✓</span>
+                                                                        )}
+                                                                    </div>
+                                                                )
+                                                            })}
+                                                        </div>
+
+                                                        {/* Footer: Clear + Running Total */}
+                                                        <div style={{
+                                                            display: 'flex',
+                                                            justifyContent: 'space-between',
+                                                            alignItems: 'center',
+                                                            padding: '6px 10px',
+                                                            borderTop: '1px solid rgba(255,255,255,0.1)',
+                                                            background: 'rgba(0,0,0,0.3)'
+                                                        }}>
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    setTempSelectedStates([]);
+                                                                }}
+                                                                style={{
+                                                                    padding: '4px 8px',
+                                                                    background: 'transparent',
+                                                                    border: '1px solid rgba(239, 68, 68, 0.4)',
+                                                                    borderRadius: '4px',
+                                                                    color: '#ef4444',
+                                                                    fontSize: '10px',
+                                                                    cursor: 'pointer'
+                                                                }}
+                                                            >
+                                                                Clear
+                                                            </button>
+                                                            <span style={{ color: '#C8A951', fontSize: '11px', fontWeight: 600 }}>
+                                                                ${(tempSelectedStates.length * (bundleSelected ? 24500 : 35000)).toLocaleString()}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Price per state hint */}
+                                                {!showStateSelector && (
+                                                    <div style={{ color: '#64748b', fontSize: '10px', marginTop: '4px', textAlign: 'center' }}>
+                                                        ${bundleSelected ? '24,500' : '35,000'}/state
+                                                    </div>
+                                                )}
                                             </div>
                                         )}
 
@@ -635,230 +758,7 @@ export function ConfigureSolution() {
                 </button>
             </div>
 
-            {/* STATE SELECTOR MODAL */}
-            {showStateSelector && (
-                <div
-                    onClick={() => setShowStateSelector(false)}
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background: 'rgba(0, 0, 0, 0.9)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 9999
-                    }}
-                >
-                    <div
-                        onClick={(e) => e.stopPropagation()}
-                        style={{
-                            background: '#0f172a',
-                            border: '2px solid #C8A951',
-                            borderRadius: '12px',
-                            width: '340px',
-                            maxHeight: '70vh',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            overflow: 'hidden'
-                        }}
-                    >
-                        {/* Modal Header */}
-                        <div style={{
-                            padding: '20px',
-                            borderBottom: '1px solid rgba(255,255,255,0.1)',
-                            background: 'rgba(200,169,81,0.05)'
-                        }}>
-                            <h3 style={{
-                                fontFamily: "'Cinzel', serif",
-                                fontSize: '18px',
-                                color: '#C8A951',
-                                margin: 0,
-                                marginBottom: '4px',
-                                textAlign: 'center'
-                            }}>
-                                Select States
-                            </h3>
-                            <p style={{
-                                color: 'rgba(255,255,255,0.5)',
-                                fontSize: '12px',
-                                margin: 0,
-                                textAlign: 'center'
-                            }}>
-                                {tempSelectedStates.length} selected • ${(tempSelectedStates.length * (bundleSelected ? 24500 : 35000)).toLocaleString()}
-                            </p>
-                        </div>
 
-                        {/* Search Input */}
-                        <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                            <input
-                                type="text"
-                                placeholder="Search states..."
-                                value={stateSearchQuery}
-                                onChange={(e) => setStateSearchQuery(e.target.value)}
-                                style={{
-                                    width: '100%',
-                                    padding: '10px 14px',
-                                    background: 'rgba(255,255,255,0.05)',
-                                    border: '1px solid rgba(255,255,255,0.15)',
-                                    borderRadius: '6px',
-                                    color: 'white',
-                                    fontSize: '14px',
-                                    outline: 'none'
-                                }}
-                            />
-                        </div>
-
-                        {/* Clear All Button */}
-                        {tempSelectedStates.length > 0 && (
-                            <div style={{ padding: '8px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                                <button
-                                    type="button"
-                                    onClick={() => setTempSelectedStates([])}
-                                    style={{
-                                        width: '100%',
-                                        padding: '8px',
-                                        background: 'rgba(239, 68, 68, 0.1)',
-                                        border: '1px solid rgba(239, 68, 68, 0.3)',
-                                        borderRadius: '6px',
-                                        color: '#ef4444',
-                                        fontSize: '12px',
-                                        cursor: 'pointer'
-                                    }}
-                                >
-                                    ✕ Clear All ({tempSelectedStates.length})
-                                </button>
-                            </div>
-                        )}
-
-                        {/* States Scroll List */}
-                        <div style={{
-                            flex: 1,
-                            overflowY: 'auto',
-                            padding: '8px 0'
-                        }}>
-                            {filteredStates.map(state => {
-                                const isSelected = tempSelectedStates.includes(state.code)
-                                return (
-                                    <div
-                                        key={state.code}
-                                        onClick={() => toggleTempState(state.code)}
-                                        style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            padding: '12px 20px',
-                                            cursor: 'pointer',
-                                            background: isSelected ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
-                                            borderLeft: isSelected ? '3px solid #10B981' : '3px solid transparent',
-                                            transition: 'all 0.15s ease'
-                                        }}
-                                    >
-                                        {/* Checkbox */}
-                                        <div style={{
-                                            width: '20px',
-                                            height: '20px',
-                                            borderRadius: '4px',
-                                            border: isSelected ? '2px solid #10B981' : '2px solid rgba(255,255,255,0.3)',
-                                            background: isSelected ? '#10B981' : 'transparent',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            marginRight: '12px',
-                                            flexShrink: 0,
-                                            transition: 'all 0.15s ease'
-                                        }}>
-                                            {isSelected && <span style={{ color: 'white', fontSize: '12px', fontWeight: 'bold' }}>✓</span>}
-                                        </div>
-                                        {/* State Code */}
-                                        <span style={{
-                                            color: isSelected ? '#10B981' : 'white',
-                                            fontWeight: 600,
-                                            fontSize: '14px',
-                                            marginRight: '10px',
-                                            width: '28px'
-                                        }}>
-                                            {state.code}
-                                        </span>
-                                        {/* State Name */}
-                                        <span style={{
-                                            color: isSelected ? 'rgba(16, 185, 129, 0.8)' : 'rgba(255,255,255,0.6)',
-                                            fontSize: '13px'
-                                        }}>
-                                            {state.name}
-                                        </span>
-                                    </div>
-                                )
-                            })}
-                        </div>
-
-                        {/* Selected States Summary */}
-                        {tempSelectedStates.length > 0 && (
-                            <div style={{
-                                padding: '12px 16px',
-                                borderTop: '1px solid rgba(255,255,255,0.1)',
-                                background: 'rgba(16, 185, 129, 0.05)'
-                            }}>
-                                <div style={{
-                                    color: '#10B981',
-                                    fontSize: '11px',
-                                    lineHeight: 1.4
-                                }}>
-                                    <strong>Selected:</strong> {tempSelectedStates.join(', ')}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Action Buttons */}
-                        <div style={{
-                            display: 'flex',
-                            gap: '10px',
-                            padding: '16px',
-                            borderTop: '1px solid rgba(255,255,255,0.1)',
-                            background: 'rgba(0,0,0,0.2)'
-                        }}>
-                            <button
-                                type="button"
-                                onClick={() => setShowStateSelector(false)}
-                                style={{
-                                    flex: 1,
-                                    padding: '12px',
-                                    background: 'transparent',
-                                    border: '1px solid rgba(255,255,255,0.3)',
-                                    borderRadius: '6px',
-                                    color: 'white',
-                                    fontSize: '13px',
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="button"
-                                onClick={confirmStateSelection}
-                                style={{
-                                    flex: 2,
-                                    padding: '12px',
-                                    background: tempSelectedStates.length > 0
-                                        ? '#C8A951'
-                                        : 'rgba(255,255,255,0.1)',
-                                    border: 'none',
-                                    borderRadius: '6px',
-                                    color: tempSelectedStates.length > 0 ? '#000' : 'rgba(255,255,255,0.4)',
-                                    fontSize: '13px',
-                                    fontWeight: 600,
-                                    cursor: 'pointer'
-                                }}
-                            >
-                                {tempSelectedStates.length > 0
-                                    ? `✓ Confirm (${tempSelectedStates.length} states)`
-                                    : 'Select at least 1 state'}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
 
     )
