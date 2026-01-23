@@ -602,7 +602,7 @@ export function getAddonPrice(id: string, hasBundle: boolean): number {
     return hasBundle ? product.bundledPrice : (product.standalonePrice || product.bundledPrice * 1.5)
 }
 
-export function calculateTotal(bundleId: string | null, addonIds: string[], ceoConsultingWeeks: number = 4): number {
+export function calculateTotal(bundleId: string | null, addonIds: string[], ceoConsultingWeeks: number = 1): number {
     let total = 0
     const hasBundle = bundleId !== null
     if (bundleId && BUNDLES[bundleId]) total += BUNDLES[bundleId].price

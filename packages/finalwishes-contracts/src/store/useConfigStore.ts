@@ -43,7 +43,7 @@ const initialState = {
     visitedTabs: ['summary'] as TabId[],
     selectedBundle: null,
     selectedAddons: [],
-    ceoConsultingWeeks: 4,
+    ceoConsultingWeeks: 1,
 }
 
 export const useConfigStore = create<ConfigState>()(
