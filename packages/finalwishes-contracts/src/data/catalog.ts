@@ -40,6 +40,7 @@ export interface Product {
     detailedScope?: DetailedScopeItem[]
     wbs?: WBSPhase[]
     recurring?: boolean
+    perWeek?: boolean
     prerequisites?: string[]
 }
 
@@ -146,7 +147,7 @@ export const PRODUCTS: Record<string, Product> = {
         description: 'Annual support contract.',
         category: 'service',
         bundledPrice: 18000,
-        standalonePrice: 27000,
+        standalonePrice: 18000,
         timeline: 12,
         timelineUnit: 'months',
         recurring: true,
@@ -154,7 +155,7 @@ export const PRODUCTS: Record<string, Product> = {
             {
                 title: "Maintenance & Support",
                 content: "Ongoing technical guardianship.",
-                subItems: ["20 Hours monthly support", "Priority bug fixes", "Security patching", "Infrastructure audits"]
+                subItems: ["20 Hours monthly support ($1,500/mo)", "Priority bug fixes", "Security patching", "Infrastructure audits"]
             }
         ]
     },
@@ -165,10 +166,11 @@ export const PRODUCTS: Record<string, Product> = {
         description: 'On-demand strategic consulting and executive partnership.',
         category: 'service',
         bundledPrice: 6000,
-        standalonePrice: 9000,
+        standalonePrice: 6000,
         timeline: 1,
         timelineUnit: 'weeks',
         recurring: true,
+        perWeek: true,
         detailedScope: [
             {
                 title: "Executive Strategic Partnership",
@@ -198,7 +200,7 @@ export const PRODUCTS: Record<string, Product> = {
         description: 'Complete brand identity system.',
         category: 'service',
         bundledPrice: 30000,
-        standalonePrice: 45000,
+        standalonePrice: 30000,
         timeline: 8,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -224,8 +226,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Executor tools & asset tracking',
         description: 'Estate management module.',
         category: 'feature',
-        bundledPrice: 45500,
-        standalonePrice: 68250,
+        bundledPrice: 31850,
+        standalonePrice: 45500,
         timeline: 8,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -251,8 +253,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'State-specific form automation',
         description: 'State-specific probate automation.',
         category: 'feature',
-        bundledPrice: 35000,
-        standalonePrice: 52500,
+        bundledPrice: 24500,
+        standalonePrice: 35000,
         timeline: 10,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -278,8 +280,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'AI form analysis',
         description: 'AI-powered probate assistance.',
         category: 'feature',
-        bundledPrice: 17500,
-        standalonePrice: null,
+        bundledPrice: 12250,
+        standalonePrice: 17500,
         timeline: 4,
         timelineUnit: 'weeks',
         prerequisites: ['probate'],
@@ -297,8 +299,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Encrypted messaging & alerts',
         description: 'Encrypted messaging system.',
         category: 'feature',
-        bundledPrice: 21000,
-        standalonePrice: 31499,
+        bundledPrice: 14700,
+        standalonePrice: 21000,
         timeline: 4,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -315,8 +317,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Live streaming & guestbook',
         description: 'Virtual memorial platform.',
         category: 'feature',
-        bundledPrice: 31499,
-        standalonePrice: 47250,
+        bundledPrice: 22050,
+        standalonePrice: 31499,
         timeline: 6,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -333,8 +335,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Plaid-powered asset search',
         description: 'Plaid-powered asset discovery.',
         category: 'feature',
-        bundledPrice: 42000,
-        standalonePrice: 62999,
+        bundledPrice: 29400,
+        standalonePrice: 42000,
         timeline: 10,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -351,8 +353,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Voice cloning & avatar memorial',
         description: 'AI-driven voice and visual synthesis for living memorials.',
         category: 'feature',
-        bundledPrice: 38500,
-        standalonePrice: 57749,
+        bundledPrice: 26950,
+        standalonePrice: 38500,
         timeline: 10,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -369,8 +371,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Automated account transitions',
         description: 'Automated closing and transfer of digital accounts.',
         category: 'feature',
-        bundledPrice: 28000,
-        standalonePrice: 42000,
+        bundledPrice: 19600,
+        standalonePrice: 28000,
         timeline: 8,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -387,8 +389,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'GDPR / Multi-region privacy',
         description: 'Multi-region data residency and compliance (GDPR, CCPA).',
         category: 'service',
-        bundledPrice: 24500,
-        standalonePrice: 36750,
+        bundledPrice: 17150,
+        standalonePrice: 24500,
         timeline: 8,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -405,8 +407,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'B2B Partner & Branding system',
         description: 'White-label dashboard for funeral homes and law firms.',
         category: 'feature',
-        bundledPrice: 52500,
-        standalonePrice: 78750,
+        bundledPrice: 36750,
+        standalonePrice: 52500,
         timeline: 12,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -423,8 +425,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Automated legacy philanthropy',
         description: 'Automation for charitable donations and foundation setup.',
         category: 'feature',
-        bundledPrice: 31499,
-        standalonePrice: 47250,
+        bundledPrice: 22050,
+        standalonePrice: 31499,
         timeline: 8,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -441,8 +443,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Deep lineage & history sync',
         description: 'Ancestry.com and FamilySearch automatic data sync.',
         category: 'feature',
-        bundledPrice: 17500,
-        standalonePrice: 26250,
+        bundledPrice: 12250,
+        standalonePrice: 17500,
         timeline: 6,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -459,8 +461,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Multi-heir vault unlocking',
         description: 'Ultra-secure vault access using Shamir\'s Secret Sharing.',
         category: 'feature',
-        bundledPrice: 21000,
-        standalonePrice: 31499,
+        bundledPrice: 14700,
+        standalonePrice: 21000,
         timeline: 6,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -477,8 +479,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Physical ethical will books',
         description: 'Physical publishing of memoirs and ethical wills.',
         category: 'service',
-        bundledPrice: 14000,
-        standalonePrice: 21000,
+        bundledPrice: 9800,
+        standalonePrice: 14000,
         timeline: 4,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -495,8 +497,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Crypto & NFT legacy vault',
         description: 'Secure legacy transfer of cryptocurrency and NFT assets.',
         category: 'feature',
-        bundledPrice: 31499,
-        standalonePrice: 47250,
+        bundledPrice: 22050,
+        standalonePrice: 31499,
         timeline: 6,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -514,8 +516,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Immutable trust automation',
         description: 'Definitive automated asset release via immutable smart contracts.',
         category: 'feature',
-        bundledPrice: 45500,
-        standalonePrice: 68250,
+        bundledPrice: 31850,
+        standalonePrice: 45500,
         timeline: 10,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -532,8 +534,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Pro-grade cinematic legacy',
         description: 'Professional video editing and archival for family documentaries.',
         category: 'service',
-        bundledPrice: 21000,
-        standalonePrice: 31499,
+        bundledPrice: 14700,
+        standalonePrice: 21000,
         timeline: 6,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -550,8 +552,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Multi-region KMS hardening',
         description: 'Hyper-resilient security with cross-region key management.',
         category: 'feature',
-        bundledPrice: 17500,
-        standalonePrice: 26250,
+        bundledPrice: 12250,
+        standalonePrice: 17500,
         timeline: 4,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -568,8 +570,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Estate health & growth insights',
         description: 'Advanced data insights into estate health and value growth.',
         category: 'feature',
-        bundledPrice: 12600,
-        standalonePrice: 18900,
+        bundledPrice: 8820,
+        standalonePrice: 12600,
         timeline: 6,
         timelineUnit: 'weeks',
         detailedScope: [
@@ -600,13 +602,20 @@ export function getAddonPrice(id: string, hasBundle: boolean): number {
     return hasBundle ? product.bundledPrice : (product.standalonePrice || product.bundledPrice * 1.5)
 }
 
-export function calculateTotal(bundleId: string | null, addonIds: string[]): number {
+export function calculateTotal(bundleId: string | null, addonIds: string[], ceoConsultingWeeks: number = 4): number {
     let total = 0
     const hasBundle = bundleId !== null
     if (bundleId && BUNDLES[bundleId]) total += BUNDLES[bundleId].price
     addonIds.forEach(id => {
         const product = PRODUCTS[id]
-        if (product) total += hasBundle ? product.bundledPrice : (product.standalonePrice || product.bundledPrice * 1.5)
+        if (product) {
+            // CEO Consulting is priced per week
+            if (id === 'ceo-consulting') {
+                total += product.bundledPrice * ceoConsultingWeeks
+            } else {
+                total += hasBundle ? product.bundledPrice : (product.standalonePrice || product.bundledPrice * 1.5)
+            }
+        }
     })
     return total
 }

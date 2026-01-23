@@ -12,10 +12,12 @@ export function ConfigureSolution() {
     const selectedAddons = useConfigStore(state => state.selectedAddons)
     const setSelectedBundle = useConfigStore(state => state.setSelectedBundle)
     const toggleAddon = useConfigStore(state => state.toggleAddon)
+    const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
+    const setCeoConsultingWeeks = useConfigStore(state => state.setCeoConsultingWeeks)
 
     const [flippedCard, setFlippedCard] = useState<string | null>(null)
 
-    const totalInvestment = calculateTotal(selectedBundle, selectedAddons)
+    const totalInvestment = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks)
     const estimatedTimeline = calculateTimeline(selectedBundle, selectedAddons)
     const itemCount = (selectedBundle ? 1 : 0) + selectedAddons.length
 
@@ -346,12 +348,68 @@ export function ConfigureSolution() {
                                         <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
                                             {showSavings && <span style={{ color: '#64748b', textDecoration: 'line-through', fontSize: '16px' }}>${standPrice.toLocaleString()}</span>}
                                             <span style={{ color: '#C8A951', fontWeight: 'bold', fontSize: '28px' }}>
-                                                ${currPrice.toLocaleString()}
-                                                {item.id === 'ceo-consulting' ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/week min</span> : (item.recurring ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/mo</span> : '')}
+                                                {item.id === 'ceo-consulting'
+                                                    ? `$${(currPrice * ceoConsultingWeeks).toLocaleString()}`
+                                                    : `$${currPrice.toLocaleString()}`
+                                                }
+                                                {item.id === 'ceo-consulting'
+                                                    ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>({ceoConsultingWeeks} weeks)</span>
+                                                    : (item.id === 'maintenance'
+                                                        ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/year</span>
+                                                        : (item.recurring ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/mo</span> : ''))}
                                             </span>
                                         </div>
 
-                                        <div style={{ color: '#64748b', fontSize: '13px', marginBottom: '16px' }}>{item.timeline} {item.timelineUnit} Delivery</div>
+                                        {/* CEO Consulting Week Selector */}
+                                        {item.id === 'ceo-consulting' && inCart && (
+                                            <div
+                                                onClick={(e) => e.stopPropagation()}
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '12px',
+                                                    marginBottom: '12px',
+                                                    padding: '8px 12px',
+                                                    background: 'rgba(200, 169, 81, 0.1)',
+                                                    borderRadius: '8px',
+                                                    border: '1px solid rgba(200, 169, 81, 0.3)'
+                                                }}
+                                            >
+                                                <span style={{ color: 'white', fontSize: '13px' }}>Weeks:</span>
+                                                <button
+                                                    onClick={() => setCeoConsultingWeeks(ceoConsultingWeeks - 1)}
+                                                    disabled={ceoConsultingWeeks <= 1}
+                                                    style={{
+                                                        width: '28px', height: '28px', borderRadius: '4px',
+                                                        background: 'rgba(255,255,255,0.1)', border: 'none',
+                                                        color: 'white', fontSize: '16px', cursor: 'pointer',
+                                                        opacity: ceoConsultingWeeks <= 1 ? 0.3 : 1
+                                                    }}
+                                                >−</button>
+                                                <span style={{ color: '#C8A951', fontWeight: 'bold', fontSize: '18px', minWidth: '32px', textAlign: 'center' }}>
+                                                    {ceoConsultingWeeks}
+                                                </span>
+                                                <button
+                                                    onClick={() => setCeoConsultingWeeks(ceoConsultingWeeks + 1)}
+                                                    disabled={ceoConsultingWeeks >= 52}
+                                                    style={{
+                                                        width: '28px', height: '28px', borderRadius: '4px',
+                                                        background: 'rgba(255,255,255,0.1)', border: 'none',
+                                                        color: 'white', fontSize: '16px', cursor: 'pointer',
+                                                        opacity: ceoConsultingWeeks >= 52 ? 0.3 : 1
+                                                    }}
+                                                >+</button>
+                                                <span style={{ color: '#64748b', fontSize: '11px', marginLeft: '4px' }}>
+                                                    @ $6K/week
+                                                </span>
+                                            </div>
+                                        )}
+
+                                        <div style={{ color: '#64748b', fontSize: '13px', marginBottom: '16px' }}>
+                                            {item.id === 'ceo-consulting'
+                                                ? `${ceoConsultingWeeks} week${ceoConsultingWeeks > 1 ? 's' : ''} engagement`
+                                                : `${item.timeline} ${item.timelineUnit} Delivery`}
+                                        </div>
                                         <p style={{ fontSize: '1rem', color: 'rgba(147, 197, 253, 0.8)', lineHeight: 1.6, margin: 0 }}>
                                             {item.shortDescription}
                                         </p>

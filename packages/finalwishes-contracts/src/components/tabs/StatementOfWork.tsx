@@ -9,11 +9,12 @@ export function StatementOfWork() {
     const setTab = useSetTab()
     const selectedBundle = useConfigStore(state => state.selectedBundle)
     const selectedAddons = useConfigStore(state => state.selectedAddons)
+    const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
 
     const currentYear = new Date().getFullYear()
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
-    const totalInvestment = calculateTotal(selectedBundle, selectedAddons)
+    const totalInvestment = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks)
     const totalTimeline = calculateTimeline(selectedBundle, selectedAddons)
     const totalHours = calculateTotalHours(selectedBundle, selectedAddons)
     const aggregatedPhases = getAggregatedWBS(selectedBundle, selectedAddons)

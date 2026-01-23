@@ -16,6 +16,7 @@ export function MasterAgreement() {
     const setTab = useSetTab()
     const selectedBundle = useConfigStore(state => state.selectedBundle)
     const selectedAddons = useConfigStore(state => state.selectedAddons)
+    const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
 
     const currentYear = new Date().getFullYear()
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -28,7 +29,7 @@ export function MasterAgreement() {
     // CRITICAL: PER GEMINI.MD RULE 12, all calculations MUST be dynamic.
     // Hardcoded financial values are strictly prohibited.
     // Dynamic Financial Calculations
-    const totalAmount = calculateTotal(selectedBundle, selectedAddons);
+    const totalAmount = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks);
     const devHours = Math.round(totalAmount / 125); // ~$125/hr internal boutique rate
     const grossDevValue = devHours * 250; // $250/hr blended market rate
     const efficiencyDiscount = Math.round(grossDevValue * 0.25); // ~25% efficiency from Sirsi
