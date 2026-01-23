@@ -252,7 +252,33 @@ export function ConfigureSolution() {
                     width: '100%',
                     margin: '0 auto'
                 }}>
-                    {Object.values(PRODUCTS).filter(p => p.category !== 'platform').map(item => {
+                    {[
+                        'maintenance',
+                        'ceo-consulting',
+                        'branding',
+                        'estate',
+                        'probate',
+                        'probate-ai',
+                        'comms',
+                        'memorial',
+                        'financial',
+                        'ai-legacy',
+                        'liquidator',
+                        'compliance',
+                        'white-label',
+                        'charity',
+                        'genealogy',
+                        'multi-sig',
+                        'publishing',
+                        'crypto',
+                        'blockchain',
+                        'documentary',
+                        'vault-guard',
+                        'analytics'
+                    ].map(id => {
+                        const item = PRODUCTS[id]
+                        if (!item) return null
+
                         const inCart = selectedAddons.includes(item.id)
                         const standPrice = item.standalonePrice || Math.round(item.bundledPrice * 1.5)
                         const currPrice = bundleSelected ? item.bundledPrice : standPrice
@@ -319,7 +345,10 @@ export function ConfigureSolution() {
 
                                         <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
                                             {showSavings && <span style={{ color: '#64748b', textDecoration: 'line-through', fontSize: '16px' }}>${standPrice.toLocaleString()}</span>}
-                                            <span style={{ color: '#C8A951', fontWeight: 'bold', fontSize: '28px' }}>${currPrice.toLocaleString()}</span>
+                                            <span style={{ color: '#C8A951', fontWeight: 'bold', fontSize: '28px' }}>
+                                                ${currPrice.toLocaleString()}
+                                                {item.id === 'ceo-consulting' ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/week min</span> : (item.recurring ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/mo</span> : '')}
+                                            </span>
                                         </div>
 
                                         <div style={{ color: '#64748b', fontSize: '13px', marginBottom: '16px' }}>{item.timeline} {item.timelineUnit} Delivery</div>
