@@ -645,146 +645,179 @@ export function ConfigureSolution() {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        background: 'rgba(0, 0, 0, 0.85)',
+                        background: 'rgba(0, 0, 0, 0.9)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        zIndex: 9999,
-                        backdropFilter: 'blur(4px)'
+                        zIndex: 9999
                     }}
                 >
                     <div
                         onClick={(e) => e.stopPropagation()}
                         style={{
-                            background: 'linear-gradient(145deg, #0f172a, #1e293b)',
+                            background: '#0f172a',
                             border: '2px solid #C8A951',
-                            borderRadius: '16px',
-                            padding: '24px',
-                            width: '90%',
-                            maxWidth: '500px',
-                            maxHeight: '80vh',
+                            borderRadius: '12px',
+                            width: '340px',
+                            maxHeight: '70vh',
                             display: 'flex',
-                            flexDirection: 'column'
+                            flexDirection: 'column',
+                            overflow: 'hidden'
                         }}
                     >
                         {/* Modal Header */}
-                        <div style={{ marginBottom: '16px' }}>
+                        <div style={{
+                            padding: '20px',
+                            borderBottom: '1px solid rgba(255,255,255,0.1)',
+                            background: 'rgba(200,169,81,0.05)'
+                        }}>
                             <h3 style={{
                                 fontFamily: "'Cinzel', serif",
-                                fontSize: '20px',
+                                fontSize: '18px',
                                 color: '#C8A951',
                                 margin: 0,
-                                marginBottom: '8px'
+                                marginBottom: '4px',
+                                textAlign: 'center'
                             }}>
-                                Select Probate States
+                                Select States
                             </h3>
-                            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', margin: 0 }}>
-                                Choose the states where you need probate automation
+                            <p style={{
+                                color: 'rgba(255,255,255,0.5)',
+                                fontSize: '12px',
+                                margin: 0,
+                                textAlign: 'center'
+                            }}>
+                                {tempSelectedStates.length} selected • ${(tempSelectedStates.length * (bundleSelected ? 24500 : 35000)).toLocaleString()}
                             </p>
                         </div>
 
                         {/* Search Input */}
-                        <input
-                            type="text"
-                            placeholder="Search states..."
-                            value={stateSearchQuery}
-                            onChange={(e) => setStateSearchQuery(e.target.value)}
-                            style={{
-                                width: '100%',
-                                padding: '12px 16px',
-                                background: 'rgba(255,255,255,0.05)',
-                                border: '1px solid rgba(255,255,255,0.2)',
-                                borderRadius: '8px',
-                                color: 'white',
-                                fontSize: '14px',
-                                marginBottom: '16px',
-                                outline: 'none'
-                            }}
-                        />
+                        <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                            <input
+                                type="text"
+                                placeholder="Search states..."
+                                value={stateSearchQuery}
+                                onChange={(e) => setStateSearchQuery(e.target.value)}
+                                style={{
+                                    width: '100%',
+                                    padding: '10px 14px',
+                                    background: 'rgba(255,255,255,0.05)',
+                                    border: '1px solid rgba(255,255,255,0.15)',
+                                    borderRadius: '6px',
+                                    color: 'white',
+                                    fontSize: '14px',
+                                    outline: 'none'
+                                }}
+                            />
+                        </div>
 
-                        {/* States Grid - Scrollable */}
+                        {/* Clear All Button */}
+                        {tempSelectedStates.length > 0 && (
+                            <div style={{ padding: '8px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                                <button
+                                    type="button"
+                                    onClick={() => setTempSelectedStates([])}
+                                    style={{
+                                        width: '100%',
+                                        padding: '8px',
+                                        background: 'rgba(239, 68, 68, 0.1)',
+                                        border: '1px solid rgba(239, 68, 68, 0.3)',
+                                        borderRadius: '6px',
+                                        color: '#ef4444',
+                                        fontSize: '12px',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    ✕ Clear All ({tempSelectedStates.length})
+                                </button>
+                            </div>
+                        )}
+
+                        {/* States Scroll List */}
                         <div style={{
                             flex: 1,
                             overflowY: 'auto',
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(3, 1fr)',
-                            gap: '8px',
-                            marginBottom: '16px',
-                            maxHeight: '300px',
-                            paddingRight: '8px'
+                            padding: '8px 0'
                         }}>
-                            {filteredStates.map(state => (
-                                <button
-                                    key={state.code}
-                                    type="button"
-                                    onClick={() => toggleTempState(state.code)}
-                                    style={{
-                                        padding: '10px 8px',
-                                        borderRadius: '6px',
-                                        fontSize: '12px',
-                                        fontWeight: 500,
-                                        cursor: 'pointer',
-                                        border: tempSelectedStates.includes(state.code)
-                                            ? '2px solid #10B981'
-                                            : '1px solid rgba(255,255,255,0.15)',
-                                        background: tempSelectedStates.includes(state.code)
-                                            ? 'rgba(16, 185, 129, 0.2)'
-                                            : 'rgba(255,255,255,0.03)',
-                                        color: tempSelectedStates.includes(state.code)
-                                            ? '#10B981'
-                                            : 'rgba(255,255,255,0.8)',
-                                        textAlign: 'left',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '6px'
-                                    }}
-                                >
-                                    <span style={{
-                                        width: '14px',
-                                        height: '14px',
-                                        borderRadius: '3px',
-                                        border: tempSelectedStates.includes(state.code)
-                                            ? '2px solid #10B981'
-                                            : '1px solid rgba(255,255,255,0.3)',
-                                        background: tempSelectedStates.includes(state.code)
-                                            ? '#10B981'
-                                            : 'transparent',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        fontSize: '10px',
-                                        color: 'white',
-                                        flexShrink: 0
-                                    }}>
-                                        {tempSelectedStates.includes(state.code) ? '✓' : ''}
-                                    </span>
-                                    {state.code}
-                                </button>
-                            ))}
+                            {filteredStates.map(state => {
+                                const isSelected = tempSelectedStates.includes(state.code)
+                                return (
+                                    <div
+                                        key={state.code}
+                                        onClick={() => toggleTempState(state.code)}
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            padding: '12px 20px',
+                                            cursor: 'pointer',
+                                            background: isSelected ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
+                                            borderLeft: isSelected ? '3px solid #10B981' : '3px solid transparent',
+                                            transition: 'all 0.15s ease'
+                                        }}
+                                    >
+                                        {/* Checkbox */}
+                                        <div style={{
+                                            width: '20px',
+                                            height: '20px',
+                                            borderRadius: '4px',
+                                            border: isSelected ? '2px solid #10B981' : '2px solid rgba(255,255,255,0.3)',
+                                            background: isSelected ? '#10B981' : 'transparent',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            marginRight: '12px',
+                                            flexShrink: 0,
+                                            transition: 'all 0.15s ease'
+                                        }}>
+                                            {isSelected && <span style={{ color: 'white', fontSize: '12px', fontWeight: 'bold' }}>✓</span>}
+                                        </div>
+                                        {/* State Code */}
+                                        <span style={{
+                                            color: isSelected ? '#10B981' : 'white',
+                                            fontWeight: 600,
+                                            fontSize: '14px',
+                                            marginRight: '10px',
+                                            width: '28px'
+                                        }}>
+                                            {state.code}
+                                        </span>
+                                        {/* State Name */}
+                                        <span style={{
+                                            color: isSelected ? 'rgba(16, 185, 129, 0.8)' : 'rgba(255,255,255,0.6)',
+                                            fontSize: '13px'
+                                        }}>
+                                            {state.name}
+                                        </span>
+                                    </div>
+                                )
+                            })}
                         </div>
 
-                        {/* Selection Summary */}
-                        <div style={{
-                            padding: '12px',
-                            background: 'rgba(200, 169, 81, 0.1)',
-                            borderRadius: '8px',
-                            marginBottom: '16px'
-                        }}>
-                            <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '11px', marginBottom: '4px' }}>
-                                {tempSelectedStates.length} state{tempSelectedStates.length !== 1 ? 's' : ''} selected
-                            </div>
-                            <div style={{ color: '#C8A951', fontSize: '18px', fontWeight: 700 }}>
-                                ${(tempSelectedStates.length * (bundleSelected ? 24500 : 35000)).toLocaleString()}
-                            </div>
-                            {tempSelectedStates.length > 0 && (
-                                <div style={{ color: '#10B981', fontSize: '11px', marginTop: '4px' }}>
-                                    {tempSelectedStates.join(', ')}
+                        {/* Selected States Summary */}
+                        {tempSelectedStates.length > 0 && (
+                            <div style={{
+                                padding: '12px 16px',
+                                borderTop: '1px solid rgba(255,255,255,0.1)',
+                                background: 'rgba(16, 185, 129, 0.05)'
+                            }}>
+                                <div style={{
+                                    color: '#10B981',
+                                    fontSize: '11px',
+                                    lineHeight: 1.4
+                                }}>
+                                    <strong>Selected:</strong> {tempSelectedStates.join(', ')}
                                 </div>
-                            )}
-                        </div>
+                            </div>
+                        )}
 
                         {/* Action Buttons */}
-                        <div style={{ display: 'flex', gap: '12px' }}>
+                        <div style={{
+                            display: 'flex',
+                            gap: '10px',
+                            padding: '16px',
+                            borderTop: '1px solid rgba(255,255,255,0.1)',
+                            background: 'rgba(0,0,0,0.2)'
+                        }}>
                             <button
                                 type="button"
                                 onClick={() => setShowStateSelector(false)}
@@ -793,9 +826,9 @@ export function ConfigureSolution() {
                                     padding: '12px',
                                     background: 'transparent',
                                     border: '1px solid rgba(255,255,255,0.3)',
-                                    borderRadius: '8px',
+                                    borderRadius: '6px',
                                     color: 'white',
-                                    fontSize: '14px',
+                                    fontSize: '13px',
                                     cursor: 'pointer'
                                 }}
                             >
@@ -804,22 +837,23 @@ export function ConfigureSolution() {
                             <button
                                 type="button"
                                 onClick={confirmStateSelection}
-                                disabled={tempSelectedStates.length === 0}
                                 style={{
                                     flex: 2,
                                     padding: '12px',
                                     background: tempSelectedStates.length > 0
-                                        ? 'linear-gradient(135deg, #C8A951, #D4AF37)'
+                                        ? '#C8A951'
                                         : 'rgba(255,255,255,0.1)',
                                     border: 'none',
-                                    borderRadius: '8px',
+                                    borderRadius: '6px',
                                     color: tempSelectedStates.length > 0 ? '#000' : 'rgba(255,255,255,0.4)',
-                                    fontSize: '14px',
+                                    fontSize: '13px',
                                     fontWeight: 600,
-                                    cursor: tempSelectedStates.length > 0 ? 'pointer' : 'not-allowed'
+                                    cursor: 'pointer'
                                 }}
                             >
-                                ✓ Confirm Selection
+                                {tempSelectedStates.length > 0
+                                    ? `✓ Confirm (${tempSelectedStates.length} states)`
+                                    : 'Select at least 1 state'}
                             </button>
                         </div>
                     </div>
