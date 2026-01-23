@@ -32,8 +32,9 @@ export function SirsiVault() {
 
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
+    const probateStates = useConfigStore(state => state.probateStates)
 
-    const totalInvestment = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks)
+    const totalInvestment = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
 
     const openPrintableMSA = () => {
         const timeline = calculateTimeline(selectedBundle, selectedAddons) // weeks

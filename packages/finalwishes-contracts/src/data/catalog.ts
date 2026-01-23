@@ -602,7 +602,7 @@ export function getAddonPrice(id: string, hasBundle: boolean): number {
     return hasBundle ? product.bundledPrice : (product.standalonePrice || product.bundledPrice * 1.5)
 }
 
-export function calculateTotal(bundleId: string | null, addonIds: string[], ceoConsultingWeeks: number = 1): number {
+export function calculateTotal(bundleId: string | null, addonIds: string[], ceoConsultingWeeks: number = 1, probateStateCount: number = 1): number {
     let total = 0
     const hasBundle = bundleId !== null
     if (bundleId && BUNDLES[bundleId]) total += BUNDLES[bundleId].price
@@ -612,6 +612,10 @@ export function calculateTotal(bundleId: string | null, addonIds: string[], ceoC
             // CEO Consulting is priced per week
             if (id === 'ceo-consulting') {
                 total += product.bundledPrice * ceoConsultingWeeks
+                // Probate Engine is priced per state
+            } else if (id === 'probate') {
+                const stateCount = Math.max(1, probateStateCount)
+                total += (hasBundle ? product.bundledPrice : (product.standalonePrice || product.bundledPrice * 1.5)) * stateCount
             } else {
                 total += hasBundle ? product.bundledPrice : (product.standalonePrice || product.bundledPrice * 1.5)
             }

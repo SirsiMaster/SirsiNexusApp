@@ -21,6 +21,7 @@ interface ConfigState {
     selectedBundle: string | null
     selectedAddons: string[]
     ceoConsultingWeeks: number
+    probateStates: string[]
 
     // Actions
     setCurrentTab: (tab: TabId) => void
@@ -29,6 +30,7 @@ interface ConfigState {
     setSelectedBundle: (id: string | null) => void
     toggleAddon: (id: string) => void
     setCeoConsultingWeeks: (weeks: number) => void
+    toggleProbateState: (state: string) => void
     markTabVisited: (tab: TabId) => void
     resetConfig: () => void
 }
@@ -44,6 +46,7 @@ const initialState = {
     selectedBundle: null,
     selectedAddons: [],
     ceoConsultingWeeks: 1,
+    probateStates: [] as string[],
 }
 
 export const useConfigStore = create<ConfigState>()(
@@ -84,6 +87,12 @@ export const useConfigStore = create<ConfigState>()(
             })),
 
             setCeoConsultingWeeks: (weeks) => set({ ceoConsultingWeeks: Math.max(1, Math.min(52, weeks)) }),
+
+            toggleProbateState: (state) => set((s) => ({
+                probateStates: s.probateStates.includes(state)
+                    ? s.probateStates.filter(st => st !== state)
+                    : [...s.probateStates, state]
+            })),
 
             markTabVisited: (tab) => set((state) => ({
                 visitedTabs: state.visitedTabs.includes(tab)

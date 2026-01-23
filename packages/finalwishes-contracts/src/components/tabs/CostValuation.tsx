@@ -10,8 +10,9 @@ export function CostValuation() {
     const selectedBundle = useConfigStore(state => state.selectedBundle)
     const selectedAddons = useConfigStore(state => state.selectedAddons)
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
+    const probateStates = useConfigStore(state => state.probateStates)
 
-    const totalInvestment = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks)
+    const totalInvestment = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
     const totalTimeline = calculateTimeline(selectedBundle, selectedAddons)
 
     // Market Value logic (approx 1.5x - 2x the bundled cost)

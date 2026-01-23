@@ -14,10 +14,12 @@ export function ConfigureSolution() {
     const toggleAddon = useConfigStore(state => state.toggleAddon)
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
     const setCeoConsultingWeeks = useConfigStore(state => state.setCeoConsultingWeeks)
+    const probateStates = useConfigStore(state => state.probateStates)
+    const toggleProbateState = useConfigStore(state => state.toggleProbateState)
 
     const [flippedCard, setFlippedCard] = useState<string | null>(null)
 
-    const totalInvestment = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks)
+    const totalInvestment = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
     const estimatedTimeline = calculateTimeline(selectedBundle, selectedAddons)
     const itemCount = (selectedBundle ? 1 : 0) + selectedAddons.length
 
@@ -350,13 +352,19 @@ export function ConfigureSolution() {
                                             <span style={{ color: '#C8A951', fontWeight: 'bold', fontSize: '28px' }}>
                                                 {item.id === 'ceo-consulting'
                                                     ? `$${(currPrice * ceoConsultingWeeks).toLocaleString()}`
-                                                    : `$${currPrice.toLocaleString()}`
+                                                    : item.id === 'probate' && probateStates.length > 0
+                                                        ? `$${(currPrice * probateStates.length).toLocaleString()}`
+                                                        : `$${currPrice.toLocaleString()}`
                                                 }
                                                 {item.id === 'ceo-consulting'
                                                     ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>({ceoConsultingWeeks} weeks)</span>
-                                                    : (item.id === 'maintenance'
-                                                        ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/year</span>
-                                                        : (item.recurring ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/mo</span> : ''))}
+                                                    : item.id === 'probate' && probateStates.length > 0
+                                                        ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>({probateStates.length} states)</span>
+                                                        : item.id === 'probate'
+                                                            ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/state</span>
+                                                            : (item.id === 'maintenance'
+                                                                ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/year</span>
+                                                                : (item.recurring ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/mo</span> : ''))}
                                             </span>
                                         </div>
 
@@ -408,17 +416,76 @@ export function ConfigureSolution() {
                                         <div style={{ color: '#64748b', fontSize: '13px', marginBottom: '16px' }}>
                                             {item.id === 'ceo-consulting'
                                                 ? `${ceoConsultingWeeks} week${ceoConsultingWeeks > 1 ? 's' : ''} engagement`
-                                                : `${item.timeline} ${item.timelineUnit} Delivery`}
+                                                : item.id === 'probate' && probateStates.length > 0
+                                                    ? `${probateStates.length} state${probateStates.length > 1 ? 's' : ''} selected`
+                                                    : `${item.timeline} ${item.timelineUnit} Delivery`}
                                         </div>
                                         <p style={{ fontSize: '1rem', color: 'rgba(147, 197, 253, 0.8)', lineHeight: 1.6, margin: 0 }}>
                                             {item.shortDescription}
                                         </p>
+
+                                        {/* Probate Engine State Selector */}
+                                        {item.id === 'probate' && inCart && (
+                                            <div
+                                                onClick={(e) => e.stopPropagation()}
+                                                style={{
+                                                    marginTop: '12px',
+                                                    padding: '12px',
+                                                    background: 'rgba(200, 169, 81, 0.1)',
+                                                    borderRadius: '8px',
+                                                    border: '1px solid rgba(200, 169, 81, 0.3)'
+                                                }}
+                                            >
+                                                <div style={{ color: 'white', fontSize: '12px', marginBottom: '8px', fontWeight: 600 }}>
+                                                    Select States:
+                                                </div>
+                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                                    {[
+                                                        { code: 'MD', name: 'Maryland', priority: true },
+                                                        { code: 'IL', name: 'Illinois', priority: true },
+                                                        { code: 'MN', name: 'Minnesota', priority: true },
+                                                        { code: 'DC', name: 'D.C.', priority: false },
+                                                        { code: 'VA', name: 'Virginia', priority: false }
+                                                    ].map(state => (
+                                                        <button
+                                                            key={state.code}
+                                                            onClick={() => toggleProbateState(state.code)}
+                                                            style={{
+                                                                padding: '6px 10px',
+                                                                borderRadius: '4px',
+                                                                fontSize: '11px',
+                                                                fontWeight: 600,
+                                                                cursor: 'pointer',
+                                                                border: probateStates.includes(state.code)
+                                                                    ? '1px solid #10B981'
+                                                                    : '1px solid rgba(255,255,255,0.2)',
+                                                                background: probateStates.includes(state.code)
+                                                                    ? 'rgba(16, 185, 129, 0.2)'
+                                                                    : 'rgba(255,255,255,0.05)',
+                                                                color: probateStates.includes(state.code)
+                                                                    ? '#10B981'
+                                                                    : 'rgba(255,255,255,0.7)'
+                                                            }}
+                                                        >
+                                                            {state.code}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                                <div style={{ color: '#64748b', fontSize: '10px', marginTop: '8px' }}>
+                                                    ${bundleSelected ? '24,500' : '35,000'}/state
+                                                </div>
+                                            </div>
+                                        )}
 
                                         <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                             {/* Caption for CEO Consulting when not selected */}
                                             {item.id === 'ceo-consulting' && !inCart ? (
                                                 <span style={{ color: '#C8A951', fontSize: '11px', fontStyle: 'italic' }}>
                                                     ☑ Check box to select weeks
+                                                </span>
+                                            ) : item.id === 'probate' && !inCart ? (
+                                                <span style={{ color: '#C8A951', fontSize: '11px', fontStyle: 'italic' }}>
+                                                    ☑ Check box to select states
                                                 </span>
                                             ) : <span></span>}
                                             <div style={{
