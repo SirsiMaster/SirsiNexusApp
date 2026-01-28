@@ -60,6 +60,7 @@ User ← → Sirsi Persona ← → Domain Agents (Internal Only)
 || **Phase 6.4** | ✅ **COMPLETE** | 100% | **Security Hardening & Professional GitHub Pages Portal** |
 || **GitHub Pages Lead Generation** | ✅ **COMPLETE** | 100% | **Professional Lead Generation Portal & App Gateway** |
 || **Phase 6.5** | ✅ **COMPLETE** | 100% | **Professional GitHub Pages Portal & Lead Generation System** |
+|| **Phase 8.1** | ✅ **COMPLETE** | 100% | **Admin Portal Refactor (Neo-Deco & gRPC-Web Foundation)** |
 
 ### **Live System Metrics**
 - **Database**: ✅ CockroachDB operational (`postgresql://root@localhost:26257/sirsi_nexus`)
@@ -718,7 +719,13 @@ redis-cli ping
 ## 🎉 **MAJOR ACHIEVEMENTS LOG**
 
 ### **Phase 6.5 Milestones (Recently Completed)**
-- **2025-07-14 (Evening)**: 🌐 **BREAKTHROUGH: Professional GitHub Pages Portal Complete (Phase 6.5)**
+- **2026-01-28**: 🏛️ **MAJOR ARCHITECTURAL UPGRADE: Admin Portal Refactor (Phase 8.1)**
+  - **Type-Safe Backend**: Implemented Go `AdminService` with Connect gRPC-Web protocol.
+  - **Neo-Deco UI**: Refactored admin dashboards into high-fidelity React components (Estates, Users, Dev KPIs, Notifications).
+  - **Dynamic Governance**: Added real-time Multiplier control and Maintenance Mode toggles.
+  - **Transmission Audit**: Built a brand new Omni-notify Engine for multi-channel communication control.
+  - **Stack Alignment**: Standardized all data fetching with TanStack Query and TanStack Table.
+  - **Status**: Phase 2 Foundation & Module implementation 100% complete.
   - Professional Landing Page: Complete redesign with SirsiNexus app UI styling using Tailwind CSS
   - Lead Generation Portal: Comprehensive signup page with user registration and update notifications
   - Secure Investor Portal: Authentication-gated data room with comprehensive investor resources

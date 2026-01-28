@@ -1,6 +1,7 @@
-// Removed unused imports
+import { useNavigate } from 'react-router-dom';
 
 export function LandingPage() {
+    const navigate = useNavigate();
     return (
         <div style={{
             minHeight: '80vh',
@@ -68,7 +69,7 @@ export function LandingPage() {
                     margin: '0 auto'
                 }}>
                     <button
-                        onClick={() => window.location.href = '/login'}
+                        onClick={() => navigate('/login')}
                         style={{
                             background: '#C8A951',
                             color: '#000',
@@ -92,7 +93,7 @@ export function LandingPage() {
                     </button>
 
                     <button
-                        onClick={() => window.location.href = '/register'}
+                        onClick={() => navigate('/login')}
                         style={{
                             background: 'transparent',
                             color: 'white',

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AgreementWorkflow } from './components/workflow/AgreementWorkflow';
 import { LandingPage } from './components/vault/LandingPage';
 import { VaultDashboard } from './components/vault/VaultDashboard';
-import { AdminDashboard } from './components/vault/AdminDashboard';
+import { AdminPortal } from './components/admin/AdminPortal';
 import { Login } from './components/auth/Login';
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
         <Route path="/vault" element={<VaultDashboard /> as any} />
 
         {/* Admin Studio */}
-        <Route path="/admin" element={<AdminDashboard /> as any} />
+        <Route path="/admin" element={<AdminPortal /> as any} />
 
         {/* Catch-all - redirect to landing */}
         <Route path="*" element={<Navigate to="/" replace /> as any} />

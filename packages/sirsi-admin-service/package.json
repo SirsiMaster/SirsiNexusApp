@@ -1,0 +1,14 @@
+{
+    "name": "sirsi-admin-service",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "dependencies": {
+        "module": "latest"
+    },
+    "devDependencies": {
+        "@bufbuild/buf": "^1.28.1",
+        "@bufbuild/protoc-gen-es": "^1.6.0",
+        "@connectrpc/protoc-gen-connect-es": "^1.2.0"
+    }
+}

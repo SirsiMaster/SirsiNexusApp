@@ -1,0 +1,19 @@
+version: v1
+managed:
+  enabled: true
+plugins:
+  - plugin: go
+    out: gen/go
+    opt: paths=source_relative
+  - plugin: go-grpc
+    out: gen/go
+    opt: paths=source_relative
+  - plugin: connect-go
+    out: gen/go
+    opt: paths=source_relative
+  - plugin: es
+    out: gen/ts
+    opt: target=ts
+  - plugin: connect-es
+    out: gen/ts
+    opt: target=ts

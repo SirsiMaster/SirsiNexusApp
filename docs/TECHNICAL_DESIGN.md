@@ -252,11 +252,26 @@ python3 -m grpc_tools.protoc \
     --python_out="${PY_OUT_DIR}" \
     --grpc_python_out="${PY_OUT_DIR}" "$proto_file"
 
-# Go (cloud connectors)
+# Go (cloud connectors & Admin Service)
 protoc --proto_path="${PROTO_DIR}" \
     --go_out="${GO_OUT_DIR}" \
-    --go-grpc_out="${GO_OUT_DIR}" "$proto_file"
+    --go-grpc_out="${GO_OUT_DIR}" \
+    --connect-go_out="${GO_OUT_DIR}" "$proto_file"
 ```
+
+### **Admin Portal gRPC-Web Architecture**
+
+The Admin Portal utilizes **Connect RPC** (gRPC-Web compatible) to provide high-performance, type-safe communication between the Vite/React frontend and the Go backend services.
+
+#### **Backend Implementation (Go)**
+- **Connect RPC**: Uses `connect-go` to serve gRPC over HTTP/1.1 and HTTP/2.
+- **Middleware**: Integrated CORS handling for local development and production security.
+- **Handlers**: Mocked and functional handlers for estates, users, and notifications.
+
+#### **Frontend Implementation (React)**
+- **Transport**: `@connectrpc/connect-web` transport configured with `credentials: 'include'`.
+- **State Management**: **TanStack Query (v5)** hooks (`useAdmin.ts`) wrap the Connect clients for robust caching and optimistic updates.
+- **UI Components**: Modules built with **TanStack Table** for complex administrative data grids.
 
 ### **Performance Metrics & Benchmarks**
 
