@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,6 +17,43 @@ import (
 )
 
 type AdminServer struct{}
+
+const settingsFile = "settings.json"
+
+var mockSettings = &adminv1.SystemSettings{
+	MaintenanceMode: false,
+	ActiveRegion:    "us-central1",
+	SirsiMultiplier: 2.0,
+}
+
+func loadSettings() {
+	data, err := os.ReadFile(settingsFile)
+	if err != nil {
+		if os.IsNotExist(err) {
+			log.Println("Settings file not found, creating default...")
+			saveSettings()
+			return
+		}
+		log.Printf("Error reading settings: %v", err)
+		return
+	}
+	err = json.Unmarshal(data, &mockSettings)
+	if err != nil {
+		log.Printf("Error unmarshaling settings: %v", err)
+	}
+}
+
+func saveSettings() {
+	data, err := json.MarshalIndent(mockSettings, "", "  ")
+	if err != nil {
+		log.Printf("Error marshaling settings: %v", err)
+		return
+	}
+	err = os.WriteFile(settingsFile, data, 0644)
+	if err != nil {
+		log.Printf("Error writing settings: %v", err)
+	}
+}
 
 func (s *AdminServer) ListEstates(
 	ctx context.Context,
@@ -126,7 +164,30 @@ func (s *AdminServer) ListNotifications(
 	return res, nil
 }
 
+func (s *AdminServer) GetSettings(
+	ctx context.Context,
+	req *connect.Request[adminv1.GetSettingsRequest],
+) (*connect.Response[adminv1.GetSettingsResponse], error) {
+	loadSettings() // Refresh from disk
+	return connect.NewResponse(&adminv1.GetSettingsResponse{
+		Settings: mockSettings,
+	}), nil
+}
+
+func (s *AdminServer) UpdateSettings(
+	ctx context.Context,
+	req *connect.Request[adminv1.UpdateSettingsRequest],
+) (*connect.Response[adminv1.UpdateSettingsResponse], error) {
+	log.Printf("UpdateSettings: Multiplier -> %f", req.Msg.Settings.SirsiMultiplier)
+	mockSettings = req.Msg.Settings
+	saveSettings()
+	return connect.NewResponse(&adminv1.UpdateSettingsResponse{
+		Success: true,
+	}), nil
+}
+
 func main() {
+	loadSettings()
 	mux := http.NewServeMux()
 	path, handler := v1connect.NewAdminServiceHandler(&AdminServer{})
 	mux.Handle(path, handler)

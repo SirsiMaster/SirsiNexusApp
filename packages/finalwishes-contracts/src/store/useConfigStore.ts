@@ -23,6 +23,10 @@ interface ConfigState {
     ceoConsultingWeeks: number
     probateStates: string[]
 
+    // System settings from Admin
+    sirsiMultiplier: number
+    maintenanceMode: boolean
+
     // Actions
     setCurrentTab: (tab: TabId) => void
     setProjectId: (id: string) => void
@@ -32,6 +36,7 @@ interface ConfigState {
     setCeoConsultingWeeks: (weeks: number) => void
     toggleProbateState: (state: string) => void
     markTabVisited: (tab: TabId) => void
+    setSystemSettings: (settings: { multiplier: number, maintenanceMode: boolean }) => void
     resetConfig: () => void
 }
 
@@ -47,6 +52,8 @@ const initialState = {
     selectedAddons: [],
     ceoConsultingWeeks: 1,
     probateStates: [] as string[],
+    sirsiMultiplier: 2.0, // Default to 2.0x as per Rule 13
+    maintenanceMode: false,
 }
 
 export const useConfigStore = create<ConfigState>()(
@@ -99,6 +106,11 @@ export const useConfigStore = create<ConfigState>()(
                     ? state.visitedTabs
                     : [...state.visitedTabs, tab]
             })),
+
+            setSystemSettings: (settings) => set({
+                sirsiMultiplier: settings.multiplier || 2.0,
+                maintenanceMode: settings.maintenanceMode || false
+            }),
 
             resetConfig: () => set(initialState),
         }),

@@ -7,14 +7,16 @@
     "scripts": {
         "start": "node src/server.js",
         "dev": "node --watch src/server.js",
-        "proto:gen": "buf generate",
+        "proto:gen": "npx buf generate ../../../finalwishes-contracts/proto",
         "build": "npm run proto:gen"
     },
     "dependencies": {
+        "@bufbuild/protobuf": "^1.10.0",
         "@connectrpc/connect": "^1.4.0",
         "@connectrpc/connect-node": "^1.4.0",
-        "@bufbuild/protobuf": "^1.10.0",
+        "@sendgrid/mail": "^8.1.6",
         "firebase-admin": "^13.0.0",
+        "plaid": "^41.1.0",
         "stripe": "^14.10.0"
     },
     "devDependencies": {

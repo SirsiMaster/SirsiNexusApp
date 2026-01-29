@@ -612,7 +612,8 @@ export function calculateTotal(
     bundleId: string | null,
     addonIds: string[],
     ceoConsultingWeeks: number = 1,
-    probateStateCount: number = 1
+    probateStateCount: number = 1,
+    multiplier: number = 1.0 // Sirsi Multiplier
 ): CalculateTotalResult {
     let bundleTotal = 0
     let addonsTotal = 0
@@ -621,14 +622,14 @@ export function calculateTotal(
 
     const hasBundle = bundleId !== null
     if (bundleId && BUNDLES[bundleId]) {
-        bundleTotal = BUNDLES[bundleId].price
+        bundleTotal = BUNDLES[bundleId].price * (multiplier || 1.0)
     }
 
     addonIds.forEach(id => {
         const product = PRODUCTS[id]
         if (product) {
             const standPrice = product.standalonePrice || Math.round(product.bundledPrice * 1.5)
-            const unitPrice = hasBundle ? product.bundledPrice : standPrice
+            const unitPrice = (hasBundle ? product.bundledPrice : standPrice) * (multiplier || 1.0)
 
             if (id === 'ceo-consulting') {
                 ceoConsultingTotal = unitPrice * Math.max(1, ceoConsultingWeeks)
@@ -937,6 +938,7 @@ export function calculateTotalHours(
     ceoConsultingWeeks: number = 1,
     probateStateCount: number = 1
 ): number {
+    // Hours are based on the BASE INTERNAL RATE ($125/hr)
     return getAggregatedWBS(bundleId, addonIds, ceoConsultingWeeks, probateStateCount).reduce((acc, p) => acc + p.hours, 0)
 }
 

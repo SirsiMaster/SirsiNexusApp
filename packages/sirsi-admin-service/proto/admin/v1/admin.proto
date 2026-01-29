@@ -19,6 +19,10 @@ service AdminService {
   // Notifications
   rpc SendNotification(SendNotificationRequest) returns (SendNotificationResponse);
   rpc ListNotifications(ListNotificationsRequest) returns (ListNotificationsResponse);
+
+  // System Settings
+  rpc GetSettings(GetSettingsRequest) returns (GetSettingsResponse);
+  rpc UpdateSettings(UpdateSettingsRequest) returns (UpdateSettingsResponse);
 }
 
 message Estate {
@@ -110,4 +114,24 @@ message Notification {
   string type = 5;
   int64 sent_at = 6;
   string status = 7;
+}
+
+message SystemSettings {
+  bool maintenance_mode = 1;
+  string active_region = 2;
+  double sirsi_multiplier = 3;
+}
+
+message GetSettingsRequest {}
+
+message GetSettingsResponse {
+  SystemSettings settings = 1;
+}
+
+message UpdateSettingsRequest {
+  SystemSettings settings = 1;
+}
+
+message UpdateSettingsResponse {
+  bool success = 1;
 }

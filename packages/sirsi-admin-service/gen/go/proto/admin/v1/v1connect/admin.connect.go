@@ -52,6 +52,12 @@ const (
 	// AdminServiceListNotificationsProcedure is the fully-qualified name of the AdminService's
 	// ListNotifications RPC.
 	AdminServiceListNotificationsProcedure = "/sirsi.admin.v1.AdminService/ListNotifications"
+	// AdminServiceGetSettingsProcedure is the fully-qualified name of the AdminService's GetSettings
+	// RPC.
+	AdminServiceGetSettingsProcedure = "/sirsi.admin.v1.AdminService/GetSettings"
+	// AdminServiceUpdateSettingsProcedure is the fully-qualified name of the AdminService's
+	// UpdateSettings RPC.
+	AdminServiceUpdateSettingsProcedure = "/sirsi.admin.v1.AdminService/UpdateSettings"
 )
 
 // AdminServiceClient is a client for the sirsi.admin.v1.AdminService service.
@@ -67,6 +73,9 @@ type AdminServiceClient interface {
 	// Notifications
 	SendNotification(context.Context, *connect.Request[v1.SendNotificationRequest]) (*connect.Response[v1.SendNotificationResponse], error)
 	ListNotifications(context.Context, *connect.Request[v1.ListNotificationsRequest]) (*connect.Response[v1.ListNotificationsResponse], error)
+	// System Settings
+	GetSettings(context.Context, *connect.Request[v1.GetSettingsRequest]) (*connect.Response[v1.GetSettingsResponse], error)
+	UpdateSettings(context.Context, *connect.Request[v1.UpdateSettingsRequest]) (*connect.Response[v1.UpdateSettingsResponse], error)
 }
 
 // NewAdminServiceClient constructs a client for the sirsi.admin.v1.AdminService service. By
@@ -122,6 +131,18 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(adminServiceMethods.ByName("ListNotifications")),
 			connect.WithClientOptions(opts...),
 		),
+		getSettings: connect.NewClient[v1.GetSettingsRequest, v1.GetSettingsResponse](
+			httpClient,
+			baseURL+AdminServiceGetSettingsProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("GetSettings")),
+			connect.WithClientOptions(opts...),
+		),
+		updateSettings: connect.NewClient[v1.UpdateSettingsRequest, v1.UpdateSettingsResponse](
+			httpClient,
+			baseURL+AdminServiceUpdateSettingsProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("UpdateSettings")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -134,6 +155,8 @@ type adminServiceClient struct {
 	listUsers         *connect.Client[v1.ListUsersRequest, v1.ListUsersResponse]
 	sendNotification  *connect.Client[v1.SendNotificationRequest, v1.SendNotificationResponse]
 	listNotifications *connect.Client[v1.ListNotificationsRequest, v1.ListNotificationsResponse]
+	getSettings       *connect.Client[v1.GetSettingsRequest, v1.GetSettingsResponse]
+	updateSettings    *connect.Client[v1.UpdateSettingsRequest, v1.UpdateSettingsResponse]
 }
 
 // ListEstates calls sirsi.admin.v1.AdminService.ListEstates.
@@ -171,6 +194,16 @@ func (c *adminServiceClient) ListNotifications(ctx context.Context, req *connect
 	return c.listNotifications.CallUnary(ctx, req)
 }
 
+// GetSettings calls sirsi.admin.v1.AdminService.GetSettings.
+func (c *adminServiceClient) GetSettings(ctx context.Context, req *connect.Request[v1.GetSettingsRequest]) (*connect.Response[v1.GetSettingsResponse], error) {
+	return c.getSettings.CallUnary(ctx, req)
+}
+
+// UpdateSettings calls sirsi.admin.v1.AdminService.UpdateSettings.
+func (c *adminServiceClient) UpdateSettings(ctx context.Context, req *connect.Request[v1.UpdateSettingsRequest]) (*connect.Response[v1.UpdateSettingsResponse], error) {
+	return c.updateSettings.CallUnary(ctx, req)
+}
+
 // AdminServiceHandler is an implementation of the sirsi.admin.v1.AdminService service.
 type AdminServiceHandler interface {
 	// Estate Management
@@ -184,6 +217,9 @@ type AdminServiceHandler interface {
 	// Notifications
 	SendNotification(context.Context, *connect.Request[v1.SendNotificationRequest]) (*connect.Response[v1.SendNotificationResponse], error)
 	ListNotifications(context.Context, *connect.Request[v1.ListNotificationsRequest]) (*connect.Response[v1.ListNotificationsResponse], error)
+	// System Settings
+	GetSettings(context.Context, *connect.Request[v1.GetSettingsRequest]) (*connect.Response[v1.GetSettingsResponse], error)
+	UpdateSettings(context.Context, *connect.Request[v1.UpdateSettingsRequest]) (*connect.Response[v1.UpdateSettingsResponse], error)
 }
 
 // NewAdminServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -235,6 +271,18 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(adminServiceMethods.ByName("ListNotifications")),
 		connect.WithHandlerOptions(opts...),
 	)
+	adminServiceGetSettingsHandler := connect.NewUnaryHandler(
+		AdminServiceGetSettingsProcedure,
+		svc.GetSettings,
+		connect.WithSchema(adminServiceMethods.ByName("GetSettings")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceUpdateSettingsHandler := connect.NewUnaryHandler(
+		AdminServiceUpdateSettingsProcedure,
+		svc.UpdateSettings,
+		connect.WithSchema(adminServiceMethods.ByName("UpdateSettings")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/sirsi.admin.v1.AdminService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AdminServiceListEstatesProcedure:
@@ -251,6 +299,10 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 			adminServiceSendNotificationHandler.ServeHTTP(w, r)
 		case AdminServiceListNotificationsProcedure:
 			adminServiceListNotificationsHandler.ServeHTTP(w, r)
+		case AdminServiceGetSettingsProcedure:
+			adminServiceGetSettingsHandler.ServeHTTP(w, r)
+		case AdminServiceUpdateSettingsProcedure:
+			adminServiceUpdateSettingsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -286,4 +338,12 @@ func (UnimplementedAdminServiceHandler) SendNotification(context.Context, *conne
 
 func (UnimplementedAdminServiceHandler) ListNotifications(context.Context, *connect.Request[v1.ListNotificationsRequest]) (*connect.Response[v1.ListNotificationsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v1.AdminService.ListNotifications is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) GetSettings(context.Context, *connect.Request[v1.GetSettingsRequest]) (*connect.Response[v1.GetSettingsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v1.AdminService.GetSettings is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) UpdateSettings(context.Context, *connect.Request[v1.UpdateSettingsRequest]) (*connect.Response[v1.UpdateSettingsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v1.AdminService.UpdateSettings is not implemented"))
 }

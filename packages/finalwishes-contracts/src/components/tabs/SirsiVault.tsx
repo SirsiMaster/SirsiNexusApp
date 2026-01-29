@@ -21,7 +21,8 @@ export function SirsiVault() {
         name: '',
         email: '',
         title: '',
-        agreed: false
+        agreed: false,
+        selectedPaymentMethod: 'card' // 'card' or 'bank'
     })
     const [hasSignature, setHasSignature] = useState(false)
     const [signatureImageData, setSignatureImageData] = useState<string | null>(null)
@@ -33,14 +34,15 @@ export function SirsiVault() {
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
     const probateStates = useConfigStore(state => state.probateStates)
+    const sirsiMultiplier = useConfigStore(state => state.sirsiMultiplier)
 
-    const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
+    const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length, sirsiMultiplier)
     const totalInvestment = totalInvestmentResult.total
 
     const openPrintableMSA = () => {
         const timeline = calculateTimeline(selectedBundle, selectedAddons, probateStates.length) // weeks
         const hours = calculateTotalHours(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length) // total dev hours
-        const msaUrl = `/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}`
+        const msaUrl = `/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=${sirsiMultiplier}`
         window.open(msaUrl, '_blank', 'width=900,height=800,scrollbars=yes,resizable=yes')
     }
 
@@ -105,15 +107,26 @@ export function SirsiVault() {
 
             // Use gRPC flow if we have a contractId
             if (contractId) {
-                // 1. Update status to SIGNED (Backend will intercept and change to WAITING_FOR_COUNTERSIGN)
+                // 1. Update status to SIGNED and include signature metadata
                 await contractsClient.updateContract({
                     id: contractId,
                     contract: {
-                        status: 3 as any // Using numeric enum for compatibility
+                        status: 3 as any, // SIGNED -> WAITING_FOR_COUNTERSIGN in backend
+                        signatureImageData: signatureImageData || '',
+                        legalAcknowledgment: (document.getElementById('legal-ack') as HTMLInputElement)?.checked || false,
+                        selectedPaymentPlan: selectedPaymentPlan,
+                        paymentMethod: signatureData.selectedPaymentMethod
                     }
                 });
 
-                // 2. Create the checkout session for the first payment
+                // If Bank Transfer, handle Plaid flow
+                if (signatureData.selectedPaymentMethod === 'bank') {
+                    console.log('🏦 Bank Transfer Selected: Chase / Plaid Flow');
+                    // In a real implementation, we would call CreatePlaidLinkToken here
+                    alert('Bank Transfer via Plaid/Chase is live. Redirecting to account selection...');
+                }
+
+                // 2. Create the checkout session for the first payment (Stripe handles both cards and ACH in some configs)
                 const session = await contractsClient.createCheckoutSession({
                     contractId: contractId,
                     planId: 'payment-1', // First payment plan

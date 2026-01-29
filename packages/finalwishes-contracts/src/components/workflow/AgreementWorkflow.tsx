@@ -8,6 +8,7 @@ import { Sidebar } from '../layout/Sidebar'
 import { AdminHeader } from '../layout/AdminHeader'
 import { ContractTabs } from '../layout/ContractTabs'
 import { useConfigStore, useCurrentTab } from '../../store/useConfigStore'
+import { useSettings } from '../../hooks/useAdmin'
 
 // Tab Components
 import { ExecutiveSummary } from '../tabs/ExecutiveSummary'
@@ -26,11 +27,24 @@ export function AgreementWorkflow() {
   const searchParams = new URLSearchParams(window.location.search)
   const isSuccess = searchParams.get('session_id') !== null && window.location.pathname.endsWith('/payment/success')
 
+  const { data: settings } = useSettings()
+  const setSystemSettings = useConfigStore(state => state.setSystemSettings)
+
   useEffect(() => {
     if (projectId) {
       setProjectId(projectId)
     }
   }, [projectId, setProjectId])
+
+  // Sync global settings (multiplier/maintenance) from Admin
+  useEffect(() => {
+    if (settings) {
+      setSystemSettings({
+        multiplier: settings.sirsiMultiplier,
+        maintenanceMode: settings.maintenanceMode
+      })
+    }
+  }, [settings, setSystemSettings])
 
   const [isLightTheme, setIsLightTheme] = useState(false)
 

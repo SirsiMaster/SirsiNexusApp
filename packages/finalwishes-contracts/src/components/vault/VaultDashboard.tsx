@@ -4,9 +4,12 @@ import { contractsClient } from '../../lib/grpc';
 interface Contract {
     id: string;
     projectName: string;
+    clientName: string;
     status: number;
     createdAt: bigint;
     totalAmount: bigint;
+    selectedPaymentPlan: number;
+    paymentMethod: string;
 }
 
 export function VaultDashboard() {
@@ -119,8 +122,18 @@ export function VaultDashboard() {
                                                 color: status.color,
                                                 fontWeight: 700,
                                                 letterSpacing: '0.1em',
-                                                marginTop: '4px'
-                                            }}>{status.label}</div>
+                                                marginTop: '4px',
+                                                display: 'flex',
+                                                gap: '8px',
+                                                justifyContent: 'flex-end'
+                                            }}>
+                                                <span>{status.label}</span>
+                                                {contract.paymentMethod && (
+                                                    <span style={{ color: 'rgba(255,255,255,0.4)' }}>
+                                                        • {contract.paymentMethod === 'card' ? 'CARD' : 'BANK'}
+                                                    </span>
+                                                )}
+                                            </div>
                                         </div>
                                         <div style={{ display: 'flex', gap: '8px' }}>
                                             {localStorage.getItem('sirsi_user_role') === 'provider' && contract.status === 6 && (
@@ -146,17 +159,22 @@ export function VaultDashboard() {
                                                     Countersign
                                                 </button>
                                             )}
-                                            <button style={{
-                                                background: 'white',
-                                                color: 'black',
-                                                border: 'none',
-                                                padding: '8px 16px',
-                                                borderRadius: '6px',
-                                                fontSize: '13px',
-                                                fontWeight: 600,
-                                                cursor: 'pointer'
-                                            }}>
-                                                View Details
+                                            <button
+                                                onClick={() => {
+                                                    const msaUrl = `/printable-msa.html?client=${encodeURIComponent(contract.clientName)}&total=${contract.totalAmount}&plan=${contract.selectedPaymentPlan || 2}&signed=true&id=${contract.id}`
+                                                    window.open(msaUrl, '_blank')
+                                                }}
+                                                style={{
+                                                    background: 'white',
+                                                    color: 'black',
+                                                    border: 'none',
+                                                    padding: '8px 16px',
+                                                    borderRadius: '6px',
+                                                    fontSize: '13px',
+                                                    fontWeight: 600,
+                                                    cursor: 'pointer'
+                                                }}>
+                                                View Agreement
                                             </button>
                                         </div>
                                     </div>

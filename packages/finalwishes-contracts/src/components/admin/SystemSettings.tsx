@@ -1,9 +1,39 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSettings, useUpdateSettings } from '../../hooks/useAdmin';
 
 export function SystemSettings() {
+    const { data: settings, isLoading, isError } = useSettings();
+    const updateSettings = useUpdateSettings();
+
     const [maintenanceMode, setMaintenanceMode] = useState(false);
     const [region, setRegion] = useState('us-central1');
     const [multiplier, setMultiplier] = useState(2.0);
+
+    // Sync local state with backend data
+    useEffect(() => {
+        if (settings) {
+            setMaintenanceMode(settings.maintenanceMode);
+            setRegion(settings.activeRegion);
+            setMultiplier(settings.sirsiMultiplier);
+        }
+    }, [settings]);
+
+    const handleSave = () => {
+        updateSettings.mutate({
+            maintenanceMode,
+            activeRegion: region,
+            sirsiMultiplier: multiplier
+        });
+    };
+
+    if (isLoading) return <div className="p-12 text-center text-gold cinzel animate-pulse">Synchronizing with Sirsi Cluster...</div>;
+    if (isError) return <div className="p-12 text-center text-red-500 cinzel border border-red-500/20 rounded-xl bg-red-500/5">Failed to acquire system configuration.</div>;
+
+    const hasChanges = settings && (
+        maintenanceMode !== settings.maintenanceMode ||
+        region !== settings.activeRegion ||
+        multiplier !== settings.sirsiMultiplier
+    );
 
     return (
         <div className="flex flex-col gap-10">
@@ -13,6 +43,15 @@ export function SystemSettings() {
                     <h2 className="cinzel text-2xl text-gold tracking-widest">System Configuration</h2>
                     <p className="inter text-xs text-slate-500 mt-1 uppercase tracking-tighter">Global environment variables & governance</p>
                 </div>
+                {hasChanges && (
+                    <button
+                        onClick={handleSave}
+                        disabled={updateSettings.isPending}
+                        className="px-6 py-2 bg-gold text-navy cinzel font-bold tracking-widest uppercase text-xs rounded hover:bg-gold-bright transition-all shadow-[0_0_15px_rgba(200,169,81,0.3)]"
+                    >
+                        {updateSettings.isPending ? 'Propagating...' : 'Commit Changes →'}
+                    </button>
+                )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -83,7 +122,7 @@ export function SystemSettings() {
                                     <span className="inter text-[9px] text-slate-500 font-mono mt-1">{integration.key}</span>
                                 </div>
                                 <span className={`inter text-[9px] font-bold uppercase px-2 py-1 rounded bg-white/5 border ${integration.status === 'Healthy' || integration.status === 'Active' || integration.status === 'Connected'
-                                        ? 'text-emerald border-emerald/20' : 'text-yellow-500 border-yellow-500/20'
+                                    ? 'text-emerald border-emerald/20' : 'text-yellow-500 border-yellow-500/20'
                                     }`}>
                                     {integration.status}
                                 </span>

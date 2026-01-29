@@ -768,3 +768,194 @@ export class Notification extends Message<Notification> {
   }
 }
 
+/**
+ * @generated from message sirsi.admin.v1.SystemSettings
+ */
+export class SystemSettings extends Message<SystemSettings> {
+  /**
+   * @generated from field: bool maintenance_mode = 1;
+   */
+  maintenanceMode = false;
+
+  /**
+   * @generated from field: string active_region = 2;
+   */
+  activeRegion = "";
+
+  /**
+   * @generated from field: double sirsi_multiplier = 3;
+   */
+  sirsiMultiplier = 0;
+
+  constructor(data?: PartialMessage<SystemSettings>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "sirsi.admin.v1.SystemSettings";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "maintenance_mode", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "active_region", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "sirsi_multiplier", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): SystemSettings {
+    return new SystemSettings().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): SystemSettings {
+    return new SystemSettings().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): SystemSettings {
+    return new SystemSettings().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: SystemSettings | PlainMessage<SystemSettings> | undefined, b: SystemSettings | PlainMessage<SystemSettings> | undefined): boolean {
+    return proto3.util.equals(SystemSettings, a, b);
+  }
+}
+
+/**
+ * @generated from message sirsi.admin.v1.GetSettingsRequest
+ */
+export class GetSettingsRequest extends Message<GetSettingsRequest> {
+  constructor(data?: PartialMessage<GetSettingsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "sirsi.admin.v1.GetSettingsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetSettingsRequest {
+    return new GetSettingsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetSettingsRequest {
+    return new GetSettingsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetSettingsRequest {
+    return new GetSettingsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetSettingsRequest | PlainMessage<GetSettingsRequest> | undefined, b: GetSettingsRequest | PlainMessage<GetSettingsRequest> | undefined): boolean {
+    return proto3.util.equals(GetSettingsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message sirsi.admin.v1.GetSettingsResponse
+ */
+export class GetSettingsResponse extends Message<GetSettingsResponse> {
+  /**
+   * @generated from field: sirsi.admin.v1.SystemSettings settings = 1;
+   */
+  settings?: SystemSettings;
+
+  constructor(data?: PartialMessage<GetSettingsResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "sirsi.admin.v1.GetSettingsResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "settings", kind: "message", T: SystemSettings },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): GetSettingsResponse {
+    return new GetSettingsResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): GetSettingsResponse {
+    return new GetSettingsResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetSettingsResponse {
+    return new GetSettingsResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: GetSettingsResponse | PlainMessage<GetSettingsResponse> | undefined, b: GetSettingsResponse | PlainMessage<GetSettingsResponse> | undefined): boolean {
+    return proto3.util.equals(GetSettingsResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message sirsi.admin.v1.UpdateSettingsRequest
+ */
+export class UpdateSettingsRequest extends Message<UpdateSettingsRequest> {
+  /**
+   * @generated from field: sirsi.admin.v1.SystemSettings settings = 1;
+   */
+  settings?: SystemSettings;
+
+  constructor(data?: PartialMessage<UpdateSettingsRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "sirsi.admin.v1.UpdateSettingsRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "settings", kind: "message", T: SystemSettings },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateSettingsRequest {
+    return new UpdateSettingsRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateSettingsRequest {
+    return new UpdateSettingsRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateSettingsRequest {
+    return new UpdateSettingsRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateSettingsRequest | PlainMessage<UpdateSettingsRequest> | undefined, b: UpdateSettingsRequest | PlainMessage<UpdateSettingsRequest> | undefined): boolean {
+    return proto3.util.equals(UpdateSettingsRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message sirsi.admin.v1.UpdateSettingsResponse
+ */
+export class UpdateSettingsResponse extends Message<UpdateSettingsResponse> {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success = false;
+
+  constructor(data?: PartialMessage<UpdateSettingsResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "sirsi.admin.v1.UpdateSettingsResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): UpdateSettingsResponse {
+    return new UpdateSettingsResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): UpdateSettingsResponse {
+    return new UpdateSettingsResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): UpdateSettingsResponse {
+    return new UpdateSettingsResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: UpdateSettingsResponse | PlainMessage<UpdateSettingsResponse> | undefined, b: UpdateSettingsResponse | PlainMessage<UpdateSettingsResponse> | undefined): boolean {
+    return proto3.util.equals(UpdateSettingsResponse, a, b);
+  }
+}
+

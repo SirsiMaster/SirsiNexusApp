@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Estate, GetEstateRequest, ListEstatesRequest, ListEstatesResponse, ListNotificationsRequest, ListNotificationsResponse, ListUsersRequest, ListUsersResponse, LogDevSessionRequest, LogDevSessionResponse, ManageUserRoleRequest, ManageUserRoleResponse, SendNotificationRequest, SendNotificationResponse } from "./admin_pb.js";
+import { Estate, GetEstateRequest, GetSettingsRequest, GetSettingsResponse, ListEstatesRequest, ListEstatesResponse, ListNotificationsRequest, ListNotificationsResponse, ListUsersRequest, ListUsersResponse, LogDevSessionRequest, LogDevSessionResponse, ManageUserRoleRequest, ManageUserRoleResponse, SendNotificationRequest, SendNotificationResponse, UpdateSettingsRequest, UpdateSettingsResponse } from "./admin_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -81,6 +81,26 @@ export const AdminService = {
       name: "ListNotifications",
       I: ListNotificationsRequest,
       O: ListNotificationsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * System Settings
+     *
+     * @generated from rpc sirsi.admin.v1.AdminService.GetSettings
+     */
+    getSettings: {
+      name: "GetSettings",
+      I: GetSettingsRequest,
+      O: GetSettingsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc sirsi.admin.v1.AdminService.UpdateSettings
+     */
+    updateSettings: {
+      name: "UpdateSettings",
+      I: UpdateSettingsRequest,
+      O: UpdateSettingsResponse,
       kind: MethodKind.Unary,
     },
   }

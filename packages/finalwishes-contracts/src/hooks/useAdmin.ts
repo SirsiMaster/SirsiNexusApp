@@ -6,7 +6,10 @@ import {
     ManageUserRoleRequest,
     ListUsersRequest,
     ListNotificationsRequest,
-    SendNotificationRequest
+    SendNotificationRequest,
+    GetSettingsRequest,
+    UpdateSettingsRequest,
+    SystemSettings
 } from '../gen/proto/admin/v1/admin_pb';
 
 export const useEstates = (pageSize = 10, pageToken = '') => {
@@ -70,6 +73,31 @@ export const useManageUserRole = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['users'] });
+        }
+    });
+};
+
+export const useSettings = () => {
+    return useQuery({
+        queryKey: ['settings'],
+        queryFn: async () => {
+            const res = await adminClient.getSettings(new GetSettingsRequest());
+            return res.settings;
+        }
+    });
+};
+
+export const useUpdateSettings = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (settings: { maintenanceMode: boolean, activeRegion: string, sirsiMultiplier: number }) => {
+            const res = await adminClient.updateSettings(new UpdateSettingsRequest({
+                settings: new SystemSettings(settings)
+            }));
+            return res;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['settings'] });
         }
     });
 };

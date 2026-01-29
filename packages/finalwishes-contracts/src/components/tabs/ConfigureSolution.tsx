@@ -37,13 +37,14 @@ export function ConfigureSolution() {
     const setCeoConsultingWeeks = useConfigStore(state => state.setCeoConsultingWeeks)
     const probateStates = useConfigStore(state => state.probateStates)
     const toggleProbateState = useConfigStore(state => state.toggleProbateState)
+    const sirsiMultiplier = useConfigStore(state => state.sirsiMultiplier)
 
     const [flippedCard, setFlippedCard] = useState<string | null>(null)
     const [stateSearchQuery, setStateSearchQuery] = useState('')
     const [tempSelectedStates, setTempSelectedStates] = useState<string[]>([])
     const [tempCeoWeeks, setTempCeoWeeks] = useState(ceoConsultingWeeks)
 
-    const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
+    const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length, sirsiMultiplier)
     const totalInvestment = totalInvestmentResult.total
     const estimatedTimeline = calculateTimeline(selectedBundle, selectedAddons, probateStates.length)
     const itemCount = (selectedBundle ? 1 : 0) + selectedAddons.length

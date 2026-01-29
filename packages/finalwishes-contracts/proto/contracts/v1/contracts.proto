@@ -22,6 +22,7 @@ service ContractsService {
   
   // Payment Integration
   rpc CreateCheckoutSession(CreateCheckoutRequest) returns (CheckoutSession);
+  rpc CreatePlaidLinkToken(CreatePlaidLinkTokenRequest) returns (PlaidLinkTokenResponse);
   
   // Bidirectional Streaming (future: chat, real-time events)
   rpc StreamEvents(stream EventRequest) returns (stream EventResponse);
@@ -52,11 +53,17 @@ message Contract {
   int64 created_at = 10;
   int64 updated_at = 11;
   string created_by = 12;
-
+ 
   // Countersigner (Dynamic Validation)
   string countersigner_name = 13;
   string countersigner_email = 14;
   int64 countersigned_at = 15;
+ 
+  // Reality Metadata
+  string signature_image_data = 16;
+  bool legal_acknowledgment = 17;
+  int32 selected_payment_plan = 18;
+  string payment_method = 19; // 'card' or 'bank'
 }
 
 message PaymentPlan {
@@ -156,6 +163,16 @@ message CreateCheckoutRequest {
 message CheckoutSession {
   string session_id = 1;
   string checkout_url = 2;
+}
+
+// Plaid
+message CreatePlaidLinkTokenRequest {
+  string user_id = 1;
+  string client_name = 2;
+}
+
+message PlaidLinkTokenResponse {
+  string link_token = 1;
 }
 
 // Streaming Events
