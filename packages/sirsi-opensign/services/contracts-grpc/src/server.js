@@ -355,12 +355,8 @@ const handlers = {
             allow_promotion_codes: true
         };
 
-        // For invoicing/subscriptions, we can collect address to ensure tax compliance if needed
-        if (isRecurring) {
-            sessionConfig.invoice_creation = {
-                enabled: true
-            };
-        } else {
+        // Invoice creation is only valid for payment mode, not subscription (which auto-creates)
+        if (!isRecurring) {
             sessionConfig.invoice_creation = {
                 enabled: true
             };
