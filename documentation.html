@@ -16,7 +16,9 @@
       originalConsole.apply(console, [message, ...args]);
     };
   </script>
-  <!-- Security Integration --><script src="/assets/js/security-init.js"></script><title>SirsiNexus Documentation - Core Technical Documents</title>
+  <!-- Security Integration -->
+  <script src="/assets/js/security-init.js"></script>
+  <title>SirsiNexus Documentation - Core Technical Documents</title>
   <meta name="description" content="SirsiNexus core technical documentation and project blueprints" />
   <!-- Cache buster: v1752541253 -->
   <script>
@@ -466,8 +468,7 @@
             </div>
             <p class="text-slate-600 dark:text-slate-400 mb-4">Complete technical specification, architecture design,
               and development roadmap for the platform.</p>
-            <a href="docs/ARCHITECTURE_DESIGN.md"
-              target="_blank"
+            <a href="docs/ARCHITECTURE_DESIGN.md" target="_blank"
               class="inline-flex items-center text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium">
               <span>View Document</span>
               <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -494,8 +495,7 @@
             </div>
             <p class="text-slate-600 dark:text-slate-400 mb-4">Detailed technical implementation guide covering
               architecture, APIs, and deployment procedures.</p>
-            <a href="docs/TECHNICAL_DESIGN.md"
-              target="_blank"
+            <a href="docs/TECHNICAL_DESIGN.md" target="_blank"
               class="inline-flex items-center text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium">
               <span>View Document</span>
               <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -704,7 +704,8 @@
   <!-- Footer -->
   </div>
 
-  <footer class="bg-slate-900 text-white py-12">
+  <!-- Footer -->
+  <footer class="bg-white dark:bg-slate-900 text-slate-600 dark:text-white py-12">
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid md:grid-cols-4 gap-8">
         <div>
@@ -715,47 +716,56 @@
             </div>
             <span class="text-xl font-semibold">SirsiNexus</span>
           </div>
-
-          <div class="container section">
-            <p class="text-slate-400">Agent-embedded infrastructure platform for enterprise cloud operations.</p>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Documentation</h4>
-            <ul class="space-y-2 text-slate-400">
-              <li><a href="https://github.com/sirsinexusdev/SirsiNexus/blob/main/README.md"
-                  class="hover:text-white transition-colors">README</a></li>
-              <li><a
-                  href="docs/ARCHITECTURE_DESIGN.md"
-                  class="hover:text-white transition-colors">Blueprint</a></li>
-              <li><a href="docs/TECHNICAL_DESIGN.md"
-                  class="hover:text-white transition-colors">Technical Docs</a></li>
-              <li><a href="https://github.com/sirsinexusdev/SirsiNexus/blob/main/docs/core/CHANGELOG.md"
-                  class="hover:text-white transition-colors">Changelog</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Platform</h4>
-            <ul class="space-y-2 text-slate-400">
-              <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
-              <li><a href="business-case.html" class="hover:text-white transition-colors">Business Case</a></li>
-              <li><a href="signup.html" class="hover:text-white transition-colors">Sign Up</a></li>
-              <li><a href="investor-portal.html" class="hover:text-white transition-colors">Investor Portal</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Legal</h4>
-            <ul class="space-y-2 text-slate-400">
-              <li><a href="/privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="/terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
-              <li><a href="https://github.com/sirsinexusdev/SirsiNexus"
-                  class="hover:text-white transition-colors">GitHub</a></li>
-            </ul>
-          </div>
+          <p class="text-slate-600 dark:text-slate-400">Agent-embedded infrastructure platform for enterprise cloud
+            operations.</p>
         </div>
-        <div class="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400">
-          <p>&copy; 2025 SirsiNexus. All rights reserved.</p>
+        <div>
+          <h4 class="font-semibold mb-4">Platform</h4>
+          <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+            <li><a href="/index.html#features"
+                class="hover:text-slate-900 dark:hover:text-white transition-colors">Features</a>
+            </li>
+            <li><a href="/index.html#platform"
+                class="hover:text-slate-900 dark:hover:text-white transition-colors">Architecture</a></li>
+            <li><a href="/documentation.html"
+                class="hover:text-slate-900 dark:hover:text-white transition-colors font-semibold">Documentation</a>
+            </li>
+            <li><a href="/index.html#pricing"
+                class="hover:text-slate-900 dark:hover:text-white transition-colors">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Company</h4>
+          <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+            <li><a href="/index.html#about"
+                class="hover:text-slate-900 dark:hover:text-white transition-colors">About</a></li>
+            <li><a href="/index.html#careers"
+                class="hover:text-slate-900 dark:hover:text-white transition-colors">Careers</a></li>
+            <li><a href="/index.html#blog" class="hover:text-slate-900 dark:hover:text-white transition-colors">Blog</a>
+            </li>
+            <li><a href="/contact.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Contact</a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4 text-emerald-600">Compliance & Legal</h4>
+          <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+            <li><a href="/privacy.html" class="hover:text-emerald-600 transition-colors font-semibold">Privacy
+                Policy</a></li>
+            <li><a href="/terms.html" class="hover:text-emerald-600 transition-colors font-semibold">Terms of
+                Service</a></li>
+            <li><a href="/security.html" class="hover:text-emerald-600 transition-colors font-semibold">Security
+                Portal</a></li>
+            <li><a href="/investor-login.html" class="hover:text-emerald-600 transition-colors">Investor Relations</a>
+            </li>
+          </ul>
         </div>
       </div>
+      <div
+        class="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8 text-center text-slate-600 dark:text-slate-400">
+        <p>&copy; 2026 SirsiNexus. All rights reserved.</p>
+      </div>
+    </div>
   </footer>
 
   </div>

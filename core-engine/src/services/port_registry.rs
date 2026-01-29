@@ -35,6 +35,8 @@ pub enum ServiceType {
     LoadBalancer,
     Frontend,
     AI,
+    Infrastructure,
+    Financial,
     Custom(String),
 }
 /// Port range specification
@@ -118,6 +120,8 @@ impl PortRegistry {
         service_ranges.insert(ServiceType::Analytics, PortRange { start: 8200, end: 8299 });
         service_ranges.insert(ServiceType::Security, PortRange { start: 8300, end: 8399 });
         service_ranges.insert(ServiceType::Frontend, PortRange { start: 3000, end: 3099 });
+        service_ranges.insert(ServiceType::Infrastructure, PortRange { start: 8400, end: 8499 });
+        service_ranges.insert(ServiceType::Financial, PortRange { start: 8500, end: 8599 });
 
         Self {
             allocations: Arc::new(RwLock::new(HashMap::new())),
@@ -374,6 +378,8 @@ impl ServiceType {
             ServiceType::Monitor => "monitor",
             ServiceType::LoadBalancer => "load-balancer",
             ServiceType::AI => "ai",
+            ServiceType::Infrastructure => "infrastructure",
+            ServiceType::Financial => "financial",
             ServiceType::Custom(name) => name,
         }
     }

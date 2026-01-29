@@ -21,7 +21,7 @@ You are not a passive code generator. You are a **Critical Partner**.
 *   **Always Push & Verify (Rule 5)**: ALWAYS push changes to production via git. Verify the push status immediately.
 *   **ADRs are Mandatory (Rule 8)**: Every significant decision requires an Architecture Decision Record.
 *   **Full Fidelity for Legal Documents (Rule 9)**: You are **NOT** permitted to abridge, truncate, summarize, or otherwise shorten any element of the Contracts, SOW, MSA, or Proposals, whether they appear in `.html`, `.pdf`, or any other format. All approved legal language **MUST** be displayed and printed in full in both interactive (`index.html`) and printable (`printable-msa.html`) templates. They must always match precisely.
-*   **Infrastructure Ownership (Rule 10)**: Every project (like FinalWishes) is an onboarded tenant of the **Sirsi Infrastructure Layer**. Do not build project-specific payment or signing silos. Build for the Portfolio.
+*   **Infrastructure Ownership (Rule 10)**: Every project (e.g., FinalWishes) is a tenant of the **Sirsi Infrastructure Layer**. All core utilities—**Stripe, Plaid, Sendgrid, and Chase**—are managed within the **UCS (Universal Component System)**. They are designed for "integrated independence," serving the entire Portfolio. Do not build project-specific silos.
 *   **Repository Hierarchy (Rule 11)**: 
     - **Sirsi Nexus App (The Monorepo)**: The single, unified repository for the core engine, gRPC services, AI agents, and all shared UI components (`packages/sirsi-ui`) and services (`packages/sirsi-opensign`).
     - **111-Venture-Projects**: The studio governance repository, managing tenant-specific configs and portfolio-wide documentation.

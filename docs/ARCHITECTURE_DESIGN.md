@@ -1,8 +1,8 @@
 # Sirsi Nexus Architecture Design (CDB)
 
-**Version:** 2.0.0  
-**Last Updated:** 2025-07-11  
-**Status:** PHASE 7.5 SIRSI-CENTRIC IMPLEMENTATION - Corrected Architecture
+**Version:** 3.0.0  
+**Last Updated:** January 29, 2026  
+**Status:** PHASE 10 - UCS INTEGRATION & POLICY FRAMEWORK
 
 ## 🎯 ARCHITECTURAL CLARIFICATION: SIRSI-CENTRIC COMMUNICATION
 
@@ -28,6 +28,8 @@ A dense, end-to-end specification for a production-ready, agent-embedded migrati
 ## Table of Contents
 
 1. [Executive Summary](#1-executive-summary)
+   - 1.5 [Complete SirsiNexus Technical Architecture](#15-complete-sirsinexus-technical-architecture)
+   - 1.6 [UCS (Universal Component System) & Infrastructure Independence](#16-ucs-universal-component-system--infrastructure-independence)
 2. [Current Development Status](#2-current-development-status)
 3. [Core Capabilities & Design Principles](#3-core-capabilities--design-principles)
 4. [High-Level Architecture](#4-high-level-architecture)
@@ -103,6 +105,20 @@ pub struct AgentCommunicator {
     pub agent_response_processor: ResponseProcessor, // Processes agent responses
 }
 ```
+
+## 1.6. UCS (Universal Component System) & Infrastructure Independence
+
+**Definition**: The **UCS (Universal Component System)** is the centralized library of premium component features and infrastructure utilities that can be "checked out" or replicated into any Sirsi portfolio tenant (e.g., FinalWishes, Assiduous). It ensures high-fidelity consistency and operational excellence across the entire ecosystem.
+
+**Infrastructure Utilities (Integrated Independence)**:
+The following core services operate as **Infrastructure Layer** components within the UCS. They are designed for "integrated independence"—meaning they are maintained as global portfolio-level assets that tenants consume via standardized interfaces:
+
+*   🌐 **Stripe (Financial Engine)**: Unified payment processing, subscription management, and escrow services.
+*   🏦 **Plaid (Financial Data & KYC)**: Global bank verification, identity authentication, and real-time financial data access.
+*   ✉️ **Sendgrid (Omnichannel Communications)**: Centralized notification engine for transactional emails, alerts, and system-wide messaging from `cylton@sirsi.ai`.
+*   🏛️ **Chase (Treasury & Settlement)**: Secure banking integration for high-value settlement and corporate treasury operations.
+
+**UCS Alignment Strategy**: Every infrastructure utility is encapsulated within the UCS to prevent the creation of "project silos." Tenants (Portfolio Projects) interact with these services via the **Sirsi Hypervisor**, ensuring that security, keys, and audit logs are managed centrally in the **Sirsi Vault**.
 
 ### 🧠 LLM-Based Agent Framework (Sirsi-Only Communication)
 

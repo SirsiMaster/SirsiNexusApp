@@ -124,7 +124,7 @@ curl -O https://raw.githubusercontent.com/111Ventures/sirsi-policies/main/polici
 |-------------------|----------------------|-------------------------|--------|
 | **SirsiNexusApp** (Root) | `assets/js/security-init.js` | Static templates in `/` | ✅ Complete |
 | **Sirsi Portal** | `sirsinexusportal/assets/js/security-init.js` | Static templates in `sirsi-portal/` | ✅ Complete |
-| **Assiduous** | `public/assets/js/security-init.js` | Static templates in `public/` | ✅ Complete |
+| **Sirsi OpenSign** (Infra) | `public/assets/js/security-init.js` | Static templates in `public/` | ✅ Complete |
 | **FinalWishes** | `AppLayout.tsx` (Hook Based) | `PolicyLinks.tsx` component | ✅ Complete |
 
 ---
@@ -135,7 +135,7 @@ curl -O https://raw.githubusercontent.com/111Ventures/sirsi-policies/main/polici
 |-------------|-----------------|---------------------|
 | **SirsiNexusApp** | Global `security-init.js` | Canonical Symlinks in Root |
 | **Sirsi Portal** | Global `security-init.js` | Canonical Symlinks in `sirsi-portal/` |
-| **Assiduous** | Portal `security-init.js` | Canonical Symlinks in `sirsi-opensign/public/` |
+| **Sirsi OpenSign** (Infra) | Global `security-init.js` | Canonical Symlinks in `sirsi-opensign/public/` |
 | **FinalWishes** | `SirsiVault.tsx` (Financial Ops) | `AppLayout.tsx` (Consent/Footer) |
 
 ### Phase 4: Verification & Certification (In Progress)
