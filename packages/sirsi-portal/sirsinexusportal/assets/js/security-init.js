@@ -121,7 +121,7 @@
                     <a href="/cookies.html" class="hover:text-emerald-600 transition-colors">Cookie Policy</a>
                 </div>
                 <p class="text-xs text-slate-400">
-                    &copy; ${new Date().getFullYear()} Sirsi AI. All rights reserved. 
+                    &copy; ${new Date().getFullYear()} Sirsi Technologies Inc.. All rights reserved. 
                     All data is encrypted and handled per SOC 2 Type II compliance standards.
                 </p>
             `;

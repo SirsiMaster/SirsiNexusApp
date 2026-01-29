@@ -6,13 +6,13 @@
 **Last Updated:** January 28, 2026  
 **Classification:** Public  
 **Owner:** Data Protection Officer (DPO)  
-**Applies To:** All Sirsi AI Corporation Services and Portfolio Applications
+**Applies To:** All Sirsi Technologies Inc. Services and Portfolio Applications
 
 ---
 
 ## Introduction
 
-Sirsi AI Corporation ("Sirsi," "we," "us," or "our") is committed to protecting the privacy and security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our services, applications, and platforms, including:
+Sirsi Technologies Inc. ("Sirsi," "we," "us," or "our") is committed to protecting the privacy and security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our services, applications, and platforms, including:
 
 - **SirsiNexus** - Agent-embedded migration & infrastructure platform
 - **Assiduous** - Professional services and consulting platform  
@@ -54,7 +54,7 @@ This Privacy Policy is designed to comply with:
 ## 1. Data Controller Information
 
 **Data Controller:**  
-Sirsi AI Corporation  
+Sirsi Technologies Inc.  
 111 Ventures Studio  
 United States
 
@@ -435,7 +435,7 @@ Continued use of our services after changes constitutes acceptance of the update
 
 **Data Protection Officer:**  
 Email: privacy@sirsi.ai  
-Mail: Sirsi AI Corporation, Attn: Privacy, [Address]
+Mail: Sirsi Technologies Inc., Attn: Privacy, [Address]
 
 ### 16.2 Supervisory Authority
 
@@ -495,4 +495,4 @@ https://oag.ca.gov/contact
 ---
 
 **Document Classification:** Public  
-**Copyright:** © 2026 Sirsi AI Corporation. All Rights Reserved.
+**Copyright:** © 2026 Sirsi Technologies Inc.. All Rights Reserved.

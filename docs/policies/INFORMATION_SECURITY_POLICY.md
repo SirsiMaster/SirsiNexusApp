@@ -7,13 +7,13 @@
 **Next Review Date:** July 28, 2026  
 **Classification:** Public  
 **Owner:** Chief Information Security Officer (CISO)  
-**Applies To:** Sirsi AI Corporation and all Portfolio Applications
+**Applies To:** Sirsi Technologies Inc. and all Portfolio Applications
 
 ---
 
 ## 1. Executive Summary
 
-This Information Security Policy establishes the framework for protecting information assets across all Sirsi AI Corporation applications, including but not limited to: **SirsiNexus**, **Assiduous**, **FinalWishes**, and all future portfolio applications. This policy is designed to meet the requirements of:
+This Information Security Policy establishes the framework for protecting information assets across all Sirsi Technologies Inc. applications, including but not limited to: **SirsiNexus**, **Assiduous**, **FinalWishes**, and all future portfolio applications. This policy is designed to meet the requirements of:
 
 - **SOC 1 Type II** (Service Organization Control)
 - **SOC 2 Type II** (Security, Availability, Confidentiality, Processing Integrity, Privacy)
@@ -491,4 +491,4 @@ This policy is reviewed annually or when significant changes occur. Approval is 
 ---
 
 **Document Classification:** Public  
-**Copyright:** © 2026 Sirsi AI Corporation. All Rights Reserved.
+**Copyright:** © 2026 Sirsi Technologies Inc.. All Rights Reserved.

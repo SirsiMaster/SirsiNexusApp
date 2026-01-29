@@ -114,7 +114,7 @@ export function PolicyLinks({
  * Complete footer with copyright and policy links
  */
 export function PolicyFooter({
-    companyName = 'Sirsi AI Corporation',
+    companyName = 'Sirsi Technologies Inc.',
     year = new Date().getFullYear(),
     ...policyLinksProps
 }: PolicyLinksProps & {

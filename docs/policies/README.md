@@ -7,7 +7,7 @@
 
 ## Overview
 
-This index provides access to all security, privacy, and compliance policies for Sirsi AI Corporation and its portfolio applications (SirsiNexus, Assiduous, FinalWishes, and all future applications).
+This index provides access to all security, privacy, and compliance policies for Sirsi Technologies Inc. and its portfolio applications (SirsiNexus, Assiduous, FinalWishes, and all future applications).
 
 ---
 
@@ -61,4 +61,4 @@ This index provides access to all security, privacy, and compliance policies for
 
 ---
 
-**© 2026 Sirsi AI Corporation. All Rights Reserved.**
+**© 2026 Sirsi Technologies Inc.. All Rights Reserved.**

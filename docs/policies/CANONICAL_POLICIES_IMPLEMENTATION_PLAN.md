@@ -282,4 +282,4 @@ When onboarding a new portfolio application:
 - [ ] CTO  
 - [ ] General Counsel
 
-**© 2026 Sirsi AI Corporation. All Rights Reserved.**
+**© 2026 Sirsi Technologies Inc.. All Rights Reserved.**

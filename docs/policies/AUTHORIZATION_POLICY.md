@@ -162,4 +162,4 @@ Auth Flow:
 
 ---
 
-**© 2026 Sirsi AI Corporation. All Rights Reserved.**
+**© 2026 Sirsi Technologies Inc.. All Rights Reserved.**

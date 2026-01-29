@@ -67,4 +67,4 @@ This report addresses the security audit findings and provides detailed remediat
 ---
 
 **Approved By:** CISO  
-**© 2026 Sirsi AI Corporation. All Rights Reserved.**
+**© 2026 Sirsi Technologies Inc.. All Rights Reserved.**

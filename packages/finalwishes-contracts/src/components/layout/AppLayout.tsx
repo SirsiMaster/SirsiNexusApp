@@ -182,7 +182,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                         color: 'rgba(255, 255, 255, 0.5)',
                         fontSize: '12px'
                     }}>
-                        © {new Date().getFullYear()} Sirsi AI Corporation. All Rights Reserved.
+                        © {new Date().getFullYear()} Sirsi Technologies Inc.. All Rights Reserved.
                     </span>
                     <PolicyLinks baseUrl="https://sirsi.ai" newTab />
                 </div>
