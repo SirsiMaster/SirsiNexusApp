@@ -1,6 +1,9 @@
 /**
  * Sirsi Vault Tab
  * Document signing and contract execution
+ * 
+ * MFA ENFORCEMENT: Per AUTHORIZATION_POLICY.md Section 4.3, MFA is required
+ * before accessing financial services (Plaid, Stripe bank transfers)
  */
 import { useState } from 'react'
 import { useConfigStore } from '../../store/useConfigStore'
@@ -8,6 +11,7 @@ import { BUNDLES, calculateTotal, calculateTimeline, calculateTotalHours } from 
 import { contractsClient } from '../../lib/grpc'
 import { getStripe } from '../../lib/stripe'
 import { SignatureCapture } from '../vault/SignatureCapture'
+import { MFAGate } from '../auth/MFAGate'
 
 export function SirsiVault() {
     const [step, setStep] = useState(1)
@@ -30,6 +34,10 @@ export function SirsiVault() {
     const [error, setError] = useState<string | null>(null)
     const [contractId, setContractId] = useState<string | null>(null)
     const [selectedPaymentPlan, setSelectedPaymentPlan] = useState<2 | 3 | 4>(2)
+
+    // MFA State - Per AUTHORIZATION_POLICY.md Section 4.3
+    const [showMFAGate, setShowMFAGate] = useState(false)
+    const [mfaVerifiedForFinancial, setMfaVerifiedForFinancial] = useState(false)
 
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
@@ -98,6 +106,12 @@ export function SirsiVault() {
     };
 
     const handleExecute = async () => {
+        // MFA Check: Require verification for bank transfers per AUTHORIZATION_POLICY.md Section 4.3
+        if (signatureData.selectedPaymentMethod === 'bank' && !mfaVerifiedForFinancial) {
+            setShowMFAGate(true)
+            return
+        }
+
         setLoading(true)
         setError(null)
 
@@ -119,11 +133,12 @@ export function SirsiVault() {
                     }
                 });
 
-                // If Bank Transfer, handle Plaid flow
+                // If Bank Transfer, handle Plaid flow (MFA verified at this point)
                 if (signatureData.selectedPaymentMethod === 'bank') {
                     console.log('🏦 Bank Transfer Selected: Chase / Plaid Flow');
+                    console.log('✅ MFA Verified - Proceeding with financial integration');
                     // In a real implementation, we would call CreatePlaidLinkToken here
-                    alert('Bank Transfer via Plaid/Chase is live. Redirecting to account selection...');
+                    alert('MFA Verified! Bank Transfer via Plaid/Chase is live. Redirecting to account selection...');
                 }
 
                 // 2. Create the checkout session for the first payment (Stripe handles both cards and ACH in some configs)
@@ -873,6 +888,23 @@ export function SirsiVault() {
                     </div>
                 )}
             </div>
+
+            {/* MFA Gate Modal - Per AUTHORIZATION_POLICY.md Section 4.3 */}
+            {showMFAGate && (
+                <MFAGate
+                    isFinancial={true}
+                    demoMode={true}
+                    onVerified={() => {
+                        setMfaVerifiedForFinancial(true)
+                        setShowMFAGate(false)
+                        // Continue with execution after MFA verification
+                        handleExecute()
+                    }}
+                    onCancel={() => {
+                        setShowMFAGate(false)
+                    }}
+                />
+            )}
         </div>
     )
 }

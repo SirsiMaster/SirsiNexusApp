@@ -5,31 +5,35 @@ import { LandingPage } from './components/vault/LandingPage';
 import { VaultDashboard } from './components/vault/VaultDashboard';
 import { AdminPortal } from './components/admin/AdminPortal';
 import { Login } from './components/auth/Login';
+import { AppLayout } from './components/layout/AppLayout';
 
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* Landing Page */}
-        <Route path="/" element={<LandingPage /> as any} />
-        <Route path="/login" element={<Login /> as any} />
+      <AppLayout>
+        <Routes>
+          {/* Landing Page */}
+          <Route path="/" element={<LandingPage /> as any} />
+          <Route path="/login" element={<Login /> as any} />
 
-        {/* Service Agreement Workflow */}
-        <Route path="/partnership" element={<Navigate to="/partnership/finalwishes" replace /> as any} />
-        <Route path="/partnership/:projectId" element={<AgreementWorkflow /> as any} />
-        <Route path="/partnership/:projectId/payment/success" element={<AgreementWorkflow /> as any} />
+          {/* Service Agreement Workflow */}
+          <Route path="/partnership" element={<Navigate to="/partnership/finalwishes" replace /> as any} />
+          <Route path="/partnership/:projectId" element={<AgreementWorkflow /> as any} />
+          <Route path="/partnership/:projectId/payment/success" element={<AgreementWorkflow /> as any} />
 
-        {/* Vault Dashboard */}
-        <Route path="/vault" element={<VaultDashboard /> as any} />
+          {/* Vault Dashboard */}
+          <Route path="/vault" element={<VaultDashboard /> as any} />
 
-        {/* Admin Studio */}
-        <Route path="/admin" element={<AdminPortal /> as any} />
+          {/* Admin Studio */}
+          <Route path="/admin" element={<AdminPortal /> as any} />
 
-        {/* Catch-all - redirect to landing */}
-        <Route path="*" element={<Navigate to="/" replace /> as any} />
-      </Routes>
+          {/* Catch-all - redirect to landing */}
+          <Route path="*" element={<Navigate to="/" replace /> as any} />
+        </Routes>
+      </AppLayout>
     </Router>
   );
 }
 
 export default App;
+
