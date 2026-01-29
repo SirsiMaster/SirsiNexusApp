@@ -35,7 +35,7 @@
         if (!config.enable2FA) return;
 
         const path = window.location.pathname.toLowerCase();
-        const sensitivePaths = ['/admin/', '/investor-portal/', 'create-invoice.html', 'validate_payments.html'];
+        const sensitivePaths = ['/admin/', '/investor-portal/', 'payment.html', 'create-invoice.html', 'validate_payments.html'];
         const isSensitive = sensitivePaths.some(p => path.includes(p));
 
         if (isSensitive) {

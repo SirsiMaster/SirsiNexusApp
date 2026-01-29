@@ -1,4 +1,5 @@
 import React from 'react';
+import { UCSFinancialGuard } from './UCSFinancialGuard';
 
 /**
  * StripePay UCS Component
@@ -48,15 +49,20 @@ export const StripePay: React.FC<StripePayProps> = ({
                     </div>
                 </div>
 
-                <button
-                    className="w-full bg-[#C8A951] hover:bg-[#D4B96A] text-[#0A1128] font-cinzel font-bold py-3 px-6 rounded transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-gold/20"
-                    onClick={() => {
+                <UCSFinancialGuard
+                    rail="STRIPE"
+                    actionName="Stripe Checkout Initiation"
+                    onSuccess={() => {
                         console.log('Initiating Stripe Checkout via UCS Hypervisor...');
                         // Implementation would call the centralized Stripe service
                     }}
                 >
-                    Proceed to Escrow
-                </button>
+                    <button
+                        className="w-full bg-[#C8A951] hover:bg-[#D4B96A] text-[#0A1128] font-cinzel font-bold py-3 px-6 rounded transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-gold/20"
+                    >
+                        Proceed to Escrow
+                    </button>
+                </UCSFinancialGuard>
 
                 <div className="mt-4 flex items-center justify-center gap-2 text-xs text-gray-500 uppercase tracking-widest">
                     <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse"></span>

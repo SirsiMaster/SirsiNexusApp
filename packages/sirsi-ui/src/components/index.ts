@@ -11,3 +11,4 @@ export { StripePay, type StripePayProps } from './UCS/StripePay';
 export { PlaidLink, type PlaidLinkProps } from './UCS/PlaidLink';
 export { SendGridEmail, type SendGridEmailProps } from './UCS/SendGridEmail';
 export { ChaseSettlement, type ChaseSettlementProps } from './UCS/ChaseSettlement';
+export { UCSFinancialGuard, type UCSFinancialGuardProps } from './UCS/UCSFinancialGuard';

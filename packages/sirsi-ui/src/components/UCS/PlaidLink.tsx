@@ -1,4 +1,5 @@
 import React from 'react';
+import { UCSFinancialGuard } from './UCSFinancialGuard';
 
 /**
  * PlaidLink UCS Component
@@ -35,14 +36,19 @@ export const PlaidLink: React.FC<PlaidLinkProps> = ({
                 Authenticate your treasury account via encrypted Plaid bridge to enable real-time settlement.
             </p>
 
-            <button
-                className="w-full border border-[#C8A951] text-[#C8A951] hover:bg-[#C8A951] hover:text-[#0A1128] font-cinzel text-sm py-2 px-4 rounded transition-all duration-300"
-                onClick={() => {
+            <UCSFinancialGuard
+                rail="PLAID"
+                actionName="Bank Account Linking"
+                onSuccess={() => {
                     console.log('Opening Plaid Link via UCS Hypervisor...');
                 }}
             >
-                Connect Financial Institution
-            </button>
+                <button
+                    className="w-full border border-[#C8A951] text-[#C8A951] hover:bg-[#C8A951] hover:text-[#0A1128] font-cinzel text-sm py-2 px-4 rounded transition-all duration-300"
+                >
+                    Connect Financial Institution
+                </button>
+            </UCSFinancialGuard>
 
             <style>{`
         .glass-panel {
