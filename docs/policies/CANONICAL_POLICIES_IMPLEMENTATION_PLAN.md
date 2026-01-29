@@ -118,15 +118,27 @@ curl -O https://raw.githubusercontent.com/111Ventures/sirsi-policies/main/polici
 
 ---
 
+## 12. Implementation Tracking (Phase 3 Complete)
+
+| Target Application | MFA / Security Script | Policy Page Integration | Status |
+|-------------------|----------------------|-------------------------|--------|
+| **SirsiNexusApp** (Root) | `assets/js/security-init.js` | Static templates in `/` | ✅ Complete |
+| **Sirsi Portal** | `sirsinexusportal/assets/js/security-init.js` | Static templates in `sirsi-portal/` | ✅ Complete |
+| **Assiduous** | `public/assets/js/security-init.js` | Static templates in `public/` | ✅ Complete |
+| **FinalWishes** | `AppLayout.tsx` (Hook Based) | `PolicyLinks.tsx` component | ✅ Complete |
+
+---
+
 ## 🏛 Summary of Canonical Implementation
 
 | Application | MFA Enforcement | Privacy/Terms Policy |
 |-------------|-----------------|---------------------|
+| **SirsiNexusApp** | Global `security-init.js` | Canonical Symlinks in Root |
+| **Sirsi Portal** | Global `security-init.js` | Canonical Symlinks in `sirsi-portal/` |
+| **Assiduous** | Portal `security-init.js` | Canonical Symlinks in `sirsi-opensign/public/` |
 | **FinalWishes** | `SirsiVault.tsx` (Financial Ops) | `AppLayout.tsx` (Consent/Footer) |
-| **Sirsi Portal** | `security-init.js` (Root Admin/Inv) | Static Pages + `security-init.js` |
-| **Documentation** | Mandatory | Canonical Symlinks in `sirsi-portal/docs` |
 
-### Phase 4: Certification (Week 4+)
+### Phase 4: Verification & Certification (In Progress)
 
 | Task | Status | Owner |
 |------|--------|-------|
