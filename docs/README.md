@@ -24,6 +24,14 @@ Welcome to the comprehensive documentation for the SirsiNexus project.
 - [Security Audit Report](security/security-report.md) - Latest security assessment
 - [Security Components](core-engine/archive/components/security.md) - Security architecture
 
+### 📜 **Security & Compliance Policies** (Canonical)
+- [Policies Index](policies/README.md) - All policies overview
+- [Information Security Policy](policies/INFORMATION_SECURITY_POLICY.md) - Master security framework (SOC 2, ISO 27001)
+- [Privacy Policy](policies/PRIVACY_POLICY.md) - GDPR/CCPA compliant data protection
+- [Authorization Policy](policies/AUTHORIZATION_POLICY.md) - Access control, RBAC, MFA requirements
+- [Security Audit Report](policies/SECURITY_AUDIT_REPORT.md) - Compliance findings and remediation
+- [Implementation Plan](policies/CANONICAL_POLICIES_IMPLEMENTATION_PLAN.md) - Portfolio-wide rollout roadmap
+
 ### 🎪 **Demos & Examples**
 - [Demo Access Information](demos/DEMO_ACCESS_INFO.md) - Demo environment access
 - [Stakeholder Presentation](demos/STAKEHOLDER_PRESENTATION.md) - Project presentations
@@ -60,6 +68,13 @@ docs/
 ├── demos/                       # Demo and presentation materials
 ├── migration/                   # Migration guides
 ├── k8s/                        # Kubernetes documentation
+├── policies/                   # 📜 CANONICAL Security & Privacy Policies
+│   ├── README.md               # Policies index
+│   ├── INFORMATION_SECURITY_POLICY.md
+│   ├── PRIVACY_POLICY.md
+│   ├── AUTHORIZATION_POLICY.md
+│   ├── SECURITY_AUDIT_REPORT.md
+│   └── CANONICAL_POLICIES_IMPLEMENTATION_PLAN.md
 └── security/                   # Security documentation
 ```
 

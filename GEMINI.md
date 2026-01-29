@@ -1,7 +1,7 @@
 # GEMINI.md
 **Operational Directive for Gemini Agent**
-**Version:** 5.1.0 (Infrastructure Pivot)
-**Date:** January 17, 2026
+**Version:** 5.2.0 (Policy Framework)
+**Date:** January 28, 2026
 
 ---
 
@@ -27,7 +27,7 @@ You are not a passive code generator. You are a **Critical Partner**.
     - **111-Venture-Projects**: The studio governance repository, managing tenant-specific configs and portfolio-wide documentation.
 
 ## 2.1 Canonical Sources of Truth (Benchmark of Progress)
-The following 28 files serve as the immutable benchmark for all project directives and progress. All code and decisions MUST align with them.
+The following 33 files serve as the immutable benchmark for all project directives and progress. All code and decisions MUST align with them.
 
 ### 🏛 The Financial Trinity (3)
 1.  `proposals/CONTRACT.md`
@@ -49,6 +49,13 @@ The following 28 files serve as the immutable benchmark for all project directiv
 11. `docs/SECURITY_COMPLIANCE.md`
 12. `docs/RISK_MANAGEMENT.md`
 13. `docs/QA_PLAN.md`
+
+### 📜 Security & Privacy Policies (5) - CANONICAL
+29. `docs/policies/INFORMATION_SECURITY_POLICY.md` - Master security framework (SOC 2, ISO 27001)
+30. `docs/policies/PRIVACY_POLICY.md` - GDPR/CCPA compliant data protection
+31. `docs/policies/AUTHORIZATION_POLICY.md` - Access control, RBAC, MFA requirements
+32. `docs/policies/SECURITY_AUDIT_REPORT.md` - Compliance findings and remediation
+33. `docs/policies/CANONICAL_POLICIES_IMPLEMENTATION_PLAN.md` - Portfolio-wide rollout
 
 ### 🔬 Requirements & Specifications (3)
 14. `docs/REQUIREMENTS_SPECIFICATION.md`
