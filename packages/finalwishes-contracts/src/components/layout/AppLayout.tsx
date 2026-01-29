@@ -19,9 +19,9 @@ function PolicyLinks({ baseUrl = '/policies', newTab = false }: PolicyLinksProps
     const linkProps = newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 
     const links = [
-        { label: 'Privacy', path: '/privacy' },
-        { label: 'Terms', path: '/terms' },
-        { label: 'Security', path: '/security' }
+        { label: 'Privacy', path: '/privacy-policy.html' },
+        { label: 'Terms', path: '/terms-of-service.html' },
+        { label: 'Security', path: '/security.html' }
     ];
 
     return (
@@ -80,7 +80,7 @@ function ConsentBanner({ onAcceptAll, onRejectAll }: ConsentBannerProps) {
                     We use cookies to enhance your experience and analyze site usage.
                     By clicking "Accept All", you consent to our use of cookies.
                     Read our{' '}
-                    <a href="/policies/privacy" style={{ color: '#C8A951', textDecoration: 'underline' }}>Privacy Policy</a>
+                    <a href="https://sirsi.ai/privacy-policy.html" style={{ color: '#C8A951', textDecoration: 'underline' }}>Privacy Policy</a>
                     {' '}for more information.
                 </p>
                 <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
@@ -184,7 +184,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                     }}>
                         © {new Date().getFullYear()} Sirsi AI Corporation. All Rights Reserved.
                     </span>
-                    <PolicyLinks baseUrl="https://sirsi.ai/policies" newTab />
+                    <PolicyLinks baseUrl="https://sirsi.ai" newTab />
                 </div>
             </footer>
 
