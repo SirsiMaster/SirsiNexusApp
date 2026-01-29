@@ -1,34 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              'inter': ['Inter', 'sans-serif'],
-            },
-            colors: {
-              emerald: {
-                600: '#059669',
-                700: '#047857',
-              },
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            'inter': ['Inter', 'sans-serif'],
+          },
+          colors: {
+            emerald: {
+              600: '#059669',
+              700: '#047857',
             },
           },
         },
-      }
-    </script>
-    <title>Sirsi Nexus - Agent-Embedded Infrastructure Platform</title>
-    <meta name="description" content="Agent-embedded migration & infrastructure platform" />
-    <!-- Cache buster: v1752705576 -->
-    <!-- MAIN BRANCH SYNC: 2025-07-16 01:32:56 -->
-    <!-- JEKYLL DISABLED - STATIC SITE ONLY -->
-    <script>
-      (function() {
+      },
+    }
+  </script>
+  <title>Sirsi Nexus - Agent-Embedded Infrastructure Platform</title>
+  <!-- Security Integration -->
+  <script src="/assets/js/security-init.js"></script>
+  <meta name="description" content="Agent-embedded migration & infrastructure platform" />
+  <!-- Cache buster: v1752705576 -->
+  <!-- MAIN BRANCH SYNC: 2025-07-16 01:32:56 -->
+  <!-- JEKYLL DISABLED - STATIC SITE ONLY -->
+  <script>
+      (function () {
         function getInitialColorMode() {
           const persistedColorPreference = window.localStorage.getItem('theme');
           if (persistedColorPreference) {
@@ -47,683 +50,789 @@
           document.documentElement.classList.remove('dark');
         }
       })();
-    </script>
-  
-<style>
-/* Professional Investment-Ready Styling */
+  </script>
 
-/* Typography & Font Loading */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  <style>
+    /* Professional Investment-Ready Styling */
 
-/* Global Reset and Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    /* Typography & Font Loading */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-html {
-    scroll-behavior: smooth;
-    font-size: 16px;
-    line-height: 1.5;
-}
+    /* Global Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #1a1a1a;
-    background-color: #ffffff;
-    overflow-x: hidden;
-}
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      line-height: 1.5;
+    }
 
-/* Professional Typography Scale */
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    color: #0a0a0a;
-    margin-bottom: 1rem;
-}
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      color: #1a1a1a;
+      background-color: #ffffff;
+      overflow-x: hidden;
+    }
 
-h1 {
-    font-size: clamp(2.5rem, 4vw, 3.5rem);
-    font-weight: 800;
-    line-height: 1.1;
-}
+    /* Professional Typography Scale */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: #0a0a0a;
+      margin-bottom: 1rem;
+    }
 
-h2 {
-    font-size: clamp(2rem, 3vw, 2.75rem);
-    font-weight: 700;
-    line-height: 1.15;
-}
+    h1 {
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+    }
 
-h3 {
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
-    font-weight: 600;
-    line-height: 1.3;
-}
+    h2 {
+      font-size: clamp(2rem, 3vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.15;
+    }
 
-h4 {
-    font-size: clamp(1.25rem, 2vw, 1.5rem);
-    font-weight: 600;
-}
+    h3 {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 600;
+      line-height: 1.3;
+    }
 
-p {
-    font-size: 1.125rem;
-    line-height: 1.7;
-    color: #4a4a4a;
-    margin-bottom: 1.5rem;
-    font-weight: 400;
-}
+    h4 {
+      font-size: clamp(1.25rem, 2vw, 1.5rem);
+      font-weight: 600;
+    }
 
-/* Professional Container System */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
+    p {
+      font-size: 1.125rem;
+      line-height: 1.7;
+      color: #4a4a4a;
+      margin-bottom: 1.5rem;
+      font-weight: 400;
+    }
 
-.section {
-    padding: 5rem 0;
-}
+    /* Professional Container System */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
 
-.section-sm {
-    padding: 3rem 0;
-}
+    .section {
+      padding: 5rem 0;
+    }
 
-/* Enhanced Tables */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-    background: #ffffff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e5e7eb;
-}
+    .section-sm {
+      padding: 3rem 0;
+    }
 
-th {
-    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-    color: #ffffff;
-    padding: 1.25rem 1.5rem;
-    text-align: left;
-    font-weight: 600;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 2px solid #374151;
-}
+    /* Enhanced Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+      background: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e5e7eb;
+    }
 
-td {
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid #f3f4f6;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: #374151;
-}
+    th {
+      background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+      color: #ffffff;
+      padding: 1.25rem 1.5rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid #374151;
+    }
 
-tr:hover {
-    background-color: #f8fafc;
-    transition: background-color 0.2s ease;
-}
+    td {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #374151;
+    }
 
-tr:last-child td {
-    border-bottom: none;
-}
+    tr:hover {
+      background-color: #f8fafc;
+      transition: background-color 0.2s ease;
+    }
 
-/* Professional Lists */
-ul, ol {
-    margin: 1.5rem 0;
-    padding-left: 0;
-}
+    tr:last-child td {
+      border-bottom: none;
+    }
 
-li {
-    position: relative;
-    padding: 0.75rem 0 0.75rem 2.5rem;
-    margin-bottom: 0.5rem;
-    line-height: 1.6;
-    color: #374151;
-    font-size: 1.05rem;
-}
+    /* Professional Lists */
+    ul,
+    ol {
+      margin: 1.5rem 0;
+      padding-left: 0;
+    }
 
-ul li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 1.2rem;
-    width: 6px;
-    height: 6px;
-    background: #059669;
-    border-radius: 50%;
-    transform: translateY(-50%);
-}
+    li {
+      position: relative;
+      padding: 0.75rem 0 0.75rem 2.5rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+      color: #374151;
+      font-size: 1.05rem;
+    }
 
-/* Enhanced Cards */
-.card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 2.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e5e7eb;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-bottom: 2rem;
-}
+    ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 1.2rem;
+      width: 6px;
+      height: 6px;
+      background: #059669;
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
 
-.card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-}
+    /* Enhanced Cards */
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e5e7eb;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      margin-bottom: 2rem;
+    }
 
-/* Professional Buttons */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.875rem 2rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 10px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-}
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    }
 
-.btn-primary {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    color: #ffffff;
-}
+    /* Professional Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.875rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
 
-.btn-primary:hover {
-    background: linear-gradient(135deg, #047857 0%, #065f46 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
-}
+    .btn-primary {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: #ffffff;
+    }
 
-.btn-secondary {
-    background: transparent;
-    color: #059669;
-    border-color: #059669;
-}
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+    }
 
-.btn-secondary:hover {
-    background: #059669;
-    color: #ffffff;
-    transform: translateY(-2px);
-}
+    .btn-secondary {
+      background: transparent;
+      color: #059669;
+      border-color: #059669;
+    }
 
-/* Professional Spacing */
-.mb-1 { margin-bottom: 0.5rem; }
-.mb-2 { margin-bottom: 1rem; }
-.mb-3 { margin-bottom: 1.5rem; }
-.mb-4 { margin-bottom: 2rem; }
-.mb-5 { margin-bottom: 2.5rem; }
-.mb-6 { margin-bottom: 3rem; }
+    .btn-secondary:hover {
+      background: #059669;
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
 
-.mt-1 { margin-top: 0.5rem; }
-.mt-2 { margin-top: 1rem; }
-.mt-3 { margin-top: 1.5rem; }
-.mt-4 { margin-top: 2rem; }
-.mt-5 { margin-top: 2.5rem; }
-.mt-6 { margin-top: 3rem; }
+    /* Professional Spacing */
+    .mb-1 {
+      margin-bottom: 0.5rem;
+    }
 
-/* Professional Colors */
-.text-primary { color: #059669; }
-.text-secondary { color: #6b7280; }
-.text-muted { color: #9ca3af; }
-.text-dark { color: #1f2937; }
+    .mb-2 {
+      margin-bottom: 1rem;
+    }
 
-/* Animations */
-@keyframes fadeInUp {
-    from {
+    .mb-3 {
+      margin-bottom: 1.5rem;
+    }
+
+    .mb-4 {
+      margin-bottom: 2rem;
+    }
+
+    .mb-5 {
+      margin-bottom: 2.5rem;
+    }
+
+    .mb-6 {
+      margin-bottom: 3rem;
+    }
+
+    .mt-1 {
+      margin-top: 0.5rem;
+    }
+
+    .mt-2 {
+      margin-top: 1rem;
+    }
+
+    .mt-3 {
+      margin-top: 1.5rem;
+    }
+
+    .mt-4 {
+      margin-top: 2rem;
+    }
+
+    .mt-5 {
+      margin-top: 2.5rem;
+    }
+
+    .mt-6 {
+      margin-top: 3rem;
+    }
+
+    /* Professional Colors */
+    .text-primary {
+      color: #059669;
+    }
+
+    .text-secondary {
+      color: #6b7280;
+    }
+
+    .text-muted {
+      color: #9ca3af;
+    }
+
+    .text-dark {
+      color: #1f2937;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
         opacity: 0;
         transform: translateY(30px);
-    }
-    to {
+      }
+
+      to {
         opacity: 1;
         transform: translateY(0);
+      }
     }
-}
 
-.animate-fade-in {
-    animation: fadeInUp 0.6s ease-out;
-}
+    .animate-fade-in {
+      animation: fadeInUp 0.6s ease-out;
+    }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container {
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
         padding: 0 1rem;
-    }
-    
-    .section {
+      }
+
+      .section {
         padding: 3rem 0;
-    }
-    
-    h1 {
+      }
+
+      h1 {
         font-size: 2.5rem;
-    }
-    
-    h2 {
+      }
+
+      h2 {
         font-size: 2rem;
-    }
-    
-    h3 {
+      }
+
+      h3 {
         font-size: 1.5rem;
-    }
-    
-    p {
+      }
+
+      p {
         font-size: 1rem;
-    }
-    
-    .card {
+      }
+
+      .card {
         padding: 1.5rem;
-    }
-    
-    table {
+      }
+
+      table {
         font-size: 0.875rem;
-    }
-    
-    th, td {
+      }
+
+      th,
+      td {
         padding: 1rem;
+      }
     }
-}
 
-/* Dark Mode Support */
-.dark body {
-    background-color: #0f172a;
-    color: #e2e8f0;
-}
+    /* Dark Mode Support */
+    .dark body {
+      background-color: #0f172a;
+      color: #e2e8f0;
+    }
 
-.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
-    color: #f1f5f9;
-}
+    .dark h1,
+    .dark h2,
+    .dark h3,
+    .dark h4,
+    .dark h5,
+    .dark h6 {
+      color: #f1f5f9;
+    }
 
-.dark p {
-    color: #cbd5e1;
-}
+    .dark p {
+      color: #cbd5e1;
+    }
 
-.dark .card {
-    background: #1e293b;
-    border-color: #334155;
-    color: #e2e8f0;
-}
+    .dark .card {
+      background: #1e293b;
+      border-color: #334155;
+      color: #e2e8f0;
+    }
 
-.dark table {
-    background: #1e293b;
-    border-color: #334155;
-}
+    .dark table {
+      background: #1e293b;
+      border-color: #334155;
+    }
 
-.dark th {
-    background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
-    color: #f1f5f9;
-    border-bottom-color: #4b5563;
-}
+    .dark th {
+      background: linear-gradient(135deg, #374151 0%, #4b5563 100%);
+      color: #f1f5f9;
+      border-bottom-color: #4b5563;
+    }
 
-.dark td {
-    color: #e2e8f0;
-    border-color: #374151;
-}
+    .dark td {
+      color: #e2e8f0;
+      border-color: #374151;
+    }
 
-.dark tr:hover {
-    background-color: #334155;
-}
+    .dark tr:hover {
+      background-color: #334155;
+    }
 
-.dark li {
-    color: #cbd5e1;
-}
+    .dark li {
+      color: #cbd5e1;
+    }
 
-.dark .text-secondary {
-    color: #94a3b8;
-}
+    .dark .text-secondary {
+      color: #94a3b8;
+    }
 
-.dark .text-muted {
-    color: #64748b;
-}
+    .dark .text-muted {
+      color: #64748b;
+    }
 
-.dark .text-dark {
-    color: #e2e8f0;
-}
+    .dark .text-dark {
+      color: #e2e8f0;
+    }
 
-/* Dark mode gradient backgrounds */
-.dark .bg-gradient-to-br {
-    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-}
+    /* Dark mode gradient backgrounds */
+    .dark .bg-gradient-to-br {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    }
 
-.dark .bg-gradient-to-r {
-    background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
-}
+    .dark .bg-gradient-to-r {
+      background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
+    }
 
-/* Dark mode CTA section */
-.dark .bg-gradient-to-r.from-emerald-600.to-blue-600 {
-    background: linear-gradient(90deg, #047857 0%, #1e40af 100%);
-}
+    /* Dark mode CTA section */
+    .dark .bg-gradient-to-r.from-emerald-600.to-blue-600 {
+      background: linear-gradient(90deg, #047857 0%, #1e40af 100%);
+    }
 
-/* Dark mode footer */
-.dark .bg-slate-900 {
-    background-color: #020617;
-}
+    /* Dark mode footer */
+    .dark .bg-slate-900 {
+      background-color: #020617;
+    }
 
-.dark .border-slate-800 {
-    border-color: #1e293b;
-}
+    .dark .border-slate-800 {
+      border-color: #1e293b;
+    }
 
-/* Print Styles */
-@media print {
-    * {
+    /* Print Styles */
+    @media print {
+      * {
         background: transparent !important;
         color: black !important;
         box-shadow: none !important;
         text-shadow: none !important;
-    }
-    
-    .card {
+      }
+
+      .card {
         border: 1px solid #ccc;
         page-break-inside: avoid;
-    }
-    
-    table {
+      }
+
+      table {
         border-collapse: collapse;
         page-break-inside: avoid;
-    }
-    
-    h1, h2, h3 {
+      }
+
+      h1,
+      h2,
+      h3 {
         page-break-after: avoid;
+      }
     }
-}
-</style>
+  </style>
 
 </head>
-  <body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
-    <!-- Header -->
-<header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="flex h-16 items-center justify-between">
-          <div class="flex items-center gap-6">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 flex items-center justify-center">
-                <img src="assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo" class="w-12 h-12 object-contain dark:hidden">
-                <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-12 h-12 object-contain hidden dark:block">
-              </div>
-              <div>
-                <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
-                  SirsiNexus
-                </h1>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
-                    v0.7.10-alpha
-                  </span>
-                  <div class="flex items-center gap-1">
-                    <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
-                    <span class="text-xs text-slate-600 dark:text-slate-300">Live</span>
-                  </div>
+
+<body class="font-inter bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100">
+  <!-- Header -->
+  <header
+    class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex h-16 items-center justify-between">
+        <div class="flex items-center gap-6">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 flex items-center justify-center">
+              <img src="assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo"
+                class="w-12 h-12 object-contain dark:hidden">
+              <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo"
+                class="w-12 h-12 object-contain hidden dark:block">
+            </div>
+            <div>
+              <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                SirsiNexus
+              </h1>
+              <div class="flex items-center gap-2">
+                <span
+                  class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+                  v0.7.10-alpha
+                </span>
+                <div class="flex items-center gap-1">
+                  <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                  <span class="text-xs text-slate-600 dark:text-slate-300">Live</span>
                 </div>
               </div>
             </div>
           </div>
-          <nav class="flex items-center gap-4">
-            <a href="index.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Home</a>
-            <a href="documentation.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Documentation</a>
-            <a href="investor-login.html" class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Investor Portal</a>
-            <button onclick="toggleTheme()" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors border border-slate-300 dark:border-slate-600">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-              </svg>
-            </button>
-            <a href="print.md" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" title="Print">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9v2m0 4h12v-4h4v6H2V11h4m6 12h6m-10-8v1m5-5v1m-5 4v1m5-5v1m-5 4v1m5-5v1M2 3a2 2 0 012-2h16a2 2 0 012 2v3m-2-3V3z"></path>
-              </svg>
-            </a>
-          </nav>
-          <button class="md:hidden text-slate-600 dark:text-slate-400" onclick="toggleMobileMenu()">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </div>
+        <nav class="flex items-center gap-4">
+          <a href="index.html"
+            class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Home</a>
+          <a href="documentation.html"
+            class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Documentation</a>
+          <a href="investor-login.html"
+            class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Investor
+            Portal</a>
+          <button onclick="toggleTheme()"
+            class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors border border-slate-300 dark:border-slate-600">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+              </path>
             </svg>
           </button>
+          <a href="print.md"
+            class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            title="Print">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M6 9v2m0 4h12v-4h4v6H2V11h4m6 12h6m-10-8v1m5-5v1m-5 4v1m5-5v1m-5 4v1m5-5v1M2 3a2 2 0 012-2h16a2 2 0 012 2v3m-2-3V3z">
+              </path>
+            </svg>
+          </a>
+        </nav>
+        <button class="md:hidden text-slate-600 dark:text-slate-400" onclick="toggleMobileMenu()">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section
+    class="relative bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900 dark:to-emerald-800 py-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
+          Agent-Embedded <span class="text-emerald-600">Infrastructure</span> Platform
+        </h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
+          SirsiNexus revolutionizes cloud infrastructure management.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="documentation.html"
+            class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white font-medium rounded-md hover:bg-emerald-700 transition-colors">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+              </path>
+            </svg>
+            Docs
+          </a>
+          <a href="signup.html"
+            class="inline-flex items-center px-4 py-2 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium rounded-md hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+              </path>
+            </svg>
+            Updates
+          </a>
         </div>
       </div>
-    </header>
+    </div>
+  </section>
 
-    <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900 dark:to-emerald-800 py-20">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center">
-          <h1 class="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6">
-            Agent-Embedded <span class="text-emerald-600">Infrastructure</span> Platform
-          </h1>
-          <p class="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
-            SirsiNexus revolutionizes cloud infrastructure management.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="documentation.html" class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white font-medium rounded-md hover:bg-emerald-700 transition-colors">
-              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-              </svg>
-              Docs
-            </a>
-            <a href="signup.html" class="inline-flex items-center px-4 py-2 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium rounded-md hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-              <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-              </svg>
-              Updates
-            </a>
+  <!-- Features Section -->
+  <section id="features" class="py-20 bg-white dark:bg-slate-900">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">Platform Features</h2>
+        <p class="text-xl text-slate-600 dark:text-slate-400">Comprehensive infrastructure management with AI-powered
+          automation</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-slate-50 dark:bg-slate-800 p-6 rounded-lg">
+          <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
           </div>
+          <h3 class="text-xl font-semibold mb-2">Smart Migration Wizards</h3>
+          <p class="text-slate-600 dark:text-slate-400">AI-guided migration processes for seamless cloud transitions
+            with minimal downtime and maximum efficiency.</p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-800 p-6 rounded-lg">
+          <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+              </path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Auto-Scaling Intelligence</h3>
+          <p class="text-slate-600 dark:text-slate-400">Dynamic resource allocation and cost optimization with
+            predictive scaling based on usage patterns.</p>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-800 p-6 rounded-lg">
+          <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+              </path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-2">Advanced Analytics</h3>
+          <p class="text-slate-600 dark:text-slate-400">Real-time monitoring and insights with ML-powered anomaly
+            detection and performance optimization.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Features Section -->
-    <section id="features" class="py-20 bg-white dark:bg-slate-900">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">Platform Features</h2>
-          <p class="text-xl text-slate-600 dark:text-slate-400">Comprehensive infrastructure management with AI-powered automation</p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
-          <div class="bg-slate-50 dark:bg-slate-800 p-6 rounded-lg">
-            <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">Smart Migration Wizards</h3>
-            <p class="text-slate-600 dark:text-slate-400">AI-guided migration processes for seamless cloud transitions with minimal downtime and maximum efficiency.</p>
-          </div>
-          <div class="bg-slate-50 dark:bg-slate-800 p-6 rounded-lg">
-            <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">Auto-Scaling Intelligence</h3>
-            <p class="text-slate-600 dark:text-slate-400">Dynamic resource allocation and cost optimization with predictive scaling based on usage patterns.</p>
-          </div>
-          <div class="bg-slate-50 dark:bg-slate-800 p-6 rounded-lg">
-            <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">Advanced Analytics</h3>
-            <p class="text-slate-600 dark:text-slate-400">Real-time monitoring and insights with ML-powered anomaly detection and performance optimization.</p>
-          </div>
-        </div>
+  <!-- Platform Section -->
+
+  <section id="platform" class="py-20 bg-slate-50 dark:bg-slate-800">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">Multi-Cloud Platform</h2>
+        <p class="text-xl text-slate-600 dark:text-slate-400">Unified management across AWS, Azure, GCP, and more</p>
       </div>
-    </section>
-
-    <!-- Platform Section -->
-
-    <section id="platform" class="py-20 bg-slate-50 dark:bg-slate-800">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">Multi-Cloud Platform</h2>
-          <p class="text-xl text-slate-600 dark:text-slate-400">Unified management across AWS, Azure, GCP, and more</p>
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h3 class="text-2xl font-semibold mb-4">Enterprise-Ready Architecture</h3>
+          <ul class="space-y-3 text-slate-600 dark:text-slate-400">
+            <li class="flex items-center">
+              <svg class="w-5 h-5 text-emerald-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Rust-powered core engine for maximum performance
+            </li>
+            <li class="flex items-center">
+              <svg class="w-5 h-5 text-emerald-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Python ML platform with TensorFlow and PyTorch
+            </li>
+            <li class="flex items-center">
+              <svg class="w-5 h-5 text-emerald-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              Go-based cloud connectors for seamless integration
+            </li>
+            <li class="flex items-center">
+              <svg class="w-5 h-5 text-emerald-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              React/Next.js frontend with TypeScript
+            </li>
+          </ul>
         </div>
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h3 class="text-2xl font-semibold mb-4">Enterprise-Ready Architecture</h3>
-            <ul class="space-y-3 text-slate-600 dark:text-slate-400">
-              <li class="flex items-center">
-                <svg class="w-5 h-5 text-emerald-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                Rust-powered core engine for maximum performance
-              </li>
-              <li class="flex items-center">
-                <svg class="w-5 h-5 text-emerald-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                Python ML platform with TensorFlow and PyTorch
-              </li>
-              <li class="flex items-center">
-                <svg class="w-5 h-5 text-emerald-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                Go-based cloud connectors for seamless integration
-              </li>
-              <li class="flex items-center">
-                <svg class="w-5 h-5 text-emerald-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                React/Next.js frontend with TypeScript
-              </li>
-            </ul>
-          </div>
-          <div class="bg-white dark:bg-slate-800 p-6 rounded-lg border border-slate-200 dark:border-slate-700">
-            <div class="text-center">
-              <h4 class="text-xl font-semibold mb-4 text-slate-900 dark:text-slate-100">Real-Time Metrics</h4>
-              <div class="grid grid-cols-2 gap-4">
-                <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-lg">
-                  <div class="text-2xl font-bold text-emerald-600">99.2%</div>
-                  <div class="text-sm text-slate-600 dark:text-slate-400">Success Rate</div>
-                </div>
-                <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-lg">
-                  <div class="text-2xl font-bold text-emerald-600">$2.8M</div>
-                  <div class="text-sm text-slate-600 dark:text-slate-400">Cost Savings</div>
-                </div>
-                <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-lg">
-                  <div class="text-2xl font-bold text-emerald-600">12,847</div>
-                  <div class="text-sm text-slate-600 dark:text-slate-400">Resources Migrated</div>
-                </div>
-                <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-lg">
-                  <div class="text-2xl font-bold text-emerald-600">47.3 TB</div>
-                  <div class="text-sm text-slate-600 dark:text-slate-400">Data Transferred</div>
-                </div>
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-lg border border-slate-200 dark:border-slate-700">
+          <div class="text-center">
+            <h4 class="text-xl font-semibold mb-4 text-slate-900 dark:text-slate-100">Real-Time Metrics</h4>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-lg">
+                <div class="text-2xl font-bold text-emerald-600">99.2%</div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">Success Rate</div>
+              </div>
+              <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-lg">
+                <div class="text-2xl font-bold text-emerald-600">$2.8M</div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">Cost Savings</div>
+              </div>
+              <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-lg">
+                <div class="text-2xl font-bold text-emerald-600">12,847</div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">Resources Migrated</div>
+              </div>
+              <div class="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-lg">
+                <div class="text-2xl font-bold text-emerald-600">47.3 TB</div>
+                <div class="text-sm text-slate-600 dark:text-slate-400">Data Transferred</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- CTA Section -->
-    <section id="signup" class="py-20 bg-gradient-to-r from-emerald-600 to-blue-600">
-      <div class="max-w-4xl mx-auto px-6 text-center">
-        <h2 class="text-3xl font-bold text-white mb-4">Ready to Transform Your Infrastructure?</h2>
-        <p class="text-xl text-white/90 mb-8">Join hundreds of enterprises already using SirsiNexus for their cloud operations</p>
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-          <a href="business-case.html" class="inline-flex items-center px-5 py-2 bg-white text-emerald-600 font-medium rounded-md hover:bg-gray-50 transition-colors">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-            </svg>
-            Business Case
-          </a>
-          <a href="investor-login.html" class="inline-flex items-center px-5 py-2 border border-white text-white font-medium rounded-md hover:bg-white hover:text-emerald-600 transition-colors">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-            </svg>
-            Investor Portal
-          </a>
-        </div>
+  <!-- CTA Section -->
+  <section id="signup" class="py-20 bg-gradient-to-r from-emerald-600 to-blue-600">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">Ready to Transform Your Infrastructure?</h2>
+      <p class="text-xl text-white/90 mb-8">Join hundreds of enterprises already using SirsiNexus for their cloud
+        operations</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="business-case.html"
+          class="inline-flex items-center px-5 py-2 bg-white text-emerald-600 font-medium rounded-md hover:bg-gray-50 transition-colors">
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+            </path>
+          </svg>
+          Business Case
+        </a>
+        <a href="investor-login.html"
+          class="inline-flex items-center px-5 py-2 border border-white text-white font-medium rounded-md hover:bg-white hover:text-emerald-600 transition-colors">
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+            </path>
+          </svg>
+          Investor Portal
+        </a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Footer -->
-<footer class="bg-white dark:bg-slate-900 text-slate-600 dark:text-white py-12">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="grid md:grid-cols-4 gap-8">
-          <div>
-            <div class="flex items-center gap-2 mb-4">
-              <div class="w-8 h-8 flex items-center justify-center">
-                <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="w-8 h-8 object-contain">
-              </div>
-              <span class="text-xl font-semibold">SirsiNexus</span>
+  <!-- Footer -->
+  <footer class="bg-white dark:bg-slate-900 text-slate-600 dark:text-white py-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-8 h-8 flex items-center justify-center">
+              <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo"
+                class="w-8 h-8 object-contain">
             </div>
-<p class="text-slate-600 dark:text-slate-400">Agent-embedded infrastructure platform for enterprise cloud operations.</p>
+            <span class="text-xl font-semibold">SirsiNexus</span>
           </div>
-          <div>
-            <h4 class="font-semibold mb-4">Platform</h4>
-<ul class="space-y-2 text-slate-600 dark:text-slate-400">
-              <li><a href="#features" class="hover:text-slate-900 dark:hover:text-white transition-colors">Features</a></li>
-              <li><a href="#platform" class="hover:text-slate-900 dark:hover:text-white transition-colors">Architecture</a></li>
-              <li><a href="#docs" class="hover:text-slate-900 dark:hover:text-white transition-colors">Documentation</a></li>
-              <li><a href="#pricing" class="hover:text-slate-900 dark:hover:text-white transition-colors">Pricing</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Company</h4>
-<ul class="space-y-2 text-slate-600 dark:text-slate-400">
-              <li><a href="#about" class="hover:text-slate-900 dark:hover:text-white transition-colors">About</a></li>
-              <li><a href="#careers" class="hover:text-slate-900 dark:hover:text-white transition-colors">Careers</a></li>
-              <li><a href="#blog" class="hover:text-slate-900 dark:hover:text-white transition-colors">Blog</a></li>
-              <li><a href="#contact" class="hover:text-slate-900 dark:hover:text-white transition-colors">Contact</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">Legal</h4>
-<ul class="space-y-2 text-slate-600 dark:text-slate-400">
-              <li><a href="privacy-policy.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="terms-of-service.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Terms of Service</a></li>
-              <li><a href="documentation.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Security</a></li>
-              <li><a href="investor-login.html" class="hover:text-slate-900 dark:hover:text-white transition-colors">Investor Relations</a></li>
-            </ul>
-          </div>
+          <p class="text-slate-600 dark:text-slate-400">Agent-embedded infrastructure platform for enterprise cloud
+            operations.</p>
         </div>
-        <div class="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8 text-center text-slate-600 dark:text-slate-400">
-          <p>&copy; 2025 Sirsi Technologies Inc. All rights reserved.</p>
-          <p class="text-sm mt-2">SirsiNexus is a product of Sirsi Technologies Inc.</p>
+        <div>
+          <h4 class="font-semibold mb-4">Platform</h4>
+          <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+            <li><a href="#features" class="hover:text-slate-900 dark:hover:text-white transition-colors">Features</a>
+            </li>
+            <li><a href="#platform"
+                class="hover:text-slate-900 dark:hover:text-white transition-colors">Architecture</a></li>
+            <li><a href="#docs" class="hover:text-slate-900 dark:hover:text-white transition-colors">Documentation</a>
+            </li>
+            <li><a href="#pricing" class="hover:text-slate-900 dark:hover:text-white transition-colors">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Company</h4>
+          <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+            <li><a href="#about" class="hover:text-slate-900 dark:hover:text-white transition-colors">About</a></li>
+            <li><a href="#careers" class="hover:text-slate-900 dark:hover:text-white transition-colors">Careers</a></li>
+            <li><a href="#blog" class="hover:text-slate-900 dark:hover:text-white transition-colors">Blog</a></li>
+            <li><a href="#contact" class="hover:text-slate-900 dark:hover:text-white transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Legal</h4>
+          <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+            <li><a href="/privacy.html" class="hover:text-emerald-600 transition-colors">Privacy Policy</a></li>
+            <li><a href="/terms.html" class="hover:text-emerald-600 transition-colors">Terms of Service</a></li>
+            <li><a href="/security.html" class="hover:text-emerald-600 transition-colors">Security</a></li>
+            <li><a href="/investor-login.html" class="hover:text-emerald-600 transition-colors">Investor Relations</a>
+            </li>
+          </ul>
         </div>
       </div>
-    </footer>
+      <div
+        class="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8 text-center text-slate-600 dark:text-slate-400">
+        <p>&copy; 2025 Sirsi Technologies Inc. All rights reserved.</p>
+        <p class="text-sm mt-2">SirsiNexus is a product of Sirsi Technologies Inc.</p>
+      </div>
+    </div>
+  </footer>
 
 
-    <script>
-        function toggleTheme() {
-            console.log('Theme toggle clicked');
-            const html = document.documentElement;
-            const isDark = html.classList.contains('dark');
-            
-            if (isDark) {
-                html.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-                console.log('Switched to light mode');
-            } else {
-                html.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-                console.log('Switched to dark mode');
-            }
-        }
-        
-        function initTheme() {
-            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            document.documentElement.classList.toggle('dark', theme === 'dark');
-            console.log('Theme initialized:', theme);
-        }
-        
-        // Initialize immediately
-        initTheme();
-        
-        // Make toggleTheme available globally
-        window.toggleTheme = toggleTheme;
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            initTheme();
-        });
-    </script>
-    </script>
-  </body>
+  <script>
+    function toggleTheme() {
+      console.log('Theme toggle clicked');
+      const html = document.documentElement;
+      const isDark = html.classList.contains('dark');
+
+      if (isDark) {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+        console.log('Switched to light mode');
+      } else {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        console.log('Switched to dark mode');
+      }
+    }
+
+    function initTheme() {
+      const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      console.log('Theme initialized:', theme);
+    }
+
+    // Initialize immediately
+    initTheme();
+
+    // Make toggleTheme available globally
+    window.toggleTheme = toggleTheme;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      initTheme();
+    });
+  </script>
+  </script>
+</body>
+
 </html>
