@@ -1,11 +1,28 @@
 {
   "name": "@sirsimaster/sirsi-ui",
-  "version": "0.1.0",
-  "description": "Sirsi UI – shared, framework-agnostic UI tokens, presets, and web components.",
+  "version": "0.2.0",
+  "description": "Sirsi UI – shared React components, hooks, and design tokens for Sirsi applications.",
   "license": "MIT",
   "main": "dist/sirsi-ui.js",
   "module": "dist/sirsi-ui.esm.js",
+  "types": "src/index.ts",
   "style": "dist/sirsi-ui.css",
+  "exports": {
+    ".": {
+      "import": "./dist/sirsi-ui.esm.js",
+      "require": "./dist/sirsi-ui.js",
+      "types": "./src/index.ts"
+    },
+    "./components": {
+      "import": "./src/components/index.ts",
+      "types": "./src/components/index.ts"
+    },
+    "./hooks": {
+      "import": "./src/hooks/index.ts",
+      "types": "./src/hooks/index.ts"
+    },
+    "./css": "./dist/sirsi-ui.css"
+  },
   "files": [
     "dist",
     "tailwind-preset.js",
@@ -17,8 +34,18 @@
     "build": "npm run build:css && npm run build:js",
     "prepublishOnly": "npm run build"
   },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "firebase": "^10.0.0"
+  },
+  "peerDependenciesMeta": {
+    "firebase": {
+      "optional": true
+    }
+  },
   "devDependencies": {
-    "tailwindcss": "^3.4.10"
+    "tailwindcss": "^3.4.10",
+    "@types/react": "^18.2.0"
   }
 }
-
