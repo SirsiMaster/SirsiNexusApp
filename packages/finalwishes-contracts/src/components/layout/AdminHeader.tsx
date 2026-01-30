@@ -1,23 +1,9 @@
-import { useConfigStore } from '../../store/useConfigStore';
-
 interface AdminHeaderProps {
     isLightTheme: boolean;
     onToggleTheme: () => void;
 }
 
 export function AdminHeader({ isLightTheme, onToggleTheme }: AdminHeaderProps) {
-    const clientName = useConfigStore(state => state.clientName);
-
-    // Generate initials
-    const getInitials = (name: string) => {
-        if (!name) return 'AD';
-        const parts = name.trim().split(/\s+/);
-        if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-    };
-
-    const initials = getInitials(clientName);
-
     return (
         <header className="admin-header" style={{
             position: 'sticky',
@@ -69,7 +55,7 @@ export function AdminHeader({ isLightTheme, onToggleTheme }: AdminHeaderProps) {
                     {isLightTheme ? '🌙 Dark Mode' : '☀️ Light Mode'}
                 </button>
 
-                <div className="avatar" title={clientName || 'Administrator'} style={{
+                <div className="avatar" style={{
                     width: '40px',
                     height: '40px',
                     borderRadius: '50%',
@@ -80,9 +66,8 @@ export function AdminHeader({ isLightTheme, onToggleTheme }: AdminHeaderProps) {
                     justifyContent: 'center',
                     fontWeight: 'bold',
                     fontSize: '14px'
-                }}>{initials}</div>
+                }}>AD</div>
             </div>
         </header>
     )
 }
-

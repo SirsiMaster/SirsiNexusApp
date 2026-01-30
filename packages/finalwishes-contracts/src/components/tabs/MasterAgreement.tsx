@@ -23,10 +23,6 @@ export function MasterAgreement() {
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
 
-    // Dynamic Client Recognition
-    const storeClientName = useConfigStore(state => state.clientName)
-    const clientName = storeClientName || "Tameeka Lockhart"
-
     // CRITICAL: PER GEMINI.MD RULE 12, all calculations MUST be dynamic.
     // Hardcoded financial values are strictly prohibited.
     // Dynamic Financial Calculations
@@ -110,7 +106,7 @@ export function MasterAgreement() {
                             This <strong>Master Services Agreement</strong> (this "Agreement") is entered into by and between:
                         </p>
                         <p>
-                            <strong>{clientName}</strong>, an individual with principal place of business at [Address] ("Client"), and
+                            <strong>The Client</strong>, an individual or entity ("Client"), and
                             {" "}<strong>Sirsi Technologies, Inc.</strong>, a Delaware corporation (FEIN: 93-1696269), with its principal place of business at 909 Rose Avenue, Suite 400, North Bethesda MD 20852 ("Provider" or "Sirsi"), represented by <strong>Cylton Collymore</strong>, CEO.
                         </p>
                         <p>Client and Provider may be referred to individually as a "Party" and collectively as the "Parties."</p>
@@ -423,7 +419,7 @@ export function MasterAgreement() {
                         style={{ width: '20px', height: '20px', marginTop: '2px' }}
                     />
                     <span>
-                        I, <strong style={{ color: '#C8A951' }}>{clientName}</strong>, have read, understand, and agree to be bound by the terms and conditions of this
+                        I hereby acknowledge that I have read, understand, and agree to be bound by the terms and conditions of this
                         Master Service Agreement. I acknowledge that this Agreement, together with the attached
                         Statement of Work, constitutes a binding legal contract for a total investment of <strong style={{ color: '#C8A951' }}>${totalAmount.toLocaleString()}</strong>.
                     </span>
