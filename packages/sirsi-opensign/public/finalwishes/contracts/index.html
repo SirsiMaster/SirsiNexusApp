@@ -2165,7 +2165,7 @@
                         </h1>
                         <div class="contract-gold-divider"></div>
                         <p id="proposal-subtitle" class="contract-subtitle">
-                            Prepared for Tameeka Lockhart • <span id="date-proposal"></span>
+                            Prepared for The Client • <span id="date-proposal"></span>
                         </p>
                     </div>
                 </div>
@@ -4490,8 +4490,8 @@
                                             <div
                                                 style="border-bottom: 2px solid rgba(200,169,81,0.5); padding-bottom: 8px; margin-bottom: 8px; min-width: 220px;">
                                                 <span
-                                                    style="font-family: 'Georgia', serif; font-style: italic; color: white; font-size: 18px;">Tameeka
-                                                    Lockhart</span>
+                                                    style="font-family: 'Georgia', serif; font-style: italic; color: white; font-size: 18px;">The
+                                                    Client</span>
                                             </div>
                                             <span
                                                 style="color: rgba(255,255,255,0.4); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;">
@@ -6464,7 +6464,7 @@
 
         async function downloadMSAPdf(e) {
             const user = window.AuthService ? window.AuthService.getCurrentUser() : null;
-            let clientName = user?.displayName || 'Tameeka Lockhart';
+            let clientName = user?.displayName || 'The Client';
 
             const guestNameInput = document.getElementById('guest-name');
             if (!user && guestNameInput && guestNameInput.value) {
