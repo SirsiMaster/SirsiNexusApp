@@ -23,9 +23,9 @@ export function MasterAgreement() {
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
 
-    // FinalWishes Client is ALWAYS Tameeka Lockhart - not the logged-in user
-    // This is a specific contract between Provider (Sirsi/Cylton) and Client (Tameeka)
-    const clientName = "Tameeka Lockhart"
+    // Dynamic Client Recognition
+    const storeClientName = useConfigStore(state => state.clientName)
+    const clientName = storeClientName || "Tameeka Lockhart"
 
     // CRITICAL: PER GEMINI.MD RULE 12, all calculations MUST be dynamic.
     // Hardcoded financial values are strictly prohibited.

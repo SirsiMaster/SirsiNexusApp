@@ -29,12 +29,22 @@ export function AgreementWorkflow() {
 
   const { data: settings } = useSettings()
   const setSystemSettings = useConfigStore(state => state.setSystemSettings)
+  const setClientInfo = useConfigStore(state => state.setClientInfo)
 
   useEffect(() => {
     if (projectId) {
       setProjectId(projectId)
     }
   }, [projectId, setProjectId])
+
+  // Sync identity from localStorage
+  useEffect(() => {
+    const localName = localStorage.getItem('sirsi_user_name')
+    const localEmail = localStorage.getItem('sirsi_user_email')
+    if (localName || localEmail) {
+      setClientInfo(localName || '', localEmail || '')
+    }
+  }, [setClientInfo])
 
   // Sync global settings (multiplier/maintenance) from Admin
   useEffect(() => {
