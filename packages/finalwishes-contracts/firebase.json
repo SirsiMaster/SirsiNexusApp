@@ -38,6 +38,18 @@
         ],
         "rewrites": [
             {
+                "source": "/api/**",
+                "function": "api"
+            },
+            {
+                "source": "/sign",
+                "destination": "/sign.html"
+            },
+            {
+                "source": "/payment",
+                "destination": "/payment.html"
+            },
+            {
                 "source": "**",
                 "destination": "/index.html"
             }

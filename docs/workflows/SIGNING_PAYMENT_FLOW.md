@@ -67,7 +67,8 @@ sequenceDiagram
 ### Phase C: The "Universal Guard" (Gate 1)
 *   **MFA Requirement**: Any move from signing to payment **MUST** be gated by MFA.
 *   **Visual**: A high-fidelity, emerald-accented modal requesting a 6-digit code.
-*   **Benefit**: This prevents "Payment Hell" by ensuring only the authorized signer can initiate the payment rail, avoiding unauthorized chargebacks or fraud.
+*   **Logic**: If the user is a `Countersignatory` (determined by the signing role), the workflow skips the Financial Rail and proceeds to the "Complete" state. Only the `Payer` role triggers the MFA Gate for financial rails.
+*   **Benefit**: This prevents "Payment Hell" by ensuring only the authorized payer can initiate the payment rail, avoiding unauthorized chargebacks or fraud.
 
 ### Phase D: Settlement (Gate 2)
 *   **Stripe Rail**: Used for Card and recurring payments.
@@ -82,8 +83,10 @@ The system intelligently determines the workflow branch based on the **Handshake
     *   **Parameters**: `{ envelopeId, signer }`
     *   **Result**: Upon signing, the session terminates at the "Success" screen. The user can download the PDF. No financial rails are warmed.
 2.  **Coupled Flow** (e.g., MSA/SOW):
-    *   **Parameters**: `{ envelopeId, amount, plan, ref }`
-    *   **Result**: The presence of `amount` triggers the **Financial Bridge**. The countdown timer initiates the redirect to `payment.html`.
+    *   **Parameters**: `{ envelopeId, amount, plan, ref, role }`
+    *   **Result**: 
+        *   If `role == "payer"`: The presence of `amount` triggers the **Financial Bridge**. The countdown timer initiates the redirect to `payment.html`.
+        *   If `role == "countersignatory"`: The system detects the role, confirms the signature is valid, and bypasses the financial rails, displaying the "Signed & Approved" confirmation.
 
 ## 5. Security & Prevention of "Payment Hell"
 
