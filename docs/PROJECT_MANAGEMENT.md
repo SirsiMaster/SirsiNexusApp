@@ -718,7 +718,15 @@ redis-cli ping
 
 ## 🎉 **MAJOR ACHIEVEMENTS LOG**
 
-### **Phase 6.5 Milestones (Recently Completed)**
+### Phase 8.2: Live MFA Delivery Rails (Active)
+- **2026-01-30**: 🛡️ **MAJOR SECURITY BREAKTHROUGH: Live MFA Integration (Stage 3 Gate)**
+  - **SMS Gate**: Successfully implemented live Twilio dispatch rail for 6-digit verification codes.
+  - **Email Gate**: Configured Nodemailer SMTP relay for encrypted MFA notices.
+  - **Financial interlocking**: Wired the MFA gate to `payment.html`, ensuring no financial rail access without `mfa_verified` claim.
+  - **Backend Security**: Centralized generation and verification in the `api` Cloud Function with Firestore TTL enforcement.
+  - **ADR Finalized**: Published [ADR-012](ADR-012-LIVE-MFA-DELIVERY-RAILS.md) to canonize the implementation.
+
+### Phase 6.5 Milestones (Recently Completed)
 - **2026-01-28**: 🏛️ **MAJOR ARCHITECTURAL UPGRADE: Admin Portal Refactor (Phase 8.1)**
   - **Type-Safe Backend**: Implemented Go `AdminService` with Connect gRPC-Web protocol.
   - **Neo-Deco UI**: Refactored admin dashboards into high-fidelity React components (Estates, Users, Dev KPIs, Notifications).

@@ -9,6 +9,7 @@ This index tracks all significant architectural decisions for the Sirsi ecosyste
 | [ADR-003](ADR-003-TANSTACK-MIGRATION.md) | Migration to TanStack Query v5 | Approved | 2025-07-12 |
 | [ADR-010](ADR-010-SIRSI-REPOSITORY-UNIFICATION.md) | Sirsi Repository Unification | Approved | 2025-07-28 |
 | [ADR-011](ADR-011-UNIVERSAL-COMPONENT-SYSTEM.md) | Universal Component System (UCS) | Approved | 2026-01-29 |
+| [ADR-012](ADR-012-LIVE-MFA-DELIVERY-RAILS.md) | Live MFA Delivery Rails (SMS/Email) | Approved | 2026-01-30 |
 
 ## Note on Legacy ADRs
 ADRs 001-002 are legacy documents from the early crystallization phase and are maintained for historical context. Active development follows the **Prime Directives** in `GEMINI.md`.
