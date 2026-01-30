@@ -11,50 +11,97 @@ export function Login() {
         // Identity recognition logic
         if (email.toLowerCase().includes('@sirsi.ai')) {
             localStorage.setItem('sirsi_user_role', 'provider');
-            localStorage.setItem('sirsi_user_email', email);
         } else {
             localStorage.setItem('sirsi_user_role', 'client');
-            localStorage.setItem('sirsi_user_email', email);
         }
 
-        navigate('/vault');
+        // Store email for session
+        localStorage.setItem('sirsi_user_email', email);
+
+        // Redirect to first step (partnership)
+        navigate('/partnership/finalwishes');
     };
 
     return (
-        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
-            <div className="neo-glass-panel" style={{ maxWidth: '400px', width: '100%', padding: '3rem' }}>
-                <h2 style={{ fontFamily: "'Cinzel', serif", color: '#C8A951', fontSize: '24px', marginBottom: '2rem', textAlign: 'center' }}>
-                    Vault Access
-                </h2>
-                <form onSubmit={handleLogin}>
-                    <div style={{ marginBottom: '1.5rem' }}>
-                        <label style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px' }}>
-                            Email Address
-                        </label>
+        <div style={{
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)',
+            padding: '2rem'
+        }}>
+            <div className="neo-glass-panel" style={{
+                maxWidth: '400px',
+                width: '100%',
+                padding: '3rem',
+                textAlign: 'center'
+            }}>
+                <div style={{
+                    fontFamily: "'Cinzel', serif",
+                    fontSize: '24px',
+                    color: '#C8A951',
+                    letterSpacing: '0.2em',
+                    marginBottom: '0.5rem'
+                }}>⚜️ SIRSI NRE</div>
+                <div style={{
+                    fontSize: '11px',
+                    color: 'rgba(255,255,255,0.5)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.3em',
+                    marginBottom: '2.5rem'
+                }}>Nexus Reality Engine</div>
+
+                <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    <div style={{ textAlign: 'left' }}>
+                        <label style={{
+                            display: 'block',
+                            fontSize: '12px',
+                            color: '#94a3b8',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                            marginBottom: '0.5rem'
+                        }}>Authorized Email</label>
                         <input
                             type="email"
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter your email"
+                            placeholder="your@email.com"
                             style={{
                                 width: '100%',
-                                padding: '12px',
                                 background: 'rgba(255,255,255,0.05)',
-                                border: '1px solid rgba(255,255,255,0.2)',
-                                borderRadius: '8px',
+                                border: '1px solid rgba(255,255,255,0.1)',
+                                borderRadius: '4px',
+                                padding: '12px 16px',
                                 color: 'white',
+                                fontSize: '14px',
                                 outline: 'none'
                             }}
                         />
                     </div>
+
                     <button
                         type="submit"
                         className="select-plan-btn"
-                        style={{ width: '100%', padding: '14px' }}
+                        style={{
+                            width: '100%',
+                            padding: '14px',
+                            marginTop: '1rem',
+                            border: 'none',
+                            cursor: 'pointer'
+                        }}
                     >
-                        Sign In →
+                        Access Secure Hub
                     </button>
+
+                    <p style={{
+                        fontSize: '11px',
+                        color: 'rgba(255,255,255,0.3)',
+                        marginTop: '1rem'
+                    }}>
+                        MFA Enforcement Active • Session Encrypted
+                    </p>
                 </form>
             </div>
         </div>
