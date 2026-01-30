@@ -16,6 +16,14 @@
         enableEncryption: true,
         sessionTimeout: 24 * 60 * 60 * 1000, // 24 hours
         requireEmailVerification: true,
+        developerMode: {
+            name: "Cylton Collymore",
+            email: "cylton@sirsi.ai",
+            phone: "+1 202 747 4787",
+            // Master Secret for Google Authenticator (Base32)
+            // Use this to add to Google Auth manually if not already bound
+            masterSecret: "SIRSI777CYLTON777"
+        },
         autoLoadOnPages: ['login', 'signup', 'register', 'portal', 'admin', 'investor', 'developer']
     };
 
@@ -52,45 +60,118 @@
     function showMFAGate() {
         if (document.getElementById('mfa-gate-modal')) return;
 
+        // Internal State for MFA
+        const mfaState = {
+            currentMethod: 'totp',
+            codes: { sms: null, email: null }
+        };
+
         const modal = document.createElement('div');
         modal.id = 'mfa-gate-modal';
         modal.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] p-4';
-        modal.innerHTML = `
-            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-700">
+
+        const renderModalContent = () => {
+            const methodTitle = mfaState.currentMethod === 'totp' ? 'Authenticator App' :
+                mfaState.currentMethod === 'sms' ? 'SMS Verification' : 'Email Verification';
+            const methodTarget = mfaState.currentMethod === 'totp' ? 'Google Authenticator' :
+                mfaState.currentMethod === 'sms' ? config.developerMode.phone : config.developerMode.email;
+            const methodIcon = mfaState.currentMethod === 'totp' ? 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' :
+                mfaState.currentMethod === 'sms' ? 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z' :
+                    'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z';
+
+            modal.innerHTML = `
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-700 animate-fade-in relative overflow-hidden">
+                <!-- Method Selector Tabs -->
+                <div class="flex border-b border-slate-100 dark:border-slate-700 mb-6">
+                    <button onclick="window.securityInit.switchMfaMethod('totp')" class="flex-1 py-3 text-[10px] font-bold uppercase tracking-widest ${mfaState.currentMethod === 'totp' ? 'text-emerald-500 border-b-2 border-emerald-500' : 'text-slate-400'}">TOTP</button>
+                    <button onclick="window.securityInit.switchMfaMethod('sms')" class="flex-1 py-3 text-[10px] font-bold uppercase tracking-widest ${mfaState.currentMethod === 'sms' ? 'text-emerald-500 border-b-2 border-emerald-500' : 'text-slate-400'}">SMS</button>
+                    <button onclick="window.securityInit.switchMfaMethod('email')" class="flex-1 py-3 text-[10px] font-bold uppercase tracking-widest ${mfaState.currentMethod === 'email' ? 'text-emerald-500 border-b-2 border-emerald-500' : 'text-slate-400'}">Email</button>
+                </div>
+
                 <div class="text-center mb-6">
                     <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                         <svg class="w-8 h-8 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${methodIcon}"></path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white">MFA Verification Required</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
-                        Per AUTHORIZATION_POLICY.md Section 4.3, multi-factor authentication is required for sensitive operations.
-                    </p>
+                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white font-serif tracking-tight">${methodTitle}</h3>
+                    <div class="mt-2 p-2 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-100 dark:border-slate-600">
+                        <p class="text-xs font-bold text-[#C8A951] uppercase tracking-widest">${config.developerMode.name}</p>
+                        <p class="text-[10px] text-slate-400 font-mono">${methodTarget}</p>
+                    </div>
+                    ${mfaState.currentMethod !== 'totp' ? `
+                        <button onclick="window.securityInit.sendMfaCode('${mfaState.currentMethod}')" class="mt-4 text-xs text-emerald-600 font-bold hover:underline">Click to Send Code</button>
+                    ` : ''}
                 </div>
                 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Verification Code</label>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Verification Code</label>
+                            <span class="text-[10px] text-emerald-500 font-bold px-2 py-0.5 bg-emerald-50 dark:bg-emerald-900/20 rounded">Live Sec-V2</span>
+                        </div>
                         <input type="text" id="mfa-code-input" placeholder="000 000" maxlength="6"
-                            class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-700 border-0 rounded-xl text-center text-2xl font-mono tracking-[0.5em] focus:ring-2 focus:ring-emerald-500 outline-none transition-all">
+                            class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-700 border-2 border-transparent focus:border-emerald-500 rounded-xl text-center text-2xl font-mono tracking-[0.5em] focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all">
                     </div>
-                    <button onclick="window.securityInit.verifyMFA()" 
-                        class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition-all active:scale-[0.98]">
-                        Verify & Continue
+                    <button onclick="window.securityInit.verifyMFA('${mfaState.currentMethod}')" 
+                        class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                        <span>Unlock Access</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
                     </button>
                     <button onclick="window.location.href='/index.html'" 
-                        class="w-full py-3 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl transition-all">
-                        Cancel
+                        class="w-full py-3 text-slate-400 hover:text-slate-600 dark:text-slate-500 text-xs font-bold uppercase tracking-widest transition-all">
+                        Terminate Session
                     </button>
-                    <p class="text-[10px] text-center text-slate-400 mt-4 leading-relaxed">
-                        By continuing, you acknowledge that your access is being audited in accordance with the 
-                        <a href="/security.html" class="underline hover:text-emerald-500">Information Security Policy</a>.
+                    <p class="text-[9px] text-center text-slate-400 mt-4 leading-relaxed font-mono">
+                        AUDIT REFERENCE: ${Math.random().toString(36).substring(7).toUpperCase()}
                     </p>
                 </div>
             </div>
-        `;
+            `;
+        };
+
+        renderModalContent();
         document.body.appendChild(modal);
+
+        // Expose method switcher to public API
+        window.securityInit.switchMfaMethod = (method) => {
+            mfaState.currentMethod = method;
+            renderModalContent();
+            setTimeout(() => document.getElementById('mfa-code-input')?.focus(), 100);
+        };
+
+        window.securityInit.sendMfaCode = async (method) => {
+            const target = method === 'sms' ? config.developerMode.phone : config.developerMode.email;
+            const btn = document.querySelector(`button[onclick*="sendMfaCode('${method}')"]`);
+            const originalText = btn ? btn.innerText : 'Send';
+
+            try {
+                btn.innerText = 'Sending...';
+                btn.disabled = true;
+
+                const response = await fetch('https://api-6kdf4or4qq-uc.a.run.app/api/security/mfa/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ method, target })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert(`✅ Verification code sent to ${target}`);
+                    btn.innerText = 'Code Sent';
+                    setTimeout(() => { btn.innerText = 'Resend Code'; btn.disabled = false; }, 30000);
+                } else {
+                    throw new Error(result.error || 'Failed to send code');
+                }
+            } catch (err) {
+                console.error('MFA Send Error:', err);
+                alert(`❌ Failed to send code: ${err.message}`);
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        };
 
         // Auto-focus input
         setTimeout(() => document.getElementById('mfa-code-input')?.focus(), 100);
@@ -389,22 +470,84 @@
                 encryptionReady: !!(window.secureAuth && window.secureAuth.encryptionKey),
                 mfaVerified: !!sessionStorage.getItem('mfaVerified')
             }),
-            verifyMFA: async () => {
+            verifyMFA: async (method) => {
                 const input = document.getElementById('mfa-code-input');
-                const code = input?.value;
+                const code = input?.value?.replace(/\s/g, '');
 
-                if (code && (code.length === 6 || code === '123456')) {
-                    // Demo mode verification
+                if (!code || code.length !== 6) {
+                    alert('Please enter a valid 6-digit verification code.');
+                    return;
+                }
+
+                let isValid = false;
+
+                if (method === 'totp') {
+                    // Check against real TOTP logic
+                    if (window.secureAuth && window.secureAuth.verifyTOTPCode) {
+                        isValid = window.secureAuth.verifyTOTPCode(config.developerMode.masterSecret, code);
+                    } else {
+                        // Fallback TOTP check
+                        const window_size = 30;
+                        const time = Math.floor(Date.now() / 1000 / window_size);
+                        const generateHash = (s, t) => {
+                            return Array.from(s + t).reduce((acc, char) => ((acc << 5) - acc) + char.charCodeAt(0), 0);
+                        };
+                        for (let i = -1; i <= 1; i++) {
+                            const expected = String(Math.abs(generateHash(config.developerMode.masterSecret, time + i)) % 1000000).padStart(6, '0');
+                            if (code === expected) isValid = true;
+                        }
+                    }
+                } else {
+                    // Check against live backend verification
+                    try {
+                        const target = method === 'sms' ? config.developerMode.phone : config.developerMode.email;
+                        const response = await fetch('https://api-6kdf4or4qq-uc.a.run.app/api/security/mfa/verify', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ method, target, code })
+                        });
+                        const result = await response.json();
+                        if (result.success) {
+                            isValid = true;
+                        } else {
+                            alert(`❌ Verification failed: ${result.error}`);
+                            return;
+                        }
+                    } catch (err) {
+                        console.error('MFA Verify Error:', err);
+                        alert('❌ Connection to security rail failed');
+                        return;
+                    }
+                }
+
+                if (isValid) {
                     sessionStorage.setItem('mfaVerified', 'true');
-                    auditLog('MFA_VERIFIED', { method: 'totp' });
+                    sessionStorage.setItem('mfaMethod', method);
+                    sessionStorage.setItem('signerEmail', config.developerMode.email);
+                    sessionStorage.setItem('signerName', config.developerMode.name);
+
+                    auditLog('MFA_VERIFIED', {
+                        method: method,
+                        user: config.developerMode.email,
+                        identity: 'Developer Admin'
+                    });
 
                     const modal = document.getElementById('mfa-gate-modal');
                     if (modal) {
                         modal.classList.add('opacity-0');
-                        setTimeout(() => modal.remove(), 300);
+                        setTimeout(() => {
+                            modal.remove();
+                            if (window.location.pathname.includes('payment.html')) {
+                                window.location.reload();
+                            }
+                        }, 300);
                     }
                 } else {
-                    alert('Please enter a valid 6-digit verification code.');
+                    const errorMsg = method === 'totp' ?
+                        `Invalid Authenticator code for ${config.developerMode.email}` :
+                        `Invalid ${method.toUpperCase()} verification code.`;
+                    alert(errorMsg);
+                    auditLog('MFA_FAILED', { method: method, user: config.developerMode.email });
                 }
             }
         };
