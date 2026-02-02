@@ -18,6 +18,8 @@ export function MasterAgreement() {
     const selectedAddons = useConfigStore(state => state.selectedAddons)
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
     const probateStates = useConfigStore(state => state.probateStates)
+    const clientName = useConfigStore(state => state.clientName)
+    const projectName = useConfigStore(state => state.projectName)
 
     const currentYear = new Date().getFullYear()
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -106,7 +108,7 @@ export function MasterAgreement() {
                             This <strong>Master Services Agreement</strong> (this "Agreement") is entered into by and between:
                         </p>
                         <p>
-                            <strong>The Client</strong>, an individual or entity ("Client"), and
+                            <strong>{clientName || 'The Client'}</strong>, an individual or entity ("Client"), and
                             {" "}<strong>Sirsi Technologies, Inc.</strong>, a Delaware corporation (FEIN: 93-1696269), with its principal place of business at 909 Rose Avenue, Suite 400, North Bethesda MD 20852 ("Provider" or "Sirsi"), represented by <strong>Cylton Collymore</strong>, CEO.
                         </p>
                         <p>Client and Provider may be referred to individually as a "Party" and collectively as the "Parties."</p>
@@ -114,7 +116,7 @@ export function MasterAgreement() {
                         <div style={{ margin: '40px 0', borderTop: '1px solid rgba(200,169,81,0.2)' }}></div>
 
                         <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px' }}>1. RECITALS</h3>
-                        <p><strong>WHEREAS</strong>, Client desires to engage Provider to design, develop, and implement a <strong>legacy management system</strong> known as <strong>FinalWishes</strong> (the "Platform"), with sufficient foundational infrastructure to support future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota; and</p>
+                        <p><strong>WHEREAS</strong>, Client desires to engage Provider to design, develop, and implement a <strong>legacy management system</strong> known as <strong>{projectName}</strong> (the "Platform"), with sufficient foundational infrastructure to support future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota; and</p>
                         <p><strong>WHEREAS</strong>, Provider (Sirsi Technologies, Inc) possesses the requisite technical expertise, personnel, and infrastructure, including expertise in artificial intelligence, cloud architecture, and secure software development, to perform the Services; and</p>
                         <p><strong>WHEREAS</strong>, the Platform is to be constructed utilizing Provider's proprietary <strong>Sirsi Nexus V4 Framework</strong> as the foundational architectural layer; and</p>
                         <p><strong>WHEREAS</strong>, the Parties desire to set forth the terms and conditions under which Provider will provide such services and license certain technologies to Client.</p>
@@ -128,7 +130,7 @@ export function MasterAgreement() {
                         <p><strong>2.2 "Background Technology" or "Sirsi Nexus V4"</strong> means all software, code, tools, libraries, frameworks, know-how, methodologies, and Intellectual Property Rights owned or licensed by Provider prior to the Effective Date or developed independently of the Services (including, without limitation, Provider's "Sirsi" component library, "The Vault" encryption protocols, "Gemini" guidance patterns, and standard deployment scripts).</p>
                         <p><strong>2.3 "Confidential Information"</strong> means any non-public information disclosed by one Party (the "Disclosing Party") to the other Party (the "Receiving Party") that is designated as confidential or that, given the nature of the information or circumstances of disclosure, reasonably should be understood to be confidential.</p>
                         <p><strong>2.4 "Deliverables"</strong> means all documents, work product, code, software, reports, and other materials that are specifically created for and delivered to Client by Provider pursuant to a Statement of Work.</p>
-                        <p><strong>2.5 "Foreground IP"</strong> means the Intellectual Property Rights in the specific business logic, legacy-management scripts, and configurations developed strictly and exclusively for FinalWishes, excluding any Background Technology.</p>
+                        <p><strong>2.5 "Foreground IP"</strong> means the Intellectual Property Rights in the specific business logic, legacy-management scripts, and configurations developed strictly and exclusively for {projectName}, excluding any Background Technology.</p>
                         <p><strong>2.6 "Intellectual Property Rights"</strong> means all patent rights, copyright rights, mask work rights, moral rights, rights of publicity, trademark, trade dress and service mark rights, goodwill, trade secret rights and other intellectual property rights as may now exist or hereafter come into existence, and all applications therefore and registrations, renewals and extensions thereof, under the laws of any state, country, territory or other jurisdiction.</p>
                         <p><strong>2.7 "Services"</strong> means the professional software development, consulting, and design services to be performed by Provider as described in a Statement of Work.</p>
                         <p><strong>2.8 "Statement of Work" or "SOW"</strong> means a document describing the specific Services to be performed, Deliverables to be provided, fees to be paid, and timeline for performance, which is agreed upon and signed by authorized representatives of both Parties. Each SOW shall be substantially in the form of <strong>Exhibit A</strong>.</p>

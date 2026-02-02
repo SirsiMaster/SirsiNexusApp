@@ -51,20 +51,20 @@ const SIRSI_ENGINEERING_CATALOG = {
                 maintenanceSLA: '4 hours'
             },
             valueRealization: {
-                marketBase: 180000,
+                marketBase: 274000,
                 marketMultiplier: 1.5,
                 marketLabel: 'US Agency (Standard Rate)',
-                googleBase: 60000,
+                googleBase: 68500,
                 googleMultiplier: 0.15,
-                googleLabel: 'Google Stack Acceleration',
-                sirsiBase: 25000,
+                googleLabel: 'SirsiNexus Efficiency Discount',
+                sirsiBase: 68500,
                 sirsiMultiplier: 0.10,
-                sirsiLabel: 'Sirsi Logic Asset Leverage'
+                sirsiLabel: 'Strategic Partnership Discount'
             },
             scopeSummary: {
                 platform: 'Living Legacy Platform (iOS, Android, Web)',
                 architecture: 'Google Cloud Fiber (Cloud Run, Firestore) + "The Shepherd" AI Agent Foundation',
-                timeline: '16 Weeks Maximum Delivery'
+                timeline: '20 Weeks Maximum Delivery'
             }
         }
     },
@@ -88,8 +88,8 @@ const SIRSI_ENGINEERING_CATALOG = {
             id: 'finalwishes-core',
             name: 'FinalWishes Core Platform',
             category: 'platform',
-            basePrice: 95000,
-            timeline: 16,
+            basePrice: 137000,
+            timeline: 20,
             timelineUnit: 'weeks',
             description: 'Full "Living Legacy" platform for iOS, Android, and Web.',
             shortDescription: 'Complete legacy curation platform',
@@ -110,7 +110,7 @@ const SIRSI_ENGINEERING_CATALOG = {
                     ]
                 },
                 {
-                    phaseNum: 2, name: 'Core Application Development', weeks: '5-8', hours: 140, cost: 28000,
+                    phaseNum: 2, name: 'Core Application Development', weeks: '5-8', hours: 160, cost: 28000,
                     activities: [
                         { name: 'Web Application Shell', role: 'Frontend Eng', hours: 30, cost: 6000 },
                         { name: 'Mobile Application Shell', role: 'Mobile Eng', hours: 35, cost: 7000 },
@@ -120,7 +120,7 @@ const SIRSI_ENGINEERING_CATALOG = {
                     ]
                 },
                 {
-                    phaseNum: 3, name: 'Living Legacy Features', weeks: '9-12', hours: 130, cost: 26000,
+                    phaseNum: 3, name: 'Living Legacy Features', weeks: '9-12', hours: 140, cost: 26000,
                     activities: [
                         { name: 'Video Memorial Management', role: 'Full Stack', hours: 30, cost: 6000 },
                         { name: 'Photo Gallery Integration', role: 'Full Stack', hours: 25, cost: 5000 },
@@ -130,14 +130,21 @@ const SIRSI_ENGINEERING_CATALOG = {
                     ]
                 },
                 {
-                    phaseNum: 4, name: 'QA, Integration & Launch', weeks: '13-16', hours: 90, cost: 17000,
+                    phaseNum: 4, name: 'QA, Integration & Launch', weeks: '13-16', hours: 100, cost: 17000,
                     activities: [
                         { name: 'End-to-End Testing', role: 'QA Engineer', hours: 25, cost: 5000 },
                         { name: 'Performance Optimization', role: 'DevOps Eng', hours: 15, cost: 3000 },
                         { name: 'Security Code Review', role: 'Security Eng', hours: 15, cost: 3000 },
                         { name: 'iOS App Store Submission', role: 'Mobile Eng', hours: 10, cost: 2000 },
                         { name: 'Google Play Store Submission', role: 'Mobile Eng', hours: 10, cost: 2000 },
-                        { name: 'Production Deployment', role: 'DevOps Eng', hours: 15, cost: 2000 }
+                    ]
+                },
+                {
+                    phaseNum: 5, name: 'Executive Advisory & Launch Optimization', weeks: '17-20', hours: 100, cost: 42000,
+                    activities: [
+                        { name: 'Lead Executive Consultation', role: 'Erin Horne McKinney', hours: 40, cost: 20000 },
+                        { name: 'Product Market Fit Optimization', role: 'Erin Horne McKinney', hours: 30, cost: 12000 },
+                        { name: 'Operational Transition Support', role: 'Erin Horne McKinney', hours: 30, cost: 10000 }
                     ]
                 }
             ],
@@ -162,12 +169,50 @@ const SIRSI_ENGINEERING_CATALOG = {
     },
 
     products: {
+        'ceo-consulting': {
+            id: 'ceo-consulting',
+            name: 'CEO Consulting',
+            category: 'service',
+            bundledPrice: 1000,
+            standalonePrice: 1000,
+            timeline: 1,
+            timelineUnit: 'weeks',
+            description: 'Direct executive partnership and strategic advisory.',
+            shortDescription: 'Direct strategic partnership (20 hrs/week)',
+            prerequisites: [],
+            standalone: true,
+            visible: true,
+            featured: false,
+            recurring: true,
+            perWeek: true,
+            wbs: [
+                {
+                    phaseNum: 1, name: 'Strategic Advisory', weeks: '1-1', hours: 20, cost: 1000,
+                    activities: [
+                        { name: 'Strategic Planning Session', role: 'Erin Horne McKinney', hours: 10, cost: 500 },
+                        { name: 'Operational Oversight', role: 'Erin Horne McKinney', hours: 10, cost: 500 }
+                    ]
+                }
+            ],
+            detailedScope: [
+                {
+                    title: "Executive Strategic Partnership",
+                    content: "High-level strategic guidance and operational oversight.",
+                    subItems: [
+                        "20 Hours weekly dedicated consulting",
+                        "Direct access to Erin Horne McKinney (Lead Strategist)",
+                        "Product roadmap validation",
+                        "Strategic partnership development"
+                    ]
+                }
+            ]
+        },
         'branding': {
             id: 'branding',
             name: 'Branding & Identity',
             category: 'service',
             bundledPrice: 30000,
-            standalonePrice: 45000,
+            standalonePrice: 30000,
             timeline: 8,
             timelineUnit: 'weeks',
             description: 'Complete brand identity system.',

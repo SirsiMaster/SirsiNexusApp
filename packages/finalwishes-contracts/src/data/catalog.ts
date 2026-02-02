@@ -65,8 +65,8 @@ export const BUNDLES: Record<string, Bundle> = {
         name: 'FinalWishes Core Platform',
         shortDescription: 'Complete Digital Legacy Solution',
         description: 'The complete FinalWishes platform including iOS, Android, and Web applications with AI-powered legacy management.',
-        price: 95000,
-        timeline: 16,
+        price: 137000,
+        timeline: 20,
         timelineUnit: 'weeks',
         addonDiscount: 0,
         includedProducts: ['vault-core', 'media-engine', 'ai-foundation', 'mobile-apps'],
@@ -109,7 +109,7 @@ export const BUNDLES: Record<string, Bundle> = {
                 ]
             },
             {
-                phaseNum: 2, name: 'Core Application Development', weeks: '5-8', hours: 160, cost: 32000,
+                phaseNum: 2, name: 'Core Application Development', weeks: '5-8', hours: 160, cost: 28000,
                 activities: [
                     { name: 'Web Application Shell', role: 'Frontend Eng', hours: 40, cost: 8000 },
                     { name: 'Mobile Application Shell (iOS/Android)', role: 'Mobile Eng', hours: 50, cost: 10000 },
@@ -118,7 +118,7 @@ export const BUNDLES: Record<string, Bundle> = {
                 ]
             },
             {
-                phaseNum: 3, name: 'Feature Integration & Vault', weeks: '9-12', hours: 140, cost: 28000,
+                phaseNum: 3, name: 'Feature Integration & Vault', weeks: '9-12', hours: 140, cost: 26000,
                 activities: [
                     { name: 'Legacy Media Vault Implementation', role: 'Backend Eng', hours: 35, cost: 7000 },
                     { name: 'Digital Lockbox & Encryption', role: 'Security Eng', hours: 35, cost: 7000 },
@@ -127,12 +127,20 @@ export const BUNDLES: Record<string, Bundle> = {
                 ]
             },
             {
-                phaseNum: 4, name: 'Testing, QA & Launch', weeks: '13-16', hours: 100, cost: 20000,
+                phaseNum: 4, name: 'Testing, QA & Launch', weeks: '13-16', hours: 100, cost: 17000,
                 activities: [
                     { name: 'End-to-End Testing & Bug Fixes', role: 'QA Engineer', hours: 30, cost: 6000 },
                     { name: 'Security Audit & Penetration Testing', role: 'Security Eng', hours: 25, cost: 5000 },
                     { name: 'Performance Optimization', role: 'DevOps Eng', hours: 20, cost: 4000 },
                     { name: 'Launch Preparation & Deployment', role: 'Sr. Architect', hours: 25, cost: 5000 }
+                ]
+            },
+            {
+                phaseNum: 5, name: 'Executive Advisory & Launch Optimization', weeks: '17-20', hours: 100, cost: 42000,
+                activities: [
+                    { name: 'Lead Executive Consultation', role: 'Erin Horne McKinney', hours: 40, cost: 20000 },
+                    { name: 'Product Market Fit Optimization', role: 'Erin Horne McKinney', hours: 30, cost: 12000 },
+                    { name: 'Operational Transition Support', role: 'Erin Horne McKinney', hours: 30, cost: 10000 }
                 ]
             }
         ]
@@ -165,8 +173,8 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Direct strategic partnership (20 hrs/week)',
         description: 'On-demand strategic consulting and executive partnership.',
         category: 'service',
-        bundledPrice: 6000,
-        standalonePrice: 6000,
+        bundledPrice: 1000,
+        standalonePrice: 1000,
         timeline: 1,
         timelineUnit: 'weeks',
         recurring: true,
@@ -185,10 +193,10 @@ export const PRODUCTS: Record<string, Product> = {
         ],
         wbs: [
             {
-                phaseNum: 1, name: 'Strategic Advisory', weeks: '1-1', hours: 20, cost: 6000,
+                phaseNum: 1, name: 'Strategic Advisory', weeks: '1-1', hours: 20, cost: 1000,
                 activities: [
-                    { name: 'Strategic Planning Session', role: 'CEO', hours: 10, cost: 3000 },
-                    { name: 'Operational Oversight', role: 'CEO', hours: 10, cost: 3000 }
+                    { name: 'Strategic Planning Session', role: 'Erin Horne McKinney', hours: 10, cost: 500 },
+                    { name: 'Operational Oversight', role: 'Erin Horne McKinney', hours: 10, cost: 500 }
                 ]
             }
         ]

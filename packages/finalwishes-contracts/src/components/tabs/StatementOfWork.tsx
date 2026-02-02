@@ -11,6 +11,7 @@ export function StatementOfWork() {
     const selectedAddons = useConfigStore(state => state.selectedAddons)
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
     const probateStates = useConfigStore(state => state.probateStates)
+    const projectName = useConfigStore(state => state.projectName)
 
     const currentYear = new Date().getFullYear()
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -75,7 +76,7 @@ export function StatementOfWork() {
                     color: '#93c5fd',
                     opacity: 0.8
                 }}>
-                    <div><strong style={{ color: 'white' }}>Project:</strong> FinalWishes Platform</div>
+                    <div><strong style={{ color: 'white' }}>Project:</strong> {projectName} Platform</div>
                     <div><strong style={{ color: 'white' }}>Date:</strong> {currentDate}</div>
                     <div><strong style={{ color: 'white' }}>SOW:</strong> SOW-{currentYear}-001</div>
                     <div><strong style={{ color: 'white' }}>MSA:</strong> MSA-{currentYear}-111-FW</div>
@@ -106,7 +107,7 @@ export function StatementOfWork() {
                     </h3>
                     <p>
                         This Statement of Work ("SOW") defines the comprehensive scope for the
-                        <strong> FinalWishes Unified Platform</strong>.
+                        <strong> {projectName} Unified Platform</strong>.
                         {selectedBundle ? ' This engagement includes the full Core Platform foundation.' : ''}
                         {selectedAddons.length > 0 ? ` Additionally, ${selectedAddons.length} strategic modules have been integrated to expand platform capabilities.` : ''}
                     </p>

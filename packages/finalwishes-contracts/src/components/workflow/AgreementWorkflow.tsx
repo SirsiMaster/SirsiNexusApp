@@ -143,7 +143,7 @@ export function AgreementWorkflow() {
                 textTransform: 'uppercase',
                 margin: '0'
               }}>
-                Prepared for The Client • <span id="date-proposal">{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                Prepared for {useConfigStore(state => state.clientName) || 'The Client'} • <span id="date-proposal">{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
               </p>
             </div>
           </div>
