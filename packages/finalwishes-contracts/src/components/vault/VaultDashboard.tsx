@@ -161,7 +161,7 @@ export function VaultDashboard() {
                                             )}
                                             <button
                                                 onClick={() => {
-                                                    const msaUrl = `/printable-msa.html?client=${encodeURIComponent(contract.clientName)}&total=${contract.totalAmount}&plan=${contract.selectedPaymentPlan || 2}&signed=true&id=${contract.id}`
+                                                    const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(contract.clientName)}&total=${contract.totalAmount}&plan=${contract.selectedPaymentPlan || 2}&signed=true&id=${contract.id}`
                                                     window.open(msaUrl, '_blank')
                                                 }}
                                                 style={{
