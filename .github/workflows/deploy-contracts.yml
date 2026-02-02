@@ -5,18 +5,45 @@ on:
     branches:
       - main
     paths:
-      - 'packages/sirsi-opensign/**'
+      - "packages/sirsi-opensign/**"
+      - "packages/finalwishes-contracts/**"
   workflow_dispatch:
 
 jobs:
-  deploy:
+  build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SIRSI_OPENSIGN }}'
+          node-version: "20"
+
+      - name: Install & Build Contracts App
+        working-directory: packages/finalwishes-contracts
+        run: |
+          npm ci
+          npm run build
+
+      - name: Sync Build Artifacts to OpenSign
+        run: |
+          # Clear existing public assets in sirsi-opensign to ensure clean state
+          rm -rf packages/sirsi-opensign/public/assets
+          rm -f packages/sirsi-opensign/public/index.html
+
+          # Copy new build artifacts
+          cp -R packages/finalwishes-contracts/dist/* packages/sirsi-opensign/public/
+
+          # Ensure partnership route structure exists if not handled by SPA rewrite
+          mkdir -p packages/sirsi-opensign/public/partnership/finalwishes
+          cp packages/sirsi-opensign/public/index.html packages/sirsi-opensign/public/partnership/finalwishes/
+
+      - name: Deploy to Firebase
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SIRSI_OPENSIGN }}"
           channelId: live
           projectId: sirsi-opensign
           entryPoint: packages/sirsi-opensign
