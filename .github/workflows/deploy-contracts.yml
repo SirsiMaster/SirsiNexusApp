@@ -1,0 +1,22 @@
+name: Deploy Contracts to Firebase Hosting
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/sirsi-opensign/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SIRSI_OPENSIGN }}'
+          channelId: live
+          projectId: sirsi-opensign
+          entryPoint: packages/sirsi-opensign
