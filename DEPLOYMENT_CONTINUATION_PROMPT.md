@@ -72,7 +72,7 @@ The **sync step is failing** - newly built assets from `finalwishes-contracts/di
 2. Sync:  Copy dist/assets/* → sirsi-opensign/public/assets/
           Copy dist/index.html → sirsi-opensign/public/partnership/finalwishes/index.html
          ↓
-3. Deploy: firebase deploy --only hosting --project sirsi-opensign
+3. Deploy: firebase deploy --only hosting --project sirsi-nexus-live
          ↓
 4. Live:  https://sirsi-sign.web.app/
 ```
@@ -148,7 +148,7 @@ cat public/partnership/finalwishes/index.html | head -20
 ### Step 3: Deploy to Firebase
 ```bash
 cd /Users/thekryptodragon/Development/SirsiNexusApp/packages/sirsi-opensign
-firebase deploy --only hosting --project sirsi-opensign
+firebase deploy --only hosting --project sirsi-nexus-live
 ```
 
 ### Step 4: Verify Deployment
@@ -198,7 +198,7 @@ echo "✓ Sync complete"
 
 # Step 3: Deploy
 echo "Step 3: Deploying to Firebase Hosting..."
-firebase deploy --only hosting --project sirsi-opensign
+firebase deploy --only hosting --project sirsi-nexus-live
 
 echo ""
 echo "=== Deployment Complete ==="
@@ -213,7 +213,7 @@ Run with: `./deploy-contracts.sh`
 
 | Key | Value |
 |-----|-------|
-| **Project ID** | `sirsi-opensign` |
+| **Project ID** | `sirsi-nexus-live` |
 | **Hosting Site** | `sirsi-sign.web.app` |
 | **Config Location** | `packages/sirsi-opensign/firebase.json` |
 
