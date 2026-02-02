@@ -37,7 +37,7 @@ echo ""
 
 # Step 3: Deploy to Firebase
 echo "Step 3: Deploying to Firebase Hosting..."
-firebase deploy --only hosting --project sirsi-opensign
+firebase deploy --only hosting --project sirsi-nexus-live
 
 echo ""
 echo "=== Deployment Complete ==="

@@ -43,7 +43,7 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SIRSI_OPENSIGN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SIRSI_NEXUS_LIVE }}"
           channelId: live
-          projectId: sirsi-opensign
+          projectId: sirsi-nexus-live
           entryPoint: packages/sirsi-opensign

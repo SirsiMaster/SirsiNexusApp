@@ -1,6 +1,16 @@
-# Deployment Continuation Prompt
+# ⚠️ DEPRECATED - DO NOT USE
+**This document is deprecated as of February 2, 2026.**
+
+## 👉 Use the Canonical Document Instead:
+**`docs/CANONICAL_DEPLOYMENT_ARCHITECTURE.md`**
+
+That document is the **single source of truth** for all deployment operations.
+
+---
+
+# (OLD) Deployment Continuation Prompt
 **Date:** February 2, 2026  
-**Status:** 🔴 TWO CRITICAL ISSUES IDENTIFIED  
+**Status:** ⚠️ DEPRECATED - SEE ABOVE  
 **Priority:** CRITICAL
 
 ---
