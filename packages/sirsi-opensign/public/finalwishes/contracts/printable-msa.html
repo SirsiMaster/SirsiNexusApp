@@ -114,7 +114,7 @@
       /* Professional 1-inch margins all around */
       @page {
         size: letter;
-        margin: 1in 1in 1in 1in;
+        margin: 0.75in 0.75in 0.75in 0.75in;
 
         /* Header */
         @top-center {
@@ -148,11 +148,12 @@
         line-height: 1.5;
       }
 
-      /* Every H1 (Exhibits) starts on new page */
+      /* ONLY Exhibit headers (H1) start on new page */
       h1 {
         page-break-before: always;
         font-size: 18pt;
         margin-top: 0;
+        padding-top: 0;
       }
 
       /* First H1 should NOT have page break */
@@ -160,12 +161,22 @@
         page-break-before: auto;
       }
 
-      /* Every H2 (Section) starts on new page */
+      /* H2 sections flow naturally - NO forced page break */
       h2 {
-        page-break-before: always;
+        page-break-before: auto;
         font-size: 13pt;
-        margin-top: 0;
+        margin-top: 1.5em;
         padding-top: 0;
+        /* Prevent orphaned headers - keep at least 3 lines with header */
+        orphans: 3;
+        widows: 3;
+      }
+
+      /* H3 subsections also flow naturally */
+      h3 {
+        page-break-before: auto;
+        font-size: 11pt;
+        margin-top: 1em;
       }
 
       /* Prevent headers from being orphaned at bottom of page */
@@ -176,12 +187,39 @@
         page-break-after: avoid;
       }
 
-      /* Tables stay together */
+      /* Keep header with following content together */
+      h2+p,
+      h2+div,
+      h2+ul,
+      h2+ol,
+      h3+p,
+      h3+div,
+      h3+ul,
+      h3+ol {
+        page-break-before: avoid;
+      }
+
+      /* Tables stay together if possible, but can break if needed */
       table {
+        page-break-inside: auto;
+      }
+
+      /* Prevent tiny table fragments */
+      tr {
         page-break-inside: avoid;
       }
 
+      /* Keep table header with at least first row */
+      thead {
+        display: table-header-group;
+      }
+
       .signature-block {
+        page-break-inside: avoid;
+      }
+
+      /* Definition blocks should try to stay together */
+      div[style*="margin-bottom: 1.5em"] {
         page-break-inside: avoid;
       }
 
@@ -194,6 +232,13 @@
         background-color: #f0f0f0 !important;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
+      }
+
+      /* Reduce unnecessary spacing in print */
+      p {
+        orphans: 2;
+        widows: 2;
+        margin-bottom: 0.75em;
       }
     }
   </style>
