@@ -126,24 +126,53 @@ export function MasterAgreement() {
                     <section style={{ marginBottom: '48px' }}>
                         <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px' }}>2. DEFINITIONS</h3>
                         <p>For purposes of this Agreement, the following terms shall have the meanings set forth below:</p>
-                        <p><strong>2.1 "Affiliate"</strong> means any entity that directly or indirectly controls, is controlled by, or is under common control with a Party, where "control" means ownership of more than fifty percent (50%) of the voting stock or other ownership interest.</p>
-                        <p><strong>2.2 "Background Technology" or "Sirsi Nexus V4"</strong> means the Provider's proprietary foundational technology platform, including all software, code, tools, libraries, frameworks, know-how, methodologies, algorithms, and Intellectual Property Rights owned, licensed, or developed by Provider, whether prior to the Effective Date or during the Term. This expansive definition explicitly includes, without limitation:</p>
-                        <p>(i) <strong>Core Architecture & Infrastructure</strong>: The "Sirsi Nexus" application framework, serverless deployment configurations, Infrastructure-as-Code (IaC) templates, CI/CD pipelines, and microservices architectures;</p>
-                        <p>(ii) <strong>Security & Compliance Engines</strong>: "The Vault" encryption protocols (AES-256, KMS integration), Identity and Access Management (IAM) systems, SOC 2 compliance controls, and audit logging mechanisms;</p>
-                        <p>(iii) <strong>Universal Component System (UCS)</strong>: The standardized integration layer and adapters for third-party services (including but not limited to Stripe, Plaid, OpenSign, and SendGrid) designed for portfolio-wide reuse;</p>
-                        <p>(iv) <strong>AI & Orchestration</strong>: The "Gemini" guidance engine patterns, RAG (Retrieval-Augmented Generation) pipelines, prompt engineering frameworks, and agentic workflow orchestration logic;</p>
-                        <p>(v) <strong>Interface & Design Systems</strong>: The "Sirsi UI" component library, reusable React/Tailwind components, design tokens, and aesthetic themes (e.g., "Royal Neo-Deco" base styles); and</p>
-                        <p>(vi) <strong>Continuous Evolution</strong>: Any updates, upgrades, improvements, patches, derivative works, or new modules added to the foregoing during the Term to support Provider's broader portfolio of services. Background Technology is the underlying "operating system" upon which the Platform is built.</p>
-                        <p><strong>2.3 "Confidential Information"</strong> means any non-public information disclosed by one Party (the "Disclosing Party") to the other Party (the "Receiving Party") that is designated as confidential or that, given the nature of the information or circumstances of disclosure, reasonably should be understood to be confidential.</p>
-                        <p><strong>2.4 "Deliverables"</strong> means all documents, work product, code, software, reports, and other materials that are specifically created for and delivered to Client by Provider pursuant to a Statement of Work.</p>
-                        <p><strong>2.5 "Foreground IP"</strong> means the Intellectual Property Rights in the comprehensive body of specific business logic, legacy management scripts, configurations, and unique operational workflows developed strictly and exclusively for FinalWishes that rely upon but are distinct from Background Technology. This explicitly encompasses the custom-built application layer and includes, without limitation:</p>
-                        <p>(i) Custom UI/UX designs, visual interfaces, and brand assets specific to FinalWishes;</p>
-                        <p>(ii) Jurisdiction-specific probate logic, workflows, and regulatory compliance rules, inclusive of but not restricted to Maryland, Illinois, and Minnesota, or any other federal, state, or local governmental jurisdictions;</p>
-                        <p>(iii) Proprietary content, decision trees, and conversational scripts authored for 'The Shepherd' guidance engine (defining the interactive user prompts, educational narratives, and process navigation pathways); and</p>
-                        <p>(iv) Unique data schemas and information architecture (representing the specific definitions, organization, and structural relationships of Client's proprietary business data).</p>
-                        <p><strong>2.6 "Intellectual Property Rights"</strong> means all patent rights, copyright rights, mask work rights, moral rights, rights of publicity, trademark, trade dress and service mark rights, goodwill, trade secret rights and other intellectual property rights as may now exist or hereafter come into existence, and all applications therefore and registrations, renewals and extensions thereof, under the laws of any state, country, territory or other jurisdiction.</p>
-                        <p><strong>2.7 "Services"</strong> means the professional software development, consulting, and design services to be performed by Provider as described in a Statement of Work.</p>
-                        <p><strong>2.8 "Statement of Work" or "SOW"</strong> means a document describing the specific Services to be performed, Deliverables to be provided, fees to be paid, and timeline for performance, which is agreed upon and signed by authorized representatives of both Parties. Each SOW shall be substantially in the form of <strong>Exhibit A</strong>.</p>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <p style={{ marginBottom: '8px' }}><strong>2.1 "Affiliate"</strong> means any entity that directly or indirectly controls, is controlled by, or is under common control with a Party, where "control" means ownership of more than fifty percent (50%) of the voting stock or other ownership interest.</p>
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <p style={{ marginBottom: '12px' }}><strong>2.2 "Background Technology" or "Sirsi Nexus V4"</strong> means the Provider's proprietary foundational technology platform, including all software, code, tools, libraries, frameworks, know-how, methodologies, algorithms, and Intellectual Property Rights owned, licensed, or developed by Provider, whether prior to the Effective Date or during the Term. This expansive definition explicitly includes, without limitation:</p>
+                            <div style={{ paddingLeft: '24px', borderLeft: '2px solid rgba(200,169,81,0.3)' }}>
+                                <p style={{ marginBottom: '8px' }}><strong>(i) Core Architecture & Infrastructure:</strong> The "Sirsi Nexus" application framework, serverless deployment configurations, Infrastructure-as-Code (IaC) templates, CI/CD pipelines, and microservices architectures;</p>
+                                <p style={{ marginBottom: '8px' }}><strong>(ii) Security & Compliance Engines:</strong> "The Vault" encryption protocols (AES-256, KMS integration), Identity and Access Management (IAM) systems, SOC 2 compliance controls, and audit logging mechanisms;</p>
+                                <p style={{ marginBottom: '8px' }}><strong>(iii) Universal Component System (UCS):</strong> The standardized integration layer and adapters for third-party services (including but not limited to Stripe, Plaid, OpenSign, and SendGrid) designed for portfolio-wide reuse;</p>
+                                <p style={{ marginBottom: '8px' }}><strong>(iv) AI & Orchestration:</strong> The "Gemini" guidance engine patterns, RAG (Retrieval-Augmented Generation) pipelines, prompt engineering frameworks, and agentic workflow orchestration logic;</p>
+                                <p style={{ marginBottom: '8px' }}><strong>(v) Interface & Design Systems:</strong> The "Sirsi UI" component library, reusable React/Tailwind components, design tokens, and aesthetic themes (e.g., "Royal Neo-Deco" base styles); and</p>
+                                <p style={{ marginBottom: '0' }}><strong>(vi) Continuous Evolution:</strong> Any updates, upgrades, improvements, patches, derivative works, or new modules added to the foregoing during the Term to support Provider's broader portfolio of services.</p>
+                            </div>
+                            <p style={{ marginTop: '12px' }}>Background Technology is the underlying "operating system" upon which the Platform is built.</p>
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <p style={{ marginBottom: '8px' }}><strong>2.3 "Confidential Information"</strong> means any non-public information disclosed by one Party (the "Disclosing Party") to the other Party (the "Receiving Party") that is designated as confidential or that, given the nature of the information or circumstances of disclosure, reasonably should be understood to be confidential.</p>
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <p style={{ marginBottom: '8px' }}><strong>2.4 "Deliverables"</strong> means all documents, work product, code, software, reports, and other materials that are specifically created for and delivered to Client by Provider pursuant to a Statement of Work.</p>
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <p style={{ marginBottom: '12px' }}><strong>2.5 "Foreground IP"</strong> means the Intellectual Property Rights in the comprehensive body of specific business logic, legacy management scripts, configurations, and unique operational workflows developed strictly and exclusively for FinalWishes that rely upon but are distinct from Background Technology. This explicitly encompasses the custom-built application layer and includes, without limitation:</p>
+                            <div style={{ paddingLeft: '24px', borderLeft: '2px solid rgba(200,169,81,0.3)' }}>
+                                <p style={{ marginBottom: '8px' }}><strong>(i)</strong> Custom UI/UX designs, visual interfaces, and brand assets specific to FinalWishes;</p>
+                                <p style={{ marginBottom: '8px' }}><strong>(ii)</strong> Jurisdiction-specific probate logic, workflows, and regulatory compliance rules, inclusive of but not restricted to Maryland, Illinois, and Minnesota, or any other federal, state, or local governmental jurisdictions;</p>
+                                <p style={{ marginBottom: '8px' }}><strong>(iii)</strong> Proprietary content, decision trees, and conversational scripts authored for 'The Shepherd' guidance engine (defining the interactive user prompts, educational narratives, and process navigation pathways); and</p>
+                                <p style={{ marginBottom: '0' }}><strong>(iv)</strong> Unique data schemas and information architecture (representing the specific definitions, organization, and structural relationships of Client's proprietary business data).</p>
+                            </div>
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <p style={{ marginBottom: '8px' }}><strong>2.6 "Intellectual Property Rights"</strong> means all patent rights, copyright rights, mask work rights, moral rights, rights of publicity, trademark, trade dress and service mark rights, goodwill, trade secret rights and other intellectual property rights as may now exist or hereafter come into existence, and all applications therefore and registrations, renewals and extensions thereof, under the laws of any state, country, territory or other jurisdiction.</p>
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <p style={{ marginBottom: '8px' }}><strong>2.7 "Services"</strong> means the professional software development, consulting, and design services to be performed by Provider as described in a Statement of Work.</p>
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <p style={{ marginBottom: '8px' }}><strong>2.8 "Statement of Work" or "SOW"</strong> means a document describing the specific Services to be performed, Deliverables to be provided, fees to be paid, and timeline for performance, which is agreed upon and signed by authorized representatives of both Parties. Each SOW shall be substantially in the form of <strong>Exhibit A</strong>.</p>
+                        </div>
                     </section>
 
                     <section style={{ marginBottom: '48px' }}>
