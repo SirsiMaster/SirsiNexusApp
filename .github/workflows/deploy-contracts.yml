@@ -23,7 +23,7 @@ jobs:
       - name: Install & Build Contracts App
         working-directory: packages/finalwishes-contracts
         run: |
-          npm ci
+          npm install
           npm run build
 
       - name: Sync Build Artifacts to OpenSign
