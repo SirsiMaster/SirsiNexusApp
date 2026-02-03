@@ -1,0 +1,125 @@
+/* ==========================================================================
+   SIRSI PRINT UI COMPONENT (Standardized)
+   ==========================================================================
+   Description: Standard actionable header for printable documents.
+   Usage: Include this CSS and add the .no-print markup to your print-optimized HTML.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+
+/* MEDIA: SCREEN (The Control Bar) */
+@media screen {
+    .print-ui-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #0f172a;
+        /* Navy */
+        color: white;
+        padding: 1rem 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        font-family: 'Inter', sans-serif;
+        /* Ensure it spans full width regardless of body padding */
+        margin-left: calc(-1 * var(--print-body-padding, 40px));
+        margin-right: calc(-1 * var(--print-body-padding, 40px));
+        margin-top: calc(-1 * var(--print-body-padding, 40px));
+        margin-bottom: 40px;
+        width: calc(100% + (2 * var(--print-body-padding, 40px)));
+    }
+
+    .print-ui-bar .brand {
+        font-family: 'Cinzel', serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        display: flex;
+        align-items: center;
+    }
+
+    .print-ui-bar .brand .gold {
+        color: #C8A951;
+    }
+
+    .print-ui-bar .brand .divider {
+        margin: 0 0.75rem;
+        color: #334155;
+    }
+
+    .print-ui-bar .actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    /* Standard Buttons */
+    .print-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+        white-space: nowrap;
+    }
+
+    /* Primary Action (Print/Save) */
+    .print-btn-gold {
+        background-color: #C8A951;
+        color: #000;
+        font-weight: 600;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .print-btn-gold:hover {
+        background-color: #dcb95b;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Secondary Action (Close) */
+    .print-btn-outline {
+        background-color: transparent;
+        border-color: rgba(255, 255, 255, 0.2);
+        color: #94a3b8;
+    }
+
+    .print-btn-outline:hover {
+        border-color: #C8A951;
+        color: #C8A951;
+        background-color: rgba(200, 169, 81, 0.05);
+    }
+
+    .print-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* MEDIA: PRINT (Hide Controls) */
+@media print {
+
+    .print-ui-bar,
+    .no-print {
+        display: none !important;
+    }
+
+    /* Reset Body for standard paper size */
+    body {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: white !important;
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    @page {
+        margin: 1in;
+    }
+}

@@ -136,6 +136,32 @@ export function VaultDashboard() {
                                             </div>
                                         </div>
                                         <div style={{ display: 'flex', gap: '8px' }}>
+                                            {/* Payment button for SIGNED contracts waiting for payment */}
+                                            {contract.status === 3 && (
+                                                <button
+                                                    onClick={() => {
+                                                        const amount = Number(contract.totalAmount) / 100;
+                                                        const paymentUrl = `/payment.html?envelope=${contract.id}&amount=${amount}&ref=MSA-${contract.id.substring(0, 8).toUpperCase()}&plan=${encodeURIComponent(contract.projectName)}&project=finalwishes`;
+                                                        window.location.href = paymentUrl;
+                                                    }}
+                                                    style={{
+                                                        background: '#10B981',
+                                                        color: '#fff',
+                                                        border: 'none',
+                                                        padding: '8px 16px',
+                                                        borderRadius: '6px',
+                                                        fontSize: '13px',
+                                                        fontWeight: 700,
+                                                        cursor: 'pointer',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '6px'
+                                                    }}
+                                                >
+                                                    <span style={{ fontSize: '14px' }}>💳</span>
+                                                    Make Payment
+                                                </button>
+                                            )}
                                             {localStorage.getItem('sirsi_user_role') === 'provider' && contract.status === 6 && (
                                                 <button
                                                     onClick={async () => {

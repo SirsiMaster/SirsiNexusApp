@@ -146,9 +146,9 @@ console.log(`🔐 Stripe Mode: ${USE_LIVE_STRIPE ? 'LIVE 💰' : 'TEST 🧪'}`);
 The following tasks complete the Stripe UCS integration from backend-ready to production-activated:
 
 ### Phase 1: UCS Frontend Wiring
-- [ ] **Wire `StripePay` UCS component** to `/api/payments/create-session`
-- [ ] **Fetch publishable key dynamically** from backend `/api/config/stripe-pk` or environment
-- [ ] **Integrate payment flow** into `VaultDashboard.tsx` after signature capture
+- [x] **Wire `StripePay` UCS component** to `/api/payments/create-session` (Feb 3, 2026)
+- [x] **Fetch publishable key dynamically** (Not needed - using Stripe Checkout redirect)
+- [x] **Integrate payment flow** into `VaultDashboard.tsx` after signature capture (Feb 3, 2026)
 
 ### Phase 2: Stripe Dashboard Configuration
 - [ ] **Register webhook endpoint** in Stripe Dashboard:
@@ -157,9 +157,9 @@ The following tasks complete the Stripe UCS integration from backend-ready to pr
 - [ ] **Update STRIPE_WEBHOOK_SECRET** in Secret Manager with signing secret
 
 ### Phase 3: UX Completion
-- [ ] **Create payment success page** at `/payment-success.html`
-- [ ] **Create payment cancelled page** at `/payment-cancelled.html`
-- [ ] **Integrate with envelope status display**
+- [x] **Create payment success page** at `/payment-success.html` (Feb 3, 2026)
+- [x] **Create payment cancelled page** at `/payment-cancelled.html` (Feb 3, 2026)
+- [x] **Integrate with envelope status display** (Feb 3, 2026)
 
 ### Phase 4: Validation
 - [ ] End-to-end test in TEST mode (sk_test_)
