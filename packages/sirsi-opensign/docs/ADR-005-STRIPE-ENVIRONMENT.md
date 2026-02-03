@@ -151,10 +151,10 @@ The following tasks complete the Stripe UCS integration from backend-ready to pr
 - [x] **Integrate payment flow** into `VaultDashboard.tsx` after signature capture (Feb 3, 2026)
 
 ### Phase 2: Stripe Dashboard Configuration
-- [ ] **Register webhook endpoint** in Stripe Dashboard:
+- [x] **Register webhook endpoint** in Stripe Dashboard (exists as `sirsi-payments-webhook`)
   - URL: `https://api-6kdf4or4qq-uc.a.run.app/api/payments/webhook`
   - Events: `checkout.session.completed`, `checkout.session.expired`, `payment_intent.payment_failed`
-- [ ] **Update STRIPE_WEBHOOK_SECRET** in Secret Manager with signing secret
+- [x] **STRIPE_WEBHOOK_SECRET** configured in Secret Manager
 
 ### Phase 3: UX Completion
 - [x] **Create payment success page** at `/payment-success.html` (Feb 3, 2026)

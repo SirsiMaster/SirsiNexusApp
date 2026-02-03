@@ -211,9 +211,10 @@
 
     // Load required scripts
     function loadSecurityScripts() {
+        const version = '20260203';
         const scripts = [
-            { src: '/assets/js/secure-auth.js', id: 'secure-auth' },
-            { src: '/assets/js/auth-integration.js', id: 'auth-integration' }
+            { src: `/assets/js/secure-auth.js?v=${version}`, id: 'secure-auth' },
+            { src: `/assets/js/auth-integration.js?v=${version}`, id: 'auth-integration' }
         ];
 
         scripts.forEach(script => {
@@ -235,7 +236,7 @@
         if (!document.querySelector('meta[http-equiv="Content-Security-Policy"]')) {
             const csp = document.createElement('meta');
             csp.httpEquiv = 'Content-Security-Policy';
-            csp.content = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://api.ipify.org; frame-src 'none'; object-src 'none';";
+            csp.content = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://api.ipify.org https://api-6kdf4or4qq-uc.a.run.app https://checkout.stripe.com; frame-src https://checkout.stripe.com https://js.stripe.com; object-src 'none';";
             document.head.appendChild(csp);
         }
 
