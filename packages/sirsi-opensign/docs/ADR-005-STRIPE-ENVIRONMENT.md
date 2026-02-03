@@ -139,6 +139,35 @@ console.log(`🔐 Stripe Mode: ${USE_LIVE_STRIPE ? 'LIVE 💰' : 'TEST 🧪'}`);
 
 ---
 
+## Go-Live Activation Checklist
+
+**Status:** In Progress (Feb 2026)
+
+The following tasks complete the Stripe UCS integration from backend-ready to production-activated:
+
+### Phase 1: UCS Frontend Wiring
+- [ ] **Wire `StripePay` UCS component** to `/api/payments/create-session`
+- [ ] **Fetch publishable key dynamically** from backend `/api/config/stripe-pk` or environment
+- [ ] **Integrate payment flow** into `VaultDashboard.tsx` after signature capture
+
+### Phase 2: Stripe Dashboard Configuration
+- [ ] **Register webhook endpoint** in Stripe Dashboard:
+  - URL: `https://api-6kdf4or4qq-uc.a.run.app/api/payments/webhook`
+  - Events: `checkout.session.completed`, `checkout.session.expired`, `payment_intent.payment_failed`
+- [ ] **Update STRIPE_WEBHOOK_SECRET** in Secret Manager with signing secret
+
+### Phase 3: UX Completion
+- [ ] **Create payment success page** at `/payment-success.html`
+- [ ] **Create payment cancelled page** at `/payment-cancelled.html`
+- [ ] **Integrate with envelope status display**
+
+### Phase 4: Validation
+- [ ] End-to-end test in TEST mode (sk_test_)
+- [ ] Verify webhook receipt and Firestore update
+- [ ] Process first LIVE transaction
+
+---
+
 ## Verification Commands
 
 ```bash
@@ -160,5 +189,7 @@ firebase deploy --only functions --project sirsi-nexus-live
 
 ## Related Documents
 
-- [PAYMENT_WORKFLOW.md](./PAYMENT_WORKFLOW.md)
+- [ADR-011: Universal Component System](../../../docs/ADR-011-UNIVERSAL-COMPONENT-SYSTEM.md)
 - [ADR-003: HMAC Security Layer](./ADR-003-HMAC-SECURITY-LAYER.md)
+- [GEMINI.md](../../../GEMINI.md) - Rule 10: Infrastructure Ownership
+
