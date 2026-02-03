@@ -1,95 +1,95 @@
 {
-    "functions": {
-        "source": "functions",
-        "runtime": "nodejs20"
-    },
-    "hosting": {
-        "site": "sirsi-sign",
-        "public": "public",
-        "ignore": [
-            "firebase.json",
-            "**/.*",
-            "**/node_modules/**"
-        ],
+  "functions": {
+    "source": "functions",
+    "runtime": "nodejs20"
+  },
+  "hosting": {
+    "site": "sirsi-sign",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "**/*.html",
         "headers": [
-            {
-                "source": "**/*.html",
-                "headers": [
-                    {
-                        "key": "Cache-Control",
-                        "value": "max-age=0, no-cache, no-store, must-revalidate"
-                    }
-                ]
-            },
-            {
-                "source": "**",
-                "headers": [
-                    {
-                        "key": "Access-Control-Allow-Origin",
-                        "value": "*"
-                    }
-                ]
-            }
-        ],
-        "rewrites": [
-            {
-                "source": "/partnership/**",
-                "destination": "/index.html"
-            },
-            {
-                "source": "/api/**",
-                "function": "api"
-            },
-            {
-                "source": "/finalwishes/contracts",
-                "destination": "/finalwishes/contracts/index.html"
-            },
-            {
-                "source": "/finalwishes/contracts/",
-                "destination": "/finalwishes/contracts/index.html"
-            },
-            {
-                "source": "/assiduous/contracts",
-                "destination": "/assiduous/contracts/index.html"
-            },
-            {
-                "source": "/assiduous/contracts/",
-                "destination": "/assiduous/contracts/index.html"
-            },
-            {
-                "source": "/sirsi/contracts",
-                "destination": "/sirsi/contracts/index.html"
-            },
-            {
-                "source": "/sirsi/contracts/",
-                "destination": "/sirsi/contracts/index.html"
-            },
-            {
-                "source": "/sign",
-                "destination": "/sign.html"
-            },
-            {
-                "source": "/payment",
-                "destination": "/payment.html"
-            }
+          {
+            "key": "Cache-Control",
+            "value": "max-age=0, no-cache, no-store, must-revalidate"
+          }
         ]
+      },
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }
+        ]
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/partnership/**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/api/**",
+        "function": "api"
+      },
+      {
+        "source": "/finalwishes/contracts",
+        "destination": "/finalwishes/contracts/index.html"
+      },
+      {
+        "source": "/finalwishes/contracts/",
+        "destination": "/finalwishes/contracts/index.html"
+      },
+      {
+        "source": "/assiduous/contracts",
+        "destination": "/assiduous/contracts/index.html"
+      },
+      {
+        "source": "/assiduous/contracts/",
+        "destination": "/assiduous/contracts/index.html"
+      },
+      {
+        "source": "/sirsi/contracts",
+        "destination": "/sirsi/contracts/index.html"
+      },
+      {
+        "source": "/sirsi/contracts/",
+        "destination": "/sirsi/contracts/index.html"
+      },
+      {
+        "source": "/sign",
+        "destination": "/sign.html"
+      },
+      {
+        "source": "/payment",
+        "destination": "/payment.html"
+      }
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "functions": {
+      "port": 5001
     },
     "firestore": {
-        "rules": "firestore.rules",
-        "indexes": "firestore.indexes.json"
+      "port": 8080
     },
-    "emulators": {
-        "functions": {
-            "port": 5001
-        },
-        "firestore": {
-            "port": 8080
-        },
-        "hosting": {
-            "port": 5000
-        },
-        "ui": {
-            "enabled": true
-        }
+    "hosting": {
+      "port": 5000
+    },
+    "ui": {
+      "enabled": true
     }
+  }
 }

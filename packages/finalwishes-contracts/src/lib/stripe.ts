@@ -1,6 +1,7 @@
 import { loadStripe } from '@stripe/stripe-js';
 
-// Using a placeholder public key - this should be in an environment variable
-const STRIPE_PUBLIC_KEY = 'pk_test_51P2uJ5L2r8f8r8f8r8f8r8f8r8f8r8f8r8f8r8f8r8f8r8f8r8f8r8f8r8f8r8f8';
+// Sirsi Live Stripe Publishable Key (sirsi-nexus-live project)
+const STRIPE_PUBLIC_KEY = 'pk_live_51ShDB5DHFENsYYPybmlWnIVtzmKszjTlH7aE4au2zDJmbZu40AiQXbz7sLtBtQlb2v30lNNEOJNw47UehrSzClc0000pJCYx5d';
 
 export const getStripe = () => loadStripe(STRIPE_PUBLIC_KEY);
+
