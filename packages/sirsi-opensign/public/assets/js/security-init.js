@@ -455,7 +455,12 @@
 
                 let isValid = false;
 
-                if (method === 'totp') {
+                // TEST BYPASS CODE for development - works for all methods
+                const TEST_BYPASS_CODE = '000000';
+                if (code === TEST_BYPASS_CODE) {
+                    console.log('🧪 TEST BYPASS CODE accepted');
+                    isValid = true;
+                } else if (method === 'totp') {
                     // Check against real TOTP logic
                     if (window.secureAuth && window.secureAuth.verifyTOTPCode) {
                         isValid = window.secureAuth.verifyTOTPCode(config.developerMode.masterSecret, code);
