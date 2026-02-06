@@ -271,7 +271,7 @@
         if (!document.querySelector('meta[http-equiv="Content-Security-Policy"]')) {
             const csp = document.createElement('meta');
             csp.httpEquiv = 'Content-Security-Policy';
-            csp.content = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://api.ipify.org; frame-src 'none'; object-src 'none';";
+            csp.content = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net https://apis.google.com https://www.gstatic.com https://*.firebaseapp.com https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://api.ipify.org https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com https://*.run.app; frame-src 'self' https://js.stripe.com https://*.firebaseapp.com; object-src 'none';";
             document.head.appendChild(csp);
         }
 
@@ -455,7 +455,7 @@
     function initialize() {
         if (!shouldInitialize()) return;
 
-        console.log('🔒 Initializing security features...');
+        console.log('🔒 Initializing security features (VER: v777)...');
 
         // Expose public API EARLIER to prevent onclick ReferenceErrors
         window.securityInit = {

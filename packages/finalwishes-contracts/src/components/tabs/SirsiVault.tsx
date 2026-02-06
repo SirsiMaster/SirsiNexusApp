@@ -37,7 +37,8 @@ export function SirsiVault() {
     const [signatureImageData, setSignatureImageData] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
-    const [contractId, setContractId] = useState<string | null>(null)
+    const contractId = useConfigStore(state => state.contractId)
+    const setStoreContractId = useConfigStore(state => state.setContractId)
     const [selectedPaymentPlan, setSelectedPaymentPlan] = useState<2 | 3 | 4>(2)
 
     // Plaid State
@@ -141,7 +142,7 @@ export function SirsiVault() {
                 stripeConnectAccountId: '' // Future: Fetch from useConfigStore/portfolio mapping
             });
 
-            setContractId(contract.id);
+            setStoreContractId(contract.id);
         } catch (err: any) {
             console.error('Failed to create draft:', err);
             // Show more detailed error
@@ -150,6 +151,14 @@ export function SirsiVault() {
         } finally {
             setLoading(false);
         }
+    };
+
+    // Cryptographic Hashing for Signature Evidence (Rule 5)
+    const hashSignature = async (dataUrl: string): Promise<string> => {
+        const msgUint8 = new TextEncoder().encode(dataUrl);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     };
 
     const handleExecute = async () => {
@@ -163,6 +172,9 @@ export function SirsiVault() {
         setError(null)
 
         try {
+            // Generate Cryptographic Hash of Signature
+            const sigHash = signatureImageData ? await hashSignature(signatureImageData) : '';
+            console.log(`🔐 Generated Signature Hash: ${sigHash}`);
             // Calculate the first payment amount based on selected plan
             const firstPayment = Math.round(totalInvestment / selectedPaymentPlan)
 
@@ -174,6 +186,8 @@ export function SirsiVault() {
                     contract: {
                         status: 3 as any, // SIGNED -> WAITING_FOR_COUNTERSIGN in backend
                         signatureImageData: signatureImageData || '',
+                        // @ts-ignore - Injecting cryptographic evidence into Firestore record
+                        signatureHash: sigHash,
                         legalAcknowledgment: (document.getElementById('legal-ack') as HTMLInputElement)?.checked || false,
                         selectedPaymentPlan: selectedPaymentPlan,
                         paymentMethod: signatureData.selectedPaymentMethod
@@ -220,7 +234,7 @@ export function SirsiVault() {
                 const session = await contractsClient.createCheckoutSession({
                     contractId: contractId,
                     planId: 'payment-1', // First payment plan
-                    successUrl: window.location.origin + `/partnership/${storeProjectId}/partnership/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+                    successUrl: window.location.origin + `/partnership/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
                     cancelUrl: window.location.href,
                     paymentMethodTypes: paymentMethodTypes,
                     stripeConnectAccountId: '' // Future: Map to project-specific Connect account

@@ -1997,7 +1997,6 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
-
 // Export the Express app as a Firebase Gen 2 Function with increased memory
 exports.opensignApi = onRequest(
   {
@@ -2018,6 +2017,88 @@ exports.opensignApi = onRequest(
     ]
   },
   app
+);
+
+/**
+ * verifyMFA - Callable Cloud Function
+ * Validates a TOTP code against the user's MFA secret and sets custom claims.
+ * 
+ * The MFA secret is stored per-user in Firestore: /users/{uid}/mfa_secret
+ * If no per-user secret exists, falls back to the platform default: SIRSI777CYLTON77
+ * 
+ * On success, sets custom claims: mfa_verified, mfa_method, mfa_timestamp, acr
+ * The frontend useMFA hook reads these claims to gate access.
+ */
+const { onCall, HttpsError } = require('firebase-functions/v2/https');
+
+exports.verifyMFA = onCall(
+  {
+    cors: true,
+  },
+  async (request) => {
+    // Require authentication
+    if (!request.auth) {
+      throw new HttpsError('unauthenticated', 'Must be signed in to verify MFA.');
+    }
+
+    const { code } = request.data;
+    const uid = request.auth.uid;
+
+    if (!code || typeof code !== 'string' || code.length !== 6) {
+      throw new HttpsError('invalid-argument', 'A valid 6-digit code is required.');
+    }
+
+    try {
+      // Look up user's MFA secret from Firestore
+      let mfaSecret = 'SIRSI777CYLTON77'; // Platform default
+      const userDoc = await db.collection('users').doc(uid).get();
+      if (userDoc.exists && userDoc.data().mfa_secret) {
+        mfaSecret = userDoc.data().mfa_secret;
+      }
+
+      // Validate the TOTP code
+      const isValid = authenticator.check(code, mfaSecret);
+
+      if (!isValid) {
+        // Log failed attempt
+        await db.collection('securityLogs').add({
+          type: 'mfa_verification_failed',
+          uid,
+          email: request.auth.token.email || 'unknown',
+          timestamp: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        return { success: false, error: 'Invalid verification code. Please try again.' };
+      }
+
+      // Set custom claims so the frontend useMFA hook can read them
+      const now = Math.floor(Date.now() / 1000);
+      await admin.auth().setCustomUserClaims(uid, {
+        ...(request.auth.token || {}),
+        mfa_verified: true,
+        mfa_method: 'totp',
+        mfa_timestamp: now,
+        acr: 'urn:sirsi:mfa:totp'
+      });
+
+      // Log successful verification
+      await db.collection('securityLogs').add({
+        type: 'mfa_verified',
+        uid,
+        email: request.auth.token.email || 'unknown',
+        method: 'totp',
+        timestamp: admin.firestore.FieldValue.serverTimestamp()
+      });
+
+      console.log(`✅ MFA verified for ${request.auth.token.email}`);
+
+      return { success: true };
+
+    } catch (err) {
+      console.error('MFA verification error:', err);
+      throw new HttpsError('internal', 'MFA verification failed. Please try again.');
+    }
+  }
 );
 
 /**

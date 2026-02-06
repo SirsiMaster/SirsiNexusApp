@@ -22,6 +22,8 @@ export function AgreementWorkflow() {
   const { projectId, userId, category, entityId, docId } = useParams()
   const currentTab = useCurrentTab()
   const setProjectId = useConfigStore(state => state.setProjectId)
+  const setContractId = useConfigStore(state => state.setContractId)
+  const fetchContract = useConfigStore(state => state.fetchContract)
   const storeProjectId = useConfigStore(state => state.projectId)
   const setCurrentTab = useConfigStore(state => state.setCurrentTab)
 
@@ -39,6 +41,14 @@ export function AgreementWorkflow() {
     const targetProjectId = entityId || projectId
     if (targetProjectId) {
       setProjectId(targetProjectId)
+    }
+
+    if (docId) {
+      setContractId(docId)
+      fetchContract(docId)
+    } else {
+      // If no docId, we might be starting a new one or it's a generic project view
+      setContractId(null)
     }
 
     // If we are in the vault hierarchy, we might want to default to the MSA/Review tab

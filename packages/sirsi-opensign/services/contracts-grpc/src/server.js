@@ -243,9 +243,9 @@ const handlers = {
             query = query.where('projectId', '==', projectId);
         }
 
-        // Cross-portfolio filtering: find where user is either the client or the countersigner
+        // Filter by user email (as client)
         if (userEmail) {
-            query = query.where('signers', 'array-contains', userEmail);
+            query = query.where('clientEmail', '==', userEmail);
         }
 
         query = query.orderBy('createdAt', 'desc').limit(pageSize);
@@ -305,16 +305,58 @@ const handlers = {
             );
         }
 
-        // Remove id from update data if present
-        delete updateData.id;
+        // Update the document
+        await db.collection('contracts').doc(id).update({
+            ...updateData,
+            updatedAt: Date.now()
+        });
 
-        await db.collection('contracts').doc(id).update(updateData);
+        // Audit Logging (Rule 5)
+        if (updateData.status && updateData.status !== existingData.status) {
+            await db.collection('contracts').doc(id).collection('audit_logs').add({
+                type: 'STATUS_CHANGE',
+                from: existingData.status || 'UNKNOWN',
+                to: updateData.status,
+                timestamp: Date.now(),
+                message: `Contract status transitioned to ${updateData.status}`
+            });
+        }
 
         const doc = await db.collection('contracts').doc(id).get();
         return {
             id: doc.id,
             ...doc.data()
         };
+    },
+
+    // Delete contract (hard delete with audit trail)
+    async deleteContract(id) {
+        const contractDoc = await db.collection('contracts').doc(id).get();
+        if (!contractDoc.exists) throw new Error('Contract not found');
+
+        const data = contractDoc.data();
+
+        // Archive to deletedContracts before removing
+        await db.collection('deletedContracts').doc(id).set({
+            ...data,
+            deletedAt: Date.now(),
+            deletedBy: 'admin'
+        });
+
+        // Delete the document
+        await db.collection('contracts').doc(id).delete();
+
+        // Audit log
+        await db.collection('contracts_audit').add({
+            type: 'CONTRACT_DELETED',
+            contractId: id,
+            projectName: data.projectName || 'Unknown',
+            clientName: data.clientName || 'Unknown',
+            timestamp: Date.now()
+        });
+
+        console.log(`🗑️ Contract ${id} deleted (archived to deletedContracts)`);
+        return { success: true };
     },
 
     // Generate contract page HTML
@@ -478,8 +520,9 @@ const server = http.createServer(async (req, res) => {
     // CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Connect-Protocol-Version, Connect-Timeout-Ms');
-    res.setHeader('Access-Control-Expose-Headers', 'Connect-Content-Encoding');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Connect-Protocol-Version, Connect-Timeout-Ms, Authorization, X-User-Agent, X-Grpc-Web');
+    res.setHeader('Access-Control-Max-Age', '86400'); // 24 hours
+    res.setHeader('Access-Control-Expose-Headers', 'Connect-Content-Encoding, Connect-Accept-Encoding');
 
     if (req.method === 'OPTIONS') {
         res.writeHead(204);
@@ -533,6 +576,8 @@ const server = http.createServer(async (req, res) => {
                 body.stripeConnectAccountId,
                 body.paymentMethodTypes
             );
+        } else if (path === '/sirsi.contracts.v1.ContractsService/DeleteContract') {
+            result = await handlers.deleteContract(body.id);
         } else if (path === '/sirsi.contracts.v1.ContractsService/CreatePlaidLinkToken') {
             result = await handlers.createPlaidLinkToken(body.userId || 'anonymous', body.clientName);
         } else if (path === '/sirsi.contracts.v1.ContractsService/ExchangePlaidToken') {
@@ -605,9 +650,15 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(result));
     } catch (error) {
-        console.error('Request error:', error);
+        console.error(`❌ ERROR [${path}]:`, error.message);
+        if (error.stack) console.error(error.stack);
+
         res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: error.message }));
+        res.end(JSON.stringify({
+            error: error.message,
+            code: 'INTERNAL',
+            path: path
+        }));
     }
 });
 

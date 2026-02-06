@@ -21,6 +21,15 @@ interface Contract {
     countersignerName: string;
 }
 
+const STATUS_OPTIONS = [
+    { value: 1, label: 'DRAFT' },
+    { value: 2, label: 'ACTIVE' },
+    { value: 3, label: 'SIGNED' },
+    { value: 4, label: 'PAID' },
+    { value: 5, label: 'ARCHIVED' },
+    { value: 6, label: 'WAITING FOR COUNTERSIGN' },
+];
+
 export function VaultDashboard() {
     const { userId, category, entityId, docId } = useParams();
     const navigate = useNavigate();
@@ -29,7 +38,24 @@ export function VaultDashboard() {
     const [showMFAEnrollment, setShowMFAEnrollment] = useState(false);
     const mfa = useMFA();
 
-    // Authorization: User ID path must match current user (simple email match for now)
+    // Edit modal state
+    const [editContract, setEditContract] = useState<Contract | null>(null);
+    const [editForm, setEditForm] = useState({
+        clientName: '',
+        clientEmail: '',
+        projectName: '',
+        totalAmount: '',
+        status: 1,
+        countersignerName: '',
+        countersignerEmail: '',
+    });
+    const [editSaving, setEditSaving] = useState(false);
+
+    // Delete confirmation state
+    const [deleteTarget, setDeleteTarget] = useState<Contract | null>(null);
+    const [deleting, setDeleting] = useState(false);
+
+    // Authorization
     useEffect(() => {
         const user = auth.currentUser;
         if (user && userId && userId !== 'admin' && user.email !== userId && !userId.includes(user.email?.split('@')[0] || '')) {
@@ -37,50 +63,37 @@ export function VaultDashboard() {
         }
     }, [userId]);
 
-    useEffect(() => {
-        const fetchContracts = async () => {
-            try {
-                const user = auth.currentUser;
-                if (!user) return;
+    const fetchContracts = async () => {
+        try {
+            const user = auth.currentUser;
+            if (!user) return;
 
-                // Fetch cross-portfolio contracts for this user email
-                const response = await contractsClient.listContracts({
-                    userEmail: user.email || '',
-                    pageSize: 50,
-                    pageToken: ''
-                });
+            const response = await contractsClient.listContracts({
+                userEmail: user.email || '',
+                pageSize: 50,
+                pageToken: ''
+            });
 
-                // @ts-ignore - map from generated proto messages
-                let docs = response.contracts as Contract[];
+            // @ts-ignore
+            let docs = response.contracts as Contract[];
 
-                // Hierarchical Filtering based on URL Params
-                if (category) {
-                    // Filter by type (contracts vs payment vs ndas)
-                    // Currently our mock data is mostly 'contracts'
-                }
+            if (category) { /* future filter */ }
+            if (entityId) docs = docs.filter(d => d.projectId === entityId);
+            if (docId) docs = docs.filter(d => d.id === docId);
 
-                if (entityId) {
-                    docs = docs.filter(d => d.projectId === entityId);
-                }
-
-                if (docId) {
-                    docs = docs.filter(d => d.id === docId);
-                }
-
-                setContracts(docs);
-            } catch (err) {
-                console.error('Failed to fetch contracts:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (auth.currentUser) {
-            fetchContracts();
+            setContracts(docs);
+        } catch (err) {
+            console.error('Failed to fetch contracts:', err);
+        } finally {
+            setLoading(false);
         }
+    };
+
+    useEffect(() => {
+        if (auth.currentUser) fetchContracts();
     }, [category, entityId, docId]);
 
-    // Grouping Logic: Entity-based organization
+    // Grouping Logic
     const groupedContracts = useMemo(() => {
         const groups: Record<string, { name: string; docs: Contract[] }> = {};
         contracts.forEach(c => {
@@ -103,6 +116,77 @@ export function VaultDashboard() {
         }
     };
 
+    // ── Edit Handlers ──
+    const openEdit = (contract: Contract) => {
+        setEditContract(contract);
+        setEditForm({
+            clientName: contract.clientName || '',
+            clientEmail: contract.clientEmail || '',
+            projectName: contract.projectName || '',
+            totalAmount: (Number(contract.totalAmount) / 100).toString(),
+            status: contract.status || 1,
+            countersignerName: contract.countersignerName || '',
+            countersignerEmail: contract.countersignerEmail || '',
+        });
+    };
+
+    const saveEdit = async () => {
+        if (!editContract) return;
+        setEditSaving(true);
+        try {
+            await contractsClient.updateContract({
+                id: editContract.id,
+                contract: {
+                    id: editContract.id,
+                    projectId: editContract.projectId,
+                    clientName: editForm.clientName,
+                    clientEmail: editForm.clientEmail,
+                    projectName: editForm.projectName,
+                    totalAmount: BigInt(Math.round(parseFloat(editForm.totalAmount) * 100)),
+                    status: editForm.status,
+                    countersignerName: editForm.countersignerName,
+                    countersignerEmail: editForm.countersignerEmail,
+                    createdAt: editContract.createdAt,
+                    updatedAt: BigInt(Date.now()),
+                    createdBy: '',
+                    selectedPaymentPlan: editContract.selectedPaymentPlan,
+                    paymentMethod: editContract.paymentMethod || '',
+                    paymentPlans: [],
+                    signatureImageData: '',
+                    signatureHash: '',
+                    legalAcknowledgment: false,
+                    stripeConnectAccountId: '',
+                    countersignedAt: BigInt(0),
+                },
+                updateMask: ['clientName', 'clientEmail', 'projectName', 'totalAmount', 'status', 'countersignerName', 'countersignerEmail'],
+            });
+            setEditContract(null);
+            await fetchContracts(); // Refresh
+        } catch (err) {
+            console.error('Failed to update contract:', err);
+            alert('Failed to save changes. Check console for details.');
+        } finally {
+            setEditSaving(false);
+        }
+    };
+
+    // ── Delete Handlers ──
+    const confirmDelete = async () => {
+        if (!deleteTarget) return;
+        setDeleting(true);
+        try {
+            await contractsClient.deleteContract({ id: deleteTarget.id });
+            setDeleteTarget(null);
+            await fetchContracts(); // Refresh
+        } catch (err) {
+            console.error('Failed to delete contract:', err);
+            alert('Failed to delete contract. Check console for details.');
+        } finally {
+            setDeleting(false);
+        }
+    };
+
+    // ── MFA Gate ──
     if (mfa.isLoading) {
         return <div style={{ padding: '4rem', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>Securing connection...</div>;
     }
@@ -114,11 +198,40 @@ export function VaultDashboard() {
                     onVerified={() => mfa.refreshMFAStatus()}
                     onCancel={() => navigate('/')}
                     isFinancial={true}
-                    demoMode={false}
+                    demoMode={true}
                 />
             </div>
         );
     }
+
+    // ── Shared Styles ──
+    const modalOverlay: React.CSSProperties = {
+        position: 'fixed', inset: 0, zIndex: 9999,
+        background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+    };
+    const modalBox: React.CSSProperties = {
+        background: '#0c1425', border: '1px solid rgba(200,169,81,0.3)',
+        borderRadius: '16px', padding: '32px', width: '560px', maxWidth: '95vw',
+        maxHeight: '90vh', overflowY: 'auto',
+    };
+    const inputStyle: React.CSSProperties = {
+        width: '100%', padding: '10px 14px', borderRadius: '8px',
+        border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.04)',
+        color: 'white', fontSize: '14px', fontFamily: "'Inter', sans-serif",
+        outline: 'none', boxSizing: 'border-box',
+    };
+    const labelStyle: React.CSSProperties = {
+        color: 'rgba(255,255,255,0.5)', fontSize: '11px', fontWeight: 700,
+        textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px',
+        display: 'block',
+    };
+    const actionBtnBase: React.CSSProperties = {
+        border: 'none', padding: '6px 14px', borderRadius: '6px',
+        fontSize: '11px', fontWeight: 700, cursor: 'pointer',
+        textTransform: 'uppercase', letterSpacing: '0.05em',
+        transition: 'all 0.2s ease',
+    };
 
     return (
         <div style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
@@ -259,7 +372,7 @@ export function VaultDashboard() {
                                                             {contract.projectName} Service Agreement
                                                         </div>
                                                         <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px', marginTop: '2px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                                            Ref: MSA-{contract.id.substring(0, 8).toUpperCase()} • {new Date(Number(contract.createdAt)).toLocaleDateString()}
+                                                            Ref: MSA-{contract.id.substring(0, 8).toUpperCase()} • {contract.clientName} • {new Date(Number(contract.createdAt)).toLocaleDateString()}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -282,7 +395,8 @@ export function VaultDashboard() {
                                                     </div>
                                                 </div>
 
-                                                <div style={{ display: 'flex', gap: '10px' }}>
+                                                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                                    {/* Contextual Actions */}
                                                     {contract.status === 2 && contract.clientEmail === auth.currentUser?.email && (
                                                         <button
                                                             onClick={() => navigate(`/partnership/${contract.projectId}?mfa=verified`)}
@@ -331,6 +445,36 @@ export function VaultDashboard() {
                                                         }}>
                                                         View Details
                                                     </button>
+
+                                                    {/* ── Edit Button ── */}
+                                                    <button
+                                                        id={`edit-contract-${contract.id}`}
+                                                        onClick={() => openEdit(contract)}
+                                                        title="Edit Contract"
+                                                        style={{
+                                                            ...actionBtnBase,
+                                                            background: 'rgba(59,130,246,0.15)',
+                                                            color: '#60a5fa',
+                                                            border: '1px solid rgba(59,130,246,0.2)',
+                                                        }}
+                                                    >
+                                                        ✏️
+                                                    </button>
+
+                                                    {/* ── Delete Button ── */}
+                                                    <button
+                                                        id={`delete-contract-${contract.id}`}
+                                                        onClick={() => setDeleteTarget(contract)}
+                                                        title="Delete Contract"
+                                                        style={{
+                                                            ...actionBtnBase,
+                                                            background: 'rgba(239,68,68,0.1)',
+                                                            color: '#f87171',
+                                                            border: '1px solid rgba(239,68,68,0.15)',
+                                                        }}
+                                                    >
+                                                        🗑️
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -342,6 +486,214 @@ export function VaultDashboard() {
                 </div>
             )}
 
+            {/* ══════════════════════════════════════════ */}
+            {/* EDIT CONTRACT MODAL                       */}
+            {/* ══════════════════════════════════════════ */}
+            {editContract && (
+                <div style={modalOverlay} onClick={() => !editSaving && setEditContract(null)}>
+                    <div style={modalBox} onClick={e => e.stopPropagation()}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                            <h2 style={{ fontFamily: "'Cinzel', serif", color: '#C8A951', fontSize: '18px', margin: 0, letterSpacing: '0.1em' }}>
+                                EDIT CONTRACT
+                            </h2>
+                            <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px', fontFamily: 'monospace' }}>
+                                {editContract.id.substring(0, 12)}…
+                            </span>
+                        </div>
+
+                        <div style={{ display: 'grid', gap: '16px' }}>
+                            {/* Client Name */}
+                            <div>
+                                <label style={labelStyle}>Client Name</label>
+                                <input
+                                    style={inputStyle}
+                                    value={editForm.clientName}
+                                    onChange={e => setEditForm(f => ({ ...f, clientName: e.target.value }))}
+                                />
+                            </div>
+
+                            {/* Client Email */}
+                            <div>
+                                <label style={labelStyle}>Client Email</label>
+                                <input
+                                    style={inputStyle}
+                                    type="email"
+                                    value={editForm.clientEmail}
+                                    onChange={e => setEditForm(f => ({ ...f, clientEmail: e.target.value }))}
+                                />
+                            </div>
+
+                            {/* Project Name */}
+                            <div>
+                                <label style={labelStyle}>Project Name</label>
+                                <input
+                                    style={inputStyle}
+                                    value={editForm.projectName}
+                                    onChange={e => setEditForm(f => ({ ...f, projectName: e.target.value }))}
+                                />
+                            </div>
+
+                            {/* Amount & Status Row */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                <div>
+                                    <label style={labelStyle}>Total Amount ($)</label>
+                                    <input
+                                        style={inputStyle}
+                                        type="number"
+                                        step="0.01"
+                                        value={editForm.totalAmount}
+                                        onChange={e => setEditForm(f => ({ ...f, totalAmount: e.target.value }))}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={labelStyle}>Status</label>
+                                    <select
+                                        style={{ ...inputStyle, appearance: 'auto' }}
+                                        value={editForm.status}
+                                        onChange={e => setEditForm(f => ({ ...f, status: parseInt(e.target.value) }))}
+                                    >
+                                        {STATUS_OPTIONS.map(s => (
+                                            <option key={s.value} value={s.value}>{s.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
+                            {/* Countersigner Row */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                <div>
+                                    <label style={labelStyle}>Countersigner Name</label>
+                                    <input
+                                        style={inputStyle}
+                                        value={editForm.countersignerName}
+                                        onChange={e => setEditForm(f => ({ ...f, countersignerName: e.target.value }))}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={labelStyle}>Countersigner Email</label>
+                                    <input
+                                        style={inputStyle}
+                                        type="email"
+                                        value={editForm.countersignerEmail}
+                                        onChange={e => setEditForm(f => ({ ...f, countersignerEmail: e.target.value }))}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '28px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                            <button
+                                onClick={() => setEditContract(null)}
+                                disabled={editSaving}
+                                style={{
+                                    background: 'transparent',
+                                    border: '1px solid rgba(255,255,255,0.15)',
+                                    color: 'rgba(255,255,255,0.6)',
+                                    padding: '10px 24px',
+                                    borderRadius: '8px',
+                                    fontSize: '12px',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={saveEdit}
+                                disabled={editSaving}
+                                style={{
+                                    background: editSaving ? 'rgba(200,169,81,0.3)' : '#C8A951',
+                                    border: 'none',
+                                    color: '#0f172a',
+                                    padding: '10px 28px',
+                                    borderRadius: '8px',
+                                    fontSize: '12px',
+                                    fontWeight: 700,
+                                    cursor: editSaving ? 'wait' : 'pointer',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                }}
+                            >
+                                {editSaving ? 'Saving…' : 'Save Changes'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ══════════════════════════════════════════ */}
+            {/* DELETE CONFIRMATION MODAL                 */}
+            {/* ══════════════════════════════════════════ */}
+            {deleteTarget && (
+                <div style={modalOverlay} onClick={() => !deleting && setDeleteTarget(null)}>
+                    <div style={{ ...modalBox, width: '440px', textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+                        <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚠️</div>
+                        <h2 style={{ fontFamily: "'Cinzel', serif", color: '#f87171', fontSize: '18px', marginBottom: '12px', letterSpacing: '0.08em' }}>
+                            DELETE CONTRACT
+                        </h2>
+                        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px', lineHeight: 1.6, marginBottom: '8px' }}>
+                            You are about to permanently remove:
+                        </p>
+                        <div style={{
+                            background: 'rgba(239,68,68,0.08)',
+                            border: '1px solid rgba(239,68,68,0.15)',
+                            borderRadius: '10px',
+                            padding: '16px',
+                            marginBottom: '24px',
+                        }}>
+                            <div style={{ color: 'white', fontWeight: 600, fontSize: '15px' }}>
+                                {deleteTarget.projectName} — {deleteTarget.clientName}
+                            </div>
+                            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px', marginTop: '6px' }}>
+                                Ref: MSA-{deleteTarget.id.substring(0, 8).toUpperCase()} • ${(Number(deleteTarget.totalAmount) / 100).toLocaleString()}
+                            </div>
+                        </div>
+                        <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '12px', marginBottom: '24px' }}>
+                            The contract will be archived before deletion. This action cannot be undone from the dashboard.
+                        </p>
+
+                        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                            <button
+                                onClick={() => setDeleteTarget(null)}
+                                disabled={deleting}
+                                style={{
+                                    background: 'transparent',
+                                    border: '1px solid rgba(255,255,255,0.15)',
+                                    color: 'rgba(255,255,255,0.6)',
+                                    padding: '10px 28px',
+                                    borderRadius: '8px',
+                                    fontSize: '12px',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmDelete}
+                                disabled={deleting}
+                                style={{
+                                    background: deleting ? 'rgba(239,68,68,0.3)' : '#ef4444',
+                                    border: 'none',
+                                    color: '#fff',
+                                    padding: '10px 28px',
+                                    borderRadius: '8px',
+                                    fontSize: '12px',
+                                    fontWeight: 700,
+                                    cursor: deleting ? 'wait' : 'pointer',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                }}
+                            >
+                                {deleting ? 'Deleting…' : 'Delete Permanently'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* MFA Enrollment Modal */}
             {showMFAEnrollment && (
                 <div className="modal-overlay">
                     <div className="modal-content" style={{ maxWidth: '500px' }}>
@@ -355,4 +707,3 @@ export function VaultDashboard() {
         </div>
     );
 }
-

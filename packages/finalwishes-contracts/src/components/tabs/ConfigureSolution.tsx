@@ -2,8 +2,8 @@
  * Configure Solution Tab
  * PIXEL-PERFECT MIGRATION from index.html renderOfferings
  */
-import { useState } from 'react'
-import { useConfigStore, useSetTab } from '../../store/useConfigStore'
+import { useState, useEffect } from 'react'
+import { useConfigStore, useSetTab, useSyncConfig } from '../../store/useConfigStore'
 import { PRODUCTS, BUNDLES, calculateTotal, calculateTimeline } from '../../data/catalog'
 
 
@@ -30,6 +30,8 @@ const US_STATES = [
 
 export function ConfigureSolution() {
     const setTab = useSetTab()
+    const syncConfig = useSyncConfig()
+    const contractId = useConfigStore(state => state.contractId)
     const selectedBundle = useConfigStore(state => state.selectedBundle)
     const selectedAddons = useConfigStore(state => state.selectedAddons)
     const setSelectedBundle = useConfigStore(state => state.setSelectedBundle)
@@ -38,6 +40,17 @@ export function ConfigureSolution() {
     const setCeoConsultingWeeks = useConfigStore(state => state.setCeoConsultingWeeks)
     const probateStates = useConfigStore(state => state.probateStates)
     const toggleProbateState = useConfigStore(state => state.toggleProbateState)
+
+    // Sync configuration to backend when selections change
+    useEffect(() => {
+        if (!contractId) return
+
+        const timer = setTimeout(() => {
+            syncConfig()
+        }, 1000) // 1 second debounce
+
+        return () => clearTimeout(timer)
+    }, [selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates, contractId, syncConfig])
 
 
     const [flippedCard, setFlippedCard] = useState<string | null>(null)

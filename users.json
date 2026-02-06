@@ -1,0 +1,87 @@
+{"users": [
+{
+  "localId": "ADMIN",
+  "email": "admin@sirsi.local",
+  "emailVerified": true,
+  "passwordHash": "VOqdkQl6B2L+/Hgb09yTmL68nSjFlNX/QGVXfHwPksv8PfXhjwMzxdszeWe6KVBWeuV15vnML/NVmMtSDiE+QQ==",
+  "salt": "IntXPrHCQON8+g==",
+  "displayName": "Administrator",
+  "createdAt": "1757640582430",
+  "disabled": false,
+  "customAttributes": "{\"role\":\"admin\"}",
+  "providerUserInfo": []
+},
+{
+  "localId": "GUEST",
+  "email": "guest@sirsi.local",
+  "emailVerified": true,
+  "passwordHash": "0B0Xe9jNpK1ZqnbXpxNTkYe9kobu7z8VL3IcH6izFDDr6mSw+Rc1KuG+Tgpt1zIjTR+dgnuUJl1QsuN9RvLbxA==",
+  "salt": "59sAl78iG1bhSA==",
+  "displayName": "Guest Access",
+  "createdAt": "1757640584723",
+  "disabled": false,
+  "customAttributes": "{\"role\":\"guest\"}",
+  "providerUserInfo": []
+},
+{
+  "localId": "INV001",
+  "email": "inv001@sirsi.local",
+  "emailVerified": true,
+  "passwordHash": "HNfVh4bkR+jJ2tXyqrNX2TQ7WYxwkuoGJohs+epVR0DWgb6BLXmMpZ7yXQS/weE1jYpFk2Gf7RluJ98lb8F6QQ==",
+  "salt": "i/RLgVVB/rtRYg==",
+  "displayName": "Demo Investor",
+  "createdAt": "1757640583075",
+  "disabled": false,
+  "customAttributes": "{\"role\":\"investor\"}",
+  "providerUserInfo": []
+},
+{
+  "localId": "INV002",
+  "email": "inv002@sirsi.local",
+  "emailVerified": true,
+  "passwordHash": "GpLtXRWvLATIdcfJLoo8r+QFic7kW1qPqK2s6fkQxViI/3vJMQHVshFdauuuoUt6YysOBO+UYHyaeJpnRmbqfw==",
+  "salt": "PvRO1oThPLydfg==",
+  "displayName": "Beta Investor",
+  "createdAt": "1757640583905",
+  "disabled": false,
+  "customAttributes": "{\"role\":\"investor\"}",
+  "providerUserInfo": []
+},
+{
+  "localId": "PII0eFxMVAanUDklKn83AZCip8e2",
+  "email": "sirsimaster@gmail.com",
+  "emailVerified": true,
+  "displayName": "Sirsi",
+  "photoUrl": "https://lh3.googleusercontent.com/a/ACg8ocL_PJbkvGOCZh-ScOGoBjmUZak5n3psiJH_kX_xAwKQ8sCCjQ=s96-c",
+  "lastSignedInAt": "1757474686608",
+  "createdAt": "1757474686608",
+  "providerUserInfo": [
+    {
+      "providerId": "google.com",
+      "rawId": "104073126824716144957",
+      "email": "sirsimaster@gmail.com",
+      "displayName": "Sirsi",
+      "photoUrl": "https://lh3.googleusercontent.com/a/ACg8ocL_PJbkvGOCZh-ScOGoBjmUZak5n3psiJH_kX_xAwKQ8sCCjQ=s96-c"
+    }
+  ]
+},
+{
+  "localId": "TTxTQtYRfWgjcMDyXEcn1JFGhM12",
+  "email": "cylton@sirsi.ai",
+  "emailVerified": false,
+  "passwordHash": "6Oyu5kVfxxVioT3gXBX/zg94NI3RHfic4fAd+M6FMB1mKsprssKavWNn+JaAgZti7Baq+rYuIe7PrDjAF1f0VA==",
+  "salt": "SO33r01w9U+n+A==",
+  "lastSignedInAt": "1757474147006",
+  "createdAt": "1757474147006",
+  "providerUserInfo": []
+},
+{
+  "localId": "mQVxrKnaISb3vCfLrafEn6EujDe2",
+  "email": "admin@sirsi.ai",
+  "emailVerified": false,
+  "passwordHash": "cDRqef9rnuCljZjHMzXok3BJzIGrs/Zss/XGYbm8U5HwpVNx/4u22h+PGsJ14Rbo077FEAXWaC4qsfaTfh0UxQ==",
+  "salt": "0TrN8zIfo9RBLA==",
+  "lastSignedInAt": "1757637545057",
+  "createdAt": "1757615083298",
+  "providerUserInfo": []
+}]}

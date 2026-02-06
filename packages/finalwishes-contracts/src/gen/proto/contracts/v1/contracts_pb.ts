@@ -344,6 +344,13 @@ export class Contract extends Message<Contract> {
   signatureImageData = "";
 
   /**
+   * Cryptographic SHA-256 evidence
+   *
+   * @generated from field: string signature_hash = 21;
+   */
+  signatureHash = "";
+
+  /**
    * @generated from field: bool legal_acknowledgment = 17;
    */
   legalAcknowledgment = false;
@@ -385,6 +392,7 @@ export class Contract extends Message<Contract> {
     { no: 15, name: "countersigned_at", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
     { no: 20, name: "stripe_connect_account_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 16, name: "signature_image_data", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 21, name: "signature_hash", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 17, name: "legal_acknowledgment", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 18, name: "selected_payment_plan", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 19, name: "payment_method", kind: "scalar", T: 9 /* ScalarType.STRING */ },

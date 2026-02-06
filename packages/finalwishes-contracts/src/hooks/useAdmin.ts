@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { adminClient } from '../lib/grpc';
+import { adminClient, contractsClient } from '../lib/grpc';
 import {
     ListEstatesRequest,
     LogDevSessionRequest,
@@ -11,6 +11,21 @@ import {
     UpdateSettingsRequest,
     SystemSettings
 } from '../gen/proto/admin/v1/admin_pb';
+import { ListContractsRequest } from '../gen/proto/contracts/v1/contracts_pb';
+
+export const useContracts = (projectId = '', userEmail = '', pageSize = 50) => {
+    return useQuery({
+        queryKey: ['contracts', projectId, userEmail, pageSize],
+        queryFn: async () => {
+            const res = await contractsClient.listContracts(new ListContractsRequest({
+                projectId,
+                userEmail,
+                pageSize
+            }));
+            return res;
+        }
+    });
+};
 
 export const useEstates = (pageSize = 10, pageToken = '') => {
     return useQuery({

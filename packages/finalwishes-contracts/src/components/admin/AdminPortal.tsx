@@ -1,21 +1,21 @@
 import { useState } from 'react';
 import { useMFA } from '../../../../sirsi-ui/src/hooks/useMFA';
 import { MFAGate } from '../auth/MFAGate';
-import { EstatesManagement } from './EstatesManagement';
+import { ContractsManagement } from './ContractsManagement';
 import { UsersAccessControl } from './UsersAccessControl';
 import { DevDashboard } from './DevDashboard';
 import { NotificationEngine } from './NotificationEngine';
 import { SystemSettings } from './SystemSettings';
 import { MFAEnrollment } from '../auth/MFAEnrollment';
 
-type AdminTab = 'estates' | 'users' | 'development' | 'notifications' | 'settings' | 'mfa';
+type AdminTab = 'contracts' | 'users' | 'development' | 'notifications' | 'settings' | 'mfa';
 
 export function AdminPortal() {
-    const [activeTab, setActiveTab] = useState<AdminTab>('estates');
+    const [activeTab, setActiveTab] = useState<AdminTab>('contracts');
     const mfa = useMFA();
 
     const tabs: { id: AdminTab; label: string; icon: string }[] = [
-        { id: 'estates', label: 'Estates', icon: '🏛️' },
+        { id: 'contracts', label: 'Permanent Ledger', icon: '📜' },
         { id: 'users', label: 'Users & Roles', icon: '👤' },
         { id: 'development', label: 'Dev KPIs', icon: '💻' },
         { id: 'notifications', label: 'Omni-Notify', icon: '🔔' },
@@ -79,15 +79,15 @@ export function AdminPortal() {
             {/* Main Content */}
             <main className="flex-1 overflow-auto p-12">
                 <div className="max-w-6xl mx-auto">
-                    {activeTab === 'estates' && <EstatesManagement />}
+                    {activeTab === 'contracts' && <ContractsManagement />}
                     {activeTab === 'users' && <UsersAccessControl />}
                     {activeTab === 'development' && <DevDashboard />}
                     {activeTab === 'notifications' && <NotificationEngine />}
                     {activeTab === 'settings' && <SystemSettings />}
                     {activeTab === 'mfa' && (
                         <MFAEnrollment
-                            onComplete={() => setActiveTab('estates')}
-                            onCancel={() => setActiveTab('estates')}
+                            onComplete={() => setActiveTab('contracts')}
+                            onCancel={() => setActiveTab('contracts')}
                         />
                     )}
                 </div>

@@ -19,6 +19,7 @@ class SecureAuthService {
         await this.initializeDatabase();
 
         // Set up security headers
+        console.log('🔒 SecureAuthService initializing (VER: v777)...');
         this.setupSecurityHeaders();
 
         // Initialize CSRF protection
@@ -411,10 +412,15 @@ class SecureAuthService {
      * Setup security headers
      */
     setupSecurityHeaders() {
-        // Content Security Policy
+        // Content Security Policy - Avoid duplicates if already set by security-init.js
+        if (document.querySelector('meta[http-equiv="Content-Security-Policy"]')) {
+            console.log('🔒 CSP already established, skipping redundant injection.');
+            return;
+        }
+
         const meta = document.createElement('meta');
         meta.httpEquiv = 'Content-Security-Policy';
-        meta.content = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'";
+        meta.content = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://cdn.tailwindcss.com https://unpkg.com https://cdn.jsdelivr.net https://apis.google.com https://www.gstatic.com https://*.firebaseapp.com https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://api.ipify.org https://*.firebaseio.com https://*.googleapis.com https://*.firebaseapp.com https://*.run.app; frame-src 'self' https://js.stripe.com https://*.firebaseapp.com; object-src 'none';";
         document.head.appendChild(meta);
 
         // Other security headers (would be set server-side in production)

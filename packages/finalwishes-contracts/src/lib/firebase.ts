@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { initializeAuth, browserLocalPersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getFunctions } from 'firebase/functions';
 
@@ -13,7 +13,13 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+
+// Use initializeAuth with explicit persistence to avoid the
+// "Expected a class definition" crash from the default redirect resolver.
+// We only use email/password auth, not OAuth redirects.
+export const auth = initializeAuth(app, {
+    persistence: browserLocalPersistence,
+});
 export const db = getFirestore(app);
 export const functions = getFunctions(app);
 

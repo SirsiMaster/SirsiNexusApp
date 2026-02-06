@@ -1,5 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
+import { contractsClient } from '../lib/grpc'
+import { calculateTotal } from '../data/catalog'
 
 export type TabId = 'summary' | 'configure' | 'sow' | 'cost' | 'msa' | 'vault'
 
@@ -8,6 +10,7 @@ interface ConfigState {
     projectName: string
     companyName: string
     projectId: string
+    contractId: string | null
 
     // Client info
     clientName: string
@@ -35,6 +38,7 @@ interface ConfigState {
     // Actions
     setCurrentTab: (tab: TabId) => void
     setProjectId: (id: string) => void
+    setContractId: (id: string | null) => void
     setClientInfo: (name: string, email: string) => void
     setCounterpartyInfo: (entity: string, name: string, title: string) => void
     setSelectedBundle: (id: string | null) => void
@@ -43,6 +47,8 @@ interface ConfigState {
     toggleProbateState: (state: string) => void
     markTabVisited: (tab: TabId) => void
     setSystemSettings: (settings: { multiplier: number, maintenanceMode: boolean }) => void
+    fetchContract: (id: string) => Promise<void>
+    syncConfig: () => Promise<void>
     resetConfig: () => void
 }
 
@@ -50,6 +56,7 @@ const initialState = {
     projectName: 'FinalWishes',
     companyName: '111 Venture Studio',
     projectId: 'finalwishes',
+    contractId: null,
     clientName: '',
     clientEmail: '',
     entityLegalName: 'Sirsi Technologies, Inc.',
@@ -89,6 +96,8 @@ export const useConfigStore = create<ConfigState>()(
 
             setProjectId: (id) => set({ projectId: id }),
 
+            setContractId: (id) => set({ contractId: id }),
+
             setClientInfo: (name, email) => set({
                 clientName: name,
                 clientEmail: email
@@ -127,10 +136,78 @@ export const useConfigStore = create<ConfigState>()(
                 maintenanceMode: settings.maintenanceMode || false
             }),
 
+            fetchContract: async (id: string) => {
+                try {
+                    const contract = await contractsClient.getContract({ id });
+                    if (contract) {
+                        const updates: Partial<ConfigState> = {
+                            contractId: contract.id,
+                            clientName: contract.clientName,
+                            clientEmail: contract.clientEmail,
+                            projectId: contract.projectId,
+                            projectName: contract.projectName,
+                        };
+
+                        // Re-hydrate selections if present in metadata
+                        // @ts-ignore - access injected selections from Firestore
+                        const selections = contract.selections;
+                        if (selections) {
+                            if (selections.bundle) updates.selectedBundle = selections.bundle;
+                            if (selections.addons) updates.selectedAddons = selections.addons;
+                            if (selections.ceoConsultingWeeks) updates.ceoConsultingWeeks = selections.ceoConsultingWeeks;
+                            if (selections.probateStates) updates.probateStates = selections.probateStates;
+                        }
+
+                        set(updates);
+                        console.log(`✅ State re-hydrated from contract ${id}`);
+                    }
+                } catch (error) {
+                    console.error(`❌ Failed to fetch contract ${id}:`, error);
+                }
+            },
+
+            syncConfig: async () => {
+                const state = get()
+                if (!state.contractId) {
+                    console.warn('Cannot sync config: No contractId available')
+                    return
+                }
+
+                try {
+                    console.log(`🔄 Syncing configuration for contract ${state.contractId}...`)
+
+                    const totalResult = calculateTotal(
+                        state.selectedBundle,
+                        state.selectedAddons,
+                        state.ceoConsultingWeeks,
+                        state.probateStates.length,
+                        state.sirsiMultiplier
+                    )
+
+                    await contractsClient.updateContract({
+                        id: state.contractId,
+                        contract: {
+                            // Convert total to cents for gRPC int64
+                            totalAmount: BigInt(Math.round(totalResult.total * 100)),
+                            // @ts-ignore - Injecting metadata to Firestore
+                            selections: {
+                                bundle: state.selectedBundle,
+                                addons: state.selectedAddons,
+                                ceoConsultingWeeks: state.ceoConsultingWeeks,
+                                probateStates: state.probateStates
+                            }
+                        }
+                    })
+                    console.log('✅ Configuration synced to Sirsi Ledger')
+                } catch (error) {
+                    console.error('❌ Failed to sync configuration:', error)
+                }
+            },
+
             resetConfig: () => set(initialState),
         }),
         {
-            name: 'finalwishes-config',
+            name: 'sirsi-config-storage',
             storage: createJSONStorage(() => localStorage),
         }
     )
@@ -163,3 +240,4 @@ export function getPrevTab(current: TabId): TabId | null {
 export const useCurrentTab = () => useConfigStore((state) => state.currentTab)
 export const useVisitedTabs = () => useConfigStore((state) => state.visitedTabs)
 export const useSetTab = () => useConfigStore((state) => state.setCurrentTab)
+export const useSyncConfig = () => useConfigStore((state) => state.syncConfig)

@@ -93,6 +93,7 @@ message Contract {
 
   // Execution Data (OpenSign)
   string signature_image_data = 16;
+  string signature_hash = 21; // Cryptographic SHA-256 evidence
   bool legal_acknowledgment = 17;
 
   // Selection Data
