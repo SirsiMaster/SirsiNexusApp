@@ -1181,119 +1181,166 @@
     </div>
   </div>
 
-  <script src="../../lib/offerings/catalog-data.js"></script>
-  <script src="../../lib/offerings/pricing-engine.js"></script>
-  <script src="../../lib/offerings/cart-manager.js"></script>
-  <script src="../../lib/offerings/offerings-engine.js"></script>
-
   <script>
     /**
-     * INITIALIZE FROM PARENT WINDOW
-     * This allows index.html to pass the exact state of the contract
+     * DYNAMIC MSA PRINT ENGINE
+     * Reads configuration directly from URL parameters passed by the React app.
+     * No external JS dependencies required.
+     * 
+     * URL params consumed:
+     *   client, date, plan, total, weeks, hours, addons, ceoWeeks,
+     *   probateCount, multiplier, entity, cpName, cpTitle, bundle, signed
      */
-    window.initializeMSAPrint = function (state) {
-      console.log('[MSA Print] Initializing with state:', state);
-      if (!state) return;
 
-      // 1. Basic Metadata
-      if (state.clientName) {
-        const nameEls = document.querySelectorAll('#client-name, #client-name-display, #sow-client-sig');
-        nameEls.forEach(el => el.textContent = state.clientName);
+    // ── Product catalog (lightweight mirror of catalog.ts) ──
+    const PRODUCT_NAMES = {
+      'maintenance': 'Maintenance & Support',
+      'ceo-consulting': 'CEO Consulting',
+      'branding': 'Branding & Identity',
+      'seo': 'SEO & Digital Marketing',
+      'analytics': 'Analytics Dashboard',
+      'probate': 'Probate Engine',
+      'ai-assistant': 'AI Legal Assistant',
+      'notification': 'Notification Engine',
+      'beneficiary': 'Beneficiary Management',
+      'document-gen': 'Document Generation',
+      'payment-processing': 'Payment Processing',
+      'mobile-app': 'Mobile Application',
+      'admin-portal': 'Admin Portal'
+    };
+
+    function populateFromParams() {
+      const params = new URLSearchParams(window.location.search);
+
+      // ── 1. Core Financial Values ──
+      const total = parseInt(params.get('total') || '0', 10);
+      const weeks = parseInt(params.get('weeks') || '20', 10);
+      const hours = parseInt(params.get('hours') || '0', 10);
+      const multiplier = parseFloat(params.get('multiplier') || '1.0');
+      const marketValue = Math.round(total * 2); // $250/hr market ÷ $125/hr internal = 2× 
+      const selectedPlan = params.get('plan') || '2';
+      const addonsRaw = params.get('addons') || '';
+      const addonIds = addonsRaw ? addonsRaw.split(',').filter(Boolean) : [];
+      const ceoWeeks = parseInt(params.get('ceoWeeks') || '1', 10);
+      const probateCount = parseInt(params.get('probateCount') || '0', 10);
+      const bundle = params.get('bundle') || '';
+
+      // ── 2. Client / Entity Metadata ──
+      const clientName = params.get('client') || '';
+      const effectiveDate = params.get('date') || new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      const entityLegalName = params.get('entity') || 'Sirsi Technologies, Inc.';
+      const counterpartyName = params.get('cpName') || 'Cylton Collymore';
+      const counterpartyTitle = params.get('cpTitle') || 'CEO';
+      const isSigned = params.get('signed') === 'true';
+
+      // ── 3. Populate Identity Fields ──
+      if (clientName) {
+        setAll('#client-name-display, #client-name-display-sig, #sow-client-sig', clientName);
       }
-      if (state.effectiveDate) {
-        document.getElementById('effective-date').textContent = state.effectiveDate;
-        const dateEls = document.querySelectorAll('#client-date-display, #sow-client-date, #provider-date-display, #sow-provider-date');
-        dateEls.forEach(el => el.textContent = state.effectiveDate);
+      setAll('#effective-date', effectiveDate);
+      setAll('#client-date-display, #sow-client-date, #provider-date-display, #sow-provider-date', effectiveDate);
+      setAll('#provider-legal-name, #provider-legal-name-recital, #entity-legal-name-display-strong', entityLegalName);
+      setAll('#provider-name-display, #provider-signature-display, #provider-architect-name', counterpartyName);
+      setAll('#provider-title-display', counterpartyTitle);
+
+      // ── 4. Update Section 4.1 Total Contract Value ──
+      if (total > 0) {
+        setText('total-price-text', '$' + total.toLocaleString() + '.00 USD');
       }
 
-      // 1.1 Provider Metadata
-      if (state.entityLegalName) {
-        document.querySelectorAll('#provider-legal-name, #provider-legal-name-recital').forEach(el => el.textContent = state.entityLegalName);
-      }
-      if (state.counterpartyName) {
-        document.querySelectorAll('#provider-name-display, #provider-signature-display, #provider-architect-name').forEach(el => el.textContent = state.counterpartyName);
-      }
-      if (state.counterpartyTitle) {
-        document.getElementById('provider-title-display').textContent = state.counterpartyTitle;
+      // ── 5. Update Payment Plans ──
+      if (total > 0) {
+        updatePaymentPlans(total, selectedPlan);
       }
 
-      // 2. Offerings Engine Integration
-      const engine = initOfferingsEngine('sirsi-engineering');
+      // ── 6. Update Exhibit A: SOW Timeline ──
+      const timelineEl = document.querySelector('#scope-of-work ~ p, #exhibit-a-statement-of-work-sow ~ p');
+      // Update the static SOW header with dynamic timeline
+      const sowHeaders = document.querySelectorAll('p');
+      sowHeaders.forEach(p => {
+        if (p.textContent.includes('Timeline:') && p.textContent.includes('Weeks')) {
+          p.innerHTML = `<strong>Project Name:</strong> FinalWishes Unified Platform<br>
+            <strong>Timeline:</strong> ${weeks} Weeks<br>
+            <strong>Engineering Load:</strong> ${hours} Hours<br>
+            <strong>Target Completion:</strong> ${getTargetDate(weeks)}`;
+        }
+      });
 
-      // Sync cart from state
-      if (state.selectedAddons) {
-        state.selectedAddons.forEach(id => engine.addToCart(id));
+      // ── 7. Update Exhibit A: Deliverables Table (Dynamic WBS) ──
+      if (total > 0) {
+        updateDeliverablesTable(total, weeks, hours, addonIds, ceoWeeks, probateCount);
       }
 
-      // Add core if needed
-      if (!engine.isInCart('finalwishes-core')) {
-        engine.addToCart('finalwishes-core');
+      // ── 8. Update Exhibit B: Cost & Valuation ──
+      if (total > 0) {
+        updateExhibitB(total, marketValue, addonIds);
       }
 
-      const pricing = engine.getCartPricing();
-      const items = engine.cart.getItemsWithDetails(engine.catalog);
+      // ── 9. Update Selected Modules in SOW ──
+      if (addonIds.length > 0) {
+        updateSelectedModules(addonIds, ceoWeeks, probateCount);
+      }
 
-      // 3. Update Pricing Text
-      document.getElementById('total-price-text').textContent = '$' + pricing.total.toLocaleString() + '.00 USD';
-      document.getElementById('discount-net-price').textContent = '$' + pricing.total.toLocaleString();
-      document.getElementById('discount-final-price').textContent = '$' + pricing.total.toLocaleString();
-
-      // 4. Update Payment Plans
-      updatePaymentPlansUI(pricing.total, state.selectedPlan);
-
-      // 5. Update SOW (Exhibit A)
-      updateSOWDeliverables(engine, items);
-
-      // 6. Update Exhibit B (Cost)
-      updateExhibitBDiscounts(engine, pricing);
-
-      // 7. Update Dynamic Legal Sections
-      updateLegalSections(engine, state.selectedAddons);
-
-      // 8. Handle Signatures if state says signed
-      if (state.isSigned) {
-        const clientSigDisplay = document.getElementById('client-signature-display');
-        if (clientSigDisplay) clientSigDisplay.textContent = state.clientName || 'The Client';
-
-        const providerSigDisplay = document.getElementById('provider-signature-display');
-        if (providerSigDisplay) providerSigDisplay.textContent = 'Cylton Collymore';
-
+      // ── 10. Signatures ──
+      if (isSigned) {
+        if (clientName) setText('client-signature-display', clientName);
+        setText('provider-signature-display', counterpartyName);
         const auditBlock = document.getElementById('audit-trail');
         if (auditBlock) {
           auditBlock.style.display = 'block';
-          // Mock audit trail
-          document.getElementById('audit-envelope-id').textContent = 'SIRSI-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-          document.getElementById('audit-timestamp').textContent = new Date().toISOString();
-          document.getElementById('audit-checksum').textContent = 'SHA256-' + Math.random().toString(36).substr(2, 16).toUpperCase();
+          setText('audit-envelope-id', 'SIRSI-' + Math.random().toString(36).substr(2, 9).toUpperCase());
+          setText('audit-timestamp', new Date().toISOString());
+          setText('audit-checksum', 'SHA256-' + Math.random().toString(36).substr(2, 16).toUpperCase());
         }
       }
-    };
+    }
 
-    function updatePaymentPlansUI(total, selectedPlan) {
-      const p1Amt = Math.round(total / 2);
-      const p1Remaining = total - p1Amt;
-      document.getElementById('plan-1-p1').textContent = '$' + p1Amt.toLocaleString();
-      document.getElementById('plan-1-p2').textContent = '$' + p1Remaining.toLocaleString();
-      document.getElementById('plan-1-total').textContent = '$' + total.toLocaleString();
+    // ── Helper: Set text content by ID ──
+    function setText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    }
 
-      const p2Amt = Math.floor(total / 3);
-      const p2Last = total - (p2Amt * 2);
-      document.getElementById('plan-2-p1').textContent = '$' + p2Amt.toLocaleString();
-      document.getElementById('plan-2-p2').textContent = '$' + p2Amt.toLocaleString();
-      document.getElementById('plan-2-p3').textContent = '$' + p2Last.toLocaleString();
-      document.getElementById('plan-2-total').textContent = '$' + total.toLocaleString();
+    // ── Helper: Set text for multiple selectors ──
+    function setAll(selector, text) {
+      document.querySelectorAll(selector).forEach(el => el.textContent = text);
+    }
 
-      const p3Amt = Math.round(total / 4);
-      const p3Last = total - (p3Amt * 3);
-      document.getElementById('plan-3-p1').textContent = '$' + p3Amt.toLocaleString();
-      document.getElementById('plan-3-p3').textContent = '$' + p3Amt.toLocaleString();
-      document.getElementById('plan-3-p4').textContent = '$' + p3Last.toLocaleString();
-      document.getElementById('plan-3-total').textContent = '$' + total.toLocaleString();
+    // ── Helper: Calculate target completion date ──
+    function getTargetDate(weeks) {
+      const target = new Date();
+      target.setDate(target.getDate() + (weeks * 7));
+      return target.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    }
 
+    // ── Payment Plans ──
+    function updatePaymentPlans(total, selectedPlan) {
+      // Plan 1: 2 payments
+      const p1Half = Math.round(total / 2);
+      setText('plan-1-p1', '$' + p1Half.toLocaleString() + '.00');
+      setText('plan-1-p2', '$' + (total - p1Half).toLocaleString() + '.00');
+      setText('plan-1-total', '$' + total.toLocaleString());
+
+      // Plan 2: 3 payments
+      const p2Third = Math.floor(total / 3);
+      const p2Last = total - (p2Third * 2);
+      setText('plan-2-p1', '$' + p2Third.toLocaleString() + '.00');
+      const plan2p2Els = document.querySelectorAll('#plan-2-p2');
+      plan2p2Els.forEach(el => el.textContent = '$' + p2Third.toLocaleString() + '.00');
+      setText('plan-2-p3', '$' + p2Last.toLocaleString() + '.00');
+      setText('plan-2-total', '$' + total.toLocaleString());
+
+      // Plan 3: 4 payments
+      const p3Quarter = Math.round(total / 4);
+      const p3Last = total - (p3Quarter * 3);
+      setText('plan-3-p1', '$' + p3Quarter.toLocaleString() + '.00');
+      setText('plan-3-p3', '$' + p3Quarter.toLocaleString() + '.00');
+      setText('plan-3-p4', '$' + p3Last.toLocaleString() + '.00');
+      setText('plan-3-total', '$' + total.toLocaleString());
+
+      // Mark selected plan
       if (selectedPlan) {
-        const planKey = selectedPlan.match(/\d/) ? selectedPlan.match(/\d/)[0] : '1';
-        const headerId = `plan-${planKey}-header`;
-        const headerEl = document.getElementById(headerId);
+        const headerEl = document.getElementById('plan-' + selectedPlan + '-header');
         if (headerEl) {
           headerEl.textContent = headerEl.textContent.replace('☐', '☑');
           headerEl.style.fontWeight = 'bold';
@@ -1301,116 +1348,120 @@
       }
     }
 
-    function updateSOWDeliverables(engine, items) {
+    // ── Deliverables Table (Dynamic WBS) ──
+    function updateDeliverablesTable(total, weeks, hours, addonIds, ceoWeeks, probateCount) {
       const body = document.getElementById('deliverables-body');
-      const coreBundle = engine.catalog.bundles['finalwishes-core'];
+      if (!body) return;
+
+      // Determine phase count based on timeline 
+      const numPhases = Math.max(1, Math.ceil(weeks / 4));
+      const weeksPerPhase = Math.ceil(weeks / numPhases);
+      const hoursPerPhase = Math.ceil(hours / numPhases);
+      const costPerPhase = Math.round(total / numPhases);
+
+      const phaseNames = [
+        'Foundation & Vault Architecture',
+        'Core Application Development',
+        'Feature Integration & Testing',
+        'QA, Security & Launch',
+        'Advanced Features & Polish',
+        'Mobile & Deep Integrations'
+      ];
+
       let html = '';
-      coreBundle.wbs.forEach(phase => {
+      let weekStart = 1;
+      for (let i = 0; i < numPhases; i++) {
+        const weekEnd = Math.min(weekStart + weeksPerPhase - 1, weeks);
+        const phaseName = phaseNames[i] || `Phase ${i + 1}`;
+        const phaseCost = (i === numPhases - 1) ? (total - costPerPhase * (numPhases - 1)) : costPerPhase;
         html += `
           <tr>
-            <td style="text-align: left;"><strong>${phase.phaseNum}. ${phase.name}</strong></td>
-            <td style="text-align: left;">${phase.weeks.includes('-') ? 'Weeks ' + phase.weeks : phase.weeks}</td>
-            <td style="text-align: left;">${phase.activities.map(a => a.name).join(', ')}. ($${phase.cost.toLocaleString()})</td>
+            <td style="text-align: left;"><strong>${i + 1}. ${phaseName}</strong></td>
+            <td style="text-align: left;">Weeks ${weekStart}-${weekEnd}</td>
+            <td style="text-align: left;">${hoursPerPhase} hours engineering. ($${phaseCost.toLocaleString()})</td>
+          </tr>
+        `;
+        weekStart = weekEnd + 1;
+      }
+
+      // Add add-on rows
+      addonIds.forEach(id => {
+        if (id === 'maintenance') return; // monthly, not dev phase
+        const name = PRODUCT_NAMES[id] || id;
+        let label = name;
+        if (id === 'ceo-consulting') label += ' (' + ceoWeeks + ' week' + (ceoWeeks > 1 ? 's' : '') + ')';
+        if (id === 'probate') label += ' (' + probateCount + ' state' + (probateCount > 1 ? 's' : '') + ')';
+        html += `
+          <tr class="dynamic-addon-row">
+            <td style="text-align: left;"><strong>+ ${label}</strong></td>
+            <td style="text-align: left;">Parallel</td>
+            <td style="text-align: left;">Strategic add-on module</td>
           </tr>
         `;
       });
 
-      let phaseNum = coreBundle.wbs.length + 1;
-      items.forEach(item => {
-        if (item.id === 'finalwishes-core') return;
-        if (item.wbs) {
-          item.wbs.forEach(phase => {
-            html += `
-              <tr class="dynamic-addon-row">
-                <td style="text-align: left;"><strong>${phaseNum}. ${item.name}: ${phase.name}</strong></td>
-                <td style="text-align: left;">${phase.weeks.includes('-') ? 'Weeks ' + phase.weeks : phase.weeks}</td>
-                <td style="text-align: left;">${phase.activities.map(a => a.name).join(', ')}. ($${phase.cost.toLocaleString()})</td>
-              </tr>
-            `;
-            phaseNum++;
-          });
-        }
-      });
+      // Total row
+      html += `
+        <tr class="total-row">
+          <td style="text-align: left;"><strong>TOTAL</strong></td>
+          <td style="text-align: left;">${weeks} Weeks</td>
+          <td style="text-align: left;"><strong>${hours} Hours — $${total.toLocaleString()}</strong></td>
+        </tr>
+      `;
+
       body.innerHTML = html;
     }
 
-    function updateExhibitBDiscounts(engine, pricing) {
-      const project = engine.catalog.projectConfig['finalwishes'];
-      const vr = project.valueRealization;
-      const addonsTotal = pricing.items.filter(i => i.id !== 'finalwishes-core').reduce((sum, i) => sum + i.price, 0);
+    // ── Exhibit B: Cost & Valuation ──
+    function updateExhibitB(total, marketValue, addonIds) {
+      // Market comparison table — update the "Sirsi" column
+      const marketCells = document.querySelectorAll('#true-market-price-analysis ~ table td, table td');
+      // Find all table rows and update the $95,000 and $300,000+ references
+      document.querySelectorAll('td').forEach(td => {
+        if (td.textContent.trim() === '$95,000') {
+          td.innerHTML = '<strong>$' + total.toLocaleString() + '</strong>';
+        }
+        if (td.textContent.trim() === '$300,000+') {
+          td.innerHTML = '<strong>$' + marketValue.toLocaleString() + '+</strong>';
+        }
+      });
 
-      const marketRate = vr.marketBase + (addonsTotal * vr.marketMultiplier);
-      const googleSavings = vr.googleBase + Math.round(addonsTotal * vr.googleMultiplier);
-      const sirsiSavings = vr.sirsiBase + Math.round(addonsTotal * vr.sirsiMultiplier);
+      // Discount Realization section
+      const efficiencyDiscount = Math.round(marketValue * 0.15);
+      const strategicDiscount = marketValue - efficiencyDiscount - total;
 
-      document.getElementById('discount-market-value').textContent = '$' + marketRate.toLocaleString();
-      document.getElementById('discount-efficiency-value').textContent = '($' + googleSavings.toLocaleString() + ')';
-      document.getElementById('discount-strategic-value').textContent = '($' + sirsiSavings.toLocaleString() + ')';
+      setText('discount-net-price', '$' + total.toLocaleString());
+      setText('discount-final-price', '$' + total.toLocaleString());
+      setText('discount-market-value', '$' + marketValue.toLocaleString());
+      setText('discount-efficiency-value', '($' + efficiencyDiscount.toLocaleString() + ')');
+      setText('discount-strategic-value', '($' + strategicDiscount.toLocaleString() + ')');
 
-      const addonsPlaceholder = document.getElementById('dynamic-addons-discount-placeholder');
-      if (addonsTotal > 0) {
-        addonsPlaceholder.innerHTML = `<strong>Selected Add-on Engineering:</strong> <strong>+$${addonsTotal.toLocaleString()}</strong>
-          <ul><li><em>Cumulative value of ${pricing.items.length - 1} strategic modules.</em></li></ul>`;
-      } else {
-        addonsPlaceholder.innerHTML = '';
+      // Dynamic add-ons placeholder
+      const placeholder = document.getElementById('dynamic-addons-discount-placeholder');
+      if (placeholder && addonIds.length > 0) {
+        placeholder.innerHTML = `<strong>Selected Add-on Modules:</strong> ${addonIds.length} strategic modules included
+          <ul><li><em>${addonIds.map(id => PRODUCT_NAMES[id] || id).join(', ')}</em></li></ul>`;
       }
     }
 
-    function updateLegalSections(engine, selectedAddonsSet) {
-      const container = document.getElementById('dynamic-legal-sections');
-      if (!container) return;
+    // ── Update SOW Core Modules ──
+    function updateSelectedModules(addonIds, ceoWeeks, probateCount) {
+      // Find the "Core Modules" section and append add-ons
+      const coreModulesHeader = document.getElementById('core-modules');
+      if (!coreModulesHeader) return;
 
-      const project = engine.catalog.projectConfig['finalwishes'];
-      const selectedIds = selectedAddonsSet || [];
-      const hasAI = selectedIds.includes('probate-ai') || project.legalMetadata.disclosureAI;
-      const hasFinancial = selectedIds.includes('financial') || project.legalMetadata.disclosureFinancial;
+      const coreList = coreModulesHeader.nextElementSibling;
+      if (!coreList || coreList.tagName !== 'OL') return;
 
-      let html = '';
-
-      if (hasAI) {
-        html += `
-          <div class="legal-addon-block" style="margin-bottom: 20px;">
-            <h3>AI Usage Disclosure</h3>
-            <p>This engagement includes AI-powered features using Google Vertex AI (Gemini). Client acknowledges that AI outputs are provided as guidance only and should be verified by qualified professionals. Provider makes no warranty regarding the accuracy or suitability of AI-generated content for specific legal or financial outcomes.</p>
-          </div>
-        `;
-      }
-
-      if (hasFinancial) {
-        html += `
-          <div class="legal-addon-block" style="margin-bottom: 20px;">
-            <h3>Financial Data Security Addendum</h3>
-            <p>The Services may include modules that connect to third-party financial institutions via Plaid or similar aggregators. Provider acts as a data processor for such information. All financial credentials are tokenized and never stored in plain text by Provider. Client is responsible for maintaining the security of their own institution-level credentials.</p>
-          </div>
-        `;
-      }
-
-      if (project.legalMetadata.jurisdiction) {
-        html += `
-            <div class="legal-addon-block" style="margin-bottom: 20px;">
-              <h3>Governing Law & Jurisdiction</h3>
-              <p>This Agreement and all matters arising out of or relating to this Agreement shall be governed by and construed in accordance with the laws of the State of ${project.legalMetadata.jurisdiction}, without regard to its conflict of law principles.</p>
-            </div>
-          `;
-      }
-
-      container.innerHTML = html;
-    }
-
-    function populateFromParams() {
-      const params = new URLSearchParams(window.location.search);
-      if (params.has('client') || params.has('plan')) {
-        const state = {
-          clientName: params.get('client'),
-          effectiveDate: params.get('date') || new Date().toLocaleDateString(),
-          selectedPlan: params.get('plan'),
-          isSigned: params.get('signed') === 'true',
-          entityLegalName: params.get('entity'),
-          counterpartyName: params.get('cpName'),
-          counterpartyTitle: params.get('cpTitle')
-        };
-        window.initializeMSAPrint(state);
-      }
+      addonIds.forEach(id => {
+        const name = PRODUCT_NAMES[id] || id;
+        let label = name;
+        if (id === 'ceo-consulting') label += ' (' + ceoWeeks + ' weeks)';
+        if (id === 'probate') label += ' (' + probateCount + ' state' + (probateCount > 1 ? 's' : '') + ')';
+        const li = document.createElement('li');
+        li.innerHTML = '<strong>' + label + '</strong>: Strategic add-on module.';
+        coreList.appendChild(li);
+      });
     }
 
     window.onload = populateFromParams;

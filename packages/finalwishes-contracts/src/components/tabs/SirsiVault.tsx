@@ -96,7 +96,7 @@ export function SirsiVault() {
         const timeline = calculateTimeline(selectedBundle, selectedAddons, probateStates.length) // weeks
         const hours = calculateTotalHours(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length) // total dev hours
         const counterpartyTitle = useConfigStore.getState().counterpartyTitle
-        const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=${sirsiMultiplier}&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(counterpartyTitle)}`
+        const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=${sirsiMultiplier}&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(counterpartyTitle)}&bundle=${selectedBundle || ''}`
         window.open(msaUrl, '_blank', 'width=900,height=800,scrollbars=yes,resizable=yes')
     }
 
