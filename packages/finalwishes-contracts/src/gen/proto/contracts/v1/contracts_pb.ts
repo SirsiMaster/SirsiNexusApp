@@ -367,6 +367,15 @@ export class Contract extends Message<Contract> {
    */
   paymentMethod = "";
 
+  /**
+   * Ledger
+   *
+   * cents — total paid against this contract
+   *
+   * @generated from field: int64 paid_amount = 22;
+   */
+  paidAmount = protoInt64.zero;
+
   constructor(data?: PartialMessage<Contract>) {
     super();
     proto3.util.initPartial(data, this);
@@ -396,6 +405,7 @@ export class Contract extends Message<Contract> {
     { no: 17, name: "legal_acknowledgment", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 18, name: "selected_payment_plan", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 19, name: "payment_method", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 22, name: "paid_amount", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Contract {

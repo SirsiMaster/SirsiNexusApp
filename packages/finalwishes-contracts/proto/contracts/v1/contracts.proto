@@ -99,6 +99,9 @@ message Contract {
   // Selection Data
   int32 selected_payment_plan = 18;
   string payment_method = 19;
+
+  // Ledger
+  int64 paid_amount = 22;  // cents — total paid against this contract
 }
 
 

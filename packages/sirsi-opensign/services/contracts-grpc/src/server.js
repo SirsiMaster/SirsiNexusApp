@@ -54,6 +54,31 @@ let stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
 let plaidClient = null;
 
 /**
+ * Status normalization for proto enum compatibility.
+ * Firestore stores strings, but the Connect/proto client expects numeric enum values.
+ */
+const STATUS_MAP = {
+    'DRAFT': 1, 'CONTRACT_STATUS_DRAFT': 1,
+    'ACTIVE': 2, 'CONTRACT_STATUS_ACTIVE': 2,
+    'SIGNED': 3, 'CONTRACT_STATUS_SIGNED': 3,
+    'PAID': 4, 'CONTRACT_STATUS_PAID': 4,
+    'ARCHIVED': 5, 'CONTRACT_STATUS_ARCHIVED': 5,
+    'WAITING_FOR_COUNTERSIGN': 6, 'CONTRACT_STATUS_WAITING_FOR_COUNTERSIGN': 6,
+};
+
+function normalizeContract(doc) {
+    const data = typeof doc === 'object' ? { ...doc } : doc;
+    if (typeof data.status === 'string') {
+        data.status = STATUS_MAP[data.status.toUpperCase()] || 0;
+    }
+    // Ensure paidAmount exists (backfill for older docs)
+    if (data.paidAmount === undefined || data.paidAmount === null) {
+        data.paidAmount = 0;
+    }
+    return data;
+}
+
+/**
  * Contract Handlers
  */
 const handlers = {
@@ -209,7 +234,8 @@ const handlers = {
             countersignedAt: null,
             signerEmail: data.clientEmail || data.signerEmail, // Field used for unified lookup
             signers: [data.clientEmail, data.countersignerEmail || 'cylton@sirsi.ai'].filter(Boolean), // Array for easier querying
-            stripeConnectAccountId: data.stripeConnectAccountId || ''
+            stripeConnectAccountId: data.stripeConnectAccountId || '',
+            paidAmount: 0, // Ledger: starts at zero
         };
 
 
@@ -229,10 +255,10 @@ const handlers = {
             throw new Error('Contract not found');
         }
 
-        return {
+        return normalizeContract({
             id: doc.id,
             ...doc.data()
-        };
+        });
     },
 
     // List contracts with pagination and cross-portfolio user filtering
@@ -251,7 +277,7 @@ const handlers = {
         query = query.orderBy('createdAt', 'desc').limit(pageSize);
 
         const snapshot = await query.get();
-        const contracts = snapshot.docs.map(doc => ({
+        const contracts = snapshot.docs.map(doc => normalizeContract({
             id: doc.id,
             ...doc.data()
         }));
@@ -613,6 +639,7 @@ const server = http.createServer(async (req, res) => {
                         console.log(`✅ Payment confirmed for contract: ${contractId}`);
                         await handlers.updateContract(contractId, {
                             status: 'PAID',
+                            paidAmount: session.amount_total || 0, // Ledger: record what Stripe collected
                             paymentMetadata: {
                                 stripeSessionId: session.id,
                                 amountPaid: session.amount_total,

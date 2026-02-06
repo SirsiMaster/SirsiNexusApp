@@ -13,6 +13,7 @@ interface Contract {
     status: number;
     createdAt: bigint;
     totalAmount: bigint;
+    paidAmount: bigint;
     selectedPaymentPlan: number;
     paymentMethod: string;
     countersignerEmail: string;
@@ -28,16 +29,23 @@ const STATUS_OPTIONS = [
     { value: 6, label: 'WAITING FOR COUNTERSIGN' },
 ];
 
-const getStatusLabel = (status: number) => {
-    switch (status) {
-        case 1: return { label: 'DRAFT', color: '#94a3b8' };
-        case 2: return { label: 'ACTIVE', color: '#3b82f6' };
-        case 3: return { label: 'SIGNED', color: '#10b981' };
-        case 4: return { label: 'PAID', color: '#C8A951' };
-        case 6: return { label: 'WAITING FOR COUNTERSIGN', color: '#f59e0b' };
+const getStatusLabel = (status: number | string) => {
+    // Normalize: Firestore returns strings, proto returns numbers
+    const s = typeof status === 'string' ? status.toUpperCase().replace('CONTRACT_STATUS_', '') : status;
+    switch (s) {
+        case 1: case 'DRAFT': return { label: 'DRAFT', color: '#94a3b8' };
+        case 2: case 'ACTIVE': return { label: 'ACTIVE', color: '#3b82f6' };
+        case 3: case 'SIGNED': return { label: 'SIGNED', color: '#10b981' };
+        case 4: case 'PAID': return { label: 'PAID', color: '#C8A951' };
+        case 5: case 'ARCHIVED': return { label: 'ARCHIVED', color: '#475569' };
+        case 6: case 'WAITING_FOR_COUNTERSIGN': case 'WAITING FOR COUNTERSIGN':
+            return { label: 'AWAITING COUNTERSIGN', color: '#f59e0b' };
         default: return { label: 'UNKNOWN', color: '#64748b' };
     }
 };
+
+const formatCents = (cents: number) =>
+    '$' + (cents / 100).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
 // ── Shared Styles ──
 const S = {
@@ -90,7 +98,7 @@ export function VaultDashboard() {
     const [editContract, setEditContract] = useState<Contract | null>(null);
     const [editForm, setEditForm] = useState({
         clientName: '', clientEmail: '', projectName: '',
-        totalAmount: '', status: 1,
+        totalAmount: '', paidAmount: '', status: 1,
         countersignerName: '', countersignerEmail: '',
     });
     const [editSaving, setEditSaving] = useState(false);
@@ -121,7 +129,6 @@ export function VaultDashboard() {
             if (docId) docs = docs.filter(d => d.id === docId);
 
             setContracts(docs);
-            // Clear selection that no longer exists
             setSelectedIds(prev => {
                 const validIds = new Set(docs.map(d => d.id));
                 const next = new Set([...prev].filter(id => validIds.has(id)));
@@ -137,6 +144,30 @@ export function VaultDashboard() {
     useEffect(() => {
         if (auth.currentUser) fetchContracts();
     }, [fetchContracts]);
+
+    // ── Derived: which contract is the ACTIVE one ──
+    // The active contract = the single one with status ACTIVE (2).
+    // If multiple have status 2, the most recently created wins.
+    // Everything else is historical.
+    const activeContractId = useMemo(() => {
+        const isActive = (s: number | string) => s === 2 || (typeof s === 'string' && s.toUpperCase().replace('CONTRACT_STATUS_', '') === 'ACTIVE');
+        const actives = contracts
+            .filter(c => isActive(c.status))
+            .sort((a, b) => Number(b.createdAt) - Number(a.createdAt));
+        return actives.length > 0 ? actives[0].id : null;
+    }, [contracts]);
+
+    // ── Aggregate Ledger ──
+    const ledger = useMemo(() => {
+        let totalOwed = 0;
+        let totalPaid = 0;
+        contracts.forEach(c => {
+            totalOwed += Number(c.totalAmount) || 0;
+            totalPaid += Number(c.paidAmount) || 0;
+        });
+        const balance = totalOwed - totalPaid;
+        return { totalOwed, totalPaid, balance };
+    }, [contracts]);
 
     const groupedContracts = useMemo(() => {
         const groups: Record<string, { name: string; docs: Contract[] }> = {};
@@ -162,11 +193,8 @@ export function VaultDashboard() {
     };
 
     const toggleAll = () => {
-        if (allSelected) {
-            setSelectedIds(new Set());
-        } else {
-            setSelectedIds(new Set(allContractIds));
-        }
+        if (allSelected) setSelectedIds(new Set());
+        else setSelectedIds(new Set(allContractIds));
     };
 
     // ── Edit ──
@@ -177,11 +205,23 @@ export function VaultDashboard() {
             clientEmail: contract.clientEmail || '',
             projectName: contract.projectName || '',
             totalAmount: (Number(contract.totalAmount) / 100).toString(),
+            paidAmount: (Number(contract.paidAmount) / 100).toString(),
             status: contract.status || 1,
             countersignerName: contract.countersignerName || '',
             countersignerEmail: contract.countersignerEmail || '',
         });
     };
+
+    // Compute ledger impact in edit modal
+    const editLedgerDelta = useMemo(() => {
+        if (!editContract) return null;
+        const newTotal = Math.round(parseFloat(editForm.totalAmount || '0') * 100);
+        const newPaid = Math.round(parseFloat(editForm.paidAmount || '0') * 100);
+        const balance = newTotal - newPaid;
+        const originalBalance = Number(editContract.totalAmount) - Number(editContract.paidAmount);
+        const delta = balance - originalBalance;
+        return { newTotal, newPaid, balance, delta };
+    }, [editContract, editForm.totalAmount, editForm.paidAmount]);
 
     const saveEdit = async () => {
         if (!editContract) return;
@@ -196,6 +236,7 @@ export function VaultDashboard() {
                     clientEmail: editForm.clientEmail,
                     projectName: editForm.projectName,
                     totalAmount: BigInt(Math.round(parseFloat(editForm.totalAmount) * 100)),
+                    paidAmount: BigInt(Math.round(parseFloat(editForm.paidAmount) * 100)),
                     status: editForm.status,
                     countersignerName: editForm.countersignerName,
                     countersignerEmail: editForm.countersignerEmail,
@@ -211,7 +252,7 @@ export function VaultDashboard() {
                     stripeConnectAccountId: '',
                     countersignedAt: BigInt(0),
                 },
-                updateMask: ['clientName', 'clientEmail', 'projectName', 'totalAmount', 'status', 'countersignerName', 'countersignerEmail'],
+                updateMask: ['clientName', 'clientEmail', 'projectName', 'totalAmount', 'paidAmount', 'status', 'countersignerName', 'countersignerEmail'],
             });
             setEditContract(null);
             await fetchContracts();
@@ -249,8 +290,7 @@ export function VaultDashboard() {
             );
             const failed = results.filter(r => r.status === 'rejected');
             if (failed.length > 0) {
-                alert(`${ids.length - failed.length} deleted, ${failed.length} failed. Check console.`);
-                failed.forEach((f, i) => console.error(`Delete failed for ${ids[i]}:`, f));
+                alert(`${ids.length - failed.length} deleted, ${failed.length} failed.`);
             }
             setSelectedIds(new Set());
             setShowBulkDelete(false);
@@ -262,11 +302,35 @@ export function VaultDashboard() {
         }
     };
 
-    // ── Selected contracts info for bulk modal ──
     const selectedContracts = useMemo(
         () => contracts.filter(c => selectedIds.has(c.id)),
         [contracts, selectedIds]
     );
+
+    // ── Per-contract balance ──
+    const getBalance = (c: Contract) => {
+        const owed = Number(c.totalAmount) || 0;
+        const paid = Number(c.paidAmount) || 0;
+        return owed - paid;
+    };
+
+    const BalanceBadge = ({ balance }: { balance: number }) => {
+        if (balance === 0) return (
+            <span style={{ fontSize: '11px', fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                ✓ Paid in Full
+            </span>
+        );
+        if (balance > 0) return (
+            <span style={{ fontSize: '11px', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                {formatCents(balance)} owed
+            </span>
+        );
+        return (
+            <span style={{ fontSize: '11px', fontWeight: 700, color: '#60a5fa', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                {formatCents(Math.abs(balance))} credit
+            </span>
+        );
+    };
 
     // ── Render ──
     return (
@@ -278,15 +342,15 @@ export function VaultDashboard() {
                 marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '2rem'
             }}>
                 <div>
-                    <h1 style={{ fontFamily: "'Cinzel', serif", color: 'white', fontSize: '36px', margin: 0, letterSpacing: '0.05em' }}>
+                    <h1 style={{ fontFamily: "'Cinzel', serif", color: 'white', fontSize: '42px', margin: 0, letterSpacing: '0.05em' }}>
                         Sirsi Vault
                     </h1>
                     <div style={{ display: 'flex', gap: '12px', marginTop: '8px', alignItems: 'center' }}>
-                        <span style={{ color: '#C8A951', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                        <span style={{ color: '#C8A951', fontSize: '14px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                             {auth.currentUser?.displayName || auth.currentUser?.email}
                         </span>
                         <span style={{ color: 'rgba(255,255,255,0.2)' }}>•</span>
-                        <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', textTransform: 'uppercase' }}>
+                        <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px', textTransform: 'uppercase' }}>
                             Permanent Record Hub
                         </span>
                     </div>
@@ -297,7 +361,7 @@ export function VaultDashboard() {
                         style={{
                             background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)',
                             color: 'rgba(255,255,255,0.6)', padding: '10px 20px', borderRadius: '8px',
-                            fontSize: '12px', fontWeight: 600, cursor: 'pointer',
+                            fontSize: '14px', fontWeight: 600, cursor: 'pointer',
                             display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.3s ease'
                         }}
                     >
@@ -305,6 +369,53 @@ export function VaultDashboard() {
                     </button>
                 </div>
             </div>
+
+            {/* ══════════════════════════════════════════ */}
+            {/* CLIENT LEDGER BANNER                      */}
+            {/* ══════════════════════════════════════════ */}
+            {!loading && contracts.length > 0 && (
+                <div style={{
+                    display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1px',
+                    marginBottom: '2rem', borderRadius: '14px', overflow: 'hidden',
+                    border: '1px solid rgba(255,255,255,0.06)',
+                    background: 'rgba(255,255,255,0.04)',
+                }}>
+                    <div style={{ padding: '20px 24px', background: 'rgba(255,255,255,0.02)' }}>
+                        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>
+                            Total Contracted
+                        </div>
+                        <div style={{ color: 'white', fontSize: '28px', fontWeight: 700, fontFamily: "'Cinzel', serif" }}>
+                            {formatCents(ledger.totalOwed)}
+                        </div>
+                    </div>
+                    <div style={{ padding: '20px 24px', background: 'rgba(255,255,255,0.02)' }}>
+                        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>
+                            Total Paid
+                        </div>
+                        <div style={{ color: '#10b981', fontSize: '28px', fontWeight: 700, fontFamily: "'Cinzel', serif" }}>
+                            {formatCents(ledger.totalPaid)}
+                        </div>
+                    </div>
+                    <div style={{
+                        padding: '20px 24px',
+                        background: ledger.balance > 0
+                            ? 'rgba(245,158,11,0.06)'
+                            : ledger.balance < 0
+                                ? 'rgba(59,130,246,0.06)'
+                                : 'rgba(16,185,129,0.06)',
+                    }}>
+                        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>
+                            {ledger.balance > 0 ? 'Balance Owed' : ledger.balance < 0 ? 'Credit Due' : 'Balance'}
+                        </div>
+                        <div style={{
+                            fontSize: '28px', fontWeight: 700, fontFamily: "'Cinzel', serif",
+                            color: ledger.balance > 0 ? '#f59e0b' : ledger.balance < 0 ? '#60a5fa' : '#10b981',
+                        }}>
+                            {ledger.balance === 0 ? '$0' : ledger.balance > 0 ? formatCents(ledger.balance) : `−${formatCents(Math.abs(ledger.balance))}`}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* ── SELECT ALL BAR ── */}
             {contracts.length > 0 && (
@@ -326,8 +437,8 @@ export function VaultDashboard() {
                             {allSelected ? 'Deselect All' : someSelected ? `${selectedIds.size} Selected` : 'Select All'}
                         </span>
                     </label>
-                    <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '11px' }}>
-                        <span style={{ fontSize: '12px' }}>{contracts.length} document{contracts.length !== 1 ? 's' : ''}</span>
+                    <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px' }}>
+                        {contracts.length} document{contracts.length !== 1 ? 's' : ''}
                     </span>
                 </div>
             )}
@@ -370,8 +481,9 @@ export function VaultDashboard() {
                             <div style={{ display: 'grid', gap: '12px' }}>
                                 {group.docs.map(contract => {
                                     const status = getStatusLabel(contract.status);
-                                    const isTarget = docId === contract.id;
+                                    const isActive = contract.id === activeContractId;
                                     const isChecked = selectedIds.has(contract.id);
+                                    const balance = getBalance(contract);
 
                                     return (
                                         <div
@@ -382,19 +494,29 @@ export function VaultDashboard() {
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 gap: '16px',
-                                                border: isChecked
-                                                    ? '1px solid rgba(200,169,81,0.4)'
-                                                    : isTarget
-                                                        ? '1px solid #C8A951'
+                                                border: isActive
+                                                    ? '1px solid rgba(200,169,81,0.6)'
+                                                    : isChecked
+                                                        ? '1px solid rgba(200,169,81,0.4)'
                                                         : '1px solid rgba(255,255,255,0.05)',
-                                                background: isChecked
-                                                    ? 'rgba(200,169,81,0.04)'
-                                                    : isTarget
-                                                        ? 'rgba(200,169,81,0.05)'
+                                                background: isActive
+                                                    ? 'rgba(200,169,81,0.06)'
+                                                    : isChecked
+                                                        ? 'rgba(200,169,81,0.04)'
                                                         : undefined,
-                                                transition: 'all 0.3s ease'
+                                                transition: 'all 0.3s ease',
+                                                position: 'relative',
                                             }}
                                         >
+                                            {/* Active indicator */}
+                                            {isActive && (
+                                                <div style={{
+                                                    position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)',
+                                                    width: '3px', height: '60%', borderRadius: '0 4px 4px 0',
+                                                    background: '#C8A951',
+                                                }} />
+                                            )}
+
                                             {/* Checkbox */}
                                             <input
                                                 type="checkbox"
@@ -406,10 +528,23 @@ export function VaultDashboard() {
                                             {/* Document Info */}
                                             <div style={{ flex: 1, minWidth: 0 }}>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-                                                    <span style={{ fontSize: '18px' }}>{contract.status === 4 ? '🔒' : '📄'}</span>
+                                                    <span style={{ fontSize: '18px' }}>
+                                                        {contract.status === 4 ? '🔒' : isActive ? '⚡' : '📄'}
+                                                    </span>
                                                     <div>
-                                                        <div style={{ color: 'white', fontWeight: 600, fontSize: '17px', letterSpacing: '0.02em' }}>
-                                                            {contract.projectName} Service Agreement
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                                            <div style={{ color: 'white', fontWeight: 600, fontSize: '17px', letterSpacing: '0.02em' }}>
+                                                                {contract.projectName} Service Agreement
+                                                            </div>
+                                                            {isActive && (
+                                                                <span style={{
+                                                                    fontSize: '9px', fontWeight: 800, color: '#C8A951',
+                                                                    background: 'rgba(200,169,81,0.15)', padding: '2px 8px',
+                                                                    borderRadius: '4px', textTransform: 'uppercase', letterSpacing: '0.1em',
+                                                                }}>
+                                                                    Active
+                                                                </span>
+                                                            )}
                                                         </div>
                                                         <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '12px', marginTop: '3px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                                             Ref: MSA-{contract.id.substring(0, 8).toUpperCase()} • {contract.clientName} • {new Date(Number(contract.createdAt)).toLocaleDateString()}
@@ -418,48 +553,35 @@ export function VaultDashboard() {
                                                 </div>
                                             </div>
 
-                                            {/* Amount & Status */}
-                                            <div style={{ textAlign: 'right', minWidth: '120px', flexShrink: 0 }}>
+                                            {/* Amount + Status + Ledger */}
+                                            <div style={{ textAlign: 'right', minWidth: '140px', flexShrink: 0 }}>
                                                 <div style={{ color: 'white', fontWeight: 600, fontSize: '20px', fontFamily: "'Cinzel', serif" }}>
-                                                    ${(Number(contract.totalAmount) / 100).toLocaleString()}
+                                                    {formatCents(Number(contract.totalAmount))}
                                                 </div>
-                                                <div style={{
-                                                    fontSize: '10px', color: status.color, fontWeight: 800,
-                                                    letterSpacing: '0.15em', marginTop: '4px', textTransform: 'uppercase'
-                                                }}>
-                                                    {status.label}
+                                                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', alignItems: 'center', marginTop: '4px' }}>
+                                                    <span style={{
+                                                        fontSize: '10px', color: status.color, fontWeight: 800,
+                                                        letterSpacing: '0.12em', textTransform: 'uppercase'
+                                                    }}>
+                                                        {status.label}
+                                                    </span>
+                                                    <span style={{ color: 'rgba(255,255,255,0.1)' }}>|</span>
+                                                    <BalanceBadge balance={balance} />
                                                 </div>
                                             </div>
 
-                                            {/* Actions */}
+                                            {/* Actions — always available */}
                                             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexShrink: 0 }}>
-                                                {contract.status === 2 && contract.clientEmail === auth.currentUser?.email && (
-                                                    <button
-                                                        onClick={() => {
-                                                            const slug = (auth.currentUser?.email || '').split('@')[0];
-                                                            navigate(`/vault/${slug}/contracts/${contract.projectId}/${contract.id}?mfa=verified`);
-                                                        }}
-                                                        className="gold-action-btn"
-                                                        style={{ padding: '8px 20px', fontSize: '13px' }}
-                                                    >
-                                                        Sign Now
-                                                    </button>
-                                                )}
-                                                {contract.status === 3 && contract.clientEmail === auth.currentUser?.email && (
-                                                    <button
-                                                        onClick={() => {
-                                                            const amount = Number(contract.totalAmount) / 100;
-                                                            navigate(`/payment.html?envelope=${contract.id}&amount=${amount}&project=${contract.projectId}`);
-                                                        }}
-                                                        style={{
-                                                            background: '#10B981', color: '#fff', border: 'none',
-                                                            padding: '8px 20px', borderRadius: '8px', fontSize: '13px',
-                                                            fontWeight: 700, cursor: 'pointer'
-                                                        }}
-                                                    >
-                                                        Make Payment
-                                                    </button>
-                                                )}
+                                                <button
+                                                    onClick={() => {
+                                                        const slug = (auth.currentUser?.email || '').split('@')[0];
+                                                        navigate(`/vault/${slug}/contracts/${contract.projectId}/${contract.id}?mfa=verified`);
+                                                    }}
+                                                    className="gold-action-btn"
+                                                    style={{ padding: '8px 20px', fontSize: '13px' }}
+                                                >
+                                                    Sign
+                                                </button>
                                                 <button
                                                     onClick={() => {
                                                         const slug = (auth.currentUser?.email || '').split('@')[0];
@@ -590,25 +712,15 @@ export function VaultDashboard() {
                             ))}
                         </div>
 
-                        <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '12px', marginBottom: '24px' }}>
-                            All contracts will be archived before deletion. This action cannot be undone from the dashboard.
-                        </p>
-
                         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
                             <button
-                                onClick={() => setShowBulkDelete(false)}
-                                disabled={bulkDeleting}
-                                style={{
-                                    background: 'transparent', border: '1px solid rgba(255,255,255,0.15)',
-                                    color: 'rgba(255,255,255,0.6)', padding: '10px 28px', borderRadius: '8px',
-                                    fontSize: '12px', fontWeight: 600, cursor: 'pointer',
-                                }}
+                                onClick={() => setShowBulkDelete(false)} disabled={bulkDeleting}
+                                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.6)', padding: '10px 28px', borderRadius: '8px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}
                             >
                                 Cancel
                             </button>
                             <button
-                                onClick={confirmBulkDelete}
-                                disabled={bulkDeleting}
+                                onClick={confirmBulkDelete} disabled={bulkDeleting}
                                 style={{
                                     background: bulkDeleting ? 'rgba(239,68,68,0.3)' : '#ef4444',
                                     border: 'none', color: '#fff', padding: '10px 28px', borderRadius: '8px',
@@ -625,7 +737,7 @@ export function VaultDashboard() {
             )}
 
             {/* ══════════════════════════════════════════ */}
-            {/* EDIT CONTRACT MODAL                       */}
+            {/* EDIT CONTRACT MODAL (with ledger impact)  */}
             {/* ══════════════════════════════════════════ */}
             {editContract && (
                 <div style={S.overlay} onClick={() => !editSaving && setEditContract(null)}>
@@ -654,15 +766,63 @@ export function VaultDashboard() {
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                                 <div>
-                                    <label style={S.label}>Total Amount ($)</label>
+                                    <label style={S.label}>Contract Amount ($)</label>
                                     <input style={S.input} type="number" step="0.01" value={editForm.totalAmount} onChange={e => setEditForm(f => ({ ...f, totalAmount: e.target.value }))} />
                                 </div>
                                 <div>
-                                    <label style={S.label}>Status</label>
-                                    <select style={{ ...S.input, appearance: 'auto' }} value={editForm.status} onChange={e => setEditForm(f => ({ ...f, status: parseInt(e.target.value) }))}>
-                                        {STATUS_OPTIONS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
-                                    </select>
+                                    <label style={S.label}>Paid Amount ($)</label>
+                                    <input style={S.input} type="number" step="0.01" value={editForm.paidAmount} onChange={e => setEditForm(f => ({ ...f, paidAmount: e.target.value }))} />
                                 </div>
+                            </div>
+
+                            {/* ── Ledger Impact Preview ── */}
+                            {editLedgerDelta && (
+                                <div style={{
+                                    background: editLedgerDelta.balance === 0
+                                        ? 'rgba(16,185,129,0.08)'
+                                        : editLedgerDelta.balance > 0
+                                            ? 'rgba(245,158,11,0.08)'
+                                            : 'rgba(59,130,246,0.08)',
+                                    border: '1px solid rgba(255,255,255,0.06)',
+                                    borderRadius: '10px', padding: '14px 18px',
+                                }}>
+                                    <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>
+                                        Ledger Impact
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div>
+                                            <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px' }}>
+                                                New Balance:{' '}
+                                            </span>
+                                            <span style={{
+                                                fontWeight: 700, fontSize: '15px',
+                                                color: editLedgerDelta.balance === 0 ? '#10b981' : editLedgerDelta.balance > 0 ? '#f59e0b' : '#60a5fa',
+                                            }}>
+                                                {editLedgerDelta.balance === 0
+                                                    ? '$0 — Paid in Full'
+                                                    : editLedgerDelta.balance > 0
+                                                        ? `${formatCents(editLedgerDelta.balance)} owed`
+                                                        : `${formatCents(Math.abs(editLedgerDelta.balance))} credit`
+                                                }
+                                            </span>
+                                        </div>
+                                        {editLedgerDelta.delta !== 0 && (
+                                            <span style={{
+                                                fontSize: '12px', fontWeight: 700,
+                                                color: editLedgerDelta.delta > 0 ? '#f87171' : '#10b981',
+                                            }}>
+                                                {editLedgerDelta.delta > 0 ? '+' : '−'}{formatCents(Math.abs(editLedgerDelta.delta))}
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+
+                            <div>
+                                <label style={S.label}>Status</label>
+                                <select style={{ ...S.input, appearance: 'auto' }} value={editForm.status} onChange={e => setEditForm(f => ({ ...f, status: parseInt(e.target.value) }))}>
+                                    {STATUS_OPTIONS.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+                                </select>
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                                 <div>
@@ -721,12 +881,9 @@ export function VaultDashboard() {
                                 {deleteTarget.projectName} — {deleteTarget.clientName}
                             </div>
                             <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px', marginTop: '6px' }}>
-                                Ref: MSA-{deleteTarget.id.substring(0, 8).toUpperCase()} • ${(Number(deleteTarget.totalAmount) / 100).toLocaleString()}
+                                Ref: MSA-{deleteTarget.id.substring(0, 8).toUpperCase()} • {formatCents(Number(deleteTarget.totalAmount))}
                             </div>
                         </div>
-                        <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '12px', marginBottom: '24px' }}>
-                            The contract will be archived before deletion. This action cannot be undone from the dashboard.
-                        </p>
                         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
                             <button
                                 onClick={() => setDeleteTarget(null)} disabled={deleting}
@@ -763,7 +920,6 @@ export function VaultDashboard() {
                 </div>
             )}
 
-            {/* Toolbar slide-up animation */}
             <style>{`
                 @keyframes slideUp {
                     from { transform: translateX(-50%) translateY(20px); opacity: 0; }
