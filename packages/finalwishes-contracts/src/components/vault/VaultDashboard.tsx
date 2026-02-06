@@ -2,7 +2,6 @@ import { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { contractsClient } from '../../lib/grpc';
 import { auth } from '../../lib/firebase';
-import { useMFA } from '../../../../sirsi-ui/src/hooks/useMFA';
 import { MFAGate } from '../auth/MFAGate';
 import { MFAEnrollment } from '../auth/MFAEnrollment';
 
@@ -36,7 +35,11 @@ export function VaultDashboard() {
     const [contracts, setContracts] = useState<Contract[]>([]);
     const [loading, setLoading] = useState(true);
     const [showMFAEnrollment, setShowMFAEnrollment] = useState(false);
-    const mfa = useMFA();
+
+    // Local session-based MFA tracking (not token claims)
+    const [mfaVerified, setMfaVerified] = useState(() => {
+        return sessionStorage.getItem('sirsi_mfa_verified') === 'true';
+    });
 
     // Edit modal state
     const [editContract, setEditContract] = useState<Contract | null>(null);
@@ -187,15 +190,14 @@ export function VaultDashboard() {
     };
 
     // ── MFA Gate ──
-    if (mfa.isLoading) {
-        return <div style={{ padding: '4rem', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>Securing connection...</div>;
-    }
-
-    if (!mfa.isMFAVerified) {
+    if (!mfaVerified) {
         return (
             <div style={{ maxWidth: '600px', margin: '4rem auto' }}>
                 <MFAGate
-                    onVerified={() => mfa.refreshMFAStatus()}
+                    onVerified={() => {
+                        setMfaVerified(true);
+                        sessionStorage.setItem('sirsi_mfa_verified', 'true');
+                    }}
                     onCancel={() => navigate('/')}
                     isFinancial={true}
                     demoMode={true}
