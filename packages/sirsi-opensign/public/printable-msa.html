@@ -905,6 +905,7 @@
 
     .audit-value {
       font-family: 'Courier New', monospace;
+      word-break: break-all;
     }
 
     .verified-badge {
@@ -1233,6 +1234,11 @@
       const counterpartyTitle = params.get('cpTitle') || 'CEO';
       const isSigned = params.get('signed') === 'true';
 
+      // ── 2b. Signature Evidence (cryptographic) ──
+      const sigHash = params.get('sigHash') || '';
+      const sigTimestamp = params.get('sigTs') || '';
+      const envelopeId = params.get('envId') || '';
+
       // ── 3. Populate Identity Fields ──
       if (clientName) {
         setAll('#client-name-display, #client-name-display-sig, #sow-client-sig', clientName);
@@ -1288,9 +1294,10 @@
         const auditBlock = document.getElementById('audit-trail');
         if (auditBlock) {
           auditBlock.style.display = 'block';
-          setText('audit-envelope-id', 'SIRSI-' + Math.random().toString(36).substr(2, 9).toUpperCase());
-          setText('audit-timestamp', new Date().toISOString());
-          setText('audit-checksum', 'SHA256-' + Math.random().toString(36).substr(2, 16).toUpperCase());
+          // Use real cryptographic evidence from URL params (passed by React app)
+          setText('audit-envelope-id', envelopeId || 'UNSIGNED');
+          setText('audit-timestamp', sigTimestamp || new Date().toISOString());
+          setText('audit-checksum', sigHash ? 'SHA256:' + sigHash : 'UNSIGNED');
         }
       }
     }
