@@ -213,7 +213,7 @@ export function StatementOfWork() {
                             <div style={{ color: 'white', fontSize: '24px', fontWeight: 600 }}>{totalHours} Hours</div>
                         </div>
                         <div style={{ background: 'rgba(200,169,81,0.1)', padding: '20px', borderRadius: '8px', textAlign: 'center', border: '1px solid rgba(200,169,81,0.3)' }}>
-                            <div style={{ color: '#C8A951', fontSize: '10px', textTransform: 'uppercase', marginBottom: '5px' }}>Total Credits</div>
+                            <div style={{ color: '#C8A951', fontSize: '10px', textTransform: 'uppercase', marginBottom: '5px' }}>Total Investment</div>
                             <div style={{ color: '#C8A951', fontSize: '24px', fontWeight: 700 }}>${totalInvestment.toLocaleString()}</div>
                         </div>
                     </div>
