@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import '../../styles/admin-layout.css'
 import '../../styles/contract.css'
 import './styles/themes.css'
@@ -130,19 +130,68 @@ export function AgreementWorkflow() {
     }
   }
 
+  // Detect if we're in vault context (hide legacy FinalWishes admin sidebar)
+  const isVaultContext = !!userId || !!category
+  const navigate = useNavigate()
+
   return (
-    <div className={`admin-wrapper ${isLightTheme ? 'theme-light' : ''}`} data-auth-protect="admin">
-      {/* Sidebar */}
-      <Sidebar />
+    <div className={`admin-wrapper ${isLightTheme ? 'theme-light' : ''}`} data-auth-protect="admin" style={isVaultContext ? { display: 'block' } : undefined}>
+      {/* Sidebar - only in legacy admin mode */}
+      {!isVaultContext && <Sidebar />}
 
       {/* Main Content */}
-      <main className="main-content contract-view" style={{
+      <main className={`main-content contract-view ${isVaultContext ? 'vault-fullwidth' : ''}`} style={{
         height: '100vh',
         overflowY: 'auto',
-        position: 'relative'
+        position: 'relative',
+        ...(isVaultContext ? { marginLeft: 0, width: '100%' } : {})
       }}>
-        {/* Header */}
-        <AdminHeader isLightTheme={isLightTheme} onToggleTheme={() => setIsLightTheme(!isLightTheme)} />
+
+        {/* Vault Breadcrumb Bar */}
+        {isVaultContext && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            padding: '12px 24px',
+            background: 'rgba(0,0,0,0.3)',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            position: 'sticky',
+            top: 0,
+            zIndex: 100,
+            backdropFilter: 'blur(10px)',
+          }}>
+            <button
+              onClick={() => navigate('/vault')}
+              style={{
+                background: 'rgba(200,169,81,0.1)',
+                border: '1px solid rgba(200,169,81,0.25)',
+                color: '#C8A951',
+                padding: '6px 16px',
+                borderRadius: '6px',
+                fontSize: '12px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                letterSpacing: '0.05em',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              ← Back to Vault
+            </button>
+            <div style={{ height: '16px', width: '1px', background: 'rgba(255,255,255,0.1)' }} />
+            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+              {entityId || projectId || 'Contract'} {docId ? `• ${docId.substring(0, 8).toUpperCase()}` : ''}
+            </span>
+          </div>
+        )}
+
+        {/* Header - only in legacy admin mode */}
+        {!isVaultContext && (
+          <AdminHeader isLightTheme={isLightTheme} onToggleTheme={() => setIsLightTheme(!isLightTheme)} />
+        )}
 
         {/* Contract Immersive Wrapper */}
         <div className="contract-immersive-wrapper" style={{
