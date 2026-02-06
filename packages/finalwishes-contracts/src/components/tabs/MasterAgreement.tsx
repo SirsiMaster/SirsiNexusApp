@@ -417,7 +417,7 @@ export function MasterAgreement() {
                             <span>-${efficiencyDiscount.toLocaleString()}</span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', color: '#C8A951' }}>
-                            <span>Strategic Partnership Discount (Discount Realization)</span>
+                            <span>SirsiNexus Efficiency Discount (Discount Realization)</span>
                             <span>-${familyDiscount.toLocaleString()}</span>
                         </div>
                         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', marginTop: '12px', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: 'bold' }}>
@@ -425,7 +425,7 @@ export function MasterAgreement() {
                             <span style={{ color: 'white' }}>${totalAmount.toLocaleString()}</span>
                         </div>
                     </div>
-                    <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', marginTop: '16px', fontStyle: 'italic' }}>* Valuations based on standard $250/hr agency blended rates. Strategic partnership discount includes shared venture risk/reward alignment.</p>
+                    <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', marginTop: '16px', fontStyle: 'italic' }}>* Valuations based on standard $250/hr agency blended rates. SirsiNexus efficiency discount reflects component library reuse and accelerated delivery methodology.</p>
                 </div>
 
             </div>

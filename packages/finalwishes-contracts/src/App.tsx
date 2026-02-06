@@ -19,21 +19,25 @@ function App() {
           <Route path="/landing" element={<Navigate to="/" replace /> as any} />
 
           {/* Service Agreement Workflow - All Gated */}
-          <Route path="/partnership" element={
+          <Route path="/contracts" element={
             <ProtectedRoute>
-              <Navigate to="/partnership/finalwishes" replace />
+              <Navigate to="/contracts/finalwishes" replace />
             </ProtectedRoute>
           } />
-          <Route path="/partnership/:projectId" element={
-            <ProtectedRoute>
-              <AgreementWorkflow />
-            </ProtectedRoute>
-          } />
-          <Route path="/partnership/:projectId/payment/success" element={
+          <Route path="/contracts/:projectId" element={
             <ProtectedRoute>
               <AgreementWorkflow />
             </ProtectedRoute>
           } />
+          <Route path="/contracts/:projectId/payment/success" element={
+            <ProtectedRoute>
+              <AgreementWorkflow />
+            </ProtectedRoute>
+          } />
+
+          {/* Backward-compat: redirect legacy /partnership URLs */}
+          <Route path="/partnership" element={<Navigate to="/contracts" replace />} />
+          <Route path="/partnership/*" element={<Navigate to="/contracts/finalwishes" replace />} />
 
           {/* New Hierarchical Vault Routes - All Gated */}
           {/* structure: sign.sirsi.ai/vault/:user/:type/:entity/:docName */}
@@ -55,11 +59,6 @@ function App() {
 
           {/* Specific Document Review Routes (Hierarchical) */}
           <Route path="/vault/:userId/contracts/:entityId/:docId" element={
-            <ProtectedRoute>
-              <AgreementWorkflow />
-            </ProtectedRoute>
-          } />
-          <Route path="/vault/:userId/partnership/:entityId/:docId" element={
             <ProtectedRoute>
               <AgreementWorkflow />
             </ProtectedRoute>

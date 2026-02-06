@@ -172,8 +172,8 @@ export const PRODUCTS: Record<string, Product> = {
     'ceo-consulting': {
         id: 'ceo-consulting',
         name: 'CEO Consulting',
-        shortDescription: 'Direct strategic partnership (20 hrs/week)',
-        description: 'On-demand strategic consulting and executive partnership.',
+        shortDescription: 'Direct strategic advisory (20 hrs/week)',
+        description: 'On-demand strategic consulting and executive advisory services.',
         category: 'service',
         bundledPrice: 6000,
         standalonePrice: 6000,
@@ -186,13 +186,13 @@ export const PRODUCTS: Record<string, Product> = {
 
         detailedScope: [
             {
-                title: "Executive Strategic Partnership",
+                title: "Executive Strategic Advisory",
                 content: "High-level strategic guidance and operational oversight.",
                 subItems: [
                     "20 Hours weekly dedicated consulting",
                     "Direct access to CEO-level strategy",
                     "Product roadmap validation",
-                    "Strategic partnership development"
+                    "Strategic advisory engagement"
                 ]
             }
         ],

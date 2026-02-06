@@ -339,7 +339,7 @@
             color: #C8A951 !important;
         }
 
-        /* PARTNERSHIP PLAN CARDS */
+        /* PAYMENT PLAN CARDS */
         #cost .plan-grid-container {
             display: grid !important;
             grid-template-columns: repeat(3, 1fr) !important;
@@ -2147,8 +2147,8 @@
         <!-- Main Content -->
         <main class="main-content">
             <!-- Header Component -->
-            <header id="universal-header-root" data-title="Partnership Agreement"
-                data-subtitle="Sirsi Engineering • Strategic Partnership" class="project-title-display"
+            <header id="universal-header-root" data-title="Master Service Agreement"
+                data-subtitle="Sirsi Engineering • Master Service Agreement" class="project-title-display"
                 data-search-placeholder="Search contract terms..."></header>
 
             <!-- Immersive Contract View -->
@@ -2161,7 +2161,7 @@
                     <div class="contract-title-wrapper"
                         style="text-align: center; width: 100%; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">
                         <h1 id="main-contract-heading" class="contract-main-heading">
-                            Technical Partnership Agreement
+                            Master Service Agreement
                         </h1>
                         <div class="contract-gold-divider"></div>
                         <p id="proposal-subtitle" class="contract-subtitle">
@@ -3553,7 +3553,7 @@
                                 </div>
                             </div>
 
-                            <!-- 5. PARTNERSHIP PLANS - PAYMENT SCHEDULES (2/3/4 Payments) -->
+                            <!-- 5. PAYMENT PLANS - PAYMENT SCHEDULES (2/3/4 Payments) -->
                             <div
                                 style="margin-top: 96px; padding-top: 48px; border-top: 1px solid rgba(200,169,81,0.3);">
                                 <h2
@@ -4656,7 +4656,7 @@
             const companyName = projectMetadata.legalMetadata.companyName || 'FinalWishes Inc.';
 
             // 1. Update document title
-            document.title = `${projectName} | Strategic Partnership Agreement`;
+            document.title = `${projectName} | Master Service Agreement`;
 
             // 2. Update all project name placeholders
             document.querySelectorAll('.project-name-insert').forEach(el => {
@@ -4671,7 +4671,7 @@
             // 4. Update Header Subtitle if component logic allows (or direct DOM)
             const header = document.querySelector('.project-title-display');
             if (header) {
-                header.setAttribute('data-subtitle', `${projectName} • Strategic Partnership Agreement`);
+                header.setAttribute('data-subtitle', `${projectName} • Master Service Agreement`);
             }
 
             console.log(`[Lifecycle Engine] Context Loaded: ${projectName} (${PROJECT_ID})`);

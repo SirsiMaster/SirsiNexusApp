@@ -221,7 +221,7 @@ export function SirsiVault() {
                     // For ACH, we've already stored the btok on the backend. 
                     // We could trigger a payment intent here or redirect to a success page.
                     alert('Bank transfer successfully authorized. Settlement will begin within 24 hours. Redirecting to confirmation...');
-                    window.location.href = `/partnership/${storeProjectId}/payment/success?method=ach&contract=${contractId}`;
+                    window.location.href = `/contracts/${storeProjectId}/payment/success?method=ach&contract=${contractId}`;
                     return;
                 }
 
@@ -234,7 +234,7 @@ export function SirsiVault() {
                 const session = await contractsClient.createCheckoutSession({
                     contractId: contractId,
                     planId: 'payment-1', // First payment plan
-                    successUrl: window.location.origin + `/partnership/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+                    successUrl: window.location.origin + `/contracts/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
                     cancelUrl: window.location.href,
                     paymentMethodTypes: paymentMethodTypes,
                     stripeConnectAccountId: '' // Future: Map to project-specific Connect account

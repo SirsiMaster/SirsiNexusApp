@@ -54,7 +54,7 @@ export function AgreementWorkflow() {
     }
 
     // Default to MSA tab when opening a specific vault document
-    if ((category === 'contracts' || category === 'partnership') && docId) {
+    if ((category === 'contracts') && docId) {
       setCurrentTab('msa')
     }
 

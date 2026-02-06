@@ -259,7 +259,7 @@ export function ContractsManagement() {
                                 View Full MSA
                             </button>
                             <button
-                                onClick={() => window.open(`/partnership/${selectedContract.projectId}/vault`, '_blank')}
+                                onClick={() => window.open(`/contracts/${selectedContract.projectId}/vault`, '_blank')}
                                 className="flex-1 py-3 bg-gold/10 border border-gold text-gold inter text-[10px] font-bold uppercase tracking-widest rounded hover:bg-gold hover:text-navy transition-all"
                             >
                                 Open in Vault
