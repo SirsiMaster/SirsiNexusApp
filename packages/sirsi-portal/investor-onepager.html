@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sirsi Technologies - Investment One-Pager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green-500: #10B981;
+            --green-600: #059669;
+            --green-700: #047857;
+            --gold-500: #F59E0B;
+            --gold-600: #D97706;
+        }
+
+        @page {
+            size: letter;
+            margin: 0.5in;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 11px;
+            line-height: 1.5;
+            color: #1a1a1a;
+            background: white;
+            max-width: 8.5in;
+            margin: 0 auto;
+            padding: 0.5in;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--green-500);
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .logo-section h1 {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--green-600);
+            letter-spacing: -0.02em;
+        }
+
+        .logo-section p {
+            font-size: 13px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .header-stat {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .header-stat .value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--green-600);
+        }
+
+        .header-stat .label {
+            font-size: 9px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Grid Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .section {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 14px;
+            border: 1px solid #eee;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--green-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--green-500);
+        }
+
+        .section-title.gold {
+            color: var(--gold-600);
+            border-bottom-color: var(--gold-500);
+        }
+
+        /* Full Width Section */
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Investment Highlights */
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .highlight-box {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        .highlight-box .number {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--green-600);
+        }
+
+        .highlight-box .label {
+            font-size: 9px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        /* Bullet Lists */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            position: relative;
+            padding-left: 16px;
+            margin-bottom: 6px;
+            font-size: 10px;
+        }
+
+        li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--green-500);
+            font-weight: 700;
+        }
+
+        /* Use of Funds Bar */
+        .funds-bar {
+            display: flex;
+            height: 24px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .funds-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 9px;
+        }
+
+        .funds-legend {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9px;
+            margin-top: 6px;
+        }
+
+        .funds-legend span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .timeline-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .timeline-dot {
+            width: 28px;
+            height: 28px;
+            background: var(--green-500);
+            border-radius: 50%;
+            margin: 0 auto 6px;
+            color: white;
+            font-weight: 700;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timeline-label {
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+        .timeline-value {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--green-600);
+        }
+
+        /* Validation Badges */
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .badge {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 2px solid var(--green-500);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-contact {
+            font-size: 10px;
+        }
+
+        .footer-contact strong {
+            color: var(--green-600);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 16px;
+            font-size: 10px;
+        }
+
+        .footer-links a {
+            color: var(--green-600);
+            text-decoration: none;
+        }
+
+        /* CTA Box */
+        .cta-box {
+            background: linear-gradient(135deg, var(--green-600), var(--green-700));
+            color: white;
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .cta-box h3 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .cta-box p {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        /* Problem/Solution Grid */
+        .ps-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .ps-box {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 3px solid var(--green-500);
+        }
+
+        .ps-box h4 {
+            font-size: 10px;
+            color: var(--green-600);
+            margin-bottom: 4px;
+        }
+
+        .ps-box p {
+            font-size: 9px;
+            color: #666;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo-section">
+            <h1>SIRSI</h1>
+            <p>AI Infrastructure for Everyone</p>
+        </div>
+        <div class="header-stats">
+            <div class="header-stat">
+                <div class="value">$12.1M</div>
+                <div class="label">Seed Round</div>
+            </div>
+            <div class="header-stat">
+                <div class="value">$28M</div>
+                <div class="label">Pre-Money</div>
+            </div>
+            <div class="header-stat"
+                style="background: linear-gradient(135deg, #fffbeb, #fef3c7); border-color: rgba(245, 158, 11, 0.2);">
+                <div class="value" style="color: var(--gold-600);">30.2%</div>
+                <div class="label">Dilution</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="main-grid">
+        <!-- Key Metrics - Full Width -->
+        <div class="section full-width">
+            <div class="section-title">Investment Highlights</div>
+            <div class="highlight-grid">
+                <div class="highlight-box">
+                    <div class="number">$147K</div>
+                    <div class="label">Contracted Revenue</div>
+                </div>
+                <div class="highlight-box">
+                    <div class="number">$175K</div>
+                    <div class="label">Capital Raised</div>
+                </div>
+                <div class="highlight-box">
+                    <div class="number">3</div>
+                    <div class="label">Patents Pending</div>
+                </div>
+                <div class="highlight-box">
+                    <div class="number" style="color: var(--gold-500);">0.84x</div>
+                    <div class="label">Capital Efficiency</div>
+                </div>
+            </div>
+            <div class="badge-row">
+                <span class="badge">✓ TEDCO Institutional Backing</span>
+                <span class="badge">✓ DCA Live 2025 AI & Cyber Award</span>
+                <span class="badge">✓ AWS MAP Partner</span>
+                <span class="badge">✓ NVIDIA Inception Member</span>
+                <span class="badge">✓ QSBS Eligible</span>
+            </div>
+        </div>
+
+        <!-- Problem/Solution -->
+        <div class="section">
+            <div class="section-title">The Opportunity</div>
+            <p style="font-size: 10px; margin-bottom: 10px; font-weight: 600;">
+                $65B cloud infrastructure market growing 22% YoY, yet 90% of SMBs can't afford enterprise-grade AI
+                infrastructure.
+            </p>
+            <div class="ps-grid">
+                <div class="ps-box">
+                    <h4>Problem</h4>
+                    <p>$250K+ annual DevOps costs. 68% of dev time wasted on configuration.</p>
+                </div>
+                <div class="ps-box" style="border-left-color: var(--gold-500);">
+                    <h4 style="color: var(--gold-600);">Solution</h4>
+                    <p>Natural language → production infrastructure. Zero code required.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology -->
+        <div class="section">
+            <div class="section-title">Proprietary Technology</div>
+            <ul>
+                <li><strong>NebuLang™</strong> - Domain-specific language for infrastructure</li>
+                <li><strong>Graph of Thought™</strong> - Advanced AI reasoning engine</li>
+                <li>Multi-cloud native (AWS, Azure, GCP)</li>
+                <li>Enterprise security built-in</li>
+                <li>3 patents pending</li>
+            </ul>
+        </div>
+
+        <!-- Use of Funds - Full Width -->
+        <div class="section full-width">
+            <div class="section-title gold">Use of $12.1M</div>
+            <div class="funds-bar">
+                <div class="funds-segment" style="width: 47.5%; background: #059669;">$5.75M</div>
+                <div class="funds-segment" style="width: 37.2%; background: #34D399;">$4.50M</div>
+                <div class="funds-segment" style="width: 15.3%; background: #FBBF24; color: #1a1a1a;">$1.85M</div>
+            </div>
+            <div class="funds-legend">
+                <span>
+                    <div class="legend-dot" style="background: #059669;"></div> Phase 1-2 Development (47.5%)
+                </span>
+                <span>
+                    <div class="legend-dot" style="background: #34D399;"></div> Phase 3 & Scaling (37.2%)
+                </span>
+                <span>
+                    <div class="legend-dot" style="background: #FBBF24;"></div> GTM & Operations (15.3%)
+                </span>
+            </div>
+        </div>
+
+        <!-- Financial Projections -->
+        <div class="section">
+            <div class="section-title">5-Year Revenue Projection</div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot">Y1</div>
+                    <div class="timeline-value">$2M</div>
+                    <div class="timeline-label">500 customers</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">Y2</div>
+                    <div class="timeline-value">$8M</div>
+                    <div class="timeline-label">2K customers</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">Y3</div>
+                    <div class="timeline-value">$18M</div>
+                    <div class="timeline-label">5.5K customers</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot" style="background: var(--gold-500);">Y4</div>
+                    <div class="timeline-value" style="color: var(--gold-600);">$38M</div>
+                    <div class="timeline-label">12K customers</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">Y5</div>
+                    <div class="timeline-value">$73M</div>
+                    <div class="timeline-label">20K customers</div>
+                </div>
+            </div>
+            <p style="font-size: 9px; color: #666; margin-top: 10px; text-align: center;">
+                Target: $1B+ valuation at 14x ARR multiple
+            </p>
+        </div>
+
+        <!-- Team & Ask -->
+        <div class="section">
+            <div class="section-title">Founder & Investment</div>
+            <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+                <div
+                    style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--green-500), var(--green-600)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 16px;">
+                    CC</div>
+                <div>
+                    <p style="font-weight: 700; font-size: 11px;">Cylton Collymore</p>
+                    <p style="font-size: 9px; color: #666;">15+ yrs enterprise tech • Meta Security Lead</p>
+                    <p style="font-size: 9px; color: #666;">Howard MBA '25 • 3 patents pending</p>
+                </div>
+            </div>
+            <div class="cta-box">
+                <h3>$12.1M Seed @ $28M Pre-Money</h3>
+                <p>Family Office Sweet Spot: $5-10M check sizes</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-contact">
+            <strong>Cylton Collymore</strong> | cylton@sirsi.ai | (301) 555-0123
+        </div>
+        <div class="footer-links">
+            <a href="https://sirsi.ai">sirsi.ai</a>
+            <a href="https://linkedin.com/company/sirsi-ai">LinkedIn</a>
+            <a href="https://sirsi.ai/pitchdeck">Full Deck</a>
+        </div>
+    </div>
+</body>
+
+</html>

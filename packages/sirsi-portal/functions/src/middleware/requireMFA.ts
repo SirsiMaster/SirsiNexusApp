@@ -10,7 +10,7 @@
 import { HttpsError, CallableRequest } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
-const db = admin.firestore();
+// Initialized lazily inside functions
 
 /**
  * Token claims interface with MFA verification
@@ -93,11 +93,11 @@ export function requireMFA(
       logMFAAttempt(uid, 'sms_not_allowed', 'failed').catch(console.error);
     }
 
-    throw new HttpsError('permission-denied', 
+    throw new HttpsError('permission-denied',
       'SMS-based MFA is not allowed for this operation. Please use TOTP or hardware key.', {
-        error: 'mfa_method_not_allowed',
-        redirect: '/auth/mfa/upgrade'
-      });
+      error: 'mfa_method_not_allowed',
+      redirect: '/auth/mfa/upgrade'
+    });
   }
 
   // Check MFA freshness
@@ -109,13 +109,13 @@ export function requireMFA(
       logMFAAttempt(uid, 'mfa_stale', 'failed').catch(console.error);
     }
 
-    throw new HttpsError('permission-denied', 
+    throw new HttpsError('permission-denied',
       'Your MFA session has expired. Please re-authenticate.', {
-        error: 'mfa_stale',
-        redirect: '/auth/mfa',
-        mfaAge,
-        maxAge
-      });
+      error: 'mfa_stale',
+      redirect: '/auth/mfa',
+      mfaAge,
+      maxAge
+    });
   }
 
   // Log successful verification
@@ -139,7 +139,7 @@ async function logMFAAttempt(
   status: 'success' | 'failed'
 ): Promise<void> {
   try {
-    await db.collection('audit_logs').add({
+    await admin.firestore().collection('audit_logs').add({
       type: 'mfa_verification',
       userId,
       method,
@@ -196,7 +196,7 @@ export async function setMFAVerified(
   method: 'totp' | 'sms' | 'hardware_key'
 ): Promise<void> {
   const auth = admin.auth();
-  
+
   // Get existing claims
   const user = await auth.getUser(userId);
   const existingClaims = user.customClaims || {};
@@ -211,7 +211,7 @@ export async function setMFAVerified(
   });
 
   // Log to Firestore
-  await db.collection('audit_logs').add({
+  await admin.firestore().collection('audit_logs').add({
     type: 'mfa_verified',
     userId,
     method,
@@ -224,7 +224,7 @@ export async function setMFAVerified(
  */
 export async function clearMFAVerification(userId: string): Promise<void> {
   const auth = admin.auth();
-  
+
   const user = await auth.getUser(userId);
   const existingClaims = user.customClaims || {};
 

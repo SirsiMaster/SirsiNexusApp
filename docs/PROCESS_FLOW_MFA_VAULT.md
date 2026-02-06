@@ -13,7 +13,7 @@ The Sirsi Nexus ecosystem uses a multi-layered approach to secure legal document
 For development and testing, the system is hardcoded with a "Master Developer" identity in `security-init.js`.
 - **Email**: `cylton@sirsi.ai`
 - **Phone**: `+1 202 747 4787`
-- **TOTP Secret**: `SIRSI777CYLTON777` (Used for Authenticator apps like Google Authenticator).
+- **TOTP Secret**: `SIRSI777CYLTON77` (Used for Authenticator apps like Google Authenticator).
 
 ### 2.2 Client Identity
 When a client (e.g., a FinalWishes partner) initiates a contract:

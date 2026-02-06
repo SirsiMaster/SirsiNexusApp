@@ -22,11 +22,40 @@ service ContractsService {
   
   // Payment Integration
   rpc CreateCheckoutSession(CreateCheckoutRequest) returns (CheckoutSession);
-  rpc CreatePlaidLinkToken(CreatePlaidLinkTokenRequest) returns (PlaidLinkTokenResponse);
+  
+  // Bank Transfer (Plaid) Integration
+  rpc CreatePlaidLinkToken(CreatePlaidLinkTokenRequest) returns (PlaidLinkToken);
+  rpc ExchangePlaidToken(ExchangePlaidTokenRequest) returns (ExchangePlaidTokenResponse);
   
   // Bidirectional Streaming (future: chat, real-time events)
   rpc StreamEvents(stream EventRequest) returns (stream EventResponse);
 }
+
+// ============================================
+// BANK TRANSFER (PLAID) MESSAGES
+// ============================================
+
+message CreatePlaidLinkTokenRequest {
+  string user_id = 1;
+  string client_name = 2;
+}
+
+message PlaidLinkToken {
+  string link_token = 1;
+}
+
+message ExchangePlaidTokenRequest {
+  string public_token = 1;
+  string contract_id = 2;
+  string account_id = 3; // Selected Plaid account ID
+}
+
+message ExchangePlaidTokenResponse {
+  bool success = 1;
+  string stripe_bank_account_token = 2; // btok_...
+  string message = 3;
+}
+
 
 // ============================================
 // CORE MESSAGES
@@ -53,18 +82,24 @@ message Contract {
   int64 created_at = 10;
   int64 updated_at = 11;
   string created_by = 12;
- 
-  // Countersigner (Dynamic Validation)
+
+  // Headers & Verification
   string countersigner_name = 13;
   string countersigner_email = 14;
   int64 countersigned_at = 15;
- 
-  // Reality Metadata
+
+  // Stripe Architecture
+  string stripe_connect_account_id = 20;
+
+  // Execution Data (OpenSign)
   string signature_image_data = 16;
   bool legal_acknowledgment = 17;
+
+  // Selection Data
   int32 selected_payment_plan = 18;
-  string payment_method = 19; // 'card' or 'bank'
+  string payment_method = 19;
 }
+
 
 message PaymentPlan {
   string id = 1;
@@ -107,7 +142,10 @@ message CreateContractRequest {
   Theme theme = 7;
   string countersigner_name = 8;
   string countersigner_email = 9;
+  string stripe_connect_account_id = 10;
 }
+
+
 
 message GetContractRequest {
   string id = 1;
@@ -117,6 +155,7 @@ message ListContractsRequest {
   string project_id = 1;
   int32 page_size = 2;
   string page_token = 3;
+  string user_email = 4;
 }
 
 message ListContractsResponse {
@@ -158,21 +197,14 @@ message CreateCheckoutRequest {
   string plan_id = 2;
   string success_url = 3;
   string cancel_url = 4;
+  string stripe_connect_account_id = 5; // Optional: for platform routing
+  repeated string payment_method_types = 6; // e.g., ["card", "us_bank_account", "customer_balance"]
 }
+
 
 message CheckoutSession {
   string session_id = 1;
   string checkout_url = 2;
-}
-
-// Plaid
-message CreatePlaidLinkTokenRequest {
-  string user_id = 1;
-  string client_name = 2;
-}
-
-message PlaidLinkTokenResponse {
-  string link_token = 1;
 }
 
 // Streaming Events

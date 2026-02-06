@@ -5,6 +5,8 @@
  */
 
 import { useState } from 'react';
+import { httpsCallable } from 'firebase/functions';
+import { functions } from '../../lib/firebase';
 
 interface MFAGateProps {
     /** Called when MFA is verified or bypassed (in demo mode) */
@@ -41,26 +43,26 @@ export function MFAGate({
         setError(null);
 
         try {
-            // Simulate verification delay
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // Demo mode: accept any 6-digit code
-            if (demoMode && verificationCode.length === 6) {
-                console.log('🔐 MFA Verified (Demo Mode)');
+            // Demo mode: allow bypass with 123456
+            if (demoMode && verificationCode === '123456') {
+                console.log('🔐 MFA Verified (Demo Bypass)');
                 onVerified();
                 return;
             }
 
-            // Real implementation would call Firebase MFA verification here
-            // const multiFactorResolver = await getMultiFactorResolver(auth);
-            // await multiFactorResolver.resolveSignIn(...);
+            // Real implementation: call Cloud Function
+            const verifyMFA = httpsCallable(functions, 'verifyMFA');
+            const result = await verifyMFA({ code: verificationCode }) as any;
 
-            if (verificationCode.length !== 6) {
-                throw new Error('Please enter a valid 6-digit code');
+            if (result.data.success) {
+                console.log('✅ MFA Verified successfully');
+                sessionStorage.setItem('mfaVerified', 'true');
+                onVerified();
+            } else {
+                throw new Error(result.data.error || 'Verification failed');
             }
-
-            onVerified();
         } catch (err: any) {
+            console.error('MFA Error:', err);
             setError(err?.message || 'Verification failed. Please try again.');
         } finally {
             setIsVerifying(false);

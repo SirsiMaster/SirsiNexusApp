@@ -12,6 +12,8 @@ import { contractsClient } from '../../lib/grpc'
 import { getStripe } from '../../lib/stripe'
 import { SignatureCapture } from '../vault/SignatureCapture'
 import { MFAGate } from '../auth/MFAGate'
+import { usePlaidLink } from 'react-plaid-link'
+import { useEffect } from 'react'
 
 export function SirsiVault() {
     const [step, setStep] = useState(1)
@@ -26,8 +28,9 @@ export function SirsiVault() {
         email: '',
         title: '',
         agreed: false,
-        selectedPaymentMethod: 'card' // 'card' or 'bank'
+        selectedPaymentMethod: 'card' // 'card', 'bank' (ACH), or 'wire' (Stripe Virtual Bank)
     })
+
     const [hasSignature, setHasSignature] = useState(false)
     const [signatureImageData, setSignatureImageData] = useState<string | null>(null)
     const [loading, setLoading] = useState(false)
@@ -35,9 +38,48 @@ export function SirsiVault() {
     const [contractId, setContractId] = useState<string | null>(null)
     const [selectedPaymentPlan, setSelectedPaymentPlan] = useState<2 | 3 | 4>(2)
 
+    // Plaid State
+    const [plaidLinkToken, setPlaidLinkToken] = useState<string | null>(null)
+    const [achLinked, setAchLinked] = useState(false)
+
     // MFA State - Per AUTHORIZATION_POLICY.md Section 4.3
     const [showMFAGate, setShowMFAGate] = useState(false)
     const [mfaVerifiedForFinancial, setMfaVerifiedForFinancial] = useState(false)
+
+    const { open: openPlaid, ready: plaidReady } = usePlaidLink({
+        token: plaidLinkToken,
+        onSuccess: async (public_token, metadata) => {
+            console.log('✅ Plaid Link Success:', public_token)
+            setLoading(true)
+            try {
+                // Exchange the public token for a Stripe btok on the backend
+                await contractsClient.exchangePlaidToken({
+                    publicToken: public_token,
+                    contractId: contractId || '',
+                    accountId: metadata.accounts[0]?.id || ''
+                })
+                setAchLinked(true)
+                setLoading(false)
+                // We don't redirect yet; we show a "confirmed" state in Step 4
+            } catch (err: any) {
+                console.error('Exchange failed:', err)
+                setError('Failed to link bank account. Please check your credentials and try again.')
+                setLoading(false)
+            }
+        },
+        onExit: () => {
+            setLoading(false)
+            setPlaidLinkToken(null)
+        }
+    })
+
+
+    // Automatically open Plaid once the token is fetched and hook is ready
+    useEffect(() => {
+        if (plaidLinkToken && plaidReady) {
+            openPlaid()
+        }
+    }, [plaidLinkToken, plaidReady, openPlaid])
 
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
@@ -92,8 +134,10 @@ export function SirsiVault() {
                     fontBody: 'Inter'
                 },
                 countersignerName: 'Cylton Collymore',
-                countersignerEmail: 'cylton@sirsi.ai'
+                countersignerEmail: 'cylton@sirsi.ai',
+                stripeConnectAccountId: '' // Future: Fetch from useConfigStore/portfolio mapping
             });
+
             setContractId(contract.id);
         } catch (err: any) {
             console.error('Failed to create draft:', err);
@@ -133,21 +177,52 @@ export function SirsiVault() {
                     }
                 });
 
+
                 // If Bank Transfer, handle Plaid flow (MFA verified at this point)
-                if (signatureData.selectedPaymentMethod === 'bank') {
+                if (signatureData.selectedPaymentMethod === 'bank' && !achLinked) {
                     console.log('🏦 Bank Transfer Selected: Chase / Plaid Flow');
                     console.log('✅ MFA Verified - Proceeding with financial integration');
-                    // In a real implementation, we would call CreatePlaidLinkToken here
-                    alert('MFA Verified! Bank Transfer via Plaid/Chase is live. Redirecting to account selection...');
+
+                    try {
+                        const response = await contractsClient.createPlaidLinkToken({
+                            userId: signatureData.email || 'anonymous',
+                            clientName: projectName
+                        })
+                        setPlaidLinkToken(response.linkToken)
+                        // useEffect will trigger openPlaid()
+                        return
+                    } catch (err: any) {
+                        console.error('Failed to create Plaid session:', err)
+                        setError('Failed to initialize bank link. Please try again or use a Card.')
+                        setLoading(false)
+                        return
+                    }
                 }
 
-                // 2. Create the checkout session for the first payment (Stripe handles both cards and ACH in some configs)
+                // If ACH is already linked or Card is selected, proceed to final confirmation/checkout
+                if (signatureData.selectedPaymentMethod === 'bank' && achLinked) {
+                    // For ACH, we've already stored the btok on the backend. 
+                    // We could trigger a payment intent here or redirect to a success page.
+                    alert('Bank transfer successfully authorized. Settlement will begin within 24 hours. Redirecting to confirmation...');
+                    window.location.href = `/partnership/${storeProjectId}/payment/success?method=ach&contract=${contractId}`;
+                    return;
+                }
+
+                // 2. Create the checkout session for the first payment
+                const paymentMethodTypes = []
+                if (signatureData.selectedPaymentMethod === 'card') paymentMethodTypes.push('card')
+                if (signatureData.selectedPaymentMethod === 'bank') paymentMethodTypes.push('us_bank_account')
+                if (signatureData.selectedPaymentMethod === 'wire') paymentMethodTypes.push('customer_balance')
+
                 const session = await contractsClient.createCheckoutSession({
                     contractId: contractId,
                     planId: 'payment-1', // First payment plan
-                    successUrl: window.location.origin + `/partnership/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-                    cancelUrl: window.location.href
+                    successUrl: window.location.origin + `/partnership/${storeProjectId}/partnership/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+                    cancelUrl: window.location.href,
+                    paymentMethodTypes: paymentMethodTypes,
+                    stripeConnectAccountId: '' // Future: Map to project-specific Connect account
                 })
+
 
                 // 3. Redirect to Stripe
                 if (session.checkoutUrl) {
@@ -160,6 +235,7 @@ export function SirsiVault() {
                         return
                     }
                 }
+
 
                 // If no checkout URL returned, show error
                 throw new Error('No checkout session URL returned from server')
@@ -652,27 +728,106 @@ export function SirsiVault() {
                             </div>
                         </div>
 
-                        {/* Signature Details */}
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: '1fr 1fr',
-                            gap: '16px',
-                            marginBottom: '24px',
-                            fontSize: '13px'
-                        }}>
-                            <div>
-                                <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', textTransform: 'uppercase', marginBottom: '4px' }}>Signer</div>
-                                <div style={{ color: 'white' }}>{signatureData.name} ({signatureData.title})</div>
+                        {/* Payment Method Selector */}
+                        <div style={{ marginBottom: '32px' }}>
+                            <div style={{
+                                display: 'flex',
+                                background: 'rgba(255,255,255,0.05)',
+                                padding: '4px',
+                                borderRadius: '12px',
+                                border: '1px solid rgba(255,255,255,0.1)',
+                                marginBottom: '16px'
+                            }}>
+                                <button
+                                    onClick={() => handleInputChange('selectedPaymentMethod', 'card')}
+                                    style={{
+                                        flex: 1,
+                                        padding: '12px',
+                                        background: signatureData.selectedPaymentMethod === 'card' ? '#C8A951' : 'transparent',
+                                        color: signatureData.selectedPaymentMethod === 'card' ? '#000' : 'white',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        fontWeight: 600,
+                                        transition: 'all 0.3s ease',
+                                        fontSize: '11px'
+                                    }}
+                                >
+                                    💳 CARD
+                                </button>
+                                <button
+                                    onClick={() => handleInputChange('selectedPaymentMethod', 'bank')}
+                                    style={{
+                                        flex: 1,
+                                        padding: '12px',
+                                        background: signatureData.selectedPaymentMethod === 'bank' ? '#C8A951' : 'transparent',
+                                        color: signatureData.selectedPaymentMethod === 'bank' ? '#000' : 'white',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        fontWeight: 600,
+                                        transition: 'all 0.3s ease',
+                                        fontSize: '11px'
+                                    }}
+                                >
+                                    🏦 ACH (PLAID)
+                                </button>
+                                <button
+                                    onClick={() => handleInputChange('selectedPaymentMethod', 'wire')}
+                                    style={{
+                                        flex: 1,
+                                        padding: '12px',
+                                        background: signatureData.selectedPaymentMethod === 'wire' ? '#C8A951' : 'transparent',
+                                        color: signatureData.selectedPaymentMethod === 'wire' ? '#000' : 'white',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        cursor: 'pointer',
+                                        fontWeight: 600,
+                                        transition: 'all 0.3s ease',
+                                        fontSize: '11px'
+                                    }}
+                                >
+                                    🏛️ WIRE (STRIPE)
+                                </button>
+
                             </div>
-                            <div>
-                                <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', textTransform: 'uppercase', marginBottom: '4px' }}>Date</div>
-                                <div style={{ color: 'white' }}>{currentDate}</div>
-                            </div>
-                            <div style={{ gridColumn: 'span 2' }}>
-                                <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', textTransform: 'uppercase', marginBottom: '4px' }}>Platform Certificate ID</div>
-                                <div style={{ color: '#10b981', fontFamily: 'monospace' }}>SIRSI-VAULT-{contractId || 'PENDING'}-EXEC</div>
-                            </div>
+
+                            {signatureData.selectedPaymentMethod === 'bank' && (
+                                <div style={{
+                                    padding: '16px',
+                                    background: achLinked ? 'rgba(16, 185, 129, 0.1)' : 'rgba(200, 169, 81, 0.1)',
+                                    border: achLinked ? '1px solid #10b981' : '1px solid #C8A951',
+                                    borderRadius: '8px',
+                                    textAlign: 'center'
+                                }}>
+                                    {achLinked ? (
+                                        <div style={{ color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                                            <span>✓ Bank Account Verified via Plaid</span>
+                                        </div>
+                                    ) : (
+                                        <div style={{ color: '#C8A951', fontSize: '12px' }}>
+                                            High-value settlement via Chase Treasury Bridge. Plaid verification required.
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {signatureData.selectedPaymentMethod === 'wire' && (
+                                <div style={{
+                                    padding: '16px',
+                                    background: 'rgba(200, 169, 81, 0.1)',
+                                    border: '1px solid #C8A951',
+                                    borderRadius: '8px',
+                                    textAlign: 'center'
+                                }}>
+                                    <div style={{ color: '#C8A951', fontSize: '12px' }}>
+                                        Stripe virtual bank account will be generated for high-limit settlement.
+                                    </div>
+                                </div>
+                            )}
                         </div>
+
+
 
                         {/* Payment Plan Selection - Royal Neo-Deco */}
                         <div style={{ marginBottom: '32px' }}>

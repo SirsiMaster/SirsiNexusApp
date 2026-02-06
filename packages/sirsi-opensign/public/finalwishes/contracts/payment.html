@@ -471,8 +471,8 @@
             }
         };
 
-        // API Endpoint - Cloud Run Gen2 Function
-        const API_BASE = 'https://api-6kdf4or4qq-uc.a.run.app/api';
+        // API Endpoint - Cloud Run Proxy (Local) or Custom Domain (Production)
+        const API_BASE = window.location.hostname === 'localhost' ? 'https://sign.sirsi.ai/api' : '/api';
 
         // Secure ACH Bank Transfer via Stripe + Plaid
         window.handleACHRedirect = async function () {
@@ -675,7 +675,7 @@
                         <h3 style="margin: 0 0 10px; color: #0369a1; font-size: 14px; text-transform: uppercase;">Payment Instructions</h3>
                         <p style="margin: 0; font-size: 13px; color: #0f172a;">
                             <strong>Secure Payment Options:</strong><br>
-                            • <strong>Card/ACH:</strong> Pay securely via our payment portal at <a href="https://sirsi-sign.web.app/payment.html">sirsi-sign.web.app</a><br>
+                            • <strong>Card/ACH:</strong> Pay securely via our payment portal at <a href="https://sign.sirsi.ai/payment.html">sign.sirsi.ai</a><br>
                             • <strong>Wire Transfer:</strong> Contact <a href="mailto:accounts@sirsi.ai">accounts@sirsi.ai</a> for verified wire instructions
                         </p>
                         <p style="margin: 10px 0 0; font-size: 11px; color: #64748b;">

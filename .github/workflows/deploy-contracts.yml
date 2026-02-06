@@ -7,23 +7,26 @@ on:
     paths:
       - "packages/sirsi-opensign/**"
       - "packages/finalwishes-contracts/**"
+      - "packages/sirsi-opensign/services/contracts-grpc/**"
   workflow_dispatch:
 
 jobs:
-  build_and_deploy:
+  build_and_deploy_frontend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.1
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.0.2
         with:
           node-version: "20"
+          cache: "npm"
+          cache-dependency-path: packages/finalwishes-contracts/package-lock.json
 
       - name: Install & Build Contracts App
         working-directory: packages/finalwishes-contracts
         run: |
-          npm install
+          npm ci
           npm run build
 
       - name: Sync Build Artifacts to OpenSign
@@ -35,15 +38,38 @@ jobs:
           # Copy new build artifacts
           cp -R packages/finalwishes-contracts/dist/* packages/sirsi-opensign/public/
 
-          # Ensure partnership route structure exists if not handled by SPA rewrite
+          # Ensure partnership route structure exists for high-fidelity routing
           mkdir -p packages/sirsi-opensign/public/partnership/finalwishes
           cp packages/sirsi-opensign/public/index.html packages/sirsi-opensign/public/partnership/finalwishes/
 
-      - name: Deploy to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0.7.1
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SIRSI_NEXUS_LIVE }}"
           channelId: live
           projectId: sirsi-nexus-live
           entryPoint: packages/sirsi-opensign
+
+  deploy_backend_service:
+    runs-on: ubuntu-latest
+    # Only deploy backend if files in the gRPC service have changed
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4.1.1
+
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SIRSI_NEXUS_LIVE }}"
+
+      - name: Deploy to Cloud Run (High-Value Rails)
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: contracts-grpc
+          region: us-east4
+          source: packages/sirsi-opensign/services/contracts-grpc
+          project_id: sirsi-nexus-live
+          env_vars: |
+            NODE_ENV=production

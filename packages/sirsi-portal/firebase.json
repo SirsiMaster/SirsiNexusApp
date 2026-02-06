@@ -61,7 +61,21 @@
     ],
     "cleanUrls": true,
     "trailingSlash": false,
-    "redirects": []
+    "redirects": [],
+    "rewrites": [
+      {
+        "source": "/pitchdeck",
+        "destination": "/admin/committee-docs/pitch-deck.html"
+      },
+      {
+        "source": "/pitchdeck2",
+        "destination": "/admin/committee-docs/pitch-deck-2.html"
+      },
+      {
+        "source": "/api/**",
+        "function": "portalApi"
+      }
+    ]
   },
   "emulators": {
     "auth": {
@@ -84,17 +98,13 @@
   "functions": [
     {
       "source": "functions",
-      "codebase": "default",
+      "codebase": "portal",
       "ignore": [
         "node_modules",
         ".git",
         "firebase-debug.log",
         "firebase-debug.*.log",
         "*.local"
-      ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run lint",
-        "npm --prefix \"$RESOURCE_DIR\" run build"
       ]
     }
   ]

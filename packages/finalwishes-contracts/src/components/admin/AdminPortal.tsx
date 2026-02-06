@@ -1,14 +1,18 @@
 import { useState } from 'react';
+import { useMFA } from '../../../../sirsi-ui/src/hooks/useMFA';
+import { MFAGate } from '../auth/MFAGate';
 import { EstatesManagement } from './EstatesManagement';
 import { UsersAccessControl } from './UsersAccessControl';
 import { DevDashboard } from './DevDashboard';
 import { NotificationEngine } from './NotificationEngine';
 import { SystemSettings } from './SystemSettings';
+import { MFAEnrollment } from '../auth/MFAEnrollment';
 
-type AdminTab = 'estates' | 'users' | 'development' | 'notifications' | 'settings';
+type AdminTab = 'estates' | 'users' | 'development' | 'notifications' | 'settings' | 'mfa';
 
 export function AdminPortal() {
     const [activeTab, setActiveTab] = useState<AdminTab>('estates');
+    const mfa = useMFA();
 
     const tabs: { id: AdminTab; label: string; icon: string }[] = [
         { id: 'estates', label: 'Estates', icon: '🏛️' },
@@ -16,7 +20,25 @@ export function AdminPortal() {
         { id: 'development', label: 'Dev KPIs', icon: '💻' },
         { id: 'notifications', label: 'Omni-Notify', icon: '🔔' },
         { id: 'settings', label: 'System Config', icon: '⚙️' },
+        { id: 'mfa', label: 'Security (MFA)', icon: '🔐' },
     ];
+
+    if (mfa.isLoading) {
+        return <div style={{ padding: '4rem', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>Securing connection...</div>;
+    }
+
+    if (!mfa.isMFAVerified) {
+        return (
+            <div style={{ maxWidth: '600px', margin: '4rem auto' }}>
+                <MFAGate
+                    onVerified={() => mfa.refreshMFAStatus()}
+                    onCancel={() => window.location.href = '/'}
+                    isFinancial={false}
+                    demoMode={false}
+                />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-navy text-white flex">
@@ -62,6 +84,12 @@ export function AdminPortal() {
                     {activeTab === 'development' && <DevDashboard />}
                     {activeTab === 'notifications' && <NotificationEngine />}
                     {activeTab === 'settings' && <SystemSettings />}
+                    {activeTab === 'mfa' && (
+                        <MFAEnrollment
+                            onComplete={() => setActiveTab('estates')}
+                            onCancel={() => setActiveTab('estates')}
+                        />
+                    )}
                 </div>
             </main>
         </div>

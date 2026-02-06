@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { CheckoutSession, Contract, CreateCheckoutRequest, CreateContractRequest, CreatePlaidLinkTokenRequest, DeleteContractRequest, DeleteContractResponse, EventRequest, EventResponse, GeneratePageRequest, GeneratePageResponse, GetContractRequest, ListContractsRequest, ListContractsResponse, PlaidLinkTokenResponse, UpdateContractRequest } from "./contracts_pb.js";
+import { CheckoutSession, Contract, CreateCheckoutRequest, CreateContractRequest, CreatePlaidLinkTokenRequest, DeleteContractRequest, DeleteContractResponse, EventRequest, EventResponse, ExchangePlaidTokenRequest, ExchangePlaidTokenResponse, GeneratePageRequest, GeneratePageResponse, GetContractRequest, ListContractsRequest, ListContractsResponse, PlaidLinkToken, UpdateContractRequest } from "./contracts_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -82,12 +82,23 @@ export const ContractsService = {
       kind: MethodKind.Unary,
     },
     /**
+     * Bank Transfer (Plaid) Integration
+     *
      * @generated from rpc sirsi.contracts.v1.ContractsService.CreatePlaidLinkToken
      */
     createPlaidLinkToken: {
       name: "CreatePlaidLinkToken",
       I: CreatePlaidLinkTokenRequest,
-      O: PlaidLinkTokenResponse,
+      O: PlaidLinkToken,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc sirsi.contracts.v1.ContractsService.ExchangePlaidToken
+     */
+    exchangePlaidToken: {
+      name: "ExchangePlaidToken",
+      I: ExchangePlaidTokenRequest,
+      O: ExchangePlaidTokenResponse,
       kind: MethodKind.Unary,
     },
     /**

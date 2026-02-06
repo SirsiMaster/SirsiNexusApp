@@ -14,13 +14,13 @@ class SecureAuthService {
     async initializeService() {
         // Initialize encryption key
         this.encryptionKey = await this.getOrCreateEncryptionKey();
-        
+
         // Initialize IndexedDB for secure storage
         await this.initializeDatabase();
-        
+
         // Set up security headers
         this.setupSecurityHeaders();
-        
+
         // Initialize CSRF protection
         this.initializeCSRFProtection();
     }
@@ -31,42 +31,42 @@ class SecureAuthService {
     async initializeDatabase() {
         return new Promise((resolve, reject) => {
             const request = indexedDB.open(this.dbName, 1);
-            
+
             request.onerror = () => reject(request.error);
             request.onsuccess = () => {
                 this.db = request.result;
                 resolve();
             };
-            
+
             request.onupgradeneeded = (event) => {
                 const db = event.target.result;
-                
+
                 // Users store with encryption
                 if (!db.objectStoreNames.contains('users')) {
                     const userStore = db.createObjectStore('users', { keyPath: 'id' });
                     userStore.createIndex('email', 'email', { unique: true });
                     userStore.createIndex('username', 'username', { unique: true });
                 }
-                
+
                 // Sessions store
                 if (!db.objectStoreNames.contains('sessions')) {
                     const sessionStore = db.createObjectStore('sessions', { keyPath: 'sessionId' });
                     sessionStore.createIndex('userId', 'userId');
                     sessionStore.createIndex('expiresAt', 'expiresAt');
                 }
-                
+
                 // Email verification tokens
                 if (!db.objectStoreNames.contains('emailTokens')) {
                     const tokenStore = db.createObjectStore('emailTokens', { keyPath: 'token' });
                     tokenStore.createIndex('userId', 'userId');
                     tokenStore.createIndex('expiresAt', 'expiresAt');
                 }
-                
+
                 // 2FA tokens
                 if (!db.objectStoreNames.contains('tfaTokens')) {
                     const tfaStore = db.createObjectStore('tfaTokens', { keyPath: 'userId' });
                 }
-                
+
                 // Audit logs
                 if (!db.objectStoreNames.contains('auditLogs')) {
                     const auditStore = db.createObjectStore('auditLogs', { keyPath: 'id', autoIncrement: true });
@@ -82,7 +82,7 @@ class SecureAuthService {
      */
     async getOrCreateEncryptionKey() {
         const keyName = 'sirsinexus-encryption-key';
-        
+
         // Try to get existing key from secure storage
         const storedKey = await this.getSecureItem(keyName);
         if (storedKey) {
@@ -94,18 +94,18 @@ class SecureAuthService {
                 ['encrypt', 'decrypt']
             );
         }
-        
+
         // Generate new key
         const key = await crypto.subtle.generateKey(
             { name: 'AES-GCM', length: 256 },
             true,
             ['encrypt', 'decrypt']
         );
-        
+
         // Export and store key
         const exportedKey = await crypto.subtle.exportKey('jwk', key);
         await this.setSecureItem(keyName, JSON.stringify(exportedKey));
-        
+
         return key;
     }
 
@@ -115,14 +115,14 @@ class SecureAuthService {
     async encrypt(data) {
         const encoder = new TextEncoder();
         const dataBuffer = encoder.encode(JSON.stringify(data));
-        
+
         const iv = crypto.getRandomValues(new Uint8Array(12));
         const encryptedBuffer = await crypto.subtle.encrypt(
             { name: 'AES-GCM', iv },
             this.encryptionKey,
             dataBuffer
         );
-        
+
         return {
             iv: Array.from(iv),
             data: Array.from(new Uint8Array(encryptedBuffer))
@@ -138,7 +138,7 @@ class SecureAuthService {
             this.encryptionKey,
             new Uint8Array(encryptedData.data)
         );
-        
+
         const decoder = new TextDecoder();
         return JSON.parse(decoder.decode(decryptedBuffer));
     }
@@ -149,11 +149,11 @@ class SecureAuthService {
     async hashPassword(password, salt = null) {
         const encoder = new TextEncoder();
         const passwordBuffer = encoder.encode(password);
-        
+
         if (!salt) {
             salt = crypto.getRandomValues(new Uint8Array(16));
         }
-        
+
         const keyMaterial = await crypto.subtle.importKey(
             'raw',
             passwordBuffer,
@@ -161,7 +161,7 @@ class SecureAuthService {
             false,
             ['deriveBits']
         );
-        
+
         const hashBuffer = await crypto.subtle.deriveBits(
             {
                 name: 'PBKDF2',
@@ -172,7 +172,7 @@ class SecureAuthService {
             keyMaterial,
             256
         );
-        
+
         return {
             hash: Array.from(new Uint8Array(hashBuffer)),
             salt: Array.from(salt)
@@ -184,20 +184,20 @@ class SecureAuthService {
      */
     async register(userData) {
         const transaction = this.db.transaction(['users', 'emailTokens', 'auditLogs'], 'readwrite');
-        
+
         try {
             // Validate input
             this.validateRegistrationData(userData);
-            
+
             // Check if user exists
             const existingUser = await this.getUserByEmail(userData.email);
             if (existingUser) {
                 throw new Error('User with this email already exists');
             }
-            
+
             // Hash password
             const passwordData = await this.hashPassword(userData.password);
-            
+
             // Create user object
             const user = {
                 id: this.generateSecureId(),
@@ -217,13 +217,13 @@ class SecureAuthService {
                 accountLocked: false,
                 accountLockExpiry: null
             };
-            
+
             // Encrypt sensitive data
             const encryptedUser = await this.encryptUserData(user);
-            
+
             // Store user
             await transaction.objectStore('users').add(encryptedUser);
-            
+
             // Generate email verification token
             const verificationToken = this.generateSecureToken();
             const tokenData = {
@@ -232,21 +232,21 @@ class SecureAuthService {
                 type: 'email_verification',
                 expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
             };
-            
+
             await transaction.objectStore('emailTokens').add(tokenData);
-            
+
             // Log registration
             await this.auditLog(user.id, 'USER_REGISTERED', { email: user.email });
-            
+
             // Send verification email (in production, this would send actual email)
             await this.sendVerificationEmail(user.email, verificationToken);
-            
+
             return {
                 success: true,
                 userId: user.id,
                 message: 'Registration successful. Please check your email to verify your account.'
             };
-            
+
         } catch (error) {
             transaction.abort();
             throw error;
@@ -264,25 +264,25 @@ class SecureAuthService {
                 await this.auditLog(null, 'LOGIN_FAILED', { email, reason: 'User not found' });
                 throw new Error('Invalid email or password');
             }
-            
+
             // Check if account is locked
             if (user.accountLocked && new Date(user.accountLockExpiry) > new Date()) {
                 await this.auditLog(user.id, 'LOGIN_BLOCKED', { reason: 'Account locked' });
                 throw new Error('Account is locked. Please try again later.');
             }
-            
+
             // Verify password
             const passwordValid = await this.verifyPassword(password, user.passwordHash, user.passwordSalt);
             if (!passwordValid) {
                 await this.handleFailedLogin(user);
                 throw new Error('Invalid email or password');
             }
-            
+
             // Check email verification
             if (!user.isEmailVerified) {
                 throw new Error('Please verify your email before logging in');
             }
-            
+
             // Check 2FA if enabled
             if (user.is2FAEnabled) {
                 if (!tfaCode) {
@@ -291,17 +291,17 @@ class SecureAuthService {
                         userId: user.id
                     };
                 }
-                
+
                 const tfaValid = await this.verify2FA(user.id, tfaCode);
                 if (!tfaValid) {
                     await this.auditLog(user.id, 'LOGIN_FAILED', { reason: 'Invalid 2FA code' });
                     throw new Error('Invalid 2FA code');
                 }
             }
-            
+
             // Create session
             const session = await this.createSession(user.id);
-            
+
             // Update last login
             await this.updateUser(user.id, {
                 lastLoginAt: new Date().toISOString(),
@@ -309,16 +309,16 @@ class SecureAuthService {
                 accountLocked: false,
                 accountLockExpiry: null
             });
-            
+
             // Audit log
             await this.auditLog(user.id, 'LOGIN_SUCCESS', { sessionId: session.sessionId });
-            
+
             return {
                 success: true,
                 sessionId: session.sessionId,
                 user: this.sanitizeUser(user)
             };
-            
+
         } catch (error) {
             throw error;
         }
@@ -330,17 +330,17 @@ class SecureAuthService {
     async enable2FA(userId) {
         const secret = this.generateTOTPSecret();
         const qrCodeUrl = await this.generateQRCode(userId, secret);
-        
+
         // Store encrypted secret
         const transaction = this.db.transaction(['tfaTokens'], 'readwrite');
         const encryptedSecret = await this.encrypt({ secret });
-        
+
         await transaction.objectStore('tfaTokens').put({
             userId,
             encryptedSecret,
             createdAt: new Date().toISOString()
         });
-        
+
         return {
             secret,
             qrCodeUrl,
@@ -354,11 +354,11 @@ class SecureAuthService {
     async verify2FA(userId, code) {
         const transaction = this.db.transaction(['tfaTokens'], 'readonly');
         const tfaData = await transaction.objectStore('tfaTokens').get(userId);
-        
+
         if (!tfaData) {
             return false;
         }
-        
+
         const { secret } = await this.decrypt(tfaData.encryptedSecret);
         return this.verifyTOTPCode(secret, code);
     }
@@ -383,7 +383,7 @@ class SecureAuthService {
         // This is a simplified example
         const window = 30; // 30 second window
         const currentTime = Math.floor(Date.now() / 1000 / window);
-        
+
         // Check current and previous time windows
         for (let i = -1; i <= 1; i++) {
             const expectedCode = this.generateTOTPCode(secret, currentTime + i);
@@ -391,7 +391,7 @@ class SecureAuthService {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -403,7 +403,7 @@ class SecureAuthService {
         const hash = Array.from(secret + time).reduce((acc, char) => {
             return ((acc << 5) - acc) + char.charCodeAt(0);
         }, 0);
-        
+
         return String(Math.abs(hash) % 1000000).padStart(6, '0');
     }
 
@@ -416,7 +416,7 @@ class SecureAuthService {
         meta.httpEquiv = 'Content-Security-Policy';
         meta.content = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'";
         document.head.appendChild(meta);
-        
+
         // Other security headers (would be set server-side in production)
         // X-Frame-Options: DENY
         // X-Content-Type-Options: nosniff
@@ -429,7 +429,7 @@ class SecureAuthService {
      */
     initializeCSRFProtection() {
         this.csrfToken = this.generateSecureToken();
-        
+
         // Add to all forms
         document.addEventListener('submit', (e) => {
             if (e.target.tagName === 'FORM') {
@@ -473,13 +473,13 @@ class SecureAuthService {
     async encryptUserData(user) {
         const sensitiveFields = ['passwordHash', 'passwordSalt', 'email', 'firstName', 'lastName'];
         const encryptedUser = { ...user };
-        
+
         for (const field of sensitiveFields) {
             if (user[field]) {
                 encryptedUser[field] = await this.encrypt(user[field]);
             }
         }
-        
+
         return encryptedUser;
     }
 
@@ -489,13 +489,13 @@ class SecureAuthService {
     async decryptUserData(encryptedUser) {
         const user = { ...encryptedUser };
         const sensitiveFields = ['passwordHash', 'passwordSalt', 'email', 'firstName', 'lastName'];
-        
+
         for (const field of sensitiveFields) {
             if (encryptedUser[field] && encryptedUser[field].iv) {
                 user[field] = await this.decrypt(encryptedUser[field]);
             }
         }
-        
+
         return user;
     }
 
@@ -503,14 +503,15 @@ class SecureAuthService {
      * Audit log
      */
     async auditLog(userId, action, details = {}) {
+        const ipAddress = await this.getClientIP();
         const transaction = this.db.transaction(['auditLogs'], 'readwrite');
-        
-        await transaction.objectStore('auditLogs').add({
+
+        transaction.objectStore('auditLogs').add({
             userId,
             action,
             details,
             timestamp: new Date().toISOString(),
-            ipAddress: await this.getClientIP(),
+            ipAddress,
             userAgent: navigator.userAgent
         });
     }
@@ -546,7 +547,7 @@ class SecureAuthService {
     async sendVerificationEmail(email, token) {
         console.log(`Verification email would be sent to ${email} with token: ${token}`);
         console.log(`Verification link: ${window.location.origin}/verify-email?token=${token}`);
-        
+
         // In production, integrate with email service (SendGrid, AWS SES, etc.)
     }
 
@@ -559,16 +560,16 @@ class SecureAuthService {
         if (!emailRegex.test(data.email)) {
             throw new Error('Invalid email format');
         }
-        
+
         // Password strength
         if (data.password.length < 8) {
             throw new Error('Password must be at least 8 characters long');
         }
-        
+
         if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(data.password)) {
             throw new Error('Password must contain uppercase, lowercase, and numbers');
         }
-        
+
         // Other validations...
     }
 
@@ -593,10 +594,10 @@ class SecureAuthService {
             expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 24 hours
             lastActivity: new Date().toISOString()
         };
-        
+
         const transaction = this.db.transaction(['sessions'], 'readwrite');
         await transaction.objectStore('sessions').add(session);
-        
+
         return session;
     }
 
@@ -604,9 +605,9 @@ class SecureAuthService {
         const transaction = this.db.transaction(['users'], 'readonly');
         const index = transaction.objectStore('users').index('email');
         const encryptedUser = await index.get(email.toLowerCase());
-        
+
         if (!encryptedUser) return null;
-        
+
         return await this.decryptUserData(encryptedUser);
     }
 
@@ -618,13 +619,13 @@ class SecureAuthService {
     async handleFailedLogin(user) {
         const failedAttempts = (user.failedLoginAttempts || 0) + 1;
         const updates = { failedLoginAttempts: failedAttempts };
-        
+
         // Lock account after 5 failed attempts
         if (failedAttempts >= 5) {
             updates.accountLocked = true;
             updates.accountLockExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString(); // 30 minutes
         }
-        
+
         await this.updateUser(user.id, updates);
         await this.auditLog(user.id, 'LOGIN_FAILED', { attemptNumber: failedAttempts });
     }
@@ -632,12 +633,12 @@ class SecureAuthService {
     async updateUser(userId, updates) {
         const transaction = this.db.transaction(['users'], 'readwrite');
         const store = transaction.objectStore('users');
-        
+
         const encryptedUser = await store.get(userId);
         const user = await this.decryptUserData(encryptedUser);
-        
+
         Object.assign(user, updates, { updatedAt: new Date().toISOString() });
-        
+
         const updatedEncryptedUser = await this.encryptUserData(user);
         await store.put(updatedEncryptedUser);
     }

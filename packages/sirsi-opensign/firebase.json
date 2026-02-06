@@ -1,6 +1,7 @@
 {
   "functions": {
     "source": "functions",
+    "codebase": "opensign",
     "runtime": "nodejs20"
   },
   "hosting": {
@@ -38,7 +39,7 @@
       },
       {
         "source": "/api/**",
-        "function": "api"
+        "function": "opensignApi"
       },
       {
         "source": "/finalwishes/contracts",

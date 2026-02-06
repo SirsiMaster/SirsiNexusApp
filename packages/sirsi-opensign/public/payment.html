@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Payment | Sirsi Technologies</title>
     <!-- Security Integration -->
-    <script src="/assets/js/security-init.js?v=20260203"></script>
+    <script src="/assets/js/security-init.js"></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -288,77 +288,14 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                                     </svg>
-                                    <span>Connect Bank Account (ACH)</span>
+                                    <span>Connect Bank Account</span>
                                 </button>
 
-                                <div class="flex gap-2 justify-center">
-                                    <button onclick="showWireInstructions()"
-                                        class="flex-1 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition-all flex items-center justify-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                        <span>View Wire Details</span>
-                                    </button>
+                                <div class="text-center">
                                     <button onclick="requestWireInstructions()"
-                                        class="flex-1 py-3 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold transition-all flex items-center justify-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                        </svg>
-                                        <span>Email Wire Details</span>
+                                        class="text-sm text-gray-500 hover:text-[#117ACA] underline transition-colors">
+                                        Request wire instructions via secure email
                                     </button>
-                                </div>
-
-                                <!-- Wire Instructions Display (Hidden by default) -->
-                                <div id="wire-details-panel"
-                                    class="hidden mt-4 p-5 bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl border border-blue-200">
-                                    <div class="flex justify-between items-center mb-4">
-                                        <h4 class="font-bold text-[#117ACA]">Wire Transfer Instructions</h4>
-                                        <button onclick="hideWireInstructions()"
-                                            class="text-slate-400 hover:text-slate-600">
-                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <table class="w-full text-sm">
-                                        <tbody>
-                                            <tr>
-                                                <td class="py-2 text-slate-500">Bank Name:</td>
-                                                <td class="py-2 font-semibold text-slate-800">JPMORGAN CHASE BANK, N.A.
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2 text-slate-500">Routing Number:</td>
-                                                <td class="py-2 font-mono font-bold text-[#117ACA]">021000021</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2 text-slate-500">Account Number:</td>
-                                                <td class="py-2 font-mono font-bold text-slate-800">2905276162</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2 text-slate-500">Beneficiary:</td>
-                                                <td class="py-2 font-semibold text-slate-800">Sirsi Technologies Inc
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2 text-slate-500">Reference:</td>
-                                                <td class="py-2 font-mono" id="wire-reference">Loading...</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                                        <p class="text-xs text-amber-800">
-                                            <strong>⚠️ Security Notice:</strong> Always verify wire details via a
-                                            trusted channel before transferring funds.
-                                            Contact <a href="mailto:accounts@sirsi.ai"
-                                                class="underline">accounts@sirsi.ai</a> if you have any concerns.
-                                        </p>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -534,8 +471,8 @@
             }
         };
 
-        // API Endpoint - Cloud Run Gen2 Function
-        const API_BASE = 'https://api-6kdf4or4qq-uc.a.run.app/api';
+        // API Endpoint - Cloud Run Proxy (Local) or Custom Domain (Production)
+        const API_BASE = window.location.hostname === 'localhost' ? 'https://sign.sirsi.ai/api' : '/api';
 
         // Secure ACH Bank Transfer via Stripe + Plaid
         window.handleACHRedirect = async function () {
@@ -627,32 +564,6 @@
                 console.error('Wire request error:', error);
                 alert('Failed to send wire instructions. Please contact accounts@sirsi.ai directly.');
             }
-        };
-
-        // Show Wire Instructions Panel (No Email Required)
-        window.showWireInstructions = function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const ref = urlParams.get('ref') || 'MSA-REF-001';
-
-            // Update reference on the panel
-            const refEl = document.getElementById('wire-reference');
-            if (refEl) refEl.textContent = ref;
-
-            // Show the panel
-            const panel = document.getElementById('wire-details-panel');
-            if (panel) {
-                panel.classList.remove('hidden');
-                panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-
-            // Log audit trail
-            console.log('📋 Wire instructions displayed for reference:', ref);
-        };
-
-        // Hide Wire Instructions Panel
-        window.hideWireInstructions = function () {
-            const panel = document.getElementById('wire-details-panel');
-            if (panel) panel.classList.add('hidden');
         };
 
         window.handleStripeRedirect = async function () {
@@ -764,7 +675,7 @@
                         <h3 style="margin: 0 0 10px; color: #0369a1; font-size: 14px; text-transform: uppercase;">Payment Instructions</h3>
                         <p style="margin: 0; font-size: 13px; color: #0f172a;">
                             <strong>Secure Payment Options:</strong><br>
-                            • <strong>Card/ACH:</strong> Pay securely via our payment portal at <a href="https://sirsi-sign.web.app/payment.html">sirsi-sign.web.app</a><br>
+                            • <strong>Card/ACH:</strong> Pay securely via our payment portal at <a href="https://sign.sirsi.ai/payment.html">sign.sirsi.ai</a><br>
                             • <strong>Wire Transfer:</strong> Contact <a href="mailto:accounts@sirsi.ai">accounts@sirsi.ai</a> for verified wire instructions
                         </p>
                         <p style="margin: 10px 0 0; font-size: 11px; color: #64748b;">

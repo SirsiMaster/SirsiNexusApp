@@ -1,1 +1,0 @@
-../../../docs/policies/AUTHORIZATION_POLICY.md

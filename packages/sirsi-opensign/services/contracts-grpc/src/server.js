@@ -85,7 +85,7 @@ const handlers = {
         const request = {
             user: { client_user_id: userId },
             client_name: clientName,
-            products: ['auth', 'transactions'],
+            products: ['auth'], // 'auth' is required for ACH bank account retrieval
             language: 'en',
             country_codes: ['US'],
         };
@@ -98,6 +98,54 @@ const handlers = {
             throw new Error('Failed to generate Plaid Link Token');
         }
     },
+
+    // Plaid: Exchange Public Token for Stripe Bank Account Token
+    async exchangePlaidToken(publicToken, contractId, accountId) {
+        if (!plaidClient || !stripe) {
+            throw new Error('Secret infrastructure (Plaid/Stripe) not initialized. Check Vault.');
+        }
+
+        try {
+            // 1. Exchange public token for access token
+            console.log(`🏦 Exchanging Plaid token for contract: ${contractId}`);
+            const exchangeResponse = await plaidClient.itemPublicTokenExchange({
+                public_token: publicToken,
+            });
+            const accessToken = exchangeResponse.data.access_token;
+
+            // 2. Create Stripe Bank Account Token (btok_...)
+            // This allows Stripe to charge the verified bank account
+            const stripeResponse = await plaidClient.processorStripeBankAccountTokenCreate({
+                access_token: accessToken,
+                account_id: accountId,
+            });
+            const stripeBankToken = stripeResponse.data.stripe_bank_account_token;
+
+            // 3. Update contract with the bank token metadata
+            if (contractId) {
+                await db.collection('contracts').doc(contractId).update({
+                    paymentMetadata: {
+                        stripeBankToken: stripeBankToken,
+                        bankAccountLast4: '****', // In production, get metadata from Plaid/Stripe
+                        bankVerificationDate: Date.now(),
+                        lastPaymentMethod: 'ach'
+                    },
+                    updatedAt: Date.now()
+                });
+                console.log(`✅ Bank account linked to contract ${contractId}: ${stripeBankToken}`);
+            }
+
+            return {
+                success: true,
+                stripeBankAccountToken: stripeBankToken,
+                message: 'Bank account linked successfully via Plaid Processor Bridge'
+            };
+        } catch (error) {
+            console.error('Plaid Token Exchange Error:', error.response ? error.response.data : error.message);
+            throw new Error('Failed to exchange Plaid token');
+        }
+    },
+
 
     // Send Notification Email
     async sendEmail(to, subject, text, html) {
@@ -126,9 +174,10 @@ const handlers = {
         const contractData = {
             projectId: data.projectId,
             clientName: data.clientName,
-            clientEmail: data.clientEmail,
-            projectName: data.projectName,
-            totalAmount: Number(data.totalAmount),
+            clientEmail: data.clientEmail || '',
+            projectName: data.projectName || '',
+            totalAmount: Number(data.totalAmount) || 0,
+            stripeConnectAccountId: data.stripeConnectAccountId || '',
             paymentPlans: (data.paymentPlans || []).map(p => ({
                 id: p.id,
                 name: p.name,
@@ -157,8 +206,12 @@ const handlers = {
             // Default Countersigner to Cylton Collymore per Studio Policy
             countersignerName: data.countersignerName || 'Cylton Collymore',
             countersignerEmail: data.countersignerEmail || 'cylton@sirsi.ai',
-            countersignedAt: null
+            countersignedAt: null,
+            signerEmail: data.clientEmail || data.signerEmail, // Field used for unified lookup
+            signers: [data.clientEmail, data.countersignerEmail || 'cylton@sirsi.ai'].filter(Boolean), // Array for easier querying
+            stripeConnectAccountId: data.stripeConnectAccountId || ''
         };
+
 
         const docRef = await db.collection('contracts').add(contractData);
 
@@ -182,12 +235,17 @@ const handlers = {
         };
     },
 
-    // List contracts with pagination
-    async listContracts(projectId, pageSize = 20) {
+    // List contracts with pagination and cross-portfolio user filtering
+    async listContracts(projectId, pageSize = 20, userEmail = null) {
         let query = db.collection('contracts');
 
         if (projectId) {
             query = query.where('projectId', '==', projectId);
+        }
+
+        // Cross-portfolio filtering: find where user is either the client or the countersigner
+        if (userEmail) {
+            query = query.where('signers', 'array-contains', userEmail);
         }
 
         query = query.orderBy('createdAt', 'desc').limit(pageSize);
@@ -217,7 +275,7 @@ const handlers = {
 
         // If client signs, transition to WAITING_FOR_COUNTERSIGN
         // Handle both string 'SIGNED' and Enum 3 (SIGNED)
-        if (updateData.status === 'SIGNED' || updateData.status === 3) {
+        if (updateData.status === 'SIGNED' || updateData.status === 3 || updateData.status === 'CONTRACT_STATUS_SIGNED') {
             updateData.status = 'WAITING_FOR_COUNTERSIGN';
             console.log(`📝 Contract ${id} signed by client. Now waiting for countersignature.`);
 
@@ -228,6 +286,13 @@ const handlers = {
                 `The contract for ${existingData.projectName} has been signed by ${existingData.clientName}. Please log in to the Sirsi Vault to countersign.`,
                 `<h3>Contract Signed</h3><p>The contract for <b>${existingData.projectName}</b> has been signed by <b>${existingData.clientName}</b>.</p><p><a href="https://vault.sirsi.ai">Review and Countersign in Vault</a></p>`
             );
+        }
+
+        // If countersign is completed
+        if (updateData.status === 'PAID' || updateData.status === 4 || updateData.status === 'CONTRACT_STATUS_PAID') {
+            if (!existingData.countersignedAt) {
+                updateData.countersignedAt = Date.now();
+            }
         }
 
         // If status becomes PAID
@@ -300,7 +365,7 @@ const handlers = {
     },
 
     // Create Stripe checkout session
-    async createCheckoutSession(contractId, planId, successUrl, cancelUrl) {
+    async createCheckoutSession(contractId, planId, successUrl, cancelUrl, reqConnectAccountId = null, reqPaymentMethodTypes = null) {
         const contractDoc = await db.collection('contracts').doc(contractId).get();
 
         if (!contractDoc.exists) {
@@ -316,6 +381,9 @@ const handlers = {
 
         const isRecurring = plan.paymentCount > 1;
         const mode = isRecurring ? 'subscription' : 'payment';
+
+        // Connect Account: Request parameter takes precedence, then contract data
+        const connectAccountId = reqConnectAccountId || contract.stripeConnectAccountId || '';
 
         const lineItem = {
             price_data: {
@@ -337,8 +405,14 @@ const handlers = {
             };
         }
 
+        // Configure Payment Method Types
+        // Default to card + ACH if not specified
+        const paymentMethodTypes = reqPaymentMethodTypes && reqPaymentMethodTypes.length > 0
+            ? reqPaymentMethodTypes
+            : ['card', 'us_bank_account'];
+
         const sessionConfig = {
-            payment_method_types: ['card', 'us_bank_account'],
+            payment_method_types: paymentMethodTypes,
             mode: mode,
             client_reference_id: contractId,
             customer_email: contract.clientEmail,
@@ -355,6 +429,36 @@ const handlers = {
             allow_promotion_codes: true
         };
 
+        // If Stripe Bank Transfer (Virtual Account) is selected
+        if (paymentMethodTypes.includes('customer_balance')) {
+            sessionConfig.payment_method_options = {
+                customer_balance: {
+                    funding_type: 'bank_transfer',
+                    bank_transfer: {
+                        type: 'us_bank_transfer',
+                    },
+                },
+            };
+        }
+
+        // Handle Connect Routing (Destination Charge)
+        if (connectAccountId) {
+            sessionConfig.payment_intent_data = {
+                transfer_data: {
+                    destination: connectAccountId,
+                },
+            };
+            // Subscriptions have their own transfer_data structure in payment_settings
+            if (isRecurring) {
+                // Subscription transfer logic varies: usually handled via subscription_data or application_fee
+                sessionConfig.subscription_data = {
+                    transfer_data: {
+                        destination: connectAccountId,
+                    }
+                };
+            }
+        }
+
         // Invoice creation is only valid for payment mode, not subscription (which auto-creates)
         if (!isRecurring) {
             sessionConfig.invoice_creation = {
@@ -366,6 +470,7 @@ const handlers = {
 
         return { sessionId: session.id, checkoutUrl: session.url };
     }
+
 };
 
 // Simple REST-like HTTP handler (Connect-compatible JSON format)
@@ -406,7 +511,11 @@ const server = http.createServer(async (req, res) => {
                 result = await handlers.createContract(body);
             }
         } else if (path === '/sirsi.contracts.v1.ContractsService/ListContracts' || path === '/api/contracts/list') {
-            result = await handlers.listContracts(body.projectId || url.searchParams.get('projectId'));
+            result = await handlers.listContracts(
+                body.projectId || url.searchParams.get('projectId'),
+                body.pageSize || 20,
+                body.userEmail || url.searchParams.get('userEmail')
+            );
         } else if (path === '/sirsi.contracts.v1.ContractsService/GetContract' || path.startsWith('/api/contracts/')) {
             const id = body.id || path.split('/').pop();
             result = await handlers.getContract(id);
@@ -416,9 +525,18 @@ const server = http.createServer(async (req, res) => {
             const contract = await handlers.getContract(body.contractId);
             result = { html: handlers.generatePage(contract, body.themeOverride) };
         } else if (path === '/sirsi.contracts.v1.ContractsService/CreateCheckoutSession') {
-            result = await handlers.createCheckoutSession(body.contractId, body.planId, body.successUrl, body.cancelUrl);
+            result = await handlers.createCheckoutSession(
+                body.contractId,
+                body.planId,
+                body.successUrl,
+                body.cancelUrl,
+                body.stripeConnectAccountId,
+                body.paymentMethodTypes
+            );
         } else if (path === '/sirsi.contracts.v1.ContractsService/CreatePlaidLinkToken') {
-            result = await handlers.createPlaidLinkToken(body.userId || 'anonymous');
+            result = await handlers.createPlaidLinkToken(body.userId || 'anonymous', body.clientName);
+        } else if (path === '/sirsi.contracts.v1.ContractsService/ExchangePlaidToken') {
+            result = await handlers.exchangePlaidToken(body.publicToken, body.contractId, body.accountId);
         } else if (path === '/webhook') {
             const sig = req.headers['stripe-signature'];
             const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;

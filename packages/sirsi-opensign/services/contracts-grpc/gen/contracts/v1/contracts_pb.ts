@@ -57,6 +57,188 @@ proto3.util.setEnumType(ContractStatus, "sirsi.contracts.v1.ContractStatus", [
 ]);
 
 /**
+ * @generated from message sirsi.contracts.v1.CreatePlaidLinkTokenRequest
+ */
+export class CreatePlaidLinkTokenRequest extends Message<CreatePlaidLinkTokenRequest> {
+  /**
+   * @generated from field: string user_id = 1;
+   */
+  userId = "";
+
+  /**
+   * @generated from field: string client_name = 2;
+   */
+  clientName = "";
+
+  constructor(data?: PartialMessage<CreatePlaidLinkTokenRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "sirsi.contracts.v1.CreatePlaidLinkTokenRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "client_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreatePlaidLinkTokenRequest {
+    return new CreatePlaidLinkTokenRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreatePlaidLinkTokenRequest {
+    return new CreatePlaidLinkTokenRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreatePlaidLinkTokenRequest {
+    return new CreatePlaidLinkTokenRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: CreatePlaidLinkTokenRequest | PlainMessage<CreatePlaidLinkTokenRequest> | undefined, b: CreatePlaidLinkTokenRequest | PlainMessage<CreatePlaidLinkTokenRequest> | undefined): boolean {
+    return proto3.util.equals(CreatePlaidLinkTokenRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message sirsi.contracts.v1.PlaidLinkToken
+ */
+export class PlaidLinkToken extends Message<PlaidLinkToken> {
+  /**
+   * @generated from field: string link_token = 1;
+   */
+  linkToken = "";
+
+  constructor(data?: PartialMessage<PlaidLinkToken>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "sirsi.contracts.v1.PlaidLinkToken";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "link_token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PlaidLinkToken {
+    return new PlaidLinkToken().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PlaidLinkToken {
+    return new PlaidLinkToken().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PlaidLinkToken {
+    return new PlaidLinkToken().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: PlaidLinkToken | PlainMessage<PlaidLinkToken> | undefined, b: PlaidLinkToken | PlainMessage<PlaidLinkToken> | undefined): boolean {
+    return proto3.util.equals(PlaidLinkToken, a, b);
+  }
+}
+
+/**
+ * @generated from message sirsi.contracts.v1.ExchangePlaidTokenRequest
+ */
+export class ExchangePlaidTokenRequest extends Message<ExchangePlaidTokenRequest> {
+  /**
+   * @generated from field: string public_token = 1;
+   */
+  publicToken = "";
+
+  /**
+   * @generated from field: string contract_id = 2;
+   */
+  contractId = "";
+
+  /**
+   * Selected Plaid account ID
+   *
+   * @generated from field: string account_id = 3;
+   */
+  accountId = "";
+
+  constructor(data?: PartialMessage<ExchangePlaidTokenRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "sirsi.contracts.v1.ExchangePlaidTokenRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "public_token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "contract_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "account_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ExchangePlaidTokenRequest {
+    return new ExchangePlaidTokenRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ExchangePlaidTokenRequest {
+    return new ExchangePlaidTokenRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ExchangePlaidTokenRequest {
+    return new ExchangePlaidTokenRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ExchangePlaidTokenRequest | PlainMessage<ExchangePlaidTokenRequest> | undefined, b: ExchangePlaidTokenRequest | PlainMessage<ExchangePlaidTokenRequest> | undefined): boolean {
+    return proto3.util.equals(ExchangePlaidTokenRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message sirsi.contracts.v1.ExchangePlaidTokenResponse
+ */
+export class ExchangePlaidTokenResponse extends Message<ExchangePlaidTokenResponse> {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success = false;
+
+  /**
+   * btok_...
+   *
+   * @generated from field: string stripe_bank_account_token = 2;
+   */
+  stripeBankAccountToken = "";
+
+  /**
+   * @generated from field: string message = 3;
+   */
+  message = "";
+
+  constructor(data?: PartialMessage<ExchangePlaidTokenResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "sirsi.contracts.v1.ExchangePlaidTokenResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "success", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "stripe_bank_account_token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ExchangePlaidTokenResponse {
+    return new ExchangePlaidTokenResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ExchangePlaidTokenResponse {
+    return new ExchangePlaidTokenResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ExchangePlaidTokenResponse {
+    return new ExchangePlaidTokenResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ExchangePlaidTokenResponse | PlainMessage<ExchangePlaidTokenResponse> | undefined, b: ExchangePlaidTokenResponse | PlainMessage<ExchangePlaidTokenResponse> | undefined): boolean {
+    return proto3.util.equals(ExchangePlaidTokenResponse, a, b);
+  }
+}
+
+/**
  * @generated from message sirsi.contracts.v1.Contract
  */
 export class Contract extends Message<Contract> {
@@ -131,7 +313,7 @@ export class Contract extends Message<Contract> {
   createdBy = "";
 
   /**
-   * Countersigner (Dynamic Validation)
+   * Headers & Verification
    *
    * @generated from field: string countersigner_name = 13;
    */
@@ -148,7 +330,7 @@ export class Contract extends Message<Contract> {
   countersignedAt = protoInt64.zero;
 
   /**
-   * Reality Metadata
+   * Execution Data (OpenSign)
    *
    * @generated from field: string signature_image_data = 16;
    */
@@ -160,13 +342,13 @@ export class Contract extends Message<Contract> {
   legalAcknowledgment = false;
 
   /**
+   * Selection Data
+   *
    * @generated from field: int32 selected_payment_plan = 18;
    */
   selectedPaymentPlan = 0;
 
   /**
-   * 'card' or 'bank'
-   *
    * @generated from field: string payment_method = 19;
    */
   paymentMethod = "";
@@ -500,6 +682,11 @@ export class ListContractsRequest extends Message<ListContractsRequest> {
    */
   pageToken = "";
 
+  /**
+   * @generated from field: string user_email = 4;
+   */
+  userEmail = "";
+
   constructor(data?: PartialMessage<ListContractsRequest>) {
     super();
     proto3.util.initPartial(data, this);
@@ -511,6 +698,7 @@ export class ListContractsRequest extends Message<ListContractsRequest> {
     { no: 1, name: "project_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "page_size", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 3, name: "page_token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "user_email", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListContractsRequest {
@@ -891,88 +1079,6 @@ export class CheckoutSession extends Message<CheckoutSession> {
 
   static equals(a: CheckoutSession | PlainMessage<CheckoutSession> | undefined, b: CheckoutSession | PlainMessage<CheckoutSession> | undefined): boolean {
     return proto3.util.equals(CheckoutSession, a, b);
-  }
-}
-
-/**
- * Plaid
- *
- * @generated from message sirsi.contracts.v1.CreatePlaidLinkTokenRequest
- */
-export class CreatePlaidLinkTokenRequest extends Message<CreatePlaidLinkTokenRequest> {
-  /**
-   * @generated from field: string user_id = 1;
-   */
-  userId = "";
-
-  /**
-   * @generated from field: string client_name = 2;
-   */
-  clientName = "";
-
-  constructor(data?: PartialMessage<CreatePlaidLinkTokenRequest>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "sirsi.contracts.v1.CreatePlaidLinkTokenRequest";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "user_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "client_name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): CreatePlaidLinkTokenRequest {
-    return new CreatePlaidLinkTokenRequest().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): CreatePlaidLinkTokenRequest {
-    return new CreatePlaidLinkTokenRequest().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): CreatePlaidLinkTokenRequest {
-    return new CreatePlaidLinkTokenRequest().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: CreatePlaidLinkTokenRequest | PlainMessage<CreatePlaidLinkTokenRequest> | undefined, b: CreatePlaidLinkTokenRequest | PlainMessage<CreatePlaidLinkTokenRequest> | undefined): boolean {
-    return proto3.util.equals(CreatePlaidLinkTokenRequest, a, b);
-  }
-}
-
-/**
- * @generated from message sirsi.contracts.v1.PlaidLinkTokenResponse
- */
-export class PlaidLinkTokenResponse extends Message<PlaidLinkTokenResponse> {
-  /**
-   * @generated from field: string link_token = 1;
-   */
-  linkToken = "";
-
-  constructor(data?: PartialMessage<PlaidLinkTokenResponse>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "sirsi.contracts.v1.PlaidLinkTokenResponse";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "link_token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PlaidLinkTokenResponse {
-    return new PlaidLinkTokenResponse().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PlaidLinkTokenResponse {
-    return new PlaidLinkTokenResponse().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PlaidLinkTokenResponse {
-    return new PlaidLinkTokenResponse().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: PlaidLinkTokenResponse | PlainMessage<PlaidLinkTokenResponse> | undefined, b: PlaidLinkTokenResponse | PlainMessage<PlaidLinkTokenResponse> | undefined): boolean {
-    return proto3.util.equals(PlaidLinkTokenResponse, a, b);
   }
 }
 

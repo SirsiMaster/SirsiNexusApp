@@ -409,12 +409,19 @@ class SecureAuthService {
 
     /**
      * Setup security headers
-     * NOTE: CSP is now handled exclusively by security-init.js to prevent duplicate/conflicting CSPs
      */
     setupSecurityHeaders() {
-        // CSP handled by security-init.js - do nothing here
-        // Multiple CSP tags conflict (browser uses most restrictive intersection)
-        console.log('[SecureAuth] Security headers delegated to security-init.js');
+        // Content Security Policy
+        const meta = document.createElement('meta');
+        meta.httpEquiv = 'Content-Security-Policy';
+        meta.content = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'";
+        document.head.appendChild(meta);
+
+        // Other security headers (would be set server-side in production)
+        // X-Frame-Options: DENY
+        // X-Content-Type-Options: nosniff
+        // Strict-Transport-Security: max-age=31536000; includeSubDomains
+        // X-XSS-Protection: 1; mode=block
     }
 
     /**
@@ -496,14 +503,15 @@ class SecureAuthService {
      * Audit log
      */
     async auditLog(userId, action, details = {}) {
+        const ipAddress = await this.getClientIP();
         const transaction = this.db.transaction(['auditLogs'], 'readwrite');
 
-        await transaction.objectStore('auditLogs').add({
+        transaction.objectStore('auditLogs').add({
             userId,
             action,
             details,
             timestamp: new Date().toISOString(),
-            ipAddress: await this.getClientIP(),
+            ipAddress,
             userAgent: navigator.userAgent
         });
     }

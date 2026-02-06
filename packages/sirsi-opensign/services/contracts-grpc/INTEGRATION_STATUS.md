@@ -122,19 +122,26 @@ The integrations are correctly wired:
 ┌─────────────────────────────────────────────────────────────┐
 │              BACKEND (contracts-grpc on Cloud Run)           │
 │                                                              │
-│  POST /CreateContract → Firestore                           │
+│  POST /CreateContract → Firestore (with Connect Mapping)    │
 │  POST /UpdateContract → Status transitions + Email          │
-│  POST /CreateCheckoutSession → Stripe                       │
-│  POST /CreatePlaidLinkToken → Plaid                         │
+│  POST /CreateCheckoutSession → Stripe (Connect + Wire Opts) │
+│  POST /CreatePlaidLinkToken → Plaid Link Session            │
+│  POST /ExchangePlaidToken → Stripe Bank Token (btok)        │
 │  POST /webhook → Stripe webhook handler                     │
 │                                                              │
 │  Secrets loaded from: Firestore vault/production            │
 └─────────────────────────────────────────────────────────────┘
                            │
-         ┌─────────────────┼─────────────────┐
-         ▼                 ▼                 ▼
-   ┌──────────┐     ┌──────────┐      ┌──────────┐
-   │  Stripe  │     │ SendGrid │      │  Plaid   │
-   │ Payments │     │  Email   │      │  ACH/Bank│
-   └──────────┘     └──────────┘      └──────────┘
+         ┌─────────────────┼─────────────────┬─────────────────┐
+         ▼                 ▼                 ▼                 ▼
+   ┌──────────┐     ┌──────────┐      ┌──────────┐      ┌──────────┐
+   │  Stripe  │     │ SendGrid │      │  Plaid   │      │  Stripe  │
+   │ Payments │     │  Email   │      │  ACH/Bank│      │  Connect │
+   └──────────┘     └──────────┘      └──────────┘      └──────────┘
 ```
+
+### New Platform Features:
+- **Stripe Connect**: Supports `transfer_data` to auto-route funds to venture-specific connected accounts.
+- **Stripe Bank Transfers**: Provides virtual bank accounts via `customer_balance` for high-value wire transfers.
+- **Plaid ACH**: Direct debit verification via the Plaid Processor Bridge.
+

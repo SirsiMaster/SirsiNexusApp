@@ -22,7 +22,7 @@
             phone: "+1 202 747 4787",
             // Master Secret for Google Authenticator (Base32)
             // Use this to add to Google Auth manually if not already bound
-            masterSecret: "SIRSI777CYLTON777"
+            masterSecret: "SIRSI777CYLTON77"
         },
         autoLoadOnPages: ['login', 'signup', 'register', 'portal', 'admin', 'investor', 'developer']
     };
@@ -63,24 +63,46 @@
         // Internal State for MFA
         const mfaState = {
             currentMethod: 'totp',
-            codes: { sms: null, email: null }
+            codes: { sms: null, email: null },
+            provisioning: null
         };
+
+        // Extract identity from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlEmail = urlParams.get('email');
+        const urlName = urlParams.get('client');
+        const identityName = urlName || config.developerMode.name;
+        const identityEmail = urlEmail || config.developerMode.email;
 
         const modal = document.createElement('div');
         modal.id = 'mfa-gate-modal';
-        modal.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] p-4';
+        modal.className = 'fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-[9999] p-4';
 
-        const renderModalContent = () => {
+        const renderModalContent = async () => {
+            // Provision if TOTP and not yet provisioned
+            if (mfaState.currentMethod === 'totp' && !mfaState.provisioning) {
+                try {
+                    const response = await fetch('https://sign.sirsi.ai/api/security/mfa/provision', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: identityEmail })
+                    });
+                    mfaState.provisioning = await response.json();
+                } catch (err) {
+                    console.error('MFA Provision error:', err);
+                }
+            }
+
             const methodTitle = mfaState.currentMethod === 'totp' ? 'Authenticator App' :
                 mfaState.currentMethod === 'sms' ? 'SMS Verification' : 'Email Verification';
-            const methodTarget = mfaState.currentMethod === 'totp' ? 'Google Authenticator' :
-                mfaState.currentMethod === 'sms' ? config.developerMode.phone : config.developerMode.email;
+            const methodTarget = mfaState.currentMethod === 'totp' ? 'Google Authenticator / 1Password' :
+                mfaState.currentMethod === 'sms' ? config.developerMode.phone : identityEmail;
             const methodIcon = mfaState.currentMethod === 'totp' ? 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' :
                 mfaState.currentMethod === 'sms' ? 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z' :
                     'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z';
 
             modal.innerHTML = `
-            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-700 animate-fade-in relative overflow-hidden">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 max-w-sm w-full shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-slate-200 dark:border-slate-700 animate-fade-in relative overflow-hidden">
                 <!-- Method Selector Tabs -->
                 <div class="flex border-b border-slate-100 dark:border-slate-700 mb-6">
                     <button onclick="window.securityInit.switchMfaMethod('totp')" class="flex-1 py-3 text-[10px] font-bold uppercase tracking-widest ${mfaState.currentMethod === 'totp' ? 'text-emerald-500 border-b-2 border-emerald-500' : 'text-slate-400'}">TOTP</button>
@@ -89,19 +111,33 @@
                 </div>
 
                 <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-7 h-7 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${methodIcon}"></path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-slate-900 dark:text-white font-serif tracking-tight">${methodTitle}</h3>
-                    <div class="mt-2 p-2 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-100 dark:border-slate-600">
-                        <p class="text-xs font-bold text-[#C8A951] uppercase tracking-widest">${config.developerMode.name}</p>
-                        <p class="text-[10px] text-slate-400 font-mono">${methodTarget}</p>
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white font-serif tracking-tight">${methodTitle}</h3>
+                    <div class="mt-2 p-2 bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-slate-100 dark:border-slate-700">
+                        <p class="text-[10px] font-bold text-[#C8A951] uppercase tracking-widest">${identityName}</p>
+                        <p class="text-[9px] text-slate-400 font-mono truncate">${identityEmail}</p>
                     </div>
-                    ${mfaState.currentMethod !== 'totp' ? `
+                    
+                    ${mfaState.currentMethod === 'totp' ? `
+                        <div class="mt-4 p-4 bg-white dark:bg-slate-900 rounded-2xl border-2 border-slate-100 dark:border-slate-700 inline-block overflow-hidden">
+                            ${mfaState.provisioning ? `
+                                <img src="${mfaState.provisioning.qrUrl}" alt="MFA QR Code" class="w-32 h-32 mx-auto rounded-lg">
+                                <p class="text-[10px] text-slate-400 mt-2 uppercase tracking-tighter">Scan to Enroll in Sirsi</p>
+                            ` : '<div class="w-32 h-32 flex items-center justify-center text-xs text-slate-400">Loading QR...</div>'}
+                        </div>
+                        ${mfaState.provisioning ? `
+                        <div class="mt-4 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-dashed border-emerald-500/30">
+                            <p class="text-[9px] text-slate-400 uppercase tracking-widest mb-1">Manual Setup Key</p>
+                            <code class="text-xs font-bold text-emerald-600 dark:text-emerald-400 select-all">${mfaState.provisioning.secret}</code>
+                        </div>
+                        ` : ''}
+                    ` : `
                         <button onclick="window.securityInit.sendMfaCode('${mfaState.currentMethod}')" class="mt-4 text-xs text-emerald-600 font-bold hover:underline">Click to Send Code</button>
-                    ` : ''}
+                    `}
                 </div>
                 
                 <div class="space-y-4">
@@ -110,8 +146,8 @@
                             <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest">Verification Code</label>
                             <span class="text-[10px] text-emerald-500 font-bold px-2 py-0.5 bg-emerald-50 dark:bg-emerald-900/20 rounded">Live Sec-V2</span>
                         </div>
-                        <input type="text" id="mfa-code-input" placeholder="000 000" maxlength="6"
-                            class="w-full px-4 py-3 bg-slate-100 dark:bg-slate-700 border-2 border-transparent focus:border-emerald-500 rounded-xl text-center text-2xl font-mono tracking-[0.5em] focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all">
+                        <input type="text" id="mfa-code-input" placeholder="······" maxlength="6"
+                            class="w-full px-4 py-4 bg-slate-100 dark:bg-slate-700/50 border-2 border-slate-200 dark:border-slate-600 focus:border-emerald-500 rounded-xl text-center text-3xl font-mono tracking-[0.2em] text-slate-900 dark:text-white focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all shadow-inner">
                     </div>
                     <button onclick="window.securityInit.verifyMFA('${mfaState.currentMethod}')" 
                         class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
@@ -452,57 +488,43 @@
                     return;
                 }
 
+                // Extract identity from URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const identityEmail = urlParams.get('email') || config.developerMode.email;
+                const identityName = urlParams.get('client') || config.developerMode.name;
+
                 let isValid = false;
 
-                if (method === 'totp') {
-                    // Check against real TOTP logic
-                    if (window.secureAuth && window.secureAuth.verifyTOTPCode) {
-                        isValid = window.secureAuth.verifyTOTPCode(config.developerMode.masterSecret, code);
+                // Check against live backend verification for ALL methods (TOTP, SMS, Email)
+                try {
+                    const target = method === 'sms' ? config.developerMode.phone : (method === 'email' ? identityEmail : 'totp');
+                    const response = await fetch('https://sign.sirsi.ai/api/security/mfa/verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ method, target, code, email: identityEmail })
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        isValid = true;
                     } else {
-                        // Fallback TOTP check
-                        const window_size = 30;
-                        const time = Math.floor(Date.now() / 1000 / window_size);
-                        const generateHash = (s, t) => {
-                            return Array.from(s + t).reduce((acc, char) => ((acc << 5) - acc) + char.charCodeAt(0), 0);
-                        };
-                        for (let i = -1; i <= 1; i++) {
-                            const expected = String(Math.abs(generateHash(config.developerMode.masterSecret, time + i)) % 1000000).padStart(6, '0');
-                            if (code === expected) isValid = true;
-                        }
-                    }
-                } else {
-                    // Check against live backend verification
-                    try {
-                        const target = method === 'sms' ? config.developerMode.phone : config.developerMode.email;
-                        const response = await fetch('https://api-6kdf4or4qq-uc.a.run.app/api/security/mfa/verify', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ method, target, code })
-                        });
-                        const result = await response.json();
-                        if (result.success) {
-                            isValid = true;
-                        } else {
-                            alert(`❌ Verification failed: ${result.error}`);
-                            return;
-                        }
-                    } catch (err) {
-                        console.error('MFA Verify Error:', err);
-                        alert('❌ Connection to security rail failed');
+                        alert(`❌ Verification failed: ${result.error || 'Invalid code'}`);
                         return;
                     }
+                } catch (err) {
+                    console.error('MFA Verify Error:', err);
+                    alert('❌ Connection to security rail failed');
+                    return;
                 }
 
                 if (isValid) {
                     sessionStorage.setItem('mfaVerified', 'true');
                     sessionStorage.setItem('mfaMethod', method);
-                    sessionStorage.setItem('signerEmail', config.developerMode.email);
-                    sessionStorage.setItem('signerName', config.developerMode.name);
+                    sessionStorage.setItem('signerEmail', identityEmail);
+                    sessionStorage.setItem('signerName', identityName);
 
                     auditLog('MFA_VERIFIED', {
-                        method: method,
-                        user: config.developerMode.email,
-                        identity: 'Developer Admin'
+                        method,
+                        email: identityEmail
                     });
 
                     const modal = document.getElementById('mfa-gate-modal');
@@ -520,7 +542,9 @@
                         `Invalid Authenticator code for ${config.developerMode.email}` :
                         `Invalid ${method.toUpperCase()} verification code.`;
                     alert(errorMsg);
-                    auditLog('MFA_FAILED', { method: method, user: config.developerMode.email });
+                    auditLog('MFA_FAILED', {
+                        method: method, user: config.developerMode.email
+                    });
                 }
             }
         };
