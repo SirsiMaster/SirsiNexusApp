@@ -403,7 +403,7 @@
     <h4 id="plan-3-header">☐ PLAN 3: 4 Monthly Payments</h4>
     <ul>
       <li><strong>Payment 1:</strong> <span id="plan-3-p1">$23,750.00</span> due upon Effective Date.</li>
-      <li><strong>Payment 2:</strong> <span id="plan-2-p2">$23,750.00</span> due Month 2.</li>
+      <li><strong>Payment 2:</strong> <span id="plan-3-p2">$23,750.00</span> due Month 2.</li>
       <li><strong>Payment 3:</strong> <span id="plan-3-p3">$23,750.00</span> due Month 3.</li>
       <li><strong>Payment 4:</strong> <span id="plan-3-p4">$23,750.00</span> due Month 4.</li>
       <li><strong>Total:</strong> <span id="plan-3-total">$95,000</span>.</li>
@@ -1334,6 +1334,7 @@
       const p3Quarter = Math.round(total / 4);
       const p3Last = total - (p3Quarter * 3);
       setText('plan-3-p1', '$' + p3Quarter.toLocaleString() + '.00');
+      setText('plan-3-p2', '$' + p3Quarter.toLocaleString() + '.00');
       setText('plan-3-p3', '$' + p3Quarter.toLocaleString() + '.00');
       setText('plan-3-p4', '$' + p3Last.toLocaleString() + '.00');
       setText('plan-3-total', '$' + total.toLocaleString());
