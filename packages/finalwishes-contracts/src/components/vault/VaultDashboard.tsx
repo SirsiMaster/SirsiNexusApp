@@ -399,7 +399,10 @@ export function VaultDashboard() {
                                                     {/* Contextual Actions */}
                                                     {contract.status === 2 && contract.clientEmail === auth.currentUser?.email && (
                                                         <button
-                                                            onClick={() => navigate(`/partnership/${contract.projectId}?mfa=verified`)}
+                                                            onClick={() => {
+                                                                const userSlug = (auth.currentUser?.email || '').split('@')[0];
+                                                                navigate(`/vault/${userSlug}/contracts/${contract.projectId}/${contract.id}?mfa=verified`);
+                                                            }}
                                                             className="gold-action-btn"
                                                             style={{ padding: '8px 20px', fontSize: '12px' }}
                                                         >
@@ -430,8 +433,8 @@ export function VaultDashboard() {
 
                                                     <button
                                                         onClick={() => {
-                                                            const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(contract.clientName)}&total=${contract.totalAmount}&signed=true&id=${contract.id}`
-                                                            window.open(msaUrl, '_blank')
+                                                            const userSlug = (auth.currentUser?.email || '').split('@')[0];
+                                                            navigate(`/vault/${userSlug}/contracts/${contract.projectId}/${contract.id}`);
                                                         }}
                                                         style={{
                                                             background: 'rgba(255,255,255,0.05)',
@@ -443,7 +446,7 @@ export function VaultDashboard() {
                                                             fontWeight: 600,
                                                             cursor: 'pointer'
                                                         }}>
-                                                        View Details
+                                                        Review Agreement
                                                     </button>
 
                                                     {/* ── Edit Button ── */}
