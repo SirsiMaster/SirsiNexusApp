@@ -70,7 +70,7 @@ export const BUNDLES: Record<string, Bundle> = {
         shortDescription: 'Complete Digital Legacy Solution',
         description: 'The complete FinalWishes platform including iOS, Android, and Web applications with AI-powered legacy management.',
         price: 95000,
-        hours: 760,
+        hours: 640, // 16 weeks × 40 hrs/week
         timeline: 16,
         timelineUnit: 'weeks',
         addonDiscount: 0,
@@ -105,31 +105,31 @@ export const BUNDLES: Record<string, Bundle> = {
         ],
         wbs: [
             {
-                phaseNum: 1, name: 'Foundation & Cloud Infrastructure', weeks: '1-4', hours: 180, cost: 22500,
+                phaseNum: 1, name: 'Foundation & Cloud Infrastructure', weeks: '1-4', hours: 160, cost: 20000,
                 activities: [
-                    { name: 'System Architecture & Technical Design', role: 'Sr. Architect', hours: 40, cost: 5000 },
-                    { name: 'Google Cloud Project Setup', role: 'DevOps Eng', hours: 30, cost: 3750 },
-                    { name: 'Database Schema Design', role: 'Backend Eng', hours: 40, cost: 5000 },
+                    { name: 'System Architecture & Technical Design', role: 'Sr. Architect', hours: 35, cost: 4375 },
+                    { name: 'Google Cloud Project Setup', role: 'DevOps Eng', hours: 25, cost: 3125 },
+                    { name: 'Database Schema Design', role: 'Backend Eng', hours: 35, cost: 4375 },
                     { name: 'Authentication System', role: 'Security Eng', hours: 30, cost: 3750 },
-                    { name: 'CI/CD Pipeline & DevOps', role: 'DevOps Eng', hours: 40, cost: 5000 }
+                    { name: 'CI/CD Pipeline & DevOps', role: 'DevOps Eng', hours: 35, cost: 4375 }
                 ]
             },
             {
-                phaseNum: 2, name: 'Core Application Development', weeks: '5-8', hours: 220, cost: 27500,
+                phaseNum: 2, name: 'Core Application Development', weeks: '5-8', hours: 160, cost: 20000,
                 activities: [
-                    { name: 'Web Application Shell', role: 'Frontend Eng', hours: 50, cost: 6250 },
-                    { name: 'Mobile Application Shell (iOS/Android)', role: 'Mobile Eng', hours: 70, cost: 8750 },
-                    { name: '"The Shepherd" AI Foundation', role: 'AI Engineer', hours: 50, cost: 6250 },
-                    { name: 'API Gateway & Backend Services', role: 'Backend Eng', hours: 50, cost: 6250 }
+                    { name: 'Web Application Shell', role: 'Frontend Eng', hours: 40, cost: 5000 },
+                    { name: 'Mobile Application Shell (iOS/Android)', role: 'Mobile Eng', hours: 50, cost: 6250 },
+                    { name: '"The Shepherd" AI Foundation', role: 'AI Engineer', hours: 35, cost: 4375 },
+                    { name: 'API Gateway & Backend Services', role: 'Backend Eng', hours: 35, cost: 4375 }
                 ]
             },
             {
-                phaseNum: 3, name: 'Feature Integration & Vault', weeks: '9-12', hours: 200, cost: 25000,
+                phaseNum: 3, name: 'Feature Integration & Vault', weeks: '9-12', hours: 160, cost: 20000,
                 activities: [
-                    { name: 'Legacy Media Vault Implementation', role: 'Backend Eng', hours: 50, cost: 6250 },
-                    { name: 'Digital Lockbox & Encryption', role: 'Security Eng', hours: 50, cost: 6250 },
-                    { name: 'Beneficiary Management Portal', role: 'Frontend Eng', hours: 50, cost: 6250 },
-                    { name: 'Final Directives Module', role: 'Full Stack', hours: 50, cost: 6250 }
+                    { name: 'Legacy Media Vault Implementation', role: 'Backend Eng', hours: 40, cost: 5000 },
+                    { name: 'Digital Lockbox & Encryption', role: 'Security Eng', hours: 40, cost: 5000 },
+                    { name: 'Beneficiary Management Portal', role: 'Frontend Eng', hours: 40, cost: 5000 },
+                    { name: 'Final Directives Module', role: 'Full Stack', hours: 40, cost: 5000 }
                 ]
             },
             {
@@ -156,7 +156,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'service',
         bundledPrice: 18000,
         standalonePrice: 18000,
-        hours: 144,
+        hours: 240, // 12 months × 20 hrs/month
         timeline: 12,
 
         timelineUnit: 'months',
@@ -177,7 +177,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'service',
         bundledPrice: 6000,
         standalonePrice: 6000,
-        hours: 48,
+        hours: 20, // 20 hrs/week (per-week commitment)
         timeline: 1,
 
         timelineUnit: 'weeks',
@@ -215,7 +215,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'service',
         bundledPrice: 30000,
         standalonePrice: 30000,
-        hours: 240,
+        hours: 320, // 8 weeks × 40 hrs/week
         timeline: 8,
 
         timelineUnit: 'weeks',
@@ -228,10 +228,21 @@ export const PRODUCTS: Record<string, Product> = {
         ],
         wbs: [
             {
-                phaseNum: 1, name: 'Brand & UI/UX Design', weeks: '1-3', hours: 60, cost: 12000,
+                phaseNum: 1, name: 'Brand Discovery & Visual Identity', weeks: '1-4', hours: 160, cost: 20000,
                 activities: [
-                    { name: 'Logo & Visual Identity', role: 'Art Director', hours: 20, cost: 4000 },
-                    { name: 'UI/UX Design Kit', role: 'UI Designer', hours: 40, cost: 8000 }
+                    { name: 'Brand Strategy & Research', role: 'Art Director', hours: 40, cost: 5000 },
+                    { name: 'Logo & Visual Identity System', role: 'Art Director', hours: 40, cost: 5000 },
+                    { name: 'Typography, Palette & Voice Guide', role: 'UI Designer', hours: 40, cost: 5000 },
+                    { name: 'UI/UX Design Kit (Figma)', role: 'UI Designer', hours: 40, cost: 5000 }
+                ]
+            },
+            {
+                phaseNum: 2, name: 'Design System & Delivery', weeks: '5-8', hours: 160, cost: 20000,
+                activities: [
+                    { name: 'Component Library Build', role: 'UI Designer', hours: 40, cost: 5000 },
+                    { name: 'Responsive Layout System', role: 'Frontend Eng', hours: 40, cost: 5000 },
+                    { name: 'Brand Asset Production', role: 'Art Director', hours: 40, cost: 5000 },
+                    { name: 'Style Guide Documentation', role: 'UI Designer', hours: 40, cost: 5000 }
                 ]
             }
         ]
@@ -244,7 +255,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 31850,
         standalonePrice: 45500,
-        hours: 364,
+        hours: 320, // 8 weeks × 40 hrs/week
         timeline: 8,
 
         timelineUnit: 'weeks',
@@ -273,7 +284,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 24500,
         standalonePrice: 35000,
-        hours: 280,
+        hours: 400, // 10 weeks × 40 hrs/week
         timeline: 10,
 
         timelineUnit: 'weeks',
@@ -302,7 +313,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 12250,
         standalonePrice: 17500,
-        hours: 140,
+        hours: 160, // 4 weeks × 40 hrs/week
         timeline: 4,
         timelineUnit: 'weeks',
         prerequisites: ['probate'],
@@ -323,7 +334,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 14700,
         standalonePrice: 21000,
-        hours: 168,
+        hours: 160, // 4 weeks × 40 hrs/week
         timeline: 4,
 
         timelineUnit: 'weeks',
@@ -343,7 +354,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 22050,
         standalonePrice: 31499,
-        hours: 252,
+        hours: 240, // 6 weeks × 40 hrs/week
         timeline: 6,
         timelineUnit: 'weeks',
 
@@ -363,7 +374,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 29400,
         standalonePrice: 42000,
-        hours: 336,
+        hours: 400, // 10 weeks × 40 hrs/week
         timeline: 10,
 
         timelineUnit: 'weeks',
@@ -383,7 +394,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 26950,
         standalonePrice: 38500,
-        hours: 308,
+        hours: 400, // 10 weeks × 40 hrs/week
         timeline: 10,
 
         timelineUnit: 'weeks',
@@ -403,7 +414,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 19600,
         standalonePrice: 28000,
-        hours: 224,
+        hours: 320, // 8 weeks × 40 hrs/week
         timeline: 8,
 
         timelineUnit: 'weeks',
@@ -423,7 +434,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'service',
         bundledPrice: 17150,
         standalonePrice: 24500,
-        hours: 196,
+        hours: 320, // 8 weeks × 40 hrs/week
         timeline: 8,
 
         timelineUnit: 'weeks',
@@ -443,7 +454,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 36750,
         standalonePrice: 52500,
-        hours: 420,
+        hours: 480, // 12 weeks × 40 hrs/week
         timeline: 12,
 
         timelineUnit: 'weeks',
@@ -463,7 +474,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 22050,
         standalonePrice: 31499,
-        hours: 252,
+        hours: 320, // 8 weeks × 40 hrs/week
         timeline: 8,
 
         timelineUnit: 'weeks',
@@ -483,7 +494,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 12250,
         standalonePrice: 17500,
-        hours: 140,
+        hours: 240, // 6 weeks × 40 hrs/week
         timeline: 6,
 
         timelineUnit: 'weeks',
@@ -503,7 +514,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 14700,
         standalonePrice: 21000,
-        hours: 168,
+        hours: 240, // 6 weeks × 40 hrs/week
         timeline: 6,
         timelineUnit: 'weeks',
 
@@ -523,7 +534,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'service',
         bundledPrice: 9800,
         standalonePrice: 14000,
-        hours: 112,
+        hours: 160, // 4 weeks × 40 hrs/week
         timeline: 4,
 
         timelineUnit: 'weeks',
@@ -543,7 +554,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 22050,
         standalonePrice: 31499,
-        hours: 252,
+        hours: 240, // 6 weeks × 40 hrs/week
         timeline: 6,
         timelineUnit: 'weeks',
 
@@ -564,7 +575,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 31850,
         standalonePrice: 45500,
-        hours: 364,
+        hours: 400, // 10 weeks × 40 hrs/week
         timeline: 10,
 
         timelineUnit: 'weeks',
@@ -584,7 +595,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'service',
         bundledPrice: 14700,
         standalonePrice: 21000,
-        hours: 168,
+        hours: 240, // 6 weeks × 40 hrs/week
         timeline: 6,
         timelineUnit: 'weeks',
 
@@ -604,7 +615,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 12250,
         standalonePrice: 17500,
-        hours: 140,
+        hours: 160, // 4 weeks × 40 hrs/week
         timeline: 4,
         timelineUnit: 'weeks',
 
@@ -624,7 +635,7 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 8820,
         standalonePrice: 12600,
-        hours: 101,
+        hours: 240, // 6 weeks × 40 hrs/week
         timeline: 6,
 
         timelineUnit: 'weeks',
