@@ -9,7 +9,7 @@
  */
 import { useState } from 'react'
 import { useConfigStore, useSetTab } from '../../store/useConfigStore'
-import { PRODUCTS, calculateTotal } from '../../data/catalog'
+import { PRODUCTS, calculateTotal, calculateTimeline, calculateTotalHours, getAggregatedWBS } from '../../data/catalog'
 
 export function MasterAgreement() {
     const [agreed, setAgreed] = useState(false)
@@ -33,6 +33,9 @@ export function MasterAgreement() {
     const totalAmountResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length, 1.0);
     const totalAmount = totalAmountResult.total;
     const marketValue = totalAmountResult.marketTotal;
+    const totalTimeline = calculateTimeline(selectedBundle, selectedAddons, probateStates.length)
+    const totalHours = calculateTotalHours(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
+    const aggregatedPhases = getAggregatedWBS(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
 
     const efficiencyDiscount = Math.round(marketValue * 0.15); // 15% platform efficiency
     const familyDiscount = marketValue - efficiencyDiscount - totalAmount;
@@ -356,41 +359,35 @@ export function MasterAgreement() {
 
                     <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', marginTop: '40px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>3. WORK BREAKDOWN STRUCTURE (WBS)</h3>
                     <div style={{ display: 'grid', gap: '24px' }}>
-                        <div>
-                            <h4 style={{ color: 'white', marginBottom: '8px' }}>PHASE 1: FOUNDATION & VAULT ARCHITECTURE (Weeks 1-4)</h4>
-                            <ul style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
-                                <li>GCP Infrastructure provisioning (Run, SQL, Firestore)</li>
-                                <li>Firebase Auth + MFA implementation</li>
-                                <li>AES-256 Vault crypto service implementation</li>
-                                <li>React 18 Component System & CI/CD Setup</li>
-                            </ul>
+                        {aggregatedPhases.length > 0 ? aggregatedPhases.map((phase, idx) => (
+                            <div key={idx}>
+                                <h4 style={{ color: 'white', marginBottom: '8px', textTransform: 'uppercase' }}>
+                                    PHASE {phase.phaseNum}: {phase.name} (Weeks {phase.weeks})
+                                </h4>
+                                <ul style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
+                                    {phase.activities.map((act, i) => (
+                                        <li key={i}>{act.name} — {act.hours}h ({act.role})</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )) : (
+                            <p style={{ color: '#94a3b8', fontStyle: 'italic' }}>Select a bundle or modules to generate WBS.</p>
+                        )}
+                    </div>
+
+                    {/* Dynamic Summary */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginTop: '32px' }}>
+                        <div style={{ background: 'rgba(200,169,81,0.05)', padding: '16px', borderRadius: '8px', textAlign: 'center' }}>
+                            <div style={{ color: '#94a3b8', fontSize: '10px', textTransform: 'uppercase', marginBottom: '5px' }}>Total Timeline</div>
+                            <div style={{ color: 'white', fontSize: '20px', fontWeight: 600 }}>{totalTimeline} Weeks</div>
                         </div>
-                        <div>
-                            <h4 style={{ color: 'white', marginBottom: '8px' }}>PHASE 2: LEGACY LOGIC & ASSET FRAMEWORK (Weeks 5-10)</h4>
-                            <ul style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
-                                <li>Plaid Integration & Legacy Inventory</li>
-                                <li>The Shepherd: Site & Application Logic Guidance</li>
-                                <li>Gemini RAG: Legacy Framework Context & Guidance</li>
-                                <li>Notification System: Life-Event Triggering Logic</li>
-                            </ul>
+                        <div style={{ background: 'rgba(200,169,81,0.05)', padding: '16px', borderRadius: '8px', textAlign: 'center' }}>
+                            <div style={{ color: '#94a3b8', fontSize: '10px', textTransform: 'uppercase', marginBottom: '5px' }}>Engineering Load</div>
+                            <div style={{ color: 'white', fontSize: '20px', fontWeight: 600 }}>{totalHours} Hours</div>
                         </div>
-                        <div>
-                            <h4 style={{ color: 'white', marginBottom: '8px' }}>PHASE 3: MOBILE & DEEP INTEGRATIONS (Weeks 11-16)</h4>
-                            <ul style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
-                                <li>React Native Expo development (iOS/Android)</li>
-                                <li>Biometric Auth & Native Camera modules</li>
-                                <li>Full Webhook handling for Plaid/Stripe/Lob</li>
-                                <li>Offline sync engine for mobile resilience</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 style={{ color: 'white', marginBottom: '8px' }}>PHASE 4: AUDIT, SECURITY & LAUNCH (Weeks 17-20)</h4>
-                            <ul style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
-                                <li>Internal security audit & SOC 2 evidence collection</li>
-                                <li>Load testing (k6) to 1,000 concurrent users</li>
-                                <li>App Store & Play Store submission</li>
-                                <li>Production migration & DNS switchover</li>
-                            </ul>
+                        <div style={{ background: 'rgba(200,169,81,0.1)', padding: '16px', borderRadius: '8px', textAlign: 'center', border: '1px solid rgba(200,169,81,0.3)' }}>
+                            <div style={{ color: '#C8A951', fontSize: '10px', textTransform: 'uppercase', marginBottom: '5px' }}>Total Investment</div>
+                            <div style={{ color: '#C8A951', fontSize: '20px', fontWeight: 700 }}>${totalAmount.toLocaleString()}</div>
                         </div>
                     </div>
 
