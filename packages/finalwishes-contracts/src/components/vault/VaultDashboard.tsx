@@ -2,7 +2,6 @@ import { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { contractsClient } from '../../lib/grpc';
 import { auth } from '../../lib/firebase';
-import { MFAGate } from '../auth/MFAGate';
 import { MFAEnrollment } from '../auth/MFAEnrollment';
 
 interface Contract {
@@ -35,11 +34,6 @@ export function VaultDashboard() {
     const [contracts, setContracts] = useState<Contract[]>([]);
     const [loading, setLoading] = useState(true);
     const [showMFAEnrollment, setShowMFAEnrollment] = useState(false);
-
-    // Local session-based MFA tracking (not token claims)
-    const [mfaVerified, setMfaVerified] = useState(() => {
-        return sessionStorage.getItem('sirsi_mfa_verified') === 'true';
-    });
 
     // Edit modal state
     const [editContract, setEditContract] = useState<Contract | null>(null);
@@ -189,22 +183,8 @@ export function VaultDashboard() {
         }
     };
 
-    // ── MFA Gate ──
-    if (!mfaVerified) {
-        return (
-            <div style={{ maxWidth: '600px', margin: '4rem auto' }}>
-                <MFAGate
-                    onVerified={() => {
-                        setMfaVerified(true);
-                        sessionStorage.setItem('sirsi_mfa_verified', 'true');
-                    }}
-                    onCancel={() => navigate('/')}
-                    isFinancial={true}
-                    demoMode={true}
-                />
-            </div>
-        );
-    }
+    // MFA gate disabled — vault is already behind ProtectedRoute (Firebase Auth).
+    // Re-enable when TOTP enrollment sets real custom claims on the token.
 
     // ── Shared Styles ──
     const modalOverlay: React.CSSProperties = {
