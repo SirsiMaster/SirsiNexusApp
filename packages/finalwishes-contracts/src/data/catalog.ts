@@ -703,8 +703,8 @@ export function calculateTotal(
             const standPrice = product.standalonePrice || Math.round(product.bundledPrice * 1.5)
             const unitPrice = hasBundle ? product.bundledPrice : standPrice
 
-            // Standalone hours are used for market valuation accuracy
-            const unitHours = hasBundle ? product.hours : Math.round(standPrice / 125)
+            // Always use canonical product.hours (timeline × 40 hrs/week)
+            const unitHours = product.hours
 
             if (id === 'ceo-consulting') {
                 const multiplier = Math.max(1, ceoConsultingWeeks)
@@ -795,18 +795,18 @@ const ROLE_DISTRIBUTION = [
  */
 function generateProductWBS(product: Product | Bundle, startWeek: number = 1): WBSPhase[] {
     const timeline = 'timeline' in product ? product.timeline : 16
-    const price = 'price' in product ? product.price : ('bundledPrice' in product ? product.bundledPrice : 0)
     const name = product.name
     const scope = product.detailedScope || []
 
-    // Calculate total hours from price (at $125/hour rate)
-    const totalHours = Math.round(price / HOURLY_RATE)
+    // Use the canonical hours field (timeline × 40 hrs/week)
+    const totalHours = product.hours
+    const totalCost = totalHours * HOURLY_RATE
 
     // Determine number of phases based on timeline
     const numPhases = Math.max(1, Math.ceil(timeline / 4)) // ~4 weeks per phase
     const weeksPerPhase = Math.ceil(timeline / numPhases)
     const hoursPerPhase = Math.ceil(totalHours / numPhases)
-    const costPerPhase = Math.round(price / numPhases)
+    const costPerPhase = Math.round(totalCost / numPhases)
 
     const phases: WBSPhase[] = []
 
@@ -944,59 +944,64 @@ export function getAggregatedWBS(
         const product = PRODUCTS[id]
         if (!product) return
 
-        // Skip recurring/support products for the main dev timeline, 
-        // but include them in WBS if they have hours (except maintenance which is yearly)
+        // Skip maintenance (yearly support, not a dev phase)
         if (id === 'maintenance') return
 
         let multiplier = 1
         if (id === 'ceo-consulting') multiplier = Math.max(1, ceoConsultingWeeks)
         if (id === 'probate') multiplier = Math.max(1, probateStateCount)
 
+        // Use the canonical product.hours field (timeline × 40 hrs/week)
+        // NOT price / $125 — that conflates pricing with engineering effort
+        const totalHours = product.hours * multiplier
+
         const standPrice = product.standalonePrice || Math.round(product.bundledPrice * 1.5)
         const unitPrice = hasBundle ? product.bundledPrice : standPrice
         const totalAddonPrice = unitPrice * multiplier
-        const totalHours = Math.round(totalAddonPrice / HOURLY_RATE)
+        const laborCost = totalHours * HOURLY_RATE
 
         // Only extend timeline for buildable features (weeks unit)
         if (product.timelineUnit === 'weeks' && id !== 'ceo-consulting') {
             const baseDuration = product.timeline
-            // Scaling duration: first state is base, each extra state adds 1 week of parallelized time
             const duration = id === 'probate' ? (baseDuration + (multiplier - 1) * 2) : baseDuration
             const parallelizedWeeks = Math.ceil(duration * 0.5)
             const weekEnd = currentWeekStart + parallelizedWeeks - 1
+            const numActivities = Math.min(product.detailedScope?.length || 1, 4)
+            const hoursPerActivity = Math.round(totalHours / numActivities)
+            const costPerActivity = Math.round(laborCost / numActivities)
 
             addonPhases.push({
                 phaseNum: 0,
                 name: multiplier > 1 ? `${product.name} (${multiplier})` : product.name,
                 weeks: `${currentWeekStart}-${weekEnd}`,
                 hours: totalHours,
-                cost: Math.round(totalAddonPrice * 0.4), // Revenue-at-risk/labor cost factor
-                activities: product.detailedScope?.slice(0, 3).map((scope, i) => ({
+                cost: laborCost,
+                activities: product.detailedScope?.slice(0, 4).map((scope, i) => ({
                     name: scope.title,
                     role: ROLE_DISTRIBUTION[i % ROLE_DISTRIBUTION.length].role,
-                    hours: Math.round(totalHours / 3),
-                    cost: Math.round((totalAddonPrice * 0.4) / 3)
+                    hours: hoursPerActivity,
+                    cost: costPerActivity
                 })) || [{
                     name: `${product.name} Implementation`,
                     role: 'Full Stack',
                     hours: totalHours,
-                    cost: Math.round(totalAddonPrice * 0.4)
+                    cost: laborCost
                 }]
             })
             currentWeekStart = weekEnd + 1
         } else if (id === 'ceo-consulting') {
-            // CEO consulting doesn't extend timeline but is in WBS
+            // CEO consulting runs in parallel — doesn't extend dev timeline
             addonPhases.push({
                 phaseNum: 0,
-                name: `${product.name} (${multiplier} weeks)`,
+                name: `${product.name} (${multiplier} week${multiplier > 1 ? 's' : ''})`,
                 weeks: `1-${multiplier}`,
                 hours: totalHours,
-                cost: Math.round(totalAddonPrice * 0.4),
+                cost: totalAddonPrice,
                 activities: [{
-                    name: 'Strategic Advisory',
+                    name: 'Strategic Advisory & Operational Oversight',
                     role: 'CEO',
                     hours: totalHours,
-                    cost: Math.round(totalAddonPrice * 0.4)
+                    cost: totalAddonPrice
                 }]
             })
         }
