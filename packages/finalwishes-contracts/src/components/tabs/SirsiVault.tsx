@@ -22,6 +22,8 @@ export function SirsiVault() {
     const storeProjectId = useConfigStore(state => state.projectId)
     const projectName = useConfigStore(state => state.projectName)
     const setClientInfo = useConfigStore(state => state.setClientInfo)
+    const entityLegalName = useConfigStore(state => state.entityLegalName)
+    const counterpartyName = useConfigStore(state => state.counterpartyName)
 
     const [signatureData, setSignatureData] = useState({
         name: '',
@@ -92,7 +94,8 @@ export function SirsiVault() {
     const openPrintableMSA = () => {
         const timeline = calculateTimeline(selectedBundle, selectedAddons, probateStates.length) // weeks
         const hours = calculateTotalHours(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length) // total dev hours
-        const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=${sirsiMultiplier}`
+        const counterpartyTitle = useConfigStore.getState().counterpartyTitle
+        const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=${sirsiMultiplier}&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(counterpartyTitle)}`
         window.open(msaUrl, '_blank', 'width=900,height=800,scrollbars=yes,resizable=yes')
     }
 
@@ -133,8 +136,8 @@ export function SirsiVault() {
                     fontHeading: 'Cinzel',
                     fontBody: 'Inter'
                 },
-                countersignerName: 'Cylton Collymore',
-                countersignerEmail: 'cylton@sirsi.ai',
+                countersignerName: counterpartyName,
+                countersignerEmail: 'cylton@sirsi.ai', // Keep email for now as it maps to the auth account
                 stripeConnectAccountId: '' // Future: Fetch from useConfigStore/portfolio mapping
             });
 

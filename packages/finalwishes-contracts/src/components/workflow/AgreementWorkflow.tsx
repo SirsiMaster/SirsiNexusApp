@@ -19,10 +19,11 @@ import { MasterAgreement } from '../tabs/MasterAgreement'
 import { SirsiVault } from '../tabs/SirsiVault'
 
 export function AgreementWorkflow() {
-  const { projectId } = useParams()
+  const { projectId, userId, category, entityId, docId } = useParams()
   const currentTab = useCurrentTab()
   const setProjectId = useConfigStore(state => state.setProjectId)
   const storeProjectId = useConfigStore(state => state.projectId)
+  const setCurrentTab = useConfigStore(state => state.setCurrentTab)
 
   const searchParams = new URLSearchParams(window.location.search)
   const isSuccess = searchParams.get('session_id') !== null && window.location.pathname.endsWith('/payment/success')
@@ -30,11 +31,52 @@ export function AgreementWorkflow() {
   const { data: settings } = useSettings()
   const setSystemSettings = useConfigStore(state => state.setSystemSettings)
 
+  const setClientInfo = useConfigStore(state => state.setClientInfo)
+  const setStore = useConfigStore.setState
+
   useEffect(() => {
-    if (projectId) {
-      setProjectId(projectId)
+    // Priority: entityId from hierarchical route > projectId from old route
+    const targetProjectId = entityId || projectId
+    if (targetProjectId) {
+      setProjectId(targetProjectId)
     }
-  }, [projectId, setProjectId])
+
+    // If we are in the vault hierarchy, we might want to default to the MSA/Review tab
+    if (category === 'contracts' || category === 'partnership') {
+      if (docId) {
+        setCurrentTab('msa') // Default to review for specific documents
+      }
+    }
+
+    // Dynamic Personalization via URL Parameters or Hierarchy
+    const clientParam = searchParams.get('client') || (userId ? userId.charAt(0).toUpperCase() + userId.slice(1).replace(/-/g, ' ') : null)
+    const emailParam = searchParams.get('email') || (userId ? `${userId}@lockhart.com` : null) // Mock fallbacks for Tameeka if userId is used
+    const projectParam = searchParams.get('project')
+    const companyParam = searchParams.get('company')
+
+    // Counterparty / Entity Info
+    const entityParam = searchParams.get('entity')
+    const cpNameParam = searchParams.get('cpName')
+    const cpTitleParam = searchParams.get('cpTitle')
+
+    if (clientParam || emailParam) {
+      setClientInfo(clientParam || '', emailParam || '')
+    }
+    if (projectParam) {
+      setStore({ projectName: projectParam })
+    }
+    if (companyParam) {
+      setStore({ companyName: companyParam })
+    }
+    if (entityParam || cpNameParam || cpTitleParam) {
+      const current = useConfigStore.getState()
+      useConfigStore.getState().setCounterpartyInfo(
+        entityParam || current.entityLegalName,
+        cpNameParam || current.counterpartyName,
+        cpTitleParam || current.counterpartyTitle
+      )
+    }
+  }, [projectId, setProjectId, setClientInfo, setStore])
 
   // Sync global settings (multiplier/maintenance) from Admin
   useEffect(() => {
@@ -45,6 +87,7 @@ export function AgreementWorkflow() {
       })
     }
   }, [settings, setSystemSettings])
+
 
   const [isLightTheme, setIsLightTheme] = useState(false)
 

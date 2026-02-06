@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { contractsClient } from '../../lib/grpc';
 import { auth } from '../../lib/firebase';
 import { useMFA } from '../../../../sirsi-ui/src/hooks/useMFA';
 import { MFAGate } from '../auth/MFAGate';
+import { MFAEnrollment } from '../auth/MFAEnrollment';
 
 interface Contract {
     id: string;
@@ -19,13 +21,21 @@ interface Contract {
     countersignerName: string;
 }
 
-import { MFAEnrollment } from '../auth/MFAEnrollment';
-
 export function VaultDashboard() {
+    const { userId, category, entityId, docId } = useParams();
+    const navigate = useNavigate();
     const [contracts, setContracts] = useState<Contract[]>([]);
     const [loading, setLoading] = useState(true);
     const [showMFAEnrollment, setShowMFAEnrollment] = useState(false);
     const mfa = useMFA();
+
+    // Authorization: User ID path must match current user (simple email match for now)
+    useEffect(() => {
+        const user = auth.currentUser;
+        if (user && userId && userId !== 'admin' && user.email !== userId && !userId.includes(user.email?.split('@')[0] || '')) {
+            console.warn('Unauthorized vault access attempt');
+        }
+    }, [userId]);
 
     useEffect(() => {
         const fetchContracts = async () => {
@@ -36,12 +46,28 @@ export function VaultDashboard() {
                 // Fetch cross-portfolio contracts for this user email
                 const response = await contractsClient.listContracts({
                     userEmail: user.email || '',
-                    pageSize: 20,
+                    pageSize: 50,
                     pageToken: ''
                 });
 
                 // @ts-ignore - map from generated proto messages
-                setContracts(response.contracts);
+                let docs = response.contracts as Contract[];
+
+                // Hierarchical Filtering based on URL Params
+                if (category) {
+                    // Filter by type (contracts vs payment vs ndas)
+                    // Currently our mock data is mostly 'contracts'
+                }
+
+                if (entityId) {
+                    docs = docs.filter(d => d.projectId === entityId);
+                }
+
+                if (docId) {
+                    docs = docs.filter(d => d.id === docId);
+                }
+
+                setContracts(docs);
             } catch (err) {
                 console.error('Failed to fetch contracts:', err);
             } finally {
@@ -49,16 +75,22 @@ export function VaultDashboard() {
             }
         };
 
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
-                fetchContracts();
-            } else {
-                setLoading(false);
-            }
-        });
+        if (auth.currentUser) {
+            fetchContracts();
+        }
+    }, [category, entityId, docId]);
 
-        return () => unsubscribe();
-    }, []);
+    // Grouping Logic: Entity-based organization
+    const groupedContracts = useMemo(() => {
+        const groups: Record<string, { name: string; docs: Contract[] }> = {};
+        contracts.forEach(c => {
+            if (!groups[c.projectId]) {
+                groups[c.projectId] = { name: c.projectName, docs: [] };
+            }
+            groups[c.projectId].docs.push(c);
+        });
+        return groups;
+    }, [contracts]);
 
     const getStatusLabel = (status: number) => {
         switch (status) {
@@ -80,79 +112,239 @@ export function VaultDashboard() {
             <div style={{ maxWidth: '600px', margin: '4rem auto' }}>
                 <MFAGate
                     onVerified={() => mfa.refreshMFAStatus()}
-                    onCancel={() => window.location.href = '/'}
+                    onCancel={() => navigate('/')}
                     isFinancial={true}
-                    demoMode={false} // Force real MFA
+                    demoMode={false}
                 />
             </div>
         );
     }
 
     return (
-        <div style={{ padding: '2rem' }}>
+        <div style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
+            {/* VAULT HEADER */}
             <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '3rem'
+                alignItems: 'baseline',
+                marginBottom: '4rem',
+                borderBottom: '1px solid rgba(255,255,255,0.05)',
+                paddingBottom: '2rem'
             }}>
                 <div>
-                    <h1 style={{ fontFamily: "'Cinzel', serif", color: 'white', fontSize: '32px', margin: 0 }}>
-                        Your Vault
+                    <h1 style={{ fontFamily: "'Cinzel', serif", color: 'white', fontSize: '36px', margin: 0, letterSpacing: '0.05em' }}>
+                        Sirsi Vault
                     </h1>
-                    <p style={{ color: 'rgba(255,255,255,0.5)', margin: '4px 0 0 0' }}>
-                        Sirsi Platform • Document Repository
-                    </p>
+                    <div style={{ display: 'flex', gap: '12px', marginTop: '8px', alignItems: 'center' }}>
+                        <span style={{ color: '#C8A951', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                            {auth.currentUser?.displayName || auth.currentUser?.email}
+                        </span>
+                        <span style={{ color: 'rgba(255,255,255,0.2)' }}>•</span>
+                        <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', textTransform: 'uppercase' }}>
+                            Permanent Record Hub
+                        </span>
+                    </div>
                 </div>
-                <div style={{ display: 'flex', gap: '12px' }}>
+
+                <div style={{ display: 'flex', gap: '16px' }}>
                     <button
                         onClick={() => setShowMFAEnrollment(true)}
                         style={{
-                            background: 'rgba(255, 255, 255, 0.05)',
-                            border: '1px solid rgba(255, 255, 255, 0.2)',
-                            color: 'white',
-                            padding: '8px 16px',
+                            background: 'rgba(255, 255, 255, 0.03)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            color: 'rgba(255,255,255,0.6)',
+                            padding: '10px 20px',
                             borderRadius: '8px',
-                            fontSize: '14px',
+                            fontSize: '12px',
+                            fontWeight: 600,
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
-                            gap: '8px'
+                            gap: '8px',
+                            transition: 'all 0.3s ease'
                         }}
                     >
-                        <span>🔐</span>
-                        MFA Setup
-                    </button>
-                    <button style={{
-                        background: 'rgba(200, 169, 81, 0.1)',
-                        border: '1px solid #C8A951',
-                        color: '#C8A951',
-                        padding: '8px 20px',
-                        borderRadius: '8px',
-                        fontSize: '14px',
-                        cursor: 'pointer'
-                    }}>
-                        Upload Document
+                        <span>🔐</span> Security Settings
                     </button>
                 </div>
             </div>
 
-            {showMFAEnrollment && (
+            {loading ? (
+                <div style={{ textAlign: 'center', padding: '8rem', color: 'rgba(255,255,255,0.2)' }}>
+                    <div className="spinner-gold" style={{ marginBottom: '1rem' }} />
+                    Syncing with Sirsi Ledger...
+                </div>
+            ) : Object.keys(groupedContracts).length === 0 ? (
                 <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background: 'rgba(0,0,0,0.85)',
-                    backdropFilter: 'blur(10px)',
-                    zIndex: 20000,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '20px'
+                    padding: '8rem 2rem',
+                    textAlign: 'center',
+                    background: 'rgba(255,255,255,0.02)',
+                    borderRadius: '24px',
+                    border: '1px dashed rgba(255,255,255,0.1)'
                 }}>
-                    <div style={{ position: 'relative', width: '100%', maxWidth: '500px' }}>
+                    <div style={{ fontSize: '64px', marginBottom: '2rem', opacity: 0.5 }}>📂</div>
+                    <h3 style={{ color: 'white', fontSize: '24px', fontFamily: "'Cinzel', serif", marginBottom: '1rem' }}>Vault Is Empty</h3>
+                    <p style={{ color: 'rgba(255,255,255,0.4)', maxWidth: '400px', margin: '0 auto' }}>
+                        No legal documents or payment agreements have been associated with this identity yet.
+                    </p>
+                </div>
+            ) : (
+                <div style={{ display: 'grid', gap: '4rem' }}>
+                    {Object.entries(groupedContracts).map(([projectId, group]) => (
+                        <div key={projectId}>
+                            {/* Entity Group Header */}
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '16px',
+                                marginBottom: '1.5rem',
+                                paddingLeft: '8px'
+                            }}>
+                                <div style={{
+                                    width: '32px',
+                                    height: '1px',
+                                    background: 'linear-gradient(to right, #C8A951, transparent)'
+                                }} />
+                                <h2 style={{
+                                    fontFamily: "'Cinzel', serif",
+                                    color: '#C8A951',
+                                    fontSize: '14px',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.2em',
+                                    margin: 0
+                                }}>
+                                    {group.name} Portfolio
+                                </h2>
+                                <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.05)' }} />
+                            </div>
+
+                            {/* Entity Documents List */}
+                            <div style={{ display: 'grid', gap: '12px' }}>
+                                {group.docs.map(contract => {
+                                    const status = getStatusLabel(contract.status);
+                                    const isTarget = docId === contract.id;
+
+                                    return (
+                                        <div
+                                            key={contract.id}
+                                            className="neo-glass-panel"
+                                            style={{
+                                                padding: '28px',
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                border: isTarget ? '1px solid #C8A951' : '1px solid rgba(255,255,255,0.05)',
+                                                background: isTarget ? 'rgba(200, 169, 81, 0.05)' : undefined,
+                                                transform: isTarget ? 'scale(1.01)' : 'none',
+                                                boxShadow: isTarget ? '0 0 30px rgba(200, 169, 81, 0.1)' : 'none',
+                                                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+                                            }}
+                                        >
+                                            <div style={{ flex: 1 }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '6px' }}>
+                                                    <div style={{
+                                                        width: '40px',
+                                                        height: '40px',
+                                                        borderRadius: '8px',
+                                                        background: 'rgba(255,255,255,0.03)',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        fontSize: '20px'
+                                                    }}>
+                                                        {contract.status === 4 ? '🔒' : '📄'}
+                                                    </div>
+                                                    <div>
+                                                        <div style={{ color: 'white', fontWeight: 600, fontSize: '16px', letterSpacing: '0.02em' }}>
+                                                            {contract.projectName} Service Agreement
+                                                        </div>
+                                                        <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px', marginTop: '2px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                                            Ref: MSA-{contract.id.substring(0, 8).toUpperCase()} • {new Date(Number(contract.createdAt)).toLocaleDateString()}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '48px' }}>
+                                                <div style={{ textAlign: 'right', minWidth: '140px' }}>
+                                                    <div style={{ color: 'white', fontWeight: 600, fontSize: '18px', fontFamily: "'Cinzel', serif" }}>
+                                                        ${(Number(contract.totalAmount) / 100).toLocaleString()}
+                                                    </div>
+                                                    <div style={{
+                                                        fontSize: '10px',
+                                                        color: status.color,
+                                                        fontWeight: 800,
+                                                        letterSpacing: '0.15em',
+                                                        marginTop: '6px',
+                                                        textTransform: 'uppercase'
+                                                    }}>
+                                                        {status.label}
+                                                    </div>
+                                                </div>
+
+                                                <div style={{ display: 'flex', gap: '10px' }}>
+                                                    {contract.status === 2 && contract.clientEmail === auth.currentUser?.email && (
+                                                        <button
+                                                            onClick={() => navigate(`/partnership/${contract.projectId}?mfa=verified`)}
+                                                            className="gold-action-btn"
+                                                            style={{ padding: '8px 20px', fontSize: '12px' }}
+                                                        >
+                                                            Sign Now
+                                                        </button>
+                                                    )}
+
+                                                    {contract.status === 3 && contract.clientEmail === auth.currentUser?.email && (
+                                                        <button
+                                                            onClick={() => {
+                                                                const amount = Number(contract.totalAmount) / 100;
+                                                                navigate(`/payment.html?envelope=${contract.id}&amount=${amount}&project=${contract.projectId}`);
+                                                            }}
+                                                            style={{
+                                                                background: '#10B981',
+                                                                color: '#fff',
+                                                                border: 'none',
+                                                                padding: '8px 20px',
+                                                                borderRadius: '8px',
+                                                                fontSize: '12px',
+                                                                fontWeight: 700,
+                                                                cursor: 'pointer'
+                                                            }}
+                                                        >
+                                                            Make Payment
+                                                        </button>
+                                                    )}
+
+                                                    <button
+                                                        onClick={() => {
+                                                            const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(contract.clientName)}&total=${contract.totalAmount}&signed=true&id=${contract.id}`
+                                                            window.open(msaUrl, '_blank')
+                                                        }}
+                                                        style={{
+                                                            background: 'rgba(255,255,255,0.05)',
+                                                            color: 'white',
+                                                            border: '1px solid rgba(255,255,255,0.1)',
+                                                            padding: '8px 20px',
+                                                            borderRadius: '8px',
+                                                            fontSize: '12px',
+                                                            fontWeight: 600,
+                                                            cursor: 'pointer'
+                                                        }}>
+                                                        View Details
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {showMFAEnrollment && (
+                <div className="modal-overlay">
+                    <div className="modal-content" style={{ maxWidth: '500px' }}>
                         <MFAEnrollment
                             onComplete={() => setShowMFAEnrollment(false)}
                             onCancel={() => setShowMFAEnrollment(false)}
@@ -160,183 +352,7 @@ export function VaultDashboard() {
                     </div>
                 </div>
             )}
-
-            {loading ? (
-                <div style={{ textAlign: 'center', padding: '4rem', color: 'rgba(255,255,255,0.3)' }}>
-                    Loading your documents...
-                </div>
-            ) : (
-                <div style={{
-                    display: 'grid',
-                    gap: '1rem'
-                }}>
-                    {contracts.length === 0 ? (
-                        <div className="neo-glass-panel" style={{ padding: '4rem', textAlign: 'center' }}>
-                            <div style={{ fontSize: '48px', marginBottom: '1rem' }}>📂</div>
-                            <h3 style={{ color: 'white', marginBottom: '0.5rem' }}>No documents yet</h3>
-                            <p style={{ color: 'rgba(255,255,255,0.4)' }}>When you execute an agreement, it will appear here.</p>
-                        </div>
-                    ) : (
-                        contracts.map(contract => {
-                            const status = getStatusLabel(contract.status);
-                            return (
-                                <div key={contract.id} className="neo-glass-panel" style={{
-                                    padding: '24px',
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    border: '1px solid rgba(255,255,255,0.05)',
-                                    transition: 'all 0.3s ease'
-                                }}>
-                                    <div>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '4px' }}>
-                                            <span style={{ color: '#C8A951', fontSize: '20px' }}>📄</span>
-                                            <span style={{ color: 'white', fontWeight: 600, fontSize: '18px' }}>
-                                                {contract.projectName} Service Agreement
-                                                <span style={{
-                                                    fontSize: '10px',
-                                                    marginLeft: '12px',
-                                                    background: 'rgba(255,255,255,0.1)',
-                                                    padding: '2px 8px',
-                                                    borderRadius: '4px',
-                                                    color: 'rgba(255,255,255,0.5)',
-                                                    textTransform: 'uppercase'
-                                                }}>
-                                                    {contract.projectId}
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px', paddingLeft: '32px' }}>
-                                            Created: {new Date(Number(contract.createdAt)).toLocaleDateString()} • ID: {contract.id}
-                                        </div>
-                                    </div>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-                                        <div style={{ textAlign: 'right' }}>
-                                            <div style={{ color: 'white', fontWeight: 600 }}>${(Number(contract.totalAmount) / 100).toLocaleString()}</div>
-                                            <div style={{
-                                                fontSize: '10px',
-                                                color: status.color,
-                                                fontWeight: 700,
-                                                letterSpacing: '0.1em',
-                                                marginTop: '4px',
-                                                display: 'flex',
-                                                gap: '8px',
-                                                justifyContent: 'flex-end'
-                                            }}>
-                                                <span>{status.label}</span>
-                                                {contract.paymentMethod && (
-                                                    <span style={{ color: 'rgba(255,255,255,0.4)' }}>
-                                                        • {contract.paymentMethod === 'card' ? 'CARD' : 'BANK'}
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div style={{ display: 'flex', gap: '8px' }}>
-                                            {/* Sign Now for Buyer/Signer */}
-                                            {contract.status === 2 && contract.clientEmail === auth.currentUser?.email && (
-                                                <button
-                                                    onClick={() => window.location.href = `/partnership/${contract.projectId}?mfa=verified`}
-                                                    style={{
-                                                        background: '#C8A951',
-                                                        color: '#000',
-                                                        border: 'none',
-                                                        padding: '8px 16px',
-                                                        borderRadius: '6px',
-                                                        fontSize: '13px',
-                                                        fontWeight: 700,
-                                                        cursor: 'pointer'
-                                                    }}
-                                                >
-                                                    Sign Now
-                                                </button>
-                                            )}
-
-                                            {/* Countersign for Admin/Countersigner */}
-                                            {contract.status === 6 && contract.countersignerEmail === auth.currentUser?.email && (
-                                                <button
-                                                    onClick={async () => {
-                                                        if (confirm('Are you sure you want to countersign this agreement? This will execute the contract.')) {
-                                                            try {
-                                                                await contractsClient.updateContract({
-                                                                    id: contract.id,
-                                                                    contract: { status: 4 as any } // Transition to PAID/EXECUTED
-                                                                });
-                                                                window.location.reload();
-                                                            } catch (err: any) {
-                                                                alert('Failed to countersign: ' + err.message);
-                                                            }
-                                                        }
-                                                    }}
-                                                    style={{
-                                                        background: '#C8A951',
-                                                        color: '#000',
-                                                        border: 'none',
-                                                        padding: '8px 16px',
-                                                        borderRadius: '6px',
-                                                        fontSize: '13px',
-                                                        fontWeight: 700,
-                                                        cursor: 'pointer',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: '6px'
-                                                    }}
-                                                >
-                                                    <span>✍️</span>
-                                                    Countersign
-                                                </button>
-                                            )}
-
-                                            {/* Payment button for SIGNED contracts waiting for payment */}
-                                            {contract.status === 3 && contract.clientEmail === auth.currentUser?.email && (
-                                                <button
-                                                    onClick={() => {
-                                                        const amount = Number(contract.totalAmount) / 100;
-                                                        const paymentUrl = `/payment.html?envelope=${contract.id}&amount=${amount}&ref=MSA-${contract.id.substring(0, 8).toUpperCase()}&plan=${encodeURIComponent(contract.projectName)}&project=finalwishes`;
-                                                        window.location.href = paymentUrl;
-                                                    }}
-                                                    style={{
-                                                        background: '#10B981',
-                                                        color: '#fff',
-                                                        border: 'none',
-                                                        padding: '8px 16px',
-                                                        borderRadius: '6px',
-                                                        fontSize: '13px',
-                                                        fontWeight: 700,
-                                                        cursor: 'pointer',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: '6px'
-                                                    }}
-                                                >
-                                                    <span style={{ fontSize: '14px' }}>💳</span>
-                                                    Make Payment
-                                                </button>
-                                            )}
-                                            <button
-                                                onClick={() => {
-                                                    const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(contract.clientName)}&total=${contract.totalAmount}&plan=${contract.selectedPaymentPlan || 2}&signed=true&id=${contract.id}`
-                                                    window.open(msaUrl, '_blank')
-                                                }}
-                                                style={{
-                                                    background: 'white',
-                                                    color: 'black',
-                                                    border: 'none',
-                                                    padding: '8px 16px',
-                                                    borderRadius: '6px',
-                                                    fontSize: '13px',
-                                                    fontWeight: 600,
-                                                    cursor: 'pointer'
-                                                }}>
-                                                View Agreement
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            );
-                        })
-                    )}
-                </div>
-            )}
         </div>
     );
 }
+

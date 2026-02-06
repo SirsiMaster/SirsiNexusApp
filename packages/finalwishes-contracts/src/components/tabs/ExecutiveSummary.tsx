@@ -2,13 +2,20 @@
  * Executive Summary Tab
  * Exact migration from the original HTML
  */
-import { useSetTab } from '../../store/useConfigStore'
+import { useConfigStore, useSetTab } from '../../store/useConfigStore'
+
 
 export function ExecutiveSummary() {
     const setTab = useSetTab()
+    const clientName = useConfigStore(state => state.clientName)
+    const companyName = useConfigStore(state => state.companyName)
+    const projectName = useConfigStore(state => state.projectName)
+    const setClientInfo = useConfigStore(state => state.setClientInfo)
+    const setStore = useConfigStore.setState
 
     return (
         <div style={{ maxWidth: '100%', margin: '0 auto', padding: '0 4rem' }}>
+
             {/* PRIMARY OBJECTIVE BOX */}
             <div style={{ textAlign: 'center', marginBottom: '4rem', marginTop: '2rem' }}>
                 <h2 style={{
@@ -24,6 +31,91 @@ export function ExecutiveSummary() {
                     Executive Summary
                 </h2>
             </div>
+
+            {/* CLIENT IDENTIFICATION SECTION */}
+            <div style={{
+                background: 'rgba(200, 169, 81, 0.05)',
+                border: '1px solid rgba(200, 169, 81, 0.3)',
+                borderRadius: '12px',
+                padding: '32px',
+                marginBottom: '4rem',
+                maxWidth: '800px',
+                margin: '0 auto 4rem auto'
+            }}>
+                <h3 style={{
+                    fontFamily: "'Cinzel', serif",
+                    color: '#FFFFFF',
+                    fontSize: '20px',
+                    marginBottom: '20px',
+                    textAlign: 'center',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em'
+                }}>
+                    Prepared For
+                </h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
+                    <div>
+                        <label style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Client Name</label>
+                        <input
+                            type="text"
+                            placeholder="Enter Name..."
+                            value={clientName}
+                            onChange={(e) => setClientInfo(e.target.value, useConfigStore.getState().clientEmail)}
+                            style={{
+                                width: '100%',
+                                background: 'rgba(255,255,255,0.05)',
+                                border: '1px solid rgba(200, 169, 81, 0.3)',
+                                borderRadius: '6px',
+                                padding: '12px',
+                                color: 'white',
+                                fontSize: '16px',
+                                outline: 'none'
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <label style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Organization</label>
+                        <input
+                            type="text"
+                            placeholder="Company (Optional)..."
+                            value={companyName}
+                            onChange={(e) => setStore({ companyName: e.target.value })}
+                            style={{
+                                width: '100%',
+                                background: 'rgba(255,255,255,0.05)',
+                                border: '1px solid rgba(200, 169, 81, 0.3)',
+                                borderRadius: '6px',
+                                padding: '12px',
+                                color: 'white',
+                                fontSize: '16px',
+                                outline: 'none'
+                            }}
+                        />
+                    </div>
+                    <div>
+                        <label style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Project Name</label>
+                        <input
+                            type="text"
+                            placeholder="e.g. The Lockhart Estate..."
+                            value={projectName}
+                            onChange={(e) => setStore({ projectName: e.target.value })}
+
+                            style={{
+                                width: '100%',
+                                background: 'rgba(255,255,255,0.05)',
+                                border: '1px solid rgba(200, 169, 81, 0.3)',
+                                borderRadius: '6px',
+                                padding: '12px',
+                                color: 'white',
+                                fontSize: '16px',
+                                outline: 'none'
+                            }}
+                        />
+                    </div>
+                </div>
+
+            </div>
+
 
             <div
                 style={{

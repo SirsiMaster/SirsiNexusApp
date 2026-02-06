@@ -4,7 +4,8 @@
  */
 import { useState } from 'react'
 import { useConfigStore, useSetTab } from '../../store/useConfigStore'
-import { PRODUCTS, calculateTotal, calculateTimeline } from '../../data/catalog'
+import { PRODUCTS, BUNDLES, calculateTotal, calculateTimeline } from '../../data/catalog'
+
 
 // All 50 US States + DC
 const US_STATES = [
@@ -37,17 +38,19 @@ export function ConfigureSolution() {
     const setCeoConsultingWeeks = useConfigStore(state => state.setCeoConsultingWeeks)
     const probateStates = useConfigStore(state => state.probateStates)
     const toggleProbateState = useConfigStore(state => state.toggleProbateState)
-    const sirsiMultiplier = useConfigStore(state => state.sirsiMultiplier)
+
 
     const [flippedCard, setFlippedCard] = useState<string | null>(null)
     const [stateSearchQuery, setStateSearchQuery] = useState('')
     const [tempSelectedStates, setTempSelectedStates] = useState<string[]>([])
     const [tempCeoWeeks, setTempCeoWeeks] = useState(ceoConsultingWeeks)
 
-    const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length, sirsiMultiplier)
+    const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length, 1.0)
     const totalInvestment = totalInvestmentResult.total
+
     const estimatedTimeline = calculateTimeline(selectedBundle, selectedAddons, probateStates.length)
     const itemCount = (selectedBundle ? 1 : 0) + selectedAddons.length
+
 
     const bundleSelected = selectedBundle === 'finalwishes-core'
     const standaloneSelected = !bundleSelected && selectedAddons.length > 0
@@ -211,9 +214,16 @@ export function ConfigureSolution() {
                         {/* ROW 4: Price Box */}
                         <div style={{ height: '100px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                             <div style={{ color: '#94a3b8', fontSize: '11px', textTransform: 'uppercase', marginBottom: '4px' }}>Investment</div>
-                            <div style={{ color: 'white', fontFamily: 'Cinzel, serif', fontSize: '32px', fontWeight: 600 }}>$95,000</div>
-                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', marginTop: '4px' }}>16 Week Delivery</div>
+                            <div style={{ color: 'white', fontFamily: 'Cinzel, serif', fontSize: '32px', fontWeight: 600 }}>
+                                ${BUNDLES['finalwishes-core'].price.toLocaleString()}
+                            </div>
+                            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '4px' }}>
+                                Market Value: <span style={{ textDecoration: 'line-through' }}>${(BUNDLES['finalwishes-core'].hours * 250).toLocaleString()}</span>
+                            </div>
+
+                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', marginTop: '4px' }}>{BUNDLES['finalwishes-core'].timeline} Week Delivery</div>
                         </div>
+
 
                         {/* ROW 6: Label */}
                         <div style={{ height: '20px', display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
@@ -441,8 +451,8 @@ export function ConfigureSolution() {
                                             {item.name}
                                         </h4>
 
-                                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
-                                            {showSavings && <span style={{ color: '#64748b', textDecoration: 'line-through', fontSize: '16px' }}>${standPrice.toLocaleString()}</span>}
+                                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+                                            {showSavings && <span style={{ color: '#64748b', textDecoration: 'line-through', fontSize: '14px' }}>${standPrice.toLocaleString()}</span>}
                                             <span style={{ color: '#C8A951', fontWeight: 'bold', fontSize: '28px' }}>
                                                 {item.id === 'ceo-consulting'
                                                     ? `$${(currPrice * ceoConsultingWeeks).toLocaleString()}`
@@ -451,16 +461,18 @@ export function ConfigureSolution() {
                                                         : `$${currPrice.toLocaleString()}`
                                                 }
                                                 {item.id === 'ceo-consulting'
-                                                    ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>({ceoConsultingWeeks} weeks)</span>
+                                                    ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>({ceoConsultingWeeks} w)</span>
                                                     : item.id === 'probate' && probateStates.length > 0
-                                                        ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>({probateStates.length} states)</span>
-                                                        : item.id === 'probate'
-                                                            ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/state</span>
-                                                            : (item.id === 'maintenance'
-                                                                ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/year</span>
-                                                                : (item.recurring ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/mo</span> : ''))}
+                                                        ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>({probateStates.length} s)</span>
+                                                        : (item.id === 'maintenance'
+                                                            ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/yr</span>
+                                                            : (item.recurring ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/mo</span> : ''))}
                                             </span>
                                         </div>
+                                        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
+                                            Market Equivalent: <span style={{ textDecoration: 'line-through' }}>${(item.hours * 250 * (item.id === 'ceo-consulting' ? ceoConsultingWeeks : (item.id === 'probate' ? Math.max(1, probateStates.length) : 1))).toLocaleString()}</span>
+                                        </div>
+
 
                                         {/* Simplified Status Divider */}
                                         <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', margin: '12px 0' }}></div>
@@ -642,9 +654,12 @@ export function ConfigureSolution() {
                                                                 {item.id === 'probate' ? 'Selected' : 'Investment'}
                                                             </span>
                                                             <span style={{ color: '#C8A951', fontSize: '18px', fontWeight: 800 }}>
-                                                                {item.id === 'probate' ? tempSelectedStates.length : `$${(tempCeoWeeks * 6000).toLocaleString()}`}
+                                                                {item.id === 'probate' ? tempSelectedStates.length : `$${(tempCeoWeeks * (bundleSelected ? (PRODUCTS['ceo-consulting']?.bundledPrice || 0) : (PRODUCTS['ceo-consulting']?.standalonePrice || 0))).toLocaleString()}`}
                                                             </span>
+
+
                                                         </div>
+
                                                         {item.id === 'probate' && (
                                                             <button
                                                                 onClick={(e) => { e.stopPropagation(); clearAllStates(); }}

@@ -20,6 +20,9 @@ export function MasterAgreement() {
     const probateStates = useConfigStore(state => state.probateStates)
     const clientName = useConfigStore(state => state.clientName)
     const projectName = useConfigStore(state => state.projectName)
+    const entityLegalName = useConfigStore(state => state.entityLegalName)
+    const counterpartyName = useConfigStore(state => state.counterpartyName)
+    const counterpartyTitle = useConfigStore(state => state.counterpartyTitle)
 
     const currentYear = new Date().getFullYear()
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -27,13 +30,15 @@ export function MasterAgreement() {
 
     // CRITICAL: PER GEMINI.MD RULE 12, all calculations MUST be dynamic.
     // Hardcoded financial values are strictly prohibited.
-    // Dynamic Financial Calculations
-    const totalAmountResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length);
+    const totalAmountResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length, 1.0);
     const totalAmount = totalAmountResult.total;
-    const devHours = Math.round(totalAmount / 125); // ~$125/hr internal boutique rate
-    const grossDevValue = devHours * 250; // $250/hr blended market rate
-    const efficiencyDiscount = Math.round(grossDevValue * 0.25); // ~25% efficiency from Sirsi
-    const familyDiscount = grossDevValue - efficiencyDiscount - totalAmount; // Remainder as Strategic F&F discount
+    const marketValue = totalAmountResult.marketTotal;
+
+    const efficiencyDiscount = Math.round(marketValue * 0.15); // 15% platform efficiency
+    const familyDiscount = marketValue - efficiencyDiscount - totalAmount;
+
+
+
 
 
     return (
@@ -109,7 +114,7 @@ export function MasterAgreement() {
                         </p>
                         <p>
                             <strong>{clientName || 'The Client'}</strong>, an individual or entity ("Client"), and
-                            {" "}<strong>Sirsi Technologies, Inc.</strong>, a Delaware corporation (FEIN: 99-1057313), with its principal place of business at 909 Rose Avenue, Suite 400, North Bethesda MD 20852 ("Provider" or "Sirsi"), represented by <strong>Cylton Collymore</strong>, CEO.
+                            {" "}<strong>{entityLegalName}</strong>, a Delaware corporation (FEIN: 99-1057313), with its principal place of business at 909 Rose Avenue, Suite 400, North Bethesda MD 20852 ("Provider" or "Sirsi"), represented by <strong>{counterpartyName}</strong>, {counterpartyTitle}.
                         </p>
                         <p>Client and Provider may be referred to individually as a "Party" and collectively as the "Parties."</p>
 
@@ -117,7 +122,7 @@ export function MasterAgreement() {
 
                         <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px' }}>1. RECITALS</h3>
                         <p><strong>WHEREAS</strong>, Client desires to engage Provider to design, develop, and implement a <strong>legacy management system</strong> known as <strong>{projectName}</strong> (the "Platform"), with sufficient foundational infrastructure to support future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota; and</p>
-                        <p><strong>WHEREAS</strong>, Provider (Sirsi Technologies, Inc) possesses the requisite technical expertise, personnel, and infrastructure, including expertise in artificial intelligence, cloud architecture, and secure software development, to perform the Services; and</p>
+                        <p><strong>WHEREAS</strong>, Provider ({entityLegalName}) possesses the requisite technical expertise, personnel, and infrastructure, including expertise in artificial intelligence, cloud architecture, and secure software development, to perform the Services; and</p>
                         <p><strong>WHEREAS</strong>, the Platform is to be constructed utilizing Provider's proprietary <strong>Sirsi Nexus V4 Framework</strong> as the foundational architectural layer; and</p>
                         <p><strong>WHEREAS</strong>, the Parties desire to set forth the terms and conditions under which Provider will provide such services and license certain technologies to Client.</p>
                         <p><strong>NOW, THEREFORE</strong>, in consideration of the mutual covenants, terms, and conditions set forth herein, and for other good and valuable consideration, the receipt and sufficiency of which are hereby acknowledged, the Parties agree as follows:</p>
@@ -407,8 +412,9 @@ export function MasterAgreement() {
                     <div style={{ background: 'rgba(255,255,255,0.05)', padding: '24px', borderRadius: '12px', border: '1px solid rgba(200,169,81,0.2)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
                             <span>Gross Development Value (Market Valuation)</span>
-                            <span style={{ color: 'white' }}>${grossDevValue.toLocaleString()}</span>
+                            <span style={{ color: 'white' }}>${marketValue.toLocaleString()}</span>
                         </div>
+
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', color: '#10B981' }}>
                             <span>SirsiNexus Efficiency Discount (25%)</span>
                             <span>-${efficiencyDiscount.toLocaleString()}</span>
@@ -445,6 +451,7 @@ export function MasterAgreement() {
                 }}>
                     Agreement Acknowledgment
                 </h3>
+
                 <label style={{
                     display: 'flex',
                     alignItems: 'flex-start',

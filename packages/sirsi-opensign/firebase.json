@@ -34,44 +34,12 @@
     ],
     "rewrites": [
       {
-        "source": "/partnership/**",
-        "destination": "/index.html"
-      },
-      {
         "source": "/api/**",
         "function": "opensignApi"
       },
       {
-        "source": "/finalwishes/contracts",
-        "destination": "/finalwishes/contracts/index.html"
-      },
-      {
-        "source": "/finalwishes/contracts/",
-        "destination": "/finalwishes/contracts/index.html"
-      },
-      {
-        "source": "/assiduous/contracts",
-        "destination": "/assiduous/contracts/index.html"
-      },
-      {
-        "source": "/assiduous/contracts/",
-        "destination": "/assiduous/contracts/index.html"
-      },
-      {
-        "source": "/sirsi/contracts",
-        "destination": "/sirsi/contracts/index.html"
-      },
-      {
-        "source": "/sirsi/contracts/",
-        "destination": "/sirsi/contracts/index.html"
-      },
-      {
-        "source": "/sign",
-        "destination": "/sign.html"
-      },
-      {
-        "source": "/payment",
-        "destination": "/payment.html"
+        "source": "**",
+        "destination": "/index.html"
       }
     ]
   },

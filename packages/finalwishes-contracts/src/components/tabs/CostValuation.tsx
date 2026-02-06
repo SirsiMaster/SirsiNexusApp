@@ -11,15 +11,17 @@ export function CostValuation() {
     const selectedAddons = useConfigStore(state => state.selectedAddons)
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
     const probateStates = useConfigStore(state => state.probateStates)
-
-    const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)
+    const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length, 1.0)
     const totalInvestment = totalInvestmentResult.total
+    const marketValue = totalInvestmentResult.marketTotal
     const totalTimeline = calculateTimeline(selectedBundle, selectedAddons, probateStates.length)
 
-    // Market Value logic (approx 1.5x - 2x the bundled cost)
-    const marketValue = (totalInvestment / 125) * 250
-    const efficiencyDiscount = Math.round(marketValue * 0.25);
+    // Sirsi Efficiency Discount represents the value gap between market and fixed bid
+    const efficiencyDiscount = Math.round(marketValue * 0.15); // 15% platform efficiency
     const familyDiscount = marketValue - efficiencyDiscount - totalInvestment;
+
+
+
 
     const bundle = selectedBundle ? BUNDLES[selectedBundle] : null
 

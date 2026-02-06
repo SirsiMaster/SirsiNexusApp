@@ -38,17 +38,10 @@ Referral Link (with embedded credentials) → sign.sirsi.ai/onboard/{token}
 |-------|---------|---------------|
 | `/` | Vault landing page (login/register) | No |
 | `/login` | Authentication | No |
-| `/vault` | Document vault dashboard | Yes |
-| `/vault/pending` | Documents awaiting signature | Yes |
-| `/vault/signed` | Signed document archive | Yes |
-| `/onboard/{token}` | Referral-based onboarding | Token-based |
-| `/contracts/configure` | Solution configurator | Token or Auth |
-| `/contracts/review` | Contract review & signature | Token or Auth |
-| `/contracts/payment` | Stripe payment processing | Token or Auth |
-| `/contracts/complete` | Success + vault registration | Token or Auth |
-| `/admin` | Sirsi Admin panel | Admin role |
-| `/admin/templates` | Contract template builder | Admin role |
-| `/admin/clients` | Client management | Admin role |
+| `/vault/:userId` | Personal vault dashboard | Yes |
+| `/vault/:userId/:category` | Filtered vault view (e.g. /contracts) | Yes |
+| `/vault/:userId/contracts/:entity/:docId` | **Document Review & Signature** | Yes |
+| `/partnership/:projectId` | Project onboarding/config | No/Token |
 
 ---
 
@@ -109,30 +102,9 @@ Projects built by Sirsi for clients can integrate:
 - gRPC endpoints for programmatic access
 - Webhook notifications for signature events
 
-### Example Integration
-```javascript
-import { SirsiSign } from '@sirsi/sign-sdk';
-
-const client = new SirsiSign({
-  projectId: 'finalwishes',
-  apiKey: process.env.SIRSI_SIGN_KEY
-});
-
-// Generate onboarding link for new client
-const link = await client.createOnboardingLink({
-  template: 'partnership-agreement',
-  client: {
-    name: 'Tameeka Lockhart',
-    email: 'tameeka@example.com',
-    project: 'FinalWishes'
-  },
-  prefillFields: {
-    tier: 'core-platform',
-    basePrice: 95000
-  }
-});
-// Returns: https://sign.sirsi.ai/onboard/abc123xyz
-```
+### Example Integration (Tameeka Lockhart)
+The new standard hierarchical link for her contract:
+`https://sign.sirsi.ai/vault/tameeka-lockhart/contracts/finalwishes/msa-001`
 
 ---
 

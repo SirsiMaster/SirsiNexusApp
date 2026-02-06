@@ -37,20 +37,18 @@ body {
   padding: 0;
 }
 
-/* Wide Center Channel Gradient Background */
+/* Balanced Sirsi Royal Blue - Softened Glow */
 #root {
-  background: linear-gradient(90deg,
-      #0f172a 0%,
-      #0f172a 10%,
-      #121b2e 25%,
-      #1e3a8a 40%,
-      #1e3a8a 60%,
-      #121b2e 75%,
-      #0f172a 90%,
-      #0f172a 100%);
+  background: radial-gradient(circle at center,
+      #1e40af 0%,
+      #111827 60%,
+      #020617 100%);
   background-attachment: fixed;
   min-height: 100vh;
 }
+
+
+
 
 /* Typography Defaults */
 h1,

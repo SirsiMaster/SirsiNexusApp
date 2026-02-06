@@ -1,0 +1,2462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sirsi - Innovation in Infrastructure</title>
+
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #008A5E;
+            --primary-dark: #006b49;
+            --primary-light: #f0fdf4;
+            --gold: #D4AF37;
+            --gold-dark: #B8860B;
+            --gold-light: #FFF9E5;
+            --text-dark: #0f172a;
+            --text-slate: #475569;
+            --text-light: #94a3b8;
+            --border: #e2e8f0;
+            --bg-page: #ffffff;
+            --glass: rgba(255, 255, 255, 0.9);
+            --glass-gold: rgba(212, 175, 55, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 18px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-page);
+            color: var(--text-dark);
+            line-height: 1.6;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Presentation Wrapper */
+        .presentation {
+            position: relative;
+            flex: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 140px 80px 100px;
+            /* Increased top padding, balanced bottom */
+            display: none;
+            flex-direction: column;
+            background: white;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Typography System */
+        h1,
+        h2,
+        h3,
+        .royal-text {
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.25rem;
+            color: var(--primary);
+            border-bottom: 4px solid var(--gold);
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: var(--gold-dark);
+            margin-bottom: 1rem;
+            letter-spacing: 0.2em;
+        }
+
+        p {
+            font-size: 1.15rem;
+            color: var(--text-slate);
+        }
+
+        .lead {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-dark);
+            max-width: 950px;
+            margin: 0 auto 2rem;
+            text-align: center;
+        }
+
+        /* Document Header Overlay */
+        .doc-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 50px;
+            /* Reduced from 25px */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            border-bottom: 1px solid var(--border);
+            height: 80px;
+            /* Set fixed height for predictability */
+        }
+
+        .header-logo {
+            height: 40px;
+            /* Reduced from 55px */
+            width: auto;
+        }
+
+        .memo-tag {
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            color: var(--text-slate);
+            text-transform: uppercase;
+        }
+
+        /* Cards & Containers */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .info-card {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 35px;
+            position: relative;
+            background: linear-gradient(135deg, #ffffff, #fcfcfc);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+            border-color: var(--primary);
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary);
+        }
+
+        .info-card.gold::before {
+            background: var(--gold);
+        }
+
+        .stat-large {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        /* Sub-Narrative Styles */
+        .value-highlight {
+            background: var(--primary-light);
+            border-left: 8px solid var(--primary);
+            padding: 25px 35px;
+            margin: 20px 0;
+        }
+
+        /* Refined Navigation Footer */
+        .nav-footer {
+            position: fixed;
+            bottom: 20px;
+            /* Adjusted position */
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            padding: 8px 18px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 5000;
+            /* Ensure it is on top */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-radius: 60px;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text-dark);
+            border-radius: 50% !important;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 138, 94, 0.2);
+        }
+
+        .nav-counter {
+            font-weight: 800;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            letter-spacing: 0.1em;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #eef2f7;
+            z-index: 1001;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--gold) 100%);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Title Slide Special */
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 160px 80px 100px;
+            /* Increased top padding to clear header */
+        }
+
+        .title-logo-large {
+            height: 280px;
+            /* Considerable increase */
+            width: auto;
+            margin-bottom: 50px;
+        }
+
+        /* Graph Mockup */
+        .graph-container {
+            height: 250px;
+            width: 100%;
+            border: 1px solid var(--border);
+            position: relative;
+            background: linear-gradient(to bottom, #fff, #f9fafb);
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        /* Custom Scrollbar */
+        .slide::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .slide::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .slide::-webkit-scrollbar-thumb {
+            background: var(--primary);
+        }
+
+        .slide-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+        }
+
+        /* Analysis Memo Style (Slide 12) */
+        .memo-wrap {
+            padding: 40px;
+            background: #fff;
+            border: 2px solid var(--text-dark);
+            color: var(--text-dark);
+        }
+
+        .memo-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin: 15px 0;
+        }
+
+        .memo-table th {
+            background: var(--primary);
+            color: #fff;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .memo-table td {
+            border: 1px solid var(--border);
+            padding: 10px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: slideIn 0.4s forwards cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Grid Utilities */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .grid-2-1 {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .grid-1-2 {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        .grid-header {
+            display: grid;
+            grid-template-columns: 0.8fr 2.2fr;
+            gap: 30px;
+        }
+
+        .grid-table {
+            display: grid;
+            grid-template-columns: 60px 1fr 1fr 1fr;
+            gap: 0;
+        }
+
+        /* Print Styles */
+        @media print {
+            @page {
+                size: landscape;
+                margin: 0.5in;
+            }
+
+            html,
+            body {
+                height: auto;
+                overflow: visible !important;
+                background: white;
+            }
+
+            .nav-footer,
+            .progress-container {
+                display: none !important;
+            }
+
+            .doc-header {
+                position: static !important;
+                border-bottom: 2px solid #000;
+                height: auto;
+                padding: 10px 0;
+                margin-bottom: 20px;
+            }
+
+            .presentation {
+                display: block;
+                height: auto;
+            }
+
+            .slide {
+                display: flex !important;
+                position: relative !important;
+                opacity: 1 !important;
+                page-break-after: always;
+                padding: 20px 0 !important;
+                height: 7in !important;
+                /* Scale for landscape print */
+                width: 10in !important;
+                border: none !important;
+                box-shadow: none !important;
+                background: white !important;
+                overflow: visible !important;
+            }
+
+            .slide-footer {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                border-top: 1px solid #000;
+                padding-top: 10px;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Ensure charts show in print */
+            canvas {
+                max-width: 100% !important;
+                height: auto !important;
+            }
+        }
+
+        /* Mobile Responsiveness - LAST BLOCK FOR HIGHEST SPECIFICITY */
+        @media screen and (max-width: 991px) {
+            html {
+                font-size: 14px !important;
+            }
+
+            body {
+                overflow-x: hidden !important;
+                overflow-y: auto !important;
+                height: auto !important;
+                min-height: 100vh !important;
+                display: block !important;
+            }
+
+            .presentation {
+                height: auto !important;
+                display: block !important;
+                overflow: visible !important;
+            }
+
+            .slide {
+                padding: 80px 20px 80px !important;
+                position: relative !important;
+                height: auto !important;
+                min-height: 100vh !important;
+                opacity: 1 !important;
+                display: none;
+                transition: none !important;
+                overflow: visible !important;
+                background: white !important;
+                width: 100% !important;
+                top: auto !important;
+                left: auto !important;
+            }
+
+            .slide.active {
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            h1 {
+                font-size: 2.2rem !important;
+                margin-bottom: 1rem !important;
+            }
+
+            h2 {
+                font-size: 1.6rem !important;
+                line-height: 1.1 !important;
+                margin-bottom: 1rem !important;
+            }
+
+            h3 {
+                font-size: 0.9rem !important;
+                letter-spacing: 0.2em !important;
+            }
+
+            .lead {
+                font-size: 1.2rem !important;
+                margin-bottom: 1.5rem !important;
+            }
+
+            /* Force ALL grids and potential layouts to 1 column */
+            [style*="grid"],
+            .content-grid,
+            .grid-2,
+            .grid-3,
+            .grid-4,
+            .grid-2-1,
+            .grid-1-2,
+            .grid-header,
+            .grid-table,
+            .doc-grid-system {
+                grid-template-columns: 1fr !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 15px !important;
+            }
+
+            .doc-header {
+                padding: 10px 15px !important;
+                height: 55px !important;
+            }
+
+            .header-logo {
+                height: 30px !important;
+            }
+
+            .nav-footer {
+                bottom: 10px !important;
+                width: 90% !important;
+                padding: 4px 10px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                gap: 10px !important;
+            }
+
+            .nav-btn {
+                width: 36px !important;
+                height: 36px !important;
+                font-size: 0.8rem !important;
+            }
+
+            .nav-counter {
+                font-size: 0.8rem !important;
+                min-width: 60px !important;
+            }
+
+            .progress-container {
+                height: 3px !important;
+            }
+
+            * {
+                max-width: 100% !important;
+                word-wrap: break-word !important;
+                box-sizing: border-box !important;
+            }
+
+            .slide * {
+                white-space: normal !important;
+                line-height: 1.4 !important;
+            }
+
+            .title-slide {
+                padding-top: 80px !important;
+                justify-content: center !important;
+                align-items: center !important;
+            }
+
+            .title-logo-large {
+                height: 100px !important;
+                margin-bottom: 20px !important;
+            }
+
+            .title-slide p {
+                font-size: 1.1rem !important;
+                margin-bottom: 1.5rem !important;
+                text-align: center !important;
+            }
+
+            .stat-large {
+                font-size: 2.2rem !important;
+            }
+
+            .value-highlight {
+                padding: 15px !important;
+                display: block !important;
+            }
+
+            .value-highlight>div {
+                margin-bottom: 10px;
+                text-align: center !important;
+            }
+
+            .value-highlight [style*="display: flex"] {
+                flex-direction: column !important;
+                gap: 10px !important;
+                align-items: center !important;
+                text-align: center !important;
+            }
+
+            .slide-footer {
+                position: relative !important;
+                margin-top: 20px !important;
+                flex-direction: column !important;
+                gap: 5px !important;
+                text-align: center !important;
+            }
+        }
+
+        /* Tablet specific tightening */
+        @media screen and (min-width: 768px) and (max-width: 1024px) {
+            .slide {
+                padding: 100px 40px 90px !important;
+            }
+
+            h2 {
+                font-size: 1.8rem !important;
+            }
+
+            .grid-2,
+            .grid-3 {
+                gap: 15px !important;
+            }
+
+            .traction-grid {
+                flex: none !important;
+                margin-bottom: 15px !important;
+            }
+        }
+
+        @media screen and (min-width: 1400px) {
+            .slide-content-wrap {
+                max-width: 1400px;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                /* Removed margin: 0 auto to restore left-alignment */
+            }
+        }
+
+        @media screen and (max-width: 767px) {
+            .traction-grid {
+                flex: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <header class="doc-header" id="mainHeader">
+        <img src="assets/pitch-deck/sirsi-logo.png" alt="Sirsi Logo" class="header-logo">
+        <div class="memo-tag">PRIVATE SEED MEMORANDUM // INVESTOR RELATIONS</div>
+    </header>
+
+    <main class="presentation">
+
+
+        <!-- Slide 1: Title -->
+        <div class="slide title-slide active">
+            <div
+                style="margin: auto 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <img src="assets/pitch-deck/sirsi-logo.png" alt="Sirsi Logo" class="title-logo-large">
+                <p
+                    style="letter-spacing: 0.15em; font-weight: 400; font-size: 1.8rem; margin-bottom: 3rem; color: var(--primary); text-transform: uppercase; line-height: 1.8;">
+                    Autonomous Operating System for AI Infrastructure
+                </p>
+                <div
+                    style="border: 2px solid var(--gold); padding: 12px 35px; display: inline-block; background: var(--gold-light);">
+                    <h3 style="margin: 0; color: var(--text-dark); font-size: 1.1rem; letter-spacing: 0.1em;">SEED
+                        OFFERING: $12.1M</h3>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>SIRSI TECHNOLOGIES INC.</div>
+                <div>CONFIDENTIAL // SLIDE 01</div>
+            </div>
+        </div>
+        <!-- Slide 2: Vision - The Cost of Complexity -->
+        <div class="slide">
+            <h3>Strategic Vision</h3>
+            <h2>The Infrastructure Paradox</h2>
+            <div class="grid-2-1" style="align-items: center; gap: 60px;">
+                <div>
+                    <p class="lead" style="text-align: left; margin: 0 0 20px; font-size: 1.5rem;">The bottleneck of AI
+                        isn't the code—it's
+                        the <strong>Operational Lifecycle</strong>. Building is easy. Scaling is crushing.
+                    </p>
+                    <div class="value-highlight" style="padding: 20px;">
+                        <p style="color: var(--primary); font-weight: 700; font-size: 1.2rem;">35% Cloud Waste.</p>
+                        <p style="font-size: 1.1rem;">Enterprises waste $600K on every $2M spent due to idle resources
+                            and inefficient
+                            architectural patterns.</p>
+                    </div>
+                    <p style="font-size: 1.1rem;">Sirsi automates the "crushing lifecycle": <strong>Migrate, Optimize, &
+                            Scale</strong>. We move
+                        you from reactive firefighting to predictive, autonomous operations instantly.</p>
+                </div>
+                <div class="info-card gold" style="text-align: center;">
+                    <div class="stat-large">$6.2M</div>
+                    <h3>5-Year Net TCO Savings</h3>
+                    <p style="font-size: 1rem;">Per Enterprise Instance</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>SIRSI TECHNOLOGIES INC.</div>
+                <div>CONFIDENTIAL // SLIDE 02</div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Problem - The DevOps Debt -->
+        <div class="slide">
+            <h3>Market Gap</h3>
+            <h2>The Infrastructure Chasm</h2>
+            <div class="lead"
+                style="margin-bottom: 30px; font-weight: 700; color: var(--primary); font-size: 1.4rem; white-space: nowrap; max-width: none; overflow: visible;">
+                "Building the app is 50% of the problem. Deployment kills innovation."</div>
+            <div class="content-grid">
+                <div class="info-card">
+                    <h4 class="royal-text" style="color: var(--primary);">01 / The Salary Tax</h4>
+                    <p style="font-size: 1.1rem;">Hiring a competent DevOps team costs <strong>$250k–$750k
+                            annually</strong>. This kills 60% of
+                        startups before they find market fit.</p>
+                </div>
+                <div class="info-card">
+                    <h4 class="royal-text" style="color: var(--primary);">02 / The Innovation Leak</h4>
+                    <p style="font-size: 1.1rem;">Infrastructure teams spend <strong>60% of their time</strong> on
+                        manual operations vs. core
+                        product innovation.</p>
+                </div>
+                <div class="info-card">
+                    <h4 class="royal-text" style="color: var(--primary);">03 / The Resiliency Risk</h4>
+                    <p style="font-size: 1.1rem;">Downtime costs <strong>$5,600 per minute</strong>. Migration and
+                        scaling failures consume 20% of
+                        engineering bandwidth.</p>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>SIRSI TECHNOLOGIES INC.</div>
+                <div>CONFIDENTIAL // SLIDE 03</div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Solution - Design, Build, Host -->
+        <div class="slide">
+            <h3>The Solution</h3>
+            <h2>Complete Lifecycle Management</h2>
+            <div class="grid-4" style="gap: 20px; text-align: center;">
+                <div class="info-card">
+                    <i class="fas fa-drafting-compass"
+                        style="font-size: 3.5rem; color: var(--primary); margin-bottom: 15px;"></i>
+                    <h4 class="royal-text">Design</h4>
+                    <p style="font-size: 0.95rem;">Integrated app blueprints and automated environment architecture.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-layer-group"
+                        style="font-size: 3.5rem; color: var(--primary); margin-bottom: 15px;"></i>
+                    <h4 class="royal-text">Build</h4>
+                    <p style="font-size: 0.95rem;">Proxies, nodes, routers, and containers provisioned in seconds.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-server" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 15px;"></i>
+                    <h4 class="royal-text">Host</h4>
+                    <p style="font-size: 0.95rem;">Hardened secure environments with zero-config encryption.</p>
+                </div>
+                <div class="info-card gold">
+                    <i class="fas fa-chart-line"
+                        style="font-size: 3.5rem; color: var(--gold); margin-bottom: 15px;"></i>
+                    <h4 class="royal-text">Scale</h4>
+                    <p style="font-size: 0.95rem;">Self-healing orchestration across AWS, Azure, and GCP.</p>
+                </div>
+            </div>
+            <div class="value-highlight" style="margin-top: 30px; text-align: center;">
+                <p
+                    style="font-style: italic; font-size: 1.15rem; color: var(--text-dark); white-space: nowrap; max-width: none;">
+                    "Sirsi let us build and deploy our AI platform with one developer. No DevOps team needed." <strong
+                        style="color: var(--primary);">— CEO, Assiduous Realty</strong>
+                </p>
+            </div>
+            <div class="slide-footer">
+                <div>SIRSI TECHNOLOGIES INC.</div>
+                <div>CONFIDENTIAL // SLIDE 04</div>
+            </div>
+        </div>
+
+        <!-- Slide 5: The Intellectual Moat -->
+        <div class="slide">
+            <h3
+                style="font-size: 0.85rem; letter-spacing: 0.4em; margin-bottom: 0.4rem; color: var(--gold-dark); font-weight: 800; text-transform: uppercase;">
+                Technical Advantage</h3>
+            <h2 style="font-size: 2.5rem; line-height: 1; letter-spacing: -0.02em; font-weight: 950;">3 Patents. One
+                Insight.</h2>
+
+            <p class="lead" style="text-align: left; margin: 8px 0 20px; font-size: 1.2rem; max-width: none;">
+                Every competitor is missing this combination.
+            </p>
+
+            <div class="content-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                <!-- Patent 1 -->
+                <div class="info-card" style="padding: 15px;">
+                    <div>
+                        <i class="fas fa-brain"
+                            style="font-size: 1.8rem; color: var(--primary); margin-bottom: 12px;"></i>
+                        <h4 class="royal-text" style="color: var(--primary); margin-bottom: 12px; font-size: 0.9rem;">
+                            Nexus: LLM + KG</h4>
+                        <p style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px;">Natural language
+                            understands
+                            YOUR infrastructure. Learns from deployments. Gets smarter with scale.</p>
+                    </div>
+                    <div
+                        style="background: var(--gold-light); border: 1px solid var(--gold); padding: 10px; font-size: 0.8rem; border-left: 4px solid var(--gold); margin-top: auto;">
+                        <strong style="color: var(--gold-dark);">Why:</strong> Terraform = 10K lines. <strong
+                            style="color: var(--primary);">Sirsi = Intent.</strong>
+                    </div>
+                </div>
+
+                <!-- Patent 2 -->
+                <div class="info-card" style="padding: 15px;">
+                    <div>
+                        <i class="fas fa-network-wired"
+                            style="font-size: 1.8rem; color: var(--primary); margin-bottom: 12px;"></i>
+                        <h4 class="royal-text" style="color: var(--primary); margin-bottom: 12px; font-size: 0.9rem;">
+                            Fractal Architecture</h4>
+                        <p style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px;">Multi-agent coordination
+                            across clouds. Orchestrates GPUs, storage, networking. No YAML. Pure AI.</p>
+                    </div>
+                    <div
+                        style="background: var(--gold-light); border: 1px solid var(--gold); padding: 10px; font-size: 0.8rem; border-left: 4px solid var(--gold); margin-top: auto;">
+                        <strong style="color: var(--gold-dark);">Why:</strong> K8s = Manual. <strong
+                            style="color: var(--primary);">Sirsi = Auto-optimized.</strong>
+                    </div>
+                </div>
+
+                <!-- Patent 3 -->
+                <div class="info-card" style="padding: 15px;">
+                    <div>
+                        <i class="fas fa-search-nodes"
+                            style="font-size: 1.8rem; color: var(--primary); margin-bottom: 12px;"></i>
+                        <h4 class="royal-text" style="color: var(--primary); margin-bottom: 12px; font-size: 0.9rem;">
+                            NebuLang: KG Query</h4>
+                        <p style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px;">Query infrastructure like a
+                            database. Real-time visibility. Predictive scaling. Built-in cost forecasting.</p>
+                    </div>
+                    <div
+                        style="background: var(--gold-light); border: 1px solid var(--gold); padding: 10px; font-size: 0.8rem; border-left: 4px solid var(--gold); margin-top: auto;">
+                        <strong style="color: var(--gold-dark);">Why:</strong> CW = Reactive. <strong
+                            style="color: var(--primary);">NebuLang = Predictive.</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="value-highlight" style="padding: 15px 30px; margin-bottom: 20px; border-radius: 4px;">
+                <p style="margin: 0; font-size: 1.05rem; color: var(--text-dark); line-height: 1.6; font-weight: 500;">
+                    <strong style="color: var(--primary);">The combination is defensible.</strong> None connect LLM
+                    understanding → multi-agent orchestration → real-time query. Complex platforms deploy in
+                    weeks with one developer.
+                </p>
+            </div>
+
+            <!-- LLM Integration Bar -->
+            <div
+                style="background: var(--primary-light); border: 1px solid var(--primary); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;">
+                <div style="font-weight: 800; color: var(--primary); font-size: 0.8rem; letter-spacing: 0.05em;">
+                    UNIVERSAL LLM INTEGRATION PORTAL</div>
+                <div style="display: flex; gap: 30px; font-weight: 700; font-size: 0.8rem; color: var(--text-dark);">
+                    <span>■ OPENAI (GPT-5+)</span>
+                    <span>■ ANTHROPIC (CLAUDE 4+)</span>
+                    <span>■ GOOGLE (GEMINI 3+)</span>
+                    <span>■ OPEN SOURCE</span>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div>SIRSI TECHNOLOGIES INC.</div>
+                <div>CONFIDENTIAL // SLIDE 05</div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Tech Stack - Foundational Core Schematic -->
+        <div class="slide">
+            <!-- Standardized Header -->
+            <div style="padding-bottom: 5px; margin-bottom: 15px;">
+                <h3
+                    style="font-size: 0.85rem; letter-spacing: 0.4em; margin-bottom: 0.4rem; color: var(--gold-dark); font-weight: 800;">
+                    PLATFORM INFRASTRUCTURE</h3>
+                <h2 style="font-size: 2.5rem; line-height: 1; letter-spacing: -0.02em; font-weight: 950;">Technical
+                    Bedrock. <span style="color: var(--primary);">Autonomous Core.</span></h2>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 18px; flex: 1;">
+                <!-- Row 1: Technical Tiers (Schematic Grid) -->
+                <!-- Row 1: 4x2 Grid of Tech Pillars -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+
+                    <!-- TIER 01: RUST -->
+                    <div class="info-card"
+                        style="padding: 15px; border-top: 5px solid var(--primary); background: #fff; display: flex; flex-direction: column; gap: 8px;">
+                        <div>
+                            <div
+                                style="font-size: 0.6rem; letter-spacing: 0.15em; font-weight: 800; color: var(--text-slate); margin-bottom: 2px;">
+                                TIER 01 // CORE KERNEL</div>
+                            <div style="font-size: 1.3rem; font-weight: 950; color: var(--text-dark); line-height: 1;">
+                                RUST</div>
+                        </div>
+                        <div style="border-top: 1.5px solid var(--border); padding-top: 8px;">
+                            <div
+                                style="font-size: 0.7rem; font-weight: 950; color: var(--primary); margin-bottom: 3px; text-transform: uppercase;">
+                                Schema // Consensus</div>
+                            <div style="font-size: 0.75rem; line-height: 1.3; color: var(--text-dark);">Native
+                                integration of Hashgraph Algorithm. Utilizes eBPF hooks for hardware security.</div>
+                        </div>
+                    </div>
+
+                    <!-- TIER 02: GO -->
+                    <div class="info-card"
+                        style="padding: 15px; border-top: 5px solid var(--gold); background: #fff; display: flex; flex-direction: column; gap: 8px;">
+                        <div>
+                            <div
+                                style="font-size: 0.6rem; letter-spacing: 0.15em; font-weight: 800; color: var(--text-slate); margin-bottom: 2px;">
+                                TIER 02 // ORCHESTRATION</div>
+                            <div style="font-size: 1.3rem; font-weight: 950; color: var(--text-dark); line-height: 1;">
+                                GO</div>
+                        </div>
+                        <div style="border-top: 1.5px solid var(--border); padding-top: 8px;">
+                            <div
+                                style="font-size: 0.7rem; font-weight: 950; color: var(--gold-dark); margin-bottom: 3px; text-transform: uppercase;">
+                                Stack // Fabric</div>
+                            <div style="font-size: 0.75rem; line-height: 1.3; color: var(--text-dark);">High-frequency
+                                data mesh. Relational persistence with atomic state synchronization.</div>
+                        </div>
+                    </div>
+
+                    <!-- TIER 03: HEDERA -->
+                    <div class="info-card"
+                        style="padding: 15px; border-top: 5px solid var(--primary); background: #fff; display: flex; flex-direction: column; gap: 8px;">
+                        <div>
+                            <div
+                                style="font-size: 0.6rem; letter-spacing: 0.15em; font-weight: 800; color: var(--text-slate); margin-bottom: 2px;">
+                                TIER 03 // TRUST LAYER</div>
+                            <div style="font-size: 1.3rem; font-weight: 950; color: var(--text-dark); line-height: 1;">
+                                HEDERA</div>
+                        </div>
+                        <div style="border-top: 1.5px solid var(--border); padding-top: 8px;">
+                            <div
+                                style="font-size: 0.7rem; font-weight: 950; color: var(--primary); margin-bottom: 3px; text-transform: uppercase;">
+                                DLT // VERIFICATION</div>
+                            <div style="font-size: 0.75rem; line-height: 1.3; color: var(--text-dark);">Immutable audit
+                                trails. Publicly verifiable state logs and DID standards.</div>
+                        </div>
+                    </div>
+
+                    <!-- TIER 04: NGINX -->
+                    <div class="info-card"
+                        style="padding: 15px; border-top: 5px solid var(--gold); background: #fff; display: flex; flex-direction: column; gap: 8px;">
+                        <div>
+                            <div
+                                style="font-size: 0.6rem; letter-spacing: 0.15em; font-weight: 800; color: var(--text-slate); margin-bottom: 2px;">
+                                TIER 04 // EDGE FABRIC</div>
+                            <div style="font-size: 1.3rem; font-weight: 950; color: var(--text-dark); line-height: 1;">
+                                NGINX</div>
+                        </div>
+                        <div style="border-top: 1.5px solid var(--border); padding-top: 8px;">
+                            <div
+                                style="font-size: 0.7rem; font-weight: 950; color: var(--gold-dark); margin-bottom: 3px; text-transform: uppercase;">
+                                ROUTING // CACHE</div>
+                            <div style="font-size: 0.75rem; line-height: 1.3; color: var(--text-dark);">Layer 7
+                                balancing. High-speed edge caching for secure autonomous endpoints.</div>
+                        </div>
+                    </div>
+
+                    <!-- TIER 05: PYTHON -->
+                    <div class="info-card"
+                        style="padding: 15px; border-top: 5px solid var(--primary); background: #fff; display: flex; flex-direction: column; gap: 8px;">
+                        <div>
+                            <div
+                                style="font-size: 0.6rem; letter-spacing: 0.15em; font-weight: 800; color: var(--text-slate); margin-bottom: 2px;">
+                                TIER 05 // INTELLIGENCE</div>
+                            <div style="font-size: 1.3rem; font-weight: 950; color: var(--text-dark); line-height: 1;">
+                                PYTHON</div>
+                        </div>
+                        <div style="border-top: 1.5px solid var(--border); padding-top: 8px;">
+                            <div
+                                style="font-size: 0.7rem; font-weight: 950; color: var(--primary); margin-bottom: 3px; text-transform: uppercase;">
+                                LOGIC // AI SUPPORT</div>
+                            <div style="font-size: 0.75rem; line-height: 1.3; color: var(--text-dark);">Self-healing
+                                patterns. Integration with PyTorch for verifiable inference.</div>
+                        </div>
+                    </div>
+
+                    <!-- TIER 06: TANSTACK -->
+                    <div class="info-card"
+                        style="padding: 15px; border-top: 5px solid var(--gold); background: #fff; display: flex; flex-direction: column; gap: 8px;">
+                        <div>
+                            <div
+                                style="font-size: 0.6rem; letter-spacing: 0.15em; font-weight: 800; color: var(--text-slate); margin-bottom: 2px;">
+                                TIER 06 // DATA STATES</div>
+                            <div style="font-size: 1.3rem; font-weight: 950; color: var(--text-dark); line-height: 1;">
+                                TANSTACK</div>
+                        </div>
+                        <div style="border-top: 1.5px solid var(--border); padding-top: 8px;">
+                            <div
+                                style="font-size: 0.7rem; font-weight: 950; color: var(--gold-dark); margin-bottom: 3px; text-transform: uppercase;">
+                                QUERY // TELEMETRY</div>
+                            <div style="font-size: 0.75rem; line-height: 1.3; color: var(--text-dark);">High-performance
+                                data fetching. Declarative management for infra telemetry.</div>
+                        </div>
+                    </div>
+
+                    <!-- TIER 07: FIREBASE -->
+                    <div class="info-card"
+                        style="padding: 15px; border-top: 5px solid var(--primary); background: #fff; display: flex; flex-direction: column; gap: 8px;">
+                        <div>
+                            <div
+                                style="font-size: 0.6rem; letter-spacing: 0.15em; font-weight: 800; color: var(--text-slate); margin-bottom: 2px;">
+                                TIER 07 // IDENTITY</div>
+                            <div style="font-size: 1.3rem; font-weight: 950; color: var(--text-dark); line-height: 1;">
+                                FIREBASE</div>
+                        </div>
+                        <div style="border-top: 1.5px solid var(--border); padding-top: 8px;">
+                            <div
+                                style="font-size: 0.7rem; font-weight: 950; color: var(--primary); margin-bottom: 3px; text-transform: uppercase;">
+                                AUTH // SYNC</div>
+                            <div style="font-size: 0.75rem; line-height: 1.3; color: var(--text-dark);">Biometric
+                                session security. Real-time document synchronization across agents.</div>
+                        </div>
+                    </div>
+
+                    <!-- TIER 08: TYPESCRIPT -->
+                    <div class="info-card"
+                        style="padding: 15px; border-top: 5px solid var(--gold); background: #fff; display: flex; flex-direction: column; gap: 8px;">
+                        <div>
+                            <div
+                                style="font-size: 0.6rem; letter-spacing: 0.15em; font-weight: 800; color: var(--text-slate); margin-bottom: 2px;">
+                                TIER 08 // UX PLANE</div>
+                            <div style="font-size: 1.3rem; font-weight: 950; color: var(--text-dark); line-height: 1;">
+                                TS</div>
+                        </div>
+                        <div style="border-top: 1.5px solid var(--border); padding-top: 8px;">
+                            <div
+                                style="font-size: 0.7rem; font-weight: 950; color: var(--gold-dark); margin-bottom: 3px; text-transform: uppercase;">
+                                UI // DELIVERY</div>
+                            <div style="font-size: 0.75rem; line-height: 1.3; color: var(--text-dark);">Next.js 15
+                                delivery. Sub-second latency with reactive bank-grade UI.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2: Systemic Advantage (Wide Blueprint Bar) -->
+                <div
+                    style="background: linear-gradient(to right, var(--primary-light), #ffffff); padding: 20px 25px; border: 1.5px solid var(--primary); border-left: 12px solid var(--gold);">
+                    <div style="display: grid; grid-template-columns: 1.4fr 2.6fr 1fr; gap: 40px; align-items: center;">
+                        <!-- Heading -->
+                        <div>
+                            <div
+                                style="font-size: 0.75rem; font-weight: 950; color: var(--primary); letter-spacing: 0.4em; margin-bottom: 5px; text-transform: uppercase;">
+                                STRATEGIC MEMO</div>
+                            <h4
+                                style="font-size: 1.5rem; font-weight: 900; letter-spacing: -0.01em; color: var(--text-dark); margin: 0; line-height: 1.1;">
+                                SYSTEMIC<br>ADVANTAGE</h4>
+                        </div>
+
+                        <!-- Core Pillars -->
+                        <div
+                            style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; border-left: 2px solid var(--border); padding-left: 35px; border-right: 2px solid var(--border); padding-right: 35px;">
+                            <div>
+                                <div
+                                    style="font-weight: 950; font-size: 0.8rem; color: var(--primary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">
+                                    § 01 // IP GATEWAY</div>
+                                <div
+                                    style="font-size: 0.95rem; line-height: 1.3; color: var(--text-dark); font-weight: 500;">
+                                    <strong>Hedera Mainnet</strong> hardware trails for all IP transitions.
+                                </div>
+                            </div>
+                            <div>
+                                <div
+                                    style="font-weight: 950; font-size: 0.8rem; color: var(--primary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">
+                                    § 02 // OMNI-MESH</div>
+                                <div
+                                    style="font-size: 0.95rem; line-height: 1.3; color: var(--text-dark); font-weight: 500;">
+                                    Unified <strong>Docker/k8s</strong> managed by Sirsi Hypervisor.</div>
+                            </div>
+                            <div>
+                                <div
+                                    style="font-weight: 950; font-size: 0.8rem; color: var(--primary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">
+                                    § 03 // VAULT CORE</div>
+                                <div
+                                    style="font-size: 0.95rem; line-height: 1.3; color: var(--text-dark); font-weight: 500;">
+                                    Biometric silicon identity via <strong>Sirsi Vault</strong> logic.</div>
+                            </div>
+                        </div>
+
+                        <!-- ROI Yield -->
+                        <div style="text-align: right;">
+                            <div
+                                style="font-weight: 950; font-size: 0.75rem; color: var(--gold-dark); margin-bottom: 4px; text-transform: uppercase;">
+                                EFFICIENCY YIELD</div>
+                            <div
+                                style="font-size: 3rem; font-weight: 950; line-height: 1; color: var(--primary); letter-spacing: -0.04em;">
+                                +30.1%</div>
+                            <div style="font-weight: 800; font-size: 0.75rem; color: var(--text-slate);">CAPITAL ROI
+                                INCREASE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Provider Ribbon (Refined) -->
+            <div
+                style="margin-top: 15px; padding: 12px 0; display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid var(--border); opacity: 0.8;">
+                <div
+                    style="font-weight: 800; font-size: 0.8rem; color: var(--text-slate); letter-spacing: 0.3em; text-transform: uppercase;">
+                    UNIVERSAL PROVIDER ECOSYSTEM</div>
+                <div
+                    style="display: flex; gap: 40px; color: var(--text-light); align-items: center; filter: grayscale(1);">
+                    <i class="fab fa-aws fa-lg"></i>
+                    <i class="fab fa-microsoft fa-lg"></i>
+                    <i class="fab fa-google fa-lg"></i>
+                    <i class="fab fa-docker fa-lg"></i>
+                    <i class="fas fa-dharmachakra fa-lg"></i>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div style="font-size: 0.85rem; font-weight: 600;">CONFIDENTIAL // SLIDE 06</div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Go To Market - Strategic Execution Schematic -->
+        <div class="slide" style="position: relative; overflow: hidden;">
+            <!-- Technical Dot Matrix -->
+            <div
+                style="position: absolute; top: 0; right: 0; width: 400px; height: 400px; background-image: radial-gradient(var(--primary) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity: 0.12; pointer-events: none;">
+            </div>
+            <div
+                style="position: absolute; bottom: 0; left: 0; width: 400px; height: 400px; background-image: radial-gradient(var(--gold) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity: 0.12; pointer-events: none;">
+            </div>
+
+            <!-- Standardized Header (Slide 6 Alignment) -->
+            <!-- Standardized Header -->
+            <div style="padding-bottom: 5px; margin-bottom: 15px;">
+                <h3
+                    style="font-size: 0.85rem; letter-spacing: 0.4em; margin-bottom: 0.4rem; color: var(--gold-dark); font-weight: 800;">
+                    GO TO MARKET STRATEGY</h3>
+                <h2 style="font-size: 2.5rem; line-height: 1; letter-spacing: -0.02em; font-weight: 900;">Execution
+                    Path.
+                    <span style="color: var(--primary);">Systemic Adoption.</span>
+                </h2>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 20px; flex: 1; position: relative;">
+                <!-- Integrated Technical Status Bar (Jazz) -->
+                <div
+                    style="display: flex; align-items: center; gap: 20px; margin-bottom: 10px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; color: var(--text-slate);">
+                    <div style="color: var(--gold-dark);">MOAT VALIDATION //</div>
+                    <div
+                        style="padding: 4px 12px; border: 1px solid var(--gold); border-radius: 4px; color: var(--text-dark);">
+                        3 PATENTS PENDING</div>
+                    <div
+                        style="padding: 4px 12px; border: 1px solid var(--primary); border-radius: 4px; color: var(--text-dark);">
+                        $135K INITIAL ACV</div>
+                    <div
+                        style="padding: 4px 12px; border: 1px solid var(--text-dark); border-radius: 4px; color: var(--text-dark);">
+                        NVIDIA INCEPTION PARTNER</div>
+                    <div style="flex: 1; height: 1px; background: var(--border); opacity: 0.5;"></div>
+                </div>
+
+                <!-- Decorative Technical Alignment Marks -->
+                <div
+                    style="position: absolute; top: -10px; left: -10px; width: 20px; height: 20px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); opacity: 0.3;">
+                </div>
+                <div
+                    style="position: absolute; top: -10px; right: -10px; width: 20px; height: 20px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); opacity: 0.3;">
+                </div>
+
+                <!-- Roadmap Engine -->
+                <div style="display: flex; flex-direction: column; gap: 0;">
+                    <!-- Milestones: Top -->
+                    <div class="grid-table" style="margin-bottom: 10px; padding-left: 20px;">
+                        <div></div>
+                        <div
+                            style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin: 0 15px;">
+                            <div style="font-weight: 900; font-size: 1rem; color: var(--text-dark);">Winter 2025</div>
+                            <div
+                                style="font-size: 0.7rem; font-weight: 700; color: var(--gold-dark); text-transform: uppercase;">
+                                Phase I // Sirsi AI MVP</div>
+                        </div>
+                        <div
+                            style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin: 0 15px;">
+                            <div style="font-weight: 900; font-size: 1rem; color: var(--text-dark);">Summer 2026</div>
+                            <div
+                                style="font-size: 0.7rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">
+                                Phase II // Portal Launch</div>
+                        </div>
+                        <div
+                            style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin: 0 15px;">
+                            <div style="font-weight: 900; font-size: 1rem; color: var(--text-dark);">Fall 2027</div>
+                            <div
+                                style="font-size: 0.7rem; font-weight: 700; color: var(--text-dark); text-transform: uppercase;">
+                                Phase III // On-Prem</div>
+                        </div>
+                    </div>
+
+                    <!-- Flow Conduit -->
+                    <div style="display: flex; align-items: stretch; margin-bottom: 12px; gap: 8px; height: 80px;">
+                        <div
+                            style="width: 60px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; color: var(--text-slate); letter-spacing: 0.3em; writing-mode: vertical-lr; text-transform: uppercase; border-right: 2px solid var(--gold); transform: rotate(180deg);">
+                            START</div>
+
+                        <div
+                            style="flex: 1; background: var(--primary-light); border: 2px solid var(--primary); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; letter-spacing: 0.1em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%);">
+                            IP DEVELOPMENT</div>
+
+                        <div
+                            style="flex: 1; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; letter-spacing: 0.1em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%, 6% 50%); margin-left: -10px;">
+                            PUBLIC RELEASE</div>
+
+                        <div
+                            style="flex: 1; background: var(--gold-light); border: 2px solid var(--gold); color: var(--gold-dark); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; letter-spacing: 0.1em; clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 6% 50%); margin-left: -10px;">
+                            SCALE GLOBAL</div>
+                    </div>
+
+                    <!-- Milestones: Bottom -->
+                    <div
+                        style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 30px; padding-left: 20px;">
+                        <div></div>
+                        <div
+                            style="text-align: center; border-top: 1px solid var(--border); padding-top: 10px; margin: 0 15px;">
+                            <div style="font-weight: 900; font-size: 1.1rem; color: var(--text-dark);">August 2025</div>
+                            <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-slate);">AI Tech Stack
+                                POC</div>
+                        </div>
+                        <div
+                            style="text-align: center; border-top: 1px solid var(--border); padding-top: 10px; margin: 0 15px;">
+                            <div style="font-weight: 900; font-size: 1.1rem; color: var(--text-dark);">Spring 2026</div>
+                            <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-slate);">Customer
+                                Scale-Up</div>
+                        </div>
+                        <div
+                            style="text-align: center; border-top: 1px solid var(--border); padding-top: 10px; margin: 0 15px;">
+                            <div style="font-weight: 900; font-size: 1.1rem; color: var(--text-dark);">Spring 2027</div>
+                            <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-slate);">Cloud Provider
+                                Sync</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategic Segmentation -->
+                <div class="grid-3" style="gap: 15px;">
+                    <!-- PRERELEASE -->
+                    <div class="info-card" style="padding: 18px; border-top: 5px solid var(--gold); background: #fff;">
+                        <div
+                            style="font-size: 0.6rem; letter-spacing: 0.15em; font-weight: 800; color: var(--gold-dark); margin-bottom: 5px;">
+                            STRATEGY // INITIAL CAPTURE</div>
+                        <div
+                            style="font-size: 1.4rem; font-weight: 900; color: var(--text-dark); margin-bottom: 12px; line-height: 1;">
+                            PRERELEASE</div>
+                        <ul
+                            style="list-style: none; padding: 0; font-size: 0.85rem; color: var(--text-dark); display: flex; flex-direction: column; gap: 6px; font-weight: 600;">
+                            <li><span style="color: var(--gold-dark); margin-right: 6px;">●</span> Non-tech Founder Base
+                            </li>
+                            <li><span style="color: var(--gold-dark); margin-right: 6px;">●</span> Limited Cloud
+                                Infrastructure</li>
+                            <li><span style="color: var(--gold-dark); margin-right: 6px;">●</span> Bootstrap Efficiency
+                                Models</li>
+                        </ul>
+                    </div>
+                    <!-- PUBLIC -->
+                    <div class="info-card"
+                        style="padding: 18px; border-top: 5px solid var(--primary); background: #fff;">
+                        <div
+                            style="font-size: 0.6rem; letter-spacing: 0.15em; font-weight: 800; color: var(--primary); margin-bottom: 5px;">
+                            STRATEGY // GROWTH SCALING</div>
+                        <div
+                            style="font-size: 1.4rem; font-weight: 900; color: var(--text-dark); margin-bottom: 12px; line-height: 1;">
+                            PUBLIC RELEASE</div>
+                        <ul
+                            style="list-style: none; padding: 0; font-size: 0.85rem; color: var(--text-dark); display: flex; flex-direction: column; gap: 6px; font-weight: 600;">
+                            <li><span style="color: var(--primary); margin-right: 6px;">●</span> Technical CTOs & Leads
+                            </li>
+                            <li><span style="color: var(--primary); margin-right: 6px;">●</span> VC-Backed High Growth
+                            </li>
+                            <li><span style="color: var(--primary); margin-right: 6px;">●</span> Infrastructure
+                                Optimization</li>
+                        </ul>
+                    </div>
+                    <!-- SCALE -->
+                    <div class="info-card" style="padding: 18px; border-top: 5px solid var(--gold); background: #fff;">
+                        <div
+                            style="font-size: 0.6rem; letter-spacing: 0.15em; font-weight: 800; color: var(--text-slate); margin-bottom: 5px;">
+                            STRATEGY // DOMINANCE</div>
+                        <div
+                            style="font-size: 1.4rem; font-weight: 900; color: var(--text-dark); margin-bottom: 12px; line-height: 1;">
+                            SCALE GLOBAL</div>
+                        <ul
+                            style="list-style: none; padding: 0; font-size: 0.85rem; color: var(--text-dark); display: flex; flex-direction: column; gap: 6px; font-weight: 600;">
+                            <li><span style="color: var(--text-dark); margin-right: 6px;">●</span> Institutional /
+                                Public Corp</li>
+                            <li><span style="color: var(--text-dark); margin-right: 6px;">●</span> Sovereign Cloud
+                                Clusters</li>
+                            <li><span style="color: var(--text-dark); margin-right: 6px;">●</span> Cross-Continental
+                                Mesh</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div style="font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em;">SIRSI TECHNOLOGIES INC.</div>
+                <div style="font-size: 0.85rem; font-weight: 600;">PRIVATE // DOCUMENT REF: SX-07</div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Market Architecture - The Trillion Dollar Convergence -->
+        <div class="slide" style="position: relative; overflow: hidden;">
+            <!-- Technical Architecture Background -->
+            <div
+                style="position: absolute; top: 0; right: 0; width: 600px; height: 600px; border-radius: 50%; border: 1px solid var(--primary); opacity: 0.1; transform: translate(300px, -300px);">
+            </div>
+            <div
+                style="position: absolute; top: -50px; left: -50px; width: 300px; height: 300px; background-image: radial-gradient(var(--border) 1px, transparent 1px); background-size: 15px 15px; opacity: 0.3;">
+            </div>
+
+            <!-- Standardized Header -->
+            <div style="padding-bottom: 5px; margin-bottom: 10px; position: relative; z-index: 10;">
+                <h3
+                    style="font-size: 0.85rem; letter-spacing: 0.5em; margin-bottom: 0.4rem; color: var(--gold-dark); font-weight: 600; text-transform: uppercase;">
+                    MARKET ARCHITECTURE // CROSS-VECTOR CONVERGENCE</h3>
+                <h2 style="font-size: 2.5rem; line-height: 1; letter-spacing: -0.03em; font-weight: 700;">A <span
+                        style="color: var(--primary);">Trillion Dollar</span> Convergence.</h2>
+            </div>
+
+            <div
+                style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; flex: 1; position: relative; z-index: 10; align-items: center;">
+
+                <!-- Left Column: Supporting Architecture Mesh (Visible & Scaled) -->
+                <div
+                    style="position: relative; width: 100%; display: flex; align-items: center; justify-content: center;">
+                    <!-- SVG Architecture Mesh -->
+                    <svg viewBox="0 0 600 500" style="width: 100%; height: auto;">
+                        <!-- Coordinate System -->
+                        <path d="M 50 250 L 550 250 M 300 50 L 300 450" stroke="var(--border)" stroke-width="2"
+                            opacity="0.7" />
+
+                        <!-- VECTOR 01: CLOUD INFRA -->
+                        <circle cx="240" cy="220" r="140" fill="none" stroke="var(--text-dark)" stroke-width="2.5"
+                            stroke-dasharray="10 5" opacity="0.5" />
+                        <text x="40" y="45" font-size="14" font-weight="600" fill="var(--text-slate)"
+                            text-anchor="start" style="letter-spacing: 0.1em; text-transform: uppercase;">Vector 01:
+                            Cloud IaaS</text>
+                        <text x="40" y="67" font-size="18" font-weight="700" fill="var(--text-dark)"
+                            text-anchor="start">$1.55T TAM</text>
+
+                        <!-- VECTOR 02: AI ECONOMY -->
+                        <circle cx="360" cy="220" r="160" fill="none" stroke="var(--primary)" stroke-width="2.5"
+                            stroke-dasharray="6 3" opacity="0.5" />
+                        <text x="560" y="35" font-size="14" font-weight="600" fill="var(--primary)" text-anchor="end"
+                            style="letter-spacing: 0.1em; text-transform: uppercase;">Vector 02: AI Context</text>
+                        <text x="560" y="57" font-size="18" font-weight="700" fill="var(--text-dark)"
+                            text-anchor="end">$15.7T IMPACT</text>
+
+                        <!-- VECTOR 03: AUTONOMOUS OPS -->
+                        <circle cx="300" cy="310" r="110" fill="none" stroke="var(--gold)" stroke-width="3"
+                            opacity="0.6" />
+                        <text x="300" y="475" font-size="14" font-weight="600" fill="var(--gold-dark)"
+                            text-anchor="middle" style="letter-spacing: 0.1em; text-transform: uppercase;">Vector 03:
+                            Systemic Autonomy</text>
+
+                        <!-- THE CONVERGENCE POINT -->
+                        <path d="M 300 180 L 370 250 L 300 330 L 230 250 Z" fill="var(--gold)" opacity="0.25" />
+                        <path d="M 300 180 L 370 250 L 300 330 L 230 250 Z" fill="none" stroke="var(--gold-dark)"
+                            stroke-width="4" />
+
+                        <circle cx="300" cy="250" r="8" fill="var(--gold-dark)" />
+
+                        <!-- Leader Line -->
+                        <line x1="300" y1="250" x2="480" y2="380" stroke="var(--text-dark)" stroke-width="2"
+                            opacity="0.9" />
+                        <text x="560" y="420" font-size="20" font-weight="700" fill="var(--gold-dark)" text-anchor="end"
+                            style="letter-spacing: 0.05em;">SIRSI UNIFIED MESH</text>
+                        <text x="560" y="440" font-size="13" font-weight="500" fill="var(--text-slate)"
+                            text-anchor="end" style="letter-spacing: 0.1em;">HIGH-VALUE SINGULARITY POINT</text>
+                    </svg>
+                </div>
+
+                <!-- Right Column: The Primary Narrative (Optimized Density) -->
+                <div
+                    style="display: flex; flex-direction: column; gap: 20px; border-left: 2px solid var(--primary); padding-left: 35px;">
+                    <div>
+                        <h4
+                            style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 15px; letter-spacing: 0.35em; text-transform: uppercase;">
+                            THE STRATEGIC THESIS</h4>
+                        <p
+                            style="font-size: 1.25rem; line-height: 1.3; color: var(--text-dark); font-weight: 500; margin-bottom: 25px; max-width: 700px;">
+                            Sirsi is the <strong>Connective Tissue</strong> at the intersection of three separate
+                            multi-trillion dollar shifts.
+                        </p>
+
+                        <div style="display: flex; flex-direction: column; gap: 18px;">
+                            <div style="display: flex; gap: 18px; align-items: flex-start;">
+                                <div
+                                    style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--text-dark); color: #fff; font-weight: 700; border-radius: 4px; flex-shrink: 0; font-size: 0.9rem;">
+                                    01</div>
+                                <div>
+                                    <div
+                                        style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px;">
+                                        Infrastructure Primacy</div>
+                                    <div
+                                        style="font-size: 0.9rem; color: var(--text-slate); font-weight: 400; line-height: 1.4;">
+                                        $1.55T Public Cloud TAM is shifting from manual dashboards to <strong>Systemic
+                                            Autonomous Layers</strong>.</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 18px; align-items: flex-start;">
+                                <div
+                                    style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--primary); color: #fff; font-weight: 700; border-radius: 4px; flex-shrink: 0; font-size: 0.9rem;">
+                                    02</div>
+                                <div>
+                                    <div
+                                        style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px;">
+                                        Compute Liquidity</div>
+                                    <div
+                                        style="font-size: 0.9rem; color: var(--text-slate); font-weight: 400; line-height: 1.4;">
+                                        AI workloads demand <strong>Cross-Continent Pooling</strong> with hardware
+                                        transparency and liquidity.</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 18px; align-items: flex-start;">
+                                <div
+                                    style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--gold-dark); color: #fff; font-weight: 700; border-radius: 4px; flex-shrink: 0; font-size: 0.9rem;">
+                                    03</div>
+                                <div>
+                                    <div
+                                        style="font-size: 1.05rem; font-weight: 700; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px;">
+                                        Sector Catch-Up</div>
+                                    <div
+                                        style="font-size: 0.9rem; color: var(--text-slate); font-weight: 400; line-height: 1.4;">
+                                        <strong>90% of organizations</strong> will adopt hybrid multi-cloud for AI by
+                                        2027. (Gartner Research)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div style="font-weight: 600; font-size: 0.85rem; letter-spacing: 0.1em;">SIRSI TECHNOLOGIES INC.</div>
+                <div style="font-size: 0.85rem; font-weight: 400;">ESTIMATED DOMAIN: $1.5T AGGREGATE // PRIVATE SX-08
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Leadership -->
+        <div class="slide">
+            <!-- Standardized Header -->
+            <div style="padding-bottom: 5px; margin-bottom: 15px;">
+                <h3
+                    style="font-size: 0.85rem; letter-spacing: 0.4em; margin-bottom: 0.4rem; color: var(--gold-dark); font-weight: 800; text-transform: uppercase;">
+                    THE ARCHITECT</h3>
+                <h2 style="font-size: 2.5rem; line-height: 1; letter-spacing: -0.02em; font-weight: 950;">Cylton
+                    Collymore</h2>
+            </div>
+            <div class="grid-header" style="gap: 50px; align-items: center;">
+                <div style="position: relative;">
+                    <div
+                        style="width: 100%; aspect-ratio: 1; background: var(--gold-light); border: 8px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);">
+                        <div style="text-align: center; color: var(--gold-dark); padding: 15px;">
+                            <i class="fas fa-microchip" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
+                            <div class="royal-text" style="font-size: 0.8rem; line-height: 1.2;">DOMAIN<br>MASTERY</div>
+                        </div>
+                    </div>
+                    <div
+                        style="position: absolute; bottom: 0; right: 0; background: var(--primary); color: white; padding: 8px 15px; border-radius: 30px; font-weight: 800; font-size: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                        MIT xPRO '24
+                    </div>
+                </div>
+                <div>
+                    <h4 class="royal-text"
+                        style="color: var(--primary); font-size: 1rem; margin-bottom: 15px; letter-spacing: 0.1em; text-transform: uppercase;">
+                        FOUNDER & CEO</h4>
+                    <ul style="list-style: none;">
+                        <li style="margin-bottom: 8px; font-size: 0.9rem;"><strong>■ 20+ Yrs DevOps Management</strong>:
+                            Scaling infra for global enterprises.</li>
+                        <li style="margin-bottom: 8px; font-size: 0.9rem;"><strong>■ Oracle Vault Lead
+                                Architect</strong>: Protected US Govt Passport database.</li>
+                        <li style="margin-bottom: 8px; font-size: 0.9rem;"><strong>■ MIT xPro Graduate</strong>: Full
+                            Stack Specialization (MERN stack).</li>
+                        <li style="margin-bottom: 8px; font-size: 0.9rem;"><strong>■ Cyber Subject Matter
+                                Expert</strong>: Led travel.state.gov security.</li>
+                        <li style="margin-bottom: 8px; font-size: 0.9rem;"><strong>■ 2x Founder</strong>: Backed by
+                            Techstars, Visa, and Hedera.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>SIRSI TECHNOLOGIES INC.</div>
+                <div>CONFIDENTIAL // SLIDE 09</div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Strategic Traction (Real-World Validation) -->
+        <div class="slide" style="display: flex; flex-direction: column;">
+            <div class="slide-content-wrap">
+                <!-- Standardized Header -->
+                <div style="padding-bottom: 5px; margin-bottom: 20px;">
+                    <h3
+                        style="font-size: 0.85rem; letter-spacing: 0.4em; margin-bottom: 0.4rem; color: var(--gold-dark); font-weight: 800; text-transform: uppercase;">
+                        STRATEGIC TRACTION</h3>
+                    <h2 style="font-size: 2.5rem; line-height: 1; letter-spacing: -0.02em; font-weight: 950;">Proven
+                        Performance: Building Platforms with Speed</h2>
+                </div>
+
+                <div class="grid-2 traction-grid" style="margin-bottom: 30px; gap: 30px;">
+                    <!-- Case Study: Assiduous -->
+                    <div class="info-card"
+                        style="border: 2px solid #e2e8f0; border-left: 10px solid var(--primary); padding: 25px; background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,0.04); border-radius: 4px; justify-content: flex-start; max-width: 650px;">
+                        <div style="margin-bottom: 15px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <h4 class="royal-text"
+                                        style="color: var(--primary); font-size: 1.2rem; margin: 0; letter-spacing: 0.05em;">
+                                        ASSIDUOUS</h4>
+                                    <div
+                                        style="font-size: 0.7rem; color: var(--text-slate); font-weight: 950; letter-spacing: 1px; text-transform: uppercase;">
+                                        Real Estate Micro-Flipping</div>
+                                </div>
+                                <div
+                                    style="border: 2px solid var(--primary); color: var(--primary); padding: 4px 10px; font-size: 0.65rem; font-weight: 950; border-radius: 2px; text-transform: uppercase;">
+                                    Strategic Rollout</div>
+                            </div>
+
+                            <p
+                                style="font-weight: 900; color: #0f172a; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.25;">
+                                $2.4B in Analyzed Assets. Production-Ready in 29 Days.
+                            </p>
+
+                            <div
+                                style="display: flex; gap: 15px; margin-bottom: 15px; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 10px 0;">
+                                <div style="flex: 1;">
+                                    <div
+                                        style="font-size: 0.65rem; font-weight: 950; color: var(--primary); text-transform: uppercase;">
+                                        March 1st Launch</div>
+                                    <div style="font-size: 0.8rem; font-weight: 800; color: #000;">Core Platform (v1.0)
+                                    </div>
+                                </div>
+                                <div style="flex: 1; border-left: 1px solid #f1f5f9; padding-left: 15px;">
+                                    <div
+                                        style="font-size: 0.65rem; font-weight: 950; color: var(--primary); text-transform: uppercase;">
+                                        May 1st Update</div>
+                                    <div style="font-size: 0.8rem; font-weight: 800; color: #000;">AI Micro-Flip Engine
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ul style="list-style: none; font-size: 0.8rem; color: #475569; padding: 0;">
+                                <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                    <span style="color: var(--primary); font-weight: 950;">■</span>
+                                    <span><strong>Universal Component System (UCS)</strong>: Build-time programmable
+                                        tokens eliminating 90% of UI bloat across 780+ production files.</span>
+                                </li>
+                                <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                    <span style="color: var(--primary); font-weight: 950;">■</span>
+                                    <span><strong>Real-Time Dev Telemetry</strong>: Automated Git-to-Firestore pipeline
+                                        tracking 650+ commits and project velocity in real-time.</span>
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 10px;">
+                                    <span style="color: var(--primary); font-weight: 950;">■</span>
+                                    <span><strong>Autonomous Match Engine</strong>: Processing 3,542+ property nodes
+                                        with
+                                        94.5% AI accuracy and $48.6M in lifecycle value.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Case Study: FinalWishes -->
+                    <div class="info-card"
+                        style="border: 2px solid #e2e8f0; border-left: 10px solid var(--gold); padding: 25px; background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,0.04); border-radius: 4px; justify-content: flex-start; max-width: 650px;">
+                        <div style="margin-bottom: 15px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <h4 class="royal-text"
+                                        style="color: var(--gold-dark); font-size: 1.2rem; margin: 0; letter-spacing: 0.05em;">
+                                        FINALWISHES</h4>
+                                    <div
+                                        style="font-size: 0.7rem; color: var(--text-slate); font-weight: 950; letter-spacing: 1px; text-transform: uppercase;">
+                                        The Legacy Operating System</div>
+                                </div>
+                                <div
+                                    style="border: 2px solid var(--gold-dark); color: var(--gold-dark); padding: 4px 10px; font-size: 0.65rem; font-weight: 950; border-radius: 2px; text-transform: uppercase;">
+                                    $135K Engagement</div>
+                            </div>
+
+                            <p
+                                style="font-weight: 900; color: #0f172a; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.25;">
+                                Securing Multi-Generational Wealth & Personal Data.
+                            </p>
+
+                            <div
+                                style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; background: #f8fafc; padding: 10px; border-radius: 4px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 800;">
+                                    <span style="color: #64748b;">SERVICE ARCHITECTURE:</span>
+                                    <span style="color: var(--gold-dark);">CONTRACTS gRPC v1.0</span>
+                                </div>
+                                <div
+                                    style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 800;">
+                                    <span style="color: #64748b;">SECURITY LAYER:</span>
+                                    <span style="color: var(--gold-dark);">HMAC CRYPTO-TRUST</span>
+                                </div>
+                            </div>
+
+                            <ul style="list-style: none; font-size: 0.8rem; color: #475569; padding: 0;">
+                                <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                    <span style="color: var(--gold-dark); font-weight: 950;">■</span>
+                                    <span><strong>Bidirectional Streaming</strong>: Real-time event bus for
+                                        mission-critical vault operations and doc execution syncing.</span>
+                                </li>
+                                <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                    <span style="color: var(--gold-dark); font-weight: 950;">■</span>
+                                    <span><strong>Immutable Audit Trails</strong>: Firestore-backed cryptographic
+                                        verification for high-value document lifecycle management.</span>
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 10px;">
+                                    <span style="color: var(--gold-dark); font-weight: 950;">■</span>
+                                    <span><strong>OpenSign Standard</strong>: Unified signing engine with global bank
+                                        verification (Plaid) and automated revenue redirects.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Light Theme Force Multiplier Banner -->
+                <div class="value-highlight"
+                    style="display: flex; align-items: center; justify-content: space-between; background: #fff; color: #000; padding: 20px 40px; border: 2px solid #000; border-radius: 8px; margin-top: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.05); max-width: 1330px;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <h3
+                            style="color: #059669; margin: 0; font-size: 0.9rem; letter-spacing: 0.3rem; font-weight: 950; text-transform: uppercase;">
+                            Platform Force Multiplier</h3>
+                    </div>
+                    <div
+                        style="display: flex; gap: 40px; text-align: right; flex-wrap: wrap; justify-content: flex-end;">
+                        <div>
+                            <div style="font-size: 1.6rem; font-weight: 950; color: #000; line-height: 1;">90%</div>
+                            <div
+                                style="font-size: 0.65rem; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
+                                Code Reuse</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.6rem; font-weight: 950; color: #000; line-height: 1;">-70%</div>
+                            <div
+                                style="font-size: 0.65rem; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
+                                Dev Overhead</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 1.6rem; font-weight: 950; color: #000; line-height: 1;">100%</div>
+                            <div
+                                style="font-size: 0.65rem; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
+                                Design Parity</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div style="font-weight: 700;">SIRSI TECHNOLOGIES INC.</div>
+                <div style="font-weight: 500;">CONFIDENTIAL // STRATEGIC TRACTION // SLIDE 10</div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Financials - Comprehensive Dashboard -->
+        <div class="slide">
+            <!-- Standardized Header -->
+            <div style="padding-bottom: 5px; margin-bottom: 15px;">
+                <h3
+                    style="font-size: 0.85rem; letter-spacing: 0.4em; margin-bottom: 0.4rem; color: var(--gold-dark); font-weight: 800; text-transform: uppercase;">
+                    GROWTH TRAJECTORY</h3>
+                <h2 style="font-size: 2.5rem; line-height: 1; letter-spacing: -0.02em; font-weight: 950;">Scale to $73M
+                    ARR</h2>
+            </div>
+            <div class="grid-2" style="gap: 25px; flex: 1; align-items: start;">
+                <!-- Left Column: Charts -->
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div class="info-card" style="height: 280px; padding: 18px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h4 class="royal-text" style="margin: 0; font-size: 0.9rem;">Projected Revenue & EBITDA ($M)
+                            </h4>
+                            <div style="display: flex; gap: 15px; font-size: 0.75rem; font-weight: 800;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span
+                                        style="width: 10px; height: 10px; background: var(--primary); display: inline-block;"></span>
+                                    <span style="color: var(--primary);">REV</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span
+                                        style="width: 10px; height: 10px; background: #8D5FD3; display: inline-block;"></span>
+                                    <span style="color: #8D5FD3;">EBITDA</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="flex: 1; position: relative; height: 230px;">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="info-card" style="padding: 15px;">
+                        <h4 class="royal-text" style="margin-bottom: 8px; font-size: 0.85rem;">Customer Base Growth</h4>
+                        <div style="height: 120px; position: relative;">
+                            <canvas id="userChart"></canvas>
+                        </div>
+                        <p
+                            style="text-align: center; font-weight: 800; margin-top: 5px; font-size: 1rem; color: var(--primary);">
+                            250,000 CONSERVATIVE TARGET (2029)</p>
+                    </div>
+                </div>
+
+                <!-- Right Column: Economics & Metrics -->
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div class="info-card gold" style="padding: 18px;">
+                        <h4 class="royal-text"
+                            style="color: var(--gold-dark); margin-bottom: 12px; font-size: 0.85rem;">
+                            Platform Economics</h4>
+                        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem;">
+                            <div
+                                style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px;">
+                                <span>Avg Enterprise ACV:</span> <strong style="color: var(--text-dark);">$135K</strong>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px;">
+                                <span>Platform Gross Margin:</span> <strong
+                                    style="color: var(--primary);">88.4%</strong>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px;">
+                                <span>CAC Payback Period:</span> <strong style="color: var(--text-dark);">4.2
+                                    Months</strong>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>LTV / CAC Ratio:</span> <strong style="color: var(--primary);">9.8x</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card"
+                        style="padding: 18px; border-top: 5px solid var(--text-dark); background: #fff;">
+                        <h4 class="royal-text"
+                            style="color: var(--text-dark); border-bottom: 1px solid var(--border); display: inline-block; margin-bottom: 10px; font-size: 0.75rem;">
+                            Burn Management</h4>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 5px;">
+                            <div style="font-size: 1.25rem; font-weight: 900; color: var(--text-dark);">24 Months</div>
+                            <p style="font-size: 0.75rem; color: var(--text-slate); margin: 0;">Cash Runway post-Seed
+                                financing.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>SIRSI TECHNOLOGIES INC.</div>
+                <div>CONFIDENTIAL // SLIDE 11</div>
+            </div>
+        </div>
+
+        <!-- Slide 12: By The Numbers (Architectural Restoration from Pitch Deck 1) -->
+        <div class="slide" style="background: #fff; padding: 0; overflow: hidden; position: relative;">
+            <style>
+                /* Slide 12 Document Specific Styles - Scoped Restoration */
+                #slide-12-container {
+                    width: 100%;
+                    height: 100%;
+                    padding: 120px 60px 40px;
+                    background: #fff;
+                    color: #000;
+                    font-family: 'Inter', sans-serif;
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    line-height: 1.2;
+                }
+
+                #slide-12-container::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-image: radial-gradient(circle, #00D37F 1px, transparent 1px);
+                    background-size: 24px 24px;
+                    opacity: 0.05;
+                    z-index: 0;
+                    pointer-events: none;
+                }
+
+                .doc-head-wrap {
+                    position: relative;
+                    z-index: 2;
+                    border-bottom: 3px solid #000;
+                    padding-bottom: 15px;
+                    margin-bottom: 20px;
+                    text-align: left;
+                }
+
+                .doc-main-title {
+                    font-size: 2.8rem;
+                    font-weight: 950;
+                    letter-spacing: -0.06em;
+                    color: #000;
+                    line-height: 0.85;
+                    margin: 0;
+                    text-transform: uppercase;
+                }
+
+                .doc-sub-banner {
+                    background: #008A5E;
+                    color: #fff;
+                    padding: 6px 15px;
+                    font-size: 1.2rem;
+                    font-weight: 900;
+                    letter-spacing: -0.02em;
+                    margin-top: 8px;
+                    display: inline-block;
+                }
+
+                .doc-vision-strip {
+                    background: #f1f5f9;
+                    border-left: 5px solid #008A5E;
+                    padding: 10px 15px;
+                    margin-bottom: 20px;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                .doc-vision-strip p {
+                    font-size: 0.75rem;
+                    color: #334155;
+                    font-style: italic;
+                    margin: 0;
+                    line-height: 1.35;
+                    max-width: 950px;
+                }
+
+                .doc-grid-system {
+                    display: grid;
+                    grid-template-columns: 1.9fr 1.1fr 1.5fr;
+                    gap: 20px;
+                    position: relative;
+                    z-index: 2;
+                    flex: 1;
+                }
+
+                .doc-data-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 0.7rem;
+                    border: 1.5px solid #000;
+                    margin-bottom: 12px;
+                }
+
+                .doc-data-table th {
+                    background: #008A5E;
+                    color: #fff;
+                    text-align: left;
+                    padding: 6px;
+                    font-weight: 900;
+                    text-transform: uppercase;
+                    border: 1px solid #000;
+                }
+
+                .doc-data-table td {
+                    padding: 6px;
+                    border: 1px solid #cbd5e1;
+                    color: #000;
+                    font-weight: 600;
+                }
+
+                .doc-data-table tr.highlight-row {
+                    background: #ecfdf5 !important;
+                    font-weight: 900 !important;
+                }
+
+                .doc-section-label {
+                    font-size: 1rem;
+                    font-weight: 950;
+                    color: #008A5E;
+                    margin-bottom: 8px;
+                    text-transform: uppercase;
+                    border-bottom: 2px solid #008A5E;
+                    display: inline-block;
+                }
+
+                .doc-square-box {
+                    border: 1.5px solid #000;
+                    padding: 12px;
+                    background: #fff;
+                }
+
+                .doc-square-box.accent-green {
+                    border-left: 6px solid #008A5E;
+                }
+
+                .doc-stat-cluster {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 12px;
+                }
+
+                .doc-stat-card {
+                    border: 1px solid #94a3b8;
+                    padding: 12px;
+                    text-align: center;
+                    background: #fff;
+                }
+
+                .doc-stat-num {
+                    font-size: 1.4rem;
+                    font-weight: 950;
+                    color: #000;
+                    display: block;
+                    line-height: 1;
+                    margin-bottom: 3px;
+                }
+
+                .doc-stat-desc {
+                    font-size: 0.6rem;
+                    font-weight: 900;
+                    color: #475569;
+                    text-transform: uppercase;
+                }
+
+                .doc-flag-box {
+                    background: #008A5E;
+                    color: #fff;
+                    padding: 10px;
+                    text-align: center;
+                }
+
+                .doc-flag-box .val {
+                    font-size: 1.8rem;
+                    font-weight: 950;
+                    display: block;
+                    line-height: 1;
+                    margin-bottom: 4px;
+                }
+
+                .doc-flag-box .lab {
+                    font-size: 0.6rem;
+                    font-weight: 800;
+                    text-transform: uppercase;
+                    line-height: 1.1;
+                }
+
+                .doc-bullets {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                }
+
+                .doc-bullets li {
+                    position: relative;
+                    padding-left: 20px;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    margin-bottom: 8px;
+                    color: #1e293b;
+                }
+
+                .doc-bullets li::before {
+                    content: '■';
+                    position: absolute;
+                    left: 0;
+                    color: #008A5E;
+                }
+
+                .text-green-bold {
+                    color: #008A5E !important;
+                    font-weight: 950 !important;
+                }
+            </style>
+
+            <div id="slide-12-container">
+                <div class="doc-head-wrap">
+                    <h1 class="doc-main-title">BY THE NUMBERS</h1>
+                    <div class="doc-sub-banner">
+                        EST. $38.6M AGGREGATE DEPLOYMENT ACROSS 3 CYCLES
+                    </div>
+                </div>
+
+                <div class="doc-vision-strip">
+                    <p>STRATEGIC OBJECTIVE: Commercialize patent-protected AI technology, accelerate technical
+                        infrastructure build-out, and reach product-market fit toward a $500M+ enterprise valuation
+                        While maximizing insider equity and capital efficiency.</p>
+                </div>
+
+                <div class="doc-grid-system">
+                    <!-- COLUMN 1 -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <span class="doc-section-label">Fundraising Roadmap</span>
+                            <table class="doc-data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Funding Cycle</th>
+                                        <th style="text-align: right;">Quantum</th>
+                                        <th style="text-align: right;">Pre-Money</th>
+                                        <th style="text-align: right;">Equity</th>
+                                        <th style="text-align: right;">Window</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Pre-Seed (Closed)</td>
+                                        <td style="text-align: right;">$1.50M</td>
+                                        <td style="text-align: right;">$12.0M</td>
+                                        <td style="text-align: right;">11.1%</td>
+                                        <td style="text-align: right;">Q2 2025</td>
+                                    </tr>
+                                    <tr class="highlight-row"
+                                        style="background: #f0fdf4 !important; border: 2px solid #008A5E;">
+                                        <td class="text-green-bold">Seed (Active)</td>
+                                        <td style="text-align: right; font-weight:950;">$12.10M</td>
+                                        <td style="text-align: right;">$28.0M</td>
+                                        <td style="text-align: right; font-weight:950;">30.2%</td>
+                                        <td style="text-align: right; font-weight:950;">NOW</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Series A (Proj)</td>
+                                        <td style="text-align: right;">$25.00M</td>
+                                        <td style="text-align: right;">$80.0M</td>
+                                        <td style="text-align: right;">23.8%</td>
+                                        <td style="text-align: right;">Q4 2026</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="doc-square-box accent-green">
+                            <span class="text-green-bold"
+                                style="font-size: 1rem; display: block; margin-bottom: 8px;">ACTIVE INVESTMENT
+                                OFFERING</span>
+                            <div class="grid-2" style="gap: 15px; font-size: 0.85rem;">
+                                <div>
+                                    <div style="margin-bottom: 5px;">Capital Ask: <strong>$12,100,000</strong></div>
+                                    <div>Pre-Valuation: <strong>$28,000,000</strong></div>
+                                </div>
+                                <div>
+                                    <div style="margin-bottom: 5px;">Round Equity: <strong>30.2%</strong></div>
+                                    <div>Asset Class: <strong>Qualified Small Biz</strong></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="doc-stat-cluster">
+                            <div class="doc-stat-card">
+                                <span class="doc-stat-num">$40.1M</span>
+                                <span class="doc-stat-desc">Post-Money Value</span>
+                            </div>
+                            <div class="doc-stat-card">
+                                <span class="doc-stat-num">3</span>
+                                <span class="doc-stat-desc">Patent Portfolio</span>
+                            </div>
+                            <div class="doc-stat-card">
+                                <span class="doc-stat-num">$500M+</span>
+                                <span class="doc-stat-desc">Exit Valuation Target</span>
+                            </div>
+                            <div class="doc-stat-card" style="border: 2px solid #008A5E;">
+                                <span class="doc-stat-num text-green-bold">+43%</span>
+                                <span class="doc-stat-desc text-green-bold">ROI Edge (QSBS)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COLUMN 2 -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <span class="doc-section-label"
+                                style="background:#008A5E; color:#fff; border-bottom:none; padding:4px 12px;">Capital
+                                Deployment</span>
+                            <ul class="doc-bullets">
+                                <li>Enterprise AI Infrastructure Core</li>
+                                <li>Technical Talent Expansion (6-10)</li>
+                                <li>Proprietary IP Development</li>
+                                <li>Strategic GTM / Market Entry</li>
+                            </ul>
+                        </div>
+
+                        <div class="doc-flag-box">
+                            <span class="val">51.2%</span>
+                            <span class="lab">Inside Control Retention<br>Projected Post-Series A</span>
+                        </div>
+
+                        <div class="doc-flag-box" style="background:#0f172a;">
+                            <span class="val">$38.6M</span>
+                            <span class="lab">Total Funding Pipeline<br>to Series A Maturity</span>
+                        </div>
+
+                        <div>
+                            <span class="doc-section-label"
+                                style="font-size: 0.9rem; border-bottom: 2px solid #008A5E;">Efficiency Ratio</span>
+                            <div
+                                style="background: #f8fafc; padding:15px; border: 1px solid #e2e8f0; font-size: 0.85rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span>Capital Efficiency:</span> <strong>0.84x</strong>
+                                </div>
+                                <div
+                                    style="display: flex; justify-content: space-between; color: var(--primary); font-weight: 800;">
+                                    <span>Initial ROI Signal:</span> <span>1:1 ALPHA</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COLUMN 3 -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <span class="doc-section-label">Post-Series A Ownership</span>
+                            <table class="doc-data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Stakeholder Group</th>
+                                        <th style="text-align: right;">Equity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="highlight-row">
+                                        <td>Strategic Founders</td>
+                                        <td style="text-align: right;">51.2%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pre-Seed Backers</td>
+                                        <td style="text-align: right;">7.1%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Seed Cohort (Active)</td>
+                                        <td style="text-align: right;">19.4%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Series A Lead</td>
+                                        <td style="text-align: right;">12.3%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ESOP / Option Reserve</td>
+                                        <td style="text-align: right;">10.0%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="doc-square-box">
+                            <span class="doc-section-label" style="font-size: 0.95rem;">QSBS Regulatory Advantage</span>
+                            <p style="font-size: 0.7rem; color: #475569; margin-bottom: 12px; font-weight: 600;">
+                                Qualified Small Business Stock (Sec 1202)<br>100% Tax-Free Capital Gains Exclusion
+                            </p>
+                            <table class="doc-data-table" style="font-size: 0.7rem; margin: 0;">
+                                <thead>
+                                    <tr style="background:#0f172a; color:#fff;">
+                                        <th style="background:#0f172a;">Return Analysis</th>
+                                        <th style="text-align:right; background:#0f172a;">Quantum</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Standard Capital Base</td>
+                                        <td style="text-align: right;">$14.7M</td>
+                                    </tr>
+                                    <tr style="background: #ecfdf5;">
+                                        <td class="text-green-bold">QSBS Optimized Return</td>
+                                        <td style="text-align: right;" class="text-green-bold">$21.0M</td>
+                                    </tr>
+                                    <tr style="background: #f1f5f9; font-weight: 900;">
+                                        <td>EXCLUSION VALUE (SAVINGS)</td>
+                                        <td style="text-align: right;" class="text-green-bold">$6.3M</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div style="font-size: 0.7rem; font-weight: 800; color: var(--text-slate); letter-spacing: 1px;">
+                        INTERNAL INVESTMENT MEMORANDUM — SIRSI TECHNOLOGIES INC.
+                    </div>
+                    <div
+                        style="color: var(--text-slate); border: 1px solid var(--border); background: white; padding: 5px 12px; font-weight: 900; font-size: 0.8rem;">
+                        12
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Ask -->
+        <div class="slide">
+            <!-- Standardized Header -->
+            <div style="padding-bottom: 5px; margin-bottom: 15px;">
+                <h3
+                    style="font-size: 0.85rem; letter-spacing: 0.4em; margin-bottom: 0.4rem; color: var(--gold-dark); font-weight: 800; text-transform: uppercase;">
+                    SEED OFFERING</h3>
+                <h2 style="font-size: 2.5rem; line-height: 1; letter-spacing: -0.02em; font-weight: 950;">Join the AI
+                    Infrastructure Revolution</h2>
+            </div>
+            <div
+                style="background: var(--primary-light); border: 1px solid var(--primary); padding: 20px; margin-bottom: 20px; text-align: center;">
+                <h1 class="text-primary" style="margin-bottom: 10px; font-size: 3rem;">Raising $12.1M</h1>
+                <p class="lead" style="font-weight: 800; font-size: 1.35rem;">Seed Round @ $28.0M Pre-Money</p>
+            </div>
+            <div class="grid-2" style="gap: 25px;">
+                <div class="info-card">
+                    <h4 class="royal-text" style="font-size: 1rem;">Allocation of Funds</h4>
+                    <ul style="list-style: none; margin-top: 15px;">
+                        <li style="margin-bottom: 8px; font-size: 0.95rem;">■ Core AI technology development</li>
+                        <li style="margin-bottom: 8px; font-size: 0.95rem;">■ Key technical hires (6-10 engineers)</li>
+                        <li style="margin-bottom: 8px; font-size: 0.95rem;">■ Proprietary IP expansion</li>
+                        <li style="margin-bottom: 8px; font-size: 0.95rem;">■ Strategic GTM & market entry</li>
+                    </ul>
+                </div>
+                <div class="info-card gold">
+                    <h4 class="royal-text" style="font-size: 1rem;">Investment Highlights</h4>
+                    <ul style="list-style: none; margin-top: 15px;">
+                        <li style="margin-bottom: 8px; font-size: 0.95rem;">■ <strong>30.2% Equity</strong> in the
+                            company</li>
+                        <li style="margin-bottom: 8px; font-size: 0.95rem;">■ <strong>Two Patents Pending</strong> (IP
+                            Advantage)</li>
+                        <li style="margin-bottom: 8px; font-size: 0.95rem;">■ <strong>QSBS Qualified</strong> (100% Tax
+                            Advantage)</li>
+                        <li style="margin-bottom: 8px; font-size: 0.95rem;">■ <strong>Institutional Backing</strong>:
+                            $175K Committed</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <div>SIRSI TECHNOLOGIES INC.</div>
+                <div>CONFIDENTIAL // SLIDE 13</div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Contact -->
+        <div class="slide" style="justify-content: center; align-items: center; text-align: center;">
+            <h3 style="letter-spacing: 0.5em; font-size: 0.85rem; margin-bottom: 10px;">CONTACT</h3>
+            <h2 style="font-size: 3rem; margin: 10px 0; font-weight: 950;">Let's Build.</h2>
+            <div style="margin: 20px 0;">
+                <p class="royal-text" style="font-size: 1.25rem; margin-bottom: 5px;">Cylton Collymore</p>
+                <p class="lead" style="margin: 0 auto; color: var(--gold-dark); font-weight: 800; font-size: 1.25rem;">
+                    Founder & CEO, Sirsi Technologies Inc.</p>
+            </div>
+            <div style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
+                <div
+                    style="border: 2px solid var(--primary); padding: 10px 25px; font-weight: 850; letter-spacing: 0.15em; font-size: 1rem;">
+                    CYLTON@SIRSI.AI</div>
+                <div
+                    style="border: 2px solid var(--primary); padding: 10px 25px; font-weight: 850; letter-spacing: 0.15em; font-size: 1rem;">
+                    WWW.SIRSI.AI</div>
+            </div>
+            <div class="slide-footer">
+                <div>SIRSI TECHNOLOGIES INC.</div>
+                <div>EST. 2025 // SLIDE 14</div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="nav-footer">
+        <div class="nav">
+            <button class="nav-btn" onclick="changeSlide(-1)" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+            <div class="nav-counter">
+                <span id="currentNum">1</span> / 14
+            </div>
+            <button class="nav-btn" onclick="changeSlide(1)" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 14;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            if (n > totalSlides) currentSlide = totalSlides;
+            if (n < 1) currentSlide = 1;
+
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+
+            document.getElementById('currentNum').textContent = currentSlide;
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+
+            const progress = ((currentSlide - 1) / (totalSlides - 1)) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            if (currentSlide === 11) {
+                setTimeout(drawRevenueChart, 400);
+                setTimeout(drawUserChart, 600);
+            }
+        }
+
+        function changeSlide(n) {
+            currentSlide += n;
+            showSlide(currentSlide);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        let revenueChart, userChart;
+
+        function drawRevenueChart() {
+            const ctx = document.getElementById('revenueChart');
+            if (!ctx) return;
+            if (revenueChart) revenueChart.destroy();
+
+            revenueChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2025', '2026', '2027', '2028', '2029'],
+                    datasets: [
+                        {
+                            label: 'Revenue ($M)',
+                            data: [2, 12, 32, 58, 73],
+                            borderColor: '#008A5E',
+                            backgroundColor: 'rgba(0, 138, 94, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 4
+                        },
+                        {
+                            label: 'EBITDA ($M)',
+                            data: [-5, 8, 22, 45, 68],
+                            borderColor: '#8D5FD3',
+                            backgroundColor: 'rgba(141, 95, 211, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 4,
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: false, ticks: { callback: v => '$' + v + 'M', font: { size: 14, weight: 'bold' } } }, x: { ticks: { font: { size: 14, weight: 'bold' } } } }
+                }
+            });
+        }
+
+        function drawUserChart() {
+            const ctx = document.getElementById('userChart');
+            if (!ctx) return;
+            if (userChart) userChart.destroy();
+
+            userChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['2025', '2026', '2027', '2028', '2029'],
+                    datasets: [{
+                        label: 'Conservative Users',
+                        data: [5000, 25000, 85000, 160000, 250000],
+                        backgroundColor: '#008A5E',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: v => v >= 1000 ? (v / 1000).toFixed(0) + 'K' : v,
+                                font: { size: 10, weight: 'bold' }
+                            },
+                            grid: { display: false }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { size: 10, weight: 'bold' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        showSlide(1);
+    </script>
+</body>
+
+</html>

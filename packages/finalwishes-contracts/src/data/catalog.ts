@@ -34,8 +34,10 @@ export interface Product {
     category: 'platform' | 'feature' | 'service' | 'addon'
     bundledPrice: number
     standalonePrice: number | null
+    hours: number // True labor hours
     timeline: number
     timelineUnit: 'weeks' | 'months'
+
     features?: string[]
     detailedScope?: DetailedScopeItem[]
     wbs?: WBSPhase[]
@@ -50,8 +52,10 @@ export interface Bundle {
     shortDescription: string
     description: string
     price: number
+    hours: number // True labor hours
     timeline: number
     timelineUnit: 'weeks' | 'months'
+
     includedProducts: string[]
     features: string[]
     addonDiscount: number // percentage
@@ -65,11 +69,13 @@ export const BUNDLES: Record<string, Bundle> = {
         name: 'FinalWishes Core Platform',
         shortDescription: 'Complete Digital Legacy Solution',
         description: 'The complete FinalWishes platform including iOS, Android, and Web applications with AI-powered legacy management.',
-        price: 137000,
-        timeline: 20,
+        price: 95000,
+        hours: 760,
+        timeline: 16,
         timelineUnit: 'weeks',
         addonDiscount: 0,
         includedProducts: ['vault-core', 'media-engine', 'ai-foundation', 'mobile-apps'],
+
         features: [
             'iOS & Android Native Apps',
             'Web Application (React)',
@@ -99,51 +105,45 @@ export const BUNDLES: Record<string, Bundle> = {
         ],
         wbs: [
             {
-                phaseNum: 1, name: 'Foundation & Cloud Infrastructure', weeks: '1-4', hours: 120, cost: 24000,
+                phaseNum: 1, name: 'Foundation & Cloud Infrastructure', weeks: '1-4', hours: 180, cost: 22500,
                 activities: [
-                    { name: 'System Architecture & Technical Design', role: 'Sr. Architect', hours: 30, cost: 6000 },
-                    { name: 'Google Cloud Project Setup', role: 'DevOps Eng', hours: 20, cost: 4000 },
-                    { name: 'Database Schema Design', role: 'Backend Eng', hours: 20, cost: 4000 },
-                    { name: 'Authentication System', role: 'Security Eng', hours: 20, cost: 4000 },
-                    { name: 'CI/CD Pipeline & DevOps', role: 'DevOps Eng', hours: 30, cost: 6000 }
+                    { name: 'System Architecture & Technical Design', role: 'Sr. Architect', hours: 40, cost: 5000 },
+                    { name: 'Google Cloud Project Setup', role: 'DevOps Eng', hours: 30, cost: 3750 },
+                    { name: 'Database Schema Design', role: 'Backend Eng', hours: 40, cost: 5000 },
+                    { name: 'Authentication System', role: 'Security Eng', hours: 30, cost: 3750 },
+                    { name: 'CI/CD Pipeline & DevOps', role: 'DevOps Eng', hours: 40, cost: 5000 }
                 ]
             },
             {
-                phaseNum: 2, name: 'Core Application Development', weeks: '5-8', hours: 160, cost: 28000,
+                phaseNum: 2, name: 'Core Application Development', weeks: '5-8', hours: 220, cost: 27500,
                 activities: [
-                    { name: 'Web Application Shell', role: 'Frontend Eng', hours: 40, cost: 8000 },
-                    { name: 'Mobile Application Shell (iOS/Android)', role: 'Mobile Eng', hours: 50, cost: 10000 },
-                    { name: '"The Shepherd" AI Foundation', role: 'AI Engineer', hours: 40, cost: 8000 },
-                    { name: 'API Gateway & Backend Services', role: 'Backend Eng', hours: 30, cost: 6000 }
+                    { name: 'Web Application Shell', role: 'Frontend Eng', hours: 50, cost: 6250 },
+                    { name: 'Mobile Application Shell (iOS/Android)', role: 'Mobile Eng', hours: 70, cost: 8750 },
+                    { name: '"The Shepherd" AI Foundation', role: 'AI Engineer', hours: 50, cost: 6250 },
+                    { name: 'API Gateway & Backend Services', role: 'Backend Eng', hours: 50, cost: 6250 }
                 ]
             },
             {
-                phaseNum: 3, name: 'Feature Integration & Vault', weeks: '9-12', hours: 140, cost: 26000,
+                phaseNum: 3, name: 'Feature Integration & Vault', weeks: '9-12', hours: 200, cost: 25000,
                 activities: [
-                    { name: 'Legacy Media Vault Implementation', role: 'Backend Eng', hours: 35, cost: 7000 },
-                    { name: 'Digital Lockbox & Encryption', role: 'Security Eng', hours: 35, cost: 7000 },
-                    { name: 'Beneficiary Management Portal', role: 'Frontend Eng', hours: 35, cost: 7000 },
-                    { name: 'Final Directives Module', role: 'Full Stack', hours: 35, cost: 7000 }
+                    { name: 'Legacy Media Vault Implementation', role: 'Backend Eng', hours: 50, cost: 6250 },
+                    { name: 'Digital Lockbox & Encryption', role: 'Security Eng', hours: 50, cost: 6250 },
+                    { name: 'Beneficiary Management Portal', role: 'Frontend Eng', hours: 50, cost: 6250 },
+                    { name: 'Final Directives Module', role: 'Full Stack', hours: 50, cost: 6250 }
                 ]
             },
             {
-                phaseNum: 4, name: 'Testing, QA & Launch', weeks: '13-16', hours: 100, cost: 17000,
+                phaseNum: 4, name: 'Testing, QA & Launch', weeks: '13-16', hours: 160, cost: 20000,
                 activities: [
-                    { name: 'End-to-End Testing & Bug Fixes', role: 'QA Engineer', hours: 30, cost: 6000 },
-                    { name: 'Security Audit & Penetration Testing', role: 'Security Eng', hours: 25, cost: 5000 },
-                    { name: 'Performance Optimization', role: 'DevOps Eng', hours: 20, cost: 4000 },
-                    { name: 'Launch Preparation & Deployment', role: 'Sr. Architect', hours: 25, cost: 5000 }
-                ]
-            },
-            {
-                phaseNum: 5, name: 'Executive Advisory & Launch Optimization', weeks: '17-20', hours: 100, cost: 42000,
-                activities: [
-                    { name: 'Lead Executive Consultation', role: 'Erin Horne McKinney', hours: 40, cost: 20000 },
-                    { name: 'Product Market Fit Optimization', role: 'Erin Horne McKinney', hours: 30, cost: 12000 },
-                    { name: 'Operational Transition Support', role: 'Erin Horne McKinney', hours: 30, cost: 10000 }
+                    { name: 'End-to-End Testing & Bug Fixes', role: 'QA Engineer', hours: 40, cost: 5000 },
+                    { name: 'Security Audit & Penetration Testing', role: 'Security Eng', hours: 40, cost: 5000 },
+                    { name: 'Performance Optimization', role: 'DevOps Eng', hours: 40, cost: 5000 },
+                    { name: 'Launch Preparation & Deployment', role: 'Sr. Architect', hours: 40, cost: 5000 }
                 ]
             }
         ]
+
+
     }
 }
 
@@ -156,7 +156,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'service',
         bundledPrice: 18000,
         standalonePrice: 18000,
+        hours: 144,
         timeline: 12,
+
         timelineUnit: 'months',
         recurring: true,
         detailedScope: [
@@ -173,12 +175,15 @@ export const PRODUCTS: Record<string, Product> = {
         shortDescription: 'Direct strategic partnership (20 hrs/week)',
         description: 'On-demand strategic consulting and executive partnership.',
         category: 'service',
-        bundledPrice: 1000,
-        standalonePrice: 1000,
+        bundledPrice: 6000,
+        standalonePrice: 6000,
+        hours: 48,
         timeline: 1,
+
         timelineUnit: 'weeks',
         recurring: true,
         perWeek: true,
+
         detailedScope: [
             {
                 title: "Executive Strategic Partnership",
@@ -193,13 +198,14 @@ export const PRODUCTS: Record<string, Product> = {
         ],
         wbs: [
             {
-                phaseNum: 1, name: 'Strategic Advisory', weeks: '1-1', hours: 20, cost: 1000,
+                phaseNum: 1, name: 'Strategic Advisory', weeks: '1-1', hours: 20, cost: 6000,
                 activities: [
-                    { name: 'Strategic Planning Session', role: 'Erin Horne McKinney', hours: 10, cost: 500 },
-                    { name: 'Operational Oversight', role: 'Erin Horne McKinney', hours: 10, cost: 500 }
+                    { name: 'Strategic Planning Session', role: 'Erin Horne McKinney', hours: 10, cost: 3000 },
+                    { name: 'Operational Oversight', role: 'Erin Horne McKinney', hours: 10, cost: 3000 }
                 ]
             }
         ]
+
     },
     'branding': {
         id: 'branding',
@@ -209,7 +215,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'service',
         bundledPrice: 30000,
         standalonePrice: 30000,
+        hours: 240,
         timeline: 8,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -236,7 +244,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 31850,
         standalonePrice: 45500,
+        hours: 364,
         timeline: 8,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -263,7 +273,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 24500,
         standalonePrice: 35000,
+        hours: 280,
         timeline: 10,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -290,9 +302,11 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 12250,
         standalonePrice: 17500,
+        hours: 140,
         timeline: 4,
         timelineUnit: 'weeks',
         prerequisites: ['probate'],
+
         detailedScope: [
             {
                 title: "Probate AI Enhancement",
@@ -309,7 +323,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 14700,
         standalonePrice: 21000,
+        hours: 168,
         timeline: 4,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -327,8 +343,10 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 22050,
         standalonePrice: 31499,
+        hours: 252,
         timeline: 6,
         timelineUnit: 'weeks',
+
         detailedScope: [
             {
                 title: "Virtual Memorial Platform",
@@ -345,7 +363,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 29400,
         standalonePrice: 42000,
+        hours: 336,
         timeline: 10,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -363,7 +383,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 26950,
         standalonePrice: 38500,
+        hours: 308,
         timeline: 10,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -381,7 +403,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 19600,
         standalonePrice: 28000,
+        hours: 224,
         timeline: 8,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -399,7 +423,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'service',
         bundledPrice: 17150,
         standalonePrice: 24500,
+        hours: 196,
         timeline: 8,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -417,7 +443,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 36750,
         standalonePrice: 52500,
+        hours: 420,
         timeline: 12,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -435,7 +463,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 22050,
         standalonePrice: 31499,
+        hours: 252,
         timeline: 8,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -453,7 +483,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 12250,
         standalonePrice: 17500,
+        hours: 140,
         timeline: 6,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -471,8 +503,10 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 14700,
         standalonePrice: 21000,
+        hours: 168,
         timeline: 6,
         timelineUnit: 'weeks',
+
         detailedScope: [
             {
                 title: "Advanced Vault Security",
@@ -489,7 +523,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'service',
         bundledPrice: 9800,
         standalonePrice: 14000,
+        hours: 112,
         timeline: 4,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -507,8 +543,10 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 22050,
         standalonePrice: 31499,
+        hours: 252,
         timeline: 6,
         timelineUnit: 'weeks',
+
         detailedScope: [
             {
                 title: "Digital Asset Preservation",
@@ -526,7 +564,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 31850,
         standalonePrice: 45500,
+        hours: 364,
         timeline: 10,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -544,8 +584,10 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'service',
         bundledPrice: 14700,
         standalonePrice: 21000,
+        hours: 168,
         timeline: 6,
         timelineUnit: 'weeks',
+
         detailedScope: [
             {
                 title: "Cinematic Legacy Preservation",
@@ -562,8 +604,10 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 12250,
         standalonePrice: 17500,
+        hours: 140,
         timeline: 4,
         timelineUnit: 'weeks',
+
         detailedScope: [
             {
                 title: "Advanced Vault Guarding",
@@ -580,7 +624,9 @@ export const PRODUCTS: Record<string, Product> = {
         category: 'feature',
         bundledPrice: 8820,
         standalonePrice: 12600,
+        hours: 101,
         timeline: 6,
+
         timelineUnit: 'weeks',
         detailedScope: [
             {
@@ -605,7 +651,10 @@ export function getBundle(id: string): Bundle | undefined {
 }
 
 export interface CalculateTotalResult {
-    total: number
+    total: number // The final investment (multiplied or base)
+    internalTotal: number // Base cost (1.0x)
+    marketTotal: number // Market valuation based on hours @ $250/hr
+    totalHours: number // Total labor hours
     breakdown: {
         bundle: number
         addons: number
@@ -616,6 +665,8 @@ export interface CalculateTotalResult {
     }
 }
 
+
+
 export function calculateTotal(
     bundleId: string | null,
     addonIds: string[],
@@ -623,44 +674,65 @@ export function calculateTotal(
     probateStateCount: number = 1,
     multiplier: number = 1.0 // Sirsi Multiplier
 ): CalculateTotalResult {
-    let bundleTotal = 0
-    let addonsTotal = 0
-    let ceoConsultingTotal = 0
-    let probateEngineTotal = 0
+    let bundleTotalBase = 0
+    let addonsTotalBase = 0
+    let ceoConsultingTotalBase = 0
+    let probateEngineTotalBase = 0
+    let totalHours = 0
 
     const hasBundle = bundleId !== null
     if (bundleId && BUNDLES[bundleId]) {
-        bundleTotal = BUNDLES[bundleId].price * (multiplier || 1.0)
+        bundleTotalBase = BUNDLES[bundleId].price
+        totalHours += BUNDLES[bundleId].hours
     }
 
     addonIds.forEach(id => {
         const product = PRODUCTS[id]
         if (product) {
             const standPrice = product.standalonePrice || Math.round(product.bundledPrice * 1.5)
-            const unitPrice = (hasBundle ? product.bundledPrice : standPrice) * (multiplier || 1.0)
+            const unitPrice = hasBundle ? product.bundledPrice : standPrice
+
+            // Standalone hours are used for market valuation accuracy
+            const unitHours = hasBundle ? product.hours : Math.round(standPrice / 125)
 
             if (id === 'ceo-consulting') {
-                ceoConsultingTotal = unitPrice * Math.max(1, ceoConsultingWeeks)
+                const multiplier = Math.max(1, ceoConsultingWeeks)
+                ceoConsultingTotalBase += unitPrice * multiplier
+                totalHours += product.hours * multiplier
             } else if (id === 'probate') {
-                probateEngineTotal = unitPrice * probateStateCount
+                const multiplier = probateStateCount
+                probateEngineTotalBase += unitPrice * multiplier
+                totalHours += product.hours * multiplier
             } else {
-                addonsTotal += unitPrice
+                addonsTotalBase += unitPrice
+                totalHours += unitHours
             }
         }
     })
 
+    const internalTotal = bundleTotalBase + addonsTotalBase + ceoConsultingTotalBase + probateEngineTotalBase
+    const scale = multiplier || 1.0
+
+    // Market Valuation Rule 13: $250/hr
+    const marketTotal = totalHours * 250
+
     return {
-        total: bundleTotal + addonsTotal + ceoConsultingTotal + probateEngineTotal,
+        total: Math.round(internalTotal * scale),
+        internalTotal: internalTotal,
+        marketTotal: marketTotal,
+        totalHours: totalHours,
         breakdown: {
-            bundle: bundleTotal,
-            addons: addonsTotal,
+            bundle: Math.round(bundleTotalBase * scale),
+            addons: Math.round(addonsTotalBase * scale),
             special: {
-                ceoConsulting: ceoConsultingTotal,
-                probateEngine: probateEngineTotal
+                ceoConsulting: Math.round(ceoConsultingTotalBase * scale),
+                probateEngine: Math.round(probateEngineTotalBase * scale)
             }
         }
     }
 }
+
+
 
 export function calculateTimeline(
     bundleId: string | null,

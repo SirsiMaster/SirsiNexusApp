@@ -13,6 +13,11 @@ interface ConfigState {
     clientName: string
     clientEmail: string
 
+    // Entity / Counterparty info
+    entityLegalName: string
+    counterpartyName: string
+    counterpartyTitle: string
+
     // Navigation state
     currentTab: TabId
     visitedTabs: TabId[]
@@ -31,6 +36,7 @@ interface ConfigState {
     setCurrentTab: (tab: TabId) => void
     setProjectId: (id: string) => void
     setClientInfo: (name: string, email: string) => void
+    setCounterpartyInfo: (entity: string, name: string, title: string) => void
     setSelectedBundle: (id: string | null) => void
     toggleAddon: (id: string) => void
     setCeoConsultingWeeks: (weeks: number) => void
@@ -46,6 +52,9 @@ const initialState = {
     projectId: 'finalwishes',
     clientName: '',
     clientEmail: '',
+    entityLegalName: 'Sirsi Technologies, Inc.',
+    counterpartyName: 'Cylton Collymore',
+    counterpartyTitle: 'CEO',
     currentTab: 'summary' as TabId,
     visitedTabs: ['summary'] as TabId[],
     selectedBundle: null,
@@ -83,6 +92,12 @@ export const useConfigStore = create<ConfigState>()(
             setClientInfo: (name, email) => set({
                 clientName: name,
                 clientEmail: email
+            }),
+
+            setCounterpartyInfo: (entity, name, title) => set({
+                entityLegalName: entity,
+                counterpartyName: name,
+                counterpartyTitle: title
             }),
 
             setSelectedBundle: (id) => set({ selectedBundle: id }),

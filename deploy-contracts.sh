@@ -24,14 +24,11 @@ cd ../sirsi-opensign
 # Clear old assets
 rm -rf public/assets/index-*.js public/assets/index-*.css
 
-# Copy new assets from dist
-cp -R ../finalwishes-contracts/dist/assets/index-*.js public/assets/
-cp -R ../finalwishes-contracts/dist/assets/index-*.css public/assets/
+# Copy all assets from dist
+cp -R ../finalwishes-contracts/dist/assets/* public/assets/
 
-# Sync public folder assets (security-init.js, etc)
-cp -R ../finalwishes-contracts/public/assets/js/* public/assets/js/
-
-# Copy the SPA index.html to partnership route
+# Copy the SPA index.html to both the root and its sub-path
+cp ../finalwishes-contracts/dist/index.html public/index.html
 mkdir -p public/partnership/finalwishes
 cp ../finalwishes-contracts/dist/index.html public/partnership/finalwishes/index.html
 
