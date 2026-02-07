@@ -256,11 +256,18 @@ export function SirsiVault() {
                     return;
                 }
 
-                // 2. Create the checkout session for the first payment
-                const paymentMethodTypes = []
+                // Wire transfers are out-of-band (manual bank transfer) — no Stripe checkout needed
+                if (signatureData.selectedPaymentMethod === 'wire') {
+                    console.log('🏦 Wire Transfer Selected: Out-of-band settlement');
+                    // Contract already updated to WAITING_FOR_COUNTERSIGN above.
+                    // Redirect to confirmation with wire instructions.
+                    window.location.href = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${calculateTimeline(selectedBundle, selectedAddons, probateStates.length)}&hours=${calculateTotalHours(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=${sirsiMultiplier}&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(useConfigStore.getState().counterpartyTitle)}&bundle=${selectedBundle || ''}&sigHash=${encodeURIComponent(signatureEvidence?.hash || '')}&sigTs=${encodeURIComponent(signatureEvidence?.timestamp || '')}&envId=${encodeURIComponent(signatureEvidence?.envelopeId || '')}&signed=true`;
+                    return;
+                }
+
+                // 2. Create the checkout session for the first payment (Card only)
+                const paymentMethodTypes: string[] = []
                 if (signatureData.selectedPaymentMethod === 'card') paymentMethodTypes.push('card')
-                if (signatureData.selectedPaymentMethod === 'bank') paymentMethodTypes.push('us_bank_account')
-                if (signatureData.selectedPaymentMethod === 'wire') paymentMethodTypes.push('customer_balance')
 
                 const session = await contractsClient.createCheckoutSession({
                     contractId: contractId,
@@ -1136,6 +1143,32 @@ export function SirsiVault() {
                                     • First payment due upon execution
                                 </span>
                             </div>
+
+                            {/* View Executed Agreement (with signature evidence) */}
+                            <button
+                                onClick={openPrintableMSA}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '8px',
+                                    width: '100%',
+                                    padding: '10px 16px',
+                                    marginTop: '16px',
+                                    background: 'rgba(16, 185, 129, 0.08)',
+                                    border: '1px solid rgba(16, 185, 129, 0.4)',
+                                    borderRadius: '8px',
+                                    color: '#10B981',
+                                    fontSize: '12px',
+                                    fontFamily: "'Cinzel', serif",
+                                    letterSpacing: '0.08em',
+                                    textTransform: 'uppercase' as const,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.3s ease'
+                                }}
+                            >
+                                📄 View & Download Executed Agreement
+                            </button>
                         </div>
 
                         {error && (
