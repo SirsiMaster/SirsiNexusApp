@@ -2,10 +2,15 @@
  * Sirsi Vault Tab
  * Document signing and contract execution
  * 
+ * BIPARTITE EXECUTION PROTOCOL (ADR-014):
+ * - Provider (countersigner) designates client signer and countersigns after client signs
+ * - Client reviews, signs, and pays
+ * - Role detected from Firebase Auth email vs contract countersignerEmail/clientEmail
+ * 
  * MFA ENFORCEMENT: Per AUTHORIZATION_POLICY.md Section 4.3, MFA is required
  * before accessing financial services (Plaid, Stripe bank transfers)
  */
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useConfigStore } from '../../store/useConfigStore'
 import { BUNDLES, calculateTotal, calculateTimeline, calculateTotalHours } from '../../data/catalog'
 import { contractsClient } from '../../lib/grpc'
@@ -13,7 +18,10 @@ import { getStripe } from '../../lib/stripe'
 import { SignatureCapture } from '../vault/SignatureCapture'
 import { MFAGate } from '../auth/MFAGate'
 import { usePlaidLink } from 'react-plaid-link'
-import { useEffect } from 'react'
+import { auth } from '../../lib/firebase'
+
+// ── Role Architecture (ADR-014) ──
+type UserRole = 'provider' | 'client' | 'viewer' | 'detecting'
 
 export function SirsiVault() {
     const [step, setStep] = useState(1)
@@ -25,6 +33,17 @@ export function SirsiVault() {
     const entityLegalName = useConfigStore(state => state.entityLegalName)
     const counterpartyName = useConfigStore(state => state.counterpartyName)
 
+    // ── ADR-014: Role Detection ──
+    const [userRole, setUserRole] = useState<UserRole>('detecting')
+    const [authUser, setAuthUser] = useState<{ displayName: string; email: string } | null>(null)
+
+    // Client designation (Provider fills this for the client signer)
+    const [clientDesignation, setClientDesignation] = useState({
+        clientName: '',
+        clientEmail: '',
+        clientTitle: ''
+    })
+
     const [signatureData, setSignatureData] = useState({
         name: '',
         email: '',
@@ -32,6 +51,7 @@ export function SirsiVault() {
         agreed: false,
         selectedPaymentMethod: 'card' // 'card', 'bank' (ACH), or 'wire' (Stripe Virtual Bank)
     })
+
 
     const [hasSignature, setHasSignature] = useState(false)
     const [signatureImageData, setSignatureImageData] = useState<string | null>(null)
@@ -95,6 +115,85 @@ export function SirsiVault() {
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
     const probateStates = useConfigStore(state => state.probateStates)
+
+    // ── ADR-014: Detect user role + pre-fill from Firebase Auth ──
+    useEffect(() => {
+        const firebaseUser = auth.currentUser
+        if (!firebaseUser) {
+            // Not authenticated — treat as client (public access via shared link)
+            setUserRole('client')
+            return
+        }
+
+        const userEmail = (firebaseUser.email || '').toLowerCase()
+        const displayName = firebaseUser.displayName || userEmail.split('@')[0]
+        setAuthUser({ displayName, email: userEmail })
+
+        // Determine role from contract's countersigner/client email
+        const storeState = useConfigStore.getState()
+        const countersignerEmail = (storeState.counterpartyName === counterpartyName)
+            ? 'cylton@sirsi.ai' // Default studio countersigner
+            : ''
+
+        const clientEmail = (storeState.clientEmail || '').toLowerCase()
+
+        if (userEmail === 'cylton@sirsi.ai' || userEmail === countersignerEmail.toLowerCase()) {
+            // Provider / Countersigner
+            setUserRole('provider')
+            // Pre-fill client designation from store if contract already has a client
+            // BUT only if the client email is different from the provider's own email
+            // (prevents stale data from old single-signer flow from pre-filling)
+            if (clientEmail && storeState.clientName && clientEmail !== userEmail) {
+                setClientDesignation({
+                    clientName: storeState.clientName,
+                    clientEmail: storeState.clientEmail,
+                    clientTitle: ''
+                })
+            }
+        } else if (userEmail === clientEmail) {
+            // Client signer — pre-fill from auth
+            setUserRole('client')
+            setSignatureData(prev => ({
+                ...prev,
+                name: prev.name || displayName,
+                email: prev.email || userEmail
+            }))
+        } else if (clientEmail === '') {
+            // No client designated yet — check if this user IS the countersigner
+            // If not, they're likely the client accessing for the first time
+            if (userEmail === 'cylton@sirsi.ai') {
+                setUserRole('provider')
+            } else {
+                setUserRole('client')
+                setSignatureData(prev => ({
+                    ...prev,
+                    name: prev.name || displayName,
+                    email: prev.email || userEmail
+                }))
+            }
+        } else {
+            // Viewer — read-only (email doesn't match either party)
+            setUserRole('viewer')
+        }
+    }, [counterpartyName])
+
+    // Role-aware step labels
+    const stepLabels = useMemo(() => {
+        if (userRole === 'provider') {
+            return [
+                { num: 1, label: 'Designate Client' },
+                { num: 2, label: 'Review Documents' },
+                { num: 3, label: 'Sign Agreement' },
+                { num: 4, label: 'Execute Agreement' }
+            ]
+        }
+        return [
+            { num: 1, label: 'Verify Identity' },
+            { num: 2, label: 'Review Documents' },
+            { num: 3, label: 'Sign Agreement' },
+            { num: 4, label: 'Execute Agreement' }
+        ]
+    }, [userRole])
 
 
     const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length, 1.0)
@@ -333,6 +432,39 @@ export function SirsiVault() {
                 marginBottom: '4rem',
                 marginTop: '2rem'
             }}>
+                {/* Role Indicator Banner (ADR-014) */}
+                {userRole !== 'detecting' && (
+                    <div style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: userRole === 'provider'
+                            ? 'rgba(200, 169, 81, 0.1)'
+                            : userRole === 'viewer'
+                                ? 'rgba(239, 68, 68, 0.1)'
+                                : 'rgba(16, 185, 129, 0.1)',
+                        border: `1px solid ${userRole === 'provider' ? 'rgba(200, 169, 81, 0.4)' : userRole === 'viewer' ? 'rgba(239, 68, 68, 0.4)' : 'rgba(16, 185, 129, 0.4)'}`,
+                        borderRadius: '20px',
+                        padding: '6px 20px',
+                        marginBottom: '1rem'
+                    }}>
+                        <span style={{
+                            color: userRole === 'provider' ? '#C8A951' : userRole === 'viewer' ? '#ef4444' : '#10b981',
+                            fontSize: '12px',
+                            fontWeight: 600,
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.15em'
+                        }}>
+                            {userRole === 'provider' ? '🛡️ Provider / Countersigner' : userRole === 'viewer' ? '👁️ View Only' : '📝 Client Signer'}
+                        </span>
+                        {authUser && (
+                            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>
+                                • {authUser.email}
+                            </span>
+                        )}
+                    </div>
+                )}
+
                 <div style={{
                     display: 'inline-block',
                     background: 'rgba(16, 185, 129, 0.1)',
@@ -358,8 +490,9 @@ export function SirsiVault() {
                     Sirsi Vault
                 </h2>
                 <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '1.25rem', maxWidth: '800px', margin: '0 auto', lineHeight: '1.8' }}>
-                    Execute your contract in our secure document vault. All signatures are timestamped
-                    and cryptographically verified.
+                    {userRole === 'provider'
+                        ? 'Configure and send contracts to clients for signature. Countersign after client execution.'
+                        : 'Execute your contract in our secure document vault. All signatures are timestamped and cryptographically verified.'}
                 </p>
             </div>
 
@@ -370,13 +503,13 @@ export function SirsiVault() {
                 gap: '48px',
                 marginBottom: '48px'
             }}>
-                {[
-                    { num: 1, label: 'Verify Identity' },
-                    { num: 2, label: 'Review Documents' },
-                    { num: 3, label: 'Sign Agreement' },
-                    { num: 4, label: 'Execute Agreement' }
-                ].map((s) => (
-                    <div key={s.num} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                {stepLabels.map((s) => (
+                    <div key={s.num} style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '8px'
+                    }}>
                         <div style={{
                             width: '40px',
                             height: '40px',
@@ -409,7 +542,145 @@ export function SirsiVault() {
 
             {/* STEP CONTENT */}
             <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-                {step === 1 && (
+
+                {/* ═══ STEP 1: ROLE-AWARE IDENTITY ═══ */}
+                {step === 1 && userRole === 'provider' && (
+                    /* ── PROVIDER VIEW: Designate Client Signer ── */
+                    <div className="neo-glass-panel" style={{ padding: '32px' }}>
+                        <h3 style={{
+                            fontFamily: "'Cinzel', serif",
+                            fontSize: '20px',
+                            color: '#C8A951',
+                            marginBottom: '8px',
+                            textAlign: 'center'
+                        }}>
+                            Step 1: Designate Client Signer
+                        </h3>
+                        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: '13px', marginBottom: '24px' }}>
+                            Enter the client's information. They will receive an invitation to review and sign.
+                        </p>
+
+                        {/* Provider Identity (pre-filled, read-only context) */}
+                        <div style={{
+                            padding: '16px',
+                            background: 'rgba(200, 169, 81, 0.06)',
+                            border: '1px solid rgba(200, 169, 81, 0.2)',
+                            borderRadius: '8px',
+                            marginBottom: '24px'
+                        }}>
+                            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>
+                                🛡️ Your Identity (Provider / Countersigner)
+                            </div>
+                            <div style={{ color: '#C8A951', fontSize: '16px', fontWeight: 600 }}>
+                                {authUser?.displayName || counterpartyName}
+                            </div>
+                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px' }}>
+                                {authUser?.email || 'cylton@sirsi.ai'} • {entityLegalName}
+                            </div>
+                        </div>
+
+                        {/* Divider */}
+                        <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', margin: '0 0 24px' }} />
+
+                        {/* Client Signer Fields */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={{ display: 'block', color: '#10b981', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.1em' }}>
+                                📝 Client Full Legal Name *
+                            </label>
+                            <input
+                                type="text"
+                                value={clientDesignation.clientName}
+                                onChange={(e) => setClientDesignation(prev => ({ ...prev, clientName: e.target.value }))}
+                                placeholder="Enter client's full legal name"
+                                style={{
+                                    width: '100%',
+                                    padding: '12px 16px',
+                                    background: 'rgba(255,255,255,0.05)',
+                                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                                    borderRadius: '8px',
+                                    color: 'white',
+                                    fontSize: '16px',
+                                    outline: 'none'
+                                }}
+                            />
+                        </div>
+
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={{ display: 'block', color: '#10b981', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.1em' }}>
+                                📧 Client Email Address *
+                            </label>
+                            <input
+                                type="email"
+                                value={clientDesignation.clientEmail}
+                                onChange={(e) => setClientDesignation(prev => ({ ...prev, clientEmail: e.target.value }))}
+                                placeholder="Enter client's email address"
+                                style={{
+                                    width: '100%',
+                                    padding: '12px 16px',
+                                    background: 'rgba(255,255,255,0.05)',
+                                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                                    borderRadius: '8px',
+                                    color: 'white',
+                                    fontSize: '16px',
+                                    outline: 'none'
+                                }}
+                            />
+                            <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px', marginTop: '6px' }}>
+                                Used for signin verification, portal access, and notifications.
+                            </p>
+                        </div>
+
+                        <div style={{ marginBottom: '24px' }}>
+                            <label style={{ display: 'block', color: '#10b981', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.1em' }}>
+                                Client Title (Optional)
+                            </label>
+                            <input
+                                type="text"
+                                value={clientDesignation.clientTitle}
+                                onChange={(e) => setClientDesignation(prev => ({ ...prev, clientTitle: e.target.value }))}
+                                placeholder="e.g. Founder, CEO, Director"
+                                style={{
+                                    width: '100%',
+                                    padding: '12px 16px',
+                                    background: 'rgba(255,255,255,0.05)',
+                                    border: '1px solid rgba(255,255,255,0.2)',
+                                    borderRadius: '8px',
+                                    color: 'white',
+                                    fontSize: '16px',
+                                    outline: 'none'
+                                }}
+                            />
+                        </div>
+
+                        <button
+                            onClick={async () => {
+                                // Set the client's name/email into the store and signatureData
+                                setClientInfo(clientDesignation.clientName, clientDesignation.clientEmail)
+                                setSignatureData(prev => ({
+                                    ...prev,
+                                    name: clientDesignation.clientName,
+                                    email: clientDesignation.clientEmail,
+                                    title: clientDesignation.clientTitle
+                                }))
+                                await handleCreateDraft()
+                                setStep(2)
+                            }}
+                            disabled={!clientDesignation.clientName || !clientDesignation.clientEmail || loading}
+                            className="select-plan-btn"
+                            style={{
+                                width: '100%',
+                                padding: '14px',
+                                opacity: (!clientDesignation.clientName || !clientDesignation.clientEmail || loading) ? 0.5 : 1,
+                                cursor: (!clientDesignation.clientName || !clientDesignation.clientEmail || loading) ? 'not-allowed' : 'pointer'
+                            }}
+                        >
+                            {loading ? 'Initializing Vault...' : '📨 Configure & Continue to Review'}
+                        </button>
+                    </div>
+                )}
+
+                {step === 1 && userRole === 'client' && (
+                    /* ── CLIENT VIEW: Verify Identity (pre-filled from auth) ── */
                     <div className="neo-glass-panel" style={{ padding: '32px' }}>
                         <h3 style={{
                             fontFamily: "'Cinzel', serif",
@@ -420,6 +691,20 @@ export function SirsiVault() {
                         }}>
                             Step 1: Verify Your Identity
                         </h3>
+
+                        {authUser && (
+                            <div style={{
+                                padding: '12px 16px',
+                                background: 'rgba(16, 185, 129, 0.06)',
+                                border: '1px solid rgba(16, 185, 129, 0.2)',
+                                borderRadius: '8px',
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#10b981'
+                            }}>
+                                ✓ Pre-filled from your account credentials. You may edit if needed.
+                            </div>
+                        )}
 
                         <div style={{ marginBottom: '20px' }}>
                             <label style={{ display: 'block', color: '#C8A951', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px' }}>
@@ -505,6 +790,36 @@ export function SirsiVault() {
                         >
                             {loading ? 'Initializing Vault...' : 'Continue to Document Review'}
                         </button>
+                    </div>
+                )}
+
+                {step === 1 && userRole === 'viewer' && (
+                    /* ── VIEWER: Read-only notice ── */
+                    <div className="neo-glass-panel" style={{ padding: '32px', textAlign: 'center' }}>
+                        <div style={{ fontSize: '48px', marginBottom: '16px' }}>👁️</div>
+                        <h3 style={{
+                            fontFamily: "'Cinzel', serif",
+                            fontSize: '20px',
+                            color: '#ef4444',
+                            marginBottom: '16px'
+                        }}>
+                            View Only Access
+                        </h3>
+                        <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', lineHeight: 1.8, marginBottom: '16px' }}>
+                            Your email (<strong style={{ color: '#C8A951' }}>{authUser?.email}</strong>) is not authorized
+                            as a signer or countersigner on this contract. You may view the documents but cannot sign or execute.
+                        </p>
+                        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px' }}>
+                            If you believe this is an error, contact the contract administrator.
+                        </p>
+                    </div>
+                )}
+
+                {step === 1 && userRole === 'detecting' && (
+                    <div className="neo-glass-panel" style={{ padding: '32px', textAlign: 'center' }}>
+                        <div style={{ color: 'rgba(255,255,255,0.4)', fontFamily: "'Cinzel', serif", letterSpacing: '0.15em' }}>
+                            DETECTING ROLE...
+                        </div>
                     </div>
                 )}
 

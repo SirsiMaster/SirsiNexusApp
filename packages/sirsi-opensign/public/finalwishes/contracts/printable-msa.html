@@ -1214,10 +1214,16 @@
       const params = new URLSearchParams(window.location.search);
 
       // ── 1. Core Financial Values ──
-      const total = parseInt(params.get('total') || '0', 10);
+      let total = parseInt(params.get('total') || '0', 10);
       const weeks = parseInt(params.get('weeks') || '20', 10);
       const hours = parseInt(params.get('hours') || '0', 10);
       const multiplier = parseFloat(params.get('multiplier') || '1.0');
+      // SAFETY: If multiplier > 1, the total was likely already inflated upstream.
+      // Normalize to canonical internal price (Rule 17: 1.0x in execution layer).
+      if (multiplier > 1) {
+        console.warn('⚠️ MSA Safety: multiplier=' + multiplier + ' detected. Normalizing total from ' + total + ' to ' + Math.round(total / multiplier));
+        total = Math.round(total / multiplier);
+      }
       const marketValue = Math.round(total * 2); // $250/hr market ÷ $125/hr internal = 2× 
       const selectedPlan = params.get('plan') || '2';
       const addonsRaw = params.get('addons') || '';
