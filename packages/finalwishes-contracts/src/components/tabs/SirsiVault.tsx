@@ -97,7 +97,7 @@ export function SirsiVault() {
     const probateStates = useConfigStore(state => state.probateStates)
     const sirsiMultiplier = useConfigStore(state => state.sirsiMultiplier)
 
-    const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length, sirsiMultiplier)
+    const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length, 1.0)
     const totalInvestment = totalInvestmentResult.total
 
     // Compute signature evidence when advancing to Step 4
