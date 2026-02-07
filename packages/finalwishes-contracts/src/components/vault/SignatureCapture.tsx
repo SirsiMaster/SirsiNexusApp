@@ -23,6 +23,11 @@ export function SignatureCapture({ onSignatureChange, signerName = '' }: Signatu
     const lastPosRef = useRef({ x: 0, y: 0 })
     const hasDrawnRef = useRef(false)
 
+    // Sync typedName when signerName prop changes (e.g., from Step 1 identity form)
+    useEffect(() => {
+        setTypedName(signerName)
+    }, [signerName])
+
     // Initialize draw canvas
     useEffect(() => {
         if (mode === 'draw' && canvasRef.current) {

@@ -95,7 +95,7 @@ export function SirsiVault() {
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
     const probateStates = useConfigStore(state => state.probateStates)
-    const sirsiMultiplier = useConfigStore(state => state.sirsiMultiplier)
+
 
     const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length, 1.0)
     const totalInvestment = totalInvestmentResult.total
@@ -125,7 +125,7 @@ export function SirsiVault() {
         const evidenceParams = signatureEvidence
             ? `&sigHash=${encodeURIComponent(signatureEvidence.hash)}&sigTs=${encodeURIComponent(signatureEvidence.timestamp)}&envId=${encodeURIComponent(signatureEvidence.envelopeId)}&signed=true`
             : ''
-        const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=${sirsiMultiplier}&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(counterpartyTitle)}&bundle=${selectedBundle || ''}${evidenceParams}`
+        const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=1&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(counterpartyTitle)}&bundle=${selectedBundle || ''}${evidenceParams}`
         window.open(msaUrl, '_blank', 'width=900,height=800,scrollbars=yes,resizable=yes')
     }
 
@@ -261,7 +261,7 @@ export function SirsiVault() {
                     console.log('🏦 Wire Transfer Selected: Out-of-band settlement');
                     // Contract already updated to WAITING_FOR_COUNTERSIGN above.
                     // Redirect to confirmation with wire instructions.
-                    window.location.href = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${calculateTimeline(selectedBundle, selectedAddons, probateStates.length)}&hours=${calculateTotalHours(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=${sirsiMultiplier}&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(useConfigStore.getState().counterpartyTitle)}&bundle=${selectedBundle || ''}&sigHash=${encodeURIComponent(signatureEvidence?.hash || '')}&sigTs=${encodeURIComponent(signatureEvidence?.timestamp || '')}&envId=${encodeURIComponent(signatureEvidence?.envelopeId || '')}&signed=true`;
+                    window.location.href = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${calculateTimeline(selectedBundle, selectedAddons, probateStates.length)}&hours=${calculateTotalHours(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=1&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(useConfigStore.getState().counterpartyTitle)}&bundle=${selectedBundle || ''}&sigHash=${encodeURIComponent(signatureEvidence?.hash || '')}&sigTs=${encodeURIComponent(signatureEvidence?.timestamp || '')}&envId=${encodeURIComponent(signatureEvidence?.envelopeId || '')}&signed=true`;
                     return;
                 }
 
