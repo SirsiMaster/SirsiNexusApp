@@ -19,6 +19,20 @@
             "queryScope": "COLLECTION",
             "fields": [
                 {
+                    "fieldPath": "countersignerEmail",
+                    "order": "ASCENDING"
+                },
+                {
+                    "fieldPath": "createdAt",
+                    "order": "DESCENDING"
+                }
+            ]
+        },
+        {
+            "collectionGroup": "contracts",
+            "queryScope": "COLLECTION",
+            "fields": [
+                {
                     "fieldPath": "projectId",
                     "order": "ASCENDING"
                 },
