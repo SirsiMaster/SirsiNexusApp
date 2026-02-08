@@ -15,6 +15,7 @@ import { useConfigStore } from '../../store/useConfigStore'
 import { BUNDLES, calculateTotal, calculateTimeline, calculateTotalHours } from '../../data/catalog'
 import { contractsClient } from '../../lib/grpc'
 import { getStripe } from '../../lib/stripe'
+import { createGuestEnvelope, createPaymentSession, requestWireInstructions } from '../../lib/opensign'
 import { SignatureCapture } from '../vault/SignatureCapture'
 import { MFAGate } from '../auth/MFAGate'
 import { usePlaidLink } from 'react-plaid-link'
@@ -96,6 +97,13 @@ export function SirsiVault() {
     // MFA State - Per AUTHORIZATION_POLICY.md Section 4.3
     const [showMFAGate, setShowMFAGate] = useState(false)
     const [mfaVerifiedForFinancial, setMfaVerifiedForFinancial] = useState(false)
+
+    // Legal Acknowledgment State (F-03, F-04)
+    const [clientLegalAck, setClientLegalAck] = useState(false)
+    const [countersignerLegalAck, setCountersignerLegalAck] = useState(false)
+
+    // OpenSign Envelope State (ADR-015)
+    const [openSignEnvelopeId, setOpenSignEnvelopeId] = useState<string | null>(null)
 
     const { open: openPlaid, ready: plaidReady } = usePlaidLink({
         token: plaidLinkToken,
@@ -331,7 +339,11 @@ export function SirsiVault() {
         const evidenceParams = signatureEvidence
             ? `&sigHash=${encodeURIComponent(signatureEvidence.hash)}&sigTs=${encodeURIComponent(signatureEvidence.timestamp)}&envId=${encodeURIComponent(signatureEvidence.envelopeId)}&signed=true`
             : ''
-        const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=1&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(counterpartyTitle)}&bundle=${selectedBundle || ''}${evidenceParams}`
+        // Include countersigner evidence if available (F-07)
+        const csEvidenceParams = countersignerEvidence
+            ? `&csSigHash=${encodeURIComponent(countersignerEvidence.hash)}&csSigTs=${encodeURIComponent(countersignerEvidence.timestamp)}&csEnvId=${encodeURIComponent(countersignerEvidence.envelopeId)}`
+            : ''
+        const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=1&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(counterpartyTitle)}&bundle=${selectedBundle || ''}${evidenceParams}${csEvidenceParams}`
         window.open(msaUrl, '_blank', 'width=900,height=800,scrollbars=yes,resizable=yes')
     }
 
@@ -378,6 +390,29 @@ export function SirsiVault() {
             });
 
             setStoreContractId(contract.id);
+
+            // ADR-015: Create corresponding OpenSign envelope
+            try {
+                const envelope = await createGuestEnvelope({
+                    projectId: 'finalwishes',
+                    docType: 'legacy-msa',
+                    signerName: signatureData.name,
+                    signerEmail: signatureData.email,
+                    metadata: {
+                        contractId: contract.id,
+                        projectId: storeProjectId,
+                        selectedBundle: selectedBundle,
+                        totalAmount: totalAmountCents
+                    },
+                    plan: `${selectedPaymentPlan}-month`,
+                    amount: totalAmountCents
+                })
+                setOpenSignEnvelopeId(envelope.envelopeId)
+                console.log(`📋 OpenSign envelope created: ${envelope.envelopeId}`)
+            } catch (envErr) {
+                // Non-fatal: payment can still fall back to contractId
+                console.warn('OpenSign envelope creation failed (non-blocking):', envErr)
+            }
         } catch (err: any) {
             console.error('Failed to create draft:', err);
             // Show more detailed error
@@ -425,7 +460,7 @@ export function SirsiVault() {
                         signatureImageData: signatureImageData || '',
                         // @ts-ignore - Injecting cryptographic evidence into Firestore record
                         signatureHash: sigHash,
-                        legalAcknowledgment: (document.getElementById('legal-ack') as HTMLInputElement)?.checked || false,
+                        legalAcknowledgment: clientLegalAck,
                         selectedPaymentPlan: selectedPaymentPlan,
                         paymentMethod: signatureData.selectedPaymentMethod
                     }
@@ -453,35 +488,51 @@ export function SirsiVault() {
                     }
                 }
 
-                // If ACH is already linked or Card is selected, proceed to final confirmation/checkout
+                // If ACH is already linked, create payment session via OpenSign (ADR-015)
                 if (signatureData.selectedPaymentMethod === 'bank' && achLinked) {
-                    // For ACH, we've already stored the btok on the backend. 
-                    // We could trigger a payment intent here or redirect to a success page.
-                    alert('Bank transfer successfully authorized. Settlement will begin within 24 hours. Redirecting to confirmation...');
-                    window.location.href = `/contracts/${storeProjectId}/payment/success?method=ach&contract=${contractId}`;
-                    return;
+                    const achSession = await createPaymentSession({
+                        envelopeId: openSignEnvelopeId || signatureEvidence?.envelopeId || contractId,
+                        planId: 'payment-1',
+                        projectId: 'finalwishes',
+                        successUrl: window.location.origin + `/contracts/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}&method=ach`,
+                        cancelUrl: window.location.href
+                    })
+
+                    if (achSession.checkoutUrl) {
+                        window.location.href = achSession.checkoutUrl
+                    } else if (achSession.sessionId) {
+                        const stripe = await getStripe()
+                        if (stripe) {
+                            await (stripe as any).redirectToCheckout({ sessionId: achSession.sessionId })
+                        }
+                    }
+                    return
                 }
 
-                // Wire transfers are out-of-band (manual bank transfer) — no Stripe checkout needed
+                // Wire transfers — request secure wire instructions via OpenSign (ADR-015)
                 if (signatureData.selectedPaymentMethod === 'wire') {
-                    console.log('🏦 Wire Transfer Selected: Out-of-band settlement');
-                    // Contract already updated to WAITING_FOR_COUNTERSIGN above.
-                    // Redirect to confirmation with wire instructions.
+                    console.log('🏦 Wire Transfer Selected: Requesting instructions via OpenSign');
+                    try {
+                        await requestWireInstructions({
+                            email: signatureData.email,
+                            reference: `SIRSI-${contractId.substring(0, 8).toUpperCase()}`,
+                            envelopeId: openSignEnvelopeId || signatureEvidence?.envelopeId || contractId
+                        })
+                    } catch (wireErr) {
+                        console.warn('Wire instructions email failed (non-blocking):', wireErr)
+                    }
+                    // Also open printable MSA for reference
                     window.location.href = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${calculateTimeline(selectedBundle, selectedAddons, probateStates.length)}&hours=${calculateTotalHours(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length)}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=1&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(useConfigStore.getState().counterpartyTitle)}&bundle=${selectedBundle || ''}&sigHash=${encodeURIComponent(signatureEvidence?.hash || '')}&sigTs=${encodeURIComponent(signatureEvidence?.timestamp || '')}&envId=${encodeURIComponent(signatureEvidence?.envelopeId || '')}&signed=true`;
                     return;
                 }
 
-                // 2. Create the checkout session for the first payment (Card only)
-                const paymentMethodTypes: string[] = []
-                if (signatureData.selectedPaymentMethod === 'card') paymentMethodTypes.push('card')
-
-                const session = await contractsClient.createCheckoutSession({
-                    contractId: contractId,
-                    planId: 'payment-1', // First payment plan
+                // Card payment — create session via OpenSign (ADR-015)
+                const session = await createPaymentSession({
+                    envelopeId: openSignEnvelopeId || signatureEvidence?.envelopeId || contractId,
+                    planId: 'payment-1',
+                    projectId: 'finalwishes',
                     successUrl: window.location.origin + `/contracts/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-                    cancelUrl: window.location.href,
-                    paymentMethodTypes: paymentMethodTypes,
-                    stripeConnectAccountId: '' // Future: Map to project-specific Connect account
+                    cancelUrl: window.location.href
                 })
 
 
@@ -770,6 +821,8 @@ export function SirsiVault() {
                                     title: clientDesignation.clientTitle
                                 }))
                                 await handleCreateDraft()
+                                // Persist configuration selections to Firestore (F-01)
+                                await useConfigStore.getState().syncConfig()
                                 setStep(2)
                             }}
                             disabled={!clientDesignation.clientName || !clientDesignation.clientEmail || loading}
@@ -884,6 +937,8 @@ export function SirsiVault() {
                                 // Persist client info to the store
                                 setClientInfo(signatureData.name, signatureData.email)
                                 await handleCreateDraft()
+                                // Persist configuration selections to Firestore (F-01)
+                                await useConfigStore.getState().syncConfig()
                                 setStep(2)
                             }}
                             disabled={!signatureData.name || !signatureData.email || !signatureData.title || loading}
@@ -1108,6 +1163,8 @@ export function SirsiVault() {
                             <input
                                 type="checkbox"
                                 id="legal-ack"
+                                checked={clientLegalAck}
+                                onChange={(e) => setClientLegalAck(e.target.checked)}
                                 style={{ width: '20px', height: '20px', marginTop: '2px', accentColor: '#C8A951' }}
                             />
                             <span style={{ color: 'rgba(255,255,255,0.9)', fontSize: '13px', lineHeight: 1.6 }}>
@@ -1136,13 +1193,13 @@ export function SirsiVault() {
                                     await computeSignatureEvidence()
                                     setStep(4)
                                 }}
-                                disabled={!hasSignature}
+                                disabled={!hasSignature || !clientLegalAck}
                                 className="select-plan-btn"
                                 style={{
                                     flex: 2,
                                     padding: '14px',
-                                    opacity: hasSignature ? 1 : 0.5,
-                                    cursor: hasSignature ? 'pointer' : 'not-allowed'
+                                    opacity: (hasSignature && clientLegalAck) ? 1 : 0.5,
+                                    cursor: (hasSignature && clientLegalAck) ? 'pointer' : 'not-allowed'
                                 }}
                             >
                                 Continue to Execution
@@ -1306,6 +1363,8 @@ export function SirsiVault() {
                                             <input
                                                 type="checkbox"
                                                 id="countersign-legal-ack"
+                                                checked={countersignerLegalAck}
+                                                onChange={(e) => setCountersignerLegalAck(e.target.checked)}
                                                 style={{ width: '20px', height: '20px', marginTop: '2px', accentColor: '#C8A951' }}
                                             />
                                             <span style={{ color: 'rgba(255,255,255,0.9)', fontSize: '13px', lineHeight: 1.6 }}>
@@ -1360,13 +1419,13 @@ export function SirsiVault() {
                                         await computeCountersignerEvidence()
                                         setStep(4)
                                     }}
-                                    disabled={!hasCountersignerSignature || contractStatus !== 'WAITING_FOR_COUNTERSIGN'}
+                                    disabled={!hasCountersignerSignature || !countersignerLegalAck || !['WAITING_FOR_COUNTERSIGN', 'PAID'].includes(contractStatus)}
                                     className="select-plan-btn"
                                     style={{
                                         flex: 2,
                                         padding: '14px',
-                                        opacity: (hasCountersignerSignature && contractStatus === 'WAITING_FOR_COUNTERSIGN') ? 1 : 0.5,
-                                        cursor: (hasCountersignerSignature && contractStatus === 'WAITING_FOR_COUNTERSIGN') ? 'pointer' : 'not-allowed'
+                                        opacity: (hasCountersignerSignature && countersignerLegalAck && ['WAITING_FOR_COUNTERSIGN', 'PAID'].includes(contractStatus)) ? 1 : 0.5,
+                                        cursor: (hasCountersignerSignature && countersignerLegalAck && ['WAITING_FOR_COUNTERSIGN', 'PAID'].includes(contractStatus)) ? 'pointer' : 'not-allowed'
                                     }}
                                 >
                                     Continue to Finalize

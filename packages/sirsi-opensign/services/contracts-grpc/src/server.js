@@ -32,7 +32,6 @@ async function fetchSecrets() {
             if (secrets.PLAID_CLIENT_ID) process.env.PLAID_CLIENT_ID = secrets.PLAID_CLIENT_ID;
             if (secrets.PLAID_SECRET) process.env.PLAID_SECRET = secrets.PLAID_SECRET;
             if (secrets.SENDGRID_API_KEY) process.env.SENDGRID_API_KEY = secrets.SENDGRID_API_KEY;
-            if (secrets.SENDGRID_API_KEY) process.env.SENDGRID_API_KEY = secrets.SENDGRID_API_KEY;
 
             // Initialize services with new keys
             if (process.env.SENDGRID_API_KEY) {
@@ -263,16 +262,22 @@ const handlers = {
     },
 
     // List contracts with pagination and cross-portfolio user filtering
-    async listContracts(projectId, pageSize = 20, userEmail = null) {
+    async listContracts(projectId, pageSize = 20, userEmail = null, role = 'client') {
         let query = db.collection('contracts');
 
         if (projectId) {
             query = query.where('projectId', '==', projectId);
         }
 
-        // Filter by user email (as client)
+        // Filter by user email based on role
         if (userEmail) {
-            query = query.where('clientEmail', '==', userEmail);
+            if (role === 'provider' || role === 'admin') {
+                // Provider/admin sees contracts they're assigned to countersign
+                query = query.where('countersignerEmail', '==', userEmail);
+            } else {
+                // Client sees their own contracts
+                query = query.where('clientEmail', '==', userEmail);
+            }
         }
 
         query = query.orderBy('createdAt', 'desc').limit(pageSize);
@@ -300,46 +305,86 @@ const handlers = {
         if (!contractDoc.exists) throw new Error('Contract not found');
         const existingData = contractDoc.data();
 
-        // If client signs, transition to WAITING_FOR_COUNTERSIGN
-        // Handle both string 'SIGNED' and Enum 3 (SIGNED)
+        // ═══════════════════════════════════════════════════════════════════
+        // STATUS TRANSITIONS — Flexible Signing Order
+        // Signing and payment are independent ceremonies. Either can happen
+        // first. When both client signature + payment exist, the contract
+        // is considered complete. Countersign completes the legal record
+        // but never blocks payment.
+        //
+        // Supported flows:
+        //   Client signs → pays → Provider countersigns → FULLY_EXECUTED
+        //   Client signs → Provider countersigns → Client pays → FULLY_EXECUTED
+        //   Client signs → pays (no countersigner required) → PAID
+        // ═══════════════════════════════════════════════════════════════════
+
+        // ─── CLIENT SIGNS ───
         if (updateData.status === 'SIGNED' || updateData.status === 3 || updateData.status === 'CONTRACT_STATUS_SIGNED') {
-            updateData.status = 'WAITING_FOR_COUNTERSIGN';
-            console.log(`📝 Contract ${id} signed by client. Now waiting for countersignature.`);
+            // Determine if this contract requires a countersigner
+            const requiresCountersign = !!(existingData.countersignerEmail || existingData.countersignerName);
 
-            // Notify Countersigner
-            await handlers.sendEmail(
-                existingData.countersignerEmail || 'cylton@sirsi.ai',
-                `Action Required: Contract Signed by ${existingData.clientName}`,
-                `The contract for ${existingData.projectName} has been signed by ${existingData.clientName}. Please log in to the Sirsi Vault to countersign.`,
-                `<h3>Contract Signed</h3><p>The contract for <b>${existingData.projectName}</b> has been signed by <b>${existingData.clientName}</b>.</p><p><a href="https://vault.sirsi.ai">Review and Countersign in Vault</a></p>`
-            );
-        }
+            if (requiresCountersign) {
+                updateData.status = 'WAITING_FOR_COUNTERSIGN';
+                console.log(`📝 Contract ${id} signed by client. Routing to countersigner.`);
 
-        // ═══ ADR-014: Countersign Transition ═══
-        // Provider countersigns → transition to FULLY_EXECUTED
-        if (updateData.status === 'FULLY_EXECUTED' || updateData.status === 7 || updateData.status === 'CONTRACT_STATUS_FULLY_EXECUTED') {
-            updateData.status = 'FULLY_EXECUTED';
-            updateData.countersignedAt = updateData.countersignerSignedAt || Date.now();
-            console.log(`✅ Contract ${id} fully executed. Both parties have signed.`);
-
-            // Notify Client that contract is fully executed
-            await handlers.sendEmail(
-                existingData.clientEmail,
-                `✅ Agreement Fully Executed: ${existingData.projectName}`,
-                `Your agreement for ${existingData.projectName} has been countersigned by ${existingData.countersignerName}. The contract is now fully executed.`,
-                `<h3>Agreement Fully Executed</h3><p>Your agreement for <b>${existingData.projectName}</b> has been countersigned by <b>${existingData.countersignerName}</b>.</p><p>Both parties have signed. Your project timeline begins now.</p><p><a href="https://sign.sirsi.ai">View Executed Agreement in Vault</a></p>`
-            );
-        }
-
-        // If countersign is completed
-        if (updateData.status === 'PAID' || updateData.status === 4 || updateData.status === 'CONTRACT_STATUS_PAID') {
-            if (!existingData.countersignedAt) {
-                updateData.countersignedAt = Date.now();
+                // Notify Countersigner
+                await handlers.sendEmail(
+                    existingData.countersignerEmail || 'cylton@sirsi.ai',
+                    `Action Required: Contract Signed by ${existingData.clientName}`,
+                    `The contract for ${existingData.projectName} has been signed by ${existingData.clientName}. Please log in to the Sirsi Vault to countersign.`,
+                    `<h3>Contract Signed</h3><p>The contract for <b>${existingData.projectName}</b> has been signed by <b>${existingData.clientName}</b>.</p><p><a href="https://sign.sirsi.ai">Review and Countersign in Vault</a></p>`
+                );
+            } else {
+                // No countersigner required — client signature completes the signing ceremony
+                updateData.status = 'SIGNED';
+                console.log(`📝 Contract ${id} signed by client. No countersigner required.`);
             }
         }
 
-        // If status becomes PAID
-        if (updateData.status === 'PAID') {
+        // ─── PROVIDER COUNTERSIGNS ───
+        if (updateData.status === 'FULLY_EXECUTED' || updateData.status === 7 || updateData.status === 'CONTRACT_STATUS_FULLY_EXECUTED') {
+            updateData.countersignedAt = updateData.countersignerSignedAt || Date.now();
+
+            // Check if payment was already received
+            const paymentAlreadyReceived = !!(existingData.paidAmount > 0 || existingData.paymentMetadata);
+
+            if (paymentAlreadyReceived) {
+                updateData.status = 'FULLY_EXECUTED';
+                console.log(`✅ Contract ${id} countersigned + payment on record → FULLY_EXECUTED (complete)`);
+            } else {
+                updateData.status = 'FULLY_EXECUTED';
+                console.log(`✅ Contract ${id} countersigned. Awaiting payment.`);
+            }
+
+            // Notify Client
+            const paymentNote = paymentAlreadyReceived
+                ? 'Payment has been confirmed. Your project timeline begins now.'
+                : 'Once payment is received, your project will begin.';
+            await handlers.sendEmail(
+                existingData.clientEmail,
+                `✅ Agreement Fully Executed: ${existingData.projectName}`,
+                `Your agreement for ${existingData.projectName} has been countersigned by ${existingData.countersignerName || 'Sirsi Technologies'}. ${paymentNote}`,
+                `<h3>Agreement Fully Executed</h3><p>Your agreement for <b>${existingData.projectName}</b> has been countersigned by <b>${existingData.countersignerName || 'Sirsi Technologies'}</b>.</p><p>${paymentNote}</p><p><a href="https://sign.sirsi.ai">View Executed Agreement in Vault</a></p>`
+            );
+        }
+
+        // ─── PAYMENT RECEIVED ───
+        if (updateData.status === 'PAID' || updateData.status === 4 || updateData.status === 'CONTRACT_STATUS_PAID') {
+            updateData.paidAt = Date.now();
+
+            // Check if countersign already exists
+            const alreadyCountersigned = !!(existingData.countersignedAt || updateData.countersignedAt);
+
+            if (alreadyCountersigned) {
+                // Both signatures + payment = complete lifecycle
+                updateData.status = 'FULLY_EXECUTED';
+                console.log(`💰 Contract ${id}: Payment received + already countersigned → FULLY_EXECUTED`);
+            } else {
+                // Payment received, awaiting countersign (or none required)
+                updateData.status = 'PAID';
+                console.log(`💰 Contract ${id}: Payment received. ${existingData.countersignerEmail ? 'Awaiting countersign.' : 'Complete.'}`);
+            }
+
             await handlers.sendEmail(
                 existingData.clientEmail,
                 `Payment Received: ${existingData.projectName}`,
@@ -528,18 +573,19 @@ const handlers = {
 
         // Handle Connect Routing (Destination Charge)
         if (connectAccountId) {
-            sessionConfig.payment_intent_data = {
-                transfer_data: {
-                    destination: connectAccountId,
-                },
-            };
-            // Subscriptions have their own transfer_data structure in payment_settings
             if (isRecurring) {
-                // Subscription transfer logic varies: usually handled via subscription_data or application_fee
+                // Subscriptions use subscription_data for Connect transfers
                 sessionConfig.subscription_data = {
                     transfer_data: {
                         destination: connectAccountId,
                     }
+                };
+            } else {
+                // One-time payments use payment_intent_data
+                sessionConfig.payment_intent_data = {
+                    transfer_data: {
+                        destination: connectAccountId,
+                    },
                 };
             }
         }
@@ -576,13 +622,15 @@ const server = http.createServer(async (req, res) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const path = url.pathname;
 
-    // Parse JSON body
+    // Parse request body — capture raw buffer for webhook signature verification
     let body = {};
+    let rawBody = null;
     if (req.method === 'POST') {
         const chunks = [];
         for await (const chunk of req) chunks.push(chunk);
+        rawBody = Buffer.concat(chunks);
         try {
-            body = JSON.parse(Buffer.concat(chunks).toString());
+            body = JSON.parse(rawBody.toString());
         } catch (e) {
             body = {};
         }
@@ -600,7 +648,8 @@ const server = http.createServer(async (req, res) => {
             result = await handlers.listContracts(
                 body.projectId || url.searchParams.get('projectId'),
                 body.pageSize || 20,
-                body.userEmail || url.searchParams.get('userEmail')
+                body.userEmail || url.searchParams.get('userEmail'),
+                body.role || url.searchParams.get('role') || 'client'
             );
         } else if (path === '/sirsi.contracts.v1.ContractsService/GetContract' || path.startsWith('/api/contracts/')) {
             const id = body.id || path.split('/').pop();
@@ -631,19 +680,19 @@ const server = http.createServer(async (req, res) => {
 
             let event;
             try {
-                if (webhookSecret && sig) {
-                    // In production with signature verification
-                    // Note: 'body' must be the raw buffer for this to work
-                    // If 'body' is already parsed JSON, we use it directly for dev/testing
-                    // but production requires the raw body.
-                    try {
-                        event = stripe.webhooks.constructEvent(req.rawBody || JSON.stringify(body), sig, webhookSecret);
-                    } catch (err) {
-                        console.warn('⚠️ Webhook signature verification failed, falling back to unverified body for development.');
-                        event = body;
-                    }
-                } else {
+                if (webhookSecret && sig && rawBody) {
+                    // Production: Verify webhook signature using raw buffer
+                    event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
+                } else if (!webhookSecret) {
+                    // Development only: No webhook secret configured
+                    console.warn('⚠️ STRIPE_WEBHOOK_SECRET not configured — processing unverified (dev only)');
                     event = body;
+                } else {
+                    // Missing signature header or raw body — reject
+                    console.error('❌ Webhook rejected: Missing stripe-signature header or request body');
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'Missing webhook signature' }));
+                    return;
                 }
 
                 console.log(`🔔 Webhook received: ${event.type}`);
@@ -656,7 +705,7 @@ const server = http.createServer(async (req, res) => {
                         console.log(`✅ Payment confirmed for contract: ${contractId}`);
                         await handlers.updateContract(contractId, {
                             status: 'PAID',
-                            paidAmount: session.amount_total || 0, // Ledger: record what Stripe collected
+                            paidAmount: session.amount_total || 0,
                             paymentMetadata: {
                                 stripeSessionId: session.id,
                                 amountPaid: session.amount_total,
@@ -665,11 +714,6 @@ const server = http.createServer(async (req, res) => {
                             },
                             updatedAt: Date.now()
                         });
-
-                        // Here you would typically trigger fulfillment:
-                        // 1. Generate final executed PDF
-                        // 2. Send confirmation email via SendGrid
-                        // 3. Notify the team
                     }
                 } else if (event.type === 'payment_intent.payment_failed') {
                     const intent = event.data.object;
@@ -678,9 +722,9 @@ const server = http.createServer(async (req, res) => {
 
                 result = { received: true };
             } catch (err) {
-                console.error(`Error processing webhook: ${err.message}`);
-                res.writeHead(400);
-                res.end(`Webhook Error: ${err.message}`);
+                console.error(`❌ Webhook verification/processing error: ${err.message}`);
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: `Webhook Error: ${err.message}` }));
                 return;
             }
         } else if (path === '/health' || path === '/') {

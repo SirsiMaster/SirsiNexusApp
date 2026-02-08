@@ -1607,6 +1607,49 @@ app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), asy
           await sendProvisioningEmail(session.customer_email, session.customer_details?.name || 'Valued Client', envelopeId);
           console.log(`📧 Provisioning email sent to ${session.customer_email}`);
         }
+
+        // ── ADR-015: Contract Status Bridge ──
+        // If this payment is linked to a contract, update that too
+        const contractId = session.metadata?.contractId;
+        if (contractId) {
+          try {
+            const contractRef = db.collection('contracts').doc(contractId);
+            const contractDoc = await contractRef.get();
+
+            if (contractDoc.exists) {
+              const contractData = contractDoc.data();
+              const wasCountersigned = !!contractData.countersignedAt;
+              const newStatus = wasCountersigned ? 'FULLY_EXECUTED' : 'PAID';
+
+              await contractRef.update({
+                status: newStatus,
+                paidAt: admin.firestore.FieldValue.serverTimestamp(),
+                paymentSessionId: session.id,
+                paymentIntentId: session.payment_intent,
+                amountPaid: session.amount_total,
+                paymentCurrency: session.currency,
+                paymentMethod: session.payment_method_types?.[0] || 'unknown',
+                updatedAt: admin.firestore.FieldValue.serverTimestamp()
+              });
+
+              console.log(`📋 Contract ${contractId} → ${newStatus}`);
+
+              // Log audit for contract payment bridge
+              await db.collection('auditLogs').add({
+                action: 'contract_payment_bridge',
+                contractId,
+                envelopeId,
+                previousStatus: contractData.status,
+                newStatus,
+                sessionId: session.id,
+                timestamp: admin.firestore.FieldValue.serverTimestamp()
+              });
+            }
+          } catch (contractErr) {
+            console.error(`⚠️ Contract bridge error for ${contractId}:`, contractErr);
+            // Non-fatal — envelope was already updated successfully
+          }
+        }
       } catch (updateError) {
         console.error('Error updating envelope after payment:', updateError);
       }
