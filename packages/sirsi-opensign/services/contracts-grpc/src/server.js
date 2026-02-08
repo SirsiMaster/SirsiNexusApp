@@ -64,6 +64,7 @@ const STATUS_MAP = {
     'PAID': 4, 'CONTRACT_STATUS_PAID': 4,
     'ARCHIVED': 5, 'CONTRACT_STATUS_ARCHIVED': 5,
     'WAITING_FOR_COUNTERSIGN': 6, 'CONTRACT_STATUS_WAITING_FOR_COUNTERSIGN': 6,
+    'FULLY_EXECUTED': 7, 'CONTRACT_STATUS_FULLY_EXECUTED': 7,
 };
 
 function normalizeContract(doc) {
@@ -311,6 +312,22 @@ const handlers = {
                 `Action Required: Contract Signed by ${existingData.clientName}`,
                 `The contract for ${existingData.projectName} has been signed by ${existingData.clientName}. Please log in to the Sirsi Vault to countersign.`,
                 `<h3>Contract Signed</h3><p>The contract for <b>${existingData.projectName}</b> has been signed by <b>${existingData.clientName}</b>.</p><p><a href="https://vault.sirsi.ai">Review and Countersign in Vault</a></p>`
+            );
+        }
+
+        // ═══ ADR-014: Countersign Transition ═══
+        // Provider countersigns → transition to FULLY_EXECUTED
+        if (updateData.status === 'FULLY_EXECUTED' || updateData.status === 7 || updateData.status === 'CONTRACT_STATUS_FULLY_EXECUTED') {
+            updateData.status = 'FULLY_EXECUTED';
+            updateData.countersignedAt = updateData.countersignerSignedAt || Date.now();
+            console.log(`✅ Contract ${id} fully executed. Both parties have signed.`);
+
+            // Notify Client that contract is fully executed
+            await handlers.sendEmail(
+                existingData.clientEmail,
+                `✅ Agreement Fully Executed: ${existingData.projectName}`,
+                `Your agreement for ${existingData.projectName} has been countersigned by ${existingData.countersignerName}. The contract is now fully executed.`,
+                `<h3>Agreement Fully Executed</h3><p>Your agreement for <b>${existingData.projectName}</b> has been countersigned by <b>${existingData.countersignerName}</b>.</p><p>Both parties have signed. Your project timeline begins now.</p><p><a href="https://sign.sirsi.ai">View Executed Agreement in Vault</a></p>`
             );
         }
 

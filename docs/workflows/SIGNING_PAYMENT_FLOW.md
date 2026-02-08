@@ -1,118 +1,285 @@
 # Signing and Payment Workflow: "The Golden Path"
 
-**Version:** 1.0.0  
-**Effective Date:** January 29, 2026  
-**Status:** Canonical Implementation
+**Version:** 2.0.0  
+**Effective Date:** February 7, 2026  
+**Status:** Canonical Implementation  
+**Supersedes:** v1.0.0 (January 29, 2026)  
+**Related ADR:** [ADR-014 — Bipartite Contract Execution Protocol](../../111-Venture-Projects/docs/ADR-014-BIPARTITE-CONTRACT-EXECUTION.md)
 
 ## 1. Executive Summary
-This document defines the unified process flow for document execution and financial settlement across the Sirsi Technologies Inc. Portfolio. It ensures that every transaction is **Protected by MFA**, **Audit-Logged**, and **Securely Orchestrated** by the Universal Component System (UCS).
 
-## 2. The Process Flow Diagram
+This document defines the unified process flow for **bipartite document execution** and financial settlement across the Sirsi Technologies Inc. Portfolio. Version 2.0 introduces the **Dual-Signature Ceremony** — ensuring both the service provider (Sirsi) and the client independently sign the agreement with provable cryptographic evidence before the contract is considered legally binding.
+
+Every transaction is **Protected by MFA**, **Audit-Logged**, and **Securely Orchestrated** by the Universal Component System (UCS).
+
+## 2. Role Resolution
+
+Before any workflow begins, the system resolves the authenticated user's role:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                   ROLE RESOLUTION                        │
+│                                                          │
+│  Firebase Auth User Email                                │
+│       │                                                  │
+│       ├──→ cylton@sirsi.ai? ──→ PROVIDER                │
+│       │                                                  │
+│       ├──→ matches contract.clientEmail? ──→ CLIENT     │
+│       │                                                  │
+│       ├──→ no clientEmail set + is cylton? ──→ PROVIDER │
+│       │                                                  │
+│       ├──→ no clientEmail set + other? ──→ CLIENT       │
+│       │                                                  │
+│       └──→ matches neither? ──→ VIEWER (read-only)      │
+└─────────────────────────────────────────────────────────┘
+```
+
+## 3. The Bipartite Process Flow
+
+### 3.1 Provider Path (Initiator)
 
 ```mermaid
 sequenceDiagram
-    participant U as User (Client)
-    participant P as Sirsi Persona (UI)
-    participant H as Sirsi Hypervisor / Vault
-    participant S as OpenSign Service
-    participant F as Financial Rail (Stripe/Plaid)
+    participant P as Provider (Cylton)
+    participant UI as Sirsi Vault UI
+    participant H as Sirsi Hypervisor / gRPC
+    participant DB as Firestore
+    participant E as SendGrid
 
-    Note over U,P: 1. Review Phase
-    U->>P: Accesses Contract Viewer
-    P->>H: Fetches Secure Proposal
-    H-->>P: Returns Encrypted SOW/MSA
-    P-->>U: Displays Immersive Contract
+    Note over P,UI: Step 1: Designate Client
+    P->>UI: Enters client name, email, title
+    UI->>H: CreateContract (DRAFT)
+    H->>DB: Store contract record
+    H-->>UI: Contract ID returned
 
-    Note over U,P: 2. Execution Phase (OpenSign)
-    U->>P: Clicks "Sign Agreement"
-    P->>S: Initiates Signing Session
-    S-->>P: Loads OpenSign Iframe
-    U->>S: Applies Signature
-    S-->>P: Signature Complete (Envelope Executed)
+    Note over P,UI: Step 2: Review Documents
+    P->>UI: Reviews MSA + SOW
+    P->>UI: Checks legal acknowledgment ✓
+    UI-->>P: "Proceed to Countersign"
 
-    Note over U,P: 3. Financial Bridge (MFA Gate)
-    P->>P: Redirects to payment.html
-    P->>H: Detects "Financial Intent"
-    H->>P: Triggers UCSFinancialGuard
-    P-->>U: Displays MFA Verification Modal
-    U->>P: Submits MFA Code (TOTP/SMS)
-    P->>H: Validates mfa_verified Claim
-    H-->>P: Access Granted to Rails
+    Note over P,UI: Step 3: Countersign Agreement
+    UI->>H: FetchContractStatus
+    H->>DB: Read contract.status
+    alt Status < WAITING_FOR_COUNTERSIGN (6)
+        UI-->>P: ⏳ "Awaiting Client Signature" Guard
+        P->>UI: Clicks "Refresh Status" (polls)
+    else Status ≥ WAITING_FOR_COUNTERSIGN (6)
+        UI-->>P: Shows client signature evidence
+        P->>UI: Draws/types countersignature
+        P->>UI: Accepts ESIGN acknowledgment ✓
+    end
 
-    Note over U,F: 4. Settlement Phase
-    U->>P: Selects Payment Rail (Stripe/Plaid)
-    P->>H: Calls payments/create-session
-    H->>F: Handshake with Provider
-    F-->>P: Returns Checkout URL
-    P->>U: Redirect to external Checkout
-    U->>F: Completes Payment
-    F->>H: Webhook Success Notification
-
-    Note over U,P: 5. Completion
-    H->>P: Updates Status: "FULLY ACTIVATED"
-    P-->>U: Shows Success Message + Download Proof
+    Note over P,UI: Step 4: Finalize Agreement
+    UI-->>P: Displays dual signatures + evidence
+    P->>UI: Clicks "Finalize & Countersign"
+    UI->>H: UpdateContract (FULLY_EXECUTED = 7)
+    H->>DB: Store countersigner evidence
+    H->>E: Email client: "Agreement Fully Executed"
+    UI-->>P: ✅ Contract is legally binding
 ```
 
-## 3. Workflow States & Visuals
+### 3.2 Client Path (Signatory)
 
-### Phase A: Review & Intent
-*   **What the User Sees**: A premium, "Royal Neo-Deco" immersive contract viewer with live price calculations and dynamic SOW sections.
-*   **Services Called**: `core-engine` (Rust) for project data, `sirsi-ui` for rendering.
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant UI as Sirsi Vault UI
+    participant H as Sirsi Hypervisor / gRPC
+    participant DB as Firestore
+    participant F as Financial Rail (Stripe/Plaid)
+    participant E as SendGrid
 
-### Phase B: Document Execution (OpenSign)
-*   **Internal Role**: OpenSign acts as a standalone service for legal evidence. It can be used for NDAs without payments.
-*   **Coupled Role**: When used as part of a Proposal, it is the first "Soft Gate" before payment.
-*   **What the User Sees**: A centered signing modal overlay. No technical data or IDs, just the legal document.
+    Note over C,UI: Step 1: Verify Identity
+    UI->>UI: Pre-fills name/email from Firebase Auth
+    C->>UI: Confirms identity
 
-### Phase C: The "Universal Guard" (Gate 1)
-*   **MFA Requirement**: Any move from signing to payment **MUST** be gated by MFA.
-*   **Visual**: A high-fidelity, emerald-accented modal requesting a 6-digit code.
-*   **Logic**: If the user is a `Countersignatory` (determined by the signing role), the workflow skips the Financial Rail and proceeds to the "Complete" state. Only the `Payer` role triggers the MFA Gate for financial rails.
-*   **Benefit**: This prevents "Payment Hell" by ensuring only the authorized payer can initiate the payment rail, avoiding unauthorized chargebacks or fraud.
+    Note over C,UI: Step 2: Review Documents
+    C->>UI: Reviews MSA + SOW
+    C->>UI: Checks legal acknowledgment ✓
 
-### Phase D: Settlement (Gate 2)
-*   **Stripe Rail**: Used for Card and recurring payments.
-*   **Plaid/Chase Rail**: Used for high-value ACH and treasury settlement.
-*   **What the User Sees**: A secure redirect to the provider's native interface, maintaining trust.
+    Note over C,UI: Step 3: Sign Agreement
+    C->>UI: Draws/types signature
+    C->>UI: Accepts ESIGN acknowledgment ✓
+    UI->>UI: Computes SHA-256 hash (client-side)
 
-## 4. Orchestration Logic: "Decision Tree"
+    Note over C,UI: Step 4: Execute Agreement
+    UI-->>C: Displays signature + evidence
+    C->>UI: Selects payment method (Card/Bank/Wire)
+    C->>UI: Clicks "Execute & Deploy Platform"
+    UI->>H: UpdateContract (SIGNED = 3)
+    H->>DB: Store signature + evidence
+    H->>E: Email provider: "New Signature Received"
 
-The system intelligently determines the workflow branch based on the **Handshake Parameters** passed to OpenSign:
+    alt Payment Method: Card
+        UI->>H: CreateCheckoutSession
+        H->>F: Stripe session
+        F-->>C: Redirect to checkout
+    else Payment Method: Bank (ACH)
+        UI->>H: CreatePlaidLinkToken
+        H->>F: Plaid Link
+        C->>F: Links bank account
+    else Payment Method: Wire
+        UI-->>C: Redirect to printable MSA with wire instructions
+    end
+```
 
-1.  **Independent Flow** (e.g., NDA):
-    *   **Parameters**: `{ envelopeId, signer }`
-    *   **Result**: Upon signing, the session terminates at the "Success" screen. The user can download the PDF. No financial rails are warmed.
-2.  **Coupled Flow** (e.g., MSA/SOW):
-    *   **Parameters**: `{ envelopeId, amount, plan, ref, role }`
-    *   **Result**: 
-        *   If `role == "payer"`: The presence of `amount` triggers the **Financial Bridge**. The countdown timer initiates the redirect to `payment.html`.
-        *   If `role == "countersignatory"`: The system detects the role, confirms the signature is valid, and bypasses the financial rails, displaying the "Signed & Approved" confirmation.
+## 4. Contract Status Lifecycle
 
-## 5. Security & Prevention of "Payment Hell"
+```
+                    ┌─────────┐
+                    │  DRAFT  │ (1) — Contract created
+                    └────┬────┘
+                         │ Provider designates client
+                    ┌────▼────┐
+                    │ ACTIVE  │ (2) — Under review
+                    └────┬────┘
+                         │ Client signs
+                    ┌────▼────┐
+                    │ SIGNED  │ (3) — Client signature captured
+                    └────┬────┘
+                         │
+              ┌──────────┼──────────┐
+              │          │          │
+         ┌────▼────┐ ┌──▼───┐ ┌───▼─────┐
+         │  PAID   │ │WAIT  │ │ARCHIVED │
+         │   (4)   │ │FOR CS│ │   (5)   │
+         └─────────┘ │ (6)  │ └─────────┘
+                     └──┬───┘
+                        │ Provider countersigns
+                   ┌────▼──────────┐
+                   │FULLY EXECUTED │ (7)
+                   │ Both signed   │
+                   └───────────────┘
+```
 
-To ensure users never feel trapped in a "neverending payment hell":
-*   **Session Persistence**: All project context is stored in `sessionStorage`. If the user refreshes `payment.html`, their progress is restored.
-*   **Decoupled Failure**: A Stripe failure does NOT invalidate the signature. The user returns to the Payment method selection screen, not the start of the signing process.
-*   **Pervasive Audit**: Every state transition (SIGNED -> PAYMENT_PENDING -> SETTLED) is logged by the `useFinancialAudit` stream.
+### Status Definitions
 
-## 6. Service Identification Table
+| Status | Code | Description | Triggered By |
+|:---|:---|:---|:---|
+| `DRAFT` | 1 | Contract created, pending review | `CreateContract` |
+| `ACTIVE` | 2 | Contract active, in review phase | Provider advances to Step 2 |
+| `SIGNED` | 3 | Client has signed | `UpdateContract` from client's Step 4 |
+| `PAID` | 4 | Payment confirmed (via Stripe webhook) | Stripe `checkout.session.completed` |
+| `ARCHIVED` | 5 | Contract archived/inactive | Admin action |
+| `WAITING_FOR_COUNTERSIGN` | 6 | Client signed, provider has not | Backend auto-transition on client sign |
+| `FULLY_EXECUTED` | 7 | Both parties have signed | Provider's Step 4 "Finalize" |
+
+## 5. Cryptographic Evidence Chain
+
+Each signature produces an independent, tamper-proof evidence record:
+
+```
+┌──────────────────────────────────────────────────────┐
+│              DUAL EVIDENCE RECORD                     │
+│                                                       │
+│  CLIENT EVIDENCE                                      │
+│  ├─ signatureImageData: "data:image/png;base64,..."  │
+│  ├─ signatureHash: "sha256:a1b2c3d4..."              │
+│  └─ signedAt: "2026-02-07T14:30:00Z"                │
+│                                                       │
+│  PROVIDER EVIDENCE                                    │
+│  ├─ countersignerSignatureImageData: "data:..."      │
+│  ├─ countersignerSignatureHash: "sha256:e5f6g7h8..." │
+│  └─ countersignerSignedAt: "2026-02-07T16:45:00Z"   │
+│                                                       │
+│  SHARED                                               │
+│  ├─ contractId: "Abu6GsULzDvvXWT2NFaB"               │
+│  └─ envelopeId: "ENV-{contractId}"                   │
+└──────────────────────────────────────────────────────┘
+```
+
+**Hash Algorithm:** SHA-256 via `crypto.subtle.digest()` on the Base64 signature image data.
+
+## 6. The Countersign Gate (Provider Step 3)
+
+The provider's Step 3 includes a **status guard** that prevents premature countersigning:
+
+| Contract Status | Provider Step 3 Behavior |
+|:---|:---|
+| `DRAFT`, `ACTIVE` | ⏳ "Awaiting Client Signature" — signature pad hidden |
+| `WAITING_FOR_COUNTERSIGN` | ✅ Client signature displayed as evidence — countersign pad visible |
+| `FULLY_EXECUTED` | 🔒 Both signatures displayed — no further action |
+
+The guard includes a **"Refresh Status"** button that calls `fetchContractStatus()` to poll the backend for updates.
+
+## 7. Orchestration Logic: Decision Tree (v2)
+
+```
+                    ┌──────────────┐
+                    │ User Clicks  │
+                    │   "Sign"     │
+                    └──────┬───────┘
+                           │
+                    ┌──────▼───────┐
+                    │ Resolve Role │
+                    └──────┬───────┘
+                           │
+              ┌────────────┼────────────┐
+              │                         │
+       ┌──────▼──────┐          ┌──────▼──────┐
+       │  PROVIDER   │          │   CLIENT    │
+       │  Designate  │          │   Verify    │
+       │  → Review   │          │   → Review  │
+       │  → Counter  │          │   → Sign    │
+       │  → Finalize │          │   → Execute │
+       └──────┬──────┘          └──────┬──────┘
+              │                         │
+              │ No Payment              │ Payment
+              │                         │
+       ┌──────▼──────┐          ┌──────▼──────┐
+       │   Status:   │          │  Financial  │
+       │   FULLY_    │          │   Bridge    │
+       │  EXECUTED   │          │  (MFA Gate) │
+       └─────────────┘          └──────┬──────┘
+                                       │
+                          ┌────────────┼────────────┐
+                          │            │            │
+                   ┌──────▼──┐  ┌─────▼────┐ ┌────▼────┐
+                   │  Card   │  │  ACH/    │ │  Wire   │
+                   │ Stripe  │  │  Plaid   │ │ Manual  │
+                   └─────────┘  └──────────┘ └─────────┘
+```
+
+**Key Distinction:** The provider path **never enters the Financial Bridge**. Only the client (payer) role triggers MFA → Payment → Settlement.
+
+## 8. Email Notification Matrix
+
+| Event | Trigger | Recipient | Subject |
+|:---|:---|:---|:---|
+| Client signs | `UpdateContract(status=SIGNED)` | Provider | `✍️ New Signature: {projectName}` |
+| Provider countersigns | `UpdateContract(status=FULLY_EXECUTED)` | Client | `✅ Agreement Fully Executed: {projectName}` |
+| Payment received | Stripe webhook | Client | `💰 Payment Confirmed: {projectName}` |
+
+## 9. Security Principles
+
+1. **MFA Gate**: Any transition from signing to payment requires TOTP verification (`mfaVerifiedForFinancial`).
+2. **Role Isolation**: Provider cannot trigger payment. Client cannot countersign.
+3. **Session Persistence**: All context stored in `sessionStorage` — refresh preserves state.
+4. **Decoupled Failure**: A Stripe failure does NOT invalidate either signature.
+5. **Pervasive Audit**: Every status transition is logged with timestamp and user identity.
+
+## 10. Service Identification Table
 
 | Service | Responsibility | Trigger Gate |
-| :--- | :--- | :--- |
-| **OpenSign** | Legal Validity & Signature Proof | User clicks "Sign" |
-| **Sirsi Vault** | Secret Storage & Key Management | Calls to Stripe/Plaid API |
-| **UCS Guard** | Security Interlocking (MFA/Audit) | Transition to `payment.html` |
-| **Stripe** | Card Processing & Subscriptions | User selects "Card Payment" |
-| **Plaid/Chase** | Treasury Bridging & Bank Verification | User selects "Bank Wire/ACH" |
-| **SendGrid** | Transactional Evidence (Receipts) | Payment Webhook Success |
+|:---|:---|:---|
+| **SirsiVault.tsx** | Role resolution, dual-step UI, evidence computation | User clicks "Sign" from Vault |
+| **contracts-grpc** | Status transitions, countersigner storage, email dispatch | Frontend `UpdateContract` call |
+| **OpenSign** (planned) | Legal Validity & PDF Signature Proof | Future integration |
+| **UCS Guard** | Security Interlocking (MFA/Audit) | Client → Payment transition |
+| **Stripe** | Card Processing & Subscriptions | Client selects "Card Payment" |
+| **Plaid/Chase** | Treasury Bridging & Bank Verification | Client selects "Bank Wire/ACH" |
+| **SendGrid** | Transactional Evidence (Receipts) | Status transition events |
 
-## 5. Frequently Asked Questions
+## 11. Implementation Artifacts
 
-### Is MFA mandatory for every payment?
-**Yes.** Per `SIRSI-ISP-001 Section 10.3`, any financial data interaction requires MFA. This protects both Sirsi Technologies and the Client from unauthorized movement of funds.
+| Artifact | Path | Role |
+|:---|:---|:---|
+| Proto Schema | `packages/finalwishes-contracts/proto/contracts/v1/contracts.proto` | Status enum, countersigner fields |
+| Frontend | `packages/finalwishes-contracts/src/components/tabs/SirsiVault.tsx` | Role detection, dual-step UI |
+| Backend | `packages/sirsi-opensign/services/contracts-grpc/src/server.js` | Status normalization, email dispatch |
+| gRPC Client | `packages/finalwishes-contracts/src/lib/grpc.ts` | Auth-intercepted Connect client |
+| ADR | `111-Venture-Projects/docs/ADR-014-BIPARTITE-CONTRACT-EXECUTION.md` | Decision record |
 
-### What happens if the payment fails?
-The user is redirected to a "Recovery Path" on `payment.html` where they can select an alternative rail (e.g., switch from ACH to Card) without re-signing the MSA. This avoids "Payment Hell."
+---
 
-### Is OpenSign separate?
-Yes. OpenSign is designed for **"Integrated Independence."** It can be called as a stand-alone utility (`sign.sirsi.ai`) or as a bridge in a larger financial workflow.
+*Version 2.0.0 — Bipartite Contract Execution Protocol — February 7, 2026*

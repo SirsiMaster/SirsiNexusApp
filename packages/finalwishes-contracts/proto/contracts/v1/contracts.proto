@@ -91,10 +91,17 @@ message Contract {
   // Stripe Architecture
   string stripe_connect_account_id = 20;
 
-  // Execution Data (OpenSign)
+  // Execution Data — Client Signer (Primary)
   string signature_image_data = 16;
   string signature_hash = 21; // Cryptographic SHA-256 evidence
   bool legal_acknowledgment = 17;
+  string client_title = 23; // Professional title of client signer
+
+  // Execution Data — Countersigner (ADR-014 Bipartite)
+  string countersigner_signature_image_data = 24;
+  string countersigner_signature_hash = 25;
+  int64 countersigner_signed_at = 26;
+  string countersigner_title = 27;
 
   // Selection Data
   int32 selected_payment_plan = 18;
@@ -126,10 +133,11 @@ enum ContractStatus {
   CONTRACT_STATUS_UNSPECIFIED = 0;
   CONTRACT_STATUS_DRAFT = 1;
   CONTRACT_STATUS_ACTIVE = 2;
-  CONTRACT_STATUS_SIGNED = 3;
+  CONTRACT_STATUS_SIGNED = 3;  // Client has signed
   CONTRACT_STATUS_PAID = 4;
   CONTRACT_STATUS_ARCHIVED = 5;
-  CONTRACT_STATUS_WAITING_FOR_COUNTERSIGN = 6;
+  CONTRACT_STATUS_WAITING_FOR_COUNTERSIGN = 6; // Client signed, awaiting provider
+  CONTRACT_STATUS_FULLY_EXECUTED = 7; // Both parties have signed (ADR-014)
 }
 
 // ============================================

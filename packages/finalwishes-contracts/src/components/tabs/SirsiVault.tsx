@@ -65,6 +65,26 @@ export function SirsiVault() {
         envelopeId: string
         signerIp: string
     } | null>(null)
+
+    // ═══ ADR-014 Phase 2: Countersigner Signature State ═══
+    const [countersignerSignatureImageData, setCountersignerSignatureImageData] = useState<string | null>(null)
+    const [hasCountersignerSignature, setHasCountersignerSignature] = useState(false)
+    const [countersignerEvidence, setCountersignerEvidence] = useState<{
+        hash: string
+        timestamp: string
+        envelopeId: string
+    } | null>(null)
+    // Track contract execution status for provider's countersign readiness
+    const [contractStatus, setContractStatus] = useState<string>('DRAFT')
+    const [clientSignatureData, setClientSignatureData] = useState<{
+        signatureImageData?: string
+        signatureHash?: string
+        clientName?: string
+        clientEmail?: string
+        clientTitle?: string
+        signedAt?: string
+    } | null>(null)
+
     const contractId = useConfigStore(state => state.contractId)
     const setStoreContractId = useConfigStore(state => state.setContractId)
     const [selectedPaymentPlan, setSelectedPaymentPlan] = useState<2 | 3 | 4>(2)
@@ -183,8 +203,8 @@ export function SirsiVault() {
             return [
                 { num: 1, label: 'Designate Client' },
                 { num: 2, label: 'Review Documents' },
-                { num: 3, label: 'Sign Agreement' },
-                { num: 4, label: 'Execute Agreement' }
+                { num: 3, label: 'Countersign' },
+                { num: 4, label: 'Finalize' }
             ]
         }
         return [
@@ -194,6 +214,93 @@ export function SirsiVault() {
             { num: 4, label: 'Execute Agreement' }
         ]
     }, [userRole])
+
+    // ═══ ADR-014 Phase 2: Fetch contract status for provider countersign readiness ═══
+    const fetchContractStatus = async () => {
+        if (!contractId) return
+        try {
+            const contract = await contractsClient.getContract({ id: contractId })
+            const rawStatus = (contract as any).status
+            // Normalize status from backend (could be string or number)
+            const statusMap: Record<string, string> = {
+                '1': 'DRAFT', 'DRAFT': 'DRAFT',
+                '2': 'ACTIVE', 'ACTIVE': 'ACTIVE',
+                '3': 'SIGNED', 'SIGNED': 'SIGNED',
+                '6': 'WAITING_FOR_COUNTERSIGN', 'WAITING_FOR_COUNTERSIGN': 'WAITING_FOR_COUNTERSIGN',
+                '7': 'FULLY_EXECUTED', 'FULLY_EXECUTED': 'FULLY_EXECUTED',
+            }
+            setContractStatus(statusMap[String(rawStatus)] || String(rawStatus))
+
+            // If contract has client signature data, capture it for display
+            const cData = contract as any
+            if (cData.signatureImageData || cData.signatureHash) {
+                setClientSignatureData({
+                    signatureImageData: cData.signatureImageData,
+                    signatureHash: cData.signatureHash,
+                    clientName: cData.clientName,
+                    clientEmail: cData.clientEmail,
+                    clientTitle: cData.clientTitle || '',
+                    signedAt: cData.updatedAt ? new Date(Number(cData.updatedAt)).toISOString() : ''
+                })
+            }
+        } catch (err) {
+            console.error('Failed to fetch contract status:', err)
+        }
+    }
+
+    // Fetch contract status on mount and when contractId changes (for provider)
+    useEffect(() => {
+        if (userRole === 'provider' && contractId) {
+            fetchContractStatus()
+        }
+    }, [userRole, contractId])
+
+    // Compute countersigner signature evidence
+    const computeCountersignerEvidence = async () => {
+        if (!countersignerSignatureImageData) return
+        const sigHash = await hashSignature(countersignerSignatureImageData)
+        const ts = new Date().toISOString()
+        const prefix = contractId ? contractId.substring(0, 8).toUpperCase() : 'SIRSI'
+        const hashFragment = sigHash.substring(0, 12).toUpperCase()
+        const envelopeId = `CS-${prefix}-${hashFragment}`
+        setCountersignerEvidence({ hash: sigHash, timestamp: ts, envelopeId })
+    }
+
+    // Handle provider countersign submission
+    const handleCountersign = async () => {
+        if (!contractId || !countersignerSignatureImageData) return
+        setLoading(true)
+        setError(null)
+
+        try {
+            const sigHash = countersignerEvidence?.hash || await hashSignature(countersignerSignatureImageData)
+            console.log(`🛡️ Countersigner Hash: ${sigHash}`)
+            console.log(`📋 Countersigner Envelope: ${countersignerEvidence?.envelopeId}`)
+            console.log(`⏰ Countersigned At: ${countersignerEvidence?.timestamp || new Date().toISOString()}`)
+
+            // Update contract with countersigner evidence → transition to FULLY_EXECUTED
+            await contractsClient.updateContract({
+                id: contractId,
+                contract: {
+                    status: 7 as any, // FULLY_EXECUTED
+                    // @ts-ignore - Injecting countersigner evidence
+                    countersignerSignatureImageData: countersignerSignatureImageData,
+                    countersignerSignatureHash: sigHash,
+                    countersignerSignedAt: Date.now().toString(),
+                    countersignerTitle: signatureData.title || 'CEO',
+                    legalAcknowledgment: true,
+                }
+            })
+
+            setContractStatus('FULLY_EXECUTED')
+            console.log('✅ Contract fully executed — both parties signed')
+        } catch (err: any) {
+            console.error('Countersign failed:', err)
+            setError(err?.message || 'Failed to submit countersignature. Please try again.')
+        } finally {
+            setLoading(false)
+        }
+    }
 
 
     const totalInvestmentResult = calculateTotal(selectedBundle, selectedAddons, ceoConsultingWeeks, probateStates.length, 1.0)
@@ -947,7 +1054,9 @@ export function SirsiVault() {
                     </div>
                 )}
 
-                {step === 3 && (
+                {/* ═══ STEP 3: ROLE-AWARE SIGNING ═══ */}
+                {step === 3 && userRole !== 'provider' && (
+                    /* ── CLIENT SIGNING (existing flow, unchanged) ── */
                     <div className="neo-glass-panel" style={{ padding: '32px' }}>
                         <h3 style={{
                             fontFamily: "'Cinzel', serif",
@@ -1042,7 +1151,242 @@ export function SirsiVault() {
                     </div>
                 )}
 
-                {step === 4 && (
+                {step === 3 && userRole === 'provider' && (
+                    /* ── PROVIDER COUNTERSIGNING (ADR-014 Phase 2) ── */
+                    <div className="neo-glass-panel" style={{ padding: '32px' }}>
+                        <h3 style={{
+                            fontFamily: "'Cinzel', serif",
+                            fontSize: '20px',
+                            color: '#C8A951',
+                            marginBottom: '24px',
+                            textAlign: 'center'
+                        }}>
+                            Step 3: Countersign Agreement
+                        </h3>
+
+                        {/* Contract Status Guard */}
+                        {contractStatus !== 'WAITING_FOR_COUNTERSIGN' && contractStatus !== 'FULLY_EXECUTED' && (
+                            <div style={{
+                                padding: '24px',
+                                background: 'rgba(200,169,81,0.08)',
+                                border: '1px solid rgba(200,169,81,0.3)',
+                                borderRadius: '12px',
+                                textAlign: 'center',
+                                marginBottom: '24px'
+                            }}>
+                                <div style={{ fontSize: '36px', marginBottom: '12px' }}>⏳</div>
+                                <div style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '16px', marginBottom: '8px' }}>
+                                    Awaiting Client Signature
+                                </div>
+                                <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', lineHeight: 1.6 }}>
+                                    The client has not yet signed this agreement. You will be notified
+                                    via email when the contract is ready for your countersignature.
+                                </div>
+                                <div style={{
+                                    marginTop: '16px',
+                                    padding: '8px 16px',
+                                    background: 'rgba(255,255,255,0.05)',
+                                    borderRadius: '8px',
+                                    display: 'inline-block',
+                                    fontSize: '11px',
+                                    color: 'rgba(255,255,255,0.4)',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.1em'
+                                }}>
+                                    Status: {contractStatus}
+                                </div>
+                                <div style={{ marginTop: '16px' }}>
+                                    <button
+                                        onClick={fetchContractStatus}
+                                        style={{
+                                            padding: '10px 24px',
+                                            background: 'rgba(200,169,81,0.15)',
+                                            border: '1px solid #C8A951',
+                                            borderRadius: '8px',
+                                            color: '#C8A951',
+                                            cursor: 'pointer',
+                                            fontSize: '12px',
+                                            letterSpacing: '0.05em'
+                                        }}
+                                    >
+                                        🔄 Refresh Status
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Countersign Ready — Show client's signature + provider's sign pad */}
+                        {(contractStatus === 'WAITING_FOR_COUNTERSIGN' || contractStatus === 'FULLY_EXECUTED') && (
+                            <>
+                                {/* Client Signature Evidence (read-only) */}
+                                <div style={{
+                                    padding: '20px',
+                                    background: 'rgba(16, 185, 129, 0.06)',
+                                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                                    borderRadius: '12px',
+                                    marginBottom: '24px'
+                                }}>
+                                    <div style={{
+                                        color: '#10b981',
+                                        fontSize: '11px',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.15em',
+                                        marginBottom: '12px',
+                                        fontWeight: 600
+                                    }}>
+                                        ✓ Client Signature on Record
+                                    </div>
+                                    {clientSignatureData?.signatureImageData && (
+                                        <img
+                                            src={clientSignatureData.signatureImageData}
+                                            alt="Client signature"
+                                            style={{
+                                                maxWidth: '280px',
+                                                maxHeight: '80px',
+                                                display: 'block',
+                                                margin: '0 auto 12px',
+                                                borderRadius: '4px',
+                                                opacity: 0.85
+                                            }}
+                                        />
+                                    )}
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>
+                                        <span>{clientSignatureData?.clientName || 'Client'} • {clientSignatureData?.clientEmail}</span>
+                                        <span style={{ fontFamily: "'Courier New', monospace", color: '#10b981', fontSize: '10px' }}>
+                                            {clientSignatureData?.signatureHash?.substring(0, 16)}…
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Provider countersigner identity */}
+                                <div style={{
+                                    padding: '16px',
+                                    background: 'rgba(255,255,255,0.03)',
+                                    border: '1px solid rgba(200,169,81,0.3)',
+                                    borderRadius: '8px',
+                                    marginBottom: '24px',
+                                    textAlign: 'center'
+                                }}>
+                                    <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '10px', textTransform: 'uppercase', marginBottom: '4px' }}>
+                                        Countersigning as
+                                    </div>
+                                    <div style={{ color: '#C8A951', fontSize: '18px', fontWeight: 600 }}>
+                                        {authUser?.displayName || counterpartyName}
+                                    </div>
+                                    <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>
+                                        {authUser?.email} • {entityLegalName}
+                                    </div>
+                                </div>
+
+                                {/* Countersignature Capture */}
+                                {contractStatus !== 'FULLY_EXECUTED' && (
+                                    <>
+                                        <div style={{ marginBottom: '24px' }}>
+                                            <SignatureCapture
+                                                signerName={authUser?.displayName || counterpartyName}
+                                                onSignatureChange={(hasSig, sigData) => {
+                                                    setHasCountersignerSignature(hasSig)
+                                                    setCountersignerSignatureImageData(sigData)
+                                                }}
+                                            />
+                                        </div>
+
+                                        {/* Legal Acknowledgment for Countersigner */}
+                                        <label style={{
+                                            display: 'flex',
+                                            alignItems: 'flex-start',
+                                            gap: '12px',
+                                            marginBottom: '24px',
+                                            cursor: 'pointer',
+                                            padding: '16px',
+                                            background: 'rgba(255,255,255,0.03)',
+                                            border: '1px solid rgba(255,255,255,0.1)',
+                                            borderRadius: '8px'
+                                        }}>
+                                            <input
+                                                type="checkbox"
+                                                id="countersign-legal-ack"
+                                                style={{ width: '20px', height: '20px', marginTop: '2px', accentColor: '#C8A951' }}
+                                            />
+                                            <span style={{ color: 'rgba(255,255,255,0.9)', fontSize: '13px', lineHeight: 1.6 }}>
+                                                I, <strong style={{ color: '#C8A951' }}>{authUser?.displayName || counterpartyName}</strong>, as authorized representative of{' '}
+                                                <strong style={{ color: '#C8A951' }}>{entityLegalName}</strong>,
+                                                hereby countersign this agreement, executing a legally binding electronic signature
+                                                pursuant to the ESIGN Act and UETA.
+                                            </span>
+                                        </label>
+                                    </>
+                                )}
+
+                                {contractStatus === 'FULLY_EXECUTED' && (
+                                    <div style={{
+                                        padding: '20px',
+                                        background: 'rgba(16, 185, 129, 0.1)',
+                                        border: '2px solid #10b981',
+                                        borderRadius: '12px',
+                                        textAlign: 'center',
+                                        marginBottom: '24px'
+                                    }}>
+                                        <div style={{ fontSize: '32px', marginBottom: '8px' }}>✅</div>
+                                        <div style={{ color: '#10b981', fontFamily: "'Cinzel', serif", fontSize: '16px' }}>
+                                            Agreement Fully Executed
+                                        </div>
+                                        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', marginTop: '4px' }}>
+                                            Both parties have signed. This contract is legally binding.
+                                        </div>
+                                    </div>
+                                )}
+                            </>
+                        )}
+
+                        <div style={{ display: 'flex', gap: '16px' }}>
+                            <button
+                                onClick={() => setStep(2)}
+                                style={{
+                                    flex: 1,
+                                    padding: '14px',
+                                    background: 'transparent',
+                                    border: '1px solid rgba(255,255,255,0.3)',
+                                    borderRadius: '8px',
+                                    color: 'white',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Back
+                            </button>
+                            {contractStatus !== 'FULLY_EXECUTED' && (
+                                <button
+                                    onClick={async () => {
+                                        await computeCountersignerEvidence()
+                                        setStep(4)
+                                    }}
+                                    disabled={!hasCountersignerSignature || contractStatus !== 'WAITING_FOR_COUNTERSIGN'}
+                                    className="select-plan-btn"
+                                    style={{
+                                        flex: 2,
+                                        padding: '14px',
+                                        opacity: (hasCountersignerSignature && contractStatus === 'WAITING_FOR_COUNTERSIGN') ? 1 : 0.5,
+                                        cursor: (hasCountersignerSignature && contractStatus === 'WAITING_FOR_COUNTERSIGN') ? 'pointer' : 'not-allowed'
+                                    }}
+                                >
+                                    Continue to Finalize
+                                </button>
+                            )}
+                            {contractStatus === 'FULLY_EXECUTED' && (
+                                <button
+                                    onClick={() => setStep(4)}
+                                    className="select-plan-btn"
+                                    style={{ flex: 2, padding: '14px' }}
+                                >
+                                    View Executed Agreement
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* ═══ STEP 4: ROLE-AWARE EXECUTION ═══ */}
+                {step === 4 && userRole !== 'provider' && (
                     <div className="neo-glass-panel" style={{ padding: '32px' }}>
                         <h3 style={{
                             fontFamily: "'Cinzel', serif",
@@ -1561,6 +1905,254 @@ export function SirsiVault() {
                         }}>
                             By clicking "Execute & Deploy Platform", you are finalizing your electronic signature
                             and authorizing the commencement of development as per the Project Timeline.
+                        </p>
+                    </div>
+                )}
+
+                {/* ═══ STEP 4: PROVIDER FINALIZATION (ADR-014 Phase 2) ═══ */}
+                {step === 4 && userRole === 'provider' && (
+                    <div className="neo-glass-panel" style={{ padding: '32px' }}>
+                        <h3 style={{
+                            fontFamily: "'Cinzel', serif",
+                            fontSize: '20px',
+                            color: '#C8A951',
+                            marginBottom: '24px',
+                            textAlign: 'center'
+                        }}>
+                            Step 4: Finalize Agreement
+                        </h3>
+
+                        {/* Dual Signature Display */}
+                        <div style={{ display: 'flex', gap: '20px', marginBottom: '24px', flexWrap: 'wrap' }}>
+                            {/* Client Signature Block */}
+                            <div style={{
+                                flex: '1 1 280px',
+                                background: 'rgba(16, 185, 129, 0.06)',
+                                border: '1px solid rgba(16, 185, 129, 0.3)',
+                                borderRadius: '12px',
+                                padding: '20px',
+                                textAlign: 'center'
+                            }}>
+                                <div style={{
+                                    color: '#10b981', fontSize: '10px', textTransform: 'uppercase',
+                                    letterSpacing: '0.15em', marginBottom: '12px', fontWeight: 600
+                                }}>
+                                    ✓ Client Signature
+                                </div>
+                                {clientSignatureData?.signatureImageData && (
+                                    <img
+                                        src={clientSignatureData.signatureImageData}
+                                        alt="Client signature"
+                                        style={{
+                                            maxWidth: '220px', maxHeight: '70px',
+                                            display: 'block', margin: '0 auto 10px',
+                                            borderRadius: '4px', opacity: 0.85
+                                        }}
+                                    />
+                                )}
+                                <div style={{ color: '#C8A951', fontSize: '14px', fontWeight: 600 }}>
+                                    {clientSignatureData?.clientName || 'Client'}
+                                </div>
+                                <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>
+                                    {clientSignatureData?.clientEmail}
+                                </div>
+                                {clientSignatureData?.signatureHash && (
+                                    <div style={{
+                                        color: '#10b981', fontSize: '9px', fontFamily: "'Courier New', monospace",
+                                        marginTop: '8px', wordBreak: 'break-all'
+                                    }}>
+                                        SHA-256: {clientSignatureData.signatureHash.substring(0, 24)}…
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Countersigner Signature Block */}
+                            <div style={{
+                                flex: '1 1 280px',
+                                background: 'rgba(200, 169, 81, 0.06)',
+                                border: '1px solid rgba(200, 169, 81, 0.3)',
+                                borderRadius: '12px',
+                                padding: '20px',
+                                textAlign: 'center'
+                            }}>
+                                <div style={{
+                                    color: '#C8A951', fontSize: '10px', textTransform: 'uppercase',
+                                    letterSpacing: '0.15em', marginBottom: '12px', fontWeight: 600
+                                }}>
+                                    {countersignerEvidence ? '✓ Countersignature' : '⏳ Countersignature'}
+                                </div>
+                                {countersignerSignatureImageData ? (
+                                    <img
+                                        src={countersignerSignatureImageData}
+                                        alt="Countersignature"
+                                        style={{
+                                            maxWidth: '220px', maxHeight: '70px',
+                                            display: 'block', margin: '0 auto 10px',
+                                            borderRadius: '4px'
+                                        }}
+                                    />
+                                ) : (
+                                    <div style={{
+                                        fontFamily: "'Cinzel', serif", fontSize: '24px',
+                                        color: '#C8A951', fontStyle: 'italic', marginBottom: '10px'
+                                    }}>
+                                        {authUser?.displayName || counterpartyName}
+                                    </div>
+                                )}
+                                <div style={{ color: '#C8A951', fontSize: '14px', fontWeight: 600 }}>
+                                    {authUser?.displayName || counterpartyName}
+                                </div>
+                                <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>
+                                    {authUser?.email} • {entityLegalName}
+                                </div>
+                                {countersignerEvidence?.hash && (
+                                    <div style={{
+                                        color: '#C8A951', fontSize: '9px', fontFamily: "'Courier New', monospace",
+                                        marginTop: '8px', wordBreak: 'break-all'
+                                    }}>
+                                        SHA-256: {countersignerEvidence.hash.substring(0, 24)}…
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Countersigner Evidence Panel */}
+                        {countersignerEvidence && (
+                            <div style={{
+                                background: 'rgba(200, 169, 81, 0.05)',
+                                border: '1px solid rgba(200, 169, 81, 0.3)',
+                                borderRadius: '12px',
+                                padding: '24px',
+                                marginBottom: '24px'
+                            }}>
+                                <div style={{
+                                    display: 'flex', alignItems: 'center', gap: '10px',
+                                    marginBottom: '16px', paddingBottom: '12px',
+                                    borderBottom: '1px solid rgba(200, 169, 81, 0.2)'
+                                }}>
+                                    <div style={{
+                                        width: '32px', height: '32px', borderRadius: '50%',
+                                        background: 'rgba(200, 169, 81, 0.15)',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px'
+                                    }}>🛡️</div>
+                                    <div style={{ color: '#C8A951', fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                                        Countersign Evidence
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase' }}>Envelope ID</span>
+                                        <span style={{ color: '#C8A951', fontSize: '12px', fontFamily: "'Inter', monospace", fontWeight: 600 }}>{countersignerEvidence.envelopeId}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase', flexShrink: 0 }}>SHA-256</span>
+                                        <span style={{
+                                            color: '#10b981', fontSize: '10px', fontFamily: "'Courier New', monospace",
+                                            maxWidth: '220px', overflow: 'hidden', textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap', marginLeft: '12px'
+                                        }}>{countersignerEvidence.hash}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase' }}>Timestamp</span>
+                                        <span style={{ color: 'white', fontSize: '12px' }}>{countersignerEvidence.timestamp}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase' }}>Countersigner</span>
+                                        <span style={{ color: 'white', fontSize: '12px' }}>{authUser?.displayName} ({authUser?.email})</span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* View Executed Agreement */}
+                        <button
+                            onClick={openPrintableMSA}
+                            style={{
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                gap: '8px', width: '100%', padding: '10px 16px',
+                                marginBottom: '24px',
+                                background: 'rgba(16, 185, 129, 0.08)',
+                                border: '1px solid rgba(16, 185, 129, 0.4)',
+                                borderRadius: '8px', color: '#10B981',
+                                fontSize: '12px', fontFamily: "'Cinzel', serif",
+                                letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+                                cursor: 'pointer'
+                            }}
+                        >
+                            📄 View Executed Agreement
+                        </button>
+
+                        {error && (
+                            <div style={{
+                                padding: '12px', background: 'rgba(239, 68, 68, 0.1)',
+                                border: '1px solid #ef4444', borderRadius: '8px',
+                                color: '#ef4444', fontSize: '14px',
+                                marginBottom: '20px', textAlign: 'center'
+                            }}>
+                                {error}
+                            </div>
+                        )}
+
+                        <div style={{ display: 'flex', gap: '16px', marginBottom: '20px' }}>
+                            <button
+                                onClick={() => setStep(3)}
+                                style={{
+                                    flex: 1, padding: '14px', background: 'transparent',
+                                    border: '1px solid rgba(255,255,255,0.3)',
+                                    borderRadius: '8px', color: 'white', cursor: 'pointer'
+                                }}
+                            >
+                                Back
+                            </button>
+                            {contractStatus !== 'FULLY_EXECUTED' && (
+                                <button
+                                    onClick={handleCountersign}
+                                    disabled={loading || !countersignerSignatureImageData}
+                                    className="select-plan-btn"
+                                    style={{
+                                        flex: 2, padding: '16px', fontSize: '16px',
+                                        letterSpacing: '0.1em',
+                                        opacity: (loading || !countersignerSignatureImageData) ? 0.7 : 1,
+                                        cursor: (loading || !countersignerSignatureImageData) ? 'wait' : 'pointer',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px'
+                                    }}
+                                >
+                                    {loading ? (
+                                        <>
+                                            <div className="spinner" style={{
+                                                width: '20px', height: '20px',
+                                                border: '2px solid rgba(0,0,0,0.1)',
+                                                borderTop: '2px solid #000',
+                                                borderRadius: '50%',
+                                                animation: 'spin 1s linear infinite'
+                                            }} />
+                                            <span>Countersigning...</span>
+                                        </>
+                                    ) : (
+                                        <span>🛡️ Finalize & Countersign</span>
+                                    )}
+                                </button>
+                            )}
+                            {contractStatus === 'FULLY_EXECUTED' && (
+                                <div style={{
+                                    flex: 2, padding: '16px', textAlign: 'center',
+                                    background: 'rgba(16, 185, 129, 0.15)',
+                                    border: '2px solid #10b981',
+                                    borderRadius: '8px',
+                                    color: '#10b981', fontFamily: "'Cinzel', serif",
+                                    fontSize: '14px', letterSpacing: '0.1em'
+                                }}>
+                                    ✅ Fully Executed
+                                </div>
+                            )}
+                        </div>
+
+                        <p style={{
+                            textAlign: 'center', color: 'rgba(255,255,255,0.4)',
+                            fontSize: '11px', lineHeight: 1.6
+                        }}>
+                            By clicking "Finalize & Countersign", you are executing this agreement on behalf of{' '}
+                            <strong style={{ color: '#C8A951' }}>{entityLegalName}</strong>, making it legally binding for both parties.
                         </p>
                     </div>
                 )}
