@@ -261,35 +261,72 @@ const handlers = {
         });
     },
 
-    // List contracts with pagination and cross-portfolio user filtering
-    async listContracts(projectId, pageSize = 20, userEmail = null, role = 'client') {
-        let query = db.collection('contracts');
+    // ═══════════════════════════════════════════════════════════
+    // RBAC Contract Visibility (ADR pending)
+    // ───────────────────────────────────────────────────────────
+    // 1. Regular User:      Sees contracts where they are client OR countersigner
+    // 2. Sirsi Admin:       Sees + edits all Sirsi contracts; sees (read-only) tenant contracts
+    // 3. Tenant Admin:      Sees + edits all tenant contracts; cannot see Sirsi contracts
+    // 4. Sirsi Super Admin: Sees + edits ALL contracts (Sirsi + tenant), no restrictions
+    //
+    // Current implementation: Super Admin (hardcoded) + regular user dual-query.
+    // Full tenant isolation to be implemented with Firebase custom claims.
+    // ═══════════════════════════════════════════════════════════
 
-        if (projectId) {
-            query = query.where('projectId', '==', projectId);
+    // Super Admin emails — full portfolio visibility
+    SUPER_ADMINS: ['cylton@sirsi.ai'],
+
+    // List ALL contracts the user participates in, across all statuses
+    async listContracts(projectId, pageSize = 50, userEmail = null) {
+        // ── Super Admin: sees everything ──
+        if (userEmail && handlers.SUPER_ADMINS.includes(userEmail.toLowerCase())) {
+            let query = db.collection('contracts');
+            if (projectId) query = query.where('projectId', '==', projectId);
+            query = query.orderBy('createdAt', 'desc').limit(pageSize);
+            const snapshot = await query.get();
+            return {
+                contracts: snapshot.docs.map(doc => normalizeContract({ id: doc.id, ...doc.data() })),
+                totalCount: snapshot.size
+            };
         }
 
-        // Filter by user email based on role
-        if (userEmail) {
-            if (role === 'provider' || role === 'admin') {
-                // Provider/admin sees contracts they're assigned to countersign
-                query = query.where('countersignerEmail', '==', userEmail);
-            } else {
-                // Client sees their own contracts
-                query = query.where('clientEmail', '==', userEmail);
+        // ── No email: reject (prevent unauthenticated listing) ──
+        if (!userEmail) {
+            return { contracts: [], totalCount: 0 };
+        }
+
+        // ── Regular user: dual-query on clientEmail + countersignerEmail ──
+        let clientQuery = db.collection('contracts').where('clientEmail', '==', userEmail);
+        let providerQuery = db.collection('contracts').where('countersignerEmail', '==', userEmail);
+
+        if (projectId) {
+            clientQuery = clientQuery.where('projectId', '==', projectId);
+            providerQuery = providerQuery.where('projectId', '==', projectId);
+        }
+
+        clientQuery = clientQuery.orderBy('createdAt', 'desc').limit(pageSize);
+        providerQuery = providerQuery.orderBy('createdAt', 'desc').limit(pageSize);
+
+        const [clientSnap, providerSnap] = await Promise.all([
+            clientQuery.get(),
+            providerQuery.get()
+        ]);
+
+        // Merge and deduplicate by document ID
+        const seen = new Set();
+        const contracts = [];
+        for (const doc of [...clientSnap.docs, ...providerSnap.docs]) {
+            if (!seen.has(doc.id)) {
+                seen.add(doc.id);
+                contracts.push(normalizeContract({ id: doc.id, ...doc.data() }));
             }
         }
 
-        query = query.orderBy('createdAt', 'desc').limit(pageSize);
-
-        const snapshot = await query.get();
-        const contracts = snapshot.docs.map(doc => normalizeContract({
-            id: doc.id,
-            ...doc.data()
-        }));
+        // Sort merged results by createdAt descending
+        contracts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
         return {
-            contracts,
+            contracts: contracts.slice(0, pageSize),
             totalCount: contracts.length
         };
     },
@@ -647,9 +684,8 @@ const server = http.createServer(async (req, res) => {
         } else if (path === '/sirsi.contracts.v1.ContractsService/ListContracts' || path === '/api/contracts/list') {
             result = await handlers.listContracts(
                 body.projectId || url.searchParams.get('projectId'),
-                body.pageSize || 20,
-                body.userEmail || url.searchParams.get('userEmail'),
-                body.role || url.searchParams.get('role') || 'client'
+                body.pageSize || 50,
+                body.userEmail || url.searchParams.get('userEmail')
             );
         } else if (path === '/sirsi.contracts.v1.ContractsService/GetContract' || path.startsWith('/api/contracts/')) {
             const id = body.id || path.split('/').pop();

@@ -117,51 +117,28 @@ export function VaultDashboard() {
             const user = auth.currentUser;
             if (!user) return;
 
-            // Fetch client contracts (where user is the signer)
-            const clientResponse = await contractsClient.listContracts({
-                userEmail: user.email || '',
-                pageSize: 50,
-                pageToken: ''
-            });
-
-            // @ts-ignore
-            const clientDocs = (clientResponse.contracts || []) as Contract[];
-
-            // Also fetch provider contracts (where user is countersigner)
-            // Direct fetch because 'role' is not in the proto schema
-            let providerDocs: Contract[] = [];
-            try {
-                const token = await user.getIdToken();
-                const provRes = await fetch(
-                    'https://contracts-grpc-210890802638.us-east4.run.app/sirsi.contracts.v1.ContractsService/ListContracts',
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: JSON.stringify({
-                            userEmail: user.email || '',
-                            pageSize: 50,
-                            role: 'provider'
-                        })
-                    }
-                );
-                if (provRes.ok) {
-                    const provData = await provRes.json();
-                    providerDocs = (provData.contracts || []) as Contract[];
+            // Fetch contracts — backend handles RBAC visibility internally
+            // Direct fetch (not proto client) to support dual-query merge
+            const token = await user.getIdToken();
+            const res = await fetch(
+                'https://contracts-grpc-210890802638.us-east4.run.app/sirsi.contracts.v1.ContractsService/ListContracts',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        userEmail: user.email || '',
+                        pageSize: 50
+                    })
                 }
-            } catch (provErr) {
-                console.warn('Provider contracts fetch failed (non-blocking):', provErr);
-            }
+            );
 
-            const seen = new Set<string>();
             let docs: Contract[] = [];
-            for (const d of [...clientDocs, ...providerDocs]) {
-                if (!seen.has(d.id)) {
-                    seen.add(d.id);
-                    docs.push(d);
-                }
+            if (res.ok) {
+                const data = await res.json();
+                docs = (data.contracts || []) as Contract[];
             }
 
             if (entityId) docs = docs.filter(d => d.projectId === entityId);
