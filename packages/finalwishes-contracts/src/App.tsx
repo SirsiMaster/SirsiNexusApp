@@ -76,6 +76,13 @@ function App() {
             </ProtectedRoute>
           } />
 
+          {/* Admin Portal - Full CRUD Management */}
+          <Route path="/admin" element={
+            <ProtectedRoute>
+              <AdminPortal />
+            </ProtectedRoute>
+          } />
+
 
           {/* Catch-all - redirect to landing */}
           <Route path="*" element={<Navigate to="/" replace /> as any} />

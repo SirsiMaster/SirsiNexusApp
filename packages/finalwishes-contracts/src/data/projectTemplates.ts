@@ -62,7 +62,7 @@ export interface ProjectTemplate {
 // Template Definitions
 // ═══════════════════════════════════════════════════════════
 
-const TEMPLATES: Record<string, ProjectTemplate> = {
+export const TEMPLATES: Record<string, ProjectTemplate> = {
 
     // ── FinalWishes (Default) ──
     finalwishes: {

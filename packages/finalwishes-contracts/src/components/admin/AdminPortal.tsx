@@ -2,20 +2,22 @@ import { useState } from 'react';
 import { useMFA } from '../../../../sirsi-ui/src/hooks/useMFA';
 import { MFAGate } from '../auth/MFAGate';
 import { ContractsManagement } from './ContractsManagement';
+import { TenantManager } from './TenantManager';
 import { UsersAccessControl } from './UsersAccessControl';
 import { DevDashboard } from './DevDashboard';
 import { NotificationEngine } from './NotificationEngine';
 import { SystemSettings } from './SystemSettings';
 import { MFAEnrollment } from '../auth/MFAEnrollment';
 
-type AdminTab = 'contracts' | 'users' | 'development' | 'notifications' | 'settings' | 'mfa';
+type AdminTab = 'contracts' | 'tenants' | 'users' | 'development' | 'notifications' | 'settings' | 'mfa';
 
 export function AdminPortal() {
     const [activeTab, setActiveTab] = useState<AdminTab>('contracts');
     const mfa = useMFA();
 
     const tabs: { id: AdminTab; label: string; icon: string }[] = [
-        { id: 'contracts', label: 'Permanent Ledger', icon: '📜' },
+        { id: 'contracts', label: 'Contract Manager', icon: '📜' },
+        { id: 'tenants', label: 'Tenant Registry', icon: '🏛️' },
         { id: 'users', label: 'Users & Roles', icon: '👤' },
         { id: 'development', label: 'Dev KPIs', icon: '💻' },
         { id: 'notifications', label: 'Omni-Notify', icon: '🔔' },
@@ -80,6 +82,7 @@ export function AdminPortal() {
             <main className="flex-1 overflow-auto p-12">
                 <div className="max-w-6xl mx-auto">
                     {activeTab === 'contracts' && <ContractsManagement />}
+                    {activeTab === 'tenants' && <TenantManager />}
                     {activeTab === 'users' && <UsersAccessControl />}
                     {activeTab === 'development' && <DevDashboard />}
                     {activeTab === 'notifications' && <NotificationEngine />}

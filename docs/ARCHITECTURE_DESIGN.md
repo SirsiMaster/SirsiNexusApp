@@ -1925,4 +1925,55 @@ pub struct Feature {
 
 ---
 
+## 21. Unified gRPC Convergence (ADR-015)
+
+> **📋 Full Blueprint:** See [ADR-015: Unified gRPC Convergence](ADR-015-UNIFIED-GRPC-CONVERGENCE.md)
+
+The platform is converging toward a **single Go gRPC gateway** (`sirsi-gateway`) that serves as the unified data plane for both the **Admin Portal** (`sirsi.ai/admin`) and **Sirsi Sign** (`sign.sirsi.ai`). This eliminates the current architectural split where the Portal operates on static HTML with hardcoded data while Sign runs on a separate standalone gRPC service.
+
+### Key Convergence Milestones
+
+| Phase | Milestone | Status |
+|-------|-----------|--------|
+| Phase 0 | Unified proto workspace (`buf` + shared common types) | ⏳ Proposed |
+| Phase 1 | Portal migration from static HTML → React SPA on gRPC | ⏳ Proposed |
+| Phase 2 | Cross-service data integration (Portal reads contracts, Sign reads tenant config) | ⏳ Proposed |
+| Phase 3 | Merge standalone `contracts-grpc` into unified `sirsi-gateway` | ⏳ Proposed |
+| Phase 4 | Full Portal parity with real data (revenue, telemetry, logs) | ⏳ Proposed |
+
+### Proto Schema Overview
+
+```
+proto/sirsi/
+├── common/v1/common.proto        # Shared types: Pagination, Money, AuditEntry, AuthContext
+├── admin/v2/
+│   ├── admin_service.proto       # Dashboard, settings, notifications
+│   └── tenant.proto              # Multi-tenant CRUD (TenantService)
+├── contracts/v2/
+│   ├── contract_service.proto    # Contract CRUD + lifecycle
+│   ├── payment.proto             # Stripe + Plaid integration
+│   └── signing.proto             # OpenSign bridge
+└── vault/v1/vault_service.proto  # Document storage
+```
+
+### Target Topology
+
+```
+                       sirsi-gateway (Cloud Run)
+                       ┌──────────────────────┐
+                       │  AdminService (v2)   │
+                       │  ContractsService(v2)│
+                       │  TenantService       │
+                       │  VaultService        │
+                       │  SystemService       │
+                       └──────────┬───────────┘
+                                  │
+                    ┌─────────────┼─────────────┐
+                    │             │             │
+              sirsi.ai/admin  sign.sirsi.ai  Mobile App
+              (React SPA)     (React SPA)    (React Native)
+```
+
+---
+
 *This comprehensive blueprint serves as the single source of truth for SirsiNexus development, incorporating all historical achievements, competitive analysis, infrastructure status, and technical implementations. All architectural decisions, feature implementations, and project priorities should align with this consolidated document.*

@@ -1,68 +1,341 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import {
     useReactTable,
     getCoreRowModel,
+    getFilteredRowModel,
     flexRender,
-    createColumnHelper
+    createColumnHelper,
 } from '@tanstack/react-table';
 import { useContracts } from '../../hooks/useAdmin';
-import { Contract, ContractStatus } from '../../gen/proto/contracts/v1/contracts_pb';
+import { contractsClient } from '../../lib/grpc';
+import {
+    Contract,
+    ContractStatus,
+    CreateContractRequest,
+    UpdateContractRequest,
+} from '../../gen/proto/contracts/v1/contracts_pb';
 import { proto3 } from '@bufbuild/protobuf';
+import { TEMPLATES } from '../../data/projectTemplates';
+
+// ── Shared Inline Styles (Royal Neo-Deco) ──────────────────────────
+const S = {
+    overlay: {
+        position: 'fixed', inset: 0, zIndex: 9999,
+        background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+    } as React.CSSProperties,
+    modal: {
+        background: '#0A0F1D', border: '1px solid rgba(200,169,81,0.3)',
+        borderRadius: '16px', padding: '40px', width: '640px', maxHeight: '85vh',
+        overflowY: 'auto', boxShadow: '0 20px 60px rgba(0,0,0,0.7)',
+    } as React.CSSProperties,
+    label: {
+        display: 'block', fontFamily: 'Inter, sans-serif', fontSize: '10px',
+        color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase',
+        letterSpacing: '0.15em', marginBottom: '6px', fontWeight: 600,
+    } as React.CSSProperties,
+    input: {
+        width: '100%', padding: '10px 14px', borderRadius: '8px',
+        border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)',
+        color: 'white', fontFamily: 'Inter, sans-serif', fontSize: '14px',
+        outline: 'none', transition: 'border-color 0.2s',
+    } as React.CSSProperties,
+    select: {
+        width: '100%', padding: '10px 14px', borderRadius: '8px',
+        border: '1px solid rgba(255,255,255,0.15)', background: '#0A0F1D',
+        color: 'white', fontFamily: 'Inter, sans-serif', fontSize: '14px',
+        outline: 'none', cursor: 'pointer',
+    } as React.CSSProperties,
+    btnPrimary: {
+        padding: '10px 24px', background: 'rgba(200,169,81,0.15)',
+        border: '1px solid #C8A951', color: '#C8A951', borderRadius: '8px',
+        fontFamily: 'Cinzel, serif', fontWeight: 700, fontSize: '12px',
+        letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer',
+        transition: 'all 0.3s',
+    } as React.CSSProperties,
+    btnGhost: {
+        padding: '10px 24px', background: 'transparent',
+        border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.6)',
+        borderRadius: '8px', fontFamily: 'Inter, sans-serif', fontWeight: 600,
+        fontSize: '12px', cursor: 'pointer', transition: 'all 0.2s',
+    } as React.CSSProperties,
+    btnDanger: {
+        padding: '10px 24px', background: 'rgba(239,68,68,0.1)',
+        border: '1px solid rgba(239,68,68,0.4)', color: '#EF4444', borderRadius: '8px',
+        fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: '12px',
+        cursor: 'pointer', transition: 'all 0.2s',
+    } as React.CSSProperties,
+    sectionTitle: {
+        fontFamily: 'Cinzel, serif', fontSize: '11px', color: '#C8A951',
+        letterSpacing: '0.2em', fontWeight: 700, textTransform: 'uppercase',
+        borderBottom: '1px solid rgba(200,169,81,0.15)', paddingBottom: '8px',
+        marginBottom: '16px', marginTop: '24px',
+    } as React.CSSProperties,
+};
+
+const STATUS_OPTIONS = [
+    { value: ContractStatus.DRAFT, label: 'Draft' },
+    { value: ContractStatus.ACTIVE, label: 'Active' },
+    { value: ContractStatus.SIGNED, label: 'Signed' },
+    { value: ContractStatus.PAID, label: 'Paid' },
+    { value: ContractStatus.ARCHIVED, label: 'Archived' },
+    { value: ContractStatus.WAITING_FOR_COUNTERSIGN, label: 'Waiting for Countersign' },
+];
 
 const columnHelper = createColumnHelper<Contract>();
 
-export function ContractsManagement() {
-    const { data, isLoading, error } = useContracts();
-    const [selectedContract, setSelectedContract] = useState<Contract | null>(null);
+// ── Form Data Types ────────────────────────────────────────────────
+interface ContractFormData {
+    projectId: string;
+    projectName: string;
+    clientName: string;
+    clientEmail: string;
+    countersignerName: string;
+    countersignerEmail: string;
+    status: ContractStatus;
+}
 
-    const getStatusLabel = (status: ContractStatus) => {
+const EMPTY_FORM: ContractFormData = {
+    projectId: 'finalwishes',
+    projectName: '',
+    clientName: '',
+    clientEmail: '',
+    countersignerName: 'Cylton Collymore',
+    countersignerEmail: 'cylton@sirsi.ai',
+    status: ContractStatus.DRAFT,
+};
+
+// ════════════════════════════════════════════════════════════════════
+// Main Component
+// ════════════════════════════════════════════════════════════════════
+export function ContractsManagement() {
+    const { data, isLoading, error, refetch } = useContracts();
+    const [globalFilter, setGlobalFilter] = useState('');
+
+    // Modal state
+    const [showCreate, setShowCreate] = useState(false);
+    const [editingContract, setEditingContract] = useState<Contract | null>(null);
+    const [detailContract, setDetailContract] = useState<Contract | null>(null);
+    const [confirmDelete, setConfirmDelete] = useState<Contract | null>(null);
+
+    // Form state
+    const [form, setForm] = useState<ContractFormData>({ ...EMPTY_FORM });
+    const [saving, setSaving] = useState(false);
+    const [saveError, setSaveError] = useState('');
+
+    // ── Helpers ────────────────────────────────────────────────────
+    const getStatusLabel = useCallback((status: ContractStatus) => {
         const enumType = proto3.getEnumType(ContractStatus);
         return enumType.findNumber(status)?.name.replace('CONTRACT_STATUS_', '') || 'UNKNOWN';
-    };
+    }, []);
 
+    const updateField = useCallback((field: keyof ContractFormData, value: any) => {
+        setForm(prev => ({ ...prev, [field]: value }));
+    }, []);
+
+    // Auto-fill project name when template changes
+    const handleProjectChange = useCallback((projectId: string) => {
+        const tpl = TEMPLATES[projectId];
+        setForm(prev => ({
+            ...prev,
+            projectId,
+            projectName: tpl?.projectDisplayName || prev.projectName,
+        }));
+    }, []);
+
+    // ── CRUD Operations ───────────────────────────────────────────
+    const handleCreate = useCallback(async () => {
+        if (!form.clientName || !form.clientEmail) {
+            setSaveError('Client name and email are required.');
+            return;
+        }
+        setSaving(true);
+        setSaveError('');
+        try {
+            await contractsClient.createContract(new CreateContractRequest({
+                projectId: form.projectId,
+                projectName: form.projectName,
+                clientName: form.clientName,
+                clientEmail: form.clientEmail,
+                countersignerName: form.countersignerName,
+                countersignerEmail: form.countersignerEmail,
+            }));
+            setShowCreate(false);
+            setForm({ ...EMPTY_FORM });
+            refetch();
+        } catch (err: any) {
+            setSaveError(err.message || 'Failed to create contract');
+        } finally {
+            setSaving(false);
+        }
+    }, [form, refetch]);
+
+    const handleUpdate = useCallback(async () => {
+        if (!editingContract) return;
+        setSaving(true);
+        setSaveError('');
+        try {
+            await contractsClient.updateContract(new UpdateContractRequest({
+                id: editingContract.id,
+                contract: new Contract({
+                    ...editingContract,
+                    clientName: form.clientName,
+                    clientEmail: form.clientEmail,
+                    projectName: form.projectName,
+                    projectId: form.projectId,
+                    countersignerName: form.countersignerName,
+                    countersignerEmail: form.countersignerEmail,
+                    status: form.status,
+                }),
+                updateMask: [
+                    'client_name', 'client_email', 'project_name', 'project_id',
+                    'countersigner_name', 'countersigner_email', 'status',
+                ],
+            }));
+            setEditingContract(null);
+            setForm({ ...EMPTY_FORM });
+            refetch();
+        } catch (err: any) {
+            setSaveError(err.message || 'Failed to update contract');
+        } finally {
+            setSaving(false);
+        }
+    }, [editingContract, form, refetch]);
+
+    const handleDelete = useCallback(async () => {
+        if (!confirmDelete) return;
+        setSaving(true);
+        try {
+            await contractsClient.deleteContract({ id: confirmDelete.id });
+            setConfirmDelete(null);
+            setDetailContract(null);
+            refetch();
+        } catch (err: any) {
+            setSaveError(err.message || 'Failed to delete contract');
+        } finally {
+            setSaving(false);
+        }
+    }, [confirmDelete, refetch]);
+
+    const openEdit = useCallback((contract: Contract) => {
+        setForm({
+            projectId: contract.projectId,
+            projectName: contract.projectName,
+            clientName: contract.clientName,
+            clientEmail: contract.clientEmail,
+            countersignerName: contract.countersignerName,
+            countersignerEmail: contract.countersignerEmail,
+            status: contract.status,
+        });
+        setSaveError('');
+        setEditingContract(contract);
+    }, []);
+
+    const openCreate = useCallback(() => {
+        setForm({ ...EMPTY_FORM });
+        setSaveError('');
+        setShowCreate(true);
+    }, []);
+
+    // ── Table Columns ─────────────────────────────────────────────
     const columns = useMemo(() => [
-        columnHelper.accessor('id', {
-            header: 'Contract ID',
-            cell: info => <span className="text-slate-400 font-mono text-xs">{info.getValue().substring(0, 8)}...</span>,
+        columnHelper.accessor('projectName', {
+            header: 'Project',
+            cell: info => (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    <span style={{ color: 'white', fontWeight: 600, fontSize: '13px' }}>{info.getValue()}</span>
+                    <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '10px', fontFamily: 'monospace' }}>{info.row.original.projectId}</span>
+                </div>
+            ),
         }),
         columnHelper.accessor('clientName', {
             header: 'Client',
-            cell: info => <span className="text-white font-semibold">{info.getValue()}</span>,
+            cell: info => (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    <span style={{ color: 'white', fontWeight: 600, fontSize: '13px' }}>{info.getValue()}</span>
+                    <span style={{ color: 'rgba(147,180,255,0.7)', fontSize: '11px' }}>{info.row.original.clientEmail}</span>
+                </div>
+            ),
         }),
-        columnHelper.accessor('projectName', {
-            header: 'Project',
-            cell: info => <span className="text-blue-200">{info.getValue()}</span>,
+        columnHelper.accessor('countersignerName', {
+            header: 'Countersigner',
+            cell: info => {
+                const name = info.getValue();
+                const email = info.row.original.countersignerEmail;
+                if (!name && !email) return <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '11px', fontStyle: 'italic' }}>Not assigned</span>;
+                return (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '12px' }}>{name}</span>
+                        {email && <span style={{ color: 'rgba(147,180,255,0.5)', fontSize: '10px' }}>{email}</span>}
+                    </div>
+                );
+            },
         }),
         columnHelper.accessor('status', {
             header: 'Status',
             cell: info => {
                 const label = getStatusLabel(info.getValue());
-                let colorClass = 'bg-white/5 text-slate-400 border border-white/10';
-
-                if (label === 'PAID' || label === 'ACTIVE') {
-                    colorClass = 'bg-emerald/10 text-emerald border border-emerald/20';
-                } else if (label === 'SIGNED' || label === 'WAITING_FOR_COUNTERSIGN') {
-                    colorClass = 'bg-gold/10 text-gold border border-gold/20';
-                } else if (label === 'DRAFT') {
-                    colorClass = 'bg-blue-500/10 text-blue-400 border border-blue-500/20';
-                }
-
+                const colors: Record<string, string> = {
+                    DRAFT: 'rgba(96,165,250,0.8)',
+                    ACTIVE: 'rgba(16,185,129,0.8)',
+                    SIGNED: '#C8A951',
+                    PAID: 'rgba(16,185,129,1)',
+                    ARCHIVED: 'rgba(255,255,255,0.3)',
+                    WAITING_FOR_COUNTERSIGN: 'rgba(251,191,36,0.8)',
+                };
+                const color = colors[label] || 'rgba(255,255,255,0.4)';
                 return (
-                    <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${colorClass}`}>
-                        {label}
+                    <span style={{
+                        padding: '3px 10px', borderRadius: '20px', fontSize: '10px',
+                        fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
+                        border: `1px solid ${color}`, color, background: `${color}15`,
+                    }}>
+                        {label.replace(/_/g, ' ')}
                     </span>
                 );
             },
         }),
         columnHelper.accessor('totalAmount', {
             header: 'Value',
-            cell: info => <span className="text-gold font-mono">${(Number(info.getValue()) / 100).toLocaleString()}</span>,
+            cell: info => (
+                <span style={{ color: '#C8A951', fontFamily: 'monospace', fontWeight: 600, fontSize: '13px' }}>
+                    ${(Number(info.getValue()) / 100).toLocaleString()}
+                </span>
+            ),
         }),
-        columnHelper.accessor('updatedAt', {
-            header: 'Last Activity',
-            cell: info => <span className="text-slate-500 text-xs">{new Date(Number(info.getValue())).toLocaleString()}</span>,
+        columnHelper.display({
+            id: 'actions',
+            header: '',
+            cell: ({ row }) => (
+                <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                    <button
+                        onClick={(e) => { e.stopPropagation(); openEdit(row.original); }}
+                        style={{
+                            padding: '4px 12px', borderRadius: '6px', fontSize: '10px',
+                            background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
+                            color: 'rgba(255,255,255,0.7)', cursor: 'pointer', fontWeight: 600,
+                            transition: 'all 0.2s',
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.borderColor = '#C8A951'; e.currentTarget.style.color = '#C8A951'; }}
+                        onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = 'rgba(255,255,255,0.7)'; }}
+                    >
+                        Edit
+                    </button>
+                    <button
+                        onClick={(e) => { e.stopPropagation(); window.open(`/contracts/${row.original.projectId}`, '_blank'); }}
+                        style={{
+                            padding: '4px 12px', borderRadius: '6px', fontSize: '10px',
+                            background: 'rgba(200,169,81,0.1)', border: '1px solid rgba(200,169,81,0.3)',
+                            color: '#C8A951', cursor: 'pointer', fontWeight: 600,
+                            transition: 'all 0.2s',
+                        }}
+                    >
+                        Open
+                    </button>
+                </div>
+            ),
         }),
-    ], []);
+    ], [getStatusLabel, openEdit]);
 
     const tableData = useMemo(() => data?.contracts ?? [], [data]);
 
@@ -70,77 +343,102 @@ export function ContractsManagement() {
         data: tableData,
         columns,
         getCoreRowModel: getCoreRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        state: { globalFilter },
+        onGlobalFilterChange: setGlobalFilter,
     });
 
-    const getAuditTrail = (contract: Contract) => {
+    // ── Audit Trail (for detail drawer) ───────────────────────────
+    const getAuditTrail = useCallback((contract: Contract) => {
         const events = [
-            { label: 'Contract Session Initialized', time: Number(contract.createdAt), icon: '📝', status: 'COMPLETE' },
+            { label: 'Contract Created', time: Number(contract.createdAt), icon: '📝' },
         ];
-
         if (Number(contract.updatedAt) > Number(contract.createdAt)) {
-            // Check for signature or status change
-            const statusLabel = getStatusLabel(contract.status);
-            if (statusLabel !== 'DRAFT') {
-                events.push({ label: 'Legal Identity Verified (MFA)', time: Number(contract.createdAt) + 300000, icon: '🔐', status: 'COMPLETE' });
-                events.push({ label: 'Client Signature Captured', time: Number(contract.updatedAt) - 600000, icon: '✍️', status: 'COMPLETE' });
-                events.push({ label: `Status Transition: ${statusLabel}`, time: Number(contract.updatedAt), icon: '🔄', status: 'COMPLETE' });
+            const label = getStatusLabel(contract.status);
+            if (label !== 'DRAFT') {
+                events.push({ label: 'Identity Verified (MFA)', time: Number(contract.createdAt) + 300000, icon: '🔐' });
+                events.push({ label: 'Client Signature Captured', time: Number(contract.updatedAt) - 600000, icon: '✍️' });
+                events.push({ label: `Status → ${label}`, time: Number(contract.updatedAt), icon: '🔄' });
             }
         }
-
         if (contract.countersignedAt && Number(contract.countersignedAt) > 0) {
-            events.push({ label: 'Permanent Countersignature Affixed', time: Number(contract.countersignedAt), icon: '🏛️', status: 'COMPLETE' });
+            events.push({ label: 'Countersignature Affixed', time: Number(contract.countersignedAt), icon: '🏛️' });
         }
-
         return events.sort((a, b) => b.time - a.time);
-    };
+    }, [getStatusLabel]);
 
-    if (isLoading) return <div className="text-gold inter p-8">Fetching Permanent Ledger...</div>;
-    if (error) return <div className="text-red-500 inter p-8">Error loading contracts repository</div>;
+    if (isLoading) return <div style={{ padding: '3rem', color: '#C8A951', fontFamily: 'Inter' }}>Fetching Permanent Ledger...</div>;
+    if (error) return <div style={{ padding: '3rem', color: '#EF4444', fontFamily: 'Inter' }}>Error loading contracts: {(error as Error).message}</div>;
 
+    // ════════════════════════════════════════════════════════════════
+    // Render
+    // ════════════════════════════════════════════════════════════════
     return (
-        <div className="flex flex-col gap-6 relative min-h-full">
-            <div className="flex justify-between items-center">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', position: 'relative', minHeight: '100%' }}>
+            {/* ── Header ─────────────────────────────────────────── */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                    <h2 className="cinzel text-2xl text-gold tracking-widest">Permanent Ledger</h2>
-                    <p className="inter text-[10px] text-slate-500 uppercase tracking-widest mt-1">Real-time Portfolio Audit Trail</p>
+                    <h2 style={{ fontFamily: 'Cinzel, serif', fontSize: '22px', color: '#C8A951', letterSpacing: '0.15em', margin: 0, fontWeight: 700 }}>
+                        Contract Command Center
+                    </h2>
+                    <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '10px', color: 'rgba(255,255,255,0.4)', letterSpacing: '0.2em', textTransform: 'uppercase', marginTop: '4px' }}>
+                        {tableData.length} Contract{tableData.length !== 1 ? 's' : ''} in Portfolio
+                    </p>
                 </div>
-                <div className="flex gap-3">
-                    <button className="px-4 py-2 bg-white/5 border border-white/10 text-slate-300 rounded-lg hover:bg-white/10 transition-all inter text-xs font-semibold">
-                        Export CSV
-                    </button>
-                    <button className="px-6 py-2 bg-gold/10 border border-gold text-gold rounded-lg hover:bg-gold hover:text-navy transition-all duration-300 cinzel font-bold text-sm tracking-wider">
-                        Generate New Proposal
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                    {/* Search */}
+                    <input
+                        placeholder="Search contracts..."
+                        value={globalFilter}
+                        onChange={e => setGlobalFilter(e.target.value)}
+                        style={{
+                            ...S.input, width: '220px', fontSize: '12px', padding: '8px 14px',
+                            borderColor: globalFilter ? 'rgba(200,169,81,0.4)' : undefined,
+                        }}
+                    />
+                    <button onClick={openCreate} style={S.btnPrimary}
+                        onMouseEnter={e => { e.currentTarget.style.background = '#C8A951'; e.currentTarget.style.color = '#0A0F1D'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'rgba(200,169,81,0.15)'; e.currentTarget.style.color = '#C8A951'; }}
+                    >
+                        + New Contract
                     </button>
                 </div>
             </div>
 
-            <div className="neo-glass-panel overflow-hidden border border-white/10 rounded-xl bg-black/20 backdrop-blur-md">
-                <table className="w-full text-left border-collapse">
+            {/* ── Table ──────────────────────────────────────────── */}
+            <div style={{
+                border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px',
+                background: 'rgba(0,0,0,0.2)', backdropFilter: 'blur(10px)', overflow: 'hidden',
+            }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                     <thead>
-                        {table.getHeaderGroups().map(headerGroup => (
-                            <tr key={headerGroup.id} className="bg-white/10 border-b border-white/10">
-                                {headerGroup.headers.map(header => (
-                                    <th key={header.id} className="p-4 cinzel text-[10px] text-gold tracking-widest uppercase font-bold">
-                                        {header.isPlaceholder
-                                            ? null
-                                            : (flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            ) as any)}
+                        {table.getHeaderGroups().map(hg => (
+                            <tr key={hg.id} style={{ background: 'rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                                {hg.headers.map(h => (
+                                    <th key={h.id} style={{
+                                        padding: '14px 16px', fontFamily: 'Cinzel, serif', fontSize: '10px',
+                                        color: '#C8A951', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 700,
+                                    }}>
+                                        {h.isPlaceholder ? null : (flexRender(h.column.columnDef.header, h.getContext()) as any)}
                                     </th>
                                 ))}
                             </tr>
                         ))}
                     </thead>
-                    <tbody className="inter text-sm">
+                    <tbody style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px' }}>
                         {table.getRowModel().rows.map(row => (
                             <tr
                                 key={row.id}
-                                className="border-b border-white/5 hover:bg-white/5 transition-colors duration-200 cursor-pointer group"
-                                onClick={() => setSelectedContract(row.original)}
+                                onClick={() => setDetailContract(row.original)}
+                                style={{
+                                    borderBottom: '1px solid rgba(255,255,255,0.04)',
+                                    cursor: 'pointer', transition: 'background 0.2s',
+                                }}
+                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
+                                onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                             >
                                 {row.getVisibleCells().map(cell => (
-                                    <td key={cell.id} className="p-4">
+                                    <td key={cell.id} style={{ padding: '14px 16px' }}>
                                         {(flexRender(cell.column.columnDef.cell, cell.getContext()) as any)}
                                     </td>
                                 ))}
@@ -149,118 +447,311 @@ export function ContractsManagement() {
                     </tbody>
                 </table>
                 {tableData.length === 0 && (
-                    <div className="p-20 text-center flex flex-col items-center gap-4">
-                        <span className="text-4xl opacity-20">📜</span>
-                        <div className="text-slate-500 inter text-sm">
-                            No executed contracts found in the portfolio.
-                        </div>
+                    <div style={{ padding: '80px 20px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+                        <span style={{ fontSize: '48px', opacity: 0.15 }}>📜</span>
+                        <p style={{ color: 'rgba(255,255,255,0.3)', fontFamily: 'Inter', fontSize: '14px' }}>No contracts yet. Create your first proposal above.</p>
                     </div>
                 )}
             </div>
 
-            {/* Detail Drawer */}
-            {selectedContract && (
-                <>
-                    <div
-                        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity"
-                        onClick={() => setSelectedContract(null)}
-                    ></div>
-                    <div className="fixed right-0 top-0 h-screen w-[450px] bg-[#0A0F1D] border-l border-gold/30 z-50 shadow-[-20px_0_50px_rgba(0,0,0,0.5)] flex flex-col animate-slide-in">
-                        {/* Drawer Header */}
-                        <div className="p-8 border-b border-white/10 flex justify-between items-start bg-gold/5">
+            {/* ═══════════════════════════════════════════════════════ */}
+            {/* CREATE MODAL                                           */}
+            {/* ═══════════════════════════════════════════════════════ */}
+            {showCreate && (
+                <div style={S.overlay} onClick={() => setShowCreate(false)}>
+                    <div style={S.modal} onClick={e => e.stopPropagation()}>
+                        <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: '18px', color: '#C8A951', letterSpacing: '0.12em', margin: 0 }}>
+                            New Contract
+                        </h3>
+                        <p style={{ fontFamily: 'Inter', fontSize: '12px', color: 'rgba(255,255,255,0.4)', marginTop: '4px', marginBottom: '24px' }}>
+                            Create a new proposal for a client. Select a project template to pre-fill content.
+                        </p>
+
+                        <div style={S.sectionTitle}>Project</div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                             <div>
-                                <span className="inter text-[10px] text-gold uppercase tracking-[0.2em] font-bold">Contract Details</span>
-                                <h3 className="cinzel text-xl text-white mt-1">{selectedContract.projectName}</h3>
-                                <p className="inter text-xs text-slate-400 mt-1">{selectedContract.clientName} • {selectedContract.clientEmail}</p>
+                                <label style={S.label}>Template</label>
+                                <select
+                                    value={form.projectId}
+                                    onChange={e => handleProjectChange(e.target.value)}
+                                    style={S.select}
+                                >
+                                    {Object.entries(TEMPLATES).map(([key, tpl]) => (
+                                        <option key={key} value={key}>{tpl.projectDisplayName}</option>
+                                    ))}
+                                </select>
                             </div>
-                            <button
-                                onClick={() => setSelectedContract(null)}
-                                className="text-slate-500 hover:text-white transition-colors"
-                            >
-                                ✕
-                            </button>
+                            <div>
+                                <label style={S.label}>Project Name</label>
+                                <input
+                                    value={form.projectName}
+                                    onChange={e => updateField('projectName', e.target.value)}
+                                    style={S.input}
+                                    placeholder="e.g. FinalWishes Platform"
+                                />
+                            </div>
                         </div>
 
-                        {/* Drawer Content */}
-                        <div className="flex-1 overflow-auto p-8 space-y-10">
-                            {/* Summary Cards */}
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="p-4 bg-white/5 border border-white/10 rounded-lg">
-                                    <span className="inter text-[9px] text-slate-500 uppercase block">Total Investment</span>
-                                    <span className="inter text-lg text-gold font-bold font-mono">${(Number(selectedContract.totalAmount) / 100).toLocaleString()}</span>
+                        <div style={S.sectionTitle}>Client (Signer)</div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                            <div>
+                                <label style={S.label}>Full Name</label>
+                                <input value={form.clientName} onChange={e => updateField('clientName', e.target.value)} style={S.input} placeholder="Richard Jones" />
+                            </div>
+                            <div>
+                                <label style={S.label}>Email</label>
+                                <input value={form.clientEmail} onChange={e => updateField('clientEmail', e.target.value)} style={S.input} placeholder="client@email.com" type="email" />
+                            </div>
+                        </div>
+
+                        <div style={S.sectionTitle}>Countersigner (Sirsi)</div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                            <div>
+                                <label style={S.label}>Full Name</label>
+                                <input value={form.countersignerName} onChange={e => updateField('countersignerName', e.target.value)} style={S.input} />
+                            </div>
+                            <div>
+                                <label style={S.label}>Email</label>
+                                <input value={form.countersignerEmail} onChange={e => updateField('countersignerEmail', e.target.value)} style={S.input} type="email" />
+                            </div>
+                        </div>
+
+                        {saveError && (
+                            <div style={{ marginTop: '16px', padding: '10px 14px', borderRadius: '8px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#EF4444', fontSize: '12px', fontFamily: 'Inter' }}>
+                                {saveError}
+                            </div>
+                        )}
+
+                        <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '32px' }}>
+                            <button onClick={() => setShowCreate(false)} style={S.btnGhost}>Cancel</button>
+                            <button onClick={handleCreate} disabled={saving} style={{ ...S.btnPrimary, opacity: saving ? 0.5 : 1 }}>
+                                {saving ? 'Creating...' : 'Create Contract'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ═══════════════════════════════════════════════════════ */}
+            {/* EDIT MODAL                                             */}
+            {/* ═══════════════════════════════════════════════════════ */}
+            {editingContract && (
+                <div style={S.overlay} onClick={() => setEditingContract(null)}>
+                    <div style={S.modal} onClick={e => e.stopPropagation()}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <div>
+                                <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: '18px', color: '#C8A951', letterSpacing: '0.12em', margin: 0 }}>
+                                    Edit Contract
+                                </h3>
+                                <p style={{ fontFamily: 'monospace', fontSize: '11px', color: 'rgba(255,255,255,0.3)', marginTop: '4px' }}>
+                                    ID: {editingContract.id}
+                                </p>
+                            </div>
+                            <button onClick={() => setEditingContract(null)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '18px', cursor: 'pointer' }}>✕</button>
+                        </div>
+
+                        <div style={S.sectionTitle}>Project</div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                            <div>
+                                <label style={S.label}>Template</label>
+                                <select value={form.projectId} onChange={e => handleProjectChange(e.target.value)} style={S.select}>
+                                    {Object.entries(TEMPLATES).map(([key, tpl]) => (
+                                        <option key={key} value={key}>{tpl.projectDisplayName}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <label style={S.label}>Project Name</label>
+                                <input value={form.projectName} onChange={e => updateField('projectName', e.target.value)} style={S.input} />
+                            </div>
+                        </div>
+
+                        <div style={S.sectionTitle}>Client (Signer)</div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                            <div>
+                                <label style={S.label}>Full Name</label>
+                                <input value={form.clientName} onChange={e => updateField('clientName', e.target.value)} style={S.input} />
+                            </div>
+                            <div>
+                                <label style={S.label}>Email</label>
+                                <input value={form.clientEmail} onChange={e => updateField('clientEmail', e.target.value)} style={S.input} type="email" />
+                            </div>
+                        </div>
+
+                        <div style={S.sectionTitle}>Countersigner</div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                            <div>
+                                <label style={S.label}>Full Name</label>
+                                <input value={form.countersignerName} onChange={e => updateField('countersignerName', e.target.value)} style={S.input} />
+                            </div>
+                            <div>
+                                <label style={S.label}>Email</label>
+                                <input value={form.countersignerEmail} onChange={e => updateField('countersignerEmail', e.target.value)} style={S.input} type="email" />
+                            </div>
+                        </div>
+
+                        <div style={S.sectionTitle}>Status</div>
+                        <select value={form.status} onChange={e => updateField('status', Number(e.target.value))} style={S.select}>
+                            {STATUS_OPTIONS.map(opt => (
+                                <option key={opt.value} value={opt.value}>{opt.label}</option>
+                            ))}
+                        </select>
+
+                        {saveError && (
+                            <div style={{ marginTop: '16px', padding: '10px 14px', borderRadius: '8px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#EF4444', fontSize: '12px', fontFamily: 'Inter' }}>
+                                {saveError}
+                            </div>
+                        )}
+
+                        <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '32px' }}>
+                            <button onClick={() => { setConfirmDelete(editingContract); setEditingContract(null); }} style={S.btnDanger}>
+                                Delete
+                            </button>
+                            <div style={{ flex: 1 }} />
+                            <button onClick={() => setEditingContract(null)} style={S.btnGhost}>Cancel</button>
+                            <button onClick={handleUpdate} disabled={saving} style={{ ...S.btnPrimary, opacity: saving ? 0.5 : 1 }}>
+                                {saving ? 'Saving...' : 'Save Changes'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ═══════════════════════════════════════════════════════ */}
+            {/* DELETE CONFIRMATION                                    */}
+            {/* ═══════════════════════════════════════════════════════ */}
+            {confirmDelete && (
+                <div style={S.overlay} onClick={() => setConfirmDelete(null)}>
+                    <div style={{ ...S.modal, width: '420px', textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+                        <div style={{ fontSize: '48px', marginBottom: '16px' }}>⚠️</div>
+                        <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: '18px', color: '#EF4444', margin: 0 }}>
+                            Delete Contract
+                        </h3>
+                        <p style={{ fontFamily: 'Inter', fontSize: '13px', color: 'rgba(255,255,255,0.6)', marginTop: '12px', lineHeight: 1.6 }}>
+                            This will permanently delete the contract for <strong style={{ color: 'white' }}>{confirmDelete.clientName}</strong> ({confirmDelete.projectName}).
+                            This action cannot be undone.
+                        </p>
+                        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '28px' }}>
+                            <button onClick={() => setConfirmDelete(null)} style={S.btnGhost}>Cancel</button>
+                            <button onClick={handleDelete} disabled={saving} style={{ ...S.btnDanger, opacity: saving ? 0.5 : 1 }}>
+                                {saving ? 'Deleting...' : 'Delete Permanently'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ═══════════════════════════════════════════════════════ */}
+            {/* DETAIL DRAWER                                          */}
+            {/* ═══════════════════════════════════════════════════════ */}
+            {detailContract && (
+                <>
+                    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', zIndex: 40 }}
+                        onClick={() => setDetailContract(null)} />
+                    <div style={{
+                        position: 'fixed', right: 0, top: 0, height: '100vh', width: '460px',
+                        background: '#0A0F1D', borderLeft: '1px solid rgba(200,169,81,0.3)', zIndex: 50,
+                        display: 'flex', flexDirection: 'column',
+                        boxShadow: '-20px 0 60px rgba(0,0,0,0.5)',
+                        animation: 'slideIn 0.3s ease-out',
+                    }}>
+                        {/* Detail Header */}
+                        <div style={{ padding: '28px 28px 20px', borderBottom: '1px solid rgba(255,255,255,0.08)', background: 'rgba(200,169,81,0.03)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                <div>
+                                    <span style={{ fontFamily: 'Inter', fontSize: '10px', color: '#C8A951', letterSpacing: '0.2em', fontWeight: 700, textTransform: 'uppercase' }}>Contract Details</span>
+                                    <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: '18px', color: 'white', marginTop: '4px', margin: 0 }}>{detailContract.projectName}</h3>
+                                    <p style={{ fontFamily: 'Inter', fontSize: '12px', color: 'rgba(255,255,255,0.5)', marginTop: '4px' }}>
+                                        {detailContract.clientName} • {detailContract.clientEmail}
+                                    </p>
                                 </div>
-                                <div className="p-4 bg-white/5 border border-white/10 rounded-lg">
-                                    <span className="inter text-[9px] text-slate-500 uppercase block">Status</span>
-                                    <span className="inter text-xs text-emerald font-bold uppercase tracking-widest mt-1 flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald animate-pulse"></div>
-                                        {getStatusLabel(selectedContract.status)}
+                                <button onClick={() => setDetailContract(null)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: '16px' }}>✕</button>
+                            </div>
+                        </div>
+
+                        {/* Detail Content */}
+                        <div style={{ flex: 1, overflowY: 'auto', padding: '28px' }}>
+                            {/* Summary Grid */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '28px' }}>
+                                <div style={{ padding: '14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px' }}>
+                                    <span style={{ fontFamily: 'Inter', fontSize: '9px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', display: 'block' }}>Investment</span>
+                                    <span style={{ fontFamily: 'Inter', fontSize: '18px', color: '#C8A951', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>${(Number(detailContract.totalAmount) / 100).toLocaleString()}</span>
+                                </div>
+                                <div style={{ padding: '14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px' }}>
+                                    <span style={{ fontFamily: 'Inter', fontSize: '9px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', display: 'block' }}>Status</span>
+                                    <span style={{ fontFamily: 'Inter', fontSize: '12px', color: 'rgb(16,185,129)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                                        {getStatusLabel(detailContract.status).replace(/_/g, ' ')}
                                     </span>
                                 </div>
                             </div>
 
-                            {/* Audit Trail Section */}
-                            <div>
-                                <h4 className="cinzel text-xs text-gold tracking-widest font-bold uppercase mb-6 flex items-center gap-2">
-                                    <span>Permanent Audit Trail</span>
-                                    <div className="flex-1 h-px bg-gold/20"></div>
-                                </h4>
-
-                                <div className="space-y-6 relative border-l border-gold/10 ml-2 pl-6">
-                                    {getAuditTrail(selectedContract).map((log, i) => (
-                                        <div key={i} className="relative">
-                                            <div className="absolute -left-[31px] top-0 w-2.5 h-2.5 rounded-full bg-gold border-2 border-navy shadow-[0_0_8px_rgba(200,169,81,0.5)]"></div>
-                                            <div className="flex flex-col">
-                                                <div className="flex justify-between items-center bg-white/5 p-3 rounded-tr-lg rounded-br-lg border-l-2 border-gold/40">
-                                                    <div className="flex items-center gap-3">
-                                                        <span className="text-sm">{log.icon}</span>
-                                                        <span className="inter text-xs text-white font-medium">{log.label}</span>
-                                                    </div>
-                                                    <span className="inter text-[9px] text-slate-500 font-mono">
-                                                        {new Date(log.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                    </span>
-                                                </div>
-                                                <span className="inter text-[9px] text-slate-500 mt-2 pl-1">
-                                                    {new Date(log.time).toLocaleDateString()} • Verified by Sirsi Vault
-                                                </span>
-                                            </div>
-                                        </div>
-                                    ))}
+                            {/* Signers */}
+                            <div style={S.sectionTitle}>Signers</div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '28px' }}>
+                                <div style={{ padding: '12px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', display: 'flex', justifyContent: 'space-between' }}>
+                                    <div>
+                                        <span style={{ fontFamily: 'Inter', fontSize: '9px', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', display: 'block', letterSpacing: '0.1em' }}>Client Signer</span>
+                                        <span style={{ fontFamily: 'Inter', fontSize: '13px', color: 'white', fontWeight: 600 }}>{detailContract.clientName}</span>
+                                    </div>
+                                    <span style={{ fontFamily: 'Inter', fontSize: '11px', color: 'rgba(147,180,255,0.6)', alignSelf: 'flex-end' }}>{detailContract.clientEmail}</span>
+                                </div>
+                                <div style={{ padding: '12px 14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', display: 'flex', justifyContent: 'space-between' }}>
+                                    <div>
+                                        <span style={{ fontFamily: 'Inter', fontSize: '9px', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', display: 'block', letterSpacing: '0.1em' }}>Countersigner</span>
+                                        <span style={{ fontFamily: 'Inter', fontSize: '13px', color: 'white', fontWeight: 600 }}>
+                                            {detailContract.countersignerName || <span style={{ color: 'rgba(255,255,255,0.2)', fontStyle: 'italic', fontWeight: 400 }}>Not assigned</span>}
+                                        </span>
+                                    </div>
+                                    <span style={{ fontFamily: 'Inter', fontSize: '11px', color: 'rgba(147,180,255,0.6)', alignSelf: 'flex-end' }}>{detailContract.countersignerEmail}</span>
                                 </div>
                             </div>
 
-                            {/* Evidence Metadata */}
-                            <div className="space-y-4">
-                                <h4 className="cinzel text-xs text-gold tracking-widest font-bold uppercase flex items-center gap-2">
-                                    <span>Cryptographic Evidence</span>
-                                    <div className="flex-1 h-px bg-gold/20"></div>
-                                </h4>
-                                <div className="p-4 bg-black/40 rounded-lg border border-white/5 space-y-3">
-                                    <div className="flex justify-between">
-                                        <span className="inter text-[9px] text-slate-500 uppercase">Provider ID</span>
-                                        <span className="inter text-[9px] text-slate-400 font-mono">SIRSI-VAULT-PROD-01</span>
+                            {/* Audit Trail */}
+                            <div style={S.sectionTitle}>Audit Trail</div>
+                            <div style={{ position: 'relative', borderLeft: '1px solid rgba(200,169,81,0.1)', marginLeft: '8px', paddingLeft: '20px' }}>
+                                {getAuditTrail(detailContract).map((log, i) => (
+                                    <div key={i} style={{ marginBottom: '16px', position: 'relative' }}>
+                                        <div style={{
+                                            position: 'absolute', left: '-25px', top: '4px', width: '8px', height: '8px',
+                                            borderRadius: '50%', background: '#C8A951', border: '2px solid #0A0F1D',
+                                            boxShadow: '0 0 6px rgba(200,169,81,0.4)',
+                                        }} />
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px', background: 'rgba(255,255,255,0.03)', borderRadius: '6px' }}>
+                                            <span style={{ fontFamily: 'Inter', fontSize: '11px', color: 'white' }}>
+                                                <span style={{ marginRight: '8px' }}>{log.icon}</span>{log.label}
+                                            </span>
+                                            <span style={{ fontFamily: 'monospace', fontSize: '9px', color: 'rgba(255,255,255,0.3)' }}>
+                                                {new Date(log.time).toLocaleString()}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div className="flex justify-between">
-                                        <span className="inter text-[9px] text-slate-500 uppercase">Hashing Alg</span>
-                                        <span className="inter text-[9px] text-slate-400 font-mono">SHA-256 (AES Compatible)</span>
+                                ))}
+                            </div>
+
+                            {/* Cryptographic Evidence */}
+                            <div style={S.sectionTitle}>Evidence Metadata</div>
+                            <div style={{ padding: '14px', background: 'rgba(0,0,0,0.3)', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.04)' }}>
+                                {[
+                                    ['Contract ID', detailContract.id],
+                                    ['Hashing', 'SHA-256 (AES Compatible)'],
+                                    ['Integrity Hash', detailContract.id.repeat(2).substring(0, 64)],
+                                ].map(([lbl, val]) => (
+                                    <div key={lbl} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
+                                        <span style={{ fontFamily: 'Inter', fontSize: '9px', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase' }}>{lbl}</span>
+                                        <span style={{ fontFamily: 'monospace', fontSize: '9px', color: 'rgba(16,185,129,0.5)', maxWidth: '60%', textAlign: 'right', wordBreak: 'break-all' }}>{val}</span>
                                     </div>
-                                    <div className="flex flex-col gap-1">
-                                        <span className="inter text-[9px] text-slate-500 uppercase">System Integrity Hash</span>
-                                        <span className="inter text-[8px] text-emerald/60 font-mono break-all leading-tight">
-                                            {selectedContract.id.repeat(2).substring(0, 64)}
-                                        </span>
-                                    </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
 
-                        {/* Drawer Footer */}
-                        <div className="p-6 border-t border-white/10 flex gap-3">
-                            <button className="flex-1 py-3 bg-white/5 border border-white/10 text-white inter text-[10px] font-bold uppercase tracking-widest rounded hover:bg-white/10 transition-all">
-                                View Full MSA
+                        {/* Detail Footer */}
+                        <div style={{ padding: '16px 28px', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', gap: '10px' }}>
+                            <button onClick={() => { openEdit(detailContract); setDetailContract(null); }} style={{ ...S.btnGhost, flex: 1, textAlign: 'center' }}>
+                                Edit Contract
                             </button>
                             <button
-                                onClick={() => window.open(`/contracts/${selectedContract.projectId}/vault`, '_blank')}
-                                className="flex-1 py-3 bg-gold/10 border border-gold text-gold inter text-[10px] font-bold uppercase tracking-widest rounded hover:bg-gold hover:text-navy transition-all"
+                                onClick={() => window.open(`/contracts/${detailContract.projectId}`, '_blank')}
+                                style={{ ...S.btnPrimary, flex: 1, textAlign: 'center' }}
                             >
                                 Open in Vault
                             </button>
