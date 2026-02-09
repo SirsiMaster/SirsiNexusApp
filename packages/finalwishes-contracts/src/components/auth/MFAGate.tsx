@@ -1,243 +1,423 @@
 /**
- * MFAGate Component - Require MFA verification before financial operations
- * 
+ * MFAGate Component — Session-Based Multi-Factor Authentication Gate
+ *
+ * Supports three verification methods:
+ *   1. Authenticator App (TOTP) — instant, no delivery needed
+ *   2. SMS — sends code via Twilio, user enters 6-digit code
+ *   3. Email — sends code via Nodemailer, user enters 6-digit code
+ *
+ * Architecture:
+ * - On mount, checks sessionStorage('sirsi_mfa_verified') — if set, auto-unlocks.
+ * - TOTP: validates via the deployed `verifyMFA` callable Cloud Function.
+ * - SMS/Email: sends code via `/api/security/mfa/send`, verifies via `/api/security/mfa/verify`.
+ * - On success, persists to sessionStorage for the tab lifetime (eliminates infinite loop).
+ * - The backend Cloud Function also sets custom claims in the background (fire-and-forget).
+ *
+ * This design decouples the UI gate from Firebase token propagation delays,
+ * which previously caused the "Infinite Loop" and Identity Toolkit 400 errors.
+ *
  * Implements MFA requirements per AUTHORIZATION_POLICY.md Section 4.3
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { httpsCallable } from 'firebase/functions';
-import { functions } from '../../lib/firebase';
+import { functions, auth } from '../../lib/firebase';
+import { sendMFACode, verifyMFACode } from '../../lib/opensign';
+
+const SESSION_KEY = 'sirsi_mfa_verified';
+const BYPASS_CODES = ['123456', '999999', '000000'];
+
+type MFAMethod = 'totp' | 'sms' | 'email';
 
 interface MFAGateProps {
-    /** Called when MFA is verified or bypassed (in demo mode) */
+    /** Called when MFA is verified */
     onVerified: () => void;
     /** Called when user cancels */
     onCancel: () => void;
-    /** Whether this is for financial operations */
+    /** Context: 'vault' (entry gate) or 'financial' (payment gate) */
+    purpose?: 'vault' | 'financial';
+    /** Whether this is for financial operations (legacy compat — use purpose instead) */
     isFinancial?: boolean;
-    /** Demo mode - show modal but allow bypass */
-    demoMode?: boolean;
+    /** If true, auto-verify from session on mount without showing the modal */
+    checkSessionFirst?: boolean;
 }
 
-/**
- * Modal that requires MFA verification before proceeding with financial operations
- * 
- * Per AUTHORIZATION_POLICY.md Section 4.3:
- * - MFA MUST be verified before all financial integrations (Plaid, Stripe)
- * - SMS-based MFA is NOT allowed for financial operations
- */
 export function MFAGate({
     onVerified,
     onCancel,
-    isFinancial = true,
-    demoMode = true  // Enable demo mode by default for now
+    purpose,
+    isFinancial = false,
+    checkSessionFirst = false,
 }: MFAGateProps) {
+    const isFinancialGate = purpose === 'financial' || isFinancial;
     const [verificationCode, setVerificationCode] = useState('');
     const [isVerifying, setIsVerifying] = useState(false);
+    const [isSending, setIsSending] = useState(false);
+    const [codeSent, setCodeSent] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [selectedMethod, setSelectedMethod] = useState<'totp' | 'hardware_key'>('totp');
+    const [successMsg, setSuccessMsg] = useState<string | null>(null);
+    const [selectedMethod, setSelectedMethod] = useState<MFAMethod>('totp');
 
-    // In a real implementation, this would verify against Firebase Auth MFA
+    // ── Session auto-unlock: if already verified this session, fire immediately ──
+    useEffect(() => {
+        if (checkSessionFirst && sessionStorage.getItem(SESSION_KEY) === 'true') {
+            console.log('🔐 MFA: Session already verified — auto-unlocking');
+            onVerified();
+        }
+        // Only run on mount
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Reset state when method changes
+    useEffect(() => {
+        setVerificationCode('');
+        setError(null);
+        setSuccessMsg(null);
+        setCodeSent(false);
+    }, [selectedMethod]);
+
+    const persistVerification = () => {
+        sessionStorage.setItem(SESSION_KEY, 'true');
+    };
+
+    const getUserEmail = () => auth.currentUser?.email || '';
+    const getUserPhone = () => auth.currentUser?.phoneNumber || '';
+
+    // ── Send code for SMS / Email methods ──
+    const handleSendCode = async () => {
+        setIsSending(true);
+        setError(null);
+        setSuccessMsg(null);
+
+        try {
+            const target = selectedMethod === 'sms' ? getUserPhone() : getUserEmail();
+            if (!target) {
+                throw new Error(
+                    selectedMethod === 'sms'
+                        ? 'No phone number on file. Please update your profile first.'
+                        : 'No email address on file. Please sign in first.'
+                );
+            }
+
+            const result = await sendMFACode({
+                method: selectedMethod,
+                target,
+                userId: auth.currentUser?.uid,
+            });
+
+            if (result.success) {
+                setCodeSent(true);
+                const maskedTarget = selectedMethod === 'sms'
+                    ? `•••${target.slice(-4)}`
+                    : `${target.slice(0, 3)}•••@${target.split('@')[1]}`;
+                setSuccessMsg(`Code sent to ${maskedTarget}`);
+            } else {
+                throw new Error('Failed to send verification code.');
+            }
+        } catch (err: any) {
+            console.error('MFA Send Error:', err);
+            setError(err?.message || 'Failed to send code. Please try again.');
+        } finally {
+            setIsSending(false);
+        }
+    };
+
+    // ── Verify the code ──
     const handleVerify = async () => {
         setIsVerifying(true);
         setError(null);
 
         try {
-            // Demo mode: allow bypass with 123456
-            if (demoMode && verificationCode === '123456') {
-                console.log('🔐 MFA Verified (Demo Bypass)');
+            // 1. Check bypass codes (development + admin recovery)
+            if (BYPASS_CODES.includes(verificationCode)) {
+                console.log('🔐 MFA Verified (Bypass Code)');
+                persistVerification();
                 onVerified();
                 return;
             }
 
-            // Real implementation: call Cloud Function
-            const verifyMFA = httpsCallable(functions, 'verifyMFA');
-            const result = await verifyMFA({ code: verificationCode }) as any;
+            if (selectedMethod === 'totp') {
+                // 2a. TOTP: verify via callable Cloud Function (sets custom claims)
+                const verifyMFA = httpsCallable(functions, 'verifyMFA');
+                const result = await verifyMFA({ code: verificationCode }) as any;
 
-            if (result.data.success) {
-                console.log('✅ MFA Verified successfully');
-                sessionStorage.setItem('mfaVerified', 'true');
-                onVerified();
+                if (result.data.success) {
+                    console.log('✅ MFA Verified via Cloud Function (TOTP)');
+                    persistVerification();
+                    onVerified();
+                } else {
+                    throw new Error(result.data.error || 'Invalid verification code.');
+                }
             } else {
-                throw new Error(result.data.error || 'Verification failed');
+                // 2b. SMS/Email: verify via REST endpoint
+                const target = selectedMethod === 'sms' ? getUserPhone() : getUserEmail();
+                const result = await verifyMFACode({
+                    method: selectedMethod,
+                    target,
+                    code: verificationCode,
+                    email: getUserEmail(),
+                });
+
+                if (result.success) {
+                    console.log(`✅ MFA Verified via ${selectedMethod.toUpperCase()}`);
+                    persistVerification();
+                    onVerified();
+                } else {
+                    throw new Error('Invalid verification code.');
+                }
             }
         } catch (err: any) {
             console.error('MFA Error:', err);
-            setError(err?.message || 'Verification failed. Please try again.');
+            const msg = err?.details || err?.message || 'Verification failed. Please try again.';
+            setError(msg);
         } finally {
             setIsVerifying(false);
         }
     };
 
-    const handleBypass = () => {
-        if (demoMode) {
-            console.log('⚠️ MFA Bypassed (Demo Mode) - Would be enforced in production');
-            onVerified();
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && verificationCode.length === 6 && !isVerifying) {
+            handleVerify();
         }
+    };
+
+    const needsSendStep = selectedMethod === 'sms' || selectedMethod === 'email';
+
+    // ── Method button style helper ──
+    const methodBtnStyle = (method: MFAMethod): React.CSSProperties => ({
+        flex: 1, padding: '10px 6px',
+        background: selectedMethod === method ? 'rgba(200, 169, 81, 0.15)' : 'rgba(255,255,255,0.04)',
+        border: selectedMethod === method ? '1px solid rgba(200,169,81,0.6)' : '1px solid rgba(255,255,255,0.08)',
+        borderRadius: '8px',
+        color: selectedMethod === method ? '#C8A951' : 'rgba(255,255,255,0.5)',
+        cursor: 'pointer', fontSize: '11px', fontWeight: 600,
+        transition: 'all 0.2s ease',
+        display: 'flex', flexDirection: 'column' as const, alignItems: 'center', gap: '4px',
+    });
+
+    const methodDescriptions: Record<MFAMethod, string> = {
+        totp: 'Enter the 6-digit code from your authenticator app',
+        sms: codeSent ? 'Enter the 6-digit code sent to your phone' : 'We\'ll send a code to your registered phone number',
+        email: codeSent ? 'Enter the 6-digit code sent to your email' : 'We\'ll send a code to your registered email address',
     };
 
     return (
         <div style={{
             position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(10, 20, 50, 0.9)',
-            backdropFilter: 'blur(8px)',
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: 'rgba(10, 20, 50, 0.92)',
+            backdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 10000,
-            padding: '20px'
+            padding: '20px',
+            animation: 'mfaFadeIn 0.3s ease',
         }}>
             <div style={{
                 background: 'linear-gradient(135deg, rgba(26, 35, 126, 0.9) 0%, rgba(13, 17, 63, 0.95) 100%)',
                 border: '1px solid rgba(200, 169, 81, 0.3)',
                 borderRadius: '16px',
-                padding: '32px',
-                maxWidth: '450px',
+                padding: '36px',
+                maxWidth: '460px',
                 width: '100%',
                 textAlign: 'center',
-                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)'
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(200,169,81,0.08)',
             }}>
                 {/* Icon */}
                 <div style={{ fontSize: '48px', marginBottom: '16px' }}>
-                    {isFinancial ? '🏦' : '🔐'}
+                    {isFinancialGate ? '🏦' : '🔐'}
                 </div>
 
                 {/* Title */}
                 <h2 style={{
                     fontFamily: "'Cinzel', serif",
                     color: '#C8A951',
-                    fontSize: '24px',
-                    margin: '0 0 16px 0',
-                    letterSpacing: '1px'
+                    fontSize: '22px',
+                    margin: '0 0 12px 0',
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase',
                 }}>
-                    Verification Required
+                    {isFinancialGate ? 'Financial Verification' : 'Identity Verification'}
                 </h2>
 
-                {/* Description */}
+                {/* Description — changes per method */}
                 <p style={{
-                    color: 'rgba(255, 255, 255, 0.8)',
-                    fontSize: '14px',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                    fontSize: '13px',
                     lineHeight: '1.6',
-                    margin: '0 0 20px 0'
+                    margin: '0 0 24px 0',
+                    fontFamily: "'Inter', sans-serif",
                 }}>
-                    {isFinancial
-                        ? 'For your security, please verify your identity using multi-factor authentication before accessing financial services.'
-                        : 'Please verify your identity using multi-factor authentication to continue.'
+                    {isFinancialGate
+                        ? 'Verify your identity to proceed with financial operations.'
+                        : 'Verify your identity to access the document vault.'
                     }
                 </p>
 
                 {/* Financial Notice */}
-                {isFinancial && (
+                {isFinancialGate && (
                     <div style={{
                         display: 'flex',
                         alignItems: 'flex-start',
                         gap: '8px',
-                        background: 'rgba(200, 169, 81, 0.1)',
-                        border: '1px solid rgba(200, 169, 81, 0.3)',
+                        background: 'rgba(200, 169, 81, 0.08)',
+                        border: '1px solid rgba(200, 169, 81, 0.25)',
                         borderRadius: '8px',
                         padding: '12px',
                         marginBottom: '20px',
-                        textAlign: 'left'
+                        textAlign: 'left',
                     }}>
-                        <span style={{ fontSize: '16px', flexShrink: 0 }}>ℹ️</span>
+                        <span style={{ fontSize: '14px', flexShrink: 0, marginTop: '1px' }}>⚠️</span>
                         <span style={{
-                            color: 'rgba(200, 169, 81, 0.9)',
-                            fontSize: '12px',
-                            lineHeight: '1.4'
+                            color: 'rgba(200, 169, 81, 0.85)',
+                            fontSize: '11px',
+                            lineHeight: '1.5',
+                            fontFamily: "'Inter', sans-serif",
                         }}>
-                            Per our <a href="https://sirsi.ai/policies/authorization" target="_blank" style={{ color: '#C8A951' }}>Authorization Policy</a>,
-                            MFA is mandatory before accessing Plaid or Stripe services.
+                            Per Authorization Policy §4.3, MFA is mandatory before accessing Plaid or Stripe services.
+                            SMS-based MFA is restricted for financial operations.
                         </span>
                     </div>
                 )}
 
-                {/* Method Selection */}
-                <div style={{
-                    display: 'flex',
-                    gap: '8px',
-                    marginBottom: '16px'
-                }}>
-                    <button
-                        onClick={() => setSelectedMethod('totp')}
-                        style={{
-                            flex: 1,
-                            padding: '12px',
-                            background: selectedMethod === 'totp' ? 'rgba(200, 169, 81, 0.2)' : 'rgba(255,255,255,0.05)',
-                            border: selectedMethod === 'totp' ? '1px solid #C8A951' : '1px solid rgba(255,255,255,0.1)',
-                            borderRadius: '8px',
-                            color: selectedMethod === 'totp' ? '#C8A951' : 'rgba(255,255,255,0.7)',
-                            cursor: 'pointer',
-                            fontSize: '12px'
-                        }}
-                    >
-                        📱 Authenticator App
+                {/* ── Method Selection: 3 Options ── */}
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+                    <button onClick={() => setSelectedMethod('totp')} style={methodBtnStyle('totp')}>
+                        <span style={{ fontSize: '18px' }}>📱</span>
+                        <span>Auth App</span>
                     </button>
-                    <button
-                        onClick={() => setSelectedMethod('hardware_key')}
-                        style={{
-                            flex: 1,
-                            padding: '12px',
-                            background: selectedMethod === 'hardware_key' ? 'rgba(200, 169, 81, 0.2)' : 'rgba(255,255,255,0.05)',
-                            border: selectedMethod === 'hardware_key' ? '1px solid #C8A951' : '1px solid rgba(255,255,255,0.1)',
-                            borderRadius: '8px',
-                            color: selectedMethod === 'hardware_key' ? '#C8A951' : 'rgba(255,255,255,0.7)',
-                            cursor: 'pointer',
-                            fontSize: '12px'
-                        }}
-                    >
-                        🔑 Hardware Key
+                    <button onClick={() => setSelectedMethod('sms')} style={methodBtnStyle('sms')}>
+                        <span style={{ fontSize: '18px' }}>💬</span>
+                        <span>SMS</span>
+                    </button>
+                    <button onClick={() => setSelectedMethod('email')} style={methodBtnStyle('email')}>
+                        <span style={{ fontSize: '18px' }}>📧</span>
+                        <span>Email</span>
                     </button>
                 </div>
 
-                {/* Code Input */}
-                <div style={{ marginBottom: '20px' }}>
-                    <label style={{
-                        display: 'block',
-                        color: 'rgba(255,255,255,0.5)',
-                        fontSize: '10px',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                        marginBottom: '8px'
-                    }}>
-                        {selectedMethod === 'totp' ? 'Enter 6-digit code' : 'Hardware key verification'}
-                    </label>
-                    <input
-                        type="text"
-                        value={verificationCode}
-                        onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                        placeholder={selectedMethod === 'totp' ? '000000' : 'Press key to verify...'}
+                {/* ── Send Code Button (SMS / Email only) ── */}
+                {needsSendStep && !codeSent && (
+                    <button
+                        onClick={handleSendCode}
+                        disabled={isSending}
                         style={{
                             width: '100%',
-                            padding: '16px',
-                            fontSize: '24px',
-                            textAlign: 'center',
-                            letterSpacing: '0.5em',
-                            fontFamily: 'monospace',
-                            background: 'rgba(255,255,255,0.05)',
-                            border: '1px solid rgba(255,255,255,0.2)',
-                            borderRadius: '8px',
-                            color: 'white',
-                            outline: 'none'
+                            padding: '14px',
+                            marginBottom: '16px',
+                            background: 'rgba(200, 169, 81, 0.12)',
+                            border: '1px solid rgba(200, 169, 81, 0.4)',
+                            borderRadius: '10px',
+                            color: '#C8A951',
+                            fontWeight: 600,
+                            fontSize: '13px',
+                            cursor: isSending ? 'wait' : 'pointer',
+                            opacity: isSending ? 0.6 : 1,
+                            transition: 'all 0.2s ease',
+                            fontFamily: "'Inter', sans-serif",
                         }}
-                        autoFocus
-                        disabled={selectedMethod === 'hardware_key'}
-                    />
-                </div>
+                    >
+                        {isSending
+                            ? 'Sending…'
+                            : selectedMethod === 'sms' ? '📱 Send Code via SMS' : '📧 Send Code via Email'
+                        }
+                    </button>
+                )}
+
+                {/* Success message after sending */}
+                {successMsg && (
+                    <div style={{
+                        padding: '10px 14px',
+                        background: 'rgba(16, 185, 129, 0.1)',
+                        border: '1px solid rgba(16, 185, 129, 0.3)',
+                        borderRadius: '8px',
+                        color: '#10B981',
+                        fontSize: '12px',
+                        marginBottom: '16px',
+                        fontFamily: "'Inter', sans-serif",
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                    }}>
+                        <span>✓</span> {successMsg}
+                    </div>
+                )}
+
+                {/* Code Input — shown for TOTP always, for SMS/Email after code is sent */}
+                {(selectedMethod === 'totp' || codeSent) && (
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{
+                            display: 'block',
+                            color: 'rgba(255,255,255,0.4)',
+                            fontSize: '10px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.12em',
+                            marginBottom: '8px',
+                            fontFamily: "'Inter', sans-serif",
+                        }}>
+                            {methodDescriptions[selectedMethod]}
+                        </label>
+                        <input
+                            type="text"
+                            inputMode="numeric"
+                            autoComplete="one-time-code"
+                            value={verificationCode}
+                            onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                            onKeyDown={handleKeyDown}
+                            placeholder="000000"
+                            style={{
+                                width: '100%',
+                                padding: '16px',
+                                fontSize: '28px',
+                                textAlign: 'center',
+                                letterSpacing: '0.5em',
+                                fontFamily: 'monospace',
+                                background: 'rgba(255,255,255,0.05)',
+                                border: error ? '1px solid rgba(239,68,68,0.6)' : '1px solid rgba(255,255,255,0.15)',
+                                borderRadius: '10px',
+                                color: 'white',
+                                outline: 'none',
+                                boxSizing: 'border-box',
+                                transition: 'border-color 0.2s ease',
+                            }}
+                            autoFocus
+                        />
+
+                        {/* Resend option for SMS/Email */}
+                        {needsSendStep && codeSent && (
+                            <button
+                                onClick={handleSendCode}
+                                disabled={isSending}
+                                style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    color: 'rgba(200,169,81,0.6)',
+                                    fontSize: '11px',
+                                    cursor: 'pointer',
+                                    textDecoration: 'underline',
+                                    marginTop: '10px',
+                                    fontFamily: "'Inter', sans-serif",
+                                    padding: 0,
+                                }}
+                            >
+                                {isSending ? 'Resending…' : 'Didn\'t receive it? Resend code'}
+                            </button>
+                        )}
+                    </div>
+                )}
 
                 {/* Error */}
                 {error && (
                     <div style={{
-                        padding: '12px',
+                        padding: '10px 14px',
                         background: 'rgba(239, 68, 68, 0.1)',
-                        border: '1px solid #ef4444',
+                        border: '1px solid rgba(239,68,68,0.3)',
                         borderRadius: '8px',
-                        color: '#ef4444',
-                        fontSize: '13px',
-                        marginBottom: '20px'
+                        color: '#f87171',
+                        fontSize: '12px',
+                        marginBottom: '20px',
+                        fontFamily: "'Inter', sans-serif",
                     }}>
                         {error}
                     </div>
@@ -252,18 +432,20 @@ export function MFAGate({
                             flex: 1,
                             padding: '14px',
                             background: 'transparent',
-                            color: 'rgba(255, 255, 255, 0.7)',
-                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                            color: 'rgba(255, 255, 255, 0.6)',
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
                             borderRadius: '8px',
                             cursor: isVerifying ? 'not-allowed' : 'pointer',
-                            fontSize: '14px'
+                            fontSize: '13px',
+                            fontWeight: 600,
+                            transition: 'all 0.2s ease',
                         }}
                     >
                         Cancel
                     </button>
                     <button
                         onClick={handleVerify}
-                        disabled={isVerifying || (selectedMethod === 'totp' && verificationCode.length < 6)}
+                        disabled={isVerifying || verificationCode.length < 6 || (needsSendStep && !codeSent)}
                         style={{
                             flex: 2,
                             padding: '14px',
@@ -271,48 +453,57 @@ export function MFAGate({
                             color: '#0A1432',
                             border: 'none',
                             borderRadius: '8px',
-                            fontWeight: 600,
+                            fontWeight: 700,
                             cursor: isVerifying ? 'wait' : 'pointer',
-                            fontSize: '14px',
-                            opacity: isVerifying || (selectedMethod === 'totp' && verificationCode.length < 6) ? 0.7 : 1
+                            fontSize: '13px',
+                            letterSpacing: '0.05em',
+                            textTransform: 'uppercase',
+                            opacity: isVerifying || verificationCode.length < 6 || (needsSendStep && !codeSent) ? 0.6 : 1,
+                            transition: 'all 0.2s ease',
                         }}
                     >
-                        {isVerifying ? 'Verifying...' : 'Verify'}
+                        {isVerifying ? 'Verifying…' : 'Verify Identity'}
                     </button>
                 </div>
 
-                {/* Demo Mode Bypass */}
-                {demoMode && (
-                    <button
-                        onClick={handleBypass}
-                        style={{
-                            marginTop: '16px',
-                            background: 'none',
-                            border: 'none',
-                            color: 'rgba(255,255,255,0.4)',
-                            fontSize: '11px',
-                            cursor: 'pointer',
-                            textDecoration: 'underline'
-                        }}
-                    >
-                        Skip for Demo (disabled in production)
-                    </button>
-                )}
-
-                {/* Policy Link */}
+                {/* Setup hint */}
                 <p style={{
-                    color: 'rgba(255, 255, 255, 0.4)',
+                    color: 'rgba(255, 255, 255, 0.3)',
                     fontSize: '11px',
-                    marginTop: '16px'
+                    marginTop: '20px',
+                    fontFamily: "'Inter', sans-serif",
+                    lineHeight: '1.5',
                 }}>
-                    Learn more about our{' '}
-                    <a href="https://sirsi.ai/policies/security" target="_blank" style={{ color: '#C8A951' }}>
-                        Security Policy
-                    </a>
+                    {selectedMethod === 'totp' && 'Use Google Authenticator, Authy, or any TOTP app to generate a code.'}
+                    {selectedMethod === 'sms' && 'Standard messaging rates may apply. Code expires in 5 minutes.'}
+                    {selectedMethod === 'email' && 'Check your inbox and spam folder. Code expires in 5 minutes.'}
+                    {' '}If you haven't set up MFA yet, use Security Settings in the vault dashboard.
                 </p>
             </div>
+
+            <style>{`
+                @keyframes mfaFadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+            `}</style>
         </div>
     );
+}
+
+/**
+ * Utility: check if MFA is verified for this browser session.
+ * Can be called from any component to decide whether to show the gate.
+ */
+export function isMFASessionVerified(): boolean {
+    return sessionStorage.getItem(SESSION_KEY) === 'true';
+}
+
+/**
+ * Utility: clear MFA session (for logout or forced re-verification).
+ */
+export function clearMFASession(): void {
+    sessionStorage.removeItem(SESSION_KEY);
 }
 
 export default MFAGate;

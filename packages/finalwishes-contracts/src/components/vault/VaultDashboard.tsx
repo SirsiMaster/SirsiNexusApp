@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { contractsClient } from '../../lib/grpc';
 import { auth } from '../../lib/firebase';
 import { MFAEnrollment } from '../auth/MFAEnrollment';
+import { MFAGate, isMFASessionVerified, clearMFASession } from '../auth/MFAGate';
 
 interface Contract {
     id: string;
@@ -90,6 +91,9 @@ export function VaultDashboard() {
     const [contracts, setContracts] = useState<Contract[]>([]);
     const [loading, setLoading] = useState(true);
     const [showMFAEnrollment, setShowMFAEnrollment] = useState(false);
+
+    // ── MFA Gate: Session-based persistence (no custom claims) ──
+    const [mfaVerified, setMfaVerified] = useState(() => isMFASessionVerified());
 
     // Selection
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -348,6 +352,17 @@ export function VaultDashboard() {
         );
     };
 
+    // ── MFA Gate: Show verification challenge if not yet verified this session ──
+    if (!mfaVerified) {
+        return (
+            <MFAGate
+                purpose="vault"
+                onVerified={() => setMfaVerified(true)}
+                onCancel={() => navigate('/')}
+            />
+        );
+    }
+
     // ── Render ──
     return (
         <div style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
@@ -382,6 +397,21 @@ export function VaultDashboard() {
                         }}
                     >
                         <span>🔐</span> Security Settings
+                    </button>
+                    <button
+                        onClick={() => {
+                            clearMFASession();
+                            setMfaVerified(false);
+                        }}
+                        style={{
+                            background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)',
+                            color: 'rgba(255,255,255,0.4)', padding: '10px 16px', borderRadius: '8px',
+                            fontSize: '12px', fontWeight: 600, cursor: 'pointer',
+                            transition: 'all 0.3s ease'
+                        }}
+                        title="Re-verify MFA"
+                    >
+                        🔄 Re-verify
                     </button>
                 </div>
             </div>

@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useMFA } from '../../../../sirsi-ui/src/hooks/useMFA';
-import { MFAGate } from '../auth/MFAGate';
+import { MFAGate, isMFASessionVerified } from '../auth/MFAGate';
 import { ContractsManagement } from './ContractsManagement';
 import { TenantManager } from './TenantManager';
 import { UsersAccessControl } from './UsersAccessControl';
@@ -13,7 +12,7 @@ type AdminTab = 'contracts' | 'tenants' | 'users' | 'development' | 'notificatio
 
 export function AdminPortal() {
     const [activeTab, setActiveTab] = useState<AdminTab>('contracts');
-    const mfa = useMFA();
+    const [mfaVerified, setMfaVerified] = useState(() => isMFASessionVerified());
 
     const tabs: { id: AdminTab; label: string; icon: string }[] = [
         { id: 'contracts', label: 'Contract Manager', icon: '📜' },
@@ -25,20 +24,13 @@ export function AdminPortal() {
         { id: 'mfa', label: 'Security (MFA)', icon: '🔐' },
     ];
 
-    if (mfa.isLoading) {
-        return <div style={{ padding: '4rem', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>Securing connection...</div>;
-    }
-
-    if (!mfa.isMFAVerified) {
+    if (!mfaVerified) {
         return (
-            <div style={{ maxWidth: '600px', margin: '4rem auto' }}>
-                <MFAGate
-                    onVerified={() => mfa.refreshMFAStatus()}
-                    onCancel={() => window.location.href = '/'}
-                    isFinancial={false}
-                    demoMode={false}
-                />
-            </div>
+            <MFAGate
+                purpose="vault"
+                onVerified={() => setMfaVerified(true)}
+                onCancel={() => window.location.href = '/'}
+            />
         );
     }
 

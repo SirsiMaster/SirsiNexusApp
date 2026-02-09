@@ -2222,8 +2222,7 @@ export function SirsiVault() {
             {/* MFA Gate Modal - Per AUTHORIZATION_POLICY.md Section 4.3 */}
             {showMFAGate && (
                 <MFAGate
-                    isFinancial={true}
-                    demoMode={true}
+                    purpose="financial"
                     onVerified={() => {
                         setMfaVerifiedForFinancial(true)
                         setShowMFAGate(false)
