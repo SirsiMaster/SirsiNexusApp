@@ -733,12 +733,54 @@ const server = http.createServer(async (req, res) => {
 
                 console.log(`🔔 Webhook received: ${event.type}`);
 
+                // ── Helper: Extract contractId from session or metadata ──
+                const extractContractId = (obj) => {
+                    return obj.client_reference_id
+                        || (obj.metadata ? obj.metadata.contractId : null);
+                };
+
+                // ═══════════════════════════════════════════════════════
+                // CARD / INSTANT PAYMENTS — Session completes immediately
+                // ═══════════════════════════════════════════════════════
                 if (event.type === 'checkout.session.completed') {
                     const session = event.data.object;
-                    const contractId = session.client_reference_id || (session.metadata ? session.metadata.contractId : null);
+                    const contractId = extractContractId(session);
 
                     if (contractId) {
-                        console.log(`✅ Payment confirmed for contract: ${contractId}`);
+                        // For async methods (ACH/wire), payment_status will be 'unpaid' here.
+                        // We mark as PAID only if payment is actually collected.
+                        const isPaid = session.payment_status === 'paid';
+                        console.log(`🔔 Checkout completed for ${contractId} — payment_status: ${session.payment_status}`);
+
+                        await handlers.updateContract(contractId, {
+                            status: isPaid ? 'PAID' : 'WAITING_FOR_PAYMENT',
+                            paidAmount: isPaid ? (session.amount_total || 0) : 0,
+                            paymentMetadata: {
+                                stripeSessionId: session.id,
+                                amountPaid: isPaid ? session.amount_total : 0,
+                                paidAt: isPaid ? Date.now() : null,
+                                paymentStatus: session.payment_status,
+                                paymentMethod: session.payment_method_types?.[0] || 'unknown',
+                            },
+                            updatedAt: Date.now()
+                        });
+
+                        if (isPaid) {
+                            console.log(`✅ Payment confirmed for contract: ${contractId}`);
+                        } else {
+                            console.log(`⏳ Async payment initiated for ${contractId} (ACH/wire) — awaiting settlement`);
+                        }
+                    }
+
+                    // ═══════════════════════════════════════════════════════
+                    // ACH / WIRE — Async settlement (3-5 business days)
+                    // ═══════════════════════════════════════════════════════
+                } else if (event.type === 'checkout.session.async_payment_succeeded') {
+                    const session = event.data.object;
+                    const contractId = extractContractId(session);
+
+                    if (contractId) {
+                        console.log(`✅ Async payment succeeded for contract: ${contractId} (ACH/Wire settled)`);
                         await handlers.updateContract(contractId, {
                             status: 'PAID',
                             paidAmount: session.amount_total || 0,
@@ -746,14 +788,120 @@ const server = http.createServer(async (req, res) => {
                                 stripeSessionId: session.id,
                                 amountPaid: session.amount_total,
                                 paidAt: Date.now(),
-                                paymentStatus: session.payment_status
+                                paymentStatus: 'paid',
+                                settledAt: Date.now(),
+                                paymentMethod: session.payment_method_types?.[0] || 'ach',
                             },
                             updatedAt: Date.now()
                         });
                     }
+
+                } else if (event.type === 'checkout.session.async_payment_failed') {
+                    const session = event.data.object;
+                    const contractId = extractContractId(session);
+
+                    if (contractId) {
+                        console.error(`❌ Async payment FAILED for contract: ${contractId} (ACH bounce/wire timeout)`);
+                        await handlers.updateContract(contractId, {
+                            status: 'WAITING_FOR_COUNTERSIGN', // Revert to pre-payment state
+                            paymentMetadata: {
+                                stripeSessionId: session.id,
+                                paymentStatus: 'failed',
+                                failedAt: Date.now(),
+                                failureReason: 'Async payment failed (ACH/wire)',
+                                paymentMethod: session.payment_method_types?.[0] || 'ach',
+                            },
+                            updatedAt: Date.now()
+                        });
+                    }
+
+                    // ═══════════════════════════════════════════════════════
+                    // PAYMENT INTENT — Direct charge failures
+                    // ═══════════════════════════════════════════════════════
                 } else if (event.type === 'payment_intent.payment_failed') {
                     const intent = event.data.object;
-                    console.error(`❌ Payment failed for intent: ${intent.id}`);
+                    const contractId = intent.metadata ? intent.metadata.contractId : null;
+                    console.error(`❌ Payment failed for intent: ${intent.id}${contractId ? ` (contract: ${contractId})` : ''}`);
+
+                    if (contractId) {
+                        await handlers.updateContract(contractId, {
+                            paymentMetadata: {
+                                paymentStatus: 'failed',
+                                failedAt: Date.now(),
+                                failureReason: intent.last_payment_error?.message || 'Payment declined',
+                                paymentMethod: intent.payment_method_types?.[0] || 'unknown',
+                            },
+                            updatedAt: Date.now()
+                        });
+                    }
+
+                } else if (event.type === 'payment_intent.succeeded') {
+                    const intent = event.data.object;
+                    const contractId = intent.metadata ? intent.metadata.contractId : null;
+                    if (contractId) {
+                        console.log(`✅ PaymentIntent succeeded for contract: ${contractId}`);
+                    }
+
+                    // ═══════════════════════════════════════════════════════
+                    // SUBSCRIPTIONS — Recurring billing lifecycle
+                    // ═══════════════════════════════════════════════════════
+                } else if (event.type === 'invoice.payment_succeeded') {
+                    const invoice = event.data.object;
+                    const contractId = invoice.subscription_details?.metadata?.contractId
+                        || invoice.metadata?.contractId;
+
+                    if (contractId) {
+                        console.log(`✅ Invoice paid for contract: ${contractId} — $${(invoice.amount_paid / 100).toFixed(2)}`);
+                        const contractDoc = await db.collection('contracts').doc(contractId).get();
+                        if (contractDoc.exists) {
+                            const existing = contractDoc.data();
+                            const payments = existing.recurringPayments || [];
+                            payments.push({
+                                invoiceId: invoice.id,
+                                amount: invoice.amount_paid,
+                                paidAt: Date.now(),
+                                periodStart: invoice.period_start,
+                                periodEnd: invoice.period_end,
+                            });
+                            await handlers.updateContract(contractId, {
+                                paidAmount: (existing.paidAmount || 0) + invoice.amount_paid,
+                                recurringPayments: payments,
+                                updatedAt: Date.now()
+                            });
+                        }
+                    }
+
+                } else if (event.type === 'invoice.payment_failed') {
+                    const invoice = event.data.object;
+                    const contractId = invoice.subscription_details?.metadata?.contractId
+                        || invoice.metadata?.contractId;
+
+                    if (contractId) {
+                        console.error(`❌ Invoice payment failed for contract: ${contractId} — attempt ${invoice.attempt_count}`);
+                        await handlers.updateContract(contractId, {
+                            paymentMetadata: {
+                                lastFailedInvoice: invoice.id,
+                                failedAt: Date.now(),
+                                attemptCount: invoice.attempt_count,
+                                nextAttempt: invoice.next_payment_attempt,
+                                paymentStatus: 'past_due',
+                            },
+                            updatedAt: Date.now()
+                        });
+                    }
+
+                } else if (event.type === 'customer.subscription.deleted') {
+                    const subscription = event.data.object;
+                    const contractId = subscription.metadata?.contractId;
+
+                    if (contractId) {
+                        console.log(`📋 Subscription ended for contract: ${contractId}`);
+                        await handlers.updateContract(contractId, {
+                            subscriptionStatus: 'canceled',
+                            subscriptionEndedAt: Date.now(),
+                            updatedAt: Date.now()
+                        });
+                    }
                 }
 
                 result = { received: true };
