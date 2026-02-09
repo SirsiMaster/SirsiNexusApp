@@ -168,6 +168,12 @@
         padding-top: 0;
       }
 
+      /* SOW and Exhibit sub-sections should NOT force page breaks */
+      .sow-section h2,
+      .exhibit-section h2 {
+        page-break-before: auto;
+      }
+
       /* Prevent headers from being orphaned at bottom of page */
       h1,
       h2,
@@ -752,77 +758,79 @@
   <hr />
   <h1 id="exhibit-b-cost-valuation-analysis">EXHIBIT B: COST &amp;
     VALUATION ANALYSIS</h1>
-  <h2 id="true-market-price-analysis">1. “True Market Price” Analysis</h2>
-  <p>Analysis of what FinalWishes would pay for this specific scope
-    without Sirsi Technologies' engagement.</p>
-  <table>
-    <colgroup>
-      <col style="width: 25%" />
-      <col style="width: 25%" />
-      <col style="width: 50%" />
-    </colgroup>
-    <thead>
-      <tr>
-        <th style="text-align: left;">Cost Driver</th>
-        <th style="text-align: left;">Typical Agency</th>
-        <th style="text-align: left;">With Sirsi (You)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="text-align: left;"><strong>Base Development</strong></td>
-        <td style="text-align: left;">$175 - $250 / hr</td>
-        <td style="text-align: left;"><strong>Fixed Bid Engineering</strong></td>
-      </tr>
-      <tr>
-        <td style="text-align: left;"><strong>Platform Scope</strong> (Web+iOS+Android)</td>
-        <td style="text-align: left;">$250,000+</td>
-        <td style="text-align: left;"><strong>Included</strong></td>
-      </tr>
-      <tr>
-        <td style="text-align: left;"><strong>Security Compliance</strong></td>
-        <td style="text-align: left;">$40,000+</td>
-        <td style="text-align: left;"><strong>Vault-Native Security</strong></td>
-      </tr>
-      <tr>
-        <td style="text-align: left;"><strong>TOTAL MARKET VALUE</strong></td>
-        <td style="text-align: left;"><strong>$300,000+</strong></td>
-        <td style="text-align: left;"><strong>$95,000</strong></td>
-      </tr>
-    </tbody>
-  </table>
-  <h2 id="discount-realization">2. Discount Realization</h2>
-  <p>How we arrive at the <strong id="discount-net-price">$95,000</strong> contract price:</p>
-  <ol type="1" id="discount-list">
-    <li><strong>Gross Development Value:</strong> <strong id="discount-market-value">$250,000</strong>
-      <ul>
-        <li><em>Based on ~1,000 hours @ $250/hr blended market rate for multi-platform build.</em></li>
-      </ul>
-    </li>
-    <li><strong>Less: SirsiNexus Efficiency:</strong>
-      <strong id="discount-efficiency-value">($105,000)</strong>
-      <ul>
-        <li><em>Savings from using pre-built Sirsi auth, vault, and UI
-            components.</em></li>
-      </ul>
-    </li>
-    <li><strong>Less: SirsiNexus Efficiency Discount:</strong>
-      <strong id="discount-strategic-value">($50,000)</strong>
-      <ul>
-        <li><em>Component library reuse and accelerated delivery methodology.</em></li>
-      </ul>
-    </li>
-    <li id="dynamic-addons-discount-placeholder"></li>
-    <li><strong>NET CONTRACT PRICE:</strong> <strong id="discount-final-price">$95,000</strong></li>
-  </ol>
-  <h2 id="infrastructure-estimates-opex">3. Infrastructure Estimates
-    (OpEx)</h2>
-  <p>Estimated monthly running costs (paid to providers): - <strong>Google
-      Cloud:</strong> ~$60/mo (Scales with usage) - <strong>Cloud
-      Messaging:</strong> Native push alerts - <strong>OpenSign:</strong> $20/mo - <strong>Vertex AI:</strong> ~$5 per
-    1M tokens</p>
+  <div class="exhibit-section">
+    <h2 id="true-market-price-analysis">1. “True Market Price” Analysis</h2>
+    <p>Analysis of what FinalWishes would pay for this specific scope
+      without Sirsi Technologies' engagement.</p>
+    <table>
+      <colgroup>
+        <col style="width: 25%" />
+        <col style="width: 25%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th style="text-align: left;">Cost Driver</th>
+          <th style="text-align: left;">Typical Agency</th>
+          <th style="text-align: left;">With Sirsi (You)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left;"><strong>Base Development</strong></td>
+          <td style="text-align: left;">$175 - $250 / hr</td>
+          <td style="text-align: left;"><strong>Fixed Bid Engineering</strong></td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Platform Scope</strong> (Web+iOS+Android)</td>
+          <td style="text-align: left;">$250,000+</td>
+          <td style="text-align: left;"><strong>Included</strong></td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Security Compliance</strong></td>
+          <td style="text-align: left;">$40,000+</td>
+          <td style="text-align: left;"><strong>Vault-Native Security</strong></td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>TOTAL MARKET VALUE</strong></td>
+          <td style="text-align: left;"><strong>$300,000+</strong></td>
+          <td style="text-align: left;"><strong>$95,000</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="discount-realization">2. Discount Realization</h2>
+    <p>How we arrive at the <strong id="discount-net-price">$95,000</strong> contract price:</p>
+    <ol type="1" id="discount-list">
+      <li><strong>Gross Development Value:</strong> <strong id="discount-market-value">$250,000</strong>
+        <ul>
+          <li><em>Based on ~1,000 hours @ $250/hr blended market rate for multi-platform build.</em></li>
+        </ul>
+      </li>
+      <li><strong>Less: SirsiNexus Efficiency:</strong>
+        <strong id="discount-efficiency-value">($105,000)</strong>
+        <ul>
+          <li><em>Savings from using pre-built Sirsi auth, vault, and UI
+              components.</em></li>
+        </ul>
+      </li>
+      <li><strong>Less: SirsiNexus Efficiency Discount:</strong>
+        <strong id="discount-strategic-value">($50,000)</strong>
+        <ul>
+          <li><em>Component library reuse and accelerated delivery methodology.</em></li>
+        </ul>
+      </li>
+      <li id="dynamic-addons-discount-placeholder"></li>
+      <li><strong>NET CONTRACT PRICE:</strong> <strong id="discount-final-price">$95,000</strong></li>
+    </ol>
+    <h2 id="infrastructure-estimates-opex">3. Infrastructure Estimates
+      (OpEx)</h2>
+    <p>Estimated monthly running costs (paid to providers): - <strong>Google
+        Cloud:</strong> ~$60/mo (Scales with usage) - <strong>Cloud
+        Messaging:</strong> Native push alerts - <strong>OpenSign:</strong> $20/mo - <strong>Vertex AI:</strong> ~$5 per
+      1M tokens</p>
 
-  <div id="dynamic-legal-sections"></div>
+    <div id="dynamic-legal-sections"></div>
+  </div><!-- /.exhibit-section -->
 
   <hr />
   <h1 id="signature-page">SIGNATURE PAGE</h1>
@@ -918,236 +926,244 @@
     }
   </style>
   <h1 id="statement-of-work-sow">Statement of Work (SOW)</h1>
-  <p><strong>Project Name:</strong> FinalWishes Platform Development
-    <strong>SOW Reference:</strong> SOW-2025-001<br />
-    <strong>Associated MSA:</strong> MSA-2025-111-FW<br />
-    <strong>Date:</strong> January 6, 2026
-  </p>
-  <hr />
-  <h2 id="executive-overview">1. Executive Overview</h2>
-  <p>This Statement of Work (“SOW”) defines the comprehensive scope for the
-    <strong>FinalWishes Unified Platform</strong>. This project deliver a “Vault-Grade”
-    secure ecosystem for the curation, preservation, and scheduled delivery of
-    a user’s digital legacy, memoirs, and final instructions.
-  </p>
-  <p><strong>Objective:</strong> Establish a permanent, industrial-grade “Living Legacy”
-    platform spanning iOS, Android, and Web, powered by Sirsi’s component library
-    and Google Cloud’s enterprise AI infrastructure.</p>
-  <hr />
-  <h2 id="detailed-scope-of-services">2. Detailed Scope of Services</h2>
-  <h3 id="core-vault-data-architecture">2.1 Core Vault &amp; Data
-    Architecture</h3>
-  <p>Provider shall implement a <strong>Multi-Tenant,
-      Zero-Knowledge</strong> architecture to ensure total data privacy. *
-    <strong>Storage Layer:</strong> Hybrid approach using <strong>Cloud SQL
-      (PostgreSQL)</strong> for structured PII (Encrypted) and
-    <strong>Firestore</strong> for real-time document metadata. *
-    <strong>File Vault:</strong> <strong>Cloud Storage</strong> buckets with
-    per-tenant isolation boundaries. All files encrypted at rest using
-    <strong>Cloud KMS</strong> (AES-256). * <strong>Security:</strong>
-    Implementation of <strong>SOC 2 Type II</strong> controls, including
-    strict IAM roles, audit logging, and encryption in transit (TLS
-    1.3).
-  </p>
-  <h3 id="technology-stack-sirsinexus-v4-1">2.2 Technology Stack
-    (SirsiNexus V4)</h3>
-  <ul>
-    <li><strong>Frontend:</strong> <strong>React 18</strong> (Vite),
-      <strong>Tanstack</strong> (Query, Router, Table),
-      <strong>shadcn/ui</strong> (Radix Primitives + Tailwind).
-    </li>
-    <li><strong>Backend:</strong> <strong>Go (Golang)</strong> on
-      <strong>Cloud Run</strong> (Serverless), <strong>Firebase
-        Auth</strong>.
-    </li>
-    <li><strong>Database:</strong> <strong>Cloud SQL</strong> (PostgreSQL) +
-      <strong>Firestore</strong> (Real-time).
-    </li>
-    <li><strong>Mobile:</strong> <strong>React Native</strong> (Expo)
-      sharing core business logic.</li>
-  </ul>
-  <h3 id="legacy-content-memory-curation">2.2 Legacy Content & Memory Curation</h3>
-  <p>Provider will build automation and curation paths for the following
-    media and directive categories:</p>
-  <p><strong>A. Multimedia Memory Walls</strong> * <strong>Video Memorials:</strong> YouTube API (Unlisted) integration
-    for
-    permanent, high-bandwidth video preservation. * <strong>Photo Galleries:</strong> Google Photos API integration for
-    automated organization and secure sharing of life milestones.</p>
-  <p><strong>B. The Secure Digital Lockbox</strong> * <strong>Passkeys & Accounts:</strong> Secure storage for digital
-    credentials
-    and account transition instructions. * <strong>Heirloom Registry:</strong> Visual inventory of physical assets
-    with designated legacy stories and recipients.</p>
-  <p><strong>C. Final Directives & Ethical Wills</strong> * <strong>Video Memoirs:</strong> In-app recording and
-    curation of
-    personal stories, life lessons, and messages of love. * <strong>Directive Generation:</strong> Secure templates for
-    funeral
-    preferences, final messages, and ethical wills (PDF generated).</p>
-  <h3 id="system-integrations">2.3 System Integrations</h3>
-  <p>Provider shall integrate the following third-party services to
-    achieve automation:</p>
-  <table>
-    <colgroup>
-      <col style="width: 33%" />
-      <col style="width: 33%" />
-      <col style="width: 33%" />
-    </colgroup>
-    <thead>
-      <tr>
-        <th style="text-align: left;">Service</th>
-        <th style="text-align: left;">Purpose</th>
-        <th style="text-align: left;">Integration Level</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="text-align: left;"><strong>YouTube / Google Photos</strong></td>
-        <td style="text-align: left;">Media Preservation</td>
-        <td style="text-align: left;"><strong>Cloud-Native API</strong> (High Permanence Storage)</td>
-      </tr>
-      <tr>
-        <td style="text-align: left;"><strong>OpenSign</strong></td>
-        <td style="text-align: left;">E-Signatures</td>
-        <td style="text-align: left;"><strong>Self-Hosted</strong> (Full API,
-          embedded signing)</td>
-      </tr>
-      <tr>
-        <td style="text-align: left;"><strong>Firebase Messaging</strong></td>
-        <td style="text-align: left;">Time-Capsule Notifications</td>
-        <td style="text-align: left;"><strong>Native Push</strong> (Mobile/Web notifications)</td>
-      </tr>
-      <tr>
-        <td style="text-align: left;"><strong>SendGrid</strong></td>
-        <td style="text-align: left;">Transactional Email</td>
-        <td style="text-align: left;"><strong>API Triggered</strong>
-          (System alerts, invites)</td>
-      </tr>
-      <tr>
-        <td style="text-align: left;"><strong>Google Cloud Storage</strong></td>
-        <td style="text-align: left;">Secure Blob Storage</td>
-        <td style="text-align: left;"><strong>AES-256 Encrypted</strong> (Private documents, vault content)</td>
-      </tr>
-      <tr>
-        <td style="text-align: left;"><strong>Vertex AI (Gemini)</strong></td>
-        <td style="text-align: left;">Legacy Guidance</td>
-        <td style="text-align: left;"><strong>Context-Aware</strong> (RAG
-          pipeline on memory curation)</td>
-      </tr>
-    </tbody>
-  </table>
-  <h3 id="the-shepherd-guidance-engine">2.4 “The Shepherd” Guidance
-    Engine</h3>
-  <p>Provider shall build a logic engine (“The Shepherd”) that: 1.
-    <strong>Unified Legacy Logic:</strong> Implements the core "Living Legacy" orchestration for media preservation. 2.
-    <strong>Generates Timeline:</strong> Creates a
-    dynamic roadmap for memory curation and final wishes organization. 3. <strong>Contextual Assistance:</strong> Uses
-    Gemini 3.0 to answer questions regarding legacy preservation, funeral preferences, and memory management. 4.
-    <strong>Time Capsule:</strong> Manages scheduled delivery of messages to heirs based on verified triggers.
-  </p>
-  <hr />
-  <h2 id="work-breakdown-structure-wbs">3. Work Breakdown Structure
-    (WBS)</h2>
-  <h3 id="phase-1-foundation-vault-architecture-weeks-1-4"><strong>PHASE
-      1: FOUNDATION &amp; VAULT ARCHITECTURE (Weeks 1-4)</strong></h3>
-  <ul>
-    <li><strong>1.1 GCP Infrastructure:</strong> Provision Cloud Run, Cloud
-      SQL, Firestore, VPC, Cloud Armor.</li>
-    <li><strong>1.2 Ops:</strong> Setup GitHub Actions CI/CD.</li>
-    <li><strong>1.3 Auth:</strong> Firebase Auth + MFA + Custom Claims.</li>
-    <li><strong>1.4 Schema:</strong> Design Relational (Heirs) vs Document
-      (Metadata) schemas.</li>
-    <li><strong>1.5 Vault:</strong> Implement AES-256 crypto service and
-      Signed URL logic.</li>
-    <li><strong>1.6 Web:</strong> <strong>React 18</strong> +
-      <strong>Tanstack</strong> (Router/Query) + <strong>shadcn/ui</strong>
-      Component System (No Next.js).
-    </li>
-    <li><strong>1.7 E-Sign:</strong> Deploy Self-Hosted OpenSign.</li>
-  </ul>
-  <h3 id="phase-2-core-logic-legacy-engines-weeks-5-10"><strong>PHASE 2:
-      CORE LOGIC &amp; LEGACY ENGINES (Weeks 5-10)</strong></h3>
-  <ul>
-    <li><strong>2.1 Memorial Module:</strong> YouTube and Google Photos API integration logic.</li>
-    <li><strong>2.2 Vault Engineering:</strong> KMS-backed encryption for sensitive directives.</li>
-    <li><strong>2.3 Legacy Engine:</strong> Build time-capsule and notification scheduling logic.</li>
-    <li><strong>2.4 Gemini AI:</strong> Connect RAG pipeline for legacy assistance and obituary generation.</li>
-    <li><strong>2.5 PDF Service:</strong> Go-based document generation for legacy exports (Wills, Directives).</li>
-  </ul>
-  <h3 id="phase-3-mobile-tri-platform-weeks-9-11"><strong>PHASE 3:
-      TRI-PLATFORM DEPLOYMENT (Weeks 9-11)</strong></h3>
-  <ul>
-    <li><strong>3.1 Mobile:</strong> Unified React Native build for iOS &amp; Android.</li>
-    <li><strong>3.2 Web Shell:</strong> Responsive dashboard for desktop management.</li>
-    <li><strong>3.3 Bio-Auth:</strong> FaceID/TouchID secure vault access.</li>
-    <li><strong>3.4 Cloud Sync:</strong> Multi-platform real-time data persistence (Firestore).</li>
-  </ul>
-  <h3 id="phase-4-audit-security-launch-weeks-11-12"><strong>PHASE 4:
-      QA, INTEGRATION & LAUNCH (Weeks 13-16)</strong></h3>
-  <ul>
-    <li><strong>4.1 Testing:</strong> End-to-end testing (Playwright/Cypress) and performance optimization.</li>
-    <li><strong>4.2 Security:</strong> Internal security code review &amp; hardening.</li>
-    <li><strong>4.3 Compliance:</strong> SOC 2 evidence collection (logging, access controls).</li>
-    <li><strong>4.4 Store Launch:</strong> App Store &amp; Play Store submission.</li>
-    <li><strong>4.5 Go-Live:</strong> DNS switchover, production deployment &amp; monitoring setup.</li>
-  </ul>
-  <hr />
-  <h2 id="deliverables">4. Deliverables</h2>
-  <table>
-    <colgroup>
-      <col style="width: 33%" />
-      <col style="width: 33%" />
-      <col style="width: 33%" />
-    </colgroup>
-    <thead>
-      <tr>
-        <th style="text-align: left;">Deliverable</th>
-        <th style="text-align: left;">Description</th>
-        <th style="text-align: left;">Format</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="text-align: left;"><strong>D1: The Vault</strong></td>
-        <td style="text-align: left;">Security core, Auth, Encrypted
-          Storage</td>
-        <td style="text-align: left;">Staging URL</td>
-      </tr>
-      <tr>
-        <td style="text-align: left;"><strong>D2: Mobile Apps</strong></td>
-        <td style="text-align: left;">iOS and Android binaries (TestFlight)</td>
-        <td style="text-align: left;">.ipa / .apk</td>
-      </tr>
-      <tr>
-        <td style="text-align: left;"><strong>D3: The Platform</strong></td>
-        <td style="text-align: left;">Production release, fully tested</td>
-        <td style="text-align: left;">Live URL</td>
-      </tr>
-      <tr>
-        <td style="text-align: left;"><strong>D4: Documentation</strong></td>
-        <td style="text-align: left;">API Specs, Admin Guide, Compliance
-          Pack</td>
-        <td style="text-align: left;">PDF / Markdown</td>
-      </tr>
-    </tbody>
-  </table>
-  <hr />
-  <h2 id="assumptions-1">5. Assumptions</h2>
-  <ol type="1">
-    <li><strong>Global Infrastructure:</strong> The platform is designed for cross-border scalability via Google Cloud;
-      localization is deferred to V2.</li>
-    <li><strong>Legacy Guidance Only:</strong> The “Shepherd” AI provides procedural and creative legacy support, not
-      legal, tax, or medical advice.</li>
-    <li><strong>Cloud Consumables:</strong> Client is responsible for direct consumption costs for external APIs (Google
-      Cloud, AI Compute, SendGrid).</li>
-    <li><strong>Engagement Model:</strong> Baseline video and photo storage is managed via standard Google ecosystem
-      integrations.</li>
-  </ol>
-  <hr />
-  <h2 id="signatures">6. Signatures</h2>
-  <p><strong>Client:</strong> <span id="sow-client-sig">_______________________</span>
-    <strong>Date:</strong> <span id="sow-client-date">___________</span><br />
-    <strong>Provider:</strong> <span id="sow-provider-sig">_______________________</span>
-    <strong>Date:</strong> <span id="sow-provider-date">___________</span>
-  </p>
+  <div class="sow-section">
+    <p><strong>Project Name:</strong> FinalWishes Platform Development
+      <strong>SOW Reference:</strong> SOW-2025-001<br />
+      <strong>Associated MSA:</strong> MSA-2025-111-FW<br />
+      <strong>Date:</strong> January 6, 2026
+    </p>
+    <hr />
+    <h2 id="executive-overview">1. Executive Overview</h2>
+    <p>This Statement of Work (“SOW”) defines the comprehensive scope for the
+      <strong>FinalWishes Unified Platform</strong>. This project deliver a “Vault-Grade”
+      secure ecosystem for the curation, preservation, and scheduled delivery of
+      a user’s digital legacy, memoirs, and final instructions.
+    </p>
+    <p><strong>Objective:</strong> Establish a permanent, industrial-grade “Living Legacy”
+      platform spanning iOS, Android, and Web, powered by Sirsi’s component library
+      and Google Cloud’s enterprise AI infrastructure.</p>
+    <hr />
+    <h2 id="detailed-scope-of-services">2. Detailed Scope of Services</h2>
+    <h3 id="core-vault-data-architecture">2.1 Core Vault &amp; Data
+      Architecture</h3>
+    <p>Provider shall implement a <strong>Multi-Tenant,
+        Zero-Knowledge</strong> architecture to ensure total data privacy. *
+      <strong>Storage Layer:</strong> Hybrid approach using <strong>Cloud SQL
+        (PostgreSQL)</strong> for structured PII (Encrypted) and
+      <strong>Firestore</strong> for real-time document metadata. *
+      <strong>File Vault:</strong> <strong>Cloud Storage</strong> buckets with
+      per-tenant isolation boundaries. All files encrypted at rest using
+      <strong>Cloud KMS</strong> (AES-256). * <strong>Security:</strong>
+      Implementation of <strong>SOC 2 Type II</strong> controls, including
+      strict IAM roles, audit logging, and encryption in transit (TLS
+      1.3).
+    </p>
+    <h3 id="technology-stack-sirsinexus-v4-1">2.2 Technology Stack
+      (SirsiNexus V4)</h3>
+    <ul>
+      <li><strong>Frontend:</strong> <strong>React 18</strong> (Vite),
+        <strong>Tanstack</strong> (Query, Router, Table),
+        <strong>shadcn/ui</strong> (Radix Primitives + Tailwind).
+      </li>
+      <li><strong>Backend:</strong> <strong>Go (Golang)</strong> on
+        <strong>Cloud Run</strong> (Serverless), <strong>Firebase
+          Auth</strong>.
+      </li>
+      <li><strong>Database:</strong> <strong>Cloud SQL</strong> (PostgreSQL) +
+        <strong>Firestore</strong> (Real-time).
+      </li>
+      <li><strong>Mobile:</strong> <strong>React Native</strong> (Expo)
+        sharing core business logic.</li>
+    </ul>
+    <h3 id="legacy-content-memory-curation">2.2 Legacy Content & Memory Curation</h3>
+    <p>Provider will build automation and curation paths for the following
+      media and directive categories:</p>
+    <p><strong>A. Multimedia Memory Walls</strong> * <strong>Video Memorials:</strong> YouTube API (Unlisted)
+      integration
+      for
+      permanent, high-bandwidth video preservation. * <strong>Photo Galleries:</strong> Google Photos API integration
+      for
+      automated organization and secure sharing of life milestones.</p>
+    <p><strong>B. The Secure Digital Lockbox</strong> * <strong>Passkeys & Accounts:</strong> Secure storage for digital
+      credentials
+      and account transition instructions. * <strong>Heirloom Registry:</strong> Visual inventory of physical assets
+      with designated legacy stories and recipients.</p>
+    <p><strong>C. Final Directives & Ethical Wills</strong> * <strong>Video Memoirs:</strong> In-app recording and
+      curation of
+      personal stories, life lessons, and messages of love. * <strong>Directive Generation:</strong> Secure templates
+      for
+      funeral
+      preferences, final messages, and ethical wills (PDF generated).</p>
+    <h3 id="system-integrations">2.3 System Integrations</h3>
+    <p>Provider shall integrate the following third-party services to
+      achieve automation:</p>
+    <table>
+      <colgroup>
+        <col style="width: 33%" />
+        <col style="width: 33%" />
+        <col style="width: 33%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th style="text-align: left;">Service</th>
+          <th style="text-align: left;">Purpose</th>
+          <th style="text-align: left;">Integration Level</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left;"><strong>YouTube / Google Photos</strong></td>
+          <td style="text-align: left;">Media Preservation</td>
+          <td style="text-align: left;"><strong>Cloud-Native API</strong> (High Permanence Storage)</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>OpenSign</strong></td>
+          <td style="text-align: left;">E-Signatures</td>
+          <td style="text-align: left;"><strong>Self-Hosted</strong> (Full API,
+            embedded signing)</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Firebase Messaging</strong></td>
+          <td style="text-align: left;">Time-Capsule Notifications</td>
+          <td style="text-align: left;"><strong>Native Push</strong> (Mobile/Web notifications)</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>SendGrid</strong></td>
+          <td style="text-align: left;">Transactional Email</td>
+          <td style="text-align: left;"><strong>API Triggered</strong>
+            (System alerts, invites)</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Google Cloud Storage</strong></td>
+          <td style="text-align: left;">Secure Blob Storage</td>
+          <td style="text-align: left;"><strong>AES-256 Encrypted</strong> (Private documents, vault content)</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Vertex AI (Gemini)</strong></td>
+          <td style="text-align: left;">Legacy Guidance</td>
+          <td style="text-align: left;"><strong>Context-Aware</strong> (RAG
+            pipeline on memory curation)</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="the-shepherd-guidance-engine">2.4 “The Shepherd” Guidance
+      Engine</h3>
+    <p>Provider shall build a logic engine (“The Shepherd”) that: 1.
+      <strong>Unified Legacy Logic:</strong> Implements the core "Living Legacy" orchestration for media preservation.
+      2.
+      <strong>Generates Timeline:</strong> Creates a
+      dynamic roadmap for memory curation and final wishes organization. 3. <strong>Contextual Assistance:</strong> Uses
+      Gemini 3.0 to answer questions regarding legacy preservation, funeral preferences, and memory management. 4.
+      <strong>Time Capsule:</strong> Manages scheduled delivery of messages to heirs based on verified triggers.
+    </p>
+    <hr />
+    <h2 id="work-breakdown-structure-wbs">3. Work Breakdown Structure
+      (WBS)</h2>
+    <h3 id="phase-1-foundation-vault-architecture-weeks-1-4"><strong>PHASE
+        1: FOUNDATION &amp; VAULT ARCHITECTURE (Weeks 1-4)</strong></h3>
+    <ul>
+      <li><strong>1.1 GCP Infrastructure:</strong> Provision Cloud Run, Cloud
+        SQL, Firestore, VPC, Cloud Armor.</li>
+      <li><strong>1.2 Ops:</strong> Setup GitHub Actions CI/CD.</li>
+      <li><strong>1.3 Auth:</strong> Firebase Auth + MFA + Custom Claims.</li>
+      <li><strong>1.4 Schema:</strong> Design Relational (Heirs) vs Document
+        (Metadata) schemas.</li>
+      <li><strong>1.5 Vault:</strong> Implement AES-256 crypto service and
+        Signed URL logic.</li>
+      <li><strong>1.6 Web:</strong> <strong>React 18</strong> +
+        <strong>Tanstack</strong> (Router/Query) + <strong>shadcn/ui</strong>
+        Component System (No Next.js).
+      </li>
+      <li><strong>1.7 E-Sign:</strong> Deploy Self-Hosted OpenSign.</li>
+    </ul>
+    <h3 id="phase-2-core-logic-legacy-engines-weeks-5-10"><strong>PHASE 2:
+        CORE LOGIC &amp; LEGACY ENGINES (Weeks 5-10)</strong></h3>
+    <ul>
+      <li><strong>2.1 Memorial Module:</strong> YouTube and Google Photos API integration logic.</li>
+      <li><strong>2.2 Vault Engineering:</strong> KMS-backed encryption for sensitive directives.</li>
+      <li><strong>2.3 Legacy Engine:</strong> Build time-capsule and notification scheduling logic.</li>
+      <li><strong>2.4 Gemini AI:</strong> Connect RAG pipeline for legacy assistance and obituary generation.</li>
+      <li><strong>2.5 PDF Service:</strong> Go-based document generation for legacy exports (Wills, Directives).</li>
+    </ul>
+    <h3 id="phase-3-mobile-tri-platform-weeks-9-11"><strong>PHASE 3:
+        TRI-PLATFORM DEPLOYMENT (Weeks 9-11)</strong></h3>
+    <ul>
+      <li><strong>3.1 Mobile:</strong> Unified React Native build for iOS &amp; Android.</li>
+      <li><strong>3.2 Web Shell:</strong> Responsive dashboard for desktop management.</li>
+      <li><strong>3.3 Bio-Auth:</strong> FaceID/TouchID secure vault access.</li>
+      <li><strong>3.4 Cloud Sync:</strong> Multi-platform real-time data persistence (Firestore).</li>
+    </ul>
+    <h3 id="phase-4-audit-security-launch-weeks-11-12"><strong>PHASE 4:
+        QA, INTEGRATION & LAUNCH (Weeks 13-16)</strong></h3>
+    <ul>
+      <li><strong>4.1 Testing:</strong> End-to-end testing (Playwright/Cypress) and performance optimization.</li>
+      <li><strong>4.2 Security:</strong> Internal security code review &amp; hardening.</li>
+      <li><strong>4.3 Compliance:</strong> SOC 2 evidence collection (logging, access controls).</li>
+      <li><strong>4.4 Store Launch:</strong> App Store &amp; Play Store submission.</li>
+      <li><strong>4.5 Go-Live:</strong> DNS switchover, production deployment &amp; monitoring setup.</li>
+    </ul>
+    <hr />
+    <h2 id="deliverables">4. Deliverables</h2>
+    <table>
+      <colgroup>
+        <col style="width: 33%" />
+        <col style="width: 33%" />
+        <col style="width: 33%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th style="text-align: left;">Deliverable</th>
+          <th style="text-align: left;">Description</th>
+          <th style="text-align: left;">Format</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left;"><strong>D1: The Vault</strong></td>
+          <td style="text-align: left;">Security core, Auth, Encrypted
+            Storage</td>
+          <td style="text-align: left;">Staging URL</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>D2: Mobile Apps</strong></td>
+          <td style="text-align: left;">iOS and Android binaries (TestFlight)</td>
+          <td style="text-align: left;">.ipa / .apk</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>D3: The Platform</strong></td>
+          <td style="text-align: left;">Production release, fully tested</td>
+          <td style="text-align: left;">Live URL</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>D4: Documentation</strong></td>
+          <td style="text-align: left;">API Specs, Admin Guide, Compliance
+            Pack</td>
+          <td style="text-align: left;">PDF / Markdown</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h2 id="assumptions-1">5. Assumptions</h2>
+    <ol type="1">
+      <li><strong>Global Infrastructure:</strong> The platform is designed for cross-border scalability via Google
+        Cloud;
+        localization is deferred to V2.</li>
+      <li><strong>Legacy Guidance Only:</strong> The “Shepherd” AI provides procedural and creative legacy support, not
+        legal, tax, or medical advice.</li>
+      <li><strong>Cloud Consumables:</strong> Client is responsible for direct consumption costs for external APIs
+        (Google
+        Cloud, AI Compute, SendGrid).</li>
+      <li><strong>Engagement Model:</strong> Baseline video and photo storage is managed via standard Google ecosystem
+        integrations.</li>
+    </ol>
+    <hr />
+    <h2 id="signatures">6. Signatures</h2>
+    <p><strong>Client:</strong> <span id="sow-client-sig">_______________________</span>
+      <strong>Date:</strong> <span id="sow-client-date">___________</span><br />
+      <strong>Provider:</strong> <span id="sow-provider-sig">_______________________</span>
+      <strong>Date:</strong> <span id="sow-provider-date">___________</span>
+    </p>
+  </div><!-- /.sow-section -->
 
   <!-- E-Signature Verification Footer -->
   <div id="audit-trail" class="audit-trail">
