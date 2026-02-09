@@ -20,6 +20,7 @@ import { SignatureCapture } from '../vault/SignatureCapture'
 import { MFAGate } from '../auth/MFAGate'
 import { usePlaidLink } from 'react-plaid-link'
 import { auth } from '../../lib/firebase'
+import { getProjectTemplate } from '../../data/projectTemplates'
 
 // ── Role Architecture (ADR-014) ──
 type UserRole = 'provider' | 'client' | 'viewer' | 'detecting'
@@ -29,6 +30,7 @@ export function SirsiVault() {
     const selectedBundle = useConfigStore(state => state.selectedBundle)
     const selectedAddons = useConfigStore(state => state.selectedAddons)
     const storeProjectId = useConfigStore(state => state.projectId)
+    const tpl = getProjectTemplate(storeProjectId)
     const projectName = useConfigStore(state => state.projectName)
     const setClientInfo = useConfigStore(state => state.setClientInfo)
     const entityLegalName = useConfigStore(state => state.entityLegalName)
@@ -394,8 +396,8 @@ export function SirsiVault() {
             // ADR-015: Create corresponding OpenSign envelope
             try {
                 const envelope = await createGuestEnvelope({
-                    projectId: 'finalwishes',
-                    docType: 'legacy-msa',
+                    projectId: storeProjectId || 'finalwishes',
+                    docType: tpl.docType,
                     signerName: signatureData.name,
                     signerEmail: signatureData.email,
                     metadata: {
@@ -493,7 +495,7 @@ export function SirsiVault() {
                     const achSession = await createPaymentSession({
                         envelopeId: openSignEnvelopeId || signatureEvidence?.envelopeId || contractId,
                         planId: 'payment-1',
-                        projectId: 'finalwishes',
+                        projectId: storeProjectId || 'finalwishes',
                         successUrl: window.location.origin + `/contracts/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}&method=ach`,
                         cancelUrl: window.location.href
                     })
@@ -530,7 +532,7 @@ export function SirsiVault() {
                 const session = await createPaymentSession({
                     envelopeId: openSignEnvelopeId || signatureEvidence?.envelopeId || contractId,
                     planId: 'payment-1',
-                    projectId: 'finalwishes',
+                    projectId: storeProjectId || 'finalwishes',
                     successUrl: window.location.origin + `/contracts/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
                     cancelUrl: window.location.href
                 })
@@ -563,8 +565,8 @@ export function SirsiVault() {
                 plan: String(selectedPaymentPlan),
                 client: signatureData.name,
                 email: signatureData.email,
-                project: projectName || 'FinalWishes',
-                ref: `MSA-${new Date().getFullYear()}-111-FW`
+                project: projectName || tpl.projectDisplayName,
+                ref: `MSA-${new Date().getFullYear()}-111-${tpl.docCode}`
             })
 
             window.location.href = `/payment.html?${paymentParams.toString()}`

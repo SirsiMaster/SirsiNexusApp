@@ -213,7 +213,7 @@ export function ConfigureSolution() {
                         {/* ROW 2: Title */}
                         <div style={{ height: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '8px' }}>
                             <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: '20px', color: 'white', margin: 0, fontWeight: 700, textAlign: 'center', lineHeight: 1.3 }}>
-                                FinalWishes Core Platform
+                                {BUNDLES['finalwishes-core']?.name || 'Core Platform'}
                             </h3>
                         </div>
 

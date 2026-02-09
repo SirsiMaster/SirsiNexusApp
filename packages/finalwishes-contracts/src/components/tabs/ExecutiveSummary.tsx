@@ -1,8 +1,9 @@
 /**
  * Executive Summary Tab
- * Exact migration from the original HTML
+ * Template-aware: reads content from projectTemplates registry
  */
 import { useConfigStore, useSetTab } from '../../store/useConfigStore'
+import { getProjectTemplate } from '../../data/projectTemplates'
 
 
 export function ExecutiveSummary() {
@@ -10,8 +11,11 @@ export function ExecutiveSummary() {
     const clientName = useConfigStore(state => state.clientName)
     const companyName = useConfigStore(state => state.companyName)
     const projectName = useConfigStore(state => state.projectName)
+    const projectId = useConfigStore(state => state.projectId)
     const setClientInfo = useConfigStore(state => state.setClientInfo)
     const setStore = useConfigStore.setState
+
+    const template = getProjectTemplate(projectId)
 
     return (
         <div style={{ maxWidth: '100%', margin: '0 auto', padding: '0 4rem' }}>
@@ -151,13 +155,10 @@ export function ExecutiveSummary() {
                     marginBottom: '24px',
                     textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)'
                 }}>
-                    The Living Legacy Platform
+                    {template.primaryObjectiveTitle}
                 </h3>
                 <p style={{ fontSize: '20px', lineHeight: 1.8, color: 'rgba(255,255,255,0.9)' }}>
-                    To architect and deploy a secure, multi-tenant digital preservation engine that
-                    allows Principals to curate their "Final Wishes"—including digital assets, legal
-                    instructions, and emotional legacies—using AI-driven guidance and a "Vault-Grade"
-                    security infrastructure.
+                    {template.primaryObjectiveDescription}
                 </p>
             </div>
 
@@ -180,9 +181,7 @@ export function ExecutiveSummary() {
                         Strategic Position
                     </h4>
                     <p style={{ lineHeight: 1.8, opacity: 0.9, fontSize: '1.25rem' }}>
-                        Sirsi acts as the Technical Lead, leveraging the <strong>Nexus V4 Core</strong> to
-                        accelerate 0-to-1 development by 60%. We are not just building an app; we are
-                        deploying a private, permanent infrastructure for estate management.
+                        {template.strategicPosition}
                     </p>
                 </div>
                 <div>
@@ -205,10 +204,9 @@ export function ExecutiveSummary() {
                         gap: '1rem',
                         opacity: 0.9
                     }}>
-                        <li style={{ fontSize: '1.25rem' }}>• <strong>Logic:</strong> Go (Golang) / Cloud Run</li>
-                        <li style={{ fontSize: '1.25rem' }}>• <strong>Intelligence:</strong> Google Vertex AI (Gemini)</li>
-                        <li style={{ fontSize: '1.25rem' }}>• <strong>Vault:</strong> Cloud SQL + KMS Encryption</li>
-                        <li style={{ fontSize: '1.25rem' }}>• <strong>Mobile:</strong> React Native Expo</li>
+                        {template.techStack.map((item, i) => (
+                            <li key={i} style={{ fontSize: '1.25rem' }}>• <strong>{item.label}:</strong> {item.value}</li>
+                        ))}
                     </ul>
                 </div>
             </div>

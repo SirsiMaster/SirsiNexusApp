@@ -10,6 +10,7 @@
 import { useState } from 'react'
 import { useConfigStore, useSetTab } from '../../store/useConfigStore'
 import { PRODUCTS, calculateTotal, calculateTimeline, calculateTotalHours, getAggregatedWBS } from '../../data/catalog'
+import { getInterpolatedTemplate } from '../../data/projectTemplates'
 
 export function MasterAgreement() {
     const [agreed, setAgreed] = useState(false)
@@ -20,9 +21,12 @@ export function MasterAgreement() {
     const probateStates = useConfigStore(state => state.probateStates)
     const clientName = useConfigStore(state => state.clientName)
     const projectName = useConfigStore(state => state.projectName)
+    const projectId = useConfigStore(state => state.projectId)
     const entityLegalName = useConfigStore(state => state.entityLegalName)
     const counterpartyName = useConfigStore(state => state.counterpartyName)
     const counterpartyTitle = useConfigStore(state => state.counterpartyTitle)
+
+    const tpl = getInterpolatedTemplate(projectId, projectName)
 
     const currentYear = new Date().getFullYear()
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -86,7 +90,7 @@ export function MasterAgreement() {
                     color: '#93c5fd',
                     opacity: 0.8
                 }}>
-                    <div><strong style={{ color: 'white' }}>Document:</strong> MSA-{currentYear}-111-FW</div>
+                    <div><strong style={{ color: 'white' }}>Document:</strong> MSA-{currentYear}-111-{tpl.docCode}</div>
                     <div><strong style={{ color: 'white' }}>Effective Date:</strong> {currentDate}</div>
                     <div><strong style={{ color: 'white' }}>Status:</strong> BINDING ENFORCEABLE</div>
                 </div>
@@ -109,7 +113,7 @@ export function MasterAgreement() {
                     <section style={{ marginBottom: '48px' }}>
                         <h2 style={{ marginTop: 0, color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '28px', textAlign: 'center', letterSpacing: '0.1em' }}>MASTER SERVICES AGREEMENT (MSA)</h2>
                         <p style={{ marginTop: '24px' }}>
-                            <strong>AGREEMENT NUMBER:</strong> MSA-{currentYear}-111-FW<br />
+                            <strong>AGREEMENT NUMBER:</strong> MSA-{currentYear}-111-{tpl.docCode}<br />
                             <strong>EFFECTIVE DATE:</strong> {currentDate}
                         </p>
                         <p>
@@ -124,7 +128,7 @@ export function MasterAgreement() {
                         <div style={{ margin: '40px 0', borderTop: '1px solid rgba(200,169,81,0.2)' }}></div>
 
                         <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px' }}>1. RECITALS</h3>
-                        <p><strong>WHEREAS</strong>, Client desires to engage Provider to design, develop, and implement a <strong>legacy management system</strong> known as <strong>{projectName}</strong> (the "Platform"), with sufficient foundational infrastructure to support future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota; and</p>
+                        <p><strong>WHEREAS</strong>, {tpl.msaRecital}; and</p>
                         <p><strong>WHEREAS</strong>, Provider ({entityLegalName}) possesses the requisite technical expertise, personnel, and infrastructure, including expertise in artificial intelligence, cloud architecture, and secure software development, to perform the Services; and</p>
                         <p><strong>WHEREAS</strong>, the Platform is to be constructed utilizing Provider's proprietary <strong>Sirsi Nexus V4 Framework</strong> as the foundational architectural layer; and</p>
                         <p><strong>WHEREAS</strong>, the Parties desire to set forth the terms and conditions under which Provider will provide such services and license certain technologies to Client.</p>
@@ -161,12 +165,11 @@ export function MasterAgreement() {
                         </div>
 
                         <div style={{ marginBottom: '20px' }}>
-                            <p style={{ marginBottom: '12px' }}><strong>2.5 "Foreground IP"</strong> means the Intellectual Property Rights in the comprehensive body of specific business logic, legacy management scripts, configurations, and unique operational workflows developed strictly and exclusively for FinalWishes that rely upon but are distinct from Background Technology. This explicitly encompasses the custom-built application layer and includes, without limitation:</p>
+                            <p style={{ marginBottom: '12px' }}><strong>2.5 "Foreground IP"</strong> means {tpl.msaForegroundIpDescription}. This explicitly encompasses the custom-built application layer and includes, without limitation:</p>
                             <div style={{ paddingLeft: '24px', borderLeft: '2px solid rgba(200,169,81,0.3)' }}>
-                                <p style={{ marginBottom: '8px' }}><strong>(i)</strong> Custom UI/UX designs, visual interfaces, and brand assets specific to FinalWishes;</p>
-                                <p style={{ marginBottom: '8px' }}><strong>(ii)</strong> Jurisdiction-specific probate logic, workflows, and regulatory compliance rules, inclusive of but not restricted to Maryland, Illinois, and Minnesota, or any other federal, state, or local governmental jurisdictions;</p>
-                                <p style={{ marginBottom: '8px' }}><strong>(iii)</strong> Proprietary content, decision trees, and conversational scripts authored for 'The Shepherd' guidance engine (defining the interactive user prompts, educational narratives, and process navigation pathways); and</p>
-                                <p style={{ marginBottom: '0' }}><strong>(iv)</strong> Unique data schemas and information architecture (representing the specific definitions, organization, and structural relationships of Client's proprietary business data).</p>
+                                {tpl.msaForegroundIpItems.map((item, i) => (
+                                    <p key={i} style={{ marginBottom: '8px' }}><strong>({String.fromCharCode(105 + i)})</strong> {item}{i < tpl.msaForegroundIpItems.length - 1 ? ';' : '.'}</p>
+                                ))}
                             </div>
                         </div>
 
@@ -207,8 +210,8 @@ export function MasterAgreement() {
 
                     <section style={{ marginBottom: '48px' }}>
                         <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px' }}>5. INTELLECTUAL PROPERTY RIGHTS</h3>
-                        <p><strong>5.1 Work Made for Hire (Foreground IP).</strong> Provider agrees that the <strong>Foreground IP</strong> (specific legacy scripts, brand assets, and business logic created exclusively for Client) shall be considered "works made for hire" and owned 100% by Client upon payment of all fees. To the extent that any Deliverable does not qualify as a work made for hire under applicable law, Provider hereby irrevocably helps, transfers, commercializes and assigns to Client all right, title, and interest in and to such Deliverable, including all Intellectual Property Rights therein, free and clear of all liens and encumbrances.</p>
-                        <p><strong>5.2 Background Technology (Sirsi Nexus V4 Retention).</strong> Notwithstanding Section 5.1, Provider retains all right, title, and interest in and to its <strong>Background Technology</strong> (the Sirsi Nexus V4 Framework). Provider hereby grants to Client a <strong>perpetual, irrevocable, worldwide, royalty-free, and exclusive vertical license</strong> to use, reproduce, and exploit the Background Technology <em>within the field of Legacy Management and Digital Inheritance Automation</em> for the purpose of operating the Platform.</p>
+                        <p><strong>5.1 Work Made for Hire (Foreground IP).</strong> Provider agrees that the <strong>Foreground IP</strong> (specific business logic, brand assets, and custom workflows created exclusively for Client) shall be considered "works made for hire" and owned 100% by Client upon payment of all fees. To the extent that any Deliverable does not qualify as a work made for hire under applicable law, Provider hereby irrevocably helps, transfers, commercializes and assigns to Client all right, title, and interest in and to such Deliverable, including all Intellectual Property Rights therein, free and clear of all liens and encumbrances.</p>
+                        <p><strong>5.2 Background Technology (Sirsi Nexus V4 Retention).</strong> Notwithstanding Section 5.1, Provider retains all right, title, and interest in and to its <strong>Background Technology</strong> (the Sirsi Nexus V4 Framework). Provider hereby grants to Client a <strong>perpetual, irrevocable, worldwide, royalty-free, and exclusive vertical license</strong> to use, reproduce, and exploit the Background Technology <em>{tpl.msaVerticalLicense}</em> for the purpose of operating the Platform.</p>
                         <p><strong>5.3 Third-Party and Open Source Software.</strong> The Deliverables may contain third-party software or open source software. Provider warrants that its use of such software will comply with the applicable licenses (e.g., AGPL-3.0, MIT, Apache 2.0). Provider shall identify any "Copyleft" libraries (that would mandate disclosure of Client’s source code) prior to integration and obtain Client’s approval.</p>
                         <p><strong>5.4 AI-Generated Content.</strong> The Parties acknowledge that Provider utilizes advanced Artificial Intelligence tools. Provider warrants that it has the full legal right to assign ownership of such AI-generated output to Client as part of the Deliverables, and that such use does not violate the terms of service of the AI providers.</p>
                         <p><strong>5.5 Further Assurances.</strong> Provider agrees to execute any documents and take any actions reasonably requested by Client to perfect Client’s ownership of the Intellectual Property Rights in the Foreground IP.</p>
@@ -257,7 +260,7 @@ export function MasterAgreement() {
                     <section style={{ marginBottom: '48px' }}>
                         <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px' }}>11. GENERAL PROVISIONS</h3>
                         <p><strong>11.1 Independent Contractor.</strong> Provider is an independent contractor. No partnership or employment relationship is created.</p>
-                        <p><strong>11.2 Market Vertical Non-Competition.</strong> Provider agrees that during the term of this Agreement and for a period of <strong>three (3) years</strong> thereafter, Provider shall not directly develop, market, or provide services for a competing <strong>Legacy Management or Digital Inheritance</strong> platform. This does not restrict Provider from using its foundational tech in unrelated market verticals.</p>
+                        <p><strong>11.2 Market Vertical Non-Competition.</strong> Provider agrees that during the term of this Agreement and for a period of <strong>three (3) years</strong> thereafter, Provider shall not directly develop, market, or provide services for a competing <strong>{tpl.msaNonCompeteVertical}</strong> platform. This does not restrict Provider from using its foundational tech in unrelated market verticals.</p>
                         <p><strong>11.3 Force Majeure.</strong> Neither Party shall be liable for any delay or failure to perform (excluding payment obligations) due to causes beyond its reasonable control, including acts of God, war, terrorism, riot, embargoes, acts of civil or military authorities, fire, floods, or accidents.</p>
                         <p><strong>11.4 Non-Solicitation.</strong> During the Term and for one (1) year thereafter, neither Party shall knowingly solicit for employment or hire any employee or contractor of the other Party who was directly involved in the provision of Services under this Agreement, without the prior written consent of the other Party.</p>
                         <p><strong>11.5 Dispute Resolution.</strong> Negotiation followed by binding arbitration in <strong>Wilmington, Delaware</strong>. Governed by <strong>Delaware Law</strong>.</p>
@@ -272,12 +275,12 @@ export function MasterAgreement() {
 
                 <div style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.8', fontSize: '15px' }}>
                     <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.6)', fontStyle: 'italic', marginBottom: '40px' }}>
-                        Project Name: FinalWishes Platform Development • SOW Reference: SOW-{currentYear}-001 • Date: {currentDate}
+                        Project Name: {projectName} Platform Development • SOW Reference: SOW-{currentYear}-001 • Date: {currentDate}
                     </p>
 
                     <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>1. EXECUTIVE OVERVIEW</h3>
-                    <p>This Statement of Work (“SOW”) defines the comprehensive scope for the <strong>FinalWishes Legacy Management System</strong>. This project aims to build foundational legacy management infrastructure with foundational support for future expansion into estate settlement capabilities in jurisdictions such as Maryland, Illinois, and Minnesota.</p>
-                    <p><strong>Objective:</strong> deliver a “Vault-Grade” secure platform that allows users to securely organize, document, and manage their legacy assets and final wishes, providing a permanent, cryptographically-secure repository for digital inheritance and beneficiary instructions.</p>
+                    <p>{tpl.msaSowOverview}</p>
+                    <p><strong>Objective:</strong> {tpl.msaSowObjective}</p>
 
                     <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', marginTop: '40px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>2. DETAILED SCOPE OF SERVICES</h3>
 
@@ -306,7 +309,7 @@ export function MasterAgreement() {
                                 })}
                             </ul>
                         ) : (
-                            <p style={{ margin: 0, color: 'rgba(255,255,255,0.5)', fontStyle: 'italic' }}>Core Legacy Management Platform (Standard Bundle)</p>
+                            <p style={{ margin: 0, color: 'rgba(255,255,255,0.5)', fontStyle: 'italic' }}>{tpl.msaNoSelectFallback}</p>
                         )}
                     </div>
 
@@ -318,11 +321,11 @@ export function MasterAgreement() {
                         <li><strong>Mobile:</strong> <strong>React Native</strong> (Expo) sharing core business logic.</li>
                     </ul>
 
-                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.4 Document Inventory & Automation Scope</h4>
-                    <p>Provider will build automation or manual guidance paths for the following specific document categories:</p>
-                    <p><strong>A. Identity & Vital Records:</strong> Death Certificate (Manual upload/OCR processing); Social Security/Gov ID (Secure entry & validation).</p>
-                    <p><strong>B. Future State Engine Framework (Expansion):</strong> Maryland/Illinois/Minnesota: Foundational logic mapping for future expansion into MDEC (Maryland), eCourt (Illinois), and MNCIS (Minnesota) e-filing guidance. <em>Note: Active development of direct court filing automation is reserved for future statement(s) of work.</em></p>
-                    <p><strong>C. Financial & Asset Documents:</strong> Asset Discovery (Plaid integration for 12,000+ institutions); Life Insurance/Retirement (Standard claim letter generation); Real Estate (Manual tracking + valuation APIs).</p>
+                    <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.4 Document Inventory & Scope</h4>
+                    <p>Provider will build automation or guidance paths for the following specific categories:</p>
+                    {tpl.msaDocumentScope.map((scope, idx) => (
+                        <p key={idx}><strong>{scope.title}:</strong> {scope.content}</p>
+                    ))}
 
                     <h4 style={{ color: 'white', fontSize: '16px', marginBottom: '10px' }}>2.5 System Integrations</h4>
                     <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '24px', fontSize: '14px' }}>
@@ -393,10 +396,9 @@ export function MasterAgreement() {
 
                     <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', marginTop: '40px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>4. ASSUMPTIONS</h3>
                     <ol style={{ paddingLeft: '20px', fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
-                        <li><strong>Future Expansion Support:</strong> Logic is focused on foundational legacy management, with future support planned for Maryland, Illinois, and Minnesota.</li>
-                        <li><strong>No Legal Advice:</strong> The “Shepherd” guides users through site and application logic and provides procedural guidance, not legal advice.</li>
-                        <li><strong>Third-Party Costs:</strong> Client pays direct consumption costs for Stripe, Plaid, Lob, and Google Cloud.</li>
-                        <li><strong>Content:</strong> Client is responsible for final validation of court form templates.</li>
+                        {tpl.msaAssumptions.map((assumption, idx) => (
+                            <li key={idx}><strong>{assumption.split(':')[0]}:</strong>{assumption.split(':').slice(1).join(':')}</li>
+                        ))}
                     </ol>
                 </div>
                 <div style={{ margin: '80px 0 40px 0', borderTop: '2px solid #C8A951', paddingTop: '40px' }}>
@@ -404,7 +406,7 @@ export function MasterAgreement() {
                 </div>
                 <div style={{ color: 'rgba(255,255,255,0.85)', lineHeight: '1.8', fontSize: '15px' }}>
                     <h3 style={{ color: '#C8A951', fontFamily: "'Cinzel', serif", fontSize: '20px', marginBottom: '20px', borderBottom: '1px solid rgba(200,169,81,0.3)', paddingBottom: '10px' }}>1. DISCOUNT & VALUATION REALIZATION</h3>
-                    <p>The FinalWishes project leverages the <strong>Sirsi Nexus V4 Framework</strong> to achieve enterprise-grade results at a fraction of typical market costs. By utilizing pre-validated logic engines and infrastructure-as-code deployments, we realize significant savings.</p>
+                    <p>{tpl.msaCostIntro}</p>
 
                     <div style={{ background: 'rgba(255,255,255,0.05)', padding: '24px', borderRadius: '12px', border: '1px solid rgba(200,169,81,0.2)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>

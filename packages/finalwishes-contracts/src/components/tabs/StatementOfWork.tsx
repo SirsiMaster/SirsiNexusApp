@@ -1,9 +1,10 @@
 /**
  * Statement of Work Tab
- * Dynamically generated document based on 22+ potential modules
+ * Template-aware: reads content from projectTemplates registry
  */
 import { useConfigStore, useSetTab } from '../../store/useConfigStore'
 import { PRODUCTS, BUNDLES, calculateTotal, calculateTimeline, getAggregatedWBS, calculateTotalHours } from '../../data/catalog'
+import { getProjectTemplate } from '../../data/projectTemplates'
 
 export function StatementOfWork() {
     const setTab = useSetTab()
@@ -12,6 +13,8 @@ export function StatementOfWork() {
     const ceoConsultingWeeks = useConfigStore(state => state.ceoConsultingWeeks)
     const probateStates = useConfigStore(state => state.probateStates)
     const projectName = useConfigStore(state => state.projectName)
+    const projectId = useConfigStore(state => state.projectId)
+    const template = getProjectTemplate(projectId)
 
     const currentYear = new Date().getFullYear()
     const currentDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
@@ -79,7 +82,7 @@ export function StatementOfWork() {
                     <div><strong style={{ color: 'white' }}>Project:</strong> {projectName} Platform</div>
                     <div><strong style={{ color: 'white' }}>Date:</strong> {currentDate}</div>
                     <div><strong style={{ color: 'white' }}>SOW:</strong> SOW-{currentYear}-001</div>
-                    <div><strong style={{ color: 'white' }}>MSA:</strong> MSA-{currentYear}-111-FW</div>
+                    <div><strong style={{ color: 'white' }}>MSA:</strong> MSA-{currentYear}-111-{template.docCode}</div>
                 </div>
             </div>
 
@@ -112,9 +115,7 @@ export function StatementOfWork() {
                         {selectedAddons.length > 0 ? ` Additionally, ${selectedAddons.length} strategic modules have been integrated to expand platform capabilities.` : ''}
                     </p>
                     <p>
-                        <strong style={{ color: '#C8A951' }}>Objective:</strong> Establish a permanent,
-                        industrial-grade "Living Legacy" platform spanning iOS, Android, and Web, powered by Sirsi's
-                        component library and Google Cloud's enterprise AI infrastructure.
+                        <strong style={{ color: '#C8A951' }}>Objective:</strong> {template.sowObjective}
                     </p>
                 </section>
 
