@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { contractsClient } from '../lib/grpc'
 import { calculateTotal } from '../data/catalog'
+import { getProjectTemplate } from '../data/projectTemplates'
 
 export type TabId = 'summary' | 'configure' | 'sow' | 'cost' | 'msa' | 'vault'
 
@@ -94,7 +95,29 @@ export const useConfigStore = create<ConfigState>()(
                 }, 50)
             },
 
-            setProjectId: (id) => set({ projectId: id }),
+            setProjectId: (id) => {
+                const current = get()
+                // Only reset when switching to a DIFFERENT project
+                if (id !== current.projectId) {
+                    const template = getProjectTemplate(id)
+                    set({
+                        projectId: id,
+                        projectName: template.projectDisplayName,
+                        companyName: initialState.companyName,
+                        clientName: '',
+                        clientEmail: '',
+                        contractId: null,
+                        currentTab: 'summary' as TabId,
+                        visitedTabs: ['summary'] as TabId[],
+                        selectedBundle: null,
+                        selectedAddons: [],
+                        ceoConsultingWeeks: 1,
+                        probateStates: [],
+                    })
+                } else {
+                    set({ projectId: id })
+                }
+            },
 
             setContractId: (id) => set({ contractId: id }),
 
