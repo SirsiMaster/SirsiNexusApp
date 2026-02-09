@@ -249,12 +249,10 @@
   <p><strong>This Master Services Agreement (“Agreement”) is entered into
       as of <span id="effective-date">January 6, 2026</span> (the “Effective Date”) by and
       between:</strong></p>
-  <p><strong><span id="entity-legal-name-display-strong">FinalWishes Inc.</span></strong>, a Delaware Corporation with
-    its principal place of business at [Address]
-    (“Client”), represented by <strong><span id="client-name-display-sig">The Client</span></strong>, CEO, and
+  <p><strong><span id="client-name-display-sig">The Client</span></strong>, an individual or entity ("Client"), and
     <strong><span id="provider-legal-name">Sirsi Technologies, Inc.</span></strong>, a Delaware corporation (FEIN:
     99-1057313), with its principal place of
-    business at 909 Rose Avenue, Suite 400, North Bethesda MD 20852 (“Provider” or “Sirsi”), represented by
+    business at 909 Rose Avenue, Suite 400, North Bethesda MD 20852 ("Provider" or "Sirsi"), represented by
     <strong><span id="provider-name-display">Cylton Collymore</span></strong>, <span
       id="provider-title-display">CEO</span>.
   </p>
@@ -1214,10 +1212,16 @@
       const params = new URLSearchParams(window.location.search);
 
       // ── 1. Core Financial Values ──
-      const total = parseInt(params.get('total') || '0', 10);
+      let total = parseInt(params.get('total') || '0', 10);
       const weeks = parseInt(params.get('weeks') || '20', 10);
       const hours = parseInt(params.get('hours') || '0', 10);
       const multiplier = parseFloat(params.get('multiplier') || '1.0');
+      // SAFETY: If multiplier > 1, the total was likely already inflated upstream.
+      // Normalize to canonical internal price (Rule 17: 1.0x in execution layer).
+      if (multiplier > 1) {
+        console.warn('⚠️ MSA Safety: multiplier=' + multiplier + ' detected. Normalizing total from ' + total + ' to ' + Math.round(total / multiplier));
+        total = Math.round(total / multiplier);
+      }
       const marketValue = Math.round(total * 2); // $250/hr market ÷ $125/hr internal = 2× 
       const selectedPlan = params.get('plan') || '2';
       const addonsRaw = params.get('addons') || '';
@@ -1245,7 +1249,7 @@
       }
       setAll('#effective-date', effectiveDate);
       setAll('#client-date-display, #sow-client-date, #provider-date-display, #sow-provider-date', effectiveDate);
-      setAll('#provider-legal-name, #provider-legal-name-recital, #entity-legal-name-display-strong', entityLegalName);
+      setAll('#provider-legal-name, #provider-legal-name-recital', entityLegalName);
       setAll('#provider-name-display, #provider-signature-display, #provider-architect-name', counterpartyName);
       setAll('#provider-title-display', counterpartyTitle);
 
