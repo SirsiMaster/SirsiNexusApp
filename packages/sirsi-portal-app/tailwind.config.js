@@ -9,9 +9,9 @@ export default {
       colors: {
         sirsi: {
           gold: '#C8A951',
-          navy: '#0f172a',
+          dark: '#05100a',
           emerald: '#10B981',
-          royal: '#1e3a8a',
+          forest: '#0a2a1b',
         }
       },
       fontFamily: {
@@ -19,7 +19,7 @@ export default {
         body: ['Inter', 'sans-serif'],
       },
       backgroundImage: {
-        'royal-gradient': 'linear-gradient(to bottom right, #050a18, #0f172a, #1e3a8a)',
+        'sirsi-gradient': 'linear-gradient(to bottom right, #05100a, #0a1a11, #064e3b)',
       }
     },
   },

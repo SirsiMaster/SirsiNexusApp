@@ -48,7 +48,7 @@ function Users() {
                                     <div className="text-[10px] text-white/40 uppercase tracking-tighter">{user.email}</div>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className={`px-2 py-0.5 rounded-full text-[10px] uppercase border ${user.role === 'Admin' ? 'bg-sirsi-royal/20 text-sirsi-royal border-sirsi-royal/30' : 'bg-white/10 text-white/60 border-white/20'
+                                    <span className={`px-2 py-0.5 rounded-full text-[10px] uppercase border ${user.role === 'Admin' ? 'bg-sirsi-emerald/20 text-sirsi-emerald border-sirsi-emerald/30' : 'bg-white/10 text-white/60 border-white/20'
                                         }`}>
                                         {user.role}
                                     </span>

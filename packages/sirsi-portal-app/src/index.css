@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-sirsi-navy text-white font-body;
+    @apply bg-sirsi-dark text-white font-body;
   }
 
   h1,
@@ -42,7 +42,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-sirsi-navy;
+  @apply bg-sirsi-dark;
 }
 
 ::-webkit-scrollbar-thumb {

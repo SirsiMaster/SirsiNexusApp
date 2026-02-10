@@ -71,7 +71,7 @@ function Settings() {
 
                     <div className="glass-panel p-6">
                         <h3 className="text-lg mb-6 flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-sirsi-royal shadow-[0_0_8px_#1e3a8a]" />
+                            <span className="w-2 h-2 rounded-full bg-sirsi-forest shadow-[0_0_8px_#102a22]" />
                             Infrastructure
                         </h3>
                         <div className="space-y-4">

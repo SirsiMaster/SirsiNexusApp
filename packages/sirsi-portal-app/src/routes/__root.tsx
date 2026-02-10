@@ -8,7 +8,7 @@ const RouterDevtools = TanStackRouterDevtools as any
 
 export const Route = createRootRoute({
     component: () => (
-        <div className="flex min-h-screen bg-royal-gradient shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]">
+        <div className="flex min-h-screen bg-sirsi-gradient shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]">
             {/* Sidebar */}
             <aside className="w-64 glass-panel m-4 flex flex-col">
                 <div className="p-8 border-b border-white/10">
