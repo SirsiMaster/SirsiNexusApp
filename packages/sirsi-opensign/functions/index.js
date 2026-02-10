@@ -24,6 +24,9 @@ const nodemailer = require('nodemailer');
 // Environment-based key switching: STRIPE_USE_LIVE controls live vs test mode
 const Stripe = require('stripe');
 const { authenticator } = require('otplib');
+// Allow ±1 time step (60s total window) to tolerate clock skew
+// between the user's phone and the Cloud Functions server.
+authenticator.options = { window: [1, 1] };
 const USE_LIVE_STRIPE = process.env.STRIPE_USE_LIVE === 'true';
 
 // Select appropriate keys based on environment
@@ -1980,7 +1983,7 @@ app.post('/api/security/mfa/verify', async (req, res) => {
 
     // 2. TOTP Logic (App Authenticator)
     if (method === 'totp' || (code.length === 6 && !target)) {
-      // Check for User-Specific Secret in Firestore
+      // Check for User-Specific Secret in mfa_secrets collection
       if (identifier) {
         const secretDoc = await db.collection('mfa_secrets').doc(identifier).get();
         if (secretDoc.exists) {
@@ -1991,6 +1994,18 @@ app.post('/api/security/mfa/verify', async (req, res) => {
               await db.collection('mfa_secrets').doc(identifier).update({ enrolled: true });
             }
             return res.json({ success: true, message: "Verified via Personal Authenticator" });
+          }
+        }
+      }
+
+      // Also check user doc (mfaSecret field, set by getMFAEnrollment)
+      if (identifier) {
+        const usersSnap = await db.collection('users').where('email', '==', identifier).limit(1).get();
+        if (!usersSnap.empty) {
+          const userData = usersSnap.docs[0].data();
+          const userDocSecret = userData.mfaSecret || userData.mfa_secret;
+          if (userDocSecret && authenticator.check(code, userDocSecret)) {
+            return res.json({ success: true, message: "Verified via User Profile Secret" });
           }
         }
       }
@@ -2093,10 +2108,17 @@ exports.verifyMFA = onCall(
 
     try {
       // Look up user's MFA secret from Firestore
+      // Field is 'mfaSecret' (camelCase) — set by getMFAEnrollment.
+      // Also check legacy 'mfa_secret' (snake_case) for backwards compat.
       let mfaSecret = 'SIRSI777CYLTON77'; // Platform default
       const userDoc = await db.collection('users').doc(uid).get();
-      if (userDoc.exists && userDoc.data().mfa_secret) {
-        mfaSecret = userDoc.data().mfa_secret;
+      if (userDoc.exists) {
+        const data = userDoc.data();
+        if (data.mfaSecret) {
+          mfaSecret = data.mfaSecret;
+        } else if (data.mfa_secret) {
+          mfaSecret = data.mfa_secret;
+        }
       }
 
       // Validate the TOTP code
