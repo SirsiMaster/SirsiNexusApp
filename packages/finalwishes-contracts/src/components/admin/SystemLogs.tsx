@@ -1,46 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-
-interface LogEntry {
-    id: string;
-    timestamp: string;
-    level: 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR' | 'SECURITY';
-    source: string;
-    message: string;
-    user?: string;
-}
+import { useAuditTrail } from '../../hooks/useAdmin';
 
 const MotionTr = motion.tr as any;
 
 export function SystemLogs() {
-    const [logs, setLogs] = useState<LogEntry[]>([]);
     const [filter, setFilter] = useState<'ALL' | 'ERROR' | 'SECURITY' | 'WARNING'>('ALL');
+    const { data: logData, isLoading, isError } = useAuditTrail(filter);
 
-    useEffect(() => {
-        const initialLogs: LogEntry[] = [
-            { id: '1', timestamp: new Date().toISOString(), level: 'SECURITY', source: 'AUTH_GATE', message: 'MFA Verification Successful', user: 'cylton@sirsi.ai' },
-            { id: '2', timestamp: new Date(Date.now() - 5000).toISOString(), level: 'INFO', source: 'LEDGER_ENGINE', message: 'Calculated project valuation for PRJ-9921', user: 'admin@sirsi.ai' },
-            { id: '3', timestamp: new Date(Date.now() - 15000).toISOString(), level: 'SUCCESS', source: 'STRIPE_RAIL', message: 'Payment intent confirmed: $12,500.00' },
-            { id: '4', timestamp: new Date(Date.now() - 60000).toISOString(), level: 'WARNING', source: 'DB_CLUSTER', message: 'P99 Latency spike detected on read nodes' },
-            { id: '5', timestamp: new Date(Date.now() - 120000).toISOString(), level: 'ERROR', source: 'MAIL_RELAY', message: 'Upstream SMTP connection timeout' },
-            { id: '6', timestamp: new Date(Date.now() - 300000).toISOString(), level: 'SECURITY', source: 'GATEKEEPER', message: 'Rate limit enforced for IP 192.168.1.1' },
-        ];
-        setLogs(initialLogs);
+    const logs = logData?.logs || [];
 
-        const interval = setInterval(() => {
-            const newLog: LogEntry = {
-                id: Math.random().toString(36).substr(2, 9),
-                timestamp: new Date().toISOString(),
-                level: (['INFO', 'SUCCESS', 'WARNING', 'ERROR', 'SECURITY'] as any)[Math.floor(Math.random() * 5)],
-                source: (['API_HUB', 'CONTRACT_FS', 'VAULT_STORE', 'OPEN_SIGN'] as any)[Math.floor(Math.random() * 4)],
-                message: 'Automated health check executed',
-                user: Math.random() > 0.5 ? 'system' : 'admin@sirsi.ai'
-            };
-            setLogs(prev => [newLog, ...prev.slice(0, 49)]);
-        }, 8000);
+    if (isLoading) return (
+        <div className="flex flex-col items-center justify-center p-20 animate-pulse">
+            <div className="w-12 h-12 border-2 border-gold/20 border-t-gold rounded-full animate-spin mb-4" />
+            <p className="inter text-[10px] text-gold uppercase tracking-[0.3em]">Syncing Multi-Region Logs...</p>
+        </div>
+    );
 
-        return () => clearInterval(interval);
-    }, []);
+    if (isError) return (
+        <div className="neo-glass-panel p-10 border border-rose-500/30 rounded-2xl bg-rose-500/5 text-center">
+            <p className="inter text-xs text-rose-500 uppercase tracking-widest font-bold mb-2">Telemetry Sync Failed</p>
+            <p className="inter text-[10px] text-slate-500 uppercase">Upstream connection timeout or unauthorized access</p>
+        </div>
+    );
 
     const filteredLogs = filter === 'ALL' ? logs : logs.filter(l => l.level === filter);
 
@@ -121,7 +103,7 @@ export function SystemLogs() {
                                     className="group hover:bg-white/5 transition-colors"
                                 >
                                     <td className="px-6 py-4 text-[11px] font-mono text-slate-500">
-                                        {new Date(log.timestamp).toLocaleTimeString([], { hour12: false })}
+                                        {new Date(Number(log.timestamp)).toLocaleTimeString([], { hour12: false })}
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`text-[9px] font-bold tracking-widest uppercase px-2 py-0.5 rounded bg-black/20 border border-white/5 ${getLevelColor(log.level)}`}>

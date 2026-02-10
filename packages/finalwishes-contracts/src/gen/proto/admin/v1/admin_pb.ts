@@ -959,3 +959,170 @@ export class UpdateSettingsResponse extends Message<UpdateSettingsResponse> {
   }
 }
 
+/**
+ * @generated from message sirsi.admin.v1.ListAuditTrailRequest
+ */
+export class ListAuditTrailRequest extends Message<ListAuditTrailRequest> {
+  /**
+   * @generated from field: int32 page_size = 1;
+   */
+  pageSize = 0;
+
+  /**
+   * @generated from field: string page_token = 2;
+   */
+  pageToken = "";
+
+  /**
+   * ALL, SECURITY, ERROR etc
+   *
+   * @generated from field: string filter_level = 3;
+   */
+  filterLevel = "";
+
+  constructor(data?: PartialMessage<ListAuditTrailRequest>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "sirsi.admin.v1.ListAuditTrailRequest";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "page_size", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "page_token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "filter_level", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListAuditTrailRequest {
+    return new ListAuditTrailRequest().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListAuditTrailRequest {
+    return new ListAuditTrailRequest().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListAuditTrailRequest {
+    return new ListAuditTrailRequest().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ListAuditTrailRequest | PlainMessage<ListAuditTrailRequest> | undefined, b: ListAuditTrailRequest | PlainMessage<ListAuditTrailRequest> | undefined): boolean {
+    return proto3.util.equals(ListAuditTrailRequest, a, b);
+  }
+}
+
+/**
+ * @generated from message sirsi.admin.v1.ListAuditTrailResponse
+ */
+export class ListAuditTrailResponse extends Message<ListAuditTrailResponse> {
+  /**
+   * @generated from field: repeated sirsi.admin.v1.AuditLogEntry logs = 1;
+   */
+  logs: AuditLogEntry[] = [];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken = "";
+
+  constructor(data?: PartialMessage<ListAuditTrailResponse>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "sirsi.admin.v1.ListAuditTrailResponse";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "logs", kind: "message", T: AuditLogEntry, repeated: true },
+    { no: 2, name: "next_page_token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ListAuditTrailResponse {
+    return new ListAuditTrailResponse().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ListAuditTrailResponse {
+    return new ListAuditTrailResponse().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ListAuditTrailResponse {
+    return new ListAuditTrailResponse().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: ListAuditTrailResponse | PlainMessage<ListAuditTrailResponse> | undefined, b: ListAuditTrailResponse | PlainMessage<ListAuditTrailResponse> | undefined): boolean {
+    return proto3.util.equals(ListAuditTrailResponse, a, b);
+  }
+}
+
+/**
+ * @generated from message sirsi.admin.v1.AuditLogEntry
+ */
+export class AuditLogEntry extends Message<AuditLogEntry> {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id = "";
+
+  /**
+   * @generated from field: int64 timestamp = 2;
+   */
+  timestamp = protoInt64.zero;
+
+  /**
+   * @generated from field: string level = 3;
+   */
+  level = "";
+
+  /**
+   * @generated from field: string source = 4;
+   */
+  source = "";
+
+  /**
+   * @generated from field: string message = 5;
+   */
+  message = "";
+
+  /**
+   * @generated from field: string user = 6;
+   */
+  user = "";
+
+  /**
+   * @generated from field: string metadata = 7;
+   */
+  metadata = "";
+
+  constructor(data?: PartialMessage<AuditLogEntry>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "sirsi.admin.v1.AuditLogEntry";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "timestamp", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 3, name: "level", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "source", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "message", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "user", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "metadata", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AuditLogEntry {
+    return new AuditLogEntry().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AuditLogEntry {
+    return new AuditLogEntry().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AuditLogEntry {
+    return new AuditLogEntry().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: AuditLogEntry | PlainMessage<AuditLogEntry> | undefined, b: AuditLogEntry | PlainMessage<AuditLogEntry> | undefined): boolean {
+    return proto3.util.equals(AuditLogEntry, a, b);
+  }
+}
+

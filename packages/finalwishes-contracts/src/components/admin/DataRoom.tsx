@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { listVaultFiles } from '../../lib/opensign';
 
 interface DataFile {
     id: string;
@@ -26,6 +27,34 @@ const APresence = AnimatePresence as any;
 
 export function DataRoom() {
     const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
+    const [realFiles, setRealFiles] = useState<DataFile[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchFiles = async () => {
+            try {
+                const res = await listVaultFiles();
+                if (res.success) {
+                    const formatted = res.files.map((f: any) => ({
+                        id: f.id,
+                        name: f.name,
+                        size: f.size,
+                        type: f.type,
+                        access: 'Restricted' as const,
+                        uploaded: new Date(f.updated).toLocaleDateString(),
+                        downloads: 0,
+                        description: `Secure document: ${f.name}`
+                    }));
+                    setRealFiles(formatted);
+                }
+            } catch (err) {
+                console.error('DataRoom Feed Error:', err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchFiles();
+    }, []);
 
     const sections: DataRoomSection[] = [
         {
@@ -34,10 +63,7 @@ export function DataRoom() {
             icon: '📊',
             color: 'blue',
             type: 'Financial Data',
-            files: [
-                { id: '1', name: 'Q4 2023 Financial Report.pdf', size: '2.5 MB', type: 'PDF', access: 'Restricted', uploaded: '2024-01-10', downloads: 45, description: 'Quarterly financial report for Q4 2023' },
-                { id: '2', name: 'Annual Audit 2023.pdf', size: '4.1 MB', type: 'PDF', access: 'Private', uploaded: '2023-12-15', downloads: 12, description: 'External audit results' }
-            ]
+            files: realFiles.filter(f => f.name.toLowerCase().includes('invoice') || f.name.toLowerCase().includes('ledger'))
         },
         {
             id: 'legal',
@@ -45,10 +71,7 @@ export function DataRoom() {
             icon: '📜',
             color: 'purple',
             type: 'Compliance & IP',
-            files: [
-                { id: '3', name: 'Master Service Agreement.pdf', size: '1.2 MB', type: 'PDF', access: 'Restricted', uploaded: '2024-02-01', downloads: 89, description: 'Standard MSA template' },
-                { id: '4', name: 'Privacy Policy v2.1.pdf', size: '0.8 MB', type: 'PDF', access: 'Public', uploaded: '2024-01-20', downloads: 204, description: 'Updated privacy guidelines' }
-            ]
+            files: realFiles.filter(f => f.name.toLowerCase().includes('executed') || f.name.toLowerCase().includes('agreement'))
         },
         {
             id: 'strategy',
@@ -56,9 +79,7 @@ export function DataRoom() {
             icon: '💡',
             color: 'amber',
             type: 'Roadmaps & Growth',
-            files: [
-                { id: '5', name: 'Product Roadmap 2024-2025.pptx', size: '6.5 MB', type: 'PPTX', access: 'Restricted', uploaded: '2024-01-15', downloads: 67, description: 'Long-term product strategy' }
-            ]
+            files: []
         },
         {
             id: 'investment',
@@ -66,15 +87,18 @@ export function DataRoom() {
             icon: '💰',
             color: 'emerald',
             type: 'Capital & Equity',
-            files: [
-                { id: '6', name: 'Term Sheet Template.docx', size: '246 KB', type: 'DOCX', access: 'Private', uploaded: '2024-01-05', downloads: 31, description: 'Pre-seed round template' }
-            ]
+            files: []
         }
     ];
 
+    // Add fallback if no real files match filters
+    if (realFiles.length > 0 && sections[1].files.length === 0 && sections[0].files.length === 0) {
+        sections[1].files = realFiles;
+    }
+
     const stats = [
         { label: 'Total Storage', value: '0.04 GB', sub: '92% Available', icon: '💽' },
-        { label: 'Total Files', value: '18', sub: '4 Categories', icon: '📁' },
+        { label: 'Total Files', value: realFiles.length.toString(), sub: '4 Categories', icon: '📁' },
         { label: 'Active Shares', value: '142', sub: '24 Secure Links', icon: '🔗' },
         { label: 'Audit Events', value: '1.2k', sub: 'Last 24 hours', icon: '🔍' },
     ];
@@ -110,30 +134,37 @@ export function DataRoom() {
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {sections.map((section) => (
-                    <div
-                        key={section.id}
-                        className={`group relative p-8 rounded-3xl border transition-all duration-500 cursor-pointer ${activeSectionId === section.id
+            {isLoading ? (
+                <div className="flex flex-col items-center justify-center p-20 animate-pulse">
+                    <div className="w-12 h-12 border-2 border-gold/20 border-t-gold rounded-full animate-spin mb-4" />
+                    <p className="inter text-[10px] text-gold uppercase tracking-[0.3em]">Accessing Cryptographic Vault...</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {sections.map((section) => (
+                        <div
+                            key={section.id}
+                            className={`group relative p-8 rounded-3xl border transition-all duration-500 cursor-pointer ${activeSectionId === section.id
                                 ? 'bg-gold/10 border-gold shadow-[0_0_30px_rgba(200,169,81,0.1)]'
                                 : 'bg-white/5 border-white/10 hover:border-white/30 hover:bg-white/[0.07]'
-                            }`}
-                        onClick={() => setActiveSectionId(activeSectionId === section.id ? null : section.id)}
-                    >
-                        <div className="flex flex-col gap-4">
-                            <span className="text-4xl">{section.icon}</span>
-                            <div>
-                                <h3 className="cinzel text-lg text-white tracking-widest font-bold mb-1">{section.title}</h3>
-                                <p className="inter text-[10px] text-slate-500 uppercase font-medium">{section.type}</p>
-                            </div>
-                            <div className="flex justify-between items-center mt-4">
-                                <span className="inter text-[10px] text-slate-400 font-bold">{section.files.length} DOCUMENTS</span>
-                                <span className={`text-gold transition-transform duration-300 ${activeSectionId === section.id ? 'rotate-90' : ''}`}>→</span>
+                                }`}
+                            onClick={() => setActiveSectionId(activeSectionId === section.id ? null : section.id)}
+                        >
+                            <div className="flex flex-col gap-4">
+                                <span className="text-4xl">{section.icon}</span>
+                                <div>
+                                    <h3 className="cinzel text-lg text-white tracking-widest font-bold mb-1">{section.title}</h3>
+                                    <p className="inter text-[10px] text-slate-500 uppercase font-medium">{section.type}</p>
+                                </div>
+                                <div className="flex justify-between items-center mt-4">
+                                    <span className="inter text-[10px] text-slate-400 font-bold">{section.files.length} DOCUMENTS</span>
+                                    <span className={`text-gold transition-transform duration-300 ${activeSectionId === section.id ? 'rotate-90' : ''}`}>→</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
 
             <APresence>
                 {activeSectionId && (
@@ -176,8 +207,8 @@ export function DataRoom() {
                                             <div className="hidden md:block text-right">
                                                 <p className="inter text-[10px] text-slate-500 uppercase font-bold tracking-widest">Access</p>
                                                 <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${file.access === 'Public' ? 'text-emerald bg-emerald/10' :
-                                                        file.access === 'Restricted' ? 'text-amber-500 bg-amber-500/10' :
-                                                            'text-rose-500 bg-rose-500/10'
+                                                    file.access === 'Restricted' ? 'text-amber-500 bg-amber-500/10' :
+                                                        'text-rose-500 bg-rose-500/10'
                                                     }`}>
                                                     {file.access}
                                                 </span>
@@ -193,6 +224,11 @@ export function DataRoom() {
                                         </div>
                                     </div>
                                 ))}
+                                {sections.find(s => s.id === activeSectionId)?.files.length === 0 && (
+                                    <div className="p-12 text-center border-2 border-dashed border-white/5 rounded-2xl">
+                                        <p className="inter text-[10px] text-slate-600 uppercase tracking-widest">No documents matching this partition</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </MotionDiv>

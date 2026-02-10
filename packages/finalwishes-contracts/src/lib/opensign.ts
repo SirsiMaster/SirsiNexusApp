@@ -244,6 +244,14 @@ export async function signEnvelope(
     })
 }
 
+/**
+ * List files in the secure vault storage.
+ * Maps to GET /api/vault/list
+ */
+export async function listVaultFiles(): Promise<{ success: boolean; files: any[] }> {
+    return request('/api/vault/list')
+}
+
 // ─── Payment Operations ──────────────────────────────────────────────
 
 /**

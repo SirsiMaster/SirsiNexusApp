@@ -9,7 +9,8 @@ import {
     SendNotificationRequest,
     GetSettingsRequest,
     UpdateSettingsRequest,
-    SystemSettings
+    SystemSettings,
+    ListAuditTrailRequest
 } from '../gen/proto/admin/v1/admin_pb';
 import { ListContractsRequest } from '../gen/proto/contracts/v1/contracts_pb';
 
@@ -113,6 +114,20 @@ export const useUpdateSettings = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['settings'] });
+        }
+    });
+};
+
+export const useAuditTrail = (filterLevel = 'ALL', pageSize = 50, pageToken = '') => {
+    return useQuery({
+        queryKey: ['audit-trail', filterLevel, pageSize, pageToken],
+        queryFn: async () => {
+            const res = await adminClient.listAuditTrail(new ListAuditTrailRequest({
+                filterLevel,
+                pageSize,
+                pageToken
+            }));
+            return res;
         }
     });
 };

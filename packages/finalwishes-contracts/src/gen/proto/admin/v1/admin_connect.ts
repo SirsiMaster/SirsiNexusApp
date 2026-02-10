@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Estate, GetEstateRequest, GetSettingsRequest, GetSettingsResponse, ListEstatesRequest, ListEstatesResponse, ListNotificationsRequest, ListNotificationsResponse, ListUsersRequest, ListUsersResponse, LogDevSessionRequest, LogDevSessionResponse, ManageUserRoleRequest, ManageUserRoleResponse, SendNotificationRequest, SendNotificationResponse, UpdateSettingsRequest, UpdateSettingsResponse } from "./admin_pb.js";
+import { Estate, GetEstateRequest, GetSettingsRequest, GetSettingsResponse, ListAuditTrailRequest, ListAuditTrailResponse, ListEstatesRequest, ListEstatesResponse, ListNotificationsRequest, ListNotificationsResponse, ListUsersRequest, ListUsersResponse, LogDevSessionRequest, LogDevSessionResponse, ManageUserRoleRequest, ManageUserRoleResponse, SendNotificationRequest, SendNotificationResponse, UpdateSettingsRequest, UpdateSettingsResponse } from "./admin_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -101,6 +101,17 @@ export const AdminService = {
       name: "UpdateSettings",
       I: UpdateSettingsRequest,
       O: UpdateSettingsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Audit & Logging
+     *
+     * @generated from rpc sirsi.admin.v1.AdminService.ListAuditTrail
+     */
+    listAuditTrail: {
+      name: "ListAuditTrail",
+      I: ListAuditTrailRequest,
+      O: ListAuditTrailResponse,
       kind: MethodKind.Unary,
     },
   }

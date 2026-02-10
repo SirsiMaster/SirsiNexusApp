@@ -222,25 +222,73 @@ app.post('/api/guest/envelopes/:id/sign', async (req, res) => {
     } catch (error: any) { res.status(500).json({ error: error.message }); }
 });
 
+app.get('/api/vault/list', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+        const [files] = await storage.getFiles({ prefix: 'vault/' });
+        const fileList = files.map(file => ({
+            id: file.id,
+            name: file.name.replace('vault/', ''),
+            size: `${(Number(file.metadata.size) / 1024 / 1024).toFixed(2)} MB`,
+            updated: file.metadata.updated,
+            type: file.metadata.contentType === 'application/pdf' ? 'PDF' : 'DOC',
+            metadata: file.metadata.metadata || {}
+        }));
+        res.json({ success: true, files: fileList });
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.post('/api/payments/create-session', async (req, res) => {
     try {
-        const { envelopeId, amount, successUrl, cancelUrl } = req.body;
+        const { envelopeId, amount, successUrl, cancelUrl, paymentMethodTypes, stripeConnectAccountId } = req.body;
         const envelopeDoc = await db.collection('envelopes').doc(envelopeId).get();
+
         if (!envelopeDoc.exists) {
             res.status(404).json({ error: 'Envelope not found' });
             return;
         }
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card', 'us_bank_account'],
+
+        const data = envelopeDoc.data()!;
+
+        const sessionConfig: Stripe.Checkout.SessionCreateParams = {
+            payment_method_types: (paymentMethodTypes && paymentMethodTypes.length > 0)
+                ? paymentMethodTypes
+                : ['card', 'us_bank_account'],
             mode: 'payment',
             client_reference_id: envelopeId,
-            line_items: [{ price_data: { currency: 'usd', unit_amount: amount || 5000000, product_data: { name: 'Master Services Agreement' } }, quantity: 1 }],
+            line_items: [{
+                price_data: {
+                    currency: 'usd',
+                    unit_amount: amount || 5000000,
+                    product_data: {
+                        name: data.metadata?.projectName
+                            ? `Master Services Agreement - ${data.metadata.projectName}`
+                            : 'Master Services Agreement'
+                    }
+                },
+                quantity: 1
+            }],
             success_url: successUrl || `https://sign.sirsi.ai/payment.html?status=success&envelope=${envelopeId}`,
             cancel_url: cancelUrl || `https://sign.sirsi.ai/payment.html?status=cancelled&envelope=${envelopeId}`,
-            metadata: { envelopeId }
-        });
-        res.json({ success: true, checkoutUrl: session.url });
-    } catch (error: any) { res.status(500).json({ error: error.message }); }
+            metadata: {
+                envelopeId,
+                projectId: data.projectId || 'sirsi'
+            }
+        };
+
+        // If Stripe Connect Account is provided, route payment through it
+        const options: Stripe.RequestOptions = {};
+        if (stripeConnectAccountId) {
+            options.stripeAccount = stripeConnectAccountId;
+        }
+
+        const session = await stripe.checkout.sessions.create(sessionConfig, options);
+        res.json({ success: true, checkoutUrl: session.url, sessionId: session.id });
+    } catch (error: any) {
+        console.error('Create Session Error:', error);
+        res.status(500).json({ error: error.message });
+    }
 });
 
 app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), async (req: express.Request, res: express.Response): Promise<void | any> => {
@@ -249,18 +297,56 @@ app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), asy
     try {
         event = STRIPE_WEBHOOK_SECRET ? stripe.webhooks.constructEvent(req.body, sig, STRIPE_WEBHOOK_SECRET) : JSON.parse(req.body);
     } catch (err: any) {
+        console.error(`❌ Webhook Error: ${err.message}`);
         res.status(400).send(`Webhook Error: ${err.message}`);
         return;
     }
 
-    if (event.type === 'checkout.session.completed') {
-        const session = event.data.object as Stripe.Checkout.Session;
-        const envelopeId = session.client_reference_id;
-        if (envelopeId) {
-            await db.collection('envelopes').doc(envelopeId).update({ status: 'paid', paymentStatus: 'completed', updatedAt: admin.firestore.FieldValue.serverTimestamp() });
-            await sendProvisioningEmail(session.customer_email!, session.customer_details?.name || 'Client', envelopeId);
-        }
+    console.log(`🔔 Webhook received: ${event.type}`);
+
+    const session = event.data.object as Stripe.Checkout.Session;
+    const envelopeId = session.client_reference_id;
+
+    if (!envelopeId) {
+        res.json({ received: true });
+        return;
     }
+
+    if (event.type === 'checkout.session.completed') {
+        // For card, payment_status is 'paid' immediately.
+        // For ACH/Wire, it is usually 'unpaid' until settlement.
+        const isPaid = session.payment_status === 'paid';
+
+        await db.collection('envelopes').doc(envelopeId).update({
+            status: isPaid ? 'paid' : 'waiting_for_payment',
+            paymentStatus: session.payment_status,
+            stripeSessionId: session.id,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+
+        if (isPaid) {
+            console.log(`✅ Instant payment complete for envelope: ${envelopeId}`);
+            await sendProvisioningEmail(session.customer_email!, session.customer_details?.name || 'Client', envelopeId);
+        } else {
+            console.log(`⏳ Async payment started for envelope: ${envelopeId} — awaiting settlement`);
+        }
+    } else if (event.type === 'checkout.session.async_payment_succeeded') {
+        console.log(`✅ Async payment settled for envelope: ${envelopeId}`);
+        await db.collection('envelopes').doc(envelopeId).update({
+            status: 'paid',
+            paymentStatus: 'paid',
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+        await sendProvisioningEmail(session.customer_email!, session.customer_details?.name || 'Client', envelopeId);
+    } else if (event.type === 'checkout.session.async_payment_failed') {
+        console.error(`❌ Async payment FAILED for envelope: ${envelopeId}`);
+        await db.collection('envelopes').doc(envelopeId).update({
+            status: 'payment_failed',
+            paymentStatus: 'failed',
+            updatedAt: admin.firestore.FieldValue.serverTimestamp()
+        });
+    }
+
     res.json({ received: true });
 });
 
