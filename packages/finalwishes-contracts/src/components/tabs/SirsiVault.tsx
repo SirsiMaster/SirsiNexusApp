@@ -293,10 +293,9 @@ export function SirsiVault() {
                 id: contractId,
                 contract: {
                     status: 7 as any, // FULLY_EXECUTED
-                    // @ts-ignore - Injecting countersigner evidence
                     countersignerSignatureImageData: countersignerSignatureImageData,
                     countersignerSignatureHash: sigHash,
-                    countersignerSignedAt: Date.now().toString(),
+                    countersignerSignedAt: BigInt(Date.now()) as any,
                     countersignerTitle: signatureData.title || 'CEO',
                     legalAcknowledgment: true,
                 }
@@ -460,7 +459,6 @@ export function SirsiVault() {
                     contract: {
                         status: 3 as any, // SIGNED -> WAITING_FOR_COUNTERSIGN in backend
                         signatureImageData: signatureImageData || '',
-                        // @ts-ignore - Injecting cryptographic evidence into Firestore record
                         signatureHash: sigHash,
                         legalAcknowledgment: clientLegalAck,
                         selectedPaymentPlan: selectedPaymentPlan,

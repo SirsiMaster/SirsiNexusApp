@@ -1,0 +1,57 @@
+{
+    "functions": [
+        {
+            "source": "packages/sirsi-auth/functions",
+            "codebase": "sirsi-auth",
+            "ignore": [
+                "node_modules",
+                ".git",
+                "firebase-debug.log",
+                "firebase-debug.*.log",
+                "*.local"
+            ],
+            "predeploy": [
+                "npm --prefix \"$RESOURCE_DIR\" run build"
+            ]
+        }
+    ],
+    "hosting": [
+        {
+            "site": "sirsi-ai",
+            "public": "packages/sirsi-portal",
+            "ignore": [
+                "firebase.json",
+                "**/.git/**",
+                "**/node_modules/**"
+            ],
+            "rewrites": [
+                {
+                    "source": "/api/**",
+                    "function": "portalApi"
+                }
+            ]
+        },
+        {
+            "site": "sirsi-sign",
+            "public": "packages/sirsi-opensign/public",
+            "ignore": [
+                "firebase.json",
+                "**/.git/**",
+                "**/node_modules/**"
+            ],
+            "rewrites": [
+                {
+                    "source": "/api/**",
+                    "function": "opensignApi"
+                }
+            ]
+        }
+    ],
+    "firestore": {
+        "rules": "packages/sirsi-portal/firestore.rules",
+        "indexes": "packages/sirsi-portal/firestore.indexes.json"
+    },
+    "storage": {
+        "rules": "packages/sirsi-portal/storage.rules"
+    }
+}

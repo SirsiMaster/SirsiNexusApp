@@ -26,6 +26,8 @@ export enum ContractStatus {
   ACTIVE = 2,
 
   /**
+   * Client has signed
+   *
    * @generated from enum value: CONTRACT_STATUS_SIGNED = 3;
    */
   SIGNED = 3,
@@ -41,9 +43,18 @@ export enum ContractStatus {
   ARCHIVED = 5,
 
   /**
+   * Client signed, awaiting provider
+   *
    * @generated from enum value: CONTRACT_STATUS_WAITING_FOR_COUNTERSIGN = 6;
    */
   WAITING_FOR_COUNTERSIGN = 6,
+
+  /**
+   * Both parties have signed (ADR-014)
+   *
+   * @generated from enum value: CONTRACT_STATUS_FULLY_EXECUTED = 7;
+   */
+  FULLY_EXECUTED = 7,
 }
 // Retrieve enum metadata with: proto3.getEnumType(ContractStatus)
 proto3.util.setEnumType(ContractStatus, "sirsi.contracts.v1.ContractStatus", [
@@ -54,6 +65,7 @@ proto3.util.setEnumType(ContractStatus, "sirsi.contracts.v1.ContractStatus", [
   { no: 4, name: "CONTRACT_STATUS_PAID" },
   { no: 5, name: "CONTRACT_STATUS_ARCHIVED" },
   { no: 6, name: "CONTRACT_STATUS_WAITING_FOR_COUNTERSIGN" },
+  { no: 7, name: "CONTRACT_STATUS_FULLY_EXECUTED" },
 ]);
 
 /**
@@ -337,7 +349,7 @@ export class Contract extends Message<Contract> {
   stripeConnectAccountId = "";
 
   /**
-   * Execution Data (OpenSign)
+   * Execution Data — Client Signer (Primary)
    *
    * @generated from field: string signature_image_data = 16;
    */
@@ -354,6 +366,35 @@ export class Contract extends Message<Contract> {
    * @generated from field: bool legal_acknowledgment = 17;
    */
   legalAcknowledgment = false;
+
+  /**
+   * Professional title of client signer
+   *
+   * @generated from field: string client_title = 23;
+   */
+  clientTitle = "";
+
+  /**
+   * Execution Data — Countersigner (ADR-014 Bipartite)
+   *
+   * @generated from field: string countersigner_signature_image_data = 24;
+   */
+  countersignerSignatureImageData = "";
+
+  /**
+   * @generated from field: string countersigner_signature_hash = 25;
+   */
+  countersignerSignatureHash = "";
+
+  /**
+   * @generated from field: int64 countersigner_signed_at = 26;
+   */
+  countersignerSignedAt = protoInt64.zero;
+
+  /**
+   * @generated from field: string countersigner_title = 27;
+   */
+  countersignerTitle = "";
 
   /**
    * Selection Data
@@ -403,6 +444,11 @@ export class Contract extends Message<Contract> {
     { no: 16, name: "signature_image_data", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 21, name: "signature_hash", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 17, name: "legal_acknowledgment", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 23, name: "client_title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 24, name: "countersigner_signature_image_data", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 25, name: "countersigner_signature_hash", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 26, name: "countersigner_signed_at", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 27, name: "countersigner_title", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 18, name: "selected_payment_plan", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 19, name: "payment_method", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 22, name: "paid_amount", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
