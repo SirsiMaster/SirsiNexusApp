@@ -1,0 +1,71 @@
+// proto/sirsi/admin/v2/tenant.proto
+syntax = "proto3";
+
+package sirsi.admin.v2;
+
+import "sirsi/common/v1/common.proto";
+
+option go_package = "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2";
+
+service TenantService {
+  rpc ListTenants(ListTenantsRequest) returns (ListTenantsResponse);
+  rpc GetTenant(GetTenantRequest) returns (Tenant);
+  rpc CreateTenant(CreateTenantRequest) returns (Tenant);
+  rpc UpdateTenant(UpdateTenantRequest) returns (Tenant);
+  rpc DeactivateTenant(DeactivateTenantRequest) returns (DeactivateTenantResponse);
+}
+
+message Tenant {
+  string id = 1;
+  string name = 2;                    // e.g., "FinalWishes"
+  string slug = 3;                    // e.g., "finalwishes"
+  string description = 4;
+  TenantStatus status = 5;
+  TenantConfig config = 6;
+  sirsi.common.v1.AuditEntry created = 7;
+  sirsi.common.v1.AuditEntry updated = 8;
+}
+
+enum TenantStatus {
+  TENANT_STATUS_UNSPECIFIED = 0;
+  TENANT_STATUS_ACTIVE = 1;
+  TENANT_STATUS_SUSPENDED = 2;
+  TENANT_STATUS_DEACTIVATED = 3;
+}
+
+message TenantConfig {
+  string primary_color = 1;
+  string logo_url = 2;
+  string domain = 3;                  // Custom domain or subdomain
+  repeated string enabled_services = 4; // ["contracts", "vault", "payments"]
+  string stripe_connect_account_id = 5;
+}
+
+message ListTenantsRequest {
+  sirsi.common.v1.PaginationRequest pagination = 1;
+  TenantStatus status_filter = 2;
+}
+
+message ListTenantsResponse {
+  repeated Tenant tenants = 1;
+  sirsi.common.v1.PaginationResponse pagination = 2;
+}
+
+message GetTenantRequest { string id = 1; }
+
+message CreateTenantRequest {
+  string name = 1;
+  string slug = 2;
+  string description = 3;
+  TenantConfig config = 4;
+}
+
+message UpdateTenantRequest {
+  string id = 1;
+  Tenant tenant = 2;
+  repeated string update_mask = 3;
+}
+
+message DeactivateTenantRequest { string id = 1; }
+
+message DeactivateTenantResponse { bool success = 1; }

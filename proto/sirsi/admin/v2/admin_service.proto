@@ -1,0 +1,137 @@
+// proto/sirsi/admin/v2/admin_service.proto
+syntax = "proto3";
+
+package sirsi.admin.v2;
+
+import "sirsi/common/v1/common.proto";
+
+option go_package = "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2";
+
+service AdminService {
+  // Development & Session Logging
+  rpc LogDevSession(LogDevSessionRequest) returns (LogDevSessionResponse);
+  
+  // User & Access Control
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+  rpc ManageUserRole(ManageUserRoleRequest) returns (ManageUserRoleResponse);
+
+  // Notifications
+  rpc ListNotifications(ListNotificationsRequest) returns (ListNotificationsResponse);
+  rpc SendNotification(SendNotificationRequest) returns (SendNotificationResponse);
+
+  // System Settings
+  rpc GetSettings(GetSettingsRequest) returns (GetSettingsResponse);
+  rpc UpdateSettings(UpdateSettingsRequest) returns (UpdateSettingsResponse);
+
+  // Audit & Logging
+  rpc ListAuditTrail(ListAuditTrailRequest) returns (ListAuditTrailResponse);
+}
+
+message LogDevSessionRequest {
+  string developer_id = 1;
+  string action = 2;
+  string metadata = 3; // JSON
+}
+
+message LogDevSessionResponse {
+  string session_id = 1;
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  string role = 4;
+  string tenant_id = 5;
+}
+
+message ListUsersRequest {
+  sirsi.common.v1.PaginationRequest pagination = 1;
+  string tenant_id = 2;
+}
+
+message ListUsersResponse {
+  repeated User users = 1;
+  sirsi.common.v1.PaginationResponse pagination = 2;
+}
+
+message ManageUserRoleRequest {
+  string user_id = 1;
+  string role = 2;
+}
+
+message ManageUserRoleResponse {
+  bool success = 1;
+}
+
+message Notification {
+  string id = 1;
+  string recipient_id = 2;
+  string title = 3;
+  string body = 4;
+  string type = 5;
+  int64 sent_at = 6;
+  string status = 7;
+}
+
+message ListNotificationsRequest {
+  sirsi.common.v1.PaginationRequest pagination = 1;
+  string recipient_id = 2;
+}
+
+message ListNotificationsResponse {
+  repeated Notification notifications = 1;
+  sirsi.common.v1.PaginationResponse pagination = 2;
+}
+
+message SendNotificationRequest {
+  string recipient_id = 1; // "all" for broadcast
+  string title = 2;
+  string body = 3;
+  string type = 4; // info, success, warning, error
+  string channel = 5; // push, in_app, email
+}
+
+message SendNotificationResponse {
+  string notification_id = 1;
+}
+
+message SystemSettings {
+  bool maintenance_mode = 1;
+  string active_region = 2;
+  double sirsi_multiplier = 3;
+}
+
+message GetSettingsRequest {}
+
+message GetSettingsResponse {
+  SystemSettings settings = 1;
+}
+
+message UpdateSettingsRequest {
+  SystemSettings settings = 1;
+}
+
+message UpdateSettingsResponse {
+  bool success = 1;
+}
+
+message ListAuditTrailRequest {
+  sirsi.common.v1.PaginationRequest pagination = 1;
+  string filter_level = 2; // ALL, SECURITY, ERROR etc
+}
+
+message ListAuditTrailResponse {
+  repeated AuditLogEntry logs = 1;
+  sirsi.common.v1.PaginationResponse pagination = 2;
+}
+
+message AuditLogEntry {
+  string id = 1;
+  int64 timestamp = 2;
+  string level = 3;
+  string source = 4;
+  string message = 5;
+  string user = 6;
+  string metadata = 7;
+}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useRouter } from '@tanstack/react-router'
 import '../../styles/admin-layout.css'
 import '../../styles/contract.css'
 import './styles/themes.css'
@@ -18,8 +18,9 @@ import { MasterAgreement } from '../tabs/MasterAgreement'
 import { SirsiVault } from '../tabs/SirsiVault'
 
 export function AgreementWorkflow() {
-  const { projectId, userId, category, entityId, docId } = useParams()
-  const navigate = useNavigate()
+  const params = useParams({ strict: false }) as any
+  const { projectId, userId, category, entityId, docId } = params
+  const { navigate } = useRouter()
   const currentTab = useCurrentTab()
   const setProjectId = useConfigStore(s => s.setProjectId)
   const setContractId = useConfigStore(s => s.setContractId)
@@ -119,7 +120,7 @@ export function AgreementWorkflow() {
         {/* Vault: breadcrumb bar */}
         {isVaultContext && (
           <div className="vault-breadcrumb">
-            <button className="vault-breadcrumb-btn" onClick={() => navigate('/vault')}>
+            <button className="vault-breadcrumb-btn" onClick={() => navigate({ to: '/vault' })}>
               ← Back to Vault
             </button>
             <div className="vault-breadcrumb-divider" />
@@ -162,7 +163,7 @@ export function AgreementWorkflow() {
                 <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.7)', marginBottom: '2rem' }}>
                   Your Master Service Agreement with {storeProjectId === 'finalwishes' ? 'FinalWishes' : storeProjectId} is now ACTIVE.
                 </p>
-                <button onClick={() => navigate('/vault')} className="select-plan-btn">
+                <button onClick={() => navigate({ to: '/vault' })} className="select-plan-btn">
                   Access Your Sirsi Vault →
                 </button>
               </div>

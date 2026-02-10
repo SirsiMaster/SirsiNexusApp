@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useRouter, useParams } from '@tanstack/react-router';
 import { contractsClient } from '../../lib/grpc';
 import { auth } from '../../lib/firebase';
 import { MFAEnrollment } from '../auth/MFAEnrollment';
@@ -85,8 +85,9 @@ const S = {
 
 
 export function VaultDashboard() {
-    const { userId: _userId, category: _category, entityId, docId } = useParams();
-    const navigate = useNavigate();
+    const { navigate } = useRouter();
+    const params = useParams({ strict: false });
+    const { userId: _userId, category: _category, entityId, docId } = params as any;
 
     const [contracts, setContracts] = useState<Contract[]>([]);
     const [loading, setLoading] = useState(true);
@@ -326,7 +327,7 @@ export function VaultDashboard() {
         console.log('🚪 Sign out initiated...');
         await auth.signOut();
         clearMFASession();
-        navigate('/');
+        navigate({ to: '/' });
     };
 
     const selectedContracts = useMemo(
@@ -365,7 +366,7 @@ export function VaultDashboard() {
             <MFAGate
                 purpose="vault"
                 onVerified={() => setMfaVerified(true)}
-                onCancel={() => navigate('/')}
+                onCancel={() => navigate({ to: '/' })}
             />
         );
     }
@@ -639,7 +640,7 @@ export function VaultDashboard() {
                                                 <button
                                                     onClick={() => {
                                                         const slug = (auth.currentUser?.email || '').split('@')[0];
-                                                        navigate(`/vault/${slug}/contracts/${contract.projectId}/${contract.id}?mfa=verified`);
+                                                        navigate({ to: `/vault/${slug}/contracts/${contract.projectId}/${contract.id}`, search: { mfa: 'verified' } });
                                                     }}
                                                     className="gold-action-btn"
                                                     style={{ padding: '8px 20px', fontSize: '13px' }}
@@ -649,7 +650,7 @@ export function VaultDashboard() {
                                                 <button
                                                     onClick={() => {
                                                         const slug = (auth.currentUser?.email || '').split('@')[0];
-                                                        navigate(`/vault/${slug}/contracts/${contract.projectId}/${contract.id}`);
+                                                        navigate({ to: `/vault/${slug}/contracts/${contract.projectId}/${contract.id}` });
                                                     }}
                                                     style={{
                                                         background: 'rgba(255,255,255,0.05)', color: 'white',

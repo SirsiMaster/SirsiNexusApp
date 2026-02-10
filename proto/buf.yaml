@@ -1,0 +1,13 @@
+# proto/buf.yaml
+version: v2
+modules:
+  - path: .
+    name: buf.build/sirsimaster/sirsi-nexus
+lint:
+  use:
+    - DEFAULT
+  except:
+    - PACKAGE_VERSION_SUFFIX
+breaking:
+  use:
+    - WIRE_JSON

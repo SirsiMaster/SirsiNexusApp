@@ -1,0 +1,39 @@
+// proto/sirsi/common/v1/common.proto
+syntax = "proto3";
+
+package sirsi.common.v1;
+
+option go_package = "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/common/v1";
+
+message PaginationRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message PaginationResponse {
+  string next_page_token = 1;
+  int32 total_count = 2;
+}
+
+message Money {
+  int64 amount_cents = 1;
+  string currency = 2; // ISO 4217, default "USD"
+}
+
+message AuditEntry {
+  string actor_id = 1;
+  string actor_email = 2;
+  string action = 3;
+  int64 timestamp = 4;
+  string ip_address = 5;
+  string user_agent = 6;
+}
+
+message FirebaseAuthContext {
+  string uid = 1;
+  string email = 2;
+  string display_name = 3;
+  repeated string roles = 4;      // "admin", "user", "entity_admin"
+  string tenant_id = 5;           // Multi-tenant isolation
+  bool mfa_verified = 6;
+}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from '@tanstack/react-router';
 import { MFAGate, isMFASessionVerified } from '../auth/MFAGate';
 import { ContractsManagement } from './ContractsManagement';
 import { TenantManager } from './TenantManager';
@@ -21,6 +22,7 @@ import { DocumentationPortal } from './DocumentationPortal';
 type AdminTab = 'contracts' | 'tenants' | 'users' | 'analytics' | 'revenue' | 'invoices' | 'dataroom' | 'developers' | 'logs' | 'docs' | 'development' | 'notifications' | 'settings' | 'mfa';
 
 export function AdminPortal() {
+    const { navigate } = useRouter();
     const [activeTab, setActiveTab] = useState<AdminTab>('contracts');
     const [mfaVerified, setMfaVerified] = useState(() => isMFASessionVerified());
     const logSession = useLogDevSession();
@@ -64,7 +66,7 @@ export function AdminPortal() {
             <MFAGate
                 purpose="vault"
                 onVerified={() => setMfaVerified(true)}
-                onCancel={() => window.location.href = '/'}
+                onCancel={() => navigate({ to: '/' })}
             />
         );
     }

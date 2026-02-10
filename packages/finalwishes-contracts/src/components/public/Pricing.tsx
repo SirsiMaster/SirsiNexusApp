@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from '@tanstack/react-router';
 
 export function Pricing() {
-    const navigate = useNavigate();
+    const { navigate } = useRouter();
 
     const plans = [
         {
@@ -101,10 +101,10 @@ export function Pricing() {
                             </ul>
 
                             <button
-                                onClick={() => plan.price === "Custom" ? navigate('/contact') : navigate('/signup', { state: { plan: plan.name.toLowerCase() } })}
+                                onClick={() => plan.price === "Custom" ? navigate({ to: '/contact' }) : navigate({ to: '/signup', search: { plan: plan.name.toLowerCase() } })}
                                 className={`w-full py-4 rounded-xl cinzel text-xs font-bold tracking-[0.2em] uppercase transition-all ${plan.highlight
-                                        ? 'bg-gold text-navy hover:bg-gold-bright hover:shadow-[0_0_30px_rgba(200,169,81,0.3)]'
-                                        : 'bg-white/5 text-white border border-white/10 hover:bg-white/10'
+                                    ? 'bg-gold text-navy hover:bg-gold-bright hover:shadow-[0_0_30px_rgba(200,169,81,0.3)]'
+                                    : 'bg-white/5 text-white border border-white/10 hover:bg-white/10'
                                     }`}
                             >
                                 {plan.buttonText}

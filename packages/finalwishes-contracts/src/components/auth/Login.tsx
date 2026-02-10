@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useRouter } from '@tanstack/react-router';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../../lib/firebase';
 
@@ -11,16 +11,16 @@ export function Login() {
     const [isLoading, setIsLoading] = useState(false);
     const [checkingAuth, setCheckingAuth] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const navigate = useNavigate();
-    const location = useLocation();
+    const { navigate, latestLocation: location } = useRouter();
 
-    const from = (location.state as any)?.from || '/vault';
+    // In TanStack Router, we use search params for the 'from' redirect
+    const from = (location.search as any)?.from || '/vault';
 
     // ── If already authenticated, skip login entirely → go to vault ──
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                navigate('/vault', { replace: true });
+                navigate({ to: '/vault', replace: true });
             } else {
                 setCheckingAuth(false);
             }
@@ -54,7 +54,7 @@ export function Login() {
             localStorage.setItem('sirsi_user_email', email);
 
             // Redirect to target destination or vault
-            navigate(from);
+            navigate({ to: from });
         } catch (err: any) {
             console.error('❌ Authentication failed:', err);
             setError(err.message || 'Authentication failed');

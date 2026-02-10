@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useRouter } from '@tanstack/react-router';
 import { auth } from '../../lib/firebase';
 import { onAuthStateChanged, type User } from 'firebase/auth';
 
@@ -14,7 +14,7 @@ interface ProtectedRouteProps {
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-    const location = useLocation();
+    const { latestLocation: location } = useRouter();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -45,7 +45,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     if (!user) {
         // Force through the front vault gate (Login)
         // Store the intended destination in redirect state
-        return <Navigate to="/login" state={{ from: location }} replace />;
+        return <Navigate to="/login" search={{ from: location.pathname }} replace /> as any;
     }
 
     return <>{children}</>;
