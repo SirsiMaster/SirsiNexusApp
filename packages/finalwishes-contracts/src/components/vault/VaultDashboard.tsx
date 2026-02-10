@@ -322,6 +322,13 @@ export function VaultDashboard() {
         }
     };
 
+    const handleSignOut = async () => {
+        console.log('🚪 Sign out initiated...');
+        await auth.signOut();
+        clearMFASession();
+        navigate('/');
+    };
+
     const selectedContracts = useMemo(
         () => contracts.filter(c => selectedIds.has(c.id)),
         [contracts, selectedIds]
@@ -412,6 +419,17 @@ export function VaultDashboard() {
                         title="Re-verify MFA"
                     >
                         🔄 Re-verify
+                    </button>
+                    <button
+                        onClick={handleSignOut}
+                        style={{
+                            background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)',
+                            color: '#f87171', padding: '10px 16px', borderRadius: '8px',
+                            fontSize: '12px', fontWeight: 700, cursor: 'pointer',
+                            display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.3s ease'
+                        }}
+                    >
+                        <span>🚪</span> Log out
                     </button>
                 </div>
             </div>

@@ -78,6 +78,7 @@ export interface CreatePaymentSessionRequest {
     projectId?: string
     successUrl?: string
     cancelUrl?: string
+    paymentMethodTypes?: string[]
 }
 
 export interface CreatePaymentSessionResponse {

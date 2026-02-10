@@ -497,7 +497,8 @@ export function SirsiVault() {
                         planId: 'payment-1',
                         projectId: storeProjectId || 'finalwishes',
                         successUrl: window.location.origin + `/contracts/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}&method=ach`,
-                        cancelUrl: window.location.href
+                        cancelUrl: window.location.href,
+                        paymentMethodTypes: ['us_bank_account']
                     })
 
                     if (achSession.checkoutUrl) {
@@ -534,7 +535,8 @@ export function SirsiVault() {
                     planId: 'payment-1',
                     projectId: storeProjectId || 'finalwishes',
                     successUrl: window.location.origin + `/contracts/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-                    cancelUrl: window.location.href
+                    cancelUrl: window.location.href,
+                    paymentMethodTypes: ['card']
                 })
 
 

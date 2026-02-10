@@ -1,10 +1,10 @@
 // @ts-nocheck
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AgreementWorkflow } from './components/workflow/AgreementWorkflow';
-import { LandingPage } from './components/vault/LandingPage';
 import { VaultDashboard } from './components/vault/VaultDashboard';
 import { AdminPortal } from './components/admin/AdminPortal';
 import { Login } from './components/auth/Login';
+import { Pricing } from './components/public/Pricing';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { AppLayout } from './components/layout/AppLayout';
 
@@ -13,10 +13,11 @@ function App() {
     <Router>
       <AppLayout>
         <Routes>
-          {/* Gateway / Vault Entry */}
-          <Route path="/" element={<LandingPage /> as any} />
+          {/* Single Gateway — Login handles auth check + auto-redirect to vault */}
+          <Route path="/" element={<Login /> as any} />
           <Route path="/login" element={<Login /> as any} />
           <Route path="/landing" element={<Navigate to="/" replace /> as any} />
+          <Route path="/pricing" element={<Pricing /> as any} />
 
           {/* Service Agreement Workflow - All Gated */}
           <Route path="/contracts" element={

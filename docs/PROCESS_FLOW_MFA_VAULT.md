@@ -1,79 +1,75 @@
 # Process Flow: Sirsi Nexus MFA & Document Vault
-**Version:** 1.0.0
-**Date:** January 29, 2026
+**Version:** 2.0.0
+**Date:** February 9, 2026
 
 ## 1. Overview
-The Sirsi Nexus ecosystem uses a multi-layered approach to secure legal documents and financial operations. This document explains how identity is verified, how data is protected, and how information routes between systems (FinalWishes, OpenSign, and the Universal Component System).
+The Sirsi Nexus ecosystem uses a multi-layered approach to secure legal documents and financial operations. This document explains how identity is verified, how data is protected, and how information routes between systems using the consolidated **Front Gate** architecture.
 
 ---
 
-## 2. The Identity Handshake (Credentials)
+## 2. The Consolidated Front Gate (Landing & Login)
 
-### 2.1 Developer Admin (Cylton Collymore)
-For development and testing, the system is hardcoded with a "Master Developer" identity in `security-init.js`.
+### 2.1 Unified Entry Point
+The Landing Page and Login form are consolidated into a single screen at the root path (`/`).
+- **Unauthenticated Users**: See the branding, features, and the login/registration form.
+- **Authenticated Users**: The `onAuthStateChanged` listener immediately redirects them to `/vault`.
+- **Navigation**: The root path (`/`) replaces the separate `/landing` and `/login` routes for a seamless experience.
+
+### 2.2 Master Identity (Cylton Collymore)
 - **Email**: `cylton@sirsi.ai`
-- **Phone**: `+1 202 747 4787`
-- **TOTP Secret**: `SIRSI777CYLTON77` (Used for Authenticator apps like Google Authenticator).
-
-### 2.2 Client Identity
-When a client (e.g., a FinalWishes partner) initiates a contract:
-1. Their email and name are passed as URL parameters or stored in `sessionStorage` during the signing phase.
-2. The `security-init.js` script recognizes these parameters and uses them to route MFA codes.
+- **Role**: `provider` (Administrator)
+- **MFA Creds**: Authenticator secret provided during onboarding.
 
 ---
 
-## 3. The Security Barrier (MFA Enforcement)
+## 3. The Security Gate (Multi-Channel MFA)
 
-### 3.1 Recognition
-The `security-init.js` script is a "pervasive" script loaded on all Sirsi pages. It monitors the URL path.
-- **Sensitive Paths**: `/payment.html`, `/admin/`, `/vault/`, etc.
-- **Trigger**: When a user hits a sensitive path, `enforceMFA()` checks if `sessionStorage.getItem('mfaVerified')` is true.
+### 3.1 Bipartite Enforcement
+After standard Firebase authentication, users are challenged by the **MFAGate**. Verification status is stored in **sessionStorage** (`sirsi_mfa_verified`) to prevent "Claim Lag" or infinite loop issues caused by Firebase token propagation delays.
 
-### 3.2 MFA Modal
-If not verified, an MFA Gate is injected into the DOM. The user must choose a method:
-- **TOTP**: Verified locally (or via backend) using the Master Secret.
-- **SMS/Email**:
-    - Frontend calls `POST /api/security/mfa/send` (Cloud Function).
-    - Backend generates a 6-digit code, stores it in Firestore with a 5-minute TTL.
-    - Delivery via **Twilio** (SMS) or **Nodemailer** (Email).
-- **Verification**:
-    - Frontend calls `POST /api/security/mfa/verify`.
-    - Backend checks Firestore. If correct, the document is deleted (one-time use) and a success response is sent.
-    - Frontend sets `sessionStorage.setItem('mfaVerified', 'true')` and reloads the page.
+### 3.2 MFA Channels
+Users can verify via three independent methods:
+1. **Authenticator App (TOTP)**: Verified via the `verifyMFA` Cloud Function.
+2. **SMS Verification**: 6-digit code sent via Twilio (`/api/security/mfa/send`).
+3. **Email Verification**: 6-digit code sent via Nodemailer/SMTP (`/api/security/mfa/send`).
+
+### 3.3 Verification Persistence
+- **Verified State**: `sessionStorage.setItem('sirsi_mfa_verified', 'true')`.
+- **Session Duration**: Persistence lasts for the duration of the browser session.
+- **Explicit Re-verify**: Users can trigger a re-verification from the Vault Dashboard.
+- **Logout Cleanup**: `clearMFASession()` removes the verified status and signs out of Firebase.
 
 ---
 
 ## 4. Document Execution & Routing
 
-### 4.1 Signing Flow
-1. **Contract Page**: FinalWishes generates the agreement.
-2. **Sign.html**: The user signs (Draw or Type).
-3. **Receipt**: A unique `envelopeId` is generated.
-4. **Handoff**: Upon completion, the user is redirected to `payment.html?envelope=...&amount=...`.
+### 4.1 Bipartite Ceremony (Dual Signature)
+1. **Client Signs**: Capture signature + SHA-256 hash + Legal Ack.
+2. **Status Update**: Contract moves to `WAITING_FOR_COUNTERSIGN`.
+3. **Provider Countersigns**: Sirsi Architect reviews client evidence and applies secondary signature.
+4. **Finalization**: Contract moves to `FULLY_EXECUTED`.
 
-### 4.2 Payment Rail
-1. `payment.html` loads the total amount and reference from URL params.
-2. **MFA Guard**: `security-init.js` triggers the MFA gate before payment can be initiated.
-3. **Processing**: Once verified, the user can choose Stripe (Card) or Chase (ACH/Wire).
-4. **Execution**: The payment is processed via Stripe Checkout or Plaid/ACH.
+### 4.2 Financial Settlement
+- **MFA Required**: MFA must be verified before payment triggers are enabled.
+- **Stripe Integration**: Secure checkout for credit/debit card payments.
+- **Ledger Sync**: Payment status is automatically synced to the contract record via webhooks.
 
 ---
 
 ## 5. The Vault (Data Protection)
 
-### 5.1 Storage
-- **PDFs**: Stored in Google Cloud Storage.
-- **Metadata**: Stored in Firestore (Project ID, Envelope ID, Signer Info, Payment Status).
-- **Audit Logs**: Every action (Page View, MFA Attempt, Payment executed) is cryptographically signed and stored in the `auditLogs` collection.
-
-### 5.2 Protection
-- **Encryption at Rest**: AES-256 for PII data.
-- **Signed URLs**: Documents are not publicly accessible; they require temporary signed URLs generated by the backend.
-- **Integrated Independence**: The Vault is a UCS component, meaning FinalWishes and Assiduous share the same secure infrastructure but maintain data isolation via `projectId` tags.
+### 5.1 Infrastructure Layer
+- **Storage**: Google Cloud Storage for permanent PDF records.
+- **Database**: Firestore (Metadata) + Cloud SQL (PII/Audit).
+- **Encryption**: AES-256 at rest; TLS 1.3 in transit.
+- **Audit Logging**: Every MFA attempt and signature is recorded in the central audit trail.
 
 ---
 
-## 6. Current Deployment Fixes
-- **Unified Site**: Fixed the conflict where `finalwishes-contracts` was overwriting the `sirsi-sign` static files.
-- **MFA Ordering**: Fixed the bug where MFA buttons were unresponsive due to initialization order.
-- **Generic Branding**: Updated tab titles to reflect "Sirsi Nexus Sign" as the carrier service.
+## 6. Recent Production Hardening
+- ✅ **Consolidated Front Gate**: Merged `/landing` and `/login` into a single high-fidelity screen.
+- ✅ **Session-Based MFA**: Resolved the infinite loop bug by using `sessionStorage` for immediate verification state.
+- ✅ **Multi-Channel Gate**: Support for TOTP, SMS, and Email delivery.
+- ✅ **Secure Sign-Out**: Integrated Firebase sign-out with MFA session clearing.
+- ✅ **Admin Portal Link**: Added a direct "Document Vault" link in the Admin Portal sidebar for easier navigation.
+
