@@ -82,6 +82,36 @@ const contractsRoute = createRoute({
     ),
 });
 
+const contractsProjectRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/contracts/$projectId',
+    component: () => (
+        <ProtectedRoute>
+            <AgreementWorkflow />
+        </ProtectedRoute>
+    ),
+});
+
+const vaultUserRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/vault/$userId',
+    component: () => (
+        <ProtectedRoute>
+            <VaultDashboard />
+        </ProtectedRoute>
+    ),
+});
+
+const vaultDeepRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/vault/$userId/$category/$entityId/$docId',
+    component: () => (
+        <ProtectedRoute>
+            <AgreementWorkflow />
+        </ProtectedRoute>
+    ),
+});
+
 // 3. Route Tree
 const routeTree = rootRoute.addChildren([
     indexRoute,
@@ -89,8 +119,11 @@ const routeTree = rootRoute.addChildren([
     pricingRoute,
     investorRoute,
     vaultRoute,
+    vaultUserRoute,
+    vaultDeepRoute,
     adminRoute,
     contractsRoute,
+    contractsProjectRoute,
 ]);
 
 // 4. Create Router

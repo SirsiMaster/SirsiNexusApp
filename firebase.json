@@ -28,6 +28,10 @@
                 {
                     "source": "/api/**",
                     "function": "portalApi"
+                },
+                {
+                    "source": "**",
+                    "destination": "/index.html"
                 }
             ]
         },
@@ -43,6 +47,10 @@
                 {
                     "source": "/api/**",
                     "function": "opensignApi"
+                },
+                {
+                    "source": "**",
+                    "destination": "/index.html"
                 }
             ]
         }
