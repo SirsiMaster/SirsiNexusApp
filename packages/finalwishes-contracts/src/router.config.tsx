@@ -72,6 +72,16 @@ const adminRoute = createRoute({
     ),
 });
 
+const contractsProjectRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/contracts/$projectId',
+    component: () => (
+        <ProtectedRoute>
+            <AgreementWorkflow />
+        </ProtectedRoute>
+    ),
+});
+
 const contractsRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/contracts',
@@ -82,9 +92,9 @@ const contractsRoute = createRoute({
     ),
 });
 
-const contractsProjectRoute = createRoute({
+const adminContractsRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/contracts/$projectId',
+    path: '/admin/contracts/$projectId',
     component: () => (
         <ProtectedRoute>
             <AgreementWorkflow />
@@ -122,6 +132,7 @@ const routeTree = rootRoute.addChildren([
     vaultUserRoute,
     vaultDeepRoute,
     adminRoute,
+    adminContractsRoute,
     contractsRoute,
     contractsProjectRoute,
 ]);

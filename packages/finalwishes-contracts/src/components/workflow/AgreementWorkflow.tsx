@@ -33,8 +33,11 @@ export function AgreementWorkflow() {
   const { data: settings } = useSettings()
   const setSystemSettings = useConfigStore(s => s.setSystemSettings)
 
-  // Vault context = accessed from /vault/:userId/... (no legacy sidebar)
+  // Context detection
   const isVaultContext = !!userId
+  const isSignDomain = window.location.hostname === 'sign.sirsi.ai' || window.location.hostname === 'sirsi-sign.web.app'
+  const isAdminPath = window.location.pathname.includes('/admin/')
+  const showSidebar = !isVaultContext && !isSignDomain && isAdminPath
 
   const searchParams = new URLSearchParams(window.location.search)
   const isPaymentSuccess = searchParams.get('session_id') !== null && window.location.pathname.endsWith('/payment/success')
@@ -106,13 +109,13 @@ export function AgreementWorkflow() {
     }
   }
 
-  const wrapperClass = `admin-wrapper${isLightTheme ? ' theme-light' : ''}${!isVaultContext ? ' has-sidebar' : ''}`
+  const wrapperClass = `admin-wrapper${isLightTheme ? ' theme-light' : ''}${showSidebar ? ' has-sidebar' : ''}`
 
   return (
     <div className={wrapperClass} data-auth-protect="admin">
 
-      {/* Sidebar — legacy admin only */}
-      {!isVaultContext && <Sidebar />}
+      {/* Sidebar — legacy admin only (App Dashboard context) */}
+      {showSidebar && <Sidebar />}
 
       {/* Main Content */}
       <main className="main-content contract-view">
@@ -130,8 +133,8 @@ export function AgreementWorkflow() {
           </div>
         )}
 
-        {/* Admin header — legacy admin only */}
-        {!isVaultContext && (
+        {/* Admin header — legacy admin only (App Dashboard context) */}
+        {showSidebar && (
           <AdminHeader isLightTheme={isLightTheme} onToggleTheme={() => setIsLightTheme(!isLightTheme)} />
         )}
 
