@@ -1,24 +1,29 @@
-# ADR-013: Sirsi Sign Unified Vault & Multi-Tenant Architecture
+# ADR-013: Sirsi Sign Hierarchical Routing & Multi-Tenant Differentiation
 
 ## Status
-Proposed
+Accepted
 
 ## Context
-The Sirsi Sign platform currently uses a flat routing structure and lacks clear multi-tenant grouping. To support a portfolio of entities (FinalWishes, Assiduous, etc.), the vault must become a hierarchical portal that handles authentication, MFA, and document grouping by entity.
+The Sirsi Sign platform required a hierarchical routing structure to support multi-tenant document access (e.g., FinalWishes, Assiduous) while maintaining a clean, professional user experience on the `sign.sirsi.ai` domain. Additionally, a distinction was needed between administrative views (App Dashboard) and client signing views (Document Vault).
 
 ## Decision
-1. **Hierarchical Routing**: Implement the following route structure:
-   - `sign.sirsi.ai/` -> Landing/Entry Portal
-   - `sign.sirsi.ai/vault/:user` -> User personal vault root
-   - `sign.sirsi.ai/vault/:user/:type/:entity/:docId` -> Deep link to specific documents/payments
-2. **Integrated Onboarding**: Combine signup/MFA setup into the entry flow for unauthenticated users arriving via deep links.
-3. **Multi-Tenant Grouping**: Group documents in the UI by originating entity (Tenant).
-4. **Role-Based Visibility**: 
-   - **User**: Sees own documents grouped by sender.
-   - **Entity Admin**: Sees documents/users for their specific entity.
-   - **Sirsi Admin**: Global cross-tenant visibility.
+1. **Hierarchical Routing**: Implemented via TanStack Router:
+   - `sign.sirsi.ai/contracts/$projectId` -> Deep link to project-specific contracts.
+   - `sign.sirsi.ai/vault/$userId` -> User personal vault root.
+   - `sign.sirsi.ai/vault/$userId/$category/$entityId/$docId` -> Granular document access.
+2. **SPA Routing Integrity**: Configured Firebase Hosting to support client-side routing:
+   - Added `rewrites` to catch all paths (`**`) and serve `index.html`.
+   - Enabled `cleanUrls: true` and `trailingSlash: false` for consistent path resolution.
+3. **Context-Aware Sidebar**: Differentiated views in `AgreementWorkflow.tsx`:
+   - **Admin Context**: Sidebar and header preserved only on `/admin/*` paths within the main portal.
+   - **User/Sign Context**: Sidebar and admin headers are strictly suppressed on the `sign.sirsi.ai` domain to provide an immersive document execution experience.
+
+## Implementation Details
+- **Router Config**: Dynamically handles `$projectId` and `$userId` parameters.
+- **Hosting Config**: Standardized across `sirsi-ai` and `sirsi-sign` sites in `firebase.json`.
+- **Visibility Logic**: Uses `window.location.hostname` and `window.location.pathname` to suppress legacy UI artifacts.
 
 ## Consequences
-- Routing becomes more complex and requires better breadcrumb/navigation handling.
-- Auth state must be synchronized with project-specific settings.
-- URL parameters must be validated to prevent IDOR or unauthorized access.
+- Deep links (e.g., `https://sign.sirsi.ai/contracts/finalwishes`) are now fully functional and bookmarkable.
+- The user experience on the signing domain is streamlined and free of administrative clutter.
+- Navigation between admin and user contexts is logically separated and secure.

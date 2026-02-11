@@ -10,7 +10,7 @@ This index tracks all significant architectural decisions for the Sirsi ecosyste
 | [ADR-010](ADR-010-SIRSI-REPOSITORY-UNIFICATION.md) | Sirsi Repository Unification | Approved | 2025-07-28 |
 | [ADR-011](ADR-011-UNIVERSAL-COMPONENT-SYSTEM.md) | Universal Component System (UCS) | Approved | 2026-01-29 |
 | [ADR-012](ADR-012-LIVE-MFA-DELIVERY-RAILS.md) | Live MFA Delivery Rails (SMS/Email) | Approved | 2026-01-30 |
-| [ADR-013](ADR-013-SIRSI-SIGN-HIERARCHY.md) | Sirsi Sign Unified Vault & Multi-Tenant Architecture | Proposed | 2026-02-06 |
+| [ADR-013](ADR-013-SIRSI-SIGN-HIERARCHY.md) | Hierarchical Routing & Multi-Tenant Differentiation | Accepted | 2026-02-10 |
 | [ADR-014](ADR-014-BIPARTITE-CONTRACT-EXECUTION.md) | Bipartite Contract Execution Protocol | Accepted | 2026-02-07 |
 | [ADR-015](ADR-015-UNIFIED-GRPC-CONVERGENCE.md) | Unified gRPC Convergence — Portal ↔ Sign Integration | Proposed | 2026-02-09 |
 

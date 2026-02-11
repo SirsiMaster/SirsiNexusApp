@@ -61,6 +61,7 @@ User ← → Sirsi Persona ← → Domain Agents (Internal Only)
 || **GitHub Pages Lead Generation** | ✅ **COMPLETE** | 100% | **Professional Lead Generation Portal & App Gateway** |
 || **Phase 6.5** | ✅ **COMPLETE** | 100% | **Professional GitHub Pages Portal & Lead Generation System** |
 || **Phase 8.1** | ✅ **COMPLETE** | 100% | **Admin Portal Refactor (Neo-Deco & gRPC-Web Foundation)** |
+|| **Phase 8.3** | ✅ **COMPLETE** | 100% | **Hierarchical Routing & Multi-Tenant Differentiation** |
 
 ### **Live System Metrics**
 - **Database**: ✅ CockroachDB operational (`postgresql://root@localhost:26257/sirsi_nexus`)
@@ -717,6 +718,14 @@ redis-cli ping
 ---
 
 ## 🎉 **MAJOR ACHIEVEMENTS LOG**
+
+### Phase 8.3: Hierarchical Routing & Multi-Tenant Differentiation (Complete)
+- **2026-02-10**: 🌐 **MAJOR ROUTING BREAKTHROUGH: Hierarchical Vault & Domain Divergence**
+  - **Dynamic Routing**: Implemented TanStack Router hierarchy supporting `/contracts/$projectId` and `/vault/$userId/...` deep links.
+  - **Domain Differentiation**: Configured `AgreementWorkflow.tsx` to automatically suppress sidebar and admin headers on the `sign.sirsi.ai` domain.
+  - **SPA Hosting Integrity**: Standardized `firebase.json` with `cleanUrls: true` and SPA catch-all rewrites for both site targets.
+  - **Admin Preservation**: Established `admin/contracts/$projectId` route to maintain administrative dashboard functionality within the main portal.
+  - **ADR Finalized**: Canonized implementation in [ADR-013](ADR-013-SIRSI-SIGN-HIERARCHY.md).
 
 ### Phase 8.2: Live MFA Delivery Rails (Active)
 - **2026-01-30**: 🛡️ **MAJOR SECURITY BREAKTHROUGH: Live MFA Integration (Stage 3 Gate)**

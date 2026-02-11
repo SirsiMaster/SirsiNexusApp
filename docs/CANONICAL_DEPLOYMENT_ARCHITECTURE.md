@@ -48,8 +48,9 @@
 |----------|-----------------|
 | **Project ID** | `sirsi-nexus-live` |
 | **Hosting Site Name** | `sirsi-sign` |
-| **Live URL (Root)** | `https://sirsi-sign.web.app/` |
-| **Live URL (Contracts)** | `https://sirsi-sign.web.app/partnership/finalwishes` |
+| **Live URL (Root)** | `https://sign.sirsi.ai/` |
+| **Live URL (Contracts)** | `https://sign.sirsi.ai/contracts/finalwishes` |
+| **Live URL (Vault)** | `https://sign.sirsi.ai/vault/$userId` |
 
 ⚠️ **CRITICAL**: The project ID is **`sirsi-nexus-live`**, NOT `sirsi-opensign`. The name `sirsi-opensign` is only the package folder name.
 
@@ -148,7 +149,7 @@ Automatically triggers on push to `main` when files change in:
 ## 🧪 VERIFICATION CHECKLIST
 
 After every deployment:
-- [ ] Visit https://sirsi-sign.web.app/partnership/finalwishes
+- [ ] Visit https://sign.sirsi.ai/contracts/finalwishes
 - [ ] Open DevTools → Network tab → Verify no 404 errors
 - [ ] Check that legal content matches what was edited
 - [ ] Run `git status` to confirm clean working tree
