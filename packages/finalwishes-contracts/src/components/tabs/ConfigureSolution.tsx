@@ -758,10 +758,10 @@ export function ConfigureSolution() {
             {/* NEXT BUTTON */}
             <div style={{ textAlign: 'center', marginTop: '4rem', marginBottom: '6rem' }}>
                 <button
-                    onClick={() => setTab('sow')}
+                    onClick={() => setTab('msa')}
                     className="select-plan-btn"
                 >
-                    Review Statement of Work →
+                    Review Master Agreement →
                 </button>
             </div>
         </div>

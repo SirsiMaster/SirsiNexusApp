@@ -12,8 +12,6 @@ import { useSettings } from '../../hooks/useAdmin'
 
 import { ExecutiveSummary } from '../tabs/ExecutiveSummary'
 import { ConfigureSolution } from '../tabs/ConfigureSolution'
-import { StatementOfWork } from '../tabs/StatementOfWork'
-import { CostValuation } from '../tabs/CostValuation'
 import { MasterAgreement } from '../tabs/MasterAgreement'
 import { SirsiVault } from '../tabs/SirsiVault'
 
@@ -101,8 +99,6 @@ export function AgreementWorkflow() {
     switch (currentTab) {
       case 'summary': return <ExecutiveSummary />
       case 'configure': return <ConfigureSolution />
-      case 'sow': return <StatementOfWork />
-      case 'cost': return <CostValuation />
       case 'msa': return <MasterAgreement />
       case 'vault': return <SirsiVault />
       default: return <ExecutiveSummary />

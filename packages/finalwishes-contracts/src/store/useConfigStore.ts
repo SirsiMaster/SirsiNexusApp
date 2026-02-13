@@ -4,7 +4,7 @@ import { contractsClient } from '../lib/grpc'
 import { calculateTotal } from '../data/catalog'
 import { getProjectTemplate } from '../data/projectTemplates'
 
-export type TabId = 'summary' | 'configure' | 'sow' | 'cost' | 'msa' | 'vault'
+export type TabId = 'summary' | 'configure' | 'msa' | 'vault'
 
 interface ConfigState {
     // Project info
@@ -242,14 +242,12 @@ export const useConfigStore = create<ConfigState>()(
 export const TABS: { id: TabId; label: string }[] = [
     { id: 'summary', label: 'Executive Summary' },
     { id: 'configure', label: 'Configure Solution' },
-    { id: 'sow', label: 'Statement of Work' },
-    { id: 'cost', label: 'Cost & Valuation' },
     { id: 'msa', label: 'Master Agreement' },
     { id: 'vault', label: 'Sirsi Vault' },
 ]
 
 // Tab order for navigation
-export const TAB_ORDER: TabId[] = ['summary', 'configure', 'sow', 'cost', 'msa', 'vault']
+export const TAB_ORDER: TabId[] = ['summary', 'configure', 'msa', 'vault']
 
 export function getNextTab(current: TabId): TabId | null {
     const idx = TAB_ORDER.indexOf(current)

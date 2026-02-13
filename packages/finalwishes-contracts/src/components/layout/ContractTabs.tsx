@@ -4,7 +4,7 @@
  */
 import { useCurrentTab, useSetTab } from '../../store/useConfigStore'
 
-type TabId = 'summary' | 'configure' | 'sow' | 'cost' | 'msa' | 'vault'
+type TabId = 'summary' | 'configure' | 'msa' | 'vault'
 
 interface Tab {
     id: TabId
@@ -15,8 +15,6 @@ interface Tab {
 const tabs: Tab[] = [
     { id: 'summary', line1: 'Executive', line2: 'Summary' },
     { id: 'configure', line1: 'Configure', line2: 'Solution' },
-    { id: 'sow', line1: 'Statement', line2: 'of Work' },
-    { id: 'cost', line1: 'Cost &', line2: 'Valuation' },
     { id: 'msa', line1: 'Master Agreement', line2: '(MSA)' },
     { id: 'vault', line1: 'Sirsi', line2: 'Vault' },
 ]
