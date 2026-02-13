@@ -16,8 +16,9 @@ import { DeveloperPortal } from './DeveloperPortal';
 import { DataRoom } from './DataRoom';
 import { SystemLogs } from './SystemLogs';
 import { DocumentationPortal } from './DocumentationPortal';
+import { GovernancePortal } from './governance/GovernancePortal';
 
-type AdminTab = 'contracts' | 'tenants' | 'users' | 'analytics' | 'revenue' | 'invoices' | 'dataroom' | 'developers' | 'logs' | 'docs' | 'development' | 'notifications' | 'settings' | 'mfa';
+type AdminTab = 'contracts' | 'tenants' | 'users' | 'governance' | 'analytics' | 'revenue' | 'invoices' | 'dataroom' | 'developers' | 'logs' | 'docs' | 'development' | 'notifications' | 'settings' | 'mfa';
 
 export function AdminPortal() {
     const [activeTab, setActiveTab] = useState<AdminTab>('contracts');
@@ -42,6 +43,7 @@ export function AdminPortal() {
         { id: 'tenants', label: 'Tenant Registry', icon: '🏛️', category: 'Operations' },
         { id: 'users', label: 'Users & Roles', icon: '👤', category: 'Operations' },
         { id: 'dataroom', label: 'Data Room', icon: '🔐', category: 'Operations' },
+        { id: 'governance', label: 'Studio Governance', icon: '⚖️', category: 'Operations' },
 
         { id: 'analytics', label: 'Intelligence', icon: '🧠', category: 'Intelligence' },
         { id: 'revenue', label: 'Financials', icon: '💰', category: 'Intelligence' },
@@ -125,6 +127,7 @@ export function AdminPortal() {
                     {activeTab === 'revenue' && <RevenueDashboard />}
                     {activeTab === 'invoices' && <CreateInvoice />}
                     {activeTab === 'dataroom' && <DataRoom />}
+                    {activeTab === 'governance' && <GovernancePortal />}
                     {activeTab === 'developers' && <DeveloperPortal />}
                     {activeTab === 'development' && <DevDashboard />}
                     {activeTab === 'logs' && <SystemLogs />}
