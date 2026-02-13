@@ -35,12 +35,12 @@ jobs:
           rm -rf packages/sirsi-opensign/public/assets
           rm -f packages/sirsi-opensign/public/index.html
 
-          # Copy new build artifacts
+          # Copy new build artifacts (SPA index.html to root only)
           cp -R packages/finalwishes-contracts/dist/* packages/sirsi-opensign/public/
 
-          # Ensure partnership route structure exists for high-fidelity routing
-          mkdir -p packages/sirsi-opensign/public/partnership/finalwishes
-          cp packages/sirsi-opensign/public/index.html packages/sirsi-opensign/public/partnership/finalwishes/
+          # Purge any stale subdirectory index.html files that break SPA routing
+          # Firebase rewrite rule ("**" → "/index.html") handles all client-side routes
+          rm -rf packages/sirsi-opensign/public/partnership packages/sirsi-opensign/public/contracts packages/sirsi-opensign/public/finalwishes
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0.7.1

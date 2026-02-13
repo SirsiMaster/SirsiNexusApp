@@ -7,7 +7,7 @@ updates:
       interval: "daily"
       time: "06:00"
       timezone: "UTC"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "SirsiNexusDev"
     assignees:
@@ -34,7 +34,7 @@ updates:
       interval: "daily"
       time: "06:00"
       timezone: "UTC"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "SirsiNexusDev"
     assignees:
@@ -61,7 +61,7 @@ updates:
       interval: "daily"
       time: "06:00"
       timezone: "UTC"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "SirsiNexusDev"
     assignees:
@@ -89,7 +89,7 @@ updates:
       day: "monday"
       time: "06:00"
       timezone: "UTC"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "SirsiNexusDev"
     assignees:
@@ -111,7 +111,7 @@ updates:
       day: "monday"
       time: "06:00"
       timezone: "UTC"
-    target-branch: "develop"
+    target-branch: "main"
     reviewers:
       - "SirsiNexusDev"
     assignees:
