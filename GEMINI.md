@@ -1,7 +1,7 @@
 # GEMINI.md
 **Operational Directive for Gemini Agent**
-**Version:** 5.5.0 (Canonical MFA Hub)
-**Date:** February 12, 2026
+**Version:** 5.6.0 (Stability Protocol)
+**Date:** February 13, 2026
 
 ---
 
@@ -25,6 +25,33 @@ You are not a passive code generator. You are a **Critical Partner**.
 *   **Repository Hierarchy (Rule 11)**: 
     - **Sirsi Nexus App (The Monorepo)**: The single, unified repository for the core engine, gRPC services, AI agents, and all shared UI components (`packages/sirsi-ui`) and services (`packages/sirsi-opensign`).
     - **111-Venture-Projects**: The studio governance repository, managing tenant-specific configs and portfolio-wide documentation.
+
+## 2.2 Code Freeze & Stability Protocol (PARAMOUNT)
+> **These rules are PARAMOUNT. They override ALL other directives when in conflict. Violation of these rules is a CRITICAL FAILURE.**
+
+*   **Do No Harm (Rule 14)**: You **MUST NOT** break any working process. If a feature currently functions correctly, any modification must preserve that behavior exactly. Before touching any file, verify what currently works and ensure it still works after. **A regression is worse than a missing feature.**
+
+*   **Additive-Only Changes (Rule 15)**: You may **ADD** functionality to a page or **IMPROVE** existing functionality, but you **MUST NOT** recode any page — visually or technically — in a way that disrupts the current working state. Do not refactor working styles, restructure working component trees, or rewrite working logic unless explicitly directed. The current beautiful, working UI is the baseline. **Protect it.**
+
+*   **Mandatory Canon Review (Rule 16)**: Before writing a SINGLE line of code in ANY sprint, you **MUST** re-read and internalize the following in this exact order:
+    1.  `GEMINI.md` (this file — all sections)
+    2.  All relevant ADRs in `docs/ADR-*.md`
+    3.  The canonical source files listed in §2.1
+    4.  The specific files you intend to modify (full read, not outline)
+    
+    **If you have not done this, you are not permitted to write code.** This is non-negotiable.
+
+*   **Sprint Planning is Mandatory (Rule 17)**: Before ANY code change, you **MUST** present a detailed, meticulous sprint plan to the USER that includes:
+    1.  **Objective**: What are we building/changing?
+    2.  **Files to Modify**: Exact file paths and the nature of each change (add/modify).
+    3.  **Dependencies**: What existing components, stores, routes, or services does this touch?
+    4.  **Potential Breaks**: An honest risk assessment of what could go wrong.
+    5.  **Rollback Plan**: How we revert if something breaks.
+    6.  **Verification Steps**: How we confirm it works without regressions.
+    
+    **No code is written until the USER approves the sprint plan.**
+
+*   **Living Canon (Rule 18)**: These canonical documents are living documents. When new rules, patterns, or architectural decisions emerge during development, they **MUST** be codified into the appropriate canonical file (GEMINI.md, ADR-*.md, etc.) immediately — not deferred. The canon must always reflect the current truth.
 
 ## 2.1 Canonical Sources of Truth (Benchmark of Progress)
 The following 34 files serve as the immutable benchmark for all project directives and progress. All code and decisions MUST align with them.
