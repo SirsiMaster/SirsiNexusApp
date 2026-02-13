@@ -643,3 +643,82 @@ button {
 .space-x-4>*+* {
   margin-left: 1rem;
 }
+
+/* ============================================
+   SIRSI CUSTOM UTILITIES (Neo-Deco)
+   ============================================ */
+.neo-glass-panel {
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.5);
+}
+
+.select-plan-btn {
+  background: #C8A951;
+  color: #0f172a;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.select-plan-btn:hover {
+  background: #D4AF37;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(200, 169, 81, 0.2);
+}
+
+.bg-navy {
+  background-color: #0A1432;
+}
+
+/* Modal System */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+}
+
+.modal-content {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 32px;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.7);
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
+}

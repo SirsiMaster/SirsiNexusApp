@@ -55,7 +55,12 @@ export function Login() {
             localStorage.setItem('sirsi_user_email', email);
 
             // Redirect to target destination or vault
-            navigate({ to: from });
+            if (isRegister) {
+                console.log('📦 New vault established — redirecting to MFA enrollment');
+                navigate({ to: '/mfa', search: { mode: 'enroll', from } });
+            } else {
+                navigate({ to: from });
+            }
         } catch (err: any) {
             console.error('❌ Authentication failed:', err);
             setError(err.message || 'Authentication failed');

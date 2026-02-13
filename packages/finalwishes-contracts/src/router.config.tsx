@@ -7,6 +7,7 @@ import { Login } from './components/auth/Login';
 import { Pricing } from './components/public/Pricing';
 import { AppLayout } from './components/layout/AppLayout';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { MFAPage } from './components/auth/MFAPage';
 
 // 1. Root Route
 const rootRoute = createRootRoute({
@@ -121,6 +122,12 @@ const vaultDeepRoute = createRoute({
     ),
 });
 
+const mfaRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/mfa',
+    component: MFAPage,
+});
+
 // 3. Route Tree
 const routeTree = rootRoute.addChildren([
     indexRoute,
@@ -134,6 +141,7 @@ const routeTree = rootRoute.addChildren([
     adminContractsRoute,
     contractsRoute,
     contractsProjectRoute,
+    mfaRoute,
 ]);
 
 // 4. Create Router

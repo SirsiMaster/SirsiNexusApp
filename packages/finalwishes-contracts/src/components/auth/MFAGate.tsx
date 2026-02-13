@@ -20,6 +20,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 import { httpsCallable } from 'firebase/functions';
 import { functions, auth } from '../../lib/firebase';
 import { sendMFACode, verifyMFACode } from '../../lib/opensign';
@@ -49,6 +50,7 @@ export function MFAGate({
     isFinancial = false,
     checkSessionFirst = false,
 }: MFAGateProps) {
+    const navigate = useNavigate();
     const isFinancialGate = purpose === 'financial' || isFinancial;
     const [verificationCode, setVerificationCode] = useState('');
     const [isVerifying, setIsVerifying] = useState(false);
@@ -477,7 +479,17 @@ export function MFAGate({
                     {selectedMethod === 'totp' && 'Use Google Authenticator, Authy, or any TOTP app to generate a code.'}
                     {selectedMethod === 'sms' && 'Standard messaging rates may apply. Code expires in 5 minutes.'}
                     {selectedMethod === 'email' && 'Check your inbox and spam folder. Code expires in 5 minutes.'}
-                    {' '}If you haven't set up MFA yet, use Security Settings in the vault dashboard.
+                    {' '}
+                    <button
+                        onClick={() => navigate({ to: '/mfa', search: { mode: 'enroll', from: window.location.pathname } })}
+                        style={{
+                            background: 'none', border: 'none', color: '#C8A951',
+                            fontSize: '11px', textDecoration: 'underline', cursor: 'pointer',
+                            padding: 0, marginLeft: '4px',
+                        }}
+                    >
+                        First time? Set up Auth App here.
+                    </button>
                 </p>
             </div>
 

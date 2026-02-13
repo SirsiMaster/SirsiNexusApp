@@ -3,6 +3,8 @@ import { httpsCallable } from 'firebase/functions';
 import { functions } from '../../lib/firebase';
 import { QRCodeSVG } from 'qrcode.react';
 
+const QRCodeSVGComponent = QRCodeSVG as any;
+
 interface MFAEnrollmentProps {
     onComplete: () => void;
     onCancel: () => void;
@@ -50,6 +52,7 @@ export function MFAEnrollment({ onComplete, onCancel }: MFAEnrollmentProps) {
             const result = await verifyMFA({ code: verificationCode }) as any;
 
             if (result.data.success) {
+                sessionStorage.setItem('sirsi_mfa_verified', 'true');
                 setSuccess(true);
                 setTimeout(onComplete, 2000);
             } else {
@@ -105,7 +108,7 @@ export function MFAEnrollment({ onComplete, onCancel }: MFAEnrollmentProps) {
                         display: 'inline-block',
                         marginBottom: '24px'
                     }}>
-                        <QRCodeSVG
+                        <QRCodeSVGComponent
                             value={enrollmentData.otpauth}
                             size={200}
                             level="H"
