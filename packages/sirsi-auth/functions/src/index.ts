@@ -17,7 +17,7 @@ const db = admin.firestore();
 const auth = admin.auth();
 
 // Set TOTP tolerance (±1 step = 60s)
-authenticator.options = { window: [1, 1] };
+authenticator.options = { window: 1 };
 
 // Import middlewares and apps
 import { setMFAVerified } from "./middleware/requireMFA";
@@ -98,28 +98,54 @@ export const getMFAEnrollment = onCall(async (request) => {
 });
 
 export const verifyMFA = onCall(async (request) => {
-    if (!request.auth) throw new HttpsError("unauthenticated", "Auth required");
-    const { code } = request.data;
-    const uid = request.auth.uid;
-    const email = request.auth.token.email;
+    try {
+        if (!request.auth) {
+            console.error('❌ MFA: Unauthenticated request');
+            throw new HttpsError("unauthenticated", "Auth required");
+        }
 
-    const userDoc = await db.doc(`users/${uid}`).get();
-    const userData = userDoc.data();
+        const { code } = request.data;
+        const uid = request.auth.uid;
+        const email = request.auth.token.email;
 
-    let mfaSecret = userData?.mfaSecret || userData?.mfa_secret;
-    const MASTER_SECRET = "SIRSI777CYLTON77";
+        console.log(`🔐 MFA Check: User ${email} (${uid}) attempting verification with code: ${code}`);
 
-    if (email === "cylton@sirsi.ai") mfaSecret = MASTER_SECRET;
+        const userDoc = await db.doc(`users/${uid}`).get();
+        const userData = userDoc.data();
 
-    const isBypass = code === "123456" || code === "999999" || code === "000000";
-    const isValid = isBypass ||
-        (mfaSecret ? authenticator.check(code, mfaSecret) : false) ||
-        authenticator.check(code, MASTER_SECRET);
+        let mfaSecret = userData?.mfaSecret || userData?.mfa_secret;
+        const MASTER_SECRET = "SIRSI777CYLTON77";
 
-    if (!isValid) throw new HttpsError("permission-denied", "Invalid code");
+        if (email === "cylton@sirsi.ai") {
+            console.log('👤 MFA: Master identity detected — using master secret');
+            mfaSecret = MASTER_SECRET;
+        }
 
-    await setMFAVerified(uid, "totp");
-    return { success: true, method: "totp" };
+        const isBypass = code === "123456" || code === "999999" || code === "000000";
+
+        let isValid = isBypass;
+        if (!isValid && mfaSecret) {
+            isValid = authenticator.check(code, mfaSecret);
+        }
+        if (!isValid) {
+            // Final fallback check against master secret
+            isValid = authenticator.check(code, MASTER_SECRET);
+        }
+
+        if (!isValid) {
+            console.warn(`⚠️ MFA: Invalid verification code for user ${email}`);
+            throw new HttpsError("permission-denied", "Invalid code");
+        }
+
+        console.log('✅ MFA: Code valid — upgrading custom claims');
+        await setMFAVerified(uid, "totp");
+
+        return { success: true, method: "totp" };
+    } catch (err: any) {
+        console.error('❌ MFA Internal Error:', err);
+        if (err instanceof HttpsError) throw err;
+        throw new HttpsError("internal", err.message || "Internal server error");
+    }
 });
 
 // ============================================

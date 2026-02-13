@@ -14,6 +14,7 @@ The Landing Page and Login form are consolidated into a single screen at the roo
 - **Unauthenticated Users**: See the branding, features, and the login/registration form.
 - **Authenticated Users**: The `onAuthStateChanged` listener immediately redirects them to `/vault`.
 - **Navigation**: The root path (`/`) replaces the separate `/landing` and `/login` routes for a seamless experience.
+- **Dedicated MFA Route**: `/mfa` handles both `verify` and `enroll` modes for canonical access.
 
 ### 2.2 Master Identity (Cylton Collymore)
 - **Email**: `cylton@sirsi.ai`
@@ -72,4 +73,5 @@ Users can verify via three independent methods:
 - ✅ **Multi-Channel Gate**: Support for TOTP, SMS, and Email delivery.
 - ✅ **Secure Sign-Out**: Integrated Firebase sign-out with MFA session clearing.
 - ✅ **Admin Portal Link**: Added a direct "Document Vault" link in the Admin Portal sidebar for easier navigation.
+- ✅ **Canonical MFA Route**: Created `/mfa` to handle redirects and setup flows.
 

@@ -20,7 +20,6 @@ export interface MFATokenClaims {
   mfa_verified?: boolean;
   mfa_method?: 'totp' | 'sms' | 'hardware_key';
   mfa_timestamp?: number;
-  acr?: string;
 }
 
 /**
@@ -154,12 +153,6 @@ async function logMFAAttempt(
 
 /**
  * Decorator-style function to wrap callable handlers with MFA requirement
- * 
- * @example
- * export const sensitiveOperation = onCall(withMFA(async (request) => {
- *   // This code only runs if MFA is verified
- *   return { success: true };
- * }));
  */
 export function withMFA<T>(
   handler: (request: CallableRequest) => Promise<T>,
@@ -173,14 +166,12 @@ export function withMFA<T>(
 
 /**
  * Decorator for financial operations with stricter MFA requirements
- * - No SMS allowed
- * - MFA must be fresh (15 minutes)
  */
 export function withFinancialMFA<T>(
   handler: (request: CallableRequest) => Promise<T>
 ) {
   return withMFA(handler, {
-    maxAge: 900,  // 15 minutes for financial operations
+    maxAge: 900,
     allowSMS: false,
     auditLog: true,
     errorMessage: 'MFA verification required before accessing financial services'
@@ -195,32 +186,40 @@ export async function setMFAVerified(
   userId: string,
   method: 'totp' | 'sms' | 'hardware_key'
 ): Promise<void> {
-  const auth = admin.auth();
+  try {
+    const auth = admin.auth();
 
-  // Get existing claims
-  const user = await auth.getUser(userId);
-  const existingClaims = user.customClaims || {};
+    console.log(`📡 MFA: Upgrading claims for user ${userId} using method ${method}`);
 
-  // Add MFA claims
-  await auth.setCustomUserClaims(userId, {
-    ...existingClaims,
-    mfa_verified: true,
-    mfa_method: method,
-    mfa_timestamp: Math.floor(Date.now() / 1000),
-    acr: 'urn:sirsi:mfa:verified'
-  });
+    // Get existing claims
+    const user = await auth.getUser(userId);
+    const existingClaims = user.customClaims || {};
 
-  // Log to Firestore
-  await admin.firestore().collection('audit_logs').add({
-    type: 'mfa_verified',
-    userId,
-    method,
-    timestamp: admin.firestore.FieldValue.serverTimestamp()
-  });
+    // Add MFA claims
+    await auth.setCustomUserClaims(userId, {
+      ...existingClaims,
+      mfa_verified: true,
+      mfa_method: method,
+      mfa_timestamp: Math.floor(Date.now() / 1000)
+    });
+
+    console.log(`✅ MFA: Claims upgraded for ${userId}`);
+
+    // Log to Firestore
+    await admin.firestore().collection('audit_logs').add({
+      type: 'mfa_verified',
+      userId,
+      method,
+      timestamp: admin.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (err: any) {
+    console.error(`❌ MFA: Failed to set claims for ${userId}:`, err);
+    throw err;
+  }
 }
 
 /**
- * Clear MFA verification status (e.g., on logout or session timeout)
+ * Clear MFA verification status
  */
 export async function clearMFAVerification(userId: string): Promise<void> {
   const auth = admin.auth();
@@ -229,7 +228,7 @@ export async function clearMFAVerification(userId: string): Promise<void> {
   const existingClaims = user.customClaims || {};
 
   // Remove MFA claims
-  const { mfa_verified, mfa_method, mfa_timestamp, acr, ...remainingClaims } = existingClaims;
+  const { mfa_verified, mfa_method, mfa_timestamp, ...remainingClaims } = existingClaims;
 
   await auth.setCustomUserClaims(userId, remainingClaims);
 }

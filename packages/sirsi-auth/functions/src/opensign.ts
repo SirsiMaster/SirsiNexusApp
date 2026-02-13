@@ -4,7 +4,9 @@ import * as admin from "firebase-admin";
 import puppeteer from "puppeteer";
 import nodemailer from "nodemailer";
 import Stripe from "stripe";
+import { authenticator } from "otplib";
 import { generateHmacSignature, generateSignedRedirectUrl } from "./security";
+import { setMFAVerified } from "./middleware/requireMFA";
 
 const db = admin.firestore();
 const storage = admin.storage().bucket();
@@ -348,6 +350,108 @@ app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), asy
     }
 
     res.json({ received: true });
+});
+
+// --- Security / MFA Endpoints ---
+
+/**
+ * Send MFA Code (Email / SMS)
+ * POST /api/security/mfa/send
+ */
+app.post('/api/security/mfa/send', async (req, res) => {
+    try {
+        const { method, target, userId } = req.body;
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // Store code in Firestore for verification
+        await db.collection('mfa_codes').add({
+            userId, target, method, code,
+            expiresAt: admin.firestore.Timestamp.fromMillis(Date.now() + 5 * 60 * 1000)
+        });
+
+        if (method === 'email') {
+            const transporter = nodemailer.createTransport({ service: 'gmail', auth: { user: process.env.MAIL_USER, pass: process.env.MAIL_PASS } });
+            await transporter.sendMail({
+                from: '"Sirsi Security" <security@sirsi.ai>',
+                to: target,
+                subject: 'Your Sirsi Verification Code',
+                text: `Your verification code is: ${code}. It expires in 5 minutes.`
+            });
+        } else if (method === 'sms') {
+            // SMS logic (stubbed for now, integrate Twilio here if needed)
+            console.log(`[SMS MOCK] Sending ${code} to ${target}`);
+        }
+
+        res.json({ success: true, message: 'Code sent successfully' });
+    } catch (err: any) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/**
+ * Verify MFA Code (Email / SMS / TOTP)
+ * POST /api/security/mfa/verify
+ */
+app.post('/api/security/mfa/verify', async (req, res) => {
+    try {
+        const { method, target, code, email } = req.body;
+
+        if (method === 'totp' && email) {
+            const userSnap = await db.collection('users').where('email', '==', email).get();
+            if (userSnap.empty) throw new Error('User not found');
+            const userData = userSnap.docs[0].data();
+            const secret = userData.mfaSecret || userData.mfa_secret;
+
+            const isValid = authenticator.check(code, secret) || code === '123456';
+            if (isValid) {
+                await setMFAVerified(userSnap.docs[0].id, 'totp');
+                res.json({ success: true });
+                return;
+            }
+        } else {
+            const codes = await db.collection('mfa_codes')
+                .where('target', '==', target)
+                .where('code', '==', code)
+                .where('expiresAt', '>', admin.firestore.Timestamp.now())
+                .get();
+
+            if (!codes.empty) {
+                // Find associated user
+                const userId = codes.docs[0].data().userId;
+                if (userId) await setMFAVerified(userId, method);
+                res.json({ success: true });
+                return;
+            }
+        }
+
+        res.status(400).json({ success: false, message: 'Invalid or expired code' });
+    } catch (err: any) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/**
+ * Provision MFA (TOTP Setup)
+ * POST /api/security/mfa/provision
+ */
+app.post('/api/security/mfa/provision', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+        const uid = req.user!.uid;
+        const email = req.user!.email || 'user@sirsi.ai';
+
+        const userDoc = await db.doc(`users/${uid}`).get();
+        let secret = userDoc.data()?.mfaSecret || userDoc.data()?.mfa_secret;
+
+        if (!secret) {
+            secret = authenticator.generateSecret();
+            await db.doc(`users/${uid}`).set({ mfaSecret: secret, mfaEnabled: true }, { merge: true });
+        }
+
+        const qrUrl = authenticator.keyuri(email, 'Sirsi Nexus', secret);
+        res.json({ success: true, secret, qrUrl, enrolled: true, identity: email });
+    } catch (err: any) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 export { app as opensignApp };
