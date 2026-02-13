@@ -344,7 +344,7 @@ export function SirsiVault() {
         const csEvidenceParams = countersignerEvidence
             ? `&csSigHash=${encodeURIComponent(countersignerEvidence.hash)}&csSigTs=${encodeURIComponent(countersignerEvidence.timestamp)}&csEnvId=${encodeURIComponent(countersignerEvidence.envelopeId)}`
             : ''
-        const msaUrl = `/finalwishes/contracts/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=1&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(counterpartyTitle)}&bundle=${selectedBundle || ''}${evidenceParams}${csEvidenceParams}`
+        const msaUrl = `/printable-msa.html?client=${encodeURIComponent(signatureData.name)}&date=${encodeURIComponent(currentDate)}&plan=${selectedPaymentPlan}&total=${totalInvestment}&weeks=${timeline}&hours=${hours}&addons=${selectedAddons.join(',')}&ceoWeeks=${ceoConsultingWeeks}&probateCount=${probateStates.length}&multiplier=1&entity=${encodeURIComponent(entityLegalName)}&cpName=${encodeURIComponent(counterpartyName)}&cpTitle=${encodeURIComponent(counterpartyTitle)}&bundle=${selectedBundle || ''}${evidenceParams}${csEvidenceParams}`
         window.open(msaUrl, '_blank', 'width=900,height=800,scrollbars=yes,resizable=yes')
     }
 
