@@ -117,7 +117,7 @@ export function AgreementWorkflow() {
       <main className="main-content contract-view">
 
         {/* Vault: breadcrumb bar */}
-        {isVaultContext && (
+        {(isVaultContext || isSignDomain) && (
           <div className="vault-breadcrumb">
             <button className="vault-breadcrumb-btn" onClick={() => navigate({ to: '/vault' })}>
               ← Back to Vault

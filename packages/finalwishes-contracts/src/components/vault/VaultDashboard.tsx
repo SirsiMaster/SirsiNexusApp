@@ -42,6 +42,11 @@ const getStatusLabel = (status: number | string) => {
         case 5: case 'ARCHIVED': return { label: 'ARCHIVED', color: '#475569' };
         case 6: case 'WAITING_FOR_COUNTERSIGN': case 'WAITING FOR COUNTERSIGN':
             return { label: 'AWAITING COUNTERSIGN', color: '#f59e0b' };
+        case 7: case 'FULLY_EXECUTED':
+            return { label: 'FULLY EXECUTED', color: '#10b981' };
+        case 8: case 'COMPLETED':
+            return { label: 'COMPLETED', color: '#22c55e' };
+        case 9: case 'ACTIVE_FUNDED': return { label: 'ACTIVE · FUNDED', color: '#C8A951' };
         default: return { label: 'UNKNOWN', color: '#64748b' };
     }
 };

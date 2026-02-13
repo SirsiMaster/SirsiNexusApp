@@ -15,6 +15,7 @@ This index tracks all significant architectural decisions for the Sirsi ecosyste
 | [ADR-015](ADR-015-UNIFIED-GRPC-CONVERGENCE.md) | Unified gRPC Convergence — Portal ↔ Sign Integration | Proposed | 2026-02-09 |
 | [ADR-016](ADR-016-CANONICAL-MFA-ROUTING-HUB.md) | Canonical MFA Routing Hub & Session Persistence | Accepted | 2026-02-12 |
 | [ADR-017](ADR-017-GOVERNANCE-CONSOLE.md) | Sirsi Governance Console & Dynamic Catalog | Proposed | 2026-02-12 |
+| [ADR-019](ADR-019-CONTRACT-LIFECYCLE.md) | Contract Lifecycle & Funding Status | Accepted | 2026-02-13 |
 
 ## Categories
 
@@ -23,6 +24,8 @@ This index tracks all significant architectural decisions for the Sirsi ecosyste
 - ADR-014: Contract Status Lifecycle (`DRAFT` → `FULLY_EXECUTED`)
 - ADR-014: SHA-256 Cryptographic Evidence Chain
 - ADR-014: Countersign Gate & Status Guards
+- ADR-019: Extended Lifecycle (`FULLY_EXECUTED` → `COMPLETED` → `ARCHIVED`)
+- ADR-019: Funding Sub-States (Unfunded / Partially Funded / Fully Funded)
 
 ### Platform Architecture
 - ADR-015: Unified gRPC Gateway (Single Go service for Portal + Sign)

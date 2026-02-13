@@ -79,6 +79,9 @@ export function SirsiVault() {
     } | null>(null)
     // Track contract execution status for provider's countersign readiness
     const [contractStatus, setContractStatus] = useState<string>('DRAFT')
+    // ═══ Phase 2: Funding Lifecycle ═══
+    const [fundingStatus, setFundingStatus] = useState<'UNFUNDED' | 'PARTIALLY_FUNDED' | 'FULLY_FUNDED'>('UNFUNDED')
+    const [fundingNotes, setFundingNotes] = useState('')
     const [clientSignatureData, setClientSignatureData] = useState<{
         signatureImageData?: string
         signatureHash?: string
@@ -264,6 +267,23 @@ export function SirsiVault() {
             fetchContractStatus()
         }
     }, [userRole, contractId])
+
+    // ═══ Phase 1 Fix: Auto-advance provider step for existing contracts ═══
+    useEffect(() => {
+        if (userRole !== 'provider' || !contractId) return
+        // Only auto-advance from step 1 — don't override manual navigation
+        if (step !== 1) return
+
+        const statusUpper = contractStatus.toUpperCase()
+        if (statusUpper === 'FULLY_EXECUTED') {
+            setStep(4)
+        } else if (statusUpper === 'WAITING_FOR_COUNTERSIGN' || statusUpper === 'SIGNED') {
+            setStep(3)
+        } else if (statusUpper === 'ACTIVE' || statusUpper === 'DRAFT') {
+            // Contract exists but client hasn't signed yet — show review
+            setStep(2)
+        }
+    }, [userRole, contractId, contractStatus])
 
     // Compute countersigner signature evidence
     const computeCountersignerEvidence = async () => {
@@ -2121,6 +2141,88 @@ export function SirsiVault() {
                                         <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase' }}>Countersigner</span>
                                         <span style={{ color: 'white', fontSize: '12px' }}>{authUser?.displayName} ({authUser?.email})</span>
                                     </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* ═══ Phase 2: Funding Status Confirmation ═══ */}
+                        {contractStatus === 'FULLY_EXECUTED' && (
+                            <div style={{
+                                background: 'rgba(200, 169, 81, 0.04)',
+                                border: '1px solid rgba(200, 169, 81, 0.2)',
+                                borderRadius: '12px',
+                                padding: '24px',
+                                marginBottom: '24px'
+                            }}>
+                                <div style={{
+                                    display: 'flex', alignItems: 'center', gap: '10px',
+                                    marginBottom: '16px', paddingBottom: '12px',
+                                    borderBottom: '1px solid rgba(200, 169, 81, 0.15)'
+                                }}>
+                                    <div style={{
+                                        width: '32px', height: '32px', borderRadius: '50%',
+                                        background: 'rgba(200, 169, 81, 0.15)',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px'
+                                    }}>💰</div>
+                                    <div style={{ color: '#C8A951', fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                                        Funding Status
+                                    </div>
+                                </div>
+                                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', marginBottom: '16px', lineHeight: 1.6 }}>
+                                    Has this contract been funded? If payment was received through the portal, a receipt will be on file.
+                                    For external payments, you may note the details below.
+                                </p>
+                                <div style={{ display: 'flex', gap: '10px', marginBottom: '16px', flexWrap: 'wrap' }}>
+                                    {[
+                                        { value: 'UNFUNDED' as const, label: 'Not Yet Funded', icon: '⏳', color: '#f59e0b' },
+                                        { value: 'PARTIALLY_FUNDED' as const, label: 'Partially Funded', icon: '📊', color: '#3b82f6' },
+                                        { value: 'FULLY_FUNDED' as const, label: 'Fully Funded', icon: '✅', color: '#10b981' },
+                                    ].map(opt => (
+                                        <button
+                                            key={opt.value}
+                                            onClick={() => setFundingStatus(opt.value)}
+                                            style={{
+                                                flex: '1 1 140px',
+                                                padding: '12px 16px',
+                                                borderRadius: '10px',
+                                                border: `1px solid ${fundingStatus === opt.value ? opt.color : 'rgba(255,255,255,0.1)'}`,
+                                                background: fundingStatus === opt.value ? `${opt.color}15` : 'rgba(255,255,255,0.03)',
+                                                color: fundingStatus === opt.value ? opt.color : 'rgba(255,255,255,0.5)',
+                                                cursor: 'pointer',
+                                                transition: 'all 0.3s ease',
+                                                display: 'flex', alignItems: 'center', gap: '8px',
+                                                fontSize: '13px', fontWeight: fundingStatus === opt.value ? 700 : 500
+                                            }}
+                                        >
+                                            <span>{opt.icon}</span> {opt.label}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div style={{ marginBottom: '12px' }}>
+                                    <label style={{ display: 'block', color: 'rgba(255,255,255,0.4)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>
+                                        Payment Notes / Reference (Optional)
+                                    </label>
+                                    <textarea
+                                        value={fundingNotes}
+                                        onChange={(e) => setFundingNotes(e.target.value)}
+                                        placeholder="e.g. Chase wire transfer confirmed 2/13/2026, Ref #WR-29381. Or: Stripe receipt attached."
+                                        rows={2}
+                                        style={{
+                                            width: '100%',
+                                            padding: '10px 14px',
+                                            background: 'rgba(255,255,255,0.04)',
+                                            border: '1px solid rgba(255,255,255,0.1)',
+                                            borderRadius: '8px',
+                                            color: 'white',
+                                            fontSize: '13px',
+                                            resize: 'vertical',
+                                            outline: 'none',
+                                            fontFamily: "'Inter', sans-serif"
+                                        }}
+                                    />
+                                </div>
+                                <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>
+                                    Funding records are appended to the contract's audit trail.
                                 </div>
                             </div>
                         )}
