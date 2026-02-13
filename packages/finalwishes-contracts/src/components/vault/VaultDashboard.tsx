@@ -4,6 +4,7 @@ import { contractsClient } from '../../lib/grpc';
 import { auth } from '../../lib/firebase';
 import { MFAEnrollment } from '../auth/MFAEnrollment';
 import { clearMFASession } from '../auth/MFAGate';
+import { BUNDLES, getBundle } from '../../data/catalog';
 
 interface Contract {
     id: string;
@@ -113,6 +114,14 @@ export function VaultDashboard() {
     const [showBulkDelete, setShowBulkDelete] = useState(false);
     const [bulkDeleting, setBulkDeleting] = useState(false);
 
+    // Create New
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [createForm, setCreateForm] = useState({
+        clientName: '', clientEmail: '', projectName: '',
+        totalAmount: '0', projectId: 'finalwishes-core',
+    });
+    const [createLoading, setCreateLoading] = useState(false);
+
     // ── Data ──
     const fetchContracts = useCallback(async () => {
         try {
@@ -213,6 +222,50 @@ export function VaultDashboard() {
     const toggleAll = () => {
         if (allSelected) setSelectedIds(new Set());
         else setSelectedIds(new Set(allContractIds));
+    };
+
+    // ── Create ──
+    const handleTemplateSelect = (bundleId: string) => {
+        const bundle = getBundle(bundleId);
+        if (!bundle) return;
+        setCreateForm(f => ({
+            ...f,
+            projectId: bundle.id,
+            projectName: bundle.name,
+            totalAmount: bundle.price.toString(),
+        }));
+    };
+
+    const handleCreateContract = async () => {
+        if (!createForm.clientEmail || !createForm.clientName) {
+            alert('Client details are required.');
+            return;
+        }
+        setCreateLoading(true);
+        try {
+            const resp = await contractsClient.createContract({
+                projectId: createForm.projectId,
+                projectName: createForm.projectName,
+                clientName: createForm.clientName,
+                clientEmail: createForm.clientEmail,
+                totalAmount: BigInt(Math.round(parseFloat(createForm.totalAmount) * 100)),
+                countersignerName: 'Sirsi Executive',
+                countersignerEmail: 'billing@sirsi.ai',
+                paymentPlans: [], // Default behavior handles plans
+            });
+            console.log('✅ Contract created:', resp.id);
+            setShowCreateModal(false);
+            setCreateForm({
+                clientName: '', clientEmail: '', projectName: '',
+                totalAmount: '0', projectId: 'finalwishes-core',
+            });
+            await fetchContracts();
+        } catch (err: any) {
+            console.error('Failed to create contract:', err);
+            alert('Failed to create contract: ' + (err.message || 'Unknown error'));
+        } finally {
+            setCreateLoading(false);
+        }
     };
 
     // ── Edit ──
@@ -408,6 +461,17 @@ export function VaultDashboard() {
                         🔄 Re-verify
                     </button>
                     <button
+                        onClick={() => {
+                            // Default to Core Platform template when opening
+                            handleTemplateSelect('finalwishes-core');
+                            setShowCreateModal(true);
+                        }}
+                        className="gold-action-btn"
+                        style={{ padding: '10px 24px', fontSize: '14px' }}
+                    >
+                        <span>➕</span> New Engagement
+                    </button>
+                    <button
                         onClick={handleSignOut}
                         style={{
                             background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)',
@@ -508,9 +572,19 @@ export function VaultDashboard() {
                 }}>
                     <div style={{ fontSize: '64px', marginBottom: '2rem', opacity: 0.5 }}>📂</div>
                     <h3 style={{ color: 'white', fontSize: '24px', fontFamily: "'Cinzel', serif", marginBottom: '1rem' }}>Vault Is Empty</h3>
-                    <p style={{ color: 'rgba(255,255,255,0.4)', maxWidth: '400px', margin: '0 auto' }}>
+                    <p style={{ color: 'rgba(255,255,255,0.4)', maxWidth: '400px', margin: '0 auto 2rem auto' }}>
                         No legal documents or payment agreements have been associated with this identity yet.
                     </p>
+                    <button
+                        onClick={() => {
+                            handleTemplateSelect('finalwishes-core');
+                            setShowCreateModal(true);
+                        }}
+                        className="gold-action-btn"
+                        style={{ padding: '14px 32px', fontSize: '15px' }}
+                    >
+                        <span>➕</span> Create Your First Engagement
+                    </button>
                 </div>
             ) : (
                 <div style={{ display: 'grid', gap: '3rem' }}>
@@ -953,6 +1027,119 @@ export function VaultDashboard() {
                                 }}
                             >
                                 {deleting ? 'Deleting…' : 'Delete Permanently'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ══════════════════════════════════════════ */}
+            {/* CREATE CONTRACT MODAL (Templates)          */}
+            {/* ══════════════════════════════════════════ */}
+            {showCreateModal && (
+                <div style={S.overlay} onClick={() => !createLoading && setShowCreateModal(false)}>
+                    <div style={{ ...S.modal, width: '640px' }} onClick={e => e.stopPropagation()}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                            <h2 style={{ fontFamily: "'Cinzel', serif", color: '#C8A951', fontSize: '18px', margin: 0, letterSpacing: '0.1em' }}>
+                                NEW SERVICE AGREEMENT
+                            </h2>
+                            <button
+                                onClick={() => setShowCreateModal(false)}
+                                style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', fontSize: '20px', cursor: 'pointer' }}
+                            >✕</button>
+                        </div>
+
+                        {/* Template Selection */}
+                        <div style={{ marginBottom: '24px' }}>
+                            <label style={S.label}>Select Engagement Template</label>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+                                {Object.values(BUNDLES).map(bundle => (
+                                    <button
+                                        key={bundle.id}
+                                        onClick={() => handleTemplateSelect(bundle.id)}
+                                        style={{
+                                            padding: '12px',
+                                            borderRadius: '10px',
+                                            textAlign: 'left',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.2s ease',
+                                            background: createForm.projectId === bundle.id ? 'rgba(200,169,81,0.15)' : 'rgba(255,255,255,0.03)',
+                                            border: createForm.projectId === bundle.id ? '1px solid rgba(200,169,81,0.5)' : '1px solid rgba(255,255,255,0.08)',
+                                        }}
+                                    >
+                                        <div style={{ color: createForm.projectId === bundle.id ? '#C8A951' : 'white', fontWeight: 700, fontSize: '13px', marginBottom: '4px' }}>
+                                            {bundle.name}
+                                        </div>
+                                        <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', lineHeight: '1.3' }}>
+                                            {bundle.shortDescription}
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Details */}
+                        <div style={{ display: 'grid', gap: '16px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                <div>
+                                    <label style={S.label}>Client Name</label>
+                                    <input
+                                        placeholder="Tameeka Lockhart"
+                                        style={S.input}
+                                        value={createForm.clientName}
+                                        onChange={e => setCreateForm(f => ({ ...f, clientName: e.target.value }))}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={S.label}>Client Email</label>
+                                    <input
+                                        placeholder="tameeka@example.com"
+                                        style={S.input}
+                                        type="email"
+                                        value={createForm.clientEmail}
+                                        onChange={e => setCreateForm(f => ({ ...f, clientEmail: e.target.value }))}
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <label style={S.label}>Agreement Title</label>
+                                <input
+                                    style={S.input}
+                                    value={createForm.projectName}
+                                    onChange={e => setCreateForm(f => ({ ...f, projectName: e.target.value }))}
+                                />
+                            </div>
+                            <div>
+                                <label style={S.label}>Total Contract Value ($)</label>
+                                <input
+                                    style={S.input}
+                                    type="number"
+                                    value={createForm.totalAmount}
+                                    onChange={e => setCreateForm(f => ({ ...f, totalAmount: e.target.value }))}
+                                />
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '32px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                            <button
+                                onClick={() => setShowCreateModal(false)}
+                                disabled={createLoading}
+                                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.6)', padding: '10px 24px', borderRadius: '8px', fontSize: '12px', fontWeight: 600, cursor: 'pointer' }}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleCreateContract}
+                                disabled={createLoading}
+                                style={{
+                                    background: createLoading ? 'rgba(200,169,81,0.3)' : '#C8A951',
+                                    border: 'none', color: '#0f172a', padding: '10px 32px', borderRadius: '8px',
+                                    fontSize: '13px', fontWeight: 800,
+                                    cursor: createLoading ? 'wait' : 'pointer',
+                                    textTransform: 'uppercase', letterSpacing: '0.05em',
+                                }}
+                            >
+                                {createLoading ? 'Establishing…' : 'Initialize Engagement'}
                             </button>
                         </div>
                     </div>
