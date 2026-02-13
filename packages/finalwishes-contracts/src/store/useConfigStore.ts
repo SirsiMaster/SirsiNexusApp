@@ -69,7 +69,7 @@ const initialState = {
     selectedAddons: [],
     ceoConsultingWeeks: 1,
     probateStates: [] as string[],
-    sirsiMultiplier: 2.0, // Default to 2.0x as per Rule 13
+    sirsiMultiplier: 1.0, // CANONICAL: 1.0x for contract pricing. 2.0x is DISPLAY-ONLY for market comparison.
     maintenanceMode: false,
 }
 
@@ -155,7 +155,7 @@ export const useConfigStore = create<ConfigState>()(
             })),
 
             setSystemSettings: (settings) => set({
-                sirsiMultiplier: settings.multiplier || 2.0,
+                sirsiMultiplier: settings.multiplier || 1.0,
                 maintenanceMode: settings.maintenanceMode || false
             }),
 
@@ -199,12 +199,14 @@ export const useConfigStore = create<ConfigState>()(
                 try {
                     console.log(`🔄 Syncing configuration for contract ${state.contractId}...`)
 
+                    // CRITICAL: Always use 1.0x for contract pricing.
+                    // The 2.0x Valuation Factor is DISPLAY-ONLY (CostValuation market comparison).
                     const totalResult = calculateTotal(
                         state.selectedBundle,
                         state.selectedAddons,
                         state.ceoConsultingWeeks,
                         state.probateStates.length,
-                        state.sirsiMultiplier
+                        1.0 // Canonical 1.0x — never apply valuation factor to actual contract price
                     )
 
                     await contractsClient.updateContract({
