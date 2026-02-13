@@ -1,7 +1,7 @@
 # GEMINI.md
 **Operational Directive for Gemini Agent**
-**Version:** 5.2.0 (Policy Framework)
-**Date:** January 28, 2026
+**Version:** 5.5.0 (Canonical MFA Hub)
+**Date:** February 12, 2026
 
 ---
 
@@ -27,7 +27,7 @@ You are not a passive code generator. You are a **Critical Partner**.
     - **111-Venture-Projects**: The studio governance repository, managing tenant-specific configs and portfolio-wide documentation.
 
 ## 2.1 Canonical Sources of Truth (Benchmark of Progress)
-The following 33 files serve as the immutable benchmark for all project directives and progress. All code and decisions MUST align with them.
+The following 34 files serve as the immutable benchmark for all project directives and progress. All code and decisions MUST align with them.
 
 ### 🏛 The Financial Trinity (3)
 1.  `proposals/CONTRACT.md`
@@ -75,10 +75,11 @@ The following 33 files serve as the immutable benchmark for all project directiv
 24. `docs/ADR-002-IMPLEMENTATION-PLAN.md`
 25. `docs/POST_IMPLEMENTATION_REVIEW.md`
 
-### 📚 Indices (3)
+### 📚 Indices (4)
 26. `docs/ADR-INDEX.md`
 27. `docs/DOCUMENTATION_INDEX.md`
 28. `docs/ADR-TEMPLATE.md`
+34. `docs/ADR-016-CANONICAL-MFA-ROUTING-HUB.md`
 
 ## 3. The Single Source of Truth (Stack V4)
 Ignore legacy references to AWS, Flutter, or Node.js in older docs. This is the **Absolute Truth**:
@@ -109,6 +110,8 @@ Ignore legacy references to AWS, Flutter, or Node.js in older docs. This is the 
 *   **The Vault Concept**: All sensitive documents are stored in Cloud Storage with metadata in Cloud SQL. We do not just "store files"; we "maintain legal evidence".
 *   **Defense in Depth**: Security is not an afterthought. Every API endpoint must have AuthZ checks. PII is always encrypted at rest.
 *   **Launch Scope**: Maryland, Illinois, Minnesota (Priority). DC/VA deferred.
+*   **Security Hub Control**: All MFA enforcement MUST be handled by the **Canonical MFA Hub** (`/mfa`) via `ProtectedRoute` redirection. Local component-level gating is prohibited.
+*   **Deep URL Sync**: The address bar MUST always reflect the current security phase (e.g., `/mfa` during verification, `/vault` during access).
 
 ## 6. Interaction Protocol
 *   **User**: "I want X."

@@ -13,6 +13,7 @@ This index tracks all significant architectural decisions for the Sirsi ecosyste
 | [ADR-013](ADR-013-SIRSI-SIGN-HIERARCHY.md) | Hierarchical Routing & Multi-Tenant Differentiation | Accepted | 2026-02-10 |
 | [ADR-014](ADR-014-BIPARTITE-CONTRACT-EXECUTION.md) | Bipartite Contract Execution Protocol | Accepted | 2026-02-07 |
 | [ADR-015](ADR-015-UNIFIED-GRPC-CONVERGENCE.md) | Unified gRPC Convergence — Portal ↔ Sign Integration | Proposed | 2026-02-09 |
+| [ADR-016](ADR-016-CANONICAL-MFA-ROUTING-HUB.md) | Canonical MFA Routing Hub & Session Persistence | Accepted | 2026-02-12 |
 
 ## Categories
 
