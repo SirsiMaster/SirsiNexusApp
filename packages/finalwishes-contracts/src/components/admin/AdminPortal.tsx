@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from '@tanstack/react-router';
-import { MFAGate, isMFASessionVerified } from '../auth/MFAGate';
 import { ContractsManagement } from './ContractsManagement';
 import { TenantManager } from './TenantManager';
 import { UsersAccessControl } from './UsersAccessControl';
@@ -22,13 +20,11 @@ import { DocumentationPortal } from './DocumentationPortal';
 type AdminTab = 'contracts' | 'tenants' | 'users' | 'analytics' | 'revenue' | 'invoices' | 'dataroom' | 'developers' | 'logs' | 'docs' | 'development' | 'notifications' | 'settings' | 'mfa';
 
 export function AdminPortal() {
-    const { navigate } = useRouter();
     const [activeTab, setActiveTab] = useState<AdminTab>('contracts');
-    const [mfaVerified, setMfaVerified] = useState(() => isMFASessionVerified());
     const logSession = useLogDevSession();
 
     useEffect(() => {
-        if (mfaVerified && auth.currentUser) {
+        if (auth.currentUser) {
             logSession.mutate({
                 developerId: auth.currentUser.uid,
                 action: 'ADMIN_PORTAL_ENTER',
@@ -39,7 +35,7 @@ export function AdminPortal() {
                 })
             });
         }
-    }, [mfaVerified]);
+    }, []);
 
     const tabs: { id: AdminTab; label: string; icon: string; category?: string }[] = [
         { id: 'contracts', label: 'Contract Manager', icon: '📜', category: 'Operations' },
@@ -60,16 +56,6 @@ export function AdminPortal() {
         { id: 'settings', label: 'System Config', icon: '⚙️', category: 'Knowledge' },
         { id: 'mfa', label: 'Security (MFA)', icon: '🛡️', category: 'Knowledge' },
     ];
-
-    if (!mfaVerified) {
-        return (
-            <MFAGate
-                purpose="vault"
-                onVerified={() => setMfaVerified(true)}
-                onCancel={() => navigate({ to: '/' })}
-            />
-        );
-    }
 
     return (
         <div className="min-h-screen bg-navy text-white flex">

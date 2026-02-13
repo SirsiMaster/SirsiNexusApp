@@ -9,7 +9,6 @@ import { AdminHeader } from '../layout/AdminHeader'
 import { ContractTabs } from '../layout/ContractTabs'
 import { useConfigStore, useCurrentTab } from '../../store/useConfigStore'
 import { useSettings } from '../../hooks/useAdmin'
-import { MFAGate, isMFASessionVerified } from '../auth/MFAGate'
 
 import { ExecutiveSummary } from '../tabs/ExecutiveSummary'
 import { ConfigureSolution } from '../tabs/ConfigureSolution'
@@ -43,7 +42,6 @@ export function AgreementWorkflow() {
   const searchParams = new URLSearchParams(window.location.search)
   const isPaymentSuccess = searchParams.get('session_id') !== null && window.location.pathname.endsWith('/payment/success')
 
-  const [mfaVerified, setMfaVerified] = useState(() => isMFASessionVerified())
   const [isLightTheme, setIsLightTheme] = useState(false)
 
   // --- Effects ---
@@ -112,16 +110,6 @@ export function AgreementWorkflow() {
   }
 
   const wrapperClass = `admin-wrapper${isLightTheme ? ' theme-light' : ''}${showSidebar ? ' has-sidebar' : ''}`
-
-  if (!mfaVerified) {
-    return (
-      <MFAGate
-        purpose="vault"
-        onVerified={() => setMfaVerified(true)}
-        onCancel={() => navigate({ to: '/' })}
-      />
-    )
-  }
 
   return (
     <div className={wrapperClass} data-auth-protect="admin">
