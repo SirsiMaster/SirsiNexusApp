@@ -5,7 +5,6 @@ import { AdminPortal } from './components/admin/AdminPortal';
 import { InvestorPortal } from './components/investor/InvestorPortal';
 import { Login } from './components/auth/Login';
 import { Pricing } from './components/public/Pricing';
-import { LandingPage } from './components/public/LandingPage';
 import { AppLayout } from './components/layout/AppLayout';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
@@ -27,7 +26,7 @@ import { Outlet } from '@tanstack/react-router';
 const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/',
-    component: LandingPage,
+    component: Login as any,
 });
 
 const loginRoute = createRoute({

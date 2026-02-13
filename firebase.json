@@ -19,6 +19,8 @@
         {
             "site": "sirsi-ai",
             "public": "packages/sirsi-portal",
+            "cleanUrls": true,
+            "trailingSlash": false,
             "ignore": [
                 "firebase.json",
                 "**/.git/**",
@@ -38,6 +40,8 @@
         {
             "site": "sirsi-sign",
             "public": "packages/sirsi-opensign/public",
+            "cleanUrls": true,
+            "trailingSlash": false,
             "ignore": [
                 "firebase.json",
                 "**/.git/**",
