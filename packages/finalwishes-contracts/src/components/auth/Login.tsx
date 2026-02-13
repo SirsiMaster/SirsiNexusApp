@@ -19,6 +19,13 @@ export function Login() {
 
     // ── If already authenticated, skip login entirely → go to vault ──
     useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const emailParam = queryParams.get('email');
+        if (emailParam) {
+            setEmail(emailParam);
+            setIsRegister(true); // Default to activation mode if email is provided in link
+        }
+
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 navigate({ to: '/vault', replace: true });
@@ -186,7 +193,7 @@ export function Login() {
                     fontFamily: "'Inter', sans-serif",
                 }}>
                     {isRegister
-                        ? 'Create your secure vault to manage contracts and legal documents.'
+                        ? 'Activate your secure vault to manage contracts and execute documents.'
                         : 'Access your secure vault to review, execute, and archive master service agreements.'
                     }
                 </p>
@@ -229,7 +236,7 @@ export function Login() {
                             display: 'block', fontSize: '10px', color: '#94a3b8',
                             textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '6px',
                             fontFamily: "'Inter', sans-serif",
-                        }}>Authorized Email</label>
+                        }}>{isRegister ? 'Authorized Email' : 'Email Address'}</label>
                         <input
                             type="email"
                             required
@@ -251,7 +258,7 @@ export function Login() {
                             display: 'block', fontSize: '10px', color: '#94a3b8',
                             textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: '6px',
                             fontFamily: "'Inter', sans-serif",
-                        }}>Password</label>
+                        }}>{isRegister ? 'Create Vault Password' : 'Password'}</label>
                         <div style={{ position: 'relative' }}>
                             <input
                                 type={showPassword ? "text" : "password"}
@@ -321,7 +328,7 @@ export function Login() {
                             opacity: isLoading ? 0.7 : 1,
                         }}
                     >
-                        {isLoading ? 'Processing...' : isRegister ? 'Establish My Vault' : 'Access Secure Hub'}
+                        {isLoading ? 'Processing...' : isRegister ? 'Activate My Secure Vault' : 'Access Secure Hub'}
                     </button>
 
                     <button
@@ -333,7 +340,7 @@ export function Login() {
                             padding: '8px',
                         }}
                     >
-                        {isRegister ? 'Already have a vault? Access here' : 'New identity? Register your vault'}
+                        {isRegister ? 'Returning user? Sign in here' : 'First time? Activate your secure vault'}
                     </button>
 
                     <p style={{
