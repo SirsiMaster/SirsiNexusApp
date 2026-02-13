@@ -72,24 +72,17 @@ const adminRoute = createRoute({
     ),
 });
 
+// CLIENT-FACING: No ProtectedRoute — these are public links sent to clients for viewing/signing.
 const contractsProjectRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/contracts/$projectId',
-    component: () => (
-        <ProtectedRoute>
-            <AgreementWorkflow />
-        </ProtectedRoute>
-    ),
+    component: AgreementWorkflow,
 });
 
 const contractsRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/contracts',
-    component: () => (
-        <ProtectedRoute>
-            <AgreementWorkflow />
-        </ProtectedRoute>
-    ),
+    component: AgreementWorkflow,
 });
 
 const adminContractsRoute = createRoute({
