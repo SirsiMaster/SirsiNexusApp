@@ -27,10 +27,11 @@ rm -rf public/assets/index-*.js public/assets/index-*.css
 # Copy all assets from dist
 cp -R ../finalwishes-contracts/dist/assets/* public/assets/
 
-# Copy the SPA index.html to both the root and its sub-path
+# Copy the SPA index.html to root only (Firebase rewrite handles all routes)
 cp ../finalwishes-contracts/dist/index.html public/index.html
-mkdir -p public/partnership/finalwishes
-cp ../finalwishes-contracts/dist/index.html public/partnership/finalwishes/index.html
+
+# Purge any stale subdirectory index.html files that break SPA routing
+rm -rf public/partnership public/contracts public/finalwishes
 
 echo "✓ Sync complete"
 echo ""
