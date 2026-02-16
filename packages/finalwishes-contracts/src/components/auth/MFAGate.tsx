@@ -452,7 +452,7 @@ export function MFAGate({
                             flex: 2,
                             padding: '14px',
                             background: '#C8A951',
-                            color: '#0A1432',
+                            color: '#022c22',
                             border: 'none',
                             borderRadius: '8px',
                             fontWeight: 700,

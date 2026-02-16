@@ -9,7 +9,7 @@ export function AdminHeader({ isLightTheme, onToggleTheme }: AdminHeaderProps) {
             position: 'sticky',
             top: 0,
             zIndex: 1000,
-            background: isLightTheme ? '#fff' : '#0f172a',
+            background: isLightTheme ? '#fff' : '#022c22',
             borderBottom: `1px solid ${isLightTheme ? '#e2e8f0' : 'rgba(255,255,255,0.1)'}`,
             display: 'flex',
             justifyContent: 'space-between',
@@ -22,7 +22,7 @@ export function AdminHeader({ isLightTheme, onToggleTheme }: AdminHeaderProps) {
                     fontSize: '1.25rem',
                     fontFamily: 'Cinzel, serif',
                     margin: 0,
-                    color: isLightTheme ? '#0f172a' : '#C8A951'
+                    color: isLightTheme ? '#022c22' : '#C8A951'
                 }}>Master Service Agreement</h1>
                 <p style={{
                     fontSize: '0.75rem',
@@ -42,7 +42,7 @@ export function AdminHeader({ isLightTheme, onToggleTheme }: AdminHeaderProps) {
                         border: `1px solid ${isLightTheme ? '#e2e8f0' : 'rgba(255,255,255,0.2)'}`,
                         borderRadius: '8px',
                         padding: '8px 12px',
-                        color: isLightTheme ? '#0f172a' : '#fff',
+                        color: isLightTheme ? '#022c22' : '#fff',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',

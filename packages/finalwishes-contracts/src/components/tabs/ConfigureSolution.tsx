@@ -264,7 +264,7 @@ export function ConfigureSolution() {
                             border: `2px solid ${standaloneSelected ? '#10B981' : 'rgba(255,255,255,0.3)'}`,
                             background: standaloneSelected
                                 ? 'linear-gradient(145deg, #0f3d2e, #0a2820)'
-                                : 'linear-gradient(145deg, #0f172a, #080c16)',
+                                : 'linear-gradient(145deg, #022c22, #011a14)',
                             position: 'relative',
                             transition: 'all 0.3s ease',
                             padding: '20px',
@@ -433,7 +433,7 @@ export function ConfigureSolution() {
                                             backfaceVisibility: 'hidden',
                                             background: inCart
                                                 ? 'linear-gradient(145deg, #0f3d2e, #0a2820)'
-                                                : 'linear-gradient(145deg, #0f172a, #080c16)',
+                                                : 'linear-gradient(145deg, #022c22, #011a14)',
                                             border: `2px solid ${inCart ? '#10B981' : 'rgba(255, 255, 255, 0.15)'}`,
                                             borderRadius: '12px',
                                             padding: '1.25rem',

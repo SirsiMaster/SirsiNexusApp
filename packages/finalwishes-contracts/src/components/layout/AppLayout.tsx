@@ -101,7 +101,7 @@ function ConsentBanner({ onAcceptAll, onRejectAll }: ConsentBannerProps) {
                         onClick={onAcceptAll}
                         style={{
                             background: '#C8A951',
-                            color: '#0A1432',
+                            color: '#022c22',
                             border: 'none',
                             padding: '10px 20px',
                             borderRadius: '6px',

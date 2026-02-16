@@ -2,23 +2,23 @@
 
 /* ============================================
    DARK THEME (Default)
-   Deep Royal Blue with Gold Accents
+   Deep Emerald Green with Gold Accents
    ============================================ */
 
 /* Dark theme is the default - no class needed */
 :root {
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
+    --bg-primary: #022c22;
+    --bg-secondary: #14532d;
+    --bg-gradient: linear-gradient(135deg, #022c22 0%, #065f46 50%, #022c22 100%);
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.85);
     --text-muted: rgba(255, 255, 255, 0.6);
     --gold: #C8A951;
     --gold-dim: rgba(200, 169, 81, 0.3);
-    --card-bg: rgba(15, 23, 42, 0.8);
+    --card-bg: rgba(2, 44, 34, 0.8);
     --card-border: rgba(200, 169, 81, 0.3);
     --card-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-    --header-bg: #0f172a;
+    --header-bg: #022c22;
     --header-border: rgba(255, 255, 255, 0.1);
     --input-bg: rgba(255, 255, 255, 0.05);
     --input-border: rgba(255, 255, 255, 0.2);
@@ -35,17 +35,17 @@
 }
 
 .admin-wrapper:not(.theme-light) .contract-hero {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%) !important;
+    background: linear-gradient(135deg, #022c22 0%, #065f46 50%, #022c22 100%) !important;
 }
 
 .admin-wrapper:not(.theme-light) .main-card {
-    background: rgba(15, 23, 42, 0.95) !important;
+    background: rgba(2, 44, 34, 0.95) !important;
     border: 1px solid rgba(200, 169, 81, 0.3) !important;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7) !important;
 }
 
 .admin-wrapper:not(.theme-light) .main-content {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%) !important;
+    background: linear-gradient(135deg, #022c22 0%, #065f46 50%, #022c22 100%) !important;
 }
 
 .admin-wrapper:not(.theme-light) h2,
@@ -69,7 +69,7 @@
     --bg-primary: #f8fafc;
     --bg-secondary: #ffffff;
     --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #f8fafc 100%);
-    --text-primary: #0f172a;
+    --text-primary: #022c22;
     --text-secondary: #334155;
     --text-muted: #64748b;
     --gold: #B8962A;
@@ -117,7 +117,7 @@ body.theme-light .main-content {
 
 /* Contract Hero Section */
 .contract-hero {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%) !important;
+    background: linear-gradient(135deg, #022c22 0%, #065f46 50%, #022c22 100%) !important;
     border-bottom: 1px solid rgba(200, 169, 81, 0.2);
 }
 
@@ -196,11 +196,11 @@ body.theme-light .contract-subtitle {
    ============================================ */
 
 .sidebar {
-    background: #1e3a8a !important;
+    background: #065f46 !important;
 }
 
 body.theme-light .sidebar {
-    background: #1e3a8a !important;
+    background: #065f46 !important;
     /* Keep sidebar dark even in light mode for brand consistency */
 }
 

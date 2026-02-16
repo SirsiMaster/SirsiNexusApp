@@ -977,7 +977,7 @@ export function VaultDashboard() {
                                 onClick={saveEdit} disabled={editSaving}
                                 style={{
                                     background: editSaving ? 'rgba(200,169,81,0.3)' : '#C8A951',
-                                    border: 'none', color: '#0f172a', padding: '10px 28px', borderRadius: '8px',
+                                    border: 'none', color: '#022c22', padding: '10px 28px', borderRadius: '8px',
                                     fontSize: '12px', fontWeight: 700,
                                     cursor: editSaving ? 'wait' : 'pointer',
                                     textTransform: 'uppercase', letterSpacing: '0.05em',
@@ -1138,7 +1138,7 @@ export function VaultDashboard() {
                                 disabled={createLoading}
                                 style={{
                                     background: createLoading ? 'rgba(200,169,81,0.3)' : '#C8A951',
-                                    border: 'none', color: '#0f172a', padding: '10px 32px', borderRadius: '8px',
+                                    border: 'none', color: '#022c22', padding: '10px 32px', borderRadius: '8px',
                                     fontSize: '13px', fontWeight: 800,
                                     cursor: createLoading ? 'wait' : 'pointer',
                                     textTransform: 'uppercase', letterSpacing: '0.05em',

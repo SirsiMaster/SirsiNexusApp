@@ -10,12 +10,12 @@
     --color-gold: #C8A951;
     --color-gold-bright: #b89c3a;
     --color-gold-dim: #F0E6D2;
-    --color-navy: #0f172a;
+    --color-navy: #022c22;
     --color-emerald: #059669;
     --color-danger: #dc2626;
     --color-blue: #0284c7;
 
-    --text-primary: #111827;
+    --text-primary: #022c22;
     --text-secondary: #4b5563;
     --text-muted: #9ca3af;
 
@@ -44,9 +44,9 @@
     min-height: 100vh;
     overflow-x: hidden;
     background: linear-gradient(90deg,
-            #0f172a 0%, #0f172a 10%, #121b2e 25%,
-            #1e3a8a 40%, #1e3a8a 60%,
-            #121b2e 75%, #0f172a 90%, #0f172a 100%);
+            #022c22 0%, #022c22 10%, #0a3d2e 25%,
+            #065f46 40%, #065f46 60%,
+            #0a3d2e 75%, #022c22 90%, #022c22 100%);
     background-attachment: fixed;
 }
 
@@ -64,7 +64,7 @@
 
 .sidebar {
     width: var(--sidebar-width);
-    background: #1e3a8a;
+    background: #065f46;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
     position: fixed;
     height: 100vh;
@@ -181,7 +181,7 @@
 }
 
 .header-left h1 {
-    color: #111827;
+    color: #022c22;
     white-space: nowrap;
     font-family: var(--font-heading);
     font-size: 1.25rem;
@@ -212,7 +212,7 @@
 }
 
 .search-bar input {
-    color: #111827;
+    color: #022c22;
     background: transparent;
     border: none;
     outline: none;

@@ -400,7 +400,7 @@ export function SirsiVault() {
                 paymentPlans: paymentPlans as any,
                 theme: {
                     primaryColor: '#C8A951',
-                    secondaryColor: '#0f172a',
+                    secondaryColor: '#022c22',
                     accentColor: '#10B981',
                     fontHeading: 'Cinzel',
                     fontBody: 'Inter'
@@ -1816,7 +1816,7 @@ export function SirsiVault() {
                                                     fontFamily: "'Cinzel', serif",
                                                     fontSize: '24px',
                                                     fontWeight: 700,
-                                                    color: isSelected ? '#0f172a' : 'rgba(255,255,255,0.7)'
+                                                    color: isSelected ? '#022c22' : 'rgba(255,255,255,0.7)'
                                                 }}>
                                                     {months}
                                                 </span>

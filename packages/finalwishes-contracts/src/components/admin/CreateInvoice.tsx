@@ -169,7 +169,7 @@ export function CreateInvoice() {
                             </div>
 
                             <div className="flex flex-col items-center gap-4 p-6 bg-white rounded-xl border-4 border-emerald/20">
-                                <QRCode value={generatedLink} size={160} level="M" fgColor="#0f172a" />
+                                <QRCode value={generatedLink} size={160} level="M" fgColor="#022c22" />
                                 <span className="inter text-[10px] text-navy font-bold uppercase tracking-widest">Multi-Channel QR</span>
                             </div>
 

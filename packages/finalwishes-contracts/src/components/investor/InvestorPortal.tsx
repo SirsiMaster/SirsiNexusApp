@@ -30,7 +30,7 @@ export function InvestorPortal() {
     }
 
     return (
-        <div className="min-h-screen bg-[#0f172a] text-slate-100 flex">
+        <div className="min-h-screen bg-[#022c22] text-slate-100 flex">
             {/* Sidebar */}
             <aside className="w-64 border-r border-white/5 flex flex-col bg-slate-900/50 backdrop-blur-xl">
                 <div className="p-8">
@@ -82,7 +82,7 @@ export function InvestorPortal() {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-auto bg-gradient-to-br from-slate-900 via-[#0f172a] to-slate-950">
+            <main className="flex-1 overflow-auto bg-gradient-to-br from-slate-900 via-[#022c22] to-slate-950">
                 {/* Live KPI Banner */}
                 <div className="bg-emerald-500/5 border-b border-white/5 px-12 py-3">
                     <div className="max-w-6xl mx-auto flex items-center justify-between">

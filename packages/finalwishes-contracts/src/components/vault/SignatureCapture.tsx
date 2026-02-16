@@ -197,7 +197,7 @@ export function SignatureCapture({ onSignatureChange, signerName = '' }: Signatu
                         transition: 'all 0.3s ease',
                         ...(mode === 'draw' ? {
                             background: 'linear-gradient(135deg, #C8A951, #D4AF37)',
-                            color: '#0f172a',
+                            color: '#022c22',
                             borderColor: '#C8A951',
                             boxShadow: '0 0 20px rgba(200, 169, 81, 0.4)',
                             transform: 'translateY(-2px)'
@@ -230,7 +230,7 @@ export function SignatureCapture({ onSignatureChange, signerName = '' }: Signatu
                         transition: 'all 0.3s ease',
                         ...(mode === 'type' ? {
                             background: 'linear-gradient(135deg, #C8A951, #D4AF37)',
-                            color: '#0f172a',
+                            color: '#022c22',
                             borderColor: '#C8A951',
                             boxShadow: '0 0 20px rgba(200, 169, 81, 0.4)',
                             transform: 'translateY(-2px)'
