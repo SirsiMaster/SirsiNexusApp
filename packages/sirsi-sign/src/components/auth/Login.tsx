@@ -120,7 +120,7 @@ export function Login() {
                 top: '50%', left: '50%',
                 transform: 'translate(-50%, -50%)',
                 width: '1200px', height: '1200px',
-                background: 'radial-gradient(circle, rgba(30, 58, 138, 0.25) 0%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(5, 150, 105, 0.25) 0%, transparent 70%)',
                 zIndex: 1,
                 pointerEvents: 'none',
             }} />
@@ -129,7 +129,7 @@ export function Login() {
             <div style={{
                 maxWidth: '520px',
                 width: '100%',
-                background: 'rgba(15, 23, 42, 0.5)',
+                background: 'rgba(2, 44, 34, 0.5)',
                 backdropFilter: 'blur(40px)',
                 border: '1px solid rgba(255, 255, 255, 0.08)',
                 borderRadius: '32px',

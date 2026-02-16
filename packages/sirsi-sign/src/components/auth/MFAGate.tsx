@@ -207,7 +207,7 @@ export function MFAGate({
         <div style={{
             position: 'fixed',
             top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(10, 20, 50, 0.92)',
+            background: 'rgba(2, 30, 22, 0.92)',
             backdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
@@ -217,7 +217,7 @@ export function MFAGate({
             animation: 'mfaFadeIn 0.3s ease',
         }}>
             <div style={{
-                background: 'linear-gradient(135deg, rgba(26, 35, 126, 0.9) 0%, rgba(13, 17, 63, 0.95) 100%)',
+                background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.9) 0%, rgba(2, 44, 34, 0.95) 100%)',
                 border: '1px solid rgba(200, 169, 81, 0.3)',
                 borderRadius: '16px',
                 padding: '36px',

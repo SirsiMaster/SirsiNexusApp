@@ -63,7 +63,7 @@ function ConsentBanner({ onAcceptAll, onRejectAll }: ConsentBannerProps) {
             bottom: 0,
             left: 0,
             right: 0,
-            background: 'rgba(10, 20, 50, 0.95)',
+            background: 'rgba(2, 30, 22, 0.95)',
             backdropFilter: 'blur(10px)',
             borderTop: '1px solid rgba(200, 169, 81, 0.3)',
             padding: '16px 24px',
