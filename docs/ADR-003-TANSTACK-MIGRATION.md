@@ -42,7 +42,7 @@ The current SirsiNexus monorepo uses **Next.js** as the primary web framework in
 ## Migration Plan
 
 ### Phase 1: Foundation (Contracts App - Current)
-- ✅ `packages/finalwishes-contracts` already uses Vite + React (NOT Next.js)
+- ✅ `packages/sirsi-sign` already uses Vite + React (NOT Next.js)
 - ✅ Can serve as migration template
 
 ### Phase 2: Component Library Extraction

@@ -13,7 +13,7 @@ I need you to continue work on the Sign.Sirsi.ai platform. Before starting, read
 
 1. `/Users/thekryptodragon/Development/SirsiNexusApp/docs/SIGN-PLATFORM-ARCHITECTURE.md` - The complete architecture spec
 2. `/Users/thekryptodragon/Development/SirsiNexusApp/docs/ADR-003-TANSTACK-MIGRATION.md` - TanStack migration decision
-3. `/Users/thekryptodragon/Development/SirsiNexusApp/packages/finalwishes-contracts/` - Current implementation (Sirsi Configurator instance)
+3. `/Users/thekryptodragon/Development/SirsiNexusApp/packages/sirsi-sign/` - Current implementation (Sirsi Configurator instance)
 
 ## Issues to Address:
 
@@ -62,8 +62,8 @@ Start by reading the docs, then give me a status report on what's working vs bro
 |----------|----------|---------|
 | **ADR-003** | `docs/ADR-003-TANSTACK-MIGRATION.md` | TanStack Start migration decision |
 | **Sign Platform Arch** | `docs/SIGN-PLATFORM-ARCHITECTURE.md` | Complete architecture for sign.sirsi.ai |
-| **Firebase Config** | `packages/finalwishes-contracts/firebase.json` | Deployment to sirsi-sign |
-| **Firebase RC** | `packages/finalwishes-contracts/.firebaserc` | Project targeting |
+| **Firebase Config** | `packages/sirsi-sign/firebase.json` | Deployment to sirsi-sign |
+| **Firebase RC** | `packages/sirsi-sign/.firebaserc` | Project targeting |
 
 ---
 

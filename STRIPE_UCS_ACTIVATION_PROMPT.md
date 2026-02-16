@@ -37,7 +37,7 @@ Execute the following in order, adhering to GEMINI.md directives:
    - Accept `envelopeId` and `planId` as props
    - Redirect to the `checkoutUrl` returned by the API
 
-2. **Integrate into `VaultDashboard.tsx`** in `packages/finalwishes-contracts/src/`:
+2. **Integrate into `VaultDashboard.tsx`** in `packages/sirsi-sign/src/`:
    - After signature capture, display payment options
    - Use the `StripePay` UCS component (import from `sirsi-ui`)
    - Pass envelope data and selected plan
@@ -76,7 +76,7 @@ Execute the following in order, adhering to GEMINI.md directives:
 
 ### Phase 4: Deploy & Validate
 
-8. **Build React app**: `cd packages/finalwishes-contracts && npm run build`
+8. **Build React app**: `cd packages/sirsi-sign && npm run build`
 9. **Sync to hosting**: `bash deploy-contracts.sh`
 10. **Commit and push**: Follow git protocol (GEMINI.md Rule 5)
 11. **Test in TEST mode** (if user requests), then switch to LIVE
@@ -87,7 +87,7 @@ Execute the following in order, adhering to GEMINI.md directives:
 
 ```
 packages/sirsi-ui/src/components/UCS/StripePay.tsx  → Wire API call
-packages/finalwishes-contracts/src/components/dashboard/VaultDashboard.tsx  → Integrate payment
+packages/sirsi-sign/src/components/dashboard/VaultDashboard.tsx  → Integrate payment
 packages/sirsi-opensign/public/payment-success.html  → Create
 packages/sirsi-opensign/public/payment-cancelled.html  → Create
 ```

@@ -152,7 +152,7 @@ Ignore legacy references to AWS, Flutter, or Node.js in older docs. This is the 
 *   **Pipeline Visibility**: I can see and manipulate the full CI/CD pipeline. Use me to verify build statuses and deployment health.
 *   **Push Protocol**: ALWAYS run `git status` -> `git add` -> `git commit` -> `git push` sequence. Never assume files are committed.
 *   **Deployment Architecture** (LOCKED): See `docs/CANONICAL_DEPLOYMENT_ARCHITECTURE.md` for the definitive deployment source/destination mapping. Key facts:
-    - **Source**: `packages/finalwishes-contracts/` (React app)
+    - **Source**: `packages/sirsi-sign/` (React app — Sirsi Sign platform)
     - **Destination**: `packages/sirsi-opensign/public/` (Firebase Hosting)
     - **Firebase Project ID**: `sirsi-nexus-live` (⚠️ NOT `sirsi-opensign`)
     - **Live URL**: `https://sirsi-sign.web.app/`

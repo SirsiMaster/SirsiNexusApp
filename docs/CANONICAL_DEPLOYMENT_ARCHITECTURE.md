@@ -15,10 +15,10 @@
 
 | Category | Canonical Value |
 |----------|-----------------|
-| **Source Package** | `packages/finalwishes-contracts/` |
-| **Build Output** | `packages/finalwishes-contracts/dist/` |
-| **React Components (Legal)** | `packages/finalwishes-contracts/src/components/tabs/` |
-| **Static Legal HTML** | `packages/finalwishes-contracts/public/finalwishes/contracts/` |
+| **Source Package** | `packages/sirsi-sign/` |
+| **Build Output** | `packages/sirsi-sign/dist/` |
+| **React Components (Legal)** | `packages/sirsi-sign/src/components/tabs/` |
+| **Static Legal HTML** | `packages/sirsi-sign/public/finalwishes/contracts/` |
 
 ### Legal Document Files (MUST STAY IN SYNC)
 
@@ -61,7 +61,7 @@
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │  STEP 1: BUILD                                                  │
-│  Location: packages/finalwishes-contracts/                      │
+│  Location: packages/sirsi-sign/                      │
 │  Command:  npm run build                                        │
 │  Output:   dist/index.html, dist/assets/index-*.js|css          │
 └─────────────────────────────────────────────────────────────────┘
@@ -69,7 +69,7 @@
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │  STEP 2: SYNC                                                   │
-│  From: packages/finalwishes-contracts/dist/                     │
+│  From: packages/sirsi-sign/dist/                     │
 │  To:   packages/sirsi-opensign/public/                          │
 │                                                                 │
 │  Files copied:                                                  │
@@ -106,7 +106,7 @@ bash deploy-contracts.sh
 ### Option 2: Step-by-Step Manual
 ```bash
 # 1. Build
-cd packages/finalwishes-contracts && npm run build
+cd packages/sirsi-sign && npm run build
 
 # 2. Deploy (sync happens automatically via sirsi-opensign config)
 cd ../sirsi-opensign
@@ -119,7 +119,7 @@ git add -A && git commit -m "deploy: update contracts" && git push
 
 ### Option 3: GitHub Actions
 Automatically triggers on push to `main` when files change in:
-- `packages/finalwishes-contracts/**`
+- `packages/sirsi-sign/**`
 - `packages/sirsi-opensign/**`
 
 **Required Secret:** `FIREBASE_SERVICE_ACCOUNT_SIRSI_NEXUS_LIVE`
@@ -137,7 +137,7 @@ Automatically triggers on push to `main` when files change in:
 ✅ Edit ALL legal document files in sync (MasterAgreement.tsx + both printable-msa.html files)
 
 ### 3. Skipping the Sync Step
-❌ Deploying sirsi-opensign without first building finalwishes-contracts  
+❌ Deploying sirsi-opensign without first building sirsi-sign  
 ✅ Always `npm run build` first, then deploy
 
 ### 4. Skipping Git Push
@@ -162,7 +162,7 @@ After every deployment:
 ```
 SirsiNexusApp/
 ├── packages/
-│   ├── finalwishes-contracts/    ← 🔵 REACT SOURCE
+│   ├── sirsi-sign/    ← 🔵 REACT SOURCE
 │   │   ├── src/
 │   │   │   └── components/
 │   │   │       └── tabs/

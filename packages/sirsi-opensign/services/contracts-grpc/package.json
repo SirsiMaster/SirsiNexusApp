@@ -7,7 +7,7 @@
     "scripts": {
         "start": "node src/server.js",
         "dev": "node --watch src/server.js",
-        "proto:gen": "npx buf generate ../../../finalwishes-contracts/proto",
+        "proto:gen": "npx buf generate ../../../sirsi-sign/proto",
         "build": "npm run proto:gen"
     },
     "dependencies": {

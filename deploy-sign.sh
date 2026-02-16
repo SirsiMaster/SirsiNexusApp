@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# Deploy Contracts Script
-# This script builds the finalwishes-contracts React app and deploys it to Firebase Hosting
+# Deploy Sirsi Sign Script
+# This script builds the Sirsi Sign React app and deploys it to Firebase Hosting
 
 set -e  # Exit on error
 
-echo "=== Sirsi Nexus App - Contract Deployment Script ==="
+echo "=== Sirsi Nexus App - Sign Deployment Script ==="
 echo ""
 
 cd "$(dirname "$0")"
 
 # Step 1: Build the React app
-echo "Step 1: Building finalwishes-contracts..."
-cd packages/finalwishes-contracts
+echo "Step 1: Building sirsi-sign..."
+cd packages/sirsi-sign
 npm run build
 echo "✓ Build complete"
 echo ""
@@ -25,10 +25,10 @@ cd ../sirsi-opensign
 rm -rf public/assets/index-*.js public/assets/index-*.css
 
 # Copy all assets from dist
-cp -R ../finalwishes-contracts/dist/assets/* public/assets/
+cp -R ../sirsi-sign/dist/assets/* public/assets/
 
 # Copy the SPA index.html to root only (Firebase rewrite handles all routes)
-cp ../finalwishes-contracts/dist/index.html public/index.html
+cp ../sirsi-sign/dist/index.html public/index.html
 
 # Purge any stale subdirectory index.html files that break SPA routing
 rm -rf public/partnership public/contracts public/finalwishes
@@ -42,5 +42,5 @@ firebase deploy --only hosting --project sirsi-nexus-live
 
 echo ""
 echo "=== Deployment Complete ==="
-echo "Your contract app should now be live at:"
-echo "https://sirsi-sign.web.app/partnership/finalwishes"
+echo "Your Sirsi Sign app is now live at:"
+echo "https://sign.sirsi.ai"
