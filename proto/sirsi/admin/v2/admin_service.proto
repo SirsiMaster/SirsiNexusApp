@@ -4,13 +4,23 @@ syntax = "proto3";
 package sirsi.admin.v2;
 
 import "sirsi/common/v1/common.proto";
+import "sirsi/admin/v2/estate.proto";
 
 option go_package = "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2";
 
 service AdminService {
   // Development & Session Logging
   rpc LogDevSession(LogDevSessionRequest) returns (LogDevSessionResponse);
+  rpc GetDevMetrics(GetDevMetricsRequest) returns (DevMetrics);
+  rpc SyncGitHubStats(SyncGitHubStatsRequest) returns (SyncGitHubStatsResponse);
   
+  // Estate Management Hub
+  rpc ListEstates(ListEstatesRequest) returns (ListEstatesResponse);
+  rpc GetEstate(GetEstateRequest) returns (Estate);
+  rpc CreateEstate(CreateEstateRequest) returns (Estate);
+  rpc UpdateEstate(UpdateEstateRequest) returns (Estate);
+  rpc DeleteEstate(DeleteEstateRequest) returns (DeleteEstateResponse);
+
   // User & Access Control
   rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
   rpc ManageUserRole(ManageUserRoleRequest) returns (ManageUserRoleResponse);
@@ -134,4 +144,35 @@ message AuditLogEntry {
   string message = 5;
   string user = 6;
   string metadata = 7;
+}
+
+// Development Intelligence Center messages
+message GetDevMetricsRequest {
+  string tenant_id = 1;
+  int64 start_time = 2;
+  int64 end_time = 3;
+}
+
+message DevMetrics {
+  double velocity = 1;
+  int32 open_issues = 2;
+  int32 closed_issues = 3;
+  int32 active_sessions = 4;
+  sirsi.common.v1.Money burn_rate = 5;
+  repeated DailyActivity activity = 6;
+}
+
+message DailyActivity {
+  string date = 1;
+  int32 commits = 2;
+  int32 session_minutes = 3;
+}
+
+message SyncGitHubStatsRequest {
+  string repo_url = 1;
+}
+
+message SyncGitHubStatsResponse {
+  bool success = 1;
+  int32 synced_count = 2;
 }

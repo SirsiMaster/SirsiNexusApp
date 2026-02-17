@@ -6,15 +6,17 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
-import type { PaginationRequest, PaginationResponse } from "../../common/v1/common_pb";
+import type { Money, PaginationRequest, PaginationResponse } from "../../common/v1/common_pb";
 import { file_sirsi_common_v1_common } from "../../common/v1/common_pb";
+import type { CreateEstateRequestSchema, DeleteEstateRequestSchema, DeleteEstateResponseSchema, EstateSchema, GetEstateRequestSchema, ListEstatesRequestSchema, ListEstatesResponseSchema, UpdateEstateRequestSchema } from "./estate_pb";
+import { file_sirsi_admin_v2_estate } from "./estate_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file sirsi/admin/v2/admin_service.proto.
  */
 export const file_sirsi_admin_v2_admin_service: GenFile = /*@__PURE__*/
-  fileDesc("CiJzaXJzaS9hZG1pbi92Mi9hZG1pbl9zZXJ2aWNlLnByb3RvEg5zaXJzaS5hZG1pbi52MiJOChRMb2dEZXZTZXNzaW9uUmVxdWVzdBIUCgxkZXZlbG9wZXJfaWQYASABKAkSDgoGYWN0aW9uGAIgASgJEhAKCG1ldGFkYXRhGAMgASgJIisKFUxvZ0RldlNlc3Npb25SZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJIlAKBFVzZXISCgoCaWQYASABKAkSDQoFZW1haWwYAiABKAkSDAoEbmFtZRgDIAEoCRIMCgRyb2xlGAQgASgJEhEKCXRlbmFudF9pZBgFIAEoCSJdChBMaXN0VXNlcnNSZXF1ZXN0EjYKCnBhZ2luYXRpb24YASABKAsyIi5zaXJzaS5jb21tb24udjEuUGFnaW5hdGlvblJlcXVlc3QSEQoJdGVuYW50X2lkGAIgASgJInEKEUxpc3RVc2Vyc1Jlc3BvbnNlEiMKBXVzZXJzGAEgAygLMhQuc2lyc2kuYWRtaW4udjIuVXNlchI3CgpwYWdpbmF0aW9uGAIgASgLMiMuc2lyc2kuY29tbW9uLnYxLlBhZ2luYXRpb25SZXNwb25zZSI2ChVNYW5hZ2VVc2VyUm9sZVJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIMCgRyb2xlGAIgASgJIikKFk1hbmFnZVVzZXJSb2xlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCJ8CgxOb3RpZmljYXRpb24SCgoCaWQYASABKAkSFAoMcmVjaXBpZW50X2lkGAIgASgJEg0KBXRpdGxlGAMgASgJEgwKBGJvZHkYBCABKAkSDAoEdHlwZRgFIAEoCRIPCgdzZW50X2F0GAYgASgDEg4KBnN0YXR1cxgHIAEoCSJoChhMaXN0Tm90aWZpY2F0aW9uc1JlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLnNpcnNpLmNvbW1vbi52MS5QYWdpbmF0aW9uUmVxdWVzdBIUCgxyZWNpcGllbnRfaWQYAiABKAkiiQEKGUxpc3ROb3RpZmljYXRpb25zUmVzcG9uc2USMwoNbm90aWZpY2F0aW9ucxgBIAMoCzIcLnNpcnNpLmFkbWluLnYyLk5vdGlmaWNhdGlvbhI3CgpwYWdpbmF0aW9uGAIgASgLMiMuc2lyc2kuY29tbW9uLnYxLlBhZ2luYXRpb25SZXNwb25zZSJrChdTZW5kTm90aWZpY2F0aW9uUmVxdWVzdBIUCgxyZWNpcGllbnRfaWQYASABKAkSDQoFdGl0bGUYAiABKAkSDAoEYm9keRgDIAEoCRIMCgR0eXBlGAQgASgJEg8KB2NoYW5uZWwYBSABKAkiMwoYU2VuZE5vdGlmaWNhdGlvblJlc3BvbnNlEhcKD25vdGlmaWNhdGlvbl9pZBgBIAEoCSJbCg5TeXN0ZW1TZXR0aW5ncxIYChBtYWludGVuYW5jZV9tb2RlGAEgASgIEhUKDWFjdGl2ZV9yZWdpb24YAiABKAkSGAoQc2lyc2lfbXVsdGlwbGllchgDIAEoASIUChJHZXRTZXR0aW5nc1JlcXVlc3QiRwoTR2V0U2V0dGluZ3NSZXNwb25zZRIwCghzZXR0aW5ncxgBIAEoCzIeLnNpcnNpLmFkbWluLnYyLlN5c3RlbVNldHRpbmdzIkkKFVVwZGF0ZVNldHRpbmdzUmVxdWVzdBIwCghzZXR0aW5ncxgBIAEoCzIeLnNpcnNpLmFkbWluLnYyLlN5c3RlbVNldHRpbmdzIikKFlVwZGF0ZVNldHRpbmdzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCJlChVMaXN0QXVkaXRUcmFpbFJlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLnNpcnNpLmNvbW1vbi52MS5QYWdpbmF0aW9uUmVxdWVzdBIUCgxmaWx0ZXJfbGV2ZWwYAiABKAkifgoWTGlzdEF1ZGl0VHJhaWxSZXNwb25zZRIrCgRsb2dzGAEgAygLMh0uc2lyc2kuYWRtaW4udjIuQXVkaXRMb2dFbnRyeRI3CgpwYWdpbmF0aW9uGAIgASgLMiMuc2lyc2kuY29tbW9uLnYxLlBhZ2luYXRpb25SZXNwb25zZSJ+Cg1BdWRpdExvZ0VudHJ5EgoKAmlkGAEgASgJEhEKCXRpbWVzdGFtcBgCIAEoAxINCgVsZXZlbBgDIAEoCRIOCgZzb3VyY2UYBCABKAkSDwoHbWVzc2FnZRgFIAEoCRIMCgR1c2VyGAYgASgJEhAKCG1ldGFkYXRhGAcgASgJMooGCgxBZG1pblNlcnZpY2USXAoNTG9nRGV2U2Vzc2lvbhIkLnNpcnNpLmFkbWluLnYyLkxvZ0RldlNlc3Npb25SZXF1ZXN0GiUuc2lyc2kuYWRtaW4udjIuTG9nRGV2U2Vzc2lvblJlc3BvbnNlElAKCUxpc3RVc2VycxIgLnNpcnNpLmFkbWluLnYyLkxpc3RVc2Vyc1JlcXVlc3QaIS5zaXJzaS5hZG1pbi52Mi5MaXN0VXNlcnNSZXNwb25zZRJfCg5NYW5hZ2VVc2VyUm9sZRIlLnNpcnNpLmFkbWluLnYyLk1hbmFnZVVzZXJSb2xlUmVxdWVzdBomLnNpcnNpLmFkbWluLnYyLk1hbmFnZVVzZXJSb2xlUmVzcG9uc2USaAoRTGlzdE5vdGlmaWNhdGlvbnMSKC5zaXJzaS5hZG1pbi52Mi5MaXN0Tm90aWZpY2F0aW9uc1JlcXVlc3QaKS5zaXJzaS5hZG1pbi52Mi5MaXN0Tm90aWZpY2F0aW9uc1Jlc3BvbnNlEmUKEFNlbmROb3RpZmljYXRpb24SJy5zaXJzaS5hZG1pbi52Mi5TZW5kTm90aWZpY2F0aW9uUmVxdWVzdBooLnNpcnNpLmFkbWluLnYyLlNlbmROb3RpZmljYXRpb25SZXNwb25zZRJWCgtHZXRTZXR0aW5ncxIiLnNpcnNpLmFkbWluLnYyLkdldFNldHRpbmdzUmVxdWVzdBojLnNpcnNpLmFkbWluLnYyLkdldFNldHRpbmdzUmVzcG9uc2USXwoOVXBkYXRlU2V0dGluZ3MSJS5zaXJzaS5hZG1pbi52Mi5VcGRhdGVTZXR0aW5nc1JlcXVlc3QaJi5zaXJzaS5hZG1pbi52Mi5VcGRhdGVTZXR0aW5nc1Jlc3BvbnNlEl8KDkxpc3RBdWRpdFRyYWlsEiUuc2lyc2kuYWRtaW4udjIuTGlzdEF1ZGl0VHJhaWxSZXF1ZXN0GiYuc2lyc2kuYWRtaW4udjIuTGlzdEF1ZGl0VHJhaWxSZXNwb25zZUK7AQoSY29tLnNpcnNpLmFkbWluLnYyQhFBZG1pblNlcnZpY2VQcm90b1ABWjhnaXRodWIuY29tL3NpcnNpbWFzdGVyL3NpcnNpLW5leHVzL2dlbi9nby9zaXJzaS9hZG1pbi92MqICA1NBWKoCDlNpcnNpLkFkbWluLlYyygIOU2lyc2lcQWRtaW5cVjLiAhpTaXJzaVxBZG1pblxWMlxHUEJNZXRhZGF0YeoCEFNpcnNpOjpBZG1pbjo6VjJiBnByb3RvMw", [file_sirsi_common_v1_common]);
+  fileDesc("CiJzaXJzaS9hZG1pbi92Mi9hZG1pbl9zZXJ2aWNlLnByb3RvEg5zaXJzaS5hZG1pbi52MiJOChRMb2dEZXZTZXNzaW9uUmVxdWVzdBIUCgxkZXZlbG9wZXJfaWQYASABKAkSDgoGYWN0aW9uGAIgASgJEhAKCG1ldGFkYXRhGAMgASgJIisKFUxvZ0RldlNlc3Npb25SZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJIlAKBFVzZXISCgoCaWQYASABKAkSDQoFZW1haWwYAiABKAkSDAoEbmFtZRgDIAEoCRIMCgRyb2xlGAQgASgJEhEKCXRlbmFudF9pZBgFIAEoCSJdChBMaXN0VXNlcnNSZXF1ZXN0EjYKCnBhZ2luYXRpb24YASABKAsyIi5zaXJzaS5jb21tb24udjEuUGFnaW5hdGlvblJlcXVlc3QSEQoJdGVuYW50X2lkGAIgASgJInEKEUxpc3RVc2Vyc1Jlc3BvbnNlEiMKBXVzZXJzGAEgAygLMhQuc2lyc2kuYWRtaW4udjIuVXNlchI3CgpwYWdpbmF0aW9uGAIgASgLMiMuc2lyc2kuY29tbW9uLnYxLlBhZ2luYXRpb25SZXNwb25zZSI2ChVNYW5hZ2VVc2VyUm9sZVJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIMCgRyb2xlGAIgASgJIikKFk1hbmFnZVVzZXJSb2xlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCJ8CgxOb3RpZmljYXRpb24SCgoCaWQYASABKAkSFAoMcmVjaXBpZW50X2lkGAIgASgJEg0KBXRpdGxlGAMgASgJEgwKBGJvZHkYBCABKAkSDAoEdHlwZRgFIAEoCRIPCgdzZW50X2F0GAYgASgDEg4KBnN0YXR1cxgHIAEoCSJoChhMaXN0Tm90aWZpY2F0aW9uc1JlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLnNpcnNpLmNvbW1vbi52MS5QYWdpbmF0aW9uUmVxdWVzdBIUCgxyZWNpcGllbnRfaWQYAiABKAkiiQEKGUxpc3ROb3RpZmljYXRpb25zUmVzcG9uc2USMwoNbm90aWZpY2F0aW9ucxgBIAMoCzIcLnNpcnNpLmFkbWluLnYyLk5vdGlmaWNhdGlvbhI3CgpwYWdpbmF0aW9uGAIgASgLMiMuc2lyc2kuY29tbW9uLnYxLlBhZ2luYXRpb25SZXNwb25zZSJrChdTZW5kTm90aWZpY2F0aW9uUmVxdWVzdBIUCgxyZWNpcGllbnRfaWQYASABKAkSDQoFdGl0bGUYAiABKAkSDAoEYm9keRgDIAEoCRIMCgR0eXBlGAQgASgJEg8KB2NoYW5uZWwYBSABKAkiMwoYU2VuZE5vdGlmaWNhdGlvblJlc3BvbnNlEhcKD25vdGlmaWNhdGlvbl9pZBgBIAEoCSJbCg5TeXN0ZW1TZXR0aW5ncxIYChBtYWludGVuYW5jZV9tb2RlGAEgASgIEhUKDWFjdGl2ZV9yZWdpb24YAiABKAkSGAoQc2lyc2lfbXVsdGlwbGllchgDIAEoASIUChJHZXRTZXR0aW5nc1JlcXVlc3QiRwoTR2V0U2V0dGluZ3NSZXNwb25zZRIwCghzZXR0aW5ncxgBIAEoCzIeLnNpcnNpLmFkbWluLnYyLlN5c3RlbVNldHRpbmdzIkkKFVVwZGF0ZVNldHRpbmdzUmVxdWVzdBIwCghzZXR0aW5ncxgBIAEoCzIeLnNpcnNpLmFkbWluLnYyLlN5c3RlbVNldHRpbmdzIikKFlVwZGF0ZVNldHRpbmdzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCJlChVMaXN0QXVkaXRUcmFpbFJlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLnNpcnNpLmNvbW1vbi52MS5QYWdpbmF0aW9uUmVxdWVzdBIUCgxmaWx0ZXJfbGV2ZWwYAiABKAkifgoWTGlzdEF1ZGl0VHJhaWxSZXNwb25zZRIrCgRsb2dzGAEgAygLMh0uc2lyc2kuYWRtaW4udjIuQXVkaXRMb2dFbnRyeRI3CgpwYWdpbmF0aW9uGAIgASgLMiMuc2lyc2kuY29tbW9uLnYxLlBhZ2luYXRpb25SZXNwb25zZSJ+Cg1BdWRpdExvZ0VudHJ5EgoKAmlkGAEgASgJEhEKCXRpbWVzdGFtcBgCIAEoAxINCgVsZXZlbBgDIAEoCRIOCgZzb3VyY2UYBCABKAkSDwoHbWVzc2FnZRgFIAEoCRIMCgR1c2VyGAYgASgJEhAKCG1ldGFkYXRhGAcgASgJIk8KFEdldERldk1ldHJpY3NSZXF1ZXN0EhEKCXRlbmFudF9pZBgBIAEoCRISCgpzdGFydF90aW1lGAIgASgDEhAKCGVuZF90aW1lGAMgASgDIr8BCgpEZXZNZXRyaWNzEhAKCHZlbG9jaXR5GAEgASgBEhMKC29wZW5faXNzdWVzGAIgASgFEhUKDWNsb3NlZF9pc3N1ZXMYAyABKAUSFwoPYWN0aXZlX3Nlc3Npb25zGAQgASgFEikKCWJ1cm5fcmF0ZRgFIAEoCzIWLnNpcnNpLmNvbW1vbi52MS5Nb25leRIvCghhY3Rpdml0eRgGIAMoCzIdLnNpcnNpLmFkbWluLnYyLkRhaWx5QWN0aXZpdHkiRwoNRGFpbHlBY3Rpdml0eRIMCgRkYXRlGAEgASgJEg8KB2NvbW1pdHMYAiABKAUSFwoPc2Vzc2lvbl9taW51dGVzGAMgASgFIioKFlN5bmNHaXRIdWJTdGF0c1JlcXVlc3QSEAoIcmVwb191cmwYASABKAkiQAoXU3luY0dpdEh1YlN0YXRzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIUCgxzeW5jZWRfY291bnQYAiABKAUy1QoKDEFkbWluU2VydmljZRJcCg1Mb2dEZXZTZXNzaW9uEiQuc2lyc2kuYWRtaW4udjIuTG9nRGV2U2Vzc2lvblJlcXVlc3QaJS5zaXJzaS5hZG1pbi52Mi5Mb2dEZXZTZXNzaW9uUmVzcG9uc2USUQoNR2V0RGV2TWV0cmljcxIkLnNpcnNpLmFkbWluLnYyLkdldERldk1ldHJpY3NSZXF1ZXN0Ghouc2lyc2kuYWRtaW4udjIuRGV2TWV0cmljcxJiCg9TeW5jR2l0SHViU3RhdHMSJi5zaXJzaS5hZG1pbi52Mi5TeW5jR2l0SHViU3RhdHNSZXF1ZXN0Gicuc2lyc2kuYWRtaW4udjIuU3luY0dpdEh1YlN0YXRzUmVzcG9uc2USVgoLTGlzdEVzdGF0ZXMSIi5zaXJzaS5hZG1pbi52Mi5MaXN0RXN0YXRlc1JlcXVlc3QaIy5zaXJzaS5hZG1pbi52Mi5MaXN0RXN0YXRlc1Jlc3BvbnNlEkUKCUdldEVzdGF0ZRIgLnNpcnNpLmFkbWluLnYyLkdldEVzdGF0ZVJlcXVlc3QaFi5zaXJzaS5hZG1pbi52Mi5Fc3RhdGUSSwoMQ3JlYXRlRXN0YXRlEiMuc2lyc2kuYWRtaW4udjIuQ3JlYXRlRXN0YXRlUmVxdWVzdBoWLnNpcnNpLmFkbWluLnYyLkVzdGF0ZRJLCgxVcGRhdGVFc3RhdGUSIy5zaXJzaS5hZG1pbi52Mi5VcGRhdGVFc3RhdGVSZXF1ZXN0GhYuc2lyc2kuYWRtaW4udjIuRXN0YXRlElkKDERlbGV0ZUVzdGF0ZRIjLnNpcnNpLmFkbWluLnYyLkRlbGV0ZUVzdGF0ZVJlcXVlc3QaJC5zaXJzaS5hZG1pbi52Mi5EZWxldGVFc3RhdGVSZXNwb25zZRJQCglMaXN0VXNlcnMSIC5zaXJzaS5hZG1pbi52Mi5MaXN0VXNlcnNSZXF1ZXN0GiEuc2lyc2kuYWRtaW4udjIuTGlzdFVzZXJzUmVzcG9uc2USXwoOTWFuYWdlVXNlclJvbGUSJS5zaXJzaS5hZG1pbi52Mi5NYW5hZ2VVc2VyUm9sZVJlcXVlc3QaJi5zaXJzaS5hZG1pbi52Mi5NYW5hZ2VVc2VyUm9sZVJlc3BvbnNlEmgKEUxpc3ROb3RpZmljYXRpb25zEiguc2lyc2kuYWRtaW4udjIuTGlzdE5vdGlmaWNhdGlvbnNSZXF1ZXN0Gikuc2lyc2kuYWRtaW4udjIuTGlzdE5vdGlmaWNhdGlvbnNSZXNwb25zZRJlChBTZW5kTm90aWZpY2F0aW9uEicuc2lyc2kuYWRtaW4udjIuU2VuZE5vdGlmaWNhdGlvblJlcXVlc3QaKC5zaXJzaS5hZG1pbi52Mi5TZW5kTm90aWZpY2F0aW9uUmVzcG9uc2USVgoLR2V0U2V0dGluZ3MSIi5zaXJzaS5hZG1pbi52Mi5HZXRTZXR0aW5nc1JlcXVlc3QaIy5zaXJzaS5hZG1pbi52Mi5HZXRTZXR0aW5nc1Jlc3BvbnNlEl8KDlVwZGF0ZVNldHRpbmdzEiUuc2lyc2kuYWRtaW4udjIuVXBkYXRlU2V0dGluZ3NSZXF1ZXN0GiYuc2lyc2kuYWRtaW4udjIuVXBkYXRlU2V0dGluZ3NSZXNwb25zZRJfCg5MaXN0QXVkaXRUcmFpbBIlLnNpcnNpLmFkbWluLnYyLkxpc3RBdWRpdFRyYWlsUmVxdWVzdBomLnNpcnNpLmFkbWluLnYyLkxpc3RBdWRpdFRyYWlsUmVzcG9uc2VCuwEKEmNvbS5zaXJzaS5hZG1pbi52MkIRQWRtaW5TZXJ2aWNlUHJvdG9QAVo4Z2l0aHViLmNvbS9zaXJzaW1hc3Rlci9zaXJzaS1uZXh1cy9nZW4vZ28vc2lyc2kvYWRtaW4vdjKiAgNTQViqAg5TaXJzaS5BZG1pbi5WMsoCDlNpcnNpXEFkbWluXFYy4gIaU2lyc2lcQWRtaW5cVjJcR1BCTWV0YWRhdGHqAhBTaXJzaTo6QWRtaW46OlYyYgZwcm90bzM", [file_sirsi_common_v1_common, file_sirsi_admin_v2_estate]);
 
 /**
  * @generated from message sirsi.admin.v2.LogDevSessionRequest
@@ -518,6 +520,143 @@ export const AuditLogEntrySchema: GenMessage<AuditLogEntry> = /*@__PURE__*/
   messageDesc(file_sirsi_admin_v2_admin_service, 19);
 
 /**
+ * Development Intelligence Center messages
+ *
+ * @generated from message sirsi.admin.v2.GetDevMetricsRequest
+ */
+export type GetDevMetricsRequest = Message<"sirsi.admin.v2.GetDevMetricsRequest"> & {
+  /**
+   * @generated from field: string tenant_id = 1;
+   */
+  tenantId: string;
+
+  /**
+   * @generated from field: int64 start_time = 2;
+   */
+  startTime: bigint;
+
+  /**
+   * @generated from field: int64 end_time = 3;
+   */
+  endTime: bigint;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetDevMetricsRequest.
+ * Use `create(GetDevMetricsRequestSchema)` to create a new message.
+ */
+export const GetDevMetricsRequestSchema: GenMessage<GetDevMetricsRequest> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_admin_service, 20);
+
+/**
+ * @generated from message sirsi.admin.v2.DevMetrics
+ */
+export type DevMetrics = Message<"sirsi.admin.v2.DevMetrics"> & {
+  /**
+   * @generated from field: double velocity = 1;
+   */
+  velocity: number;
+
+  /**
+   * @generated from field: int32 open_issues = 2;
+   */
+  openIssues: number;
+
+  /**
+   * @generated from field: int32 closed_issues = 3;
+   */
+  closedIssues: number;
+
+  /**
+   * @generated from field: int32 active_sessions = 4;
+   */
+  activeSessions: number;
+
+  /**
+   * @generated from field: sirsi.common.v1.Money burn_rate = 5;
+   */
+  burnRate?: Money;
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.DailyActivity activity = 6;
+   */
+  activity: DailyActivity[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.DevMetrics.
+ * Use `create(DevMetricsSchema)` to create a new message.
+ */
+export const DevMetricsSchema: GenMessage<DevMetrics> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_admin_service, 21);
+
+/**
+ * @generated from message sirsi.admin.v2.DailyActivity
+ */
+export type DailyActivity = Message<"sirsi.admin.v2.DailyActivity"> & {
+  /**
+   * @generated from field: string date = 1;
+   */
+  date: string;
+
+  /**
+   * @generated from field: int32 commits = 2;
+   */
+  commits: number;
+
+  /**
+   * @generated from field: int32 session_minutes = 3;
+   */
+  sessionMinutes: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.DailyActivity.
+ * Use `create(DailyActivitySchema)` to create a new message.
+ */
+export const DailyActivitySchema: GenMessage<DailyActivity> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_admin_service, 22);
+
+/**
+ * @generated from message sirsi.admin.v2.SyncGitHubStatsRequest
+ */
+export type SyncGitHubStatsRequest = Message<"sirsi.admin.v2.SyncGitHubStatsRequest"> & {
+  /**
+   * @generated from field: string repo_url = 1;
+   */
+  repoUrl: string;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.SyncGitHubStatsRequest.
+ * Use `create(SyncGitHubStatsRequestSchema)` to create a new message.
+ */
+export const SyncGitHubStatsRequestSchema: GenMessage<SyncGitHubStatsRequest> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_admin_service, 23);
+
+/**
+ * @generated from message sirsi.admin.v2.SyncGitHubStatsResponse
+ */
+export type SyncGitHubStatsResponse = Message<"sirsi.admin.v2.SyncGitHubStatsResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: int32 synced_count = 2;
+   */
+  syncedCount: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.SyncGitHubStatsResponse.
+ * Use `create(SyncGitHubStatsResponseSchema)` to create a new message.
+ */
+export const SyncGitHubStatsResponseSchema: GenMessage<SyncGitHubStatsResponse> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_admin_service, 24);
+
+/**
  * @generated from service sirsi.admin.v2.AdminService
  */
 export const AdminService: GenService<{
@@ -530,6 +669,64 @@ export const AdminService: GenService<{
     methodKind: "unary";
     input: typeof LogDevSessionRequestSchema;
     output: typeof LogDevSessionResponseSchema;
+  },
+  /**
+   * @generated from rpc sirsi.admin.v2.AdminService.GetDevMetrics
+   */
+  getDevMetrics: {
+    methodKind: "unary";
+    input: typeof GetDevMetricsRequestSchema;
+    output: typeof DevMetricsSchema;
+  },
+  /**
+   * @generated from rpc sirsi.admin.v2.AdminService.SyncGitHubStats
+   */
+  syncGitHubStats: {
+    methodKind: "unary";
+    input: typeof SyncGitHubStatsRequestSchema;
+    output: typeof SyncGitHubStatsResponseSchema;
+  },
+  /**
+   * Estate Management Hub
+   *
+   * @generated from rpc sirsi.admin.v2.AdminService.ListEstates
+   */
+  listEstates: {
+    methodKind: "unary";
+    input: typeof ListEstatesRequestSchema;
+    output: typeof ListEstatesResponseSchema;
+  },
+  /**
+   * @generated from rpc sirsi.admin.v2.AdminService.GetEstate
+   */
+  getEstate: {
+    methodKind: "unary";
+    input: typeof GetEstateRequestSchema;
+    output: typeof EstateSchema;
+  },
+  /**
+   * @generated from rpc sirsi.admin.v2.AdminService.CreateEstate
+   */
+  createEstate: {
+    methodKind: "unary";
+    input: typeof CreateEstateRequestSchema;
+    output: typeof EstateSchema;
+  },
+  /**
+   * @generated from rpc sirsi.admin.v2.AdminService.UpdateEstate
+   */
+  updateEstate: {
+    methodKind: "unary";
+    input: typeof UpdateEstateRequestSchema;
+    output: typeof EstateSchema;
+  },
+  /**
+   * @generated from rpc sirsi.admin.v2.AdminService.DeleteEstate
+   */
+  deleteEstate: {
+    methodKind: "unary";
+    input: typeof DeleteEstateRequestSchema;
+    output: typeof DeleteEstateResponseSchema;
   },
   /**
    * User & Access Control

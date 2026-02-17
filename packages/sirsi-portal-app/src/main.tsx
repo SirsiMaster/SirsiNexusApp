@@ -12,6 +12,8 @@ import { Route as tenantsRoute } from './routes/tenants'
 import { Route as usersRoute } from './routes/users'
 import { Route as contractsRoute } from './routes/contracts'
 import { Route as settingsRoute } from './routes/settings'
+import { Route as estatesRoute } from './routes/estates'
+import { Route as developmentRoute } from './routes/development'
 
 // Create the route tree manually
 const routeTree = (rootRoute as any).addChildren([
@@ -20,6 +22,8 @@ const routeTree = (rootRoute as any).addChildren([
   usersRoute as any,
   contractsRoute as any,
   settingsRoute as any,
+  estatesRoute as any,
+  developmentRoute as any,
 ])
 
 // Create the router

@@ -29,6 +29,12 @@ export const Route = createRootRoute({
                     <SidebarLink to="/contracts" className="nav-link" activeProps={{ className: 'active' }}>
                         <span>Contracts</span>
                     </SidebarLink>
+                    <SidebarLink to="/estates" className="nav-link" activeProps={{ className: 'active' }}>
+                        <span>Estates</span>
+                    </SidebarLink>
+                    <SidebarLink to="/development" className="nav-link" activeProps={{ className: 'active' }}>
+                        <span>Development</span>
+                    </SidebarLink>
                     <div className="flex-1" />
                     <SidebarLink to="/settings" className="nav-link" activeProps={{ className: 'active' }}>
                         <span>Settings</span>

@@ -1,0 +1,73 @@
+// proto/sirsi/admin/v2/estate.proto
+syntax = "proto3";
+
+package sirsi.admin.v2;
+
+import "sirsi/common/v1/common.proto";
+
+option go_package = "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2";
+
+enum EstatePhase {
+  ESTATE_PHASE_UNSPECIFIED = 0;
+  ESTATE_PHASE_PLANNING = 1;
+  ESTATE_PHASE_FUNDING = 2;
+  ESTATE_PHASE_DISTRIBUTION = 3;
+  ESTATE_PHASE_CLOSED = 4;
+}
+
+message Estate {
+  string id = 1;
+  string name = 2;
+  string owner_id = 3;
+  string owner_email = 4;
+  EstatePhase phase = 5;
+  sirsi.common.v1.Money valuation = 6;
+  int64 created_at = 7;
+  int64 updated_at = 8;
+  repeated EstateContact contacts = 9;
+  string tenant_id = 10;
+}
+
+message EstateContact {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string role = 4; // e.g., "Executor", "Heir", "Attorney"
+  bool verified = 5;
+}
+
+message ListEstatesRequest {
+  sirsi.common.v1.PaginationRequest pagination = 1;
+  string tenant_id = 2;
+  EstatePhase phase_filter = 3;
+}
+
+message ListEstatesResponse {
+  repeated Estate estates = 1;
+  sirsi.common.v1.PaginationResponse pagination = 2;
+}
+
+message GetEstateRequest {
+  string id = 1;
+}
+
+message CreateEstateRequest {
+  string name = 1;
+  string owner_email = 2;
+  string tenant_id = 3;
+  sirsi.common.v1.Money initial_valuation = 4;
+}
+
+message UpdateEstateRequest {
+  string id = 1;
+  Estate estate = 2;
+  repeated string update_mask = 3;
+}
+
+message DeleteEstateRequest {
+  string id = 1;
+}
+
+message DeleteEstateResponse {
+  bool success = 1;
+}
