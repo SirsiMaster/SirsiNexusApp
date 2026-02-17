@@ -58,34 +58,35 @@ const formatCents = (cents: number) =>
 const S = {
     overlay: {
         position: 'fixed', inset: 0, zIndex: 9999,
-        background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)',
+        background: 'rgba(2, 44, 34, 0.4)', backdropFilter: 'blur(8px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
     } as React.CSSProperties,
     modal: {
-        background: '#0c1425', border: '1px solid rgba(200,169,81,0.3)',
+        background: '#ffffff', border: '1px solid rgba(2, 44, 34, 0.1)',
         borderRadius: '16px', padding: '32px', width: '560px', maxWidth: '95vw',
         maxHeight: '90vh', overflowY: 'auto',
+        boxShadow: '0 40px 100px -20px rgba(2, 44, 34, 0.15)',
     } as React.CSSProperties,
     input: {
         width: '100%', padding: '10px 14px', borderRadius: '8px',
-        border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.04)',
-        color: 'white', fontSize: '14px', fontFamily: "'Inter', sans-serif",
+        border: '1px solid #e2e8f0', background: '#f8faf9',
+        color: '#022c22', fontSize: '16px', fontFamily: "'Inter', sans-serif",
         outline: 'none', boxSizing: 'border-box',
     } as React.CSSProperties,
     label: {
-        color: 'rgba(255,255,255,0.5)', fontSize: '11px', fontWeight: 700,
+        color: '#64748b', fontSize: '13px', fontWeight: 700,
         textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px',
         display: 'block',
     } as React.CSSProperties,
     btnBase: {
         border: 'none', padding: '6px 14px', borderRadius: '6px',
-        fontSize: '11px', fontWeight: 700, cursor: 'pointer',
+        fontSize: '13px', fontWeight: 700, cursor: 'pointer',
         textTransform: 'uppercase', letterSpacing: '0.05em',
         transition: 'all 0.2s ease',
     } as React.CSSProperties,
     checkbox: {
         width: '18px', height: '18px', cursor: 'pointer',
-        accentColor: '#C8A951',
+        accentColor: '#059669',
     } as React.CSSProperties,
 };
 
@@ -399,17 +400,17 @@ export function VaultDashboard() {
 
     const BalanceBadge = ({ balance }: { balance: number }) => {
         if (balance === 0) return (
-            <span style={{ fontSize: '11px', fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <span style={{ fontSize: '13px', fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 ✓ Paid in Full
             </span>
         );
         if (balance > 0) return (
-            <span style={{ fontSize: '11px', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <span style={{ fontSize: '13px', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 {formatCents(balance)} owed
             </span>
         );
         return (
-            <span style={{ fontSize: '11px', fontWeight: 700, color: '#60a5fa', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+            <span style={{ fontSize: '13px', fontWeight: 700, color: '#60a5fa', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 {formatCents(Math.abs(balance))} credit
             </span>
         );
@@ -422,18 +423,18 @@ export function VaultDashboard() {
             {/* ── VAULT HEADER ── */}
             <div style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-                marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '2rem'
+                marginBottom: '2rem', borderBottom: '1px solid rgba(2, 44, 34, 0.05)', paddingBottom: '2rem'
             }}>
                 <div>
-                    <h1 style={{ fontFamily: "'Cinzel', serif", color: 'white', fontSize: '42px', margin: 0, letterSpacing: '0.05em' }}>
+                    <h1 style={{ fontFamily: "'Cinzel', serif", color: '#022c22', fontSize: '42px', margin: 0, letterSpacing: '0.05em' }}>
                         Sirsi Vault
                     </h1>
                     <div style={{ display: 'flex', gap: '12px', marginTop: '8px', alignItems: 'center' }}>
-                        <span style={{ color: '#C8A951', fontSize: '14px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                        <span style={{ color: '#A68936', fontSize: '14px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                             {auth.currentUser?.displayName || auth.currentUser?.email}
                         </span>
-                        <span style={{ color: 'rgba(255,255,255,0.2)' }}>•</span>
-                        <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px', textTransform: 'uppercase' }}>
+                        <span style={{ color: 'rgba(2, 44, 34, 0.1)' }}>•</span>
+                        <span style={{ color: '#64748b', fontSize: '15px', textTransform: 'uppercase' }}>
                             Permanent Record Hub
                         </span>
                     </div>
@@ -442,10 +443,11 @@ export function VaultDashboard() {
                     <button
                         onClick={() => setShowMFAEnrollment(true)}
                         style={{
-                            background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)',
-                            color: 'rgba(255,255,255,0.6)', padding: '10px 20px', borderRadius: '8px',
-                            fontSize: '14px', fontWeight: 600, cursor: 'pointer',
-                            display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.3s ease'
+                            background: '#ffffff', border: '1px solid #e2e8f0',
+                            color: '#64748b', padding: '10px 20px', borderRadius: '8px',
+                            fontSize: '16px', fontWeight: 600, cursor: 'pointer',
+                            display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.3s ease',
+                            boxShadow: '0 2px 5px rgba(0,0,0,0.02)',
                         }}
                     >
                         <span>🔐</span> Security Settings
@@ -456,8 +458,8 @@ export function VaultDashboard() {
                             window.location.reload();
                         }}
                         style={{
-                            background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)',
-                            color: 'rgba(255,255,255,0.4)', padding: '10px 16px', borderRadius: '8px',
+                            background: '#ffffff', border: '1px solid #e2e8f0',
+                            color: '#94a3b8', padding: '10px 16px', borderRadius: '8px',
                             fontSize: '12px', fontWeight: 600, cursor: 'pointer',
                             transition: 'all 0.3s ease'
                         }}
@@ -472,7 +474,7 @@ export function VaultDashboard() {
                             setShowCreateModal(true);
                         }}
                         className="gold-action-btn"
-                        style={{ padding: '10px 24px', fontSize: '14px' }}
+                        style={{ padding: '10px 24px', fontSize: '16px' }}
                     >
                         <span>➕</span> New Engagement
                     </button>
@@ -497,19 +499,19 @@ export function VaultDashboard() {
                 <div style={{
                     display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1px',
                     marginBottom: '2rem', borderRadius: '14px', overflow: 'hidden',
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(2, 44, 34, 0.08)',
+                    background: 'rgba(2, 44, 34, 0.05)',
                 }}>
-                    <div style={{ padding: '20px 24px', background: 'rgba(255,255,255,0.02)' }}>
-                        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>
+                    <div style={{ padding: '20px 24px', background: '#ffffff' }}>
+                        <div style={{ color: '#64748b', fontSize: '15px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>
                             Total Contracted
                         </div>
-                        <div style={{ color: 'white', fontSize: '28px', fontWeight: 700, fontFamily: "'Cinzel', serif" }}>
+                        <div style={{ color: '#022c22', fontSize: '28px', fontWeight: 700, fontFamily: "'Cinzel', serif" }}>
                             {formatCents(ledger.totalOwed)}
                         </div>
                     </div>
-                    <div style={{ padding: '20px 24px', background: 'rgba(255,255,255,0.02)' }}>
-                        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>
+                    <div style={{ padding: '20px 24px', background: '#ffffff' }}>
+                        <div style={{ color: '#64748b', fontSize: '15px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>
                             Total Paid
                         </div>
                         <div style={{ color: '#10b981', fontSize: '28px', fontWeight: 700, fontFamily: "'Cinzel', serif" }}>
@@ -519,12 +521,12 @@ export function VaultDashboard() {
                     <div style={{
                         padding: '20px 24px',
                         background: ledger.balance > 0
-                            ? 'rgba(245,158,11,0.06)'
+                            ? 'rgba(245,158,11,0.03)'
                             : ledger.balance < 0
-                                ? 'rgba(59,130,246,0.06)'
-                                : 'rgba(16,185,129,0.06)',
+                                ? 'rgba(59,130,246,0.03)'
+                                : 'rgba(16,185,129,0.03)',
                     }}>
-                        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>
+                        <div style={{ color: '#64748b', fontSize: '15px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px' }}>
                             {ledger.balance > 0 ? 'Balance Owed' : ledger.balance < 0 ? 'Credit Due' : 'Balance'}
                         </div>
                         <div style={{
@@ -542,8 +544,8 @@ export function VaultDashboard() {
                 <div style={{
                     display: 'flex', alignItems: 'center', gap: '16px',
                     marginBottom: '1.5rem', padding: '12px 16px',
-                    background: 'rgba(255,255,255,0.02)', borderRadius: '10px',
-                    border: '1px solid rgba(255,255,255,0.04)',
+                    background: '#ffffff', borderRadius: '10px',
+                    border: '1px solid #e2e8f0',
                 }}>
                     <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
                         <input
@@ -553,11 +555,11 @@ export function VaultDashboard() {
                             onChange={toggleAll}
                             style={S.checkbox}
                         />
-                        <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                        <span style={{ color: '#64748b', fontSize: '15px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                             {allSelected ? 'Deselect All' : someSelected ? `${selectedIds.size} Selected` : 'Select All'}
                         </span>
                     </label>
-                    <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px' }}>
+                    <span style={{ color: '#94a3b8', fontSize: '14px' }}>
                         {contracts.length} document{contracts.length !== 1 ? 's' : ''}
                     </span>
                 </div>
@@ -597,14 +599,14 @@ export function VaultDashboard() {
                         <div key={projectId}>
                             {/* Entity Group Header */}
                             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '1.5rem', paddingLeft: '8px' }}>
-                                <div style={{ width: '32px', height: '1px', background: 'linear-gradient(to right, #C8A951, transparent)' }} />
+                                <div style={{ width: '32px', height: '1px', background: 'linear-gradient(to right, #A68936, transparent)' }} />
                                 <h2 style={{
-                                    fontFamily: "'Cinzel', serif", color: '#C8A951', fontSize: '14px',
+                                    fontFamily: "'Cinzel', serif", color: '#A68936', fontSize: '16px',
                                     textTransform: 'uppercase', letterSpacing: '0.2em', margin: 0
                                 }}>
                                     {group.name} Portfolio
                                 </h2>
-                                <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.05)' }} />
+                                <div style={{ flex: 1, height: '1px', background: 'rgba(2, 44, 34, 0.05)' }} />
                             </div>
 
                             {/* Documents */}
@@ -625,15 +627,15 @@ export function VaultDashboard() {
                                                 alignItems: 'center',
                                                 gap: '16px',
                                                 border: isActive
-                                                    ? '1px solid rgba(200,169,81,0.6)'
+                                                    ? '1px solid rgba(166,137,54,0.4)'
                                                     : isChecked
-                                                        ? '1px solid rgba(200,169,81,0.4)'
-                                                        : '1px solid rgba(255,255,255,0.05)',
+                                                        ? '1px solid rgba(166,137,54,0.2)'
+                                                        : '1px solid rgba(2, 44, 34, 0.08)',
                                                 background: isActive
-                                                    ? 'rgba(200,169,81,0.06)'
+                                                    ? 'rgba(166,137,54,0.05)'
                                                     : isChecked
-                                                        ? 'rgba(200,169,81,0.04)'
-                                                        : undefined,
+                                                        ? 'rgba(166,137,54,0.02)'
+                                                        : '#ffffff',
                                                 transition: 'all 0.3s ease',
                                                 position: 'relative',
                                             }}
@@ -643,7 +645,7 @@ export function VaultDashboard() {
                                                 <div style={{
                                                     position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)',
                                                     width: '3px', height: '60%', borderRadius: '0 4px 4px 0',
-                                                    background: '#C8A951',
+                                                    background: '#A68936',
                                                 }} />
                                             )}
 
@@ -663,20 +665,20 @@ export function VaultDashboard() {
                                                     </span>
                                                     <div>
                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                            <div style={{ color: 'white', fontWeight: 600, fontSize: '17px', letterSpacing: '0.02em' }}>
+                                                            <div style={{ color: '#022c22', fontWeight: 600, fontSize: '19px', letterSpacing: '0.02em' }}>
                                                                 {contract.projectName} Service Agreement
                                                             </div>
                                                             {isActive && (
                                                                 <span style={{
-                                                                    fontSize: '9px', fontWeight: 800, color: '#C8A951',
-                                                                    background: 'rgba(200,169,81,0.15)', padding: '2px 8px',
+                                                                    fontSize: '11px', fontWeight: 800, color: '#A68936',
+                                                                    background: 'rgba(166,137,54,0.1)', padding: '2px 8px',
                                                                     borderRadius: '4px', textTransform: 'uppercase', letterSpacing: '0.1em',
                                                                 }}>
                                                                     Active
                                                                 </span>
                                                             )}
                                                         </div>
-                                                        <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '12px', marginTop: '3px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                                        <div style={{ color: '#94a3b8', fontSize: '14px', marginTop: '3px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                                             Ref: MSA-{contract.id.substring(0, 8).toUpperCase()} • {contract.clientName} • {new Date(Number(contract.createdAt)).toLocaleDateString()}
                                                         </div>
                                                     </div>
@@ -685,12 +687,12 @@ export function VaultDashboard() {
 
                                             {/* Amount + Status + Ledger */}
                                             <div style={{ textAlign: 'right', minWidth: '140px', flexShrink: 0 }}>
-                                                <div style={{ color: 'white', fontWeight: 600, fontSize: '20px', fontFamily: "'Cinzel', serif" }}>
+                                                <div style={{ color: '#022c22', fontWeight: 600, fontSize: '20px', fontFamily: "'Cinzel', serif" }}>
                                                     {formatCents(Number(contract.totalAmount))}
                                                 </div>
                                                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', alignItems: 'center', marginTop: '4px' }}>
                                                     <span style={{
-                                                        fontSize: '10px', color: status.color, fontWeight: 800,
+                                                        fontSize: '12px', color: status.color, fontWeight: 800,
                                                         letterSpacing: '0.12em', textTransform: 'uppercase'
                                                     }}>
                                                         {status.label}
@@ -708,7 +710,7 @@ export function VaultDashboard() {
                                                         navigate({ to: `/vault/${slug}/contracts/${contract.projectId}/${contract.id}`, search: { mfa: 'verified' } });
                                                     }}
                                                     className="gold-action-btn"
-                                                    style={{ padding: '8px 20px', fontSize: '13px' }}
+                                                    style={{ padding: '8px 20px', fontSize: '15px' }}
                                                 >
                                                     Sign
                                                 </button>
@@ -718,9 +720,10 @@ export function VaultDashboard() {
                                                         navigate({ to: `/vault/${slug}/contracts/${contract.projectId}/${contract.id}` });
                                                     }}
                                                     style={{
-                                                        background: 'rgba(255,255,255,0.05)', color: 'white',
-                                                        border: '1px solid rgba(255,255,255,0.1)', padding: '8px 22px',
-                                                        borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer'
+                                                        background: '#ffffff', color: '#022c22',
+                                                        border: '1px solid #e2e8f0', padding: '8px 22px',
+                                                        borderRadius: '8px', fontSize: '15px', fontWeight: 600, cursor: 'pointer',
+                                                        boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
                                                     }}
                                                 >
                                                     Review
@@ -764,21 +767,21 @@ export function VaultDashboard() {
                 <div style={{
                     position: 'fixed', bottom: '32px', left: '50%', transform: 'translateX(-50%)',
                     zIndex: 1000, display: 'flex', alignItems: 'center', gap: '20px',
-                    background: 'rgba(15,20,37,0.95)', border: '1px solid rgba(200,169,81,0.3)',
+                    background: 'rgba(255,255,255,0.98)', border: '1px solid rgba(2, 44, 34, 0.1)',
                     borderRadius: '14px', padding: '14px 28px',
                     backdropFilter: 'blur(16px)',
-                    boxShadow: '0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(200,169,81,0.1)',
+                    boxShadow: '0 20px 60px rgba(2, 44, 34, 0.1)',
                     animation: 'slideUp 0.3s ease',
                 }}>
-                    <span style={{ color: '#C8A951', fontSize: '14px', fontWeight: 700, letterSpacing: '0.05em' }}>
+                    <span style={{ color: '#A68936', fontSize: '14px', fontWeight: 700, letterSpacing: '0.05em' }}>
                         {selectedIds.size} selected
                     </span>
-                    <div style={{ width: '1px', height: '24px', background: 'rgba(255,255,255,0.1)' }} />
+                    <div style={{ width: '1px', height: '24px', background: 'rgba(2, 44, 34, 0.1)' }} />
                     <button
                         onClick={toggleAll}
                         style={{
-                            background: 'transparent', border: '1px solid rgba(255,255,255,0.1)',
-                            color: 'rgba(255,255,255,0.6)', padding: '8px 16px', borderRadius: '8px',
+                            background: 'transparent', border: '1px solid #e2e8f0',
+                            color: '#64748b', padding: '8px 16px', borderRadius: '8px',
                             fontSize: '11px', fontWeight: 600, cursor: 'pointer', textTransform: 'uppercase',
                             letterSpacing: '0.05em',
                         }}

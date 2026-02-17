@@ -24,7 +24,7 @@ export function ExecutiveSummary() {
             <div style={{ textAlign: 'center', marginBottom: '4rem', marginTop: '2rem' }}>
                 <h2 style={{
                     fontFamily: "'Cinzel', serif",
-                    color: '#C8A951',
+                    color: '#A68936',
                     fontSize: '3.5rem',
                     fontWeight: 600,
                     textTransform: 'uppercase',
@@ -38,17 +38,18 @@ export function ExecutiveSummary() {
 
             {/* CLIENT IDENTIFICATION SECTION */}
             <div style={{
-                background: 'rgba(200, 169, 81, 0.05)',
-                border: '1px solid rgba(200, 169, 81, 0.3)',
+                background: '#ffffff',
+                border: '1px solid rgba(2, 44, 34, 0.1)',
                 borderRadius: '12px',
                 padding: '32px',
                 marginBottom: '4rem',
                 maxWidth: '800px',
-                margin: '0 auto 4rem auto'
+                margin: '0 auto 4rem auto',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)'
             }}>
                 <h3 style={{
                     fontFamily: "'Cinzel', serif",
-                    color: '#FFFFFF',
+                    color: '#022c22',
                     fontSize: '20px',
                     marginBottom: '20px',
                     textAlign: 'center',
@@ -59,7 +60,7 @@ export function ExecutiveSummary() {
                 </h3>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
                     <div>
-                        <label style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Client Name</label>
+                        <label style={{ display: 'block', color: '#64748b', fontSize: '14px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Client Name</label>
                         <input
                             type="text"
                             placeholder="Enter Name..."
@@ -67,18 +68,18 @@ export function ExecutiveSummary() {
                             onChange={(e) => setClientInfo(e.target.value, useConfigStore.getState().clientEmail)}
                             style={{
                                 width: '100%',
-                                background: 'rgba(255,255,255,0.05)',
-                                border: '1px solid rgba(200, 169, 81, 0.3)',
+                                background: '#f8faf9',
+                                border: '1px solid #e2e8f0',
                                 borderRadius: '6px',
                                 padding: '12px',
-                                color: 'white',
+                                color: '#022c22',
                                 fontSize: '16px',
                                 outline: 'none'
                             }}
                         />
                     </div>
                     <div>
-                        <label style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Organization</label>
+                        <label style={{ display: 'block', color: '#64748b', fontSize: '14px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Organization</label>
                         <input
                             type="text"
                             placeholder="Company (Optional)..."
@@ -86,18 +87,18 @@ export function ExecutiveSummary() {
                             onChange={(e) => setStore({ companyName: e.target.value })}
                             style={{
                                 width: '100%',
-                                background: 'rgba(255,255,255,0.05)',
-                                border: '1px solid rgba(200, 169, 81, 0.3)',
+                                background: '#f8faf9',
+                                border: '1px solid #e2e8f0',
                                 borderRadius: '6px',
                                 padding: '12px',
-                                color: 'white',
+                                color: '#022c22',
                                 fontSize: '16px',
                                 outline: 'none'
                             }}
                         />
                     </div>
                     <div>
-                        <label style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: '11px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Project Name</label>
+                        <label style={{ display: 'block', color: '#64748b', fontSize: '14px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Project Name</label>
                         <input
                             type="text"
                             placeholder="e.g. The Lockhart Estate..."
@@ -106,11 +107,11 @@ export function ExecutiveSummary() {
 
                             style={{
                                 width: '100%',
-                                background: 'rgba(255,255,255,0.05)',
-                                border: '1px solid rgba(200, 169, 81, 0.3)',
+                                background: '#f8faf9',
+                                border: '1px solid #e2e8f0',
                                 borderRadius: '6px',
                                 padding: '12px',
-                                color: 'white',
+                                color: '#022c22',
                                 fontSize: '16px',
                                 outline: 'none'
                             }}
@@ -123,41 +124,39 @@ export function ExecutiveSummary() {
 
             <div
                 style={{
-                    background: 'linear-gradient(145deg, #141e3c, #0a0f1e)',
+                    background: '#ffffff',
                     marginBottom: '3rem',
                     cursor: 'default',
                     padding: '28px',
                     borderRadius: '12px',
-                    border: '2px solid rgba(200, 169, 81, 0.5)',
-                    backdropFilter: 'blur(12px)',
-                    boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)'
+                    border: '1px solid rgba(166, 137, 54, 0.3)',
+                    boxShadow: '0 10px 40px rgba(2, 44, 34, 0.05)'
                 }}
             >
                 <div style={{
                     display: 'inline-block',
-                    background: 'linear-gradient(135deg, #C8A951, #E2C76B)',
-                    color: '#000',
+                    background: '#A68936',
+                    color: '#ffffff',
                     padding: '8px 20px',
                     borderRadius: '4px',
                     fontWeight: 'bold',
-                    fontSize: '12px',
+                    fontSize: '14px',
                     marginBottom: '28px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.15em',
-                    boxShadow: '0 4px 15px rgba(200, 169, 81, 0.3)'
+                    boxShadow: '0 4px 15px rgba(166, 137, 54, 0.2)'
                 }}>
                     Primary Objective
                 </div>
                 <h3 style={{
                     fontFamily: "'Cinzel', serif",
                     fontSize: '36px',
-                    color: '#FFFFFF',
-                    marginBottom: '24px',
-                    textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)'
+                    color: '#022c22',
+                    marginBottom: '24px'
                 }}>
                     {template.primaryObjectiveTitle}
                 </h3>
-                <p style={{ fontSize: '20px', lineHeight: 1.8, color: 'rgba(255,255,255,0.9)' }}>
+                <p style={{ fontSize: '20px', lineHeight: 1.8, color: '#475569' }}>
                     {template.primaryObjectiveDescription}
                 </p>
             </div>
@@ -171,12 +170,12 @@ export function ExecutiveSummary() {
             }}>
                 <div>
                     <h4 style={{
-                        color: '#C8A951',
+                        color: '#A68936',
                         fontWeight: 'bold',
                         textTransform: 'uppercase',
                         letterSpacing: '0.15em',
                         marginBottom: '1.5rem',
-                        fontSize: '14px'
+                        fontSize: '16px'
                     }}>
                         Strategic Position
                     </h4>
@@ -186,12 +185,12 @@ export function ExecutiveSummary() {
                 </div>
                 <div>
                     <h4 style={{
-                        color: '#C8A951',
+                        color: '#A68936',
                         fontWeight: 'bold',
                         textTransform: 'uppercase',
                         letterSpacing: '0.15em',
                         marginBottom: '1.5rem',
-                        fontSize: '14px'
+                        fontSize: '16px'
                     }}>
                         Technology Stack
                     </h4>

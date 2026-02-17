@@ -7,7 +7,7 @@ export function TabNavigation() {
     const setCurrentTab = useConfigStore((state) => state.setCurrentTab)
 
     return (
-        <nav className="bg-royal-900/50 border-b border-white/10">
+        <nav className="nav-tabs">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="flex overflow-x-auto scrollbar-thin">
                     {TABS.map((tab) => {
@@ -18,28 +18,29 @@ export function TabNavigation() {
                             <button
                                 key={tab.id}
                                 onClick={() => setCurrentTab(tab.id)}
-                                className={`
-                  relative px-5 py-4 text-sm font-medium whitespace-nowrap
-                  transition-all duration-200
-                  ${isActive
-                                        ? 'text-gold'
-                                        : isVisited
-                                            ? 'text-white/70 hover:text-white'
-                                            : 'text-white/40 hover:text-white/60'
-                                    }
-                `}
+                                className={`tab-btn ${isActive ? 'active' : ''}`}
+                                style={{
+                                    border: 'none',
+                                    background: 'transparent',
+                                    padding: '1rem 1.25rem',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 500,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease',
+                                    position: 'relative'
+                                }}
                             >
                                 {/* Tab Label */}
-                                <span className="relative z-10">{tab.label}</span>
+                                <span className="relative z-10" style={{ color: isActive ? '#A68936' : isVisited ? '#334155' : '#94a3b8' }}>{tab.label}</span>
 
                                 {/* Active Indicator */}
                                 {isActive && (
-                                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold" />
+                                    <div className="absolute bottom-0 left-0 right-0 h-0.5" style={{ background: '#A68936' }} />
                                 )}
 
                                 {/* Visited Indicator (small dot) */}
                                 {!isActive && isVisited && (
-                                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold/50" />
+                                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full" style={{ background: 'rgba(166, 137, 54, 0.5)' }} />
                                 )}
                             </button>
                         )
@@ -69,7 +70,7 @@ export function TabNavButtons({
     const currentTab = useCurrentTab()
     const setCurrentTab = useConfigStore((state) => state.setCurrentTab)
 
-    const tabOrder: TabId[] = ['summary', 'configure', 'sow', 'cost', 'msa', 'vault']
+    const tabOrder: TabId[] = ['summary', 'configure', 'msa', 'vault']
     const currentIndex = tabOrder.indexOf(currentTab)
     const prevTab = currentIndex > 0 ? tabOrder[currentIndex - 1] : null
     const nextTab = currentIndex < tabOrder.length - 1 ? tabOrder[currentIndex + 1] : null

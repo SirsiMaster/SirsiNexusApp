@@ -33,7 +33,7 @@ export function MFAPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#050816] flex items-center justify-center">
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
                 <div className="cinzel text-gold text-sm tracking-[0.2em] animate-pulse">
                     SECURE HUB INITIALIZING...
                 </div>
@@ -44,7 +44,7 @@ export function MFAPage() {
     if (!isAuthenticated) return null;
 
     return (
-        <div className="min-h-screen bg-[#050816] flex items-center justify-center p-4">
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
             <div className="max-w-md w-full">
                 {mode === 'enroll' ? (
                     <MFAEnrollment
@@ -61,7 +61,7 @@ export function MFAPage() {
                 <div className="mt-8 text-center">
                     <button
                         onClick={() => navigate({ to: '/' })}
-                        className="inter text-[10px] text-slate-500 hover:text-white uppercase tracking-widest transition-colors"
+                        className="inter text-[10px] text-slate-500 hover:text-emerald-600 uppercase tracking-widest transition-colors"
                     >
                         ← Back to Landing
                     </button>

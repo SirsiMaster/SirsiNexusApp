@@ -399,9 +399,9 @@ export function SirsiVault() {
                 totalAmount: totalAmountCents.toString() as any,
                 paymentPlans: paymentPlans as any,
                 theme: {
-                    primaryColor: '#C8A951',
-                    secondaryColor: '#022c22',
-                    accentColor: '#10B981',
+                    primaryColor: '#A68936',
+                    secondaryColor: '#ffffff',
+                    accentColor: '#059669',
                     fontHeading: 'Cinzel',
                     fontBody: 'Inter'
                 },
@@ -619,11 +619,11 @@ export function SirsiVault() {
                         alignItems: 'center',
                         gap: '8px',
                         background: userRole === 'provider'
-                            ? 'rgba(200, 169, 81, 0.1)'
+                            ? 'rgba(166, 137, 54, 0.08)'
                             : userRole === 'viewer'
-                                ? 'rgba(239, 68, 68, 0.1)'
-                                : 'rgba(16, 185, 129, 0.1)',
-                        border: `1px solid ${userRole === 'provider' ? 'rgba(200, 169, 81, 0.4)' : userRole === 'viewer' ? 'rgba(239, 68, 68, 0.4)' : 'rgba(16, 185, 129, 0.4)'}`,
+                                ? 'rgba(239, 68, 68, 0.08)'
+                                : 'rgba(5, 150, 105, 0.08)',
+                        border: `1px solid ${userRole === 'provider' ? 'rgba(166, 137, 54, 0.2)' : userRole === 'viewer' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(5, 150, 105, 0.2)'}`,
                         borderRadius: '20px',
                         padding: '6px 20px',
                         marginBottom: '1rem'
@@ -638,7 +638,7 @@ export function SirsiVault() {
                             {userRole === 'provider' ? '🛡️ Provider / Countersigner' : userRole === 'viewer' ? '👁️ View Only' : '📝 Client Signer'}
                         </span>
                         {authUser && (
-                            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>
+                            <span style={{ color: 'rgba(2, 44, 34, 0.4)', fontSize: '11px' }}>
                                 • {authUser.email}
                             </span>
                         )}
@@ -647,8 +647,8 @@ export function SirsiVault() {
 
                 <div style={{
                     display: 'inline-block',
-                    background: 'rgba(16, 185, 129, 0.1)',
-                    border: '1px solid rgba(16, 185, 129, 0.4)',
+                    background: 'rgba(5, 150, 105, 0.08)',
+                    border: '1px solid rgba(5, 150, 105, 0.2)',
                     borderRadius: '20px',
                     padding: '6px 20px',
                     marginBottom: '1.5rem'
@@ -660,7 +660,7 @@ export function SirsiVault() {
                 <h2 style={{
                     fontSize: '3.5rem',
                     fontFamily: "'Cinzel', serif",
-                    color: '#C8A951',
+                    color: '#A68936',
                     textTransform: 'uppercase',
                     letterSpacing: '0.15em',
                     marginBottom: '1.5rem',
@@ -669,7 +669,7 @@ export function SirsiVault() {
                 }}>
                     Sirsi Vault
                 </h2>
-                <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '1.25rem', maxWidth: '800px', margin: '0 auto', lineHeight: '1.8' }}>
+                <p style={{ color: '#475569', fontSize: '1.25rem', maxWidth: '800px', margin: '0 auto', lineHeight: '1.8' }}>
                     {userRole === 'provider'
                         ? 'Configure and send contracts to clients for signature. Countersign after client execution.'
                         : 'Execute your contract in our secure document vault. All signatures are timestamped and cryptographically verified.'}
@@ -703,14 +703,14 @@ export function SirsiVault() {
                                 ? 'linear-gradient(135deg, #C8A951, #D4AF37)'
                                 : step > s.num
                                     ? '#10b981'
-                                    : 'rgba(255,255,255,0.1)',
-                            color: step >= s.num ? '#000' : 'rgba(255,255,255,0.5)',
-                            border: step === s.num ? '2px solid #C8A951' : '2px solid transparent'
+                                    : '#f1f5f9',
+                            color: step >= s.num ? '#ffffff' : '#64748b',
+                            border: step === s.num ? '2px solid #A68936' : '2px solid #e2e8f0'
                         }}>
                             {step > s.num ? '✓' : s.num}
                         </div>
                         <span style={{
-                            color: step >= s.num ? 'white' : 'rgba(255,255,255,0.5)',
+                            color: step >= s.num ? '#022c22' : '#94a3b8',
                             fontWeight: step === s.num ? 600 : 400,
                             fontSize: '14px'
                         }}>
@@ -730,28 +730,28 @@ export function SirsiVault() {
                         <h3 style={{
                             fontFamily: "'Cinzel', serif",
                             fontSize: '20px',
-                            color: '#C8A951',
+                            color: '#A68936',
                             marginBottom: '8px',
                             textAlign: 'center'
                         }}>
                             Step 1: Designate Client Signer
                         </h3>
-                        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: '13px', marginBottom: '24px' }}>
+                        <p style={{ textAlign: 'center', color: '#64748b', fontSize: '13px', marginBottom: '24px' }}>
                             Enter the client's information. They will receive an invitation to review and sign.
                         </p>
 
                         {/* Provider Identity (pre-filled, read-only context) */}
                         <div style={{
                             padding: '16px',
-                            background: 'rgba(200, 169, 81, 0.06)',
-                            border: '1px solid rgba(200, 169, 81, 0.2)',
+                            background: '#f8faf9',
+                            border: '1px solid #e2e8f0',
                             borderRadius: '8px',
                             marginBottom: '24px'
                         }}>
-                            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>
+                            <div style={{ color: '#94a3b8', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>
                                 🛡️ Your Identity (Provider / Countersigner)
                             </div>
-                            <div style={{ color: '#C8A951', fontSize: '16px', fontWeight: 600 }}>
+                            <div style={{ color: '#A68936', fontSize: '16px', fontWeight: 600 }}>
                                 {authUser?.displayName || counterpartyName}
                             </div>
                             <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px' }}>
@@ -760,11 +760,11 @@ export function SirsiVault() {
                         </div>
 
                         {/* Divider */}
-                        <div style={{ height: '1px', background: 'rgba(255,255,255,0.1)', margin: '0 0 24px' }} />
+                        <div style={{ height: '1px', background: '#f1f5f9', margin: '0 0 24px' }} />
 
                         {/* Client Signer Fields */}
                         <div style={{ marginBottom: '20px' }}>
-                            <label style={{ display: 'block', color: '#10b981', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.1em' }}>
+                            <label style={{ display: 'block', color: '#059669', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.1em' }}>
                                 📝 Client Full Legal Name *
                             </label>
                             <input
@@ -786,12 +786,11 @@ export function SirsiVault() {
                         </div>
 
                         <div style={{ marginBottom: '20px' }}>
-                            <label style={{ display: 'block', color: '#10b981', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.1em' }}>
+                            <label style={{ display: 'block', color: '#059669', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.1em' }}>
                                 📧 Client Email Address *
                             </label>
                             <input
                                 type="email"
-                                value={clientDesignation.clientEmail}
                                 onChange={(e) => setClientDesignation(prev => ({ ...prev, clientEmail: e.target.value }))}
                                 placeholder="Enter client's email address"
                                 style={{

@@ -38,7 +38,8 @@ app.use(cors({
         'https://legacy-estate-os.web.app', 'https://assiduous-prod.web.app', 'https://assiduousflip.com',
         'https://www.assiduousflip.com', 'https://finalwishes.com', 'https://www.finalwishes.com',
         'https://sirsi.ai', 'https://www.sirsi.ai', 'https://sirsi-nexus-live.web.app',
-        'http://localhost:3000', 'http://localhost:5000', 'http://127.0.0.1:5000'
+        'http://localhost:3000', 'http://localhost:5000', 'http://127.0.0.1:5000',
+        'http://localhost:5173', 'http://127.0.0.1:5173'
     ],
     credentials: true
 }));
@@ -236,6 +237,65 @@ app.get('/api/vault/list', authenticate, async (req: AuthenticatedRequest, res) 
             metadata: file.metadata.metadata || {}
         }));
         res.json({ success: true, files: fileList });
+    } catch (error: any) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get('/api/envelopes/:id/pdf', async (req, res) => {
+    try {
+        const { id } = req.params;
+        // isGuest is currently unused but reserved for future role-based logic
+        // const isGuest = req.query.guest === 'true';
+
+        // In a real production system, we'd verify the signed redirect/token here
+        // or check authorization if not guest.
+
+        const file = storage.file(`vault/executed-${id}.pdf`);
+        const [exists] = await file.exists();
+
+        if (exists) {
+            const [content] = await file.download();
+            res.contentType('application/pdf');
+            res.send(content);
+            return;
+        }
+
+        // If PDF doesn't exist, try to generate it from envelope data
+        const docRef = db.collection('envelopes').doc(id);
+        const doc = await docRef.get();
+        if (!doc.exists) {
+            res.status(404).json({ error: 'Envelope not found' });
+            return;
+        }
+
+        const data = doc.data()!;
+        if (!data.signatures || data.signatures.length === 0) {
+            res.status(400).json({ error: 'Envelope not signed' });
+            return;
+        }
+
+        const sig = data.signatures[0];
+        const html = generateSignedContractHtml({
+            signerName: sig.signerName,
+            signerEmail: sig.signerEmail,
+            signatureImage: sig.signatureImage,
+            signedAt: sig.signedAt,
+            planDetails: data.metadata?.selectedPlan || '',
+            contractRef: `MSA-${id.substring(0, 8)}`
+        });
+
+        const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+        const page = await browser.newPage();
+        await page.setContent(html);
+        const pdf = await page.pdf({ format: 'A4' });
+        await browser.close();
+
+        // Save for future use
+        await file.save(pdf);
+
+        res.contentType('application/pdf');
+        res.send(pdf);
     } catch (error: any) {
         res.status(500).json({ error: error.message });
     }

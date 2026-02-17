@@ -96,7 +96,7 @@ export function MFAEnrollment({ onComplete, onCancel }: MFAEnrollmentProps) {
             <h2 className="cinzel text-xl text-gold mb-6 text-center">MFA Enrollment</h2>
 
             <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-                <p className="inter text-sm text-slate-300 mb-6">
+                <p className="inter text-sm text-slate-600 mb-6">
                     Scan the QR code below with your Authenticator app (Google Authenticator, Authy, etc.)
                 </p>
 
@@ -117,7 +117,7 @@ export function MFAEnrollment({ onComplete, onCancel }: MFAEnrollmentProps) {
                     </div>
                 )}
 
-                <div style={{ textAlign: 'left', background: 'rgba(255,255,255,0.05)', padding: '16px', borderRadius: '8px', marginBottom: '24px' }}>
+                <div style={{ textAlign: 'left', background: '#f8fafc', padding: '16px', borderRadius: '8px', marginBottom: '24px', border: '1px solid #e2e8f0' }}>
                     <h4 className="inter text-[10px] text-slate-500 uppercase font-bold mb-2">Manual Entry</h4>
                     <div className="flex items-center justify-between gap-4">
                         <code style={{ color: '#C8A951', fontSize: '14px', letterSpacing: '1px' }}>
@@ -151,10 +151,10 @@ export function MFAEnrollment({ onComplete, onCancel }: MFAEnrollmentProps) {
                         fontSize: '20px',
                         textAlign: 'center',
                         letterSpacing: '0.4em',
-                        background: 'rgba(0,0,0,0.2)',
-                        border: '1px solid rgba(255,255,255,0.1)',
+                        background: '#f8fafc',
+                        border: '1px solid #e2e8f0',
                         borderRadius: '8px',
-                        color: 'white',
+                        color: '#022c22',
                         outline: 'none'
                     }}
                 />
@@ -169,7 +169,7 @@ export function MFAEnrollment({ onComplete, onCancel }: MFAEnrollmentProps) {
             <div className="flex gap-4">
                 <button
                     onClick={onCancel}
-                    className="flex-1 px-4 py-3 border border-white/10 rounded-lg text-sm text-slate-400 hover:bg-white/5 transition-all"
+                    className="flex-1 px-4 py-3 border border-slate-200 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-all"
                 >
                     Cancel
                 </button>

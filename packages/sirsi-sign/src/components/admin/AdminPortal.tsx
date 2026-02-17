@@ -60,23 +60,23 @@ export function AdminPortal() {
     ];
 
     return (
-        <div className="min-h-screen bg-navy text-white flex">
+        <div className="min-h-screen bg-slate-50 text-slate-900 flex">
             {/* Sidebar */}
-            <aside className="w-64 border-r border-white/10 flex flex-col backdrop-blur-xl bg-black/20">
+            <aside className="w-64 border-r border-slate-200 flex flex-col bg-[#022c22]">
                 <div className="p-8">
                     <h1 className="cinzel text-xl text-gold tracking-widest font-bold">SIRSI ADMIN</h1>
-                    <p className="inter text-[10px] text-slate-500 tracking-[0.2em] font-medium mt-1 uppercase">Permanent Ledger Hub</p>
+                    <p className="inter text-[10px] text-emerald-500/60 tracking-[0.2em] font-medium mt-1 uppercase">Permanent Ledger Hub</p>
                 </div>
 
                 <nav className="flex-1 px-4 py-2 flex flex-col gap-6">
                     {/* Main Section */}
                     <div>
-                        <p className="inter text-[9px] text-slate-500 tracking-[0.2em] font-bold px-4 mb-3 uppercase">Main</p>
+                        <p className="inter text-[9px] text-white/40 tracking-[0.2em] font-bold px-4 mb-3 uppercase">Main</p>
                         <a
                             href="https://sign.sirsi.ai/vault"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-300 inter text-sm font-medium text-slate-400 hover:text-white hover:bg-white/5 border border-transparent group"
+                            className="flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-300 inter text-sm font-medium text-white/60 hover:text-white hover:bg-white/5 border border-transparent group"
                         >
                             <span className="text-lg opacity-70 group-hover:opacity-100 transition-opacity">🛡️</span>
                             Document Vault
@@ -86,7 +86,7 @@ export function AdminPortal() {
                     {/* Dynamic Tabs by Category */}
                     {['Operations', 'Intelligence', 'Engineering', 'Knowledge'].map(category => (
                         <div key={category}>
-                            <p className="inter text-[9px] text-slate-500 tracking-[0.2em] font-bold px-4 mb-3 uppercase">{category}</p>
+                            <p className="inter text-[9px] text-white/40 tracking-[0.2em] font-bold px-4 mb-3 uppercase">{category}</p>
                             <div className="flex flex-col gap-1">
                                 {tabs.filter(t => t.category === category).map(tab => (
                                     <button
@@ -94,7 +94,7 @@ export function AdminPortal() {
                                         onClick={() => setActiveTab(tab.id)}
                                         className={`flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-300 inter text-sm font-medium ${activeTab === tab.id
                                             ? 'bg-gold/10 text-gold border border-gold/20 shadow-[0_0_15px_rgba(200,169,81,0.1)]'
-                                            : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent'
+                                            : 'text-white/60 hover:text-white hover:bg-white/5 border border-transparent'
                                             }`}
                                     >
                                         <span className="text-lg opacity-70">{tab.icon}</span>
@@ -111,7 +111,7 @@ export function AdminPortal() {
                         <div className="w-8 h-8 rounded-full bg-emerald/20 border border-emerald/50 flex items-center justify-center text-[10px] text-emerald font-bold">CC</div>
                         <div className="flex flex-col">
                             <span className="inter text-xs font-semibold text-white">Cylton Collymore</span>
-                            <span className="inter text-[9px] text-slate-500 uppercase tracking-tighter">System Architect</span>
+                            <span className="inter text-[9px] text-white/40 uppercase tracking-tighter">System Architect</span>
                         </div>
                     </div>
                 </div>

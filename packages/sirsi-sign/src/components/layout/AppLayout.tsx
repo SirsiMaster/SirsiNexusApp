@@ -32,18 +32,18 @@ function PolicyLinks({ baseUrl = '/policies', newTab = false }: PolicyLinksProps
                         href={`${baseUrl}${link.path}`}
                         {...linkProps}
                         style={{
-                            color: 'rgba(255,255,255,0.6)',
+                            color: 'rgba(2, 44, 34, 0.6)',
                             textDecoration: 'none',
                             fontSize: '12px',
                             transition: 'color 0.2s ease'
                         }}
-                        onMouseEnter={(e) => (e.target as HTMLElement).style.color = 'rgba(255,255,255,0.9)'}
-                        onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'rgba(255,255,255,0.6)'}
+                        onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#022c22'}
+                        onMouseLeave={(e) => (e.target as HTMLElement).style.color = 'rgba(2, 44, 34, 0.6)'}
                     >
                         {link.label}
                     </a>
                     {i < links.length - 1 && (
-                        <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: '8px', marginLeft: '8px' }}>•</span>
+                        <span style={{ color: 'rgba(2, 44, 34, 0.2)', fontSize: '8px', marginLeft: '8px' }}>•</span>
                     )}
                 </span>
             ))}
@@ -63,16 +63,16 @@ function ConsentBanner({ onAcceptAll, onRejectAll }: ConsentBannerProps) {
             bottom: 0,
             left: 0,
             right: 0,
-            background: 'rgba(2, 30, 22, 0.95)',
+            background: 'rgba(255, 255, 255, 0.98)',
             backdropFilter: 'blur(10px)',
-            borderTop: '1px solid rgba(200, 169, 81, 0.3)',
+            borderTop: '1px solid rgba(2, 44, 34, 0.1)',
             padding: '16px 24px',
             zIndex: 9999,
-            boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.3)'
+            boxShadow: '0 -10px 30px rgba(0, 0, 0, 0.05)'
         }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 <p style={{
-                    color: 'rgba(255, 255, 255, 0.8)',
+                    color: '#334155',
                     fontSize: '14px',
                     lineHeight: '1.5',
                     marginBottom: '16px'
@@ -88,8 +88,8 @@ function ConsentBanner({ onAcceptAll, onRejectAll }: ConsentBannerProps) {
                         onClick={onRejectAll}
                         style={{
                             background: 'transparent',
-                            color: 'rgba(255, 255, 255, 0.8)',
-                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                            color: '#64748b',
+                            border: '1px solid #e2e8f0',
                             padding: '10px 20px',
                             borderRadius: '6px',
                             cursor: 'pointer'
@@ -100,8 +100,8 @@ function ConsentBanner({ onAcceptAll, onRejectAll }: ConsentBannerProps) {
                     <button
                         onClick={onAcceptAll}
                         style={{
-                            background: '#C8A951',
-                            color: '#022c22',
+                            background: '#022c22',
+                            color: '#ffffff',
                             border: 'none',
                             padding: '10px 20px',
                             borderRadius: '6px',
@@ -166,8 +166,8 @@ export function AppLayout({ children }: AppLayoutProps) {
             {/* Footer with Policy Links */}
             <footer style={{
                 padding: '16px 24px',
-                background: 'rgba(0, 0, 0, 0.3)',
-                borderTop: '1px solid rgba(255, 255, 255, 0.1)'
+                background: '#ffffff',
+                borderTop: '1px solid #f1f5f9'
             }}>
                 <div style={{
                     display: 'flex',
@@ -179,10 +179,10 @@ export function AppLayout({ children }: AppLayoutProps) {
                     gap: '16px'
                 }}>
                     <span style={{
-                        color: 'rgba(255, 255, 255, 0.5)',
+                        color: 'rgba(2, 44, 34, 0.5)',
                         fontSize: '12px'
                     }}>
-                        © {new Date().getFullYear()} Sirsi Technologies Inc.. All Rights Reserved.
+                        © {new Date().getFullYear()} Sirsi Technologies Inc. All Rights Reserved.
                     </span>
                     <PolicyLinks baseUrl="https://sirsi.ai" newTab />
                 </div>

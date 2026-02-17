@@ -207,7 +207,7 @@ export function MFAGate({
         <div style={{
             position: 'fixed',
             top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(2, 30, 22, 0.92)',
+            background: 'rgba(240, 245, 243, 0.95)',
             backdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
@@ -217,14 +217,14 @@ export function MFAGate({
             animation: 'mfaFadeIn 0.3s ease',
         }}>
             <div style={{
-                background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.9) 0%, rgba(2, 44, 34, 0.95) 100%)',
-                border: '1px solid rgba(200, 169, 81, 0.3)',
+                background: '#ffffff',
+                border: '1px solid rgba(2, 44, 34, 0.1)',
                 borderRadius: '16px',
                 padding: '36px',
                 maxWidth: '460px',
                 width: '100%',
                 textAlign: 'center',
-                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(200,169,81,0.08)',
+                boxShadow: '0 40px 100px -20px rgba(2, 44, 34, 0.1), 0 0 40px rgba(200,169,81,0.08)',
             }}>
                 {/* Icon */}
                 <div style={{ fontSize: '48px', marginBottom: '16px' }}>
@@ -245,7 +245,7 @@ export function MFAGate({
 
                 {/* Description — changes per method */}
                 <p style={{
-                    color: 'rgba(255, 255, 255, 0.7)',
+                    color: 'rgba(2, 44, 34, 0.6)',
                     fontSize: '13px',
                     lineHeight: '1.6',
                     margin: '0 0 24px 0',
@@ -351,7 +351,7 @@ export function MFAGate({
                     <div style={{ marginBottom: '20px' }}>
                         <label style={{
                             display: 'block',
-                            color: 'rgba(255,255,255,0.4)',
+                            color: 'rgba(2, 44, 34, 0.4)',
                             fontSize: '10px',
                             textTransform: 'uppercase',
                             letterSpacing: '0.12em',
@@ -375,10 +375,10 @@ export function MFAGate({
                                 textAlign: 'center',
                                 letterSpacing: '0.5em',
                                 fontFamily: 'monospace',
-                                background: 'rgba(255,255,255,0.05)',
-                                border: error ? '1px solid rgba(239,68,68,0.6)' : '1px solid rgba(255,255,255,0.15)',
+                                background: '#f8faf9',
+                                border: error ? '1px solid rgba(239,68,68,0.6)' : '1px solid #e2e8f0',
                                 borderRadius: '10px',
-                                color: 'white',
+                                color: '#022c22',
                                 outline: 'none',
                                 boxSizing: 'border-box',
                                 transition: 'border-color 0.2s ease',
@@ -434,8 +434,8 @@ export function MFAGate({
                             flex: 1,
                             padding: '14px',
                             background: 'transparent',
-                            color: 'rgba(255, 255, 255, 0.6)',
-                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                            color: 'rgba(2, 44, 34, 0.6)',
+                            border: '1px solid rgba(2, 44, 34, 0.1)',
                             borderRadius: '8px',
                             cursor: isVerifying ? 'not-allowed' : 'pointer',
                             fontSize: '13px',
@@ -470,7 +470,7 @@ export function MFAGate({
 
                 {/* Setup hint */}
                 <p style={{
-                    color: 'rgba(255, 255, 255, 0.3)',
+                    color: 'rgba(2, 44, 34, 0.4)',
                     fontSize: '11px',
                     marginTop: '20px',
                     fontFamily: "'Inter', sans-serif",

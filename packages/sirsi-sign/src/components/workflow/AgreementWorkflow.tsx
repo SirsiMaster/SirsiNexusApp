@@ -40,7 +40,7 @@ export function AgreementWorkflow() {
   const searchParams = new URLSearchParams(window.location.search)
   const isPaymentSuccess = searchParams.get('session_id') !== null && window.location.pathname.endsWith('/payment/success')
 
-  const [isLightTheme, setIsLightTheme] = useState(false)
+  const [isLightTheme, setIsLightTheme] = useState(true) // Default to light theme now
 
   // --- Effects ---
 
@@ -90,7 +90,8 @@ export function AgreementWorkflow() {
   }, [settings, setSystemSettings])
 
   useEffect(() => {
-    document.body.classList.toggle('theme-light', isLightTheme)
+    // Light is default via :root in themes.css. We only toggle .theme-dark if light mode is off.
+    document.body.classList.toggle('theme-dark', !isLightTheme)
   }, [isLightTheme])
 
   // --- Render ---
@@ -118,12 +119,12 @@ export function AgreementWorkflow() {
 
         {/* Vault: breadcrumb bar */}
         {(isVaultContext || isSignDomain) && (
-          <div className="vault-breadcrumb">
-            <button className="vault-breadcrumb-btn" onClick={() => navigate({ to: '/vault' })}>
+          <div className="vault-breadcrumb" style={{ borderBottom: '1px solid rgba(2, 44, 34, 0.05)', background: 'rgba(255,255,255,0.5)', backdropFilter: 'blur(5px)' }}>
+            <button className="vault-breadcrumb-btn" onClick={() => navigate({ to: '/vault' })} style={{ color: '#022c22' }}>
               ← Back to Vault
             </button>
-            <div className="vault-breadcrumb-divider" />
-            <span className="vault-breadcrumb-ref">
+            <div className="vault-breadcrumb-divider" style={{ background: 'rgba(2, 44, 34, 0.1)' }} />
+            <span className="vault-breadcrumb-ref" style={{ color: '#64748b' }}>
               {entityId || projectId || 'Contract'}{docId ? ` • ${docId.substring(0, 8).toUpperCase()}` : ''}
             </span>
           </div>
@@ -154,12 +155,12 @@ export function AgreementWorkflow() {
           {/* Tabs + Content */}
           <div className="main-card">
             {isPaymentSuccess ? (
-              <div style={{ padding: '4rem', textAlign: 'center' }}>
+              <div style={{ padding: '4rem', textAlign: 'center', background: '#ffffff', borderRadius: '16px' }}>
                 <div style={{ fontSize: '64px', marginBottom: '1rem' }}>✅</div>
-                <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: '32px', color: '#C8A951', marginBottom: '1rem' }}>
+                <h2 style={{ fontFamily: "'Cinzel', serif", fontSize: '32px', color: '#A68936', marginBottom: '1rem' }}>
                   Payment Received!
                 </h2>
-                <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.7)', marginBottom: '2rem' }}>
+                <p style={{ fontSize: '18px', color: '#64748b', marginBottom: '2rem' }}>
                   Your Master Service Agreement with {storeProjectId === 'finalwishes' ? 'FinalWishes' : storeProjectId} is now ACTIVE.
                 </p>
                 <button onClick={() => navigate({ to: '/vault' })} className="select-plan-btn">

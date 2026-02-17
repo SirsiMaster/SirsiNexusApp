@@ -36,18 +36,10 @@
    CONTRACT IMMERSIVE WRAPPER
    ============================================ */
 .contract-immersive-wrapper {
-    background: linear-gradient(90deg,
-            #022c22 0%,
-            #022c22 10%,
-            #0a3d2e 25%,
-            #065f46 40%,
-            #065f46 60%,
-            #0a3d2e 75%,
-            #022c22 90%,
-            #022c22 100%);
-    background-color: #022c22;
+    background: var(--bg-gradient);
+    background-color: var(--bg-primary);
     background-attachment: fixed;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-primary);
     font-family: 'Inter', sans-serif;
     flex: 1;
     min-height: 100vh;
@@ -60,11 +52,11 @@
    MAIN CARD CONTAINER
    ============================================ */
 .main-card {
-    background: rgba(2, 44, 34, 0.6);
-    border: 1px solid rgba(200, 169, 81, 0.3);
-    box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.6);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
     backdrop-filter: blur(16px);
-    border-radius: 4px;
+    border-radius: 8px;
     max-width: 1440px;
     margin: 0 auto;
     position: relative;
@@ -75,7 +67,7 @@
    CONTRACT HEADER STYLES
    ============================================ */
 .contract-main-heading {
-    color: #FFFFFF;
+    color: var(--text-primary);
     margin-bottom: 24px;
     font-size: 4.5rem;
     line-height: 1.2;
@@ -97,7 +89,7 @@
 
 .contract-subtitle {
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.25em;
     font-weight: 600;
@@ -251,12 +243,12 @@
 .contract-immersive-wrapper span:not(.neo-text-gold):not(.tab-line1):not(.tab-line2) {
     font-size: 1rem;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-primary);
 }
 
 .contract-immersive-wrapper p {
     margin-bottom: 1.5rem;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--text-secondary);
     font-size: 1.125rem;
 }
 
@@ -519,10 +511,9 @@
    LEGAL VIEWER (MSA)
    ============================================ */
 .legal-viewer {
-    background: rgba(2, 44, 34, 0.4);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(200, 169, 81, 0.2);
-    color: rgba(255, 255, 255, 0.9);
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
     padding: 4rem;
     font-family: 'Inter', sans-serif;
     line-height: 1.8;
@@ -610,8 +601,8 @@
     min-height: 400px;
     overflow-y: auto;
     overflow-x: hidden;
-    background: rgba(2, 44, 34, 0.4);
-    border: 1px solid rgba(200, 169, 81, 0.3);
+    background: #ffffff;
+    border: 1px solid var(--card-border);
     border-radius: 12px;
     padding: 4rem;
     position: relative;

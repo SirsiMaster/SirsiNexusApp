@@ -43,10 +43,7 @@
     flex-direction: column;
     min-height: 100vh;
     overflow-x: hidden;
-    background: linear-gradient(90deg,
-            #022c22 0%, #022c22 10%, #0a3d2e 25%,
-            #065f46 40%, #065f46 60%,
-            #0a3d2e 75%, #022c22 90%, #022c22 100%);
+    background: var(--bg-gradient);
     background-attachment: fixed;
 }
 
@@ -91,7 +88,7 @@
 }
 
 .sidebar-logo span {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -99,7 +96,7 @@
 
 .nav-section-label {
     color: rgba(255, 255, 255, 0.4);
-    font-size: 0.65rem;
+    font-size: 0.85rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.15em;
@@ -113,7 +110,7 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem 1rem;
-    font-size: 0.875rem;
+    font-size: 1rem;
     text-decoration: none;
     transition: all 0.2s ease;
     cursor: pointer;
@@ -160,18 +157,18 @@
 }
 
 .contract-view .admin-header {
-    background: rgba(2, 44, 34, 0.95);
-    border-bottom: 1px solid rgba(200, 169, 81, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid rgba(2, 44, 34, 0.05);
     backdrop-filter: blur(12px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .contract-view .admin-header .header-left h1 {
-    color: var(--color-gold);
+    color: var(--gold);
 }
 
 .contract-view .admin-header .header-left p {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-muted);
 }
 
 .header-left {
@@ -194,7 +191,7 @@
 .header-left p {
     color: #6b7280;
     white-space: nowrap;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     margin: 0;
 }
 
@@ -217,7 +214,7 @@
     border: none;
     outline: none;
     flex: 1;
-    font-size: 0.875rem;
+    font-size: 1rem;
 }
 
 .search-bar input::placeholder {
@@ -252,7 +249,7 @@
     justify-content: center;
     color: #000;
     font-weight: 700;
-    font-size: 0.875rem;
+    font-size: 1rem;
 }
 
 
@@ -263,8 +260,8 @@
     align-items: center;
     gap: 16px;
     padding: 12px 24px;
-    background: rgba(0, 0, 0, 0.35);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(2, 44, 34, 0.05);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -272,12 +269,12 @@
 }
 
 .vault-breadcrumb-btn {
-    background: rgba(200, 169, 81, 0.1);
-    border: 1px solid rgba(200, 169, 81, 0.25);
-    color: var(--color-gold);
+    background: rgba(5, 150, 105, 0.05);
+    border: 1px solid rgba(5, 150, 105, 0.15);
+    color: #059669;
     padding: 6px 16px;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     display: flex;
@@ -288,19 +285,19 @@
 }
 
 .vault-breadcrumb-btn:hover {
-    background: rgba(200, 169, 81, 0.2);
-    border-color: rgba(200, 169, 81, 0.5);
+    background: rgba(5, 150, 105, 0.1);
+    border-color: rgba(5, 150, 105, 0.3);
 }
 
 .vault-breadcrumb-divider {
     height: 16px;
     width: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(2, 44, 34, 0.1);
 }
 
 .vault-breadcrumb-ref {
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 11px;
+    color: #64748b;
+    font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }

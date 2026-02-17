@@ -129,13 +129,13 @@ export function Login() {
             <div style={{
                 maxWidth: '520px',
                 width: '100%',
-                background: 'rgba(2, 44, 34, 0.5)',
+                background: 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(40px)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
+                border: '1px solid rgba(2, 44, 34, 0.1)',
                 borderRadius: '32px',
                 padding: '60px 48px 48px 48px',
                 textAlign: 'center',
-                boxShadow: '0 60px 120px -30px rgba(0, 0, 0, 0.8), inset 0 0 40px rgba(255, 255, 255, 0.02)',
+                boxShadow: '0 40px 100px -20px rgba(2, 44, 34, 0.1), inset 0 0 40px rgba(255, 255, 255, 0.5)',
                 position: 'relative',
                 zIndex: 10,
             }}>
@@ -167,7 +167,7 @@ export function Login() {
                     margin: '0',
                     letterSpacing: '0.18em',
                     lineHeight: '1.2',
-                    color: '#FFFFFF',
+                    color: '#022c22',
                 }}>
                     THE PROFESSIONAL
                 </h1>
@@ -184,12 +184,12 @@ export function Login() {
                 </h2>
 
                 <p style={{
-                    color: 'rgba(255, 255, 255, 0.55)',
+                    color: 'rgba(2, 44, 34, 0.65)',
                     fontSize: '14px',
                     maxWidth: '380px',
                     margin: '20px auto 36px auto',
                     lineHeight: '1.6',
-                    fontWeight: 300,
+                    fontWeight: 400,
                     fontFamily: "'Inter', sans-serif",
                 }}>
                     {isRegister
@@ -221,9 +221,9 @@ export function Login() {
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Cylton Collymore"
                                 style={{
-                                    width: '100%', background: 'rgba(255,255,255,0.05)',
-                                    border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px',
-                                    padding: '14px 16px', color: 'white', fontSize: '14px', outline: 'none',
+                                    width: '100%', background: '#F8FAF9',
+                                    border: '1px solid #E2E8F0', borderRadius: '10px',
+                                    padding: '14px 16px', color: '#022c22', fontSize: '14px', outline: 'none',
                                     boxSizing: 'border-box', transition: 'border-color 0.2s ease',
                                     fontFamily: "'Inter', sans-serif",
                                 }}
@@ -244,9 +244,9 @@ export function Login() {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="your@email.com"
                             style={{
-                                width: '100%', background: 'rgba(255,255,255,0.05)',
-                                border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px',
-                                padding: '14px 16px', color: 'white', fontSize: '14px', outline: 'none',
+                                width: '100%', background: '#F8FAF9',
+                                border: '1px solid #E2E8F0', borderRadius: '10px',
+                                padding: '14px 16px', color: '#022c22', fontSize: '14px', outline: 'none',
                                 boxSizing: 'border-box', transition: 'border-color 0.2s ease',
                                 fontFamily: "'Inter', sans-serif",
                             }}
@@ -267,9 +267,9 @@ export function Login() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
                                 style={{
-                                    width: '100%', background: 'rgba(255,255,255,0.05)',
-                                    border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px',
-                                    padding: '14px 16px', color: 'white', fontSize: '14px', outline: 'none',
+                                    width: '100%', background: '#F8FAF9',
+                                    border: '1px solid #E2E8F0', borderRadius: '10px',
+                                    padding: '14px 16px', color: '#022c22', fontSize: '14px', outline: 'none',
                                     paddingRight: '48px',
                                     boxSizing: 'border-box', transition: 'border-color 0.2s ease',
                                     fontFamily: "'Inter', sans-serif",
@@ -368,8 +368,8 @@ export function Login() {
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                             </svg>
                         </div>
-                        <div style={{ fontWeight: 700, fontSize: '11px', color: '#FFF' }}>Immutable Audit</div>
-                        <div style={{ color: 'rgba(255, 255, 255, 0.35)', fontSize: '10px', lineHeight: '1.4', marginTop: '4px' }}>Signed logs</div>
+                        <div style={{ fontWeight: 700, fontSize: '11px', color: '#022c22' }}>Immutable Audit</div>
+                        <div style={{ color: 'rgba(2, 44, 34, 0.45)', fontSize: '10px', lineHeight: '1.4', marginTop: '4px' }}>Signed logs</div>
                     </div>
                     <div style={{ textAlign: 'center' }}>
                         <div style={{ color: '#C8A951', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
@@ -380,8 +380,8 @@ export function Login() {
                                 <line x1="16" y1="17" x2="8" y2="17"></line>
                             </svg>
                         </div>
-                        <div style={{ fontWeight: 700, fontSize: '11px', color: '#FFF' }}>Smart Metadata</div>
-                        <div style={{ color: 'rgba(255, 255, 255, 0.35)', fontSize: '10px', lineHeight: '1.4', marginTop: '4px' }}>AI indexing</div>
+                        <div style={{ fontWeight: 700, fontSize: '11px', color: '#022c22' }}>Smart Metadata</div>
+                        <div style={{ color: 'rgba(2, 44, 34, 0.45)', fontSize: '10px', lineHeight: '1.4', marginTop: '4px' }}>AI indexing</div>
                     </div>
                     <div style={{ textAlign: 'center' }}>
                         <div style={{ color: '#C8A951', marginBottom: '10px', display: 'flex', justifyContent: 'center' }}>
@@ -390,8 +390,8 @@ export function Login() {
                                 <line x1="2" y1="10" x2="22" y2="10"></line>
                             </svg>
                         </div>
-                        <div style={{ fontWeight: 700, fontSize: '11px', color: '#FFF' }}>Unified Billing</div>
-                        <div style={{ color: 'rgba(255, 255, 255, 0.35)', fontSize: '10px', lineHeight: '1.4', marginTop: '4px' }}>Stripe rails</div>
+                        <div style={{ fontWeight: 700, fontSize: '11px', color: '#022c22' }}>Unified Billing</div>
+                        <div style={{ color: 'rgba(2, 44, 34, 0.45)', fontSize: '10px', lineHeight: '1.4', marginTop: '4px' }}>Stripe rails</div>
                     </div>
                 </div>
             </div>

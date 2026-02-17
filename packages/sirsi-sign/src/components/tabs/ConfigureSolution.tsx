@@ -137,7 +137,7 @@ export function ConfigureSolution() {
             <div style={{ textAlign: 'center', marginBottom: '3rem', marginTop: '2rem' }}>
                 <h2 style={{
                     fontFamily: "'Cinzel', serif",
-                    color: '#C8A951',
+                    color: '#A68936',
                     fontSize: '3.5rem',
                     fontWeight: 600,
                     textTransform: 'uppercase',
@@ -149,7 +149,7 @@ export function ConfigureSolution() {
                 </h2>
                 <p style={{
                     fontSize: '1.25rem',
-                    color: 'rgba(255, 255, 255, 0.7)',
+                    color: '#64748b',
                     maxWidth: '800px',
                     margin: '0 auto',
                     lineHeight: 1.6
@@ -162,7 +162,7 @@ export function ConfigureSolution() {
             <div style={{ marginBottom: '4rem' }}>
                 <h2 style={{
                     fontFamily: "'Inter', sans-serif",
-                    color: '#C8A951',
+                    color: '#A68936',
                     fontSize: '2.25rem',
                     fontWeight: 600,
                     textTransform: 'uppercase',
@@ -182,22 +182,22 @@ export function ConfigureSolution() {
                         onClick={() => setSelectedBundle('finalwishes-core')}
                         style={{
                             cursor: 'pointer',
-                            border: `2px solid ${bundleSelected ? '#10B981' : '#C8A951'}`,
+                            border: `2px solid ${bundleSelected ? '#10B981' : '#e2e8f0'}`,
                             background: bundleSelected
-                                ? 'linear-gradient(145deg, #0f3d2e, #0a2820)'
-                                : 'linear-gradient(145deg, #141e3c, #0a0f1e)',
+                                ? '#f0fdf4'
+                                : '#ffffff',
                             position: 'relative',
                             transition: 'all 0.3s ease',
                             padding: '20px',
                             borderRadius: '12px',
-                            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)'
+                            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.05)'
                         }}
                     >
                         {/* Selection Indicator */}
                         <div style={{
                             position: 'absolute', top: '16px', right: '16px', width: '28px', height: '28px', borderRadius: '50%',
-                            border: `2px solid ${bundleSelected ? '#10B981' : 'rgba(255,255,255,0.3)'}`,
-                            background: bundleSelected ? '#10B981' : 'transparent',
+                            border: `2px solid ${bundleSelected ? '#10B981' : '#e2e8f0'}`,
+                            background: bundleSelected ? '#10B981' : '#ffffff',
                             display: 'flex', alignItems: 'center', justifyContent: 'center'
                         }}>
                             {bundleSelected && <span style={{ color: 'white', fontWeight: 'bold' }}>✓</span>}
@@ -205,46 +205,46 @@ export function ConfigureSolution() {
 
                         {/* ROW 1: Badge */}
                         <div style={{ height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px' }}>
-                            <div style={{ background: 'linear-gradient(135deg, #C8A951, #D4AF37)', color: '#000', padding: '6px 16px', borderRadius: '20px', fontWeight: 700, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                            <div style={{ background: '#A68936', color: '#ffffff', padding: '6px 16px', borderRadius: '20px', fontWeight: 700, fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                                 ✨ Recommended
                             </div>
                         </div>
 
                         {/* ROW 2: Title */}
                         <div style={{ height: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '8px' }}>
-                            <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: '20px', color: 'white', margin: 0, fontWeight: 700, textAlign: 'center', lineHeight: 1.3 }}>
+                            <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: '20px', color: '#022c22', margin: 0, fontWeight: 700, textAlign: 'center', lineHeight: 1.3 }}>
                                 {BUNDLES['finalwishes-core']?.name || 'Core Platform'}
                             </h3>
                         </div>
 
                         {/* ROW 3: Subtitle */}
                         <div style={{ height: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
-                            <p style={{ fontSize: '11px', color: '#C8A951', textTransform: 'uppercase', letterSpacing: '0.1em', margin: 0, textAlign: 'center' }}>
+                            <p style={{ fontSize: '13px', color: '#A68936', textTransform: 'uppercase', letterSpacing: '0.1em', margin: 0, textAlign: 'center' }}>
                                 Complete Digital Legacy Solution
                             </p>
                         </div>
 
                         {/* ROW 4: Price Box */}
-                        <div style={{ height: '100px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <div style={{ color: '#94a3b8', fontSize: '11px', textTransform: 'uppercase', marginBottom: '4px' }}>Investment</div>
-                            <div style={{ color: 'white', fontFamily: 'Cinzel, serif', fontSize: '32px', fontWeight: 600 }}>
+                        <div style={{ height: '100px', background: '#f8fafc', borderRadius: '8px', marginBottom: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', border: '1px solid #e2e8f0' }}>
+                            <div style={{ color: '#64748b', fontSize: '13px', textTransform: 'uppercase', marginBottom: '4px' }}>Investment</div>
+                            <div style={{ color: '#022c22', fontFamily: 'Cinzel, serif', fontSize: '32px', fontWeight: 600 }}>
                                 ${BUNDLES['finalwishes-core'].price.toLocaleString()}
                             </div>
-                            <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '4px' }}>
+                            <div style={{ color: '#94a3b8', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '4px' }}>
                                 Market Value: <span style={{ textDecoration: 'line-through' }}>${(BUNDLES['finalwishes-core'].hours * 250).toLocaleString()}</span>
                             </div>
 
-                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', marginTop: '4px' }}>{BUNDLES['finalwishes-core'].timeline} Week Delivery</div>
+                            <div style={{ color: '#64748b', fontSize: '11px', marginTop: '4px' }}>{BUNDLES['finalwishes-core'].timeline} Week Delivery</div>
                         </div>
 
 
                         {/* ROW 6: Label */}
                         <div style={{ height: '20px', display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-                            <div style={{ color: '#93c5fd', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>What's Included:</div>
+                            <div style={{ color: '#059669', fontWeight: 600, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>What's Included:</div>
                         </div>
 
                         {/* ROW 7: List */}
-                        <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.8 }}>
+                        <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '15px', color: '#475569', lineHeight: 1.8 }}>
                             <li>iOS & Android Native Apps</li>
                             <li>Web Application (React)</li>
                             <li>"The Shepherd" AI Foundation</li>
@@ -261,15 +261,15 @@ export function ConfigureSolution() {
                         onClick={() => setSelectedBundle(null)}
                         style={{
                             cursor: 'pointer',
-                            border: `2px solid ${standaloneSelected ? '#10B981' : 'rgba(255,255,255,0.3)'}`,
+                            border: `2px solid ${standaloneSelected ? '#10B981' : '#e2e8f0'}`,
                             background: standaloneSelected
-                                ? 'linear-gradient(145deg, #0f3d2e, #0a2820)'
-                                : 'linear-gradient(145deg, #022c22, #011a14)',
+                                ? '#f0fdf4'
+                                : '#ffffff',
                             position: 'relative',
                             transition: 'all 0.3s ease',
                             padding: '20px',
                             borderRadius: '12px',
-                            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.5)'
+                            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.05)'
                         }}
                     >
                         {/* Selection Indicator */}
@@ -283,34 +283,34 @@ export function ConfigureSolution() {
                         </div>
 
                         <div style={{ height: '40px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '16px' }}>
-                            <div style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.5)', padding: '6px 16px', borderRadius: '20px', fontWeight: 600, fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                            <div style={{ background: '#f1f5f9', color: '#64748b', padding: '6px 16px', borderRadius: '20px', fontWeight: 600, fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                                 À La Carte
                             </div>
                         </div>
 
                         <div style={{ height: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '8px' }}>
-                            <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: '20px', color: 'white', margin: 0, fontWeight: 700, textAlign: 'center', lineHeight: 1.3 }}>
+                            <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: '20px', color: '#022c22', margin: 0, fontWeight: 700, textAlign: 'center', lineHeight: 1.3 }}>
                                 Standalone Services
                             </h3>
                         </div>
 
                         <div style={{ height: '24px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
-                            <p style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em', margin: 0, textAlign: 'center' }}>
+                            <p style={{ fontSize: '13px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.1em', margin: 0, textAlign: 'center' }}>
                                 Individual Module Selection
                             </p>
                         </div>
 
-                        <div style={{ height: '100px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <div style={{ color: '#94a3b8', fontSize: '11px', textTransform: 'uppercase', marginBottom: '4px' }}>Starting From</div>
-                            <div style={{ color: 'white', fontFamily: 'Cinzel, serif', fontSize: '32px', fontWeight: 600 }}>$18,000</div>
-                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '11px', marginTop: '4px' }}>Per Individual Module</div>
+                        <div style={{ height: '100px', background: '#f8fafc', borderRadius: '8px', marginBottom: '24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', border: '1px solid #e2e8f0' }}>
+                            <div style={{ color: '#64748b', fontSize: '11px', textTransform: 'uppercase', marginBottom: '4px' }}>Starting From</div>
+                            <div style={{ color: '#022c22', fontFamily: 'Cinzel, serif', fontSize: '32px', fontWeight: 600 }}>$18,000</div>
+                            <div style={{ color: '#94a3b8', fontSize: '11px', marginTop: '4px' }}>Per Individual Module</div>
                         </div>
 
                         <div style={{ height: '20px', display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-                            <div style={{ color: '#94a3b8', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Available Services:</div>
+                            <div style={{ color: '#64748b', fontWeight: 600, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Available Services:</div>
                         </div>
 
-                        <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.8 }}>
+                        <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '15px', color: '#475569', lineHeight: 1.8 }}>
                             <li>Branding & Identity</li>
                             <li>Maintenance & Support</li>
                             <li>Estate Administration</li>
@@ -318,7 +318,7 @@ export function ConfigureSolution() {
                             <li>Secure Communications</li>
                             <li>Virtual Memorial Services</li>
                             <li>Advanced Asset Discovery</li>
-                            <li style={{ color: 'rgba(255,255,255,0.4)', fontStyle: 'italic' }}>+ More modules available</li>
+                            <li style={{ color: '#94a3b8', fontStyle: 'italic' }}>+ More modules available</li>
                         </ul>
                     </div>
                 </div>
@@ -326,11 +326,11 @@ export function ConfigureSolution() {
                 {/* Callout */}
                 <div style={{
                     textAlign: 'center', margin: '24px auto 0 auto', padding: '16px',
-                    background: (bundleSelected || standaloneSelected) ? 'rgba(200, 169, 81, 0.1)' : 'rgba(255,255,255,0.03)',
-                    border: `1px solid ${(bundleSelected || standaloneSelected) ? 'rgba(200, 169, 81, 0.4)' : 'rgba(255,255,255,0.1)'}`,
+                    background: (bundleSelected || standaloneSelected) ? 'rgba(5, 150, 105, 0.05)' : '#f8fafc',
+                    border: `1px solid ${(bundleSelected || standaloneSelected) ? 'rgba(5, 150, 105, 0.2)' : '#e2e8f0'}`,
                     borderRadius: '8px', width: '100%'
                 }}>
-                    <span style={{ color: (bundleSelected || standaloneSelected) ? '#C8A951' : 'rgba(255,255,255,0.4)', fontWeight: 600, fontSize: '15px' }}>
+                    <span style={{ color: (bundleSelected || standaloneSelected) ? '#059669' : '#94a3b8', fontWeight: 600, fontSize: '15px' }}>
                         {bundleSelected ? '✓ Core Platform Bundle selected — strategic synergies unlocked.' : ''}
                         {standaloneSelected ? '✓ Standalone path selected — select individual services below' : ''}
                         {!bundleSelected && !standaloneSelected ? 'Click a card above to select your path' : ''}
@@ -342,7 +342,7 @@ export function ConfigureSolution() {
             <div style={{ marginBottom: '4rem' }}>
                 <h2 style={{
                     fontFamily: "'Inter', sans-serif",
-                    color: '#C8A951',
+                    color: '#A68936',
                     fontSize: '2.25rem',
                     fontWeight: 600,
                     textTransform: 'uppercase',
@@ -355,8 +355,8 @@ export function ConfigureSolution() {
                     2. Strategic Add-On Modules
                 </h2>
 
-                <div className="neo-glass-panel" style={{ width: '100%', margin: '0 auto 3rem auto', textAlign: 'center' }}>
-                    <p style={{ margin: 0, fontSize: '1.25rem', lineHeight: 1.75, color: 'rgba(255, 255, 255, 0.9)' }}>
+                <div className="neo-glass-panel" style={{ width: '100%', margin: '0 auto 3rem auto', textAlign: 'center', background: '#ffffff', border: '1px solid #e2e8f0' }}>
+                    <p style={{ margin: 0, fontSize: '1.25rem', lineHeight: 1.75, color: '#475569' }}>
                         Enhance your platform with specialized modules designed for long-term growth and operational efficiency.
                     </p>
                 </div>
@@ -432,19 +432,19 @@ export function ConfigureSolution() {
                                             height: '100%',
                                             backfaceVisibility: 'hidden',
                                             background: inCart
-                                                ? 'linear-gradient(145deg, #0f3d2e, #0a2820)'
-                                                : 'linear-gradient(145deg, #022c22, #011a14)',
-                                            border: `2px solid ${inCart ? '#10B981' : 'rgba(255, 255, 255, 0.15)'}`,
+                                                ? '#f0fdf4'
+                                                : '#ffffff',
+                                            border: `2px solid ${inCart ? '#10B981' : '#e2e8f0'}`,
                                             borderRadius: '12px',
                                             padding: '1.25rem',
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.4)',
+                                            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.05)',
                                             boxSizing: 'border-box'
                                         }}
                                     >
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
-                                            <div style={{ padding: '12px', background: 'rgba(200, 169, 81, 0.1)', borderRadius: '8px', color: '#C8A951' }}>
+                                            <div style={{ padding: '12px', background: 'rgba(166, 137, 54, 0.05)', borderRadius: '8px', color: '#A68936' }}>
                                                 <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                                                     <path d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                                 </svg>
@@ -454,19 +454,19 @@ export function ConfigureSolution() {
                                                     e.stopPropagation();
                                                     setFlippedCard(item.id);
                                                 }}
-                                                style={{ background: 'transparent', border: 'none', color: '#C8A951', fontSize: '13px', cursor: 'pointer', fontWeight: 600 }}
+                                                style={{ background: 'transparent', border: 'none', color: '#A68936', fontSize: '15px', cursor: 'pointer', fontWeight: 600 }}
                                             >
                                                 Details ⓘ
                                             </button>
                                         </div>
 
-                                        <h4 style={{ color: 'white', fontWeight: 'bold', fontSize: '20px', marginBottom: '12px', fontFamily: 'Inter, sans-serif' }}>
+                                        <h4 style={{ color: '#022c22', fontWeight: 'bold', fontSize: '20px', marginBottom: '12px', fontFamily: 'Inter, sans-serif' }}>
                                             {item.name}
                                         </h4>
 
                                         <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
-                                            {showSavings && <span style={{ color: '#64748b', textDecoration: 'line-through', fontSize: '14px' }}>${standPrice.toLocaleString()}</span>}
-                                            <span style={{ color: '#C8A951', fontWeight: 'bold', fontSize: '28px' }}>
+                                            {showSavings && <span style={{ color: '#94a3b8', textDecoration: 'line-through', fontSize: '14px' }}>${standPrice.toLocaleString()}</span>}
+                                            <span style={{ color: '#A68936', fontWeight: 'bold', fontSize: '28px' }}>
                                                 {item.id === 'ceo-consulting'
                                                     ? `$${(currPrice * ceoConsultingWeeks).toLocaleString()}`
                                                     : item.id === 'probate' && probateStates.length > 0
@@ -482,22 +482,22 @@ export function ConfigureSolution() {
                                                             : (item.recurring ? <span style={{ fontSize: '14px', marginLeft: '4px' }}>/mo</span> : ''))}
                                             </span>
                                         </div>
-                                        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
+                                        <div style={{ fontSize: '12px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
                                             Market Equivalent: <span style={{ textDecoration: 'line-through' }}>${(item.hours * 250 * (item.id === 'ceo-consulting' ? ceoConsultingWeeks : (item.id === 'probate' ? Math.max(1, probateStates.length) : 1))).toLocaleString()}</span>
                                         </div>
 
 
                                         {/* Simplified Status Divider */}
-                                        <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', margin: '12px 0' }}></div>
+                                        <div style={{ height: '1px', background: '#e2e8f0', margin: '12px 0' }}></div>
 
-                                        <div style={{ color: '#64748b', fontSize: '13px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                        <div style={{ color: '#64748b', fontSize: '15px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                                             {item.id === 'ceo-consulting' ? (
                                                 <>
                                                     {ceoConsultingWeeks} week{ceoConsultingWeeks > 1 ? 's' : ''} engagement
                                                     {inCart && (
                                                         <span
                                                             onClick={(e) => { e.stopPropagation(); toggleCeoConfig(); }}
-                                                            style={{ cursor: 'pointer', color: '#C8A951', fontSize: '12px' }}
+                                                            style={{ cursor: 'pointer', color: '#A68936', fontSize: '12px' }}
                                                         >
                                                             (Edit)
                                                         </span>
@@ -511,7 +511,7 @@ export function ConfigureSolution() {
                                                     {inCart && (
                                                         <span
                                                             onClick={(e) => { e.stopPropagation(); toggleProbateConfig(); }}
-                                                            style={{ cursor: 'pointer', color: '#C8A951', fontSize: '12px' }}
+                                                            style={{ cursor: 'pointer', color: '#A68936', fontSize: '12px' }}
                                                         >
                                                             (Edit)
                                                         </span>
@@ -521,14 +521,14 @@ export function ConfigureSolution() {
                                                 `${item.timeline} ${item.timelineUnit} Delivery`
                                             )}
                                         </div>
-                                        <p style={{ fontSize: '1rem', color: 'rgba(147, 197, 253, 0.8)', lineHeight: 1.6, margin: 0 }}>
+                                        <p style={{ fontSize: '1rem', color: '#475569', lineHeight: 1.6, margin: 0 }}>
                                             {item.shortDescription}
                                         </p>
 
                                         <div style={{ marginTop: 'auto', paddingTop: '12px', minHeight: '44px', display: 'flex', alignItems: 'center' }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                                                 <div style={{ flex: 1 }}>
-                                                    <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>
+                                                    <span style={{ color: '#94a3b8', fontSize: '13px' }}>
                                                         {inCart ? (
                                                             <span style={{ color: '#10B981', fontWeight: 600 }}>✓ Module Selected</span>
                                                         ) : (
@@ -549,8 +549,8 @@ export function ConfigureSolution() {
                                                     }}
                                                     style={{
                                                         width: '32px', height: '32px', borderRadius: '6px',
-                                                        border: inCart ? 'none' : '2px solid rgba(200, 169, 81, 0.4)',
-                                                        background: inCart ? '#10B981' : 'rgba(0,0,0,0.3)',
+                                                        border: inCart ? 'none' : '2px solid #e2e8f0',
+                                                        background: inCart ? '#10B981' : '#ffffff',
                                                         color: 'white', fontWeight: 'bold', display: 'flex',
                                                         alignItems: 'center', justifyContent: 'center',
                                                         cursor: 'pointer',
@@ -571,8 +571,8 @@ export function ConfigureSolution() {
                                             width: '100%',
                                             height: '100%',
                                             backfaceVisibility: 'hidden',
-                                            background: '#0a0f1e',
-                                            border: '2px solid #C8A951',
+                                            background: '#ffffff',
+                                            border: '2px solid #A68936',
                                             borderRadius: '12px',
                                             transform: 'rotateY(180deg)',
                                             display: 'flex',
@@ -584,18 +584,18 @@ export function ConfigureSolution() {
                                         {(item.id === 'probate' || item.id === 'ceo-consulting') ? (
                                             <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                                                 <div style={{ padding: '20px 20px 10px 20px', textAlign: 'center' }}>
-                                                    <h4 style={{ fontFamily: 'Cinzel, serif', color: '#C8A951', fontSize: '18px', margin: '0 0 4px 0' }}>
+                                                    <h4 style={{ fontFamily: 'Cinzel, serif', color: '#A68936', fontSize: '18px', margin: '0 0 4px 0' }}>
                                                         {item.id === 'probate' ? 'Jurisdictions' : 'Engagement Duration'}
                                                     </h4>
-                                                    <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)', margin: 0 }}>
+                                                    <p style={{ fontSize: '12px', color: '#94a3b8', margin: 0 }}>
                                                         {item.id === 'probate' ? 'SCROLL & SELECT STATES' : 'SCROLL TO SELECT WEEKS'}
                                                     </p>
                                                 </div>
 
                                                 <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-                                                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40px', background: 'linear-gradient(to bottom, #0a0f1e, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
-                                                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40px', background: 'linear-gradient(to top, #0a0f1e, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
-                                                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80%', height: '36px', borderTop: '1px solid rgba(200,169,81,0.3)', borderBottom: '1px solid rgba(200,169,81,0.3)', pointerEvents: 'none', zIndex: 1 }}></div>
+                                                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '40px', background: 'linear-gradient(to bottom, #ffffff, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
+                                                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40px', background: 'linear-gradient(to top, #ffffff, transparent)', zIndex: 2, pointerEvents: 'none' }}></div>
+                                                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80%', height: '36px', borderTop: '1px solid rgba(166, 137, 54, 0.3)', borderBottom: '1px solid rgba(166, 137, 54, 0.3)', pointerEvents: 'none', zIndex: 1 }}></div>
 
                                                     {item.id === 'probate' && (
                                                         <div style={{ padding: '0 20px 8px 20px' }}>
@@ -606,9 +606,9 @@ export function ConfigureSolution() {
                                                                 onClick={(e) => e.stopPropagation()}
                                                                 onChange={(e) => setStateSearchQuery(e.target.value)}
                                                                 style={{
-                                                                    width: '100%', background: 'rgba(255,255,255,0.05)',
-                                                                    border: '1px solid rgba(200, 169, 81, 0.3)', borderRadius: '6px',
-                                                                    padding: '6px 12px', color: 'white', fontSize: '12px', outline: 'none'
+                                                                    width: '100%', background: '#f8fafc',
+                                                                    border: '1px solid #e2e8f0', borderRadius: '6px',
+                                                                    padding: '6px 12px', color: '#022c22', fontSize: '14px', outline: 'none'
                                                                 }}
                                                             />
                                                         </div>
@@ -627,7 +627,7 @@ export function ConfigureSolution() {
                                                                         onClick={(e) => { e.stopPropagation(); toggleTempState(state.code); }}
                                                                         style={{
                                                                             height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                                                            color: isSelected ? '#C8A951' : 'rgba(255,255,255,0.85)',
+                                                                            color: isSelected ? '#A68936' : '#64748b',
                                                                             fontSize: isSelected ? '16px' : '14px',
                                                                             fontWeight: isSelected ? 700 : 400,
                                                                             cursor: 'pointer', scrollSnapAlign: 'center', transition: 'all 0.2s ease'
@@ -646,7 +646,7 @@ export function ConfigureSolution() {
                                                                         onClick={(e) => { e.stopPropagation(); setTempCeoWeeks(week); }}
                                                                         style={{
                                                                             height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                                                            color: isSelected ? '#C8A951' : 'rgba(255,255,255,0.85)',
+                                                                            color: isSelected ? '#A68936' : '#64748b',
                                                                             fontSize: isSelected ? '20px' : '14px',
                                                                             fontWeight: isSelected ? 800 : 400,
                                                                             cursor: 'pointer', scrollSnapAlign: 'center', transition: 'all 0.2s ease'
@@ -660,13 +660,13 @@ export function ConfigureSolution() {
                                                     </div>
                                                 </div>
 
-                                                <div style={{ padding: '16px 20px 20px 20px', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                                                <div style={{ padding: '16px 20px 20px 20px', borderTop: '1px solid #e2e8f0' }}>
                                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                                                         <div style={{ textAlign: 'left' }}>
-                                                            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '9px', display: 'block', textTransform: 'uppercase' }}>
+                                                            <span style={{ color: '#94a3b8', fontSize: '12px', display: 'block', textTransform: 'uppercase' }}>
                                                                 {item.id === 'probate' ? 'Selected' : 'Investment'}
                                                             </span>
-                                                            <span style={{ color: '#C8A951', fontSize: '18px', fontWeight: 800 }}>
+                                                            <span style={{ color: '#A68936', fontSize: '18px', fontWeight: 800 }}>
                                                                 {item.id === 'probate' ? tempSelectedStates.length : `$${(tempCeoWeeks * (bundleSelected ? (PRODUCTS['ceo-consulting']?.bundledPrice || 0) : (PRODUCTS['ceo-consulting']?.standalonePrice || 0))).toLocaleString()}`}
                                                             </span>
 
@@ -676,7 +676,7 @@ export function ConfigureSolution() {
                                                         {item.id === 'probate' && (
                                                             <button
                                                                 onClick={(e) => { e.stopPropagation(); clearAllStates(); }}
-                                                                style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.6)', padding: '2px 8px', borderRadius: '4px', fontSize: '10px', cursor: 'pointer' }}
+                                                                style={{ background: 'transparent', border: '1px solid #e2e8f0', color: '#64748b', padding: '2px 8px', borderRadius: '4px', fontSize: '10px', cursor: 'pointer' }}
                                                             >
                                                                 Clear All
                                                             </button>
@@ -685,13 +685,13 @@ export function ConfigureSolution() {
                                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                                                         <button
                                                             onClick={(e) => { e.stopPropagation(); setFlippedCard(null); }}
-                                                            style={{ padding: '10px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', fontWeight: 600, fontSize: '11px', cursor: 'pointer' }}
+                                                            style={{ padding: '10px', borderRadius: '8px', background: '#f1f5f9', border: '1px solid #e2e8f0', color: '#64748b', fontWeight: 600, fontSize: '11px', cursor: 'pointer' }}
                                                         >
                                                             Cancel
                                                         </button>
                                                         <button
                                                             onClick={(e) => { e.stopPropagation(); item.id === 'probate' ? confirmStateSelection() : confirmCeoSelection(); }}
-                                                            style={{ padding: '10px', borderRadius: '8px', background: 'linear-gradient(135deg, #C8A951 0%, #A08332 100%)', border: 'none', color: '#000', fontWeight: 800, fontSize: '11px', cursor: 'pointer' }}
+                                                            style={{ padding: '10px', borderRadius: '8px', background: '#A68936', border: 'none', color: '#ffffff', fontWeight: 800, fontSize: '11px', cursor: 'pointer' }}
                                                         >
                                                             Confirm
                                                         </button>
@@ -700,13 +700,13 @@ export function ConfigureSolution() {
                                             </div>
                                         ) : (
                                             <div onClick={(e) => e.stopPropagation()} style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: '1.5rem' }}>
-                                                <h4 style={{ color: '#C8A951', fontWeight: 'bold', fontSize: '18px', marginBottom: '16px' }}>
+                                                <h4 style={{ color: '#A68936', fontWeight: 'bold', fontSize: '18px', marginBottom: '16px' }}>
                                                     Scope of Services:
                                                 </h4>
-                                                <div style={{ color: 'white', fontSize: '14px', lineHeight: 1.6, flex: 1, overflowY: 'auto' }}>
+                                                <div style={{ color: '#475569', fontSize: '14px', lineHeight: 1.6, flex: 1, overflowY: 'auto' }}>
                                                     {item.detailedScope?.map((scope, idx) => (
                                                         <div key={idx} style={{ marginBottom: '16px' }}>
-                                                            <div style={{ fontWeight: 'bold', color: '#93c5fd', marginBottom: '4px' }}>{scope.title}</div>
+                                                            <div style={{ fontWeight: 'bold', color: '#059669', marginBottom: '4px' }}>{scope.title}</div>
                                                             <ul style={{ paddingLeft: '1.25rem', margin: 0 }}>
                                                                 {scope.subItems.map((si, sidx) => (
                                                                     <li key={sidx} style={{ marginBottom: '2px' }}>{si}</li>
@@ -720,7 +720,7 @@ export function ConfigureSolution() {
                                                 </div>
                                                 <button
                                                     onClick={() => setFlippedCard(null)}
-                                                    style={{ marginTop: '1rem', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', padding: '10px', borderRadius: '6px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}
+                                                    style={{ marginTop: '1rem', background: '#f1f5f9', border: 'none', color: '#64748b', padding: '10px', borderRadius: '6px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}
                                                 >
                                                     Return to Selection
                                                 </button>
@@ -735,22 +735,22 @@ export function ConfigureSolution() {
             </div>
 
             {/* SELECTION SUMMARY */}
-            <div className="summary-box" style={{ width: '100%', margin: '4rem auto 2rem auto', padding: '32px', border: '1px solid rgba(200, 169, 81, 0.3)', borderRadius: '12px', background: 'rgba(200, 169, 81, 0.08)' }}>
-                <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: '24px', color: '#C8A951', marginBottom: '32px', textAlign: 'center', marginTop: 0 }}>
+            <div className="summary-box" style={{ width: '100%', margin: '4rem auto 2rem auto', padding: '32px', border: '1px solid rgba(166, 137, 54, 0.2)', borderRadius: '12px', background: '#ffffff', boxShadow: '0 10px 40px rgba(0,0,0,0.05)' }}>
+                <h3 style={{ fontFamily: 'Cinzel, serif', fontSize: '24px', color: '#A68936', marginBottom: '32px', textAlign: 'center', marginTop: 0 }}>
                     4. Selection Summary
                 </h3>
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '64px', flexWrap: 'wrap' }}>
                     <div style={{ textAlign: 'center' }}>
                         <div style={{ color: '#94a3b8', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px' }}>Modules</div>
-                        <div style={{ color: 'white', fontSize: '32px', fontWeight: 600 }}>{itemCount}</div>
+                        <div style={{ color: '#022c22', fontSize: '32px', fontWeight: 600 }}>{itemCount}</div>
                     </div>
                     <div style={{ textAlign: 'center' }}>
                         <div style={{ color: '#94a3b8', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px' }}>Estimated Investment</div>
-                        <div style={{ color: '#C8A951', fontSize: '32px', fontWeight: 600 }}>${totalInvestment.toLocaleString()}</div>
+                        <div style={{ color: '#A68936', fontSize: '32px', fontWeight: 600 }}>${totalInvestment.toLocaleString()}</div>
                     </div>
                     <div style={{ textAlign: 'center' }}>
                         <div style={{ color: '#94a3b8', fontSize: '12px', textTransform: 'uppercase', marginBottom: '8px' }}>Timeline</div>
-                        <div style={{ color: 'white', fontSize: '32px', fontWeight: 600 }}>{estimatedTimeline} Weeks</div>
+                        <div style={{ color: '#022c22', fontSize: '32px', fontWeight: 600 }}>{estimatedTimeline} Weeks</div>
                     </div>
                 </div>
             </div>

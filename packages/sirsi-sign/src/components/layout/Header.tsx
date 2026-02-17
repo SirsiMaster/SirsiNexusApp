@@ -4,15 +4,22 @@ export function Header() {
     const companyName = '111 Venture Studio'
 
     return (
-        <header className="bg-royal-950/80 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
+        <header style={{
+            background: 'rgba(255, 255, 255, 0.8)',
+            backdropFilter: 'blur(12px)',
+            borderBottom: '1px solid rgba(2, 44, 34, 0.05)',
+            zIndex: 50,
+            position: 'sticky',
+            top: 0
+        }}>
             <div className="max-w-7xl mx-auto px-6 py-4">
                 <div className="flex items-center justify-between">
                     {/* Left: Logo and Title */}
                     <div className="flex items-center gap-4">
-                        <div className="text-gold font-serif text-xl tracking-wider">
+                        <div style={{ fontFamily: "'Cinzel', serif", color: '#A68936', fontSize: '1.25rem', fontWeight: 700, letterSpacing: '0.05em' }}>
                             MASTER SERVICE AGREEMENT
                         </div>
-                        <div className="hidden md:block text-white/40 text-sm">
+                        <div className="hidden md:block" style={{ color: 'rgba(2, 44, 34, 0.4)', fontSize: '1rem' }}>
                             {companyName} × {projectName} Agreement
                         </div>
                     </div>
@@ -20,14 +27,18 @@ export function Header() {
                     {/* Right: Actions */}
                     <div className="flex items-center gap-4">
                         {/* Search (placeholder) */}
-                        <button className="p-2 text-white/50 hover:text-white transition-colors">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button style={{ background: 'none', border: 'none', padding: '8px', color: 'rgba(2, 44, 34, 0.4)', cursor: 'pointer' }}>
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ width: '20px', height: '20px' }}>
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </button>
 
                         {/* User Avatar */}
-                        <div className="w-8 h-8 bg-gold rounded-full flex items-center justify-center text-royal-950 font-bold text-sm">
+                        <div style={{
+                            width: '32px', height: '32px', background: '#C8A951', borderRadius: '50%',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            color: '#022c22', fontWeight: 700, fontSize: '1rem'
+                        }}>
                             CC
                         </div>
                     </div>

@@ -8,12 +8,37 @@
    CSS RESET & BASE
    ============================================ */
 :root {
-  --color-gold: #C8A951;
-  --color-gold-dark: #A08332;
-  --color-gold-bright: #D4AF37;
+  /* Color Tokens */
+  --color-gold: #A68936;
+  --color-gold-dark: #8c732a;
+  --color-gold-bright: #C8A951;
   --color-base-dark: #022c22;
-  --color-emerald: #10B981;
-  --color-emerald-mid: #059669;
+  --color-emerald: #059669;
+  --color-emerald-mid: #047857;
+  --color-emerald-light: #ecfdf5;
+
+  /* Theme: Light (Default) */
+  --bg-primary: #fcfdfd;
+  --bg-secondary: #ffffff;
+  --bg-gradient: radial-gradient(circle at top right, #fcfdfd 0%, #edf2f0 100%);
+  --text-primary: #022c22;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --border-primary: rgba(2, 44, 34, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+.theme-dark {
+  --bg-primary: #022c22;
+  --bg-secondary: #011a14;
+  --bg-gradient: radial-gradient(circle at top right, #022c22 0%, #000000 100%);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.85);
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --border-primary: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(2, 44, 34, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.08);
 }
 
 *,
@@ -30,19 +55,15 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: var(--color-base-dark);
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
   margin: 0;
   padding: 0;
 }
 
-/* Balanced Sirsi Emerald - Softened Glow */
 #root {
-  background: radial-gradient(circle at center,
-      #059669 0%,
-      #052e16 60%,
-      #012318 100%);
+  background: var(--bg-gradient);
   background-attachment: fixed;
   min-height: 100vh;
 }
@@ -665,7 +686,7 @@ button {
   font-family: 'Inter', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-size: 13px;
+  font-size: 15px;
   cursor: pointer;
   transition: all 0.2s ease;
 }

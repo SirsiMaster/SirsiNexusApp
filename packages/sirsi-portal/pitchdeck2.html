@@ -9,7 +9,8 @@
     <!-- Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cinzel:wght@400;700;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -28,6 +29,39 @@
             --bg-page: #ffffff;
             --glass: rgba(255, 255, 255, 0.9);
             --glass-gold: rgba(212, 175, 55, 0.05);
+            --royal-blue: #0f172a;
+            --royal-blue-light: #1e293b;
+            --gold-neo: #C8A951;
+            --emerald: #10B981;
+        }
+
+        .royal-bg {
+            background: radial-gradient(circle at center, var(--royal-blue-light) 0%, var(--royal-blue) 100%);
+            color: #fff;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(200, 169, 81, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .cinzel {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.1em;
+        }
+
+        .gold-border {
+            border: 1px solid var(--gold-neo);
+        }
+
+        .gold-text-neo {
+            color: var(--gold-neo);
+        }
+
+        .emerald-text {
+            color: var(--emerald);
         }
 
         * {
@@ -827,11 +861,10 @@
                         data sovereignty.</p>
                 </div>
                 <div class="info-card">
-                    <i class="fas fa-microchip"
-                        style="font-size: 3.5rem; color: var(--primary); margin-bottom: 15px;"></i>
-                    <h4 class="royal-text">Hardware</h4>
-                    <p style="font-size: 0.95rem;">Specialized <strong>NVIDIA GPU</strong> orchestration for
-                        high-performance AI workloads.</p>
+                    <i class="fab fa-apple" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 15px;"></i>
+                    <h4 class="royal-text">Tri-Silicon</h4>
+                    <p style="font-size: 0.95rem;">Orchestrating <strong>NVIDIA, TPU, and Apple Silicon</strong> into a
+                        unified, high-performance neural mesh.</p>
                 </div>
                 <div class="info-card gold">
                     <i class="fas fa-chart-line"
@@ -890,15 +923,15 @@
                         <i class="fas fa-network-wired"
                             style="font-size: 1.8rem; color: var(--primary); margin-bottom: 12px;"></i>
                         <h4 class="royal-text" style="color: var(--primary); margin-bottom: 12px; font-size: 0.9rem;">
-                            Fractal Lattice</h4>
-                        <p style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px;"><strong>Hardware
-                                Orchestration</strong> for specialized GPUs (NVIDIA/H100). Automates orchestration
-                            across On-Prem and Multi-Cloud.</p>
+                            Neural-Fractal Architecture</h4>
+                        <p style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px;">AI that automatically
+                            converts business needs into verified cloud solutions across AWS, Azure, and Google
+                            Cloud—delivering <strong>40%+ cost reductions</strong> with fault-tolerant consistency.</p>
                     </div>
                     <div
                         style="background: var(--gold-light); border: 1px solid var(--gold); padding: 10px; font-size: 0.8rem; border-left: 4px solid var(--gold); margin-top: auto;">
-                        <strong style="color: var(--gold-dark);">Utility:</strong> No YAML. <strong
-                            style="color: var(--primary);">NVIDIA Accelerated.</strong>
+                        <strong style="color: var(--gold-dark);">Utility:</strong> Multi-Cloud Trust. <strong
+                            style="color: var(--primary);">Verified Outcomes.</strong>
                     </div>
                 </div>
 
@@ -1187,6 +1220,7 @@
                     <i class="fab fa-aws fa-lg"></i>
                     <i class="fab fa-microsoft fa-lg"></i>
                     <i class="fab fa-google fa-lg"></i>
+                    <i class="fab fa-apple fa-lg"></i>
                     <i class="fab fa-docker fa-lg"></i>
                     <i class="fas fa-dharmachakra fa-lg"></i>
                 </div>
@@ -1194,6 +1228,204 @@
 
             <div class="slide-footer">
                 <div style="font-size: 0.85rem; font-weight: 600;">CONFIDENTIAL // SLIDE 06</div>
+            </div>
+        </div>
+
+        <!-- Slide 7: The Neural-Hashgraph Pod -->
+        <div class="slide" style="padding: 0; flex-direction: row; background: #fff; color: #000;">
+            <!-- Left: Top-Down Product Realism -->
+            <div style="flex: 1.3; position: relative; overflow: hidden; height: 100%; background: #f9f9fb;">
+                <img src="assets/pod_top.png" style="width: 100%; height: 100%; object-fit: contain; padding: 60px;">
+                <div
+                    style="position: absolute; bottom: 40px; left: 60px; border-left: 3px solid var(--gold-neo); padding-left: 20px;">
+                    <div class="cinzel"
+                        style="font-size: 0.7rem; font-weight: 800; color: var(--gold-dark); letter-spacing: 0.4em; margin-bottom: 5px;">
+                        UNIT DESIGNATION</div>
+                    <div class="cinzel" style="font-size: 1.4rem; font-weight: 900; color: #000;">SIRSI-POD-ALPHA</div>
+                </div>
+            </div>
+
+            <!-- Right: Professional Specifications -->
+            <div
+                style="flex: 1; padding: 120px 80px; display: flex; flex-direction: column; gap: 45px; background: #fff;">
+                <div>
+                    <div class="cinzel"
+                        style="font-size: 0.8rem; font-weight: 950; color: var(--gold-dark); letter-spacing: 0.6em; margin-bottom: 25px;">
+                        STUDIO-GRADE CLUSTER</div>
+                    <h2 class="cinzel"
+                        style="color: #000; border-bottom: none; font-size: 3.2rem; margin: 0; padding: 0; line-height: 1.0; font-weight: 900;">
+                        Neural-Hashgraph <span style="color: var(--gold-dark);">01.</span></h2>
+                    <div style="width: 80px; height: 3px; background: var(--gold-neo); margin-top: 30px;"></div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    <div style="padding-bottom: 20px; border-bottom: 1px solid #eee;">
+                        <h4 class="cinzel"
+                            style="font-size: 0.85rem; font-weight: 900; color: var(--gold-dark); margin-bottom: 10px;">
+                            Top-View Architecture</h4>
+                        <div style="font-size: 1.1rem; font-weight: 700; color: #000;">4x Mac Studio Cluster</div>
+                        <p style="font-size: 0.9rem; color: #666; font-weight: 500; margin-top: 5px;">Direct-facing
+                            Apple Silicon mesh utilizing M5 Ultra processing for deterministic local AI conduction.</p>
+                    </div>
+
+                    <div style="padding-bottom: 20px; border-bottom: 1px solid #eee;">
+                        <h4 class="cinzel"
+                            style="font-size: 0.85rem; font-weight: 900; color: var(--gold-dark); margin-bottom: 10px;">
+                            Sovereign Fabric</h4>
+                        <div style="font-size: 1.1rem; font-weight: 700; color: #000;">TB5 Fiber Interconnect</div>
+                        <p style="font-size: 0.9rem; color: #666; font-weight: 500; margin-top: 5px;">Gold-braided
+                            120Gbps RDMA fabric with pulsing data synchronization across all nodes.</p>
+                    </div>
+
+                    <div>
+                        <h4 class="cinzel"
+                            style="font-size: 0.85rem; font-weight: 900; color: var(--gold-dark); margin-bottom: 10px;">
+                            Trust Layer</h4>
+                        <div style="font-size: 1.1rem; font-weight: 700; color: #000;">Hedera Local Mirror Node</div>
+                        <p style="font-size: 0.9rem; color: #666; font-weight: 500; margin-top: 5px;">Local
+                            consensus-as-a-service. Every inference transaction is hashed and verified instantly.</p>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-top: auto; display: flex; gap: 50px; background: #fcfcfd; padding: 25px; border: 1px solid #f0f0f2;">
+                    <div>
+                        <div class="cinzel" style="font-size: 1.8rem; font-weight: 900; color: #000;">2.0 <span
+                                style="font-size: 0.8rem; color: #999;">TB</span></div>
+                        <div
+                            style="font-size: 0.6rem; letter-spacing: 0.2em; color: var(--gold-dark); font-weight: 800;">
+                            TOTAL VRAM</div>
+                    </div>
+                    <div style="width: 1px; height: 100%; background: #eee;"></div>
+                    <div>
+                        <div class="cinzel" style="font-size: 1.8rem; font-weight: 900; color: #000;">152 <span
+                                style="font-size: 0.8rem; color: #999;">Tops</span></div>
+                        <div
+                            style="font-size: 0.6rem; letter-spacing: 0.2em; color: var(--gold-dark); font-weight: 800;">
+                            NPU COMPUTE</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer" style="padding: 40px 80px;">
+                <div
+                    style="font-size: 0.7rem; color: #aaa; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 800;">
+                    SIRSI TECHNOLOGIES // HARDWARE CANON // ALPHA SERIES</div>
+            </div>
+        </div>
+
+        <!-- Slide 8: The Super-Cluster Mesh (THE TECHNOLOGY THAT BREAKS THE WORLD) -->
+        <!-- Slide 8: The Super-Cluster Mesh (THE TECHNOLOGY THAT BREAKS THE WORLD) -->
+        <div class="slide"
+            style="padding: 85px 0 100px 0; display: flex; flex-direction: row; background: #fff; color: #000;">
+            <!-- Left: High-Fidelity Infrastructure Visual (Preserved) -->
+            <div
+                style="flex: 1.6; background: #f8f8fb; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                <img src="assets/supercluster_mesh_8k.png"
+                    style="width: 100%; height: 100%; object-fit: contain; padding: 40px;">
+                <!-- Precision ID Label -->
+                <div
+                    style="position: absolute; bottom: 40px; left: 50px; border-left: 3px solid var(--gold-neo); padding-left: 20px;">
+                    <div class="cinzel"
+                        style="font-size: 0.7rem; font-weight: 800; color: var(--gold-dark); letter-spacing: 0.4em; margin-bottom: 5px;">
+                        MESH ARCHITECTURE</div>
+                    <div class="cinzel" style="font-size: 1.5rem; font-weight: 900; color: #000;">SX-SUPER-CORE</div>
+                </div>
+            </div>
+
+            <!-- Right: Technical Narrative & Deep-Spec Data Sheet (MAXIMIZED) -->
+            <div
+                style="flex: 1.1; padding: 60px; display: flex; flex-direction: column; gap: 30px; background: #fff; border-left: 1px solid #f0f0f2; position: relative; overflow-y: auto;">
+                <div>
+                    <div class="cinzel"
+                        style="font-size: 0.8rem; font-weight: 950; color: var(--gold-dark); letter-spacing: 0.6em; margin-bottom: 15px;">
+                        THE TECHNOLOGY THAT BREAKS THE WORLD</div>
+                    <h2 class="cinzel"
+                        style="color: #000; border-bottom: none; font-size: 2.8rem; margin: 0; padding: 0; line-height: 1.1; font-weight: 950;">
+                        Sirsi Nexus <span style="color: var(--gold-dark);">Core.</span></h2>
+                    <div style="width: 60px; height: 3px; background: var(--gold-neo); margin-top: 20px;"></div>
+                </div>
+
+                <p class="lead"
+                    style="color: #000; font-size: 1.2rem; font-weight: 700; line-height: 1.4; margin: 0; text-align: left;">
+                    The synthesis of Apple Silicon and Sirsi Software. A 32-node sovereign mesh engineered for absolute
+                    high-concurrency intelligence.
+                </p>
+
+                <!-- Product Specification Grid (Filled to the gills) -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+
+                    <!-- Spec Block: Compute Engine -->
+                    <div style="border-left: 2px solid #eee; padding-left: 20px;">
+                        <div class="cinzel"
+                            style="font-size: 0.7rem; letter-spacing: 0.3em; color: var(--gold-dark); font-weight: 950; margin-bottom: 10px;">
+                            ENGINE: SOVEREIGN COMPUTE</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <div style="font-size: 1.1rem; font-weight: 900; color: #000;">16.0 TB RAM</div>
+                                <div style="font-size: 0.65rem; color: #777; font-weight: 700;">512GB UNIFIED PER NODE
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-size: 1.1rem; font-weight: 900; color: #000;">4,000+ CORES</div>
+                                <div style="font-size: 0.65rem; color: #777; font-weight: 700;">CPU + GPU + NEURAL
+                                    DENSITY</div>
+                            </div>
+                            <div
+                                style="grid-column: span 2; background: rgba(0, 138, 94, 0.05); padding: 10px; border-radius: 4px;">
+                                <div style="font-size: 1rem; font-weight: 900; color: #008A5E;">APPLE MLX NATIVE</div>
+                                <div style="font-size: 0.65rem; color: #006b49; font-weight: 700;">Unified Memory
+                                    Orchestration for sub-millisecond LLM inference</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spec Block: Neural Fabric & Fabric -->
+                    <div style="border-left: 2px solid #eee; padding-left: 20px;">
+                        <div class="cinzel"
+                            style="font-size: 0.7rem; letter-spacing: 0.3em; color: var(--gold-dark); font-weight: 950; margin-bottom: 10px;">
+                            FABRIC: NEURAL SYNC</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <div style="font-size: 1.1rem; font-weight: 900; color: #000;">RDMA over TB5</div>
+                                <div style="font-size: 0.65rem; color: #777; font-weight: 700;">120 Gbps NODE-TO-NODE
+                                </div>
+                            </div>
+                            <div>
+                                <div style="font-size: 1.1rem; font-weight: 900; color: #000;">256 TB STORAGE</div>
+                                <div style="font-size: 0.65rem; color: #777; font-weight: 700;">SOVEREIGN NVMe SWARM
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spec Block: Trust & Verification -->
+                    <div style="border-left: 2px solid #eee; padding-left: 20px;">
+                        <div class="cinzel"
+                            style="font-size: 0.7rem; letter-spacing: 0.3em; color: var(--gold-dark); font-weight: 950; margin-bottom: 10px;">
+                            CONSENSUS: DATA INTEGRITY</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <div style="font-size: 1.1rem; font-weight: 900; color: #000;">aBFT TRUST</div>
+                                <div style="font-size: 0.65rem; color: #777; font-weight: 700;">HEDERA DLT STATE
+                                    MIRRORING</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 1.1rem; font-weight: 900; color: #000;">ZERO-CLOUD</div>
+                                <div style="font-size: 0.65rem; color: #777; font-weight: 700;">ISOLATED SOVEREIGN VAULT
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid #eee;">
+                    <div class="cinzel"
+                        style="font-size: 0.65rem; color: #bbb; text-transform: uppercase; letter-spacing: 0.4em; font-weight: 900; line-height: 1.6;">
+                        GLOBAL SOVEREIGN INFRASTRUCTURE // ALPHA SERIES-32<br>
+                        <span style="color: var(--gold-dark);">SIRSI PERSONA // HYPERVISOR ACTIVE</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1378,7 +1610,7 @@
 
             <div class="slide-footer">
                 <div style="font-weight: 800; font-size: 0.85rem; letter-spacing: 0.1em;">SIRSI TECHNOLOGIES INC.</div>
-                <div style="font-size: 0.85rem; font-weight: 600;">PRIVATE // DOCUMENT REF: SX-07</div>
+                <div style="font-size: 0.85rem; font-weight: 600;">PRIVATE // DOCUMENT REF: SX-09</div>
             </div>
         </div>
 
@@ -1738,7 +1970,7 @@
 
             <div class="slide-footer">
                 <div style="font-weight: 700;">SIRSI TECHNOLOGIES INC.</div>
-                <div style="font-weight: 500;">CONFIDENTIAL // STRATEGIC TRACTION // SLIDE 10</div>
+                <div style="font-weight: 500;">CONFIDENTIAL // STRATEGIC TRACTION // SLIDE 12</div>
             </div>
         </div>
 
@@ -2169,13 +2401,13 @@
                         </div>
 
                         <div class="doc-flag-box">
-                            <span class="val">12+</span>
-                            <span class="lab">Target Enterprise Clients<br>By Q4 2026 Milestone</span>
+                            <span class="val">Q3 2026</span>
+                            <span class="lab">Beta Launch: Apple Cluster<br>Hypervisor Milestone</span>
                         </div>
 
                         <div class="doc-flag-box" style="background:#0f172a;">
                             <span class="val">$1.0M</span>
-                            <span class="lab">Projected ARR Run-Rate<br>By Q4 2026 Engagement</span>
+                            <span class="lab">Projected ARR Run-Rate<br>By Q1 2027 Engagement</span>
                         </div>
 
                         <div>
@@ -2267,7 +2499,7 @@
                     </div>
                     <div
                         style="color: var(--text-slate); border: 1px solid var(--border); background: white; padding: 5px 12px; font-weight: 900; font-size: 0.8rem;">
-                        12
+                        14
                     </div>
                 </div>
             </div>
@@ -2314,7 +2546,7 @@
             </div>
             <div class="slide-footer">
                 <div>SIRSI TECHNOLOGIES INC.</div>
-                <div>CONFIDENTIAL // SLIDE 13</div>
+                <div>CONFIDENTIAL // SLIDE 15</div>
             </div>
         </div>
 
@@ -2337,7 +2569,7 @@
             </div>
             <div class="slide-footer">
                 <div>SIRSI TECHNOLOGIES INC.</div>
-                <div>EST. 2025 // SLIDE 14</div>
+                <div>EST. 2025 // SLIDE 16</div>
             </div>
         </div>
     </main>
@@ -2346,7 +2578,7 @@
         <div class="nav">
             <button class="nav-btn" onclick="changeSlide(-1)" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
             <div class="nav-counter">
-                <span id="currentNum">1</span> / 14
+                <span id="currentNum">1</span> / 16
             </div>
             <button class="nav-btn" onclick="changeSlide(1)" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
         </div>
@@ -2355,7 +2587,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         let currentSlide = 1;
-        const totalSlides = 14;
+        const totalSlides = 16;
 
         function showSlide(n) {
             const slides = document.querySelectorAll('.slide');
@@ -2372,7 +2604,7 @@
             const progress = ((currentSlide - 1) / (totalSlides - 1)) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
 
-            if (currentSlide === 11) {
+            if (currentSlide === 13) {
                 setTimeout(drawRevenueChart, 400);
                 setTimeout(drawUserChart, 600);
             }
