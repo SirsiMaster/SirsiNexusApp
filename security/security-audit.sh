@@ -49,7 +49,7 @@ audit_network_security() {
     log "Checking open ports..."
     netstat -tuln > "${AUDIT_DIR}/open-ports.txt" 2>/dev/null || ss -tuln > "${AUDIT_DIR}/open-ports.txt"
     
-    # Expected ports: 26257 (CockroachDB), 6379 (Redis), 8080 (Core Engine), 3000 (Frontend)
+    # Expected ports: 26257 (PostgreSQL), 6379 (Redis), 8080 (Core Engine), 3000 (Frontend)
     local expected_ports=(26257 6379 8080 3000)
     local security_score=100
     
@@ -115,21 +115,21 @@ audit_database_security() {
     
     local db_score=100
     
-    # Check CockroachDB security
-    log "Checking CockroachDB security configuration..."
+    # Check PostgreSQL security
+    log "Checking PostgreSQL security configuration..."
     
     # Test database connection security
-    if command_exists cockroach; then
+    if command_exists postgres; then
         # Check if database is running with --insecure flag (development only)
-        if pgrep -f "cockroach.*--insecure" >/dev/null; then
-            log_warning "CockroachDB running in insecure mode (development only)"
+        if pgrep -f "postgres.*--insecure" >/dev/null; then
+            log_warning "PostgreSQL running in insecure mode (development only)"
             db_score=$((db_score - 30))
         else
-            log_success "CockroachDB running in secure mode"
+            log_success "PostgreSQL running in secure mode"
         fi
         
         # Check database permissions
-        local db_check=$(cockroach sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SHOW GRANTS ON DATABASE sirsi_nexus;" 2>/dev/null || echo "error")
+        local db_check=$(postgres sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SHOW GRANTS ON DATABASE sirsi_nexus;" 2>/dev/null || echo "error")
         if [ "$db_check" != "error" ]; then
             log_success "Database connectivity and permissions check passed"
         else
@@ -137,7 +137,7 @@ audit_database_security() {
             db_score=$((db_score - 20))
         fi
     else
-        log_warning "CockroachDB CLI not available for security check"
+        log_warning "PostgreSQL CLI not available for security check"
         db_score=$((db_score - 10))
     fi
     

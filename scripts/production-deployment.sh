@@ -201,20 +201,20 @@ build_frontend() {
 setup_database() {
     log_info "Setting up and validating database..."
     
-    # Check if CockroachDB is running
+    # Check if PostgreSQL is running
     if ! pg_isready -h localhost -p 26257 -U root; then
-        log_info "Starting CockroachDB..."
-        if command -v cockroach &> /dev/null; then
-            cockroach start-single-node --insecure --listen-addr=localhost:26257 --background
+        log_info "Starting PostgreSQL..."
+        if command -v postgres &> /dev/null; then
+            postgres start-single-node --insecure --listen-addr=localhost:26257 --background
             sleep 10
         else
-            handle_error "CockroachDB not found and not running"
+            handle_error "PostgreSQL not found and not running"
         fi
     fi
     
     # Verify database connection
     if ! psql -h localhost -p 26257 -U root -d defaultdb -c "SELECT 1;" &>/dev/null; then
-        handle_error "Cannot connect to CockroachDB"
+        handle_error "Cannot connect to PostgreSQL"
     fi
     
     # Create database if not exists

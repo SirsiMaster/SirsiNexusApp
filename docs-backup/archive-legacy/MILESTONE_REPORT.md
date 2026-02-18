@@ -97,7 +97,7 @@ Phase 5: Advanced Features         ⏳ PLANNED (Future)
 
 ### Version Progression
 - **v1.0.0**: Core infrastructure and database foundation
-- **v1.1.0**: CockroachDB migration and backend completion
+- **v1.1.0**: PostgreSQL migration and backend completion
 - **v1.2.0**: Frontend foundation with complete TypeScript compilation
 - **v2.0.0**: AI agent framework with multi-cloud automation ← **TODAY**
 - **v3.0.0**: Real cloud SDK integration and MCP implementation (Target)

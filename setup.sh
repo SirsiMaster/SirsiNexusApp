@@ -27,7 +27,7 @@ git lfs track "*.db"
 git lfs track "*.sqlite*"
 git lfs track "*.wal"
 git lfs track "node1/**"
-git lfs track "core-engine/cockroach-data/**"
+git lfs track "core-engine/postgres-data/**"
 git lfs track "temp/**"
 
 git add .gitattributes

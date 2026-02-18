@@ -44,12 +44,9 @@ This guide provides detailed steps and an automation script to set up a new repo
 2. **Track Large Files**:
    ```bash
    git lfs track "*.log"
-   git lfs track "*.sst"
    git lfs track "*.db"
    git lfs track "*.sqlite*"
-   git lfs track "*.wal"
-   git lfs track "node1/**"
-   git lfs track "core-engine/cockroach-data/**"
+   git lfs track "temp/**"
    git lfs track "temp/**"
    ```
 3. **Commit `.gitattributes`**: Commit the file to store Git LFS settings.
@@ -82,12 +79,8 @@ fi
 
 echo "Setting up Git LFS tracking"
 git lfs track "*.log"
-git lfs track "*.sst"
 git lfs track "*.db"
 git lfs track "*.sqlite*"
-git lfs track "*.wal"
-git lfs track "node1/**"
-git lfs track "core-engine/cockroach-data/**"
 git lfs track "temp/**"
 
 git add .gitattributes

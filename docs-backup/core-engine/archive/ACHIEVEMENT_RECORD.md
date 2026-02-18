@@ -19,7 +19,7 @@
 ### 🏗️ **Infrastructure Achievements**
 
 #### Database Integration
-- ✅ **CockroachDB Live**: `postgresql://root@localhost:26257/sirsi_nexus`
+- ✅ **PostgreSQL Live**: `postgresql://root@localhost:26257/sirsi_nexus`
 - ✅ **Complete Schema**: Users, Projects, Resources, Audit Logs, RBAC tables
 - ✅ **All Migrations Applied**: 6 migration files successfully executed
 - ✅ **Foreign Key Constraints**: Full referential integrity
@@ -104,7 +104,7 @@
 - ✅ **Health Checks**: Readiness and liveness probes
 
 ### Infrastructure Requirements Met
-- ✅ **Database**: CockroachDB operational
+- ✅ **Database**: PostgreSQL operational
 - ✅ **Cache**: Redis operational  
 - ✅ **Networking**: High-performance communication
 - ✅ **Storage**: Persistent data management

@@ -119,7 +119,7 @@ wait_for_deployments() {
         "sirsi-nexus-core-engine"
         "sirsi-nexus-ui"
         "sirsi-nexus-frontend"
-        "cockroachdb"
+        "postgres"
         "redis"
     )
     

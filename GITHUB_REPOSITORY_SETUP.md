@@ -48,7 +48,7 @@ monitoring
 grafana
 prometheus
 redis
-cockroachdb
+postgres
 grpc
 websocket
 jwt

@@ -116,7 +116,7 @@ check_services() {
     local services=(
         "${BASE_URL}/health:Core Engine"
         "${FRONTEND_URL}/api/health:Frontend"
-        "http://localhost:26257/health:CockroachDB"
+        "http://localhost:26257/health:PostgreSQL"
     )
     
     for service in "${services[@]}"; do
@@ -399,7 +399,7 @@ run_database_test() {
     for i in $(seq 1 $concurrent_connections); do
         (
             for j in $(seq 1 $queries_per_connection); do
-                cockroach sql --insecure --host=localhost:26257 --database=sirsi_nexus \
+                postgres sql --insecure --host=localhost:26257 --database=sirsi_nexus \
                     --execute="SELECT version();" >/dev/null 2>&1
             done
         ) &

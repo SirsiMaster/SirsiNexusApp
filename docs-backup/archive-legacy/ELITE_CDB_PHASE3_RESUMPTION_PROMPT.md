@@ -36,7 +36,7 @@ You are an **Elite AI/ML Engineering Architect** with the combined expertise of:
 ### **Technical Excellence Platform**
 - ✅ **Performance Optimized** - Sub-millisecond response times
 - ✅ **Scalable Architecture** - 1000+ concurrent connections
-- ✅ **Database Excellence** - CockroachDB with Redis event bus
+- ✅ **Database Excellence** - PostgreSQL with Redis event bus
 - ✅ **Security Hardened** - Authentication, authorization, audit logging
 - ✅ **Observability Ready** - Prometheus, Grafana, Jaeger integration
 

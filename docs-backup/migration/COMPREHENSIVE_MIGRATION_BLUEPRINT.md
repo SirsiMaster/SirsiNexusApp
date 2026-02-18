@@ -14,7 +14,7 @@ This blueprint defines the complete implementation of the SirsiNexus AI-powered 
 ### Core Platform Components
 - **Frontend**: React/Next.js TypeScript application with 50 pages
 - **Backend**: Rust (Axum) + Python (ML/Analytics) + Go (Connectors)
-- **Database**: CockroachDB for distributed data management
+- **Database**: PostgreSQL for distributed data management
 - **Cache**: Redis for session and context management
 - **AI Engine**: OpenAI GPT-4 + Anthropic Claude integration
 - **Communication**: WebSocket + gRPC for real-time updates

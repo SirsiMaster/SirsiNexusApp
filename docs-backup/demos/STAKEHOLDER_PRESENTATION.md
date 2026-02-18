@@ -25,7 +25,7 @@
 - **Core Engine**: Rust (performance & safety)
 - **Frontend**: Next.js (modern web experience)
 - **Analytics**: Python with ML capabilities
-- **Database**: CockroachDB (distributed SQL)
+- **Database**: PostgreSQL (distributed SQL)
 - **Deployment**: Kubernetes (cloud-native)
 
 ### Enterprise Features

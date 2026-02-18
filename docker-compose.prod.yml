@@ -12,11 +12,11 @@ services:
       - "9090:9090"  # gRPC
     environment:
       - RUST_LOG=info
-      - DATABASE_URL=postgresql://root@cockroachdb:26257/sirsi_nexus?sslmode=disable
+      - DATABASE_URL=postgresql://root@postgres:5432/sirsi_nexus?sslmode=disable
       - REDIS_URL=redis://redis:6379
       - ENVIRONMENT=production
     depends_on:
-      - cockroachdb
+      - postgres
       - redis
     restart: unless-stopped
     healthcheck:
@@ -74,19 +74,21 @@ services:
     networks:
       - sirsi-network
 
-  # CockroachDB (Production Configuration)
-  cockroachdb:
-    image: cockroachdb/cockroach:v25.2.1
-    command: start-single-node --insecure --listen-addr=0.0.0.0:26257 --http-addr=0.0.0.0:8081
+  # PostgreSQL (Production Configuration)
+  postgres:
+    image: postgres:15-alpine
     ports:
-      - "26257:26257"
-      - "8081:8081"
+      - "5432:5432"
     volumes:
-      - cockroach-data:/cockroach/cockroach-data
+      - postgres-data:/var/lib/postgresql/data
       - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
+    environment:
+      - POSTGRES_DB=sirsi_nexus
+      - POSTGRES_USER=root
+      - POSTGRES_HOST_AUTH_METHOD=trust
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      test: ["CMD", "pg_isready", "-U", "root"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -159,7 +161,7 @@ services:
       - sirsi-network
 
 volumes:
-  cockroach-data:
+  postgres-data:
     driver: local
   redis-data:
     driver: local

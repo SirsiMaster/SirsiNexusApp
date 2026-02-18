@@ -49,7 +49,7 @@ audit_network_security() {
     log "Checking open ports..."
     netstat -tuln > "${AUDIT_DIR}/open-ports.txt" 2>/dev/null || ss -tuln > "${AUDIT_DIR}/open-ports.txt"
     
-    # Expected ports: 26257 (CockroachDB), 6379 (Redis), 8080 (Core Engine), 3000 (Frontend)
+    # Expected ports: 26257 (PostgreSQL), 6379 (Redis), 8080 (Core Engine), 3000 (Frontend)
     local expected_ports=(26257 6379 8080 3000)
     local security_score=100
     local issues=0
@@ -130,28 +130,28 @@ audit_database_security() {
     local db_score=100
     local issues=0
     
-    # Check CockroachDB security
-    log "Checking CockroachDB security configuration..."
+    # Check PostgreSQL security
+    log "Checking PostgreSQL security configuration..."
     
     # Test database connection security
-    if command_exists cockroach; then
+    if command_exists postgres; then
         # Check if database is running with --insecure flag (development only)
-        if pgrep -f "cockroach.*--insecure" >/dev/null; then
-            log_warning "CockroachDB running in insecure mode (development only)"
+        if pgrep -f "postgres.*--insecure" >/dev/null; then
+            log_warning "PostgreSQL running in insecure mode (development only)"
             issues=$((issues + 1))
         else
-            log_success "CockroachDB running in secure mode"
+            log_success "PostgreSQL running in secure mode"
         fi
         
         # Check database permissions
-        if cockroach sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SELECT version();" >/dev/null 2>&1; then
+        if postgres sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SELECT version();" >/dev/null 2>&1; then
             log_success "Database connectivity and permissions check passed"
         else
             log_error "Database connectivity issues detected"
             issues=$((issues + 1))
         fi
     else
-        log_warning "CockroachDB CLI not available for security check"
+        log_warning "PostgreSQL CLI not available for security check"
         issues=$((issues + 1))
     fi
     

@@ -47,7 +47,7 @@ check_service() {
             return 1
         fi
     elif [ "$protocol" = "postgresql" ]; then
-        if cockroach sql --insecure --port="$port" --execute="SELECT 1;" > /dev/null 2>&1; then
+        if postgres sql --insecure --port="$port" --execute="SELECT 1;" > /dev/null 2>&1; then
             echo -e "${GREEN}✅ OPERATIONAL${NC}"
             return 0
         else
@@ -151,8 +151,8 @@ echo -e "${BLUE}📋 3. CORE INFRASTRUCTURE SERVICES${NC}"
 echo ""
 
 echo "  🏗️  Phase 1: Infrastructure Services"
-check_service "CockroachDB SQL" "26257" "postgresql"
-check_service "CockroachDB Admin" "8081" "http" "/health"
+check_service "PostgreSQL SQL" "26257" "postgresql"
+check_service "PostgreSQL Admin" "8081" "http" "/health"
 check_service "Redis Cache" "6379" "redis"
 
 echo ""
@@ -252,7 +252,7 @@ echo -e "================================================${NC}"
 echo ""
 
 echo -e "${GREEN}✅ Phase 6.4 COMPLETED: Security Hardening & GitHub Pages Portal${NC}"
-echo -e "${GREEN}✅ All Infrastructure Services: CockroachDB + Redis operational${NC}"
+echo -e "${GREEN}✅ All Infrastructure Services: PostgreSQL + Redis operational${NC}"
 echo -e "${GREEN}✅ All Application Services: Core API + WebSocket + gRPC${NC}"
 echo -e "${GREEN}✅ All AI Services: Real OpenAI/Anthropic integration${NC}"
 echo -e "${GREEN}✅ Port Registry Service: Dynamic allocation operational${NC}"

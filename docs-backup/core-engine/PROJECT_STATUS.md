@@ -17,7 +17,7 @@
 - **Overall System**: ✅ 100% Operational
 
 ### 🏗️ **Live Infrastructure Status**
-- **Database**: ✅ CockroachDB live at `postgresql://root@localhost:26257/sirsi_nexus`
+- **Database**: ✅ PostgreSQL live at `postgresql://root@localhost:26257/sirsi_nexus`
 - **Redis**: ✅ Live connection at `redis://localhost:6379`
 - **Tests**: ✅ 75 unit + 8 integration tests (100% success rate)
 - **Build**: ✅ Zero compilation errors, clean release builds
@@ -43,7 +43,7 @@
 
 ### **Technical Stack**
 - **Backend**: Rust with async/await, enterprise-grade performance
-- **Database**: CockroachDB (distributed SQL with ACID compliance)
+- **Database**: PostgreSQL (distributed SQL with ACID compliance)
 - **Cache**: Redis (agent context storage + event bus)
 - **APIs**: gRPC + REST with comprehensive OpenAPI documentation
 - **Security**: JWT + RBAC, TLS 1.3, zero-trust architecture
@@ -155,7 +155,7 @@ cargo test --lib
 cargo build --release
 
 # Check live connections
-cockroach sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SELECT version();"
+postgres sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SELECT version();"
 redis-cli ping
 
 # Ready for Phase 3!
@@ -186,7 +186,7 @@ redis-cli ping
 ## 🔄 **VERSION HISTORY**
 
 ### **v0.2.1** *(Current - July 5, 2025)*
-- ✅ Complete live database integration (CockroachDB)
+- ✅ Complete live database integration (PostgreSQL)
 - ✅ Redis event bus operational
 - ✅ 100% test success rate achieved
 - ✅ Enterprise security framework complete

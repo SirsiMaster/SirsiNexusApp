@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Stabilized dynamic agent loading and execution
   - Enhanced error handling and recovery mechanisms
 - **Database and Redis Integration**
-  - Fixed CockroachDB connection pooling and query optimization
+  - Fixed PostgreSQL connection pooling and query optimization
   - Stabilized Redis event bus communication
   - Corrected session management and context storage
   - Enhanced transaction handling and data consistency

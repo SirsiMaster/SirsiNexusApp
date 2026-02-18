@@ -25,7 +25,7 @@ Transform how organizations approach cloud infrastructure through intelligent au
 - **AI Platform**: Python with TensorFlow, PyTorch, Prophet for analytics and ML
 - **Cloud Connectors**: Go services for AWS, Azure, GCP, DigitalOcean integrations
 - **Frontend**: Next.js 15 + React 18 + TypeScript (57 pages, 100% functional)
-- **Database**: CockroachDB (distributed SQL) with Redis caching
+- **Database**: PostgreSQL (distributed SQL) with Redis caching
 - **Real-time**: WebSocket + gRPC communication protocols
 
 ### **Real AI Integration**
@@ -96,7 +96,7 @@ User Journey:
 ### **Technical Performance**
 - **AI Response Time**: < 2 minutes for complex infrastructure analysis
 - **WebSocket Latency**: < 100ms for real-time updates
-- **Database Performance**: < 50ms for typical CockroachDB queries
+- **Database Performance**: < 50ms for typical PostgreSQL queries
 - **Frontend Load**: < 3 seconds initial page load
 - **Concurrent Users**: 50+ simultaneous demo sessions supported
 
@@ -118,7 +118,7 @@ User Journey:
 
 ### **Phase Completion History**
 - **Phase 1** (Jan 2025): Core Infrastructure ✅ 
-  - Rust engine, CockroachDB, authentication foundation
+  - Rust engine, PostgreSQL, authentication foundation
 - **Phase 2** (Feb 2025): AI Framework ✅
   - Agent hypervisor, gRPC communication, Redis caching  
 - **Phase 3** (Mar 2025): Unified Platform ✅

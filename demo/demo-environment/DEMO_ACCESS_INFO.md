@@ -14,7 +14,7 @@
 - **Prometheus Metrics**: http://localhost:9000
 
 ### Database Access
-- **CockroachDB Admin**: http://localhost:8081
+- **PostgreSQL Admin**: http://localhost:8081
   - No authentication (demo mode)
 
 ## 🎯 Demo Scenarios
@@ -123,7 +123,7 @@ for i in {1..20}; do curl -s http://localhost:8080 & done
 
 2. Verify database connectivity:
    ```bash
-   kubectl exec -it cockroachdb-0 -n sirsi-nexus -- /cockroach/cockroach sql --insecure
+   kubectl exec -it postgres-0 -n sirsi-nexus -- /postgres/postgres sql --insecure
    ```
 
 ### If Monitoring is Unavailable

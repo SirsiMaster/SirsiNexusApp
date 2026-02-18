@@ -107,7 +107,7 @@ user_roles (user_id, role_id, assigned_by, expires_at)
 
 ## 💾 **DATA LAYER** (`src/models/`)
 
-### **CockroachDB Integration**
+### **PostgreSQL Integration**
 
 **Database Features**:
 - **Distributed SQL** - ACID compliance with global consistency
@@ -307,7 +307,7 @@ CMD ["sirsi-core"]
 
 ### **Required Dependencies**
 - **Rust**: 1.70+ with cargo
-- **CockroachDB**: 25.2+ for database
+- **PostgreSQL**: 25.2+ for database
 - **Redis**: 6.0+ for caching and messaging
 - **Docker**: 20.0+ for containerization
 - **Kubernetes**: 1.24+ for orchestration
@@ -316,7 +316,7 @@ CMD ["sirsi-core"]
 ```bash
 # Setup development environment
 cargo install --locked cargo-edit cargo-audit
-cockroach start-single-node --insecure
+postgres start-single-node --insecure
 redis-server
 
 # Run development server with hot reload

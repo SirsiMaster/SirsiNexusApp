@@ -25,7 +25,7 @@ docker-compose up -d
 # ✅ Core Engine (Rust) - sirsi-nexus binary
 # ✅ Frontend (Next.js) - React UI
 # ✅ Analytics Platform (Python)
-# ✅ CockroachDB Database
+# ✅ PostgreSQL Database
 # ✅ Redis Cache
 # ✅ Nginx Reverse Proxy
 # ✅ Prometheus + Grafana Monitoring
@@ -40,7 +40,7 @@ cd ui && npm run dev
 ./target/debug/sirsi-nexus start --dev
 
 # Database (Terminal 3)
-cockroach start-single-node --insecure
+docker-compose up -d postgres
 ```
 
 ---
@@ -83,8 +83,8 @@ cockroach start-single-node --insecure
 ┌─────────────────▼───────────────────────────────────┐
 │                DATABASE LAYER                       │
 │   ┌─────────────────┐  ┌─────────────────────────┐  │
-│   │   CockroachDB   │  │        Redis            │  │
-│   │   Port 26257    │  │      Port 6379          │  │
+│   │   PostgreSQL    │  │        Redis            │  │
+│   │   Port 5432     │  │      Port 6379          │  │
 │   │   (Main Data)   │  │   (Agent Context)       │  │
 │   └─────────────────┘  └─────────────────────────┘  │
 └─────────────────────────────────────────────────────┘
@@ -126,7 +126,7 @@ cockroach start-single-node --insecure
 ### **For Development:**
 ```bash
 # 1. Start database services
-docker-compose up -d cockroachdb redis
+docker-compose up -d postgres redis
 
 # 2. Start the platform
 ./target/debug/sirsi-nexus start

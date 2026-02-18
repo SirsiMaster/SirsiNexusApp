@@ -34,7 +34,7 @@ SirsiNexus: AI-Powered Multi-Cloud Orchestration Platform
 │
 ├── 🏛️ Infrastructure Layer (Phase 1)
 │   ├── Core Engine (Rust + Axum)
-│   ├── Database (CockroachDB + SQLx)
+│   ├── Database (PostgreSQL + SQLx)
 │   ├── Authentication (JWT + Argon2)
 │   └── Security Framework (SPIFFE/SPIRE + Vault)
 │
@@ -59,7 +59,7 @@ SirsiNexus: AI-Powered Multi-Cloud Orchestration Platform
 
 #### **Backend Core Engine (`core-engine/`)**
 - **Rust Core Engine**: Axum web framework with async/await
-- **Database Layer**: CockroachDB integration with SQLx ORM
+- **Database Layer**: PostgreSQL integration with SQLx ORM
 - **Authentication System**: JWT tokens with Argon2 password hashing
 - **API Framework**: REST endpoints with comprehensive validation
 - **Error Handling**: Type-safe error management with thiserror
@@ -74,7 +74,7 @@ SirsiNexus: AI-Powered Multi-Cloud Orchestration Platform
 - **Session Management**: Secure session handling with expiration
 
 #### **Infrastructure & DevOps**
-- **Database**: CockroachDB v25.2+ with distributed SQL
+- **Database**: PostgreSQL v25.2+ with distributed SQL
 - **Container**: Docker multi-stage builds
 - **CI/CD**: GitHub Actions workflows for testing and deployment
 - **Documentation**: Comprehensive API documentation with OpenAPI

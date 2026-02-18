@@ -30,7 +30,7 @@ Sirsi Nexus combines a polyglot microservices architecture (Rust, Go, Python, Ty
 - **AI Feature Awareness System**: Complete platform feature registry with automated discovery and documentation
 - **Sub-Agents**: Domain-specific services (DiscoveryAgent, AssessmentAgent, etc.)
 - **MCP Service**: Unified context and messaging API
-- **CockroachDB**: Distributed SQL database for sessions, agent events, and knowledge graph data
+- **PostgreSQL**: Distributed SQL database for sessions, agent events, and knowledge graph data
 - **UI**: Next.js + React frontend with Tailwind, dark mode, and integrated AI assistant
 - **CLI**: Tauri + Rust-based command-line interface
 - **Hypervisor Feature Access**: AI agents can autonomously execute any platform feature
@@ -42,15 +42,15 @@ Sirsi Nexus combines a polyglot microservices architecture (Rust, Go, Python, Ty
 **Status**: 🚀 **PRODUCTION-READY AI INFRASTRUCTURE MANAGEMENT PLATFORM**  
 **Architecture**: Complete full-stack platform with real backend services and AI integrations  
 **Deployment**: Production-ready with real cloud provider integrations and database persistence  
-**Backend**: Complete Node.js/Express backend with CockroachDB, real AI APIs, and cloud SDKs  
+**Backend**: Complete Node.js/Express backend with PostgreSQL, real AI APIs, and cloud SDKs  
 **Frontend**: Enhanced React/Next.js UI with all functional pages and real-time features  
-**NEW**: ✅ **COMPLETE BACKEND INTEGRATION** - Real OpenAI/Anthropic AI, AWS/Azure/GCP APIs, CockroachDB persistence, WebSocket real-time updates, email notifications, and full user authentication
+**NEW**: ✅ **COMPLETE BACKEND INTEGRATION** - Real OpenAI/Anthropic AI, AWS/Azure/GCP APIs, PostgreSQL persistence, WebSocket real-time updates, email notifications, and full user authentication
 
 ### 🎆 **Phase 4 Major Achievements**
 
 #### **✅ Complete Backend Infrastructure (Steps 1-5)**
 - **Authentication & Security**: JWT with 2FA, bcrypt passwords, rate limiting, session management
-- **Database Integration**: CockroachDB with complete schema, UUID keys, JSONB flexibility
+- **Database Integration**: PostgreSQL with complete schema, UUID keys, JSONB flexibility
 - **AI Services**: Real OpenAI GPT-4 & Anthropic Claude integration with rule-based fallbacks
 - **Cloud Providers**: Live AWS, Azure, GCP, DigitalOcean SDKs with real resource management
 - **Real-time Features**: Socket.IO WebSocket service with authentication and live updates
@@ -67,7 +67,7 @@ Sirsi Nexus combines a polyglot microservices architecture (Rust, Go, Python, Ty
 - **5 Core Backend Services**: Database, AI, Cloud Providers, Notifications, WebSocket
 - **Complete API Routes**: `/api/auth`, `/api/settings`, `/api/ai`, `/api/infrastructure`
 - **Security & Performance**: JWT auth, rate limiting, error handling, graceful shutdown
-- **Real Integrations**: No mocks - actual OpenAI, AWS SDK, CockroachDB, email SMTP
+- **Real Integrations**: No mocks - actual OpenAI, AWS SDK, PostgreSQL, email SMTP
 
 #### **📊 Business Impact**
 - **20-30% Cost Savings** through AI-powered optimization recommendations
@@ -117,7 +117,7 @@ npm run dev
 **🎆 COMPLETE PLATFORM SERVICES:**
 - 🚀 **Backend API** (Node.js/Express) - Port 5000
 - 🌐 **Frontend UI** (Next.js/React) - Port 3000  
-- 💾 **CockroachDB** (Real database persistence)
+- 💾 **PostgreSQL** (Real database persistence)
 - 🤖 **AI Services** (OpenAI GPT-4, Anthropic Claude)
 - ☁️ **Cloud SDKs** (AWS, Azure, GCP, DigitalOcean)
 - 📧 **Email Notifications** (Nodemailer with SMTP)
@@ -127,7 +127,7 @@ npm run dev
 
 **Essential Configuration** (ui/server/.env):
 ```bash
-# Database (CockroachDB)
+# Database (PostgreSQL)
 DATABASE_URL=postgresql://username:password@host:port/sirsinexus
 
 # JWT Security
@@ -286,7 +286,7 @@ sirsi-nexus/
 │   │   │   ├── services/     # Backend services (database, ai, cloudProviders, notifications, websocket)
 │   │   │   ├── middleware/   # Auth, rate limiting, error handling
 │   │   │   └── index.js      # Main server entry point
-│   │   ├── package.json      # Backend dependencies (OpenAI, AWS SDK, CockroachDB, etc.)
+│   │   ├── package.json      # Backend dependencies (OpenAI, AWS SDK, PostgreSQL, etc.)
 │   │   └── .env.example      # Environment configuration template
 │   ├── src/                  # ⚙️ Frontend Application (Next.js/React)
 │   │   ├── app/              # App Router pages

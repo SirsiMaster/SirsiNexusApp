@@ -27,7 +27,7 @@ The SirsiNexus Kubernetes deployment consists of 8 microservices:
       ┌────────────────┼────────────────┐
       │                │                │
 ┌─────▼─────┐    ┌─────▼─────┐    ┌─────▼─────┐
-│CockroachDB│    │   Redis   │    │Monitoring │
+│PostgreSQL│    │   Redis   │    │Monitoring │
 │(3 replicas)│   │(1 replica)│    │Prometheus │
 │ Database  │    │   Cache   │    │ + Grafana │
 └───────────┘    └───────────┘    └───────────┘
@@ -116,11 +116,11 @@ kubectl apply -f rbac.yaml
 
 # Deploy databases first
 kubectl apply -f redis-deployment.yaml
-kubectl apply -f cockroachdb-deployment.yaml
+kubectl apply -f postgres-deployment.yaml
 
 # Wait for databases to be ready
 kubectl wait --for=condition=ready pod -l app=redis -n sirsi-nexus --timeout=300s
-kubectl wait --for=condition=ready pod -l app=cockroachdb -n sirsi-nexus --timeout=300s
+kubectl wait --for=condition=ready pod -l app=postgres -n sirsi-nexus --timeout=300s
 
 # Deploy core services
 kubectl apply -f core-engine-deployment.yaml
@@ -164,7 +164,7 @@ Edit the ConfigMap in `configmap.yaml` or values in `helm/sirsi-nexus/values.yam
 ```yaml
 # Core Engine
 RUST_LOG: "info"  # debug, info, warn, error
-DATABASE_URL: "postgresql://root@cockroachdb-service:26257/sirsi_nexus"
+DATABASE_URL: "postgresql://root@postgres-service:26257/sirsi_nexus"
 REDIS_URL: "redis://redis-service:6379"
 
 # Frontend
@@ -185,7 +185,7 @@ Default resource requests and limits:
 | Core Engine | 1000m | 2Gi | 2000m | 4Gi |
 | Frontend | 250m | 512Mi | 500m | 1Gi |
 | Analytics | 500m | 1Gi | 1000m | 2Gi |
-| CockroachDB | 1000m | 2Gi | 2000m | 4Gi |
+| PostgreSQL | 1000m | 2Gi | 2000m | 4Gi |
 | Redis | 250m | 256Mi | 500m | 512Mi |
 | Nginx | 100m | 128Mi | 200m | 256Mi |
 | Prometheus | 500m | 1Gi | 1000m | 2Gi |
@@ -226,7 +226,7 @@ Horizontal Pod Autoscaling (HPA) is configured for:
 
 ### Prometheus Metrics
 - **Core Engine**: Custom application metrics on port 9091
-- **CockroachDB**: Database metrics on port 8081
+- **PostgreSQL**: Database metrics on port 8081
 - **Redis**: Redis metrics via redis_exporter
 - **Kubernetes**: Node and pod metrics
 
@@ -270,11 +270,11 @@ nslookup core-engine-service.sirsi-nexus.svc.cluster.local
 
 #### 3. Database Connection Problems
 ```bash
-# Check CockroachDB logs
-kubectl logs -f statefulset/cockroachdb -n sirsi-nexus
+# Check PostgreSQL logs
+kubectl logs -f statefulset/postgres -n sirsi-nexus
 
-# Exec into CockroachDB pod
-kubectl exec -it cockroachdb-0 -n sirsi-nexus -- /cockroach/cockroach sql --insecure
+# Exec into PostgreSQL pod
+kubectl exec -it postgres-0 -n sirsi-nexus -- /postgres/postgres sql --insecure
 
 # Check Redis
 kubectl exec -it redis-0 -n sirsi-nexus -- redis-cli ping
@@ -347,8 +347,8 @@ kubectl port-forward svc/grafana-service 3001:3000 -n sirsi-nexus
 kubectl port-forward svc/prometheus-service 9000:9090 -n sirsi-nexus
 # Visit: http://localhost:9000
 
-# CockroachDB Admin UI
-kubectl port-forward svc/cockroachdb-public 8081:8081 -n sirsi-nexus
+# PostgreSQL Admin UI
+kubectl port-forward svc/postgres-public 8081:8081 -n sirsi-nexus
 # Visit: http://localhost:8081
 ```
 
@@ -368,8 +368,8 @@ kubectl rollout undo deployment/core-engine -n sirsi-nexus
 
 ### Backup & Recovery
 ```bash
-# Backup CockroachDB
-kubectl exec cockroachdb-0 -n sirsi-nexus -- /cockroach/cockroach sql --insecure -e "BACKUP TO 's3://your-bucket/backup?AWS_ACCESS_KEY_ID=...'"
+# Backup PostgreSQL
+kubectl exec postgres-0 -n sirsi-nexus -- /postgres/postgres sql --insecure -e "BACKUP TO 's3://your-bucket/backup?AWS_ACCESS_KEY_ID=...'"
 
 # Backup Redis
 kubectl exec redis-0 -n sirsi-nexus -- redis-cli BGSAVE
@@ -378,7 +378,7 @@ kubectl exec redis-0 -n sirsi-nexus -- redis-cli BGSAVE
 ## 📈 Performance Tuning
 
 ### Database Optimization
-- Adjust CockroachDB cache settings based on available memory
+- Adjust PostgreSQL cache settings based on available memory
 - Configure Redis memory limits and eviction policies
 - Monitor query performance and add indexes as needed
 
@@ -409,6 +409,6 @@ kubectl cluster-info dump > cluster-info.txt
 - Core Engine: `http://core-engine-service:8080/health`
 - Frontend: `http://frontend-service:3000/api/health`
 - Analytics: `http://analytics-service:8000/health`
-- CockroachDB: `http://cockroachdb-public:8081/health`
+- PostgreSQL: `http://postgres-public:8081/health`
 
 For additional support, check the main project documentation or contact the SirsiNexus team.

@@ -38,7 +38,7 @@ You are an **Elite Multi-Domain Engineer** with the combined expertise of:
 ### **Technical Excellence Achieved**
 - ✅ **Real Cloud Connectivity** - Azure SDK, AWS SDK, and multi-cloud operations
 - ✅ **Performance Optimized** - Sub-millisecond response times, 1000+ concurrent connections
-- ✅ **Database Excellence** - CockroachDB with Redis event bus integration
+- ✅ **Database Excellence** - PostgreSQL with Redis event bus integration
 - ✅ **WebSocket-gRPC Bridge** - Real-time client communication with backend services
 - ✅ **Agent Management** - Complete lifecycle with spawning, messaging, and termination
 
@@ -97,7 +97,7 @@ mkdir -p .github/workflows
 # 2. Kubernetes Foundation
 mkdir -p deploy/k8s
 # Create production-ready manifests:
-# - CockroachDB StatefulSet with persistence
+# - PostgreSQL StatefulSet with persistence
 # - Redis cluster for agent context
 # - Jaeger for distributed tracing
 # - Prometheus + Grafana monitoring stack

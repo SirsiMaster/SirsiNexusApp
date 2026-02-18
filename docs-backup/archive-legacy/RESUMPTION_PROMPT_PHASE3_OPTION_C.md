@@ -11,7 +11,7 @@
 - **Phase 1**: ✅ 100% Complete (Core Infrastructure)
 - **Phase 1.5**: ✅ 100% Complete (Enhanced Features)  
 - **Phase 2**: ✅ 100% Complete (AI Hypervisor Core + Live Database)
-- **Database**: ✅ CockroachDB live at `postgresql://root@localhost:26257/sirsi_nexus`
+- **Database**: ✅ PostgreSQL live at `postgresql://root@localhost:26257/sirsi_nexus`
 - **Redis**: ✅ Live connection at `redis://localhost:6379`
 - **Tests**: ✅ 75 unit tests + 8 integration tests (100% success rate)
 - **Build**: ✅ Zero compilation errors, clean release builds
@@ -79,7 +79,7 @@
 ### **Current Working Directory**: `/Users/thekryptodragon/SirsiNexus/core-engine`
 
 ### **Key Files & Components**:
-- **Database**: Live CockroachDB with complete schema
+- **Database**: Live PostgreSQL with complete schema
 - **Redis**: Operational for agent context storage
 - **Agent Manager**: `src/agent/manager.rs` - Full lifecycle management
 - **Hypervisor**: `src/hypervisor/coordinator.rs` - Ready for enhancement
@@ -125,7 +125,7 @@ cargo test --lib
 cargo build --release
 
 # Check database and Redis connectivity
-cockroach sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SELECT version();"
+postgres sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SELECT version();"
 redis-cli ping
 
 # Review current metrics
@@ -156,7 +156,7 @@ touch deployment/ci/pipeline.yml
 
 ### **System Architecture**:
 - **Rust Backend**: High-performance agent orchestration
-- **CockroachDB**: Distributed SQL database (live)
+- **PostgreSQL**: Distributed SQL database (live)
 - **Redis**: Event bus and context storage (live)
 - **gRPC/REST**: Dual API interfaces
 - **WebSocket**: Real-time communication

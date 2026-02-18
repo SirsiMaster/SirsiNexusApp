@@ -60,7 +60,7 @@ SirsiNexus transforms cloud infrastructure management from reactive operations t
 - ✅ Python analytics platform with TensorFlow/PyTorch
 - ✅ Go-based cloud connectors for AWS, Azure, GCP, DigitalOcean
 - ✅ TypeScript frontend with React/Next.js
-- ✅ CockroachDB database with Redis caching
+- ✅ PostgreSQL database with Redis caching
 - ✅ WebSocket + gRPC real-time communication
 - ✅ Production security with JWT, 2FA, SPIFFE/SPIRE
 - ✅ Kubernetes orchestration with Helm charts

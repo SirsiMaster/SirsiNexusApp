@@ -15,7 +15,7 @@ cd /Users/thekryptodragon/SirsiNexus
 git status && git pull origin main
 
 # 2. Check infrastructure dependencies
-cockroach sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SELECT version();"
+postgres sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SELECT version();"
 redis-cli ping
 
 # 3. Verify all systems
@@ -29,7 +29,7 @@ cd ../ui && npm run dev &
 ```
 
 ### **Resumption Signal for AI**
-*"I'm ready to continue SirsiNexus development. Current status: Phase 3 AI orchestration 98% complete with production containerization ready. Infrastructure verified: CockroachDB live, Redis operational, all tests passing, Docker production deployment available. Focus: Kubernetes orchestration and security hardening."*
+*"I'm ready to continue SirsiNexus development. Current status: Phase 3 AI orchestration 98% complete with production containerization ready. Infrastructure verified: PostgreSQL live, Redis operational, all tests passing, Docker production deployment available. Focus: Kubernetes orchestration and security hardening."*
 
 ### **🚀 Production Deployment (NEW)**
 ```bash
@@ -67,7 +67,7 @@ curl -k https://localhost/health
 
 🏛️ Infrastructure Layer
 ├── Core Engine (Rust + Axum)
-├── Database (CockroachDB + SQLx)  
+├── Database (PostgreSQL + SQLx)  
 ├── Authentication (JWT + Argon2)
 └── Security Framework (SPIFFE/SPIRE + Vault)
 
@@ -193,7 +193,7 @@ git push origin feature/new-ai-capability
 ### **Debugging System Issues**
 ```bash
 # 1. Check infrastructure
-cockroach sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SELECT COUNT(*) FROM users;"
+postgres sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SELECT COUNT(*) FROM users;"
 redis-cli info replication
 
 # 2. Check service logs
@@ -272,7 +272,7 @@ python3 -m pip install --upgrade pip
 pip install -r analytics-platform/requirements.txt
 
 # Infrastructure
-brew install cockroachdb/tap/cockroach
+brew install postgres/tap/postgres
 brew install redis
 ```
 
@@ -332,14 +332,14 @@ NODE_ENV=development
 
 #### **Database Connection Issues**
 ```bash
-# Check CockroachDB status
-brew services list | grep cockroach
+# Check PostgreSQL status
+brew services list | grep postgres
 
 # Restart if needed
-brew services restart cockroachdb/tap/cockroach
+brew services restart postgres/tap/postgres
 
 # Verify connection
-cockroach sql --insecure --host=localhost:26257
+postgres sql --insecure --host=localhost:26257
 ```
 
 #### **Redis Connection Issues**

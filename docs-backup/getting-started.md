@@ -80,7 +80,7 @@ kubectl apply -f k8s/
 
 ```bash
 # Start database
-docker-compose up -d cockroachdb redis
+docker-compose up -d postgres redis
 
 # Start core engine
 cd core-engine
@@ -122,7 +122,7 @@ SirsiNexus follows a microservices architecture:
                                  │
                     ┌──────────────────┐
                     │   Database       │
-                    │   (CockroachDB)  │
+                    │   (PostgreSQL)  │
                     └──────────────────┘
 ```
 
@@ -131,14 +131,14 @@ SirsiNexus follows a microservices architecture:
 1. **Core Engine**: Rust-based backend handling API requests, authentication, and business logic
 2. **Frontend UI**: React/Next.js application providing the user interface
 3. **Analytics Platform**: Python service for ML/AI analytics and predictions
-4. **Database**: CockroachDB for distributed data storage
+4. **Database**: PostgreSQL for distributed data storage
 5. **Cache**: Redis for session management and caching
 
 ## 🔧 Configuration
 
 ### Database Configuration
 
-SirsiNexus uses CockroachDB by default. To configure:
+SirsiNexus uses PostgreSQL by default. To configure:
 
 ```yaml
 # config/default.yaml

@@ -14,7 +14,7 @@ k8s/
 ├── core-engine-deployment.yaml # Core Rust service
 ├── frontend-deployment.yaml    # Next.js frontend
 ├── analytics-deployment.yaml   # Python analytics
-├── cockroachdb-deployment.yaml # Database cluster
+├── postgres-deployment.yaml # Database cluster
 ├── redis-deployment.yaml       # Cache service
 ├── nginx-deployment.yaml       # Reverse proxy
 ├── prometheus-deployment.yaml  # Monitoring
@@ -45,7 +45,7 @@ helm/sirsi-nexus/
 - **Secrets Management**: Encrypted configuration and credentials
 
 ### Storage & Persistence
-- **StatefulSets**: For CockroachDB and Redis data persistence
+- **StatefulSets**: For PostgreSQL and Redis data persistence
 - **PVCs**: Separate storage for databases and monitoring
 - **Storage Classes**: Fast SSD for databases, standard for monitoring
 
@@ -92,7 +92,7 @@ helm install sirsi-nexus ./sirsi-nexus -n sirsi-nexus --create-namespace
 | Core Engine | 1000m | 2Gi | N/A |
 | Frontend | 250m | 512Mi | N/A |
 | Analytics | 500m | 1Gi | N/A |
-| CockroachDB | 1000m | 2Gi | 100Gi |
+| PostgreSQL | 1000m | 2Gi | 100Gi |
 | Redis | 250m | 256Mi | 20Gi |
 | Monitoring | 750m | 1.25Gi | 60Gi |
 
@@ -144,7 +144,7 @@ kubectl port-forward svc/prometheus-service 9000:9090 -n sirsi-nexus
 ### Prometheus Metrics Collection
 - **Application Metrics**: Custom metrics from core engine
 - **Infrastructure Metrics**: Node and pod resource usage
-- **Database Metrics**: CockroachDB performance data
+- **Database Metrics**: PostgreSQL performance data
 - **Cache Metrics**: Redis operation statistics
 
 ### Grafana Dashboards

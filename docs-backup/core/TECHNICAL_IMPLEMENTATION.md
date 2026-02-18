@@ -70,7 +70,7 @@ For deployment automation and continuous integration, GitHub Actions have been s
 - **AI Platform**: Python (TensorFlow, PyTorch, Prophet) for analytics and ML
 - **Cloud Connectors**: Go services for multi-cloud integrations  
 - **Frontend**: Next.js 15 + React 18 + TypeScript with 57 pages
-- **Database**: CockroachDB (distributed SQL) on localhost:26257
+- **Database**: PostgreSQL (distributed SQL) on localhost:26257
 - **Cache**: Redis for agent context store on localhost:6379
 - **Real-time**: gRPC (ports 9090-9092) + WebSocket (port 8081) communication
 
@@ -376,7 +376,7 @@ impl AwsAgent {
 
 ## 🔧 **IMPLEMENTATION DETAILS**
 
-### **Database Schema (CockroachDB)**
+### **Database Schema (PostgreSQL)**
 ```sql
 -- Core production tables
 CREATE TABLE users (
@@ -639,24 +639,24 @@ services:
       - "8080:8080"  # HTTP service
     environment:
       - RUST_LOG=info
-      - DATABASE_URL=postgresql://root@cockroachdb:26257/sirsinexus
+      - DATABASE_URL=postgresql://root@postgres:26257/sirsinexus
       - REDIS_URL=redis://redis:6379
       - NGINX_IPC_ENABLED=true
       - PROTOBUF_OPTIMIZATION=true
     depends_on:
-      - cockroachdb
+      - postgres
       - redis
     networks:
       - sirsi-network
 
-  cockroachdb:
-    image: cockroachdb/cockroach:latest
+  postgres:
+    image: postgres/postgres:latest
     command: start-single-node --insecure
     ports:
       - "26257:26257"
-      - "8081:8080"  # CockroachDB admin UI
+      - "8081:8080"  # PostgreSQL admin UI
     volumes:
-      - cockroach-data:/cockroach/cockroach-data
+      - postgres-data:/postgres/postgres-data
     networks:
       - sirsi-network
 
@@ -670,7 +670,7 @@ services:
       - sirsi-network
 
 volumes:
-  cockroach-data:
+  postgres-data:
   redis-data:
 
 networks:
@@ -1001,19 +1001,19 @@ impl SirsiInterface {
       - "8081:8081"    # WebSocket
       - "50051:50051"  # gRPC
     environment:
-      - DATABASE_URL=postgresql://root@cockroachdb:26257/sirsi_nexus
+      - DATABASE_URL=postgresql://root@postgres:26257/sirsi_nexus
       - REDIS_URL=redis://redis:6379
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     
-  cockroachdb:
-    image: cockroachdb/cockroach:latest
+  postgres:
+    image: postgres/postgres:latest
     command: start-single-node --insecure
     ports:
       - "26257:26257"
       - "8080:8080"
     volumes:
-      - cockroach-data:/cockroach/cockroach-data
+      - postgres-data:/postgres/postgres-data
       
   redis:
     image: redis:7-alpine
@@ -1023,7 +1023,7 @@ impl SirsiInterface {
       - redis-data:/data
 
 volumes:
-  cockroach-data:
+  postgres-data:
   redis-data:
 ```
 

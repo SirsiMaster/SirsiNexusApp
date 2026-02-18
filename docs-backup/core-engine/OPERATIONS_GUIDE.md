@@ -24,7 +24,7 @@
 - **Kubernetes**: 1.24+ (for production deployments)
 
 ### Database Requirements
-- **CockroachDB**: 22.1+ (recommended for production)
+- **PostgreSQL**: 22.1+ (recommended for production)
 - **PostgreSQL**: 13+ (alternative for development)
 - **Redis**: 6.2+ (for event bus and caching)
 
@@ -220,8 +220,8 @@ ingress:
         - api.sirsinexus.com
 
 database:
-  type: cockroachdb
-  host: cockroachdb.database.svc.cluster.local
+  type: postgres
+  host: postgres.database.svc.cluster.local
   port: 26257
   name: sirsi_nexus
   user: sirsi

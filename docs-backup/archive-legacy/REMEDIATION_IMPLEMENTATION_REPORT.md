@@ -242,7 +242,7 @@ interface Credential {
 4. **Enable Real Resource Discovery**: Connect to actual AWS/Azure/GCP APIs
 
 ### Medium-term Enhancements (1-2 months)
-1. **Database Integration**: Connect to CockroachDB for persistent storage
+1. **Database Integration**: Connect to PostgreSQL for persistent storage
 2. **Advanced Agent Workflows**: Implement complex multi-agent scenarios
 3. **Performance Optimization**: Fine-tune WebSocket and gRPC performance
 4. **Advanced Security**: Implement advanced credential management features

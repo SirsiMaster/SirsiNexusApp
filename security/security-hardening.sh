@@ -93,7 +93,7 @@ container_vulnerability_scan() {
         "sirsi-nexus/core-engine:v1.0.0"
         "sirsi-nexus/frontend:v1.0.0"
         "sirsi-nexus/analytics:v1.0.0"
-        "cockroachdb/cockroach:v25.2.1"
+        "postgres/postgres:v25.2.1"
         "redis:7-alpine"
         "nginx:alpine"
         "prom/prometheus:latest"
@@ -264,8 +264,8 @@ network_security_testing() {
         echo 'Testing Redis connection (should work):';
         nc -z redis-service 6379 && echo 'Redis: ACCESSIBLE' || echo 'Redis: BLOCKED';
         
-        echo 'Testing CockroachDB connection (should work):';
-        nc -z cockroachdb-service 26257 && echo 'CockroachDB: ACCESSIBLE' || echo 'CockroachDB: BLOCKED';
+        echo 'Testing PostgreSQL connection (should work):';
+        nc -z postgres-service 26257 && echo 'PostgreSQL: ACCESSIBLE' || echo 'PostgreSQL: BLOCKED';
         
         echo 'Testing Core Engine connection (should work):';
         nc -z core-engine-service 8080 && echo 'Core Engine: ACCESSIBLE' || echo 'Core Engine: BLOCKED';

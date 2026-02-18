@@ -139,3 +139,11 @@ Thumbs.db
 .firebase/
 **/.firebase/
 FIREBASE_SERVICE_ACCOUNT_SIRSI_OPENSIGN
+
+# Local Database Data
+cockroach-data/
+node1/
+node2/
+node3/
+qdrant-data/
+heap_profiler/

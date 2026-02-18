@@ -70,7 +70,7 @@ For deployment automation and continuous integration, GitHub Actions have been s
 - **AI Platform**: Python (TensorFlow, PyTorch, Prophet) for analytics and ML
 - **Cloud Connectors**: Go services for multi-cloud integrations  
 - **Frontend**: Next.js 15 + React 18 + TypeScript with 57 pages
-- **Database**: CockroachDB (distributed SQL) on localhost:26257
+- **Database**: PostgreSQL on localhost:5432
 - **Cache**: Redis for agent context store on localhost:6379
 - **Real-time**: gRPC (ports 9090-9092) + WebSocket (port 8081) communication
 
@@ -400,7 +400,7 @@ impl AwsAgent {
 
 ## 🔧 **IMPLEMENTATION DETAILS**
 
-### **Database Schema (CockroachDB)**
+### **Database Schema**
 ```sql
 -- Core production tables
 CREATE TABLE users (
@@ -663,24 +663,26 @@ services:
       - "8080:8080"  # HTTP service
     environment:
       - RUST_LOG=info
-      - DATABASE_URL=postgresql://root@cockroachdb:26257/sirsinexus
+      - DATABASE_URL=postgresql://root@postgres:5432/sirsinexus?sslmode=disable
       - REDIS_URL=redis://redis:6379
       - NGINX_IPC_ENABLED=true
       - PROTOBUF_OPTIMIZATION=true
     depends_on:
-      - cockroachdb
+      - postgres
       - redis
     networks:
       - sirsi-network
 
-  cockroachdb:
-    image: cockroachdb/cockroach:latest
-    command: start-single-node --insecure
+  postgres:
+    image: postgres:15-alpine
     ports:
-      - "26257:26257"
-      - "8081:8080"  # CockroachDB admin UI
+      - "5432:5432"
     volumes:
-      - cockroach-data:/cockroach/cockroach-data
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=sirsinexus
+      - POSTGRES_USER=root
+      - POSTGRES_HOST_AUTH_METHOD=trust
     networks:
       - sirsi-network
 
@@ -694,7 +696,7 @@ services:
       - sirsi-network
 
 volumes:
-  cockroach-data:
+  postgres-data:
   redis-data:
 
 networks:

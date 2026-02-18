@@ -59,9 +59,9 @@ create_backup() {
     mkdir -p "$BACKUP_DIR"
     
     # Backup database
-    if docker ps | grep -q cockroachdb; then
-        log "Backing up CockroachDB..."
-        docker exec sirsi-nexus-cockroachdb-1 cockroach dump sirsi_nexus --insecure > "$BACKUP_DIR/database.sql"
+    if docker ps | grep -q postgres; then
+        log "Backing up PostgreSQL..."
+        docker exec sirsi-nexus-postgres-1 postgres dump sirsi_nexus --insecure > "$BACKUP_DIR/database.sql"
     fi
     
     # Backup Redis
@@ -115,9 +115,9 @@ deploy() {
     # Health checks
     log "Performing health checks..."
     
-    # Check CockroachDB
-    if ! health_check "CockroachDB" "http://localhost:8081/health"; then
-        error "CockroachDB health check failed"
+    # Check PostgreSQL
+    if ! health_check "PostgreSQL" "http://localhost:8081/health"; then
+        error "PostgreSQL health check failed"
         return 1
     fi
     
@@ -170,9 +170,9 @@ rollback() {
         # Restore database
         if [ -f "$BACKUP_DIR/database.sql" ]; then
             log "Restoring database..."
-            docker-compose -f "$COMPOSE_FILE" up -d cockroachdb
+            docker-compose -f "$COMPOSE_FILE" up -d postgres
             sleep 20
-            docker exec -i sirsi-nexus-cockroachdb-1 cockroach sql --insecure --database=sirsi_nexus < "$BACKUP_DIR/database.sql"
+            docker exec -i sirsi-nexus-postgres-1 postgres sql --insecure --database=sirsi_nexus < "$BACKUP_DIR/database.sql"
         fi
         
         # Restore Redis

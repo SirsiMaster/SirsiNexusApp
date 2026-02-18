@@ -44,7 +44,7 @@ done
 
 # Test 2: Database Integration
 echo "🗄️ Testing Database Integration..."
-if cockroach sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SHOW TABLES;" > "${TEST_RESULTS}/db-tables.txt" 2>&1; then
+if postgres sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SHOW TABLES;" > "${TEST_RESULTS}/db-tables.txt" 2>&1; then
   echo "✅ Database connection successful" | tee -a "${TEST_RESULTS}/integration.log"
   table_count=$(grep -c "table_name" "${TEST_RESULTS}/db-tables.txt" || echo "0")
   echo "Found $table_count tables" | tee -a "${TEST_RESULTS}/integration.log"

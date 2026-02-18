@@ -25,7 +25,7 @@
 
 ### **✅ What's Actually Working**
 - **Unified Binary**: `sirsi-nexus` compiles and has CLI interface
-- **Database**: CockroachDB running on localhost:26257
+- **Database**: PostgreSQL running on localhost:26257
 - **Cache**: Redis running on localhost:6379  
 - **Rust Codebase**: 81 Rust files, substantial core engine
 - **Polyglot Structure**: Python (analytics), Go (connectors), TypeScript (frontend)
@@ -119,7 +119,7 @@
 ## 📋 **RESUMPTION CHECKLIST**
 
 ### **Before Starting Development**
-- [ ] Verify CockroachDB is running (localhost:26257)
+- [ ] Verify PostgreSQL is running (localhost:26257)
 - [ ] Verify Redis is running (localhost:6379)
 - [ ] Check current working directory: `/Users/thekryptodragon/SirsiNexus`
 - [ ] Review this resumption prompt thoroughly
@@ -168,7 +168,7 @@
 cd /Users/thekryptodragon/SirsiNexus
 
 # 2. Check infrastructure
-ps aux | grep -E "(cockroach|redis)" | grep -v grep
+ps aux | grep -E "(postgres|redis)" | grep -v grep
 
 # 3. Fix frontend first
 cd ui

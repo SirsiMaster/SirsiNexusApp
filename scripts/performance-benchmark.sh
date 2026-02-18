@@ -5,8 +5,8 @@
 
 echo "⚡ Running SirsiNexus Performance Benchmarks..."
 
-# CockroachDB Performance Tests
-echo "🗄️ Testing CockroachDB Performance..."
+# PostgreSQL Performance Tests
+echo "🗄️ Testing PostgreSQL Performance..."
 BENCH_DATE=$(date +"%Y%m%d_%H%M%S")
 RESULTS_DIR="performance-results-${BENCH_DATE}"
 mkdir -p "${RESULTS_DIR}"
@@ -15,7 +15,7 @@ mkdir -p "${RESULTS_DIR}"
 echo "Testing database connection latency..." | tee "${RESULTS_DIR}/db-latency.txt"
 for i in {1..10}; do
   start=$(date +%s%3N)
-  cockroach sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SELECT 1;" >/dev/null 2>&1
+  postgres sql --insecure --host=localhost:26257 --database=sirsi_nexus --execute="SELECT 1;" >/dev/null 2>&1
   end=$(date +%s%3N)
   latency=$((end - start))
   echo "Connection $i: ${latency}ms" | tee -a "${RESULTS_DIR}/db-latency.txt"

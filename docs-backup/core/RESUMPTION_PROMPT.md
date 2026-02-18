@@ -24,7 +24,7 @@
 ### **Core Engine (Rust)**
 - **Binary**: `sirsi-nexus` - unified platform executable
 - **Framework**: Axum with SQLx, Tokio async runtime
-- **Database**: CockroachDB (localhost:26257) + Redis cache (localhost:6379)
+- **Database**: PostgreSQL (localhost:26257) + Redis cache (localhost:6379)
 - **Services**: 5 core services (REST API, WebSocket, gRPC, Analytics, Security)
 - **Status**: Production-ready with real AI integrations
 
@@ -89,7 +89,7 @@
 - **gRPC**: Port 50051 - AI agent communication
 - **Analytics**: Port 8082 - Python ML platform
 - **Security**: Port 8083 - Security monitoring
-- **Database**: CockroachDB (26257) + Redis (6379)
+- **Database**: PostgreSQL (26257) + Redis (6379)
 
 ### **GitHub Pages Portal**
 - **Main Site**: https://sirsinexusdev.github.io/SirsiNexus/
@@ -112,7 +112,7 @@
 - **Rust**: 100% compilation success with zero errors
 - **TypeScript**: 100% compilation success (41 pages)
 - **Python**: Complete ML environment with all dependencies
-- **Database**: CockroachDB operational with proper schema
+- **Database**: PostgreSQL operational with proper schema
 - **Services**: All 5 services start and run without conflicts
 
 ### **Key Scripts**
@@ -179,7 +179,7 @@
 - **Rust**: Axum, SQLx, Tokio, serde, uuid, chrono
 - **TypeScript**: Next.js, React, Tailwind CSS, Socket.IO
 - **Python**: TensorFlow, PyTorch, pandas, scikit-learn
-- **Database**: CockroachDB, Redis
+- **Database**: PostgreSQL, Redis
 - **Cloud**: AWS SDK, Azure SDK, GCP SDK, DigitalOcean SDK
 - **Security**: JWT, bcrypt, AES-256-GCM, 2FA
 

@@ -33,7 +33,7 @@ Showcase catalog management, advanced search, and real-time inventory tracking.
 - Seamless user experience
 
 ## Key Points to Highlight
-- Performance: CockroachDB speed
+- Performance: PostgreSQL speed
 - Functionality: Advanced search capabilities
 - Reliability: ACID transaction compliance
 - Scalability: Multi-library support ready

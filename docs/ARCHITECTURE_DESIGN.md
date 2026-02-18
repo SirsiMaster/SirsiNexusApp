@@ -1,4 +1,4 @@
-# Sirsi Nexus Architecture Design (CDB)
+# Sirsi Nexus Architecture Design
 
 **Version:** 4.0.0  
 **Last Updated:** February 16, 2026  
@@ -265,10 +265,6 @@ pub struct UIIntegration {
 
 ### Phase 1: Core Infrastructure ✅ COMPLETED (v1.1.0)
 
-#### 🎯 **Major Milestone: CockroachDB Migration Complete**
-
-**Production-Ready Database Foundation:** Successfully migrated from PostgreSQL to CockroachDB, establishing a distributed, scalable database infrastructure with enhanced resilience and horizontal scaling capabilities.
-
 #### ✅ **Completed Components:**
 
 ##### **🦀 Rust Core Engine (100% Complete)**
@@ -296,22 +292,20 @@ pub struct UIIntegration {
   - ✅ Redirect-to-Front-Gate on unauthorized access
   - ✅ Per-session audit logging for MFA events
 
-##### **🗄️ CockroachDB Integration (100% Complete - UPGRADED)**
+##### **🗄️ Database Integration (100% Complete)**
 - ✅ **Database Architecture**
-  - ✅ CockroachDB v25.2+ with PostgreSQL compatibility
+  - ✅ PostgreSQL compatibility established
   - ✅ Connection pooling with configurable limits (max 20)
   - ✅ Runtime SQLx queries for compile-time independence
-  - ✅ CockroachDB-specific optimizations (gen_random_uuid())
+  - ✅ Optimized query patterns
   - ✅ Timestamp compatibility (chrono::NaiveDateTime)
 - ✅ **Schema Management**
-  - ✅ CockroachDB-compatible migrations
-  - ✅ String-based enums with CHECK constraints
   - ✅ Automated migration system
+  - ✅ Type-safe schema definitions
   - ✅ Development and test database separation
 - ✅ **Development Infrastructure**
-  - ✅ Docker Compose with CockroachDB, Redis, Jaeger
-  - ✅ Automated database setup script (./scripts/setup-db.sh)
-  - ✅ CockroachDB Admin UI integration (localhost:8081)
+  - ✅ Docker Compose with Redis, Jaeger
+  - ✅ Automated database setup scripts
   - ✅ Multi-environment configuration (dev/test/prod)
 
 ##### **🌐 API Framework (100% Complete)**
@@ -338,7 +332,7 @@ pub struct UIIntegration {
   - ✅ Type-safe resource operations
 
 ##### **🧪 Testing Infrastructure (100% Complete)**
-- ✅ **CockroachDB Testing**
+- ✅ **Database Testing**
   - ✅ Integration tests for database connectivity
   - ✅ End-to-end user model testing
   - ✅ UUID generation verification
@@ -348,8 +342,8 @@ pub struct UIIntegration {
 
 ##### **📚 Documentation (100% Complete)**
 - ✅ **Comprehensive Database Guide**
-  - ✅ DATABASE_SETUP.md with complete instructions
-  - ✅ CockroachDB vs PostgreSQL comparison
+  - ✅ Database setup instructions
+  - ✅ Schema design and optimization
   - ✅ Manual and automated setup procedures
   - ✅ Troubleshooting guide and best practices
   - ✅ Production deployment considerations

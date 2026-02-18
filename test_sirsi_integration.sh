@@ -82,17 +82,17 @@ echo ""
 # Step 4: Start backend services
 print_status $YELLOW "🚀 Step 4: Starting backend services..."
 
-# Check if CockroachDB is running
+# Check if PostgreSQL is running
 if ! curl -s http://localhost:8080/_status/vars > /dev/null 2>&1; then
-    print_status $YELLOW "⚠️ CockroachDB not detected, starting in insecure mode..."
-    # Start CockroachDB in background if not running
-    if command -v cockroach &> /dev/null; then
-        cockroach start-single-node --insecure --listen-addr=localhost:26257 --http-addr=localhost:8080 --store=cockroach-data &
+    print_status $YELLOW "⚠️ PostgreSQL not detected, starting in insecure mode..."
+    # Start PostgreSQL in background if not running
+    if command -v postgres &> /dev/null; then
+        postgres start-single-node --insecure --listen-addr=localhost:26257 --http-addr=localhost:8080 --store=postgres-data &
         COCKROACH_PID=$!
-        echo "Started CockroachDB with PID: $COCKROACH_PID"
+        echo "Started PostgreSQL with PID: $COCKROACH_PID"
         sleep 5
     else
-        print_status $YELLOW "⚠️ CockroachDB not installed, using SQLite fallback"
+        print_status $YELLOW "⚠️ PostgreSQL not installed, using SQLite fallback"
     fi
 fi
 
@@ -199,7 +199,7 @@ fi
 
 if [ ! -z "$COCKROACH_PID" ] && ps -p $COCKROACH_PID > /dev/null; then
     kill $COCKROACH_PID
-    echo "Stopped CockroachDB (PID: $COCKROACH_PID)"
+    echo "Stopped PostgreSQL (PID: $COCKROACH_PID)"
 fi
 
 echo ""

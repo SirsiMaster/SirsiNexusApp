@@ -13,7 +13,7 @@
 - **gRPC Server**: Fully functional AgentService with all methods implemented
 - **WASM Runtime**: Dynamic agent loading and execution environment
 - **Event Bus**: Redis-based communication system for agent coordination
-- **Database**: CockroachDB integration with complete migration framework
+- **Database**: PostgreSQL integration with complete migration framework
 - **Security**: Production-ready authentication and authorization
 
 ### Performance Metrics

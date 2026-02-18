@@ -287,14 +287,14 @@ run_database_load_tests() {
     # Monitor database performance during load test
     log "Monitoring database performance..."
     
-    # Get CockroachDB metrics
-    kubectl exec -n "$NAMESPACE" cockroachdb-0 -- /cockroach/cockroach sql --insecure -e "
+    # Get PostgreSQL metrics
+    kubectl exec -n "$NAMESPACE" postgres-0 -- /postgres/postgres sql --insecure -e "
     SELECT 
         now() as timestamp,
         (SELECT value FROM crdb_internal.node_metrics WHERE name='sql.select.count') as select_count,
         (SELECT value FROM crdb_internal.node_metrics WHERE name='sql.insert.count') as insert_count,
         (SELECT value FROM crdb_internal.node_metrics WHERE name='sql.update.count') as update_count;
-    " > "$RESULTS_DIR/database-tests/cockroachdb-metrics_${TIMESTAMP}.txt" 2>&1 || true
+    " > "$RESULTS_DIR/database-tests/postgres-metrics_${TIMESTAMP}.txt" 2>&1 || true
     
     success "Database load tests completed"
 }
