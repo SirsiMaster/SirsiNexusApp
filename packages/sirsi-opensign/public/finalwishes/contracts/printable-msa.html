@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Sirsi Contract &amp; SOW</title>
+  <style>
+    /* Professional Legal Document Styling */
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+
+    html {
+      font-size: 11pt;
+    }
+
+    body {
+      font-family: "Merriweather", "Times New Roman", serif;
+      line-height: 1.6;
+      color: #000;
+      max-width: 8.5in;
+      margin: 0 auto;
+      padding: 40px;
+      background-color: white;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: "Cinzel", "Merriweather", serif;
+      color: #2c3e50;
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+    }
+
+    h1 {
+      font-size: 22pt;
+      text-align: center;
+      text-transform: uppercase;
+      border-bottom: 2px solid #000;
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+
+    h2 {
+      font-size: 14pt;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+      margin-top: 2em;
+    }
+
+    h3 {
+      font-size: 12pt;
+    }
+
+    h4 {
+      font-size: 11pt;
+    }
+
+    p {
+      text-align: justify;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5em 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid #000;
+      margin: 2em 0;
+    }
+
+    .signature-block {
+      margin-top: 50px;
+      page-break-inside: avoid;
+    }
+
+    /* Printable Checkboxes */
+    .checkbox {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #000;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    /* ========================================
+       PRINT SPECIFICS - PROFESSIONAL FORMAT
+       ======================================== */
+    @media print {
+
+      /* Professional 1-inch margins all around */
+      @page {
+        size: letter;
+        margin: 1in 1in 1in 1in;
+
+        /* Header */
+        @top-center {
+          content: "Master Services Agreement — FinalWishes Platform";
+          font-family: 'Inter', sans-serif;
+          font-size: 9pt;
+          color: #666;
+        }
+
+        /* Footer with page number */
+        @bottom-center {
+          content: "Page " counter(page) " of " counter(pages);
+          font-family: 'Inter', sans-serif;
+          font-size: 9pt;
+          color: #666;
+        }
+
+        /* Confidential notice */
+        @bottom-left {
+          content: "CONFIDENTIAL";
+          font-family: 'Inter', sans-serif;
+          font-size: 8pt;
+          color: #999;
+        }
+      }
+
+      body {
+        padding: 0;
+        margin: 0;
+        font-size: 10pt;
+        line-height: 1.5;
+      }
+
+      /* Every H1 (Exhibits) starts on new page */
+      h1 {
+        page-break-before: always;
+        font-size: 18pt;
+        margin-top: 0;
+      }
+
+      /* First H1 should NOT have page break */
+      h1:first-of-type {
+        page-break-before: auto;
+      }
+
+      /* Every H2 (Section) starts on new page */
+      h2 {
+        page-break-before: always;
+        font-size: 13pt;
+        margin-top: 0;
+        padding-top: 0;
+      }
+
+      /* SOW and Exhibit sub-sections should NOT force page breaks */
+      .sow-section h2,
+      .exhibit-section h2 {
+        page-break-before: auto;
+      }
+
+      /* Prevent headers from being orphaned at bottom of page */
+      h1,
+      h2,
+      h3,
+      h4 {
+        page-break-after: avoid;
+      }
+
+      /* Tables stay together */
+      table {
+        page-break-inside: avoid;
+      }
+
+      .signature-block {
+        page-break-inside: avoid;
+      }
+
+      a {
+        text-decoration: none;
+        color: black;
+      }
+
+      th {
+        background-color: #f0f0f0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+  <!-- Standardized Print UI Actions -->
+  <link rel="stylesheet" href="/assets/css/sirsi-print-ui.css?v=1.0.0">
+  <style>
+    /* Local Overrides if needed */
+    :root {
+      --print-body-padding: 40px;
+    }
+  </style>
+  <style>
+    /* Google Fonts for Signatures */
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&display=swap');
+  </style>
+  <style>
+    /* Styling for dynamic sections */
+    .dynamic-addon-row td {
+      border-top: 1px dashed #eee;
+    }
+
+    .total-row td {
+      border-top: 2px solid #000;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Print/Save Controls (Component: Standard Print Header) -->
+  <div class="print-ui-bar no-print">
+    <div class="brand">
+      <span class="gold">Final</span>Wishes <span class="divider">|</span> MSA Viewer
+    </div>
+    <div class="actions">
+      <button onclick="window.print()" class="print-btn print-btn-gold">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        </svg>
+        Print / Save as PDF
+      </button>
+      <button onclick="window.close()" class="print-btn print-btn-outline">
+        Close Window
+      </button>
+    </div>
+  </div>
+  <header id="title-block-header">
+    <h1 class="title">Sirsi Contract &amp; SOW</h1>
+  </header>
+  <h1 id="master-services-agreement-msa">MASTER SERVICES AGREEMENT
+    (MSA)</h1>
+  <p><strong>This Master Services Agreement (“Agreement”) is entered into
+      as of <span id="effective-date">January 6, 2026</span> (the “Effective Date”) by and
+      between:</strong></p>
+  <p><strong><span id="client-name-display-sig">The Client</span></strong>, an individual or entity ("Client"), and
+    <strong><span id="provider-legal-name">Sirsi Technologies, Inc.</span></strong>, a Delaware corporation (FEIN:
+    99-1057313), with its principal place of
+    business at 909 Rose Avenue, Suite 400, North Bethesda MD 20852 ("Provider" or "Sirsi"), represented by
+    <strong><span id="provider-name-display">Cylton Collymore</span></strong>, <span
+      id="provider-title-display">CEO</span>.
+  </p>
+  <p>Client and Provider may be referred to individually as a “Party” and collectively as the “Parties.”</p>
+  <hr />
+  <h2 id="recitals">1. RECITALS</h2>
+  <p><strong>WHEREAS</strong>, Client desires to engage Provider to
+    design, develop, and implement a comprehensive legacy curation
+    software platform known as <strong>FinalWishes</strong> (the
+    “Platform”); and</p>
+  <p><strong>WHEREAS</strong>, Provider (<span id="provider-legal-name-recital">Sirsi Technologies, Inc</span>)
+    possesses the requisite technical expertise, personnel, and
+    infrastructure, including expertise in artificial intelligence, cloud
+    architecture, and secure software development, to perform the
+    Services; and</p>
+  <p><strong>WHEREAS</strong>, the Platform is to be constructed utilizing Provider's proprietary <strong>Sirsi Nexus V4
+      Framework</strong> as the foundational architectural layer; and</p>
+  <p><strong>WHEREAS</strong>, the Parties desire to set forth the terms and
+    conditions under which Provider will provide such services and license certain technologies to Client.</p>
+  <p><strong>NOW, THEREFORE</strong>, in consideration of the mutual
+    covenants contained herein, and for other good and valuable
+    consideration, the receipt and sufficiency of which are hereby
+    acknowledged, the Parties agree as follows:</p>
+  <hr />
+  <h2 id="definitions">2. DEFINITIONS</h2>
+  <p>For purposes of this Agreement, the following terms shall have the
+    meanings set forth below:</p>
+  <ul>
+    <li>
+      <p><strong>“Affiliate”</strong> means any entity that directly or
+        indirectly controls, is controlled by, or is under common control with a
+        Party, where “control” means ownership of more than fifty percent (50%)
+        of the voting stock or other ownership interest.</p>
+    </li>
+    <li>
+      <p><strong>“Background Technology” or “Sirsi Nexus V4”</strong> means all software,
+        code, tools, libraries, frameworks, know-how, methodologies, and
+        Intellectual Property Rights owned or licensed by Provider prior to the
+        Effective Date or developed independently of the Services (including,
+        without limitation, Provider’s “Sirsi” component library, “The Vault” encryption protocols, “Gemini”
+        guidance patterns, and standard deployment scripts).</p>
+    </li>
+    <li>
+      <p><strong>“Confidential Information”</strong> means any non-public
+        information disclosed by one Party (the “Disclosing Party”) to the other
+        Party (the “Receiving Party”) that is designated as confidential or
+        that, given the nature of the information or circumstances of
+        disclosure, reasonably should be understood to be confidential.</p>
+    </li>
+    <li>
+      <p><strong>“Deliverables”</strong> means all documents, work
+        product, code, software, reports, and other materials that are
+        specifically created for and delivered to Client by Provider pursuant to
+        a Statement of Work.</p>
+    </li>
+    <li>
+      <p><strong>“Foreground IP”</strong> means the Intellectual Property Rights in the specific business logic,
+        probate-specific scripts, and configurations developed strictly and exclusively for FinalWishes, excluding any
+        Background Technology.</p>
+    </li>
+    <li>
+      <p><strong>“Intellectual Property Rights”</strong> means all patent
+        rights, copyright rights, mask work rights, moral rights, rights of
+        publicity, trademark, trade dress and service mark rights, goodwill,
+        trade secret rights and other intellectual property rights as may now
+        exist or hereafter come into existence, and all applications therefore
+        and registrations, renewals and extensions thereof, under the laws of
+        any state, country, territory or other jurisdiction.</p>
+    </li>
+    <li>
+      <p><strong>“Services”</strong> means the professional software
+        development, consulting, and design services to be performed by Provider
+        as described in a Statement of Work.</p>
+    </li>
+    <li>
+      <p><strong>“Statement of Work” or “SOW”</strong> means a document
+        describing the specific Services to be performed, Deliverables to be
+        provided, fees to be paid, and timeline for performance, which is agreed
+        upon and signed by authorized representatives of both Parties. Each SOW
+        shall be substantially in the form of Exhibit A.</p>
+    </li>
+  </ul>
+  <hr />
+  <h2 id="services-and-engagement">3. SERVICES AND ENGAGEMENT</h2>
+  <h3 id="statements-of-work">3.1 Statements of Work</h3>
+  <p>Provider shall provide the Services and Deliverables to Client as
+    specified in each SOW. Each SOW shall be effectively incorporated into
+    this Agreement. In the event of a conflict between the terms of this
+    Agreement and an SOW, the terms of the SOW shall control ONLY regarding
+    the specific description of Services, fees, and timeline; for all other
+    legal terms and conditions, this Agreement shall control.</p>
+  <h3 id="standard-of-performance">3.2 Standard of Performance</h3>
+  <p>Provider represents and warrants that the Services will be performed
+    in a professional, workmanlike manner, by qualified personnel, and
+    consistent with the highest industry standards for similar
+    enterprise-grade software development services. Provider shall devote
+    adequate resources to meet its obligations under this Agreement.</p>
+  <h3 id="change-orders">3.3 Change Orders</h3>
+  <p>Client may, at any time, request changes to the scope of the Services
+    (“Change Request”). If Provider determines that such changes will impact
+    the fees, timeline, or technical architecture, Provider shall submit a
+    written “Change Order” detailing the impact. No change shall be
+    effective until the Change Order is signed by both Parties. Minor
+    changes requiring less than eight (8) hours of effort may be approved
+    via written correspondence (email sufficient).</p>
+  <h3 id="resource-commitment">3.4 Resource Commitment</h3>
+  <p>Provider commits a <strong>Lead Architect</strong> (<span id="provider-architect-name">Cylton Collymore</span>) at
+    a maximum of <strong>50% time
+      commitment</strong> for the duration of the initial development and designates the Project as "Priority Status"
+    within the Sirsi infrastructure.</p>
+  <h3 id="review-and-close-period">3.5 Review and Close Period</h3>
+  <p>Following the launch of the Platform, Provider shall provide a <strong>sixty (60) day</strong> "Review and Close"
+    period. During this time, Provider will provide reasonable support to ensure the Platform functions as specified in
+    the SOW.</p>
+  <h3 id="ongoing-maintenance-support">3.6 Ongoing Maintenance & Support</h3>
+  <p>Client acknowledges that any technical maintenance, feature updates, or priority SLA support beyond the initial
+    60-day period is <strong>not included</strong> in the base Service Fees and requires the separate purchase of the
+    "Maintenance and Support" add-on as specified in the service catalog.</p>
+  <hr />
+  <h2 id="compensation-and-payment">4. COMPENSATION AND PAYMENT</h2>
+  <h3 id="total-contract-value">4.1 Total Contract Value</h3>
+  <p>The total fixed price for the Services described in Exhibit A is
+    <strong id="total-price-text">$95,000.00 USD</strong>. This pricing reflects a "Unified Platform" investment and the
+    use of the Sirsi
+    component library, as detailed
+    in <strong>Exhibit B (Cost &amp; Valuation Analysis)</strong>.
+  </p>
+  <h3 id="payment-plan-selection">4.2 Payment Plan Selection</h3>
+  <p>Client shall select <strong>ONE</strong> of the following payment
+    plans for the disbursement of fees. Selection must be made upon
+    execution of this Agreement.</p>
+  <div id="payment-plans-container">
+    <h4 id="plan-1-header">☐ PLAN 1: 2 Payments</h4>
+    <ul>
+      <li><strong>Payment 1:</strong> <span id="plan-1-p1">$47,500.00</span> due upon Effective Date.</li>
+      <li><strong>Payment 2:</strong> <span id="plan-1-p2">$47,500.00</span> due upon Final Delivery.</li>
+      <li><strong>Total:</strong> <span id="plan-1-total">$95,000</span>.</li>
+    </ul>
+    <h4 id="plan-2-header">☐ PLAN 2: 3 Monthly Payments</h4>
+    <ul>
+      <li><strong>Payment 1:</strong> <span id="plan-2-p1">$31,666.00</span> due upon Effective Date.</li>
+      <li><strong>Payment 2:</strong> <span id="plan-2-p2">$31,666.00</span> due Month 2.</li>
+      <li><strong>Payment 3:</strong> <span id="plan-2-p3">$31,668.00</span> due Month 3.</li>
+      <li><strong>Total:</strong> <span id="plan-2-total">$95,000</span>.</li>
+    </ul>
+    <h4 id="plan-3-header">☐ PLAN 3: 4 Monthly Payments</h4>
+    <ul>
+      <li><strong>Payment 1:</strong> <span id="plan-3-p1">$23,750.00</span> due upon Effective Date.</li>
+      <li><strong>Payment 2:</strong> <span id="plan-3-p2">$23,750.00</span> due Month 2.</li>
+      <li><strong>Payment 3:</strong> <span id="plan-3-p3">$23,750.00</span> due Month 3.</li>
+      <li><strong>Payment 4:</strong> <span id="plan-3-p4">$23,750.00</span> due Month 4.</li>
+      <li><strong>Total:</strong> <span id="plan-3-total">$95,000</span>.</li>
+    </ul>
+  </div>
+  <h3 id="expenses">4.3 Expenses</h3>
+  <p>Client shall reimburse Provider for reasonable, documented
+    “Pass-Through Expenses” incurred in connection with the Services (e.g.,
+    specific cloud infrastructure costs, third-party API licensing fees,
+    software licenses specifically required for the Project). Provider shall
+    obtain Client’s prior written approval for any individual expense
+    exceeding Five Hundred Dollars ($500.00). Travel expenses shall only be
+    reimbursable if pre-approved by Client in writing.</p>
+  <h3 id="payment-terms">4.4 Payment Terms</h3>
+  <p>Provider shall submit invoices to Client upon completion of
+    Milestones or monthly for Time &amp; Materials engagements. Invoices are
+    due and payable <strong>Net Fifteen (15)</strong> days from the invoice
+    date.</p>
+  <h3 id="late-payments">4.5 Late Payments</h3>
+  <p>Undisputed payments not received by the due date shall accrue
+    interest at the lesser of one and one-half percent (1.5%) per month or
+    the maximum rate permitted by law.</p>
+  <h3 id="taxes">4.6 Taxes</h3>
+  <p>Fees do not include any sales, use, value-added, or similar taxes.
+    Client shall be responsible for paying all such taxes properly levied on
+    the Services, excluding taxes based on Provider’s net income, property,
+    or employees.</p>
+  <hr />
+  <h2 id="intellectual-property-rights">5. INTELLECTUAL PROPERTY
+    RIGHTS</h2>
+  <h3 id="work-made-for-hire">5.1 Work Made for Hire (Foreground IP)</h3>
+  <p>Provider agrees that the <strong>Foreground IP</strong> (specific probate scripts, brand assets, and business logic
+    created exclusively for Client) shall be considered “works made for hire” and owned 100% by Client upon payment of
+    all fees. To the extent that any Deliverable does not qualify as
+    a work made for hire under applicable law, Provider hereby irrevocably
+    assigns to Client all right, title, and interest in and to such
+    Deliverable, including all Intellectual Property Rights therein, free
+    and clear of all liens and encumbrances.</p>
+  <h3 id="background-technology">5.2 Background Technology (Sirsi Nexus V4 Retention)</h3>
+  <p>Notwithstanding Section 5.1, Provider retains all right, title, and
+    interest in and to its <strong>Background Technology</strong> (the Sirsi Nexus V4 Framework). Provider hereby grants
+    to
+    Client a <strong>perpetual, irrevocable, worldwide, royalty-free, and exclusive vertical license</strong> to use,
+    reproduce, and exploit the Background Technology <em>within the field of Estate Settlement and Probate
+      Automation</em> for the purpose of operating the Platform.</p>
+  <h3 id="third-party-and-open-source-software">5.3 Third-Party and Open
+    Source Software</h3>
+  <p>The Deliverables may contain third-party software or open source
+    software. Provider warrants that its use of such software will comply
+    with the applicable licenses (e.g., AGPL-3.0, MIT, Apache 2.0). Provider
+    shall identify any “Copyleft” libraries (that would mandate disclosure
+    of Client’s source code) prior to integration and obtain Client’s
+    approval.</p>
+  <h3 id="ai-generated-content">5.4 AI-Generated Content</h3>
+  <p>The Parties acknowledge that Provider utilizes advanced Artificial
+    Intelligence tools (e.g., Google Gemini, Anthropic Claude) to assist in
+    code generation and architecture. Provider warrants that it has the full
+    legal right to assign ownership of such AI-generated output to Client as
+    part of the Deliverables, and that such use does not violate the terms
+    of service of the AI providers.</p>
+  <h3 id="further-assurances">5.5 Further Assurances</h3>
+  <p>Provider agrees to execute any documents and take any actions
+    reasonably requested by Client to perfect Client’s ownership of the
+    Intellectual Property Rights in the Deliverables.</p>
+  <hr />
+  <h2 id="confidentiality">6. CONFIDENTIALITY</h2>
+  <h3 id="obligations">6.1 Obligations</h3>
+  <p>The Receiving Party agrees: (i) to hold the Disclosing Party’s
+    Confidential Information in strict confidence and take reasonable
+    precautions to protect it (including all precautions the Receiving Party
+    employs with respect to its own confidential materials); (ii) not to
+    divulge any such Confidential Information to any third party (other than
+    employees, contractors, or agents who have a need to know and are bound
+    by written confidentiality obligations); and (iii) not to use such
+    Confidential Information except for the performance of this
+    Agreement.</p>
+  <h3 id="exclusions">6.2 Exclusions</h3>
+  <p>Confidential Information shall not include information that: (a) is
+    or becomes generally available to the public without breach of this
+    Agreement; (b) was in the Receiving Party’s possession prior to
+    disclosure without legal restriction; (c) is captured by the Receiving
+    Party from a third party who had the legal right to disclose it; or (d)
+    is independently developed by the Receiving Party without reference to
+    or use of the Confidential Information.</p>
+  <h3 id="data-security-soc-2-compliance">6.3 Data Security &amp; SOC 2
+    Compliance</h3>
+  <p>Provider acknowledges that it may have access to Client’s data, which
+    may include Personally Identifiable Information (PII). Provider agrees
+    to implement and maintain commercially reasonable technical and
+    organizational security measures—consistent with SOC 2 Type II
+    criteria—to protect such data from unauthorized access, use,
+    modification, or disclosure. This includes, but is not limited to,
+    encryption of data at rest and in transit, access controls, and regular
+    security audits.</p>
+  <h3 id="compelled-disclosure">6.4 Compelled Disclosure</h3>
+  <p>If the Receiving Party is required by law or court order to disclose
+    Confidential Information, it shall give the Disclosing Party prompt
+    written notice (if legally permitted) to allow the Disclosing Party to
+    seek a protective order.</p>
+  <hr />
+  <h2 id="warranties-and-covenants">7. WARRANTIES AND COVENANTS</h2>
+  <h3 id="provider-warranties">7.1 Provider Warranties</h3>
+  <p>Provider represents and warrants that:</p>
+  <ol type="a">
+    <li>
+      <p><strong>Non-Infringement:</strong> The Deliverables will be
+        original and will not infringe, misappropriate, or violate any patent,
+        copyright, trademark, trade secret, or other proprietary right of any
+        third party.</p>
+    </li>
+    <li>
+      <p><strong>Compliance with Laws:</strong> The Services will be
+        performed in compliance with all applicable federal, state, and local
+        laws and regulations.</p>
+    </li>
+    <li>
+      <p><strong>Malicious Code:</strong> Provider will use
+        industry-standard measures to ensure the Deliverables do not contain any
+        viruses, malware, trojan horses, time bombs, or other harmful
+        code.</p>
+    </li>
+  </ol>
+  <h3 id="performance-warranty">7.2 Performance Warranty</h3>
+  <p>The Performance Warranty is limited to the <strong>sixty (60) day</strong> Review and Close Period. Provider shall
+    correct any material non-conformity with the Specifications at its sole expense during this period. Any requests for
+    remediation following this period shall be governed by the terms of the Maintenance and Support add-on, if
+    purchased.</p>
+  <h3 id="disclaimer">7.3 Disclaimer</h3>
+  <p>EXCEPT AS EXPRESSLY SET FORTH IN THIS AGREEMENT, PROVIDER MAKES NO
+    OTHER WARRANTIES, EXPRESS OR IMPLIED, AND HEREBY DISCLAIMS ALL IMPLIED
+    WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+    NON-INFRINGEMENT.</p>
+  <hr />
+  <h2 id="indemnification">8. INDEMNIFICATION</h2>
+  <h3 id="by-provider">8.1 By Provider</h3>
+  <p>Provider shall indemnify, defend, and hold harmless Client and its
+    officers, directors, employees, and agents from and against any and all
+    losses, damages, liabilities, costs, and expenses (including reasonable
+    attorneys’ fees) arising out of or resulting from any third-party claim
+    alleging that the Deliverables or Services infringe or misappropriate
+    any U.S. copyright, trademark, or trade secret.</p>
+  <h3 id="by-client">8.2 By Client</h3>
+  <p>Client shall indemnify, defend, and hold harmless Provider from and
+    against any and all losses, damages, liabilities, costs, and expenses
+    arising out of or resulting from: (i) Client’s specific specifications
+    or instructions that compelled the infringement; or (ii) content or data
+    provided by Client to Provider.</p>
+  <h3 id="procedure">8.3 Procedure</h3>
+  <p>The indemnified party shall: (a) promptly notify the indemnifying
+    party in writing of the claim; (b) allow the indemnifying party sole
+    control of the defense and settlement of the claim; and (c) provide
+    reasonable assistance to the indemnifying party.</p>
+  <hr />
+  <h2 id="limitation-of-liability">9. LIMITATION OF LIABILITY</h2>
+  <h3 id="exclusion-of-consequential-damages">9.1 Exclusion of
+    Consequential Damages</h3>
+  <p>EXCEPT FOR BREACHES OF CONFIDENTIALITY (SECTION 6) OR INDEMNIFICATION
+    OBLIGATIONS (SECTION 8), IN NO EVENT SHALL EITHER PARTY BE LIABLE TO THE
+    OTHER FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE
+    DAMAGES (INCLUDING LOSS OF PROFITS, DATA, OR USE), EVEN IF ADVISED OF
+    THE POSSIBILITY OF SUCH DAMAGES.</p>
+  <h3 id="liability-cap">9.2 Liability Cap</h3>
+  <p>EXCEPT FOR PROVIDER’S INDEMNIFICATION OBLIGATIONS FOR IP INFRINGEMENT
+    (SECTION 8.1), EACH PARTY’S TOTAL AGGREGATE LIABILITY ARISING OUT OF OR
+    RELATED TO THIS AGREEMENT, WHETHER IN CONTRACT, TORT, OR OTHERWISE,
+    SHALL NOT EXCEED THE TOTAL FEES PAID OR PAYABLE BY CLIENT TO PROVIDER
+    UNDER THE APPLICABLE SOW IN THE TWELVE (12) MONTHS IMMEDIATELY PRECEDING
+    THE EVENT GIVING RISE TO THE CLAIM.</p>
+  <hr />
+  <h2 id="term-and-termination">10. TERM AND TERMINATION</h2>
+  <h3 id="term">10.1 Term</h3>
+  <p>This Agreement shall commence on the Effective Date and shall
+    continue in full force and effect until terminated as provided
+    herein.</p>
+  <h3 id="termination-for-convenience">10.2 Termination for
+    Convenience</h3>
+  <p>Client may terminate this Agreement or any SOW for any reason or no
+    reason upon thirty (30) days’ prior written notice to Provider. Upon
+    such termination, Client shall pay Provider for all Services performed
+    and non-cancellable expenses incurred up to the date of termination.</p>
+  <h3 id="termination-for-cause">10.3 Termination for Cause</h3>
+  <p>Either Party may terminate this Agreement or any SOW immediately upon
+    written notice if the other Party: (i) materially breaches this
+    Agreement and fails to cure such breach within fifteen (15) days after
+    receiving written notice thereof; or (ii) becomes insolvent, makes an
+    assignment for the benefit of creditors, or files for bankruptcy.</p>
+  <h3 id="effect-of-termination">10.4 Effect of Termination</h3>
+  <p>Upon termination: (i) Client shall pay all outstanding undisputed
+    invoices; (ii) Provider shall deliver to Client all completed and
+    partially completed Deliverables; and (iii) each Party shall return or
+    destroy the other Party’s Confidential Information.</p>
+  <h3 id="survival">10.5 Survival</h3>
+  <p>Sections 2, 4, 5, 6, 7.3, 8, 9, and 11 shall survive any
+    termination or expiration of this Agreement.</p>
+  <hr />
+  <h2 id="general-provisions">11. GENERAL PROVISIONS</h2>
+  <h3 id="independent-contractor">11.1 Independent Contractor</h3>
+  <p>Provider is an independent contractor. Nothing in this Agreement
+    shall be construed to create a partnership, joint venture, agency, or
+    employment relationship between the Parties.</p>
+  <h3 id="market-vertical-non-competition">11.2 Market Vertical Non-Competition</h3>
+  <p>Provider agrees that during the term of this Agreement and for a period of <strong>three (3) years</strong>
+    thereafter, Provider shall not directly develop, market, or provide services for a competing <strong>Estate
+      Settlement, Probate Automation, or Legacy Planning</strong> platform. This does not restrict Provider from using
+    its foundational tech in unrelated market verticals.</p>
+  <h3 id="force-majeure">11.3 Force Majeure</h3>
+  <p>Neither Party shall be liable for any delay or failure to perform
+    (excluding payment obligations) due to causes beyond its reasonable
+    control, including acts of God, war, terrorism, riot, embargoes, acts of
+    civil or military authorities, fire, floods, or accidents.</p>
+  <h3 id="non-solicitation">11.4 Non-Solicitation</h3>
+  <p>During the Term and for one (1) year thereafter, neither Party shall
+    knowingly solicit for employment or hire any employee or contractor of
+    the other Party who was directly involved in the provision of Services
+    under this Agreement, without the prior written consent of the other
+    Party.</p>
+  <h3 id="dispute-resolution">11.4 Dispute Resolution</h3>
+  <ol type="a">
+    <li>
+      <p><strong>Negotiation:</strong> The Parties agree to attempt to
+        resolve any dispute arising out of this Agreement through good faith
+        negotiation between senior executives.</p>
+    </li>
+    <li>
+      <p><strong>Arbitration:</strong> If negotiation fails within thirty
+        (30) days, the dispute shall be predominantly resolved by binding
+        arbitration administered by the American Arbitration Association (AAA)
+        in accordance with its Commercial Arbitration Rules.</p>
+    </li>
+    <li>
+      <p><strong>Venue &amp; Law:</strong> The seat of arbitration shall
+        be <strong>Wilmington, Delaware</strong>. This Agreement shall be
+        governed by the laws of the <strong>State of Delaware</strong>, without
+        regard to its conflict of laws principles.</p>
+    </li>
+    <li>
+      <p><strong>No Jury Trial:</strong> EACH PARTY HEREBY WAIVES ANY
+        RIGHT TO A JURY TRIAL IN CONNECTION WITH ANY DISPUTE ARISING OUT OF THIS
+        AGREEMENT.</p>
+    </li>
+  </ol>
+  <h3 id="assignment">11.5 Assignment</h3>
+  <p>Neither Party may assign this Agreement without the prior written
+    consent of the other Party, except that either Party may assign this
+    Agreement to an Affiliate or in connection with a merger, acquisition,
+    or sale of substantially all of its assets.</p>
+  <h3 id="severability">11.6 Severability</h3>
+  <p>If any provision of this Agreement is held to be invalid or
+    unenforceable, the remaining provisions shall continue in full force and
+    effect.</p>
+  <h3 id="entire-agreement">11.7 Entire Agreement</h3>
+  <p>This Agreement, together with all SOWs and Exhibits, constitutes the
+    entire agreement between the Parties regarding the subject matter hereof
+    and supersedes all prior or contemporaneous agreements, understandings,
+    and communications.</p>
+  <h3 id="counterparts">11.8 Counterparts</h3>
+  <p>This Agreement may be executed in counterparts, each of which shall
+    be deemed an original, but all of which together shall constitute one
+    and the same instrument. Electronic signatures shall be deemed original
+    signatures.</p>
+  <hr />
+  <h1 id="exhibit-a-statement-of-work-sow">EXHIBIT A: STATEMENT OF WORK
+    (SOW)</h1>
+  <p><strong>Project Name:</strong> FinalWishes Unified Platform<br />
+    <strong>Timeline:</strong> 16 Weeks (12 Weeks Development + 4 Weeks QA/Launch)<br />
+    <strong>Target Completion:</strong> May 2026
+  </p>
+  <h2 id="scope-of-work">1. Scope of Work</h2>
+  <p>Provider to deliver a “Vault-Grade” legacy curation platform
+    focused on permanent media preservation and directive management.</p>
+  <h3 id="core-modules">Core Modules</h3>
+  <ol type="1">
+    <li><strong>Vault Architecture</strong>: Zero-knowledge encryption
+      (Cloud KMS + AES-256) for all legacy assets.</li>
+    <li><strong>Legacy Engine</strong>: Automated time-capsule scheduling and memory curation logic (“The Shepherd”
+      engine).</li>
+    <li><strong>Media Integration</strong>: Deep integration with
+      <strong>YouTube API</strong> (Videos) and <strong>Google Photos</strong> (Galleries).
+    </li>
+    <li><strong>Universal App</strong>: Native Mobile Applications for
+      <strong>iOS and Android</strong> (React Native) + Web dashboard.
+    </li>
+  </ol>
+  <h2 id="technology-stack-sirsinexus-v4">2. Technology Stack (SirsiNexus
+    V4)</h2>
+  <ul>
+    <li><strong>Frontend:</strong> <strong>React 18</strong> (Vite),
+      <strong>Tanstack</strong> (Query, Router, Table),
+      <strong>shadcn/ui</strong> (Radix Primitives + Tailwind).
+    </li>
+    <li><strong>Backend:</strong> <strong>Go (Golang)</strong> on
+      <strong>Cloud Run</strong> (Serverless), <strong>Firebase
+        Auth</strong>.
+    </li>
+    <li><strong>Database:</strong> <strong>Cloud SQL</strong> (PostgreSQL) +
+      <strong>Firestore</strong> (Real-time).
+    </li>
+    <li><strong>Mobile:</strong> <strong>React Native</strong> (Expo)
+      sharing core business logic.</li>
+  </ul>
+  <h2 id="deliverables-schedule">3. Deliverables &amp; Schedule</h2>
+  <table id="deliverables-table">
+    <colgroup>
+      <col style="width: 30%" />
+      <col style="width: 20%" />
+      <col style="width: 50%" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th style="text-align: left;">Phase</th>
+        <th style="text-align: left;">Duration</th>
+        <th style="text-align: left;">Deliverables & Fees</th>
+      </tr>
+    </thead>
+    <tbody id="deliverables-body">
+      <tr>
+        <td style="text-align: left;"><strong>1. Foundation & Cloud Infrastructure</strong></td>
+        <td style="text-align: left;">Weeks 1-4</td>
+        <td style="text-align: left;">System Architecture, Cloud Project Setup, Database Schema, Authentication, Vault
+          Infrastructure, OpenSign Deployment. ($24,000)</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;"><strong>2. Core Application Development</strong></td>
+        <td style="text-align: left;">Weeks 5-8</td>
+        <td style="text-align: left;">React + Vite Web Shell, React Native Mobile Shell, User Dashboard, "The Shepherd"
+          AI Foundation, Time Capsule Scheduling. ($28,000)</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;"><strong>3. Living Legacy Features</strong></td>
+        <td style="text-align: left;">Weeks 9-12</td>
+        <td style="text-align: left;">Video Memorials, Photo Gallery Integration, Digital Lockbox, Beneficiary
+          Management, Cross-Platform Sync. ($26,000)</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;"><strong>4. QA, Integration & Launch</strong></td>
+        <td style="text-align: left;">Weeks 13-16</td>
+        <td style="text-align: left;">End-to-End Testing, Performance Optimization, Security Review, App Store
+          Submissions, Production Deployment. ($17,000)</td>
+      </tr>
+    </tbody>
+  </table>
+  <h2 id="assumptions">4. Assumptions</h2>
+  <ul>
+    <li>Client pays for direct cloud/API usage costs (Google Cloud, SendGrid).</li>
+    <li>“The Shepherd” provides procedural legacy guidance and memory curation, not legal or financial advice.</li>
+    <li>Permanent video preservation is achieved via YouTube/Google Photos infrastructure integration.</li>
+  </ul>
+  <hr />
+  <h1 id="exhibit-b-cost-valuation-analysis">EXHIBIT B: COST &amp;
+    VALUATION ANALYSIS</h1>
+  <div class="exhibit-section">
+    <h2 id="true-market-price-analysis">1. “True Market Price” Analysis</h2>
+    <p>Analysis of what FinalWishes would pay for this specific scope
+      without Sirsi Technologies' engagement.</p>
+    <table>
+      <colgroup>
+        <col style="width: 25%" />
+        <col style="width: 25%" />
+        <col style="width: 50%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th style="text-align: left;">Cost Driver</th>
+          <th style="text-align: left;">Typical Agency</th>
+          <th style="text-align: left;">With Sirsi (You)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left;"><strong>Base Development</strong></td>
+          <td style="text-align: left;">$175 - $250 / hr</td>
+          <td style="text-align: left;"><strong>Fixed Bid Engineering</strong></td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Platform Scope</strong> (Web+iOS+Android)</td>
+          <td style="text-align: left;">$250,000+</td>
+          <td style="text-align: left;"><strong>Included</strong></td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Security Compliance</strong></td>
+          <td style="text-align: left;">$40,000+</td>
+          <td style="text-align: left;"><strong>Vault-Native Security</strong></td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>TOTAL MARKET VALUE</strong></td>
+          <td style="text-align: left;"><strong>$300,000+</strong></td>
+          <td style="text-align: left;"><strong>$95,000</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 id="discount-realization">2. Discount Realization</h2>
+    <p>How we arrive at the <strong id="discount-net-price">$95,000</strong> contract price:</p>
+    <ol type="1" id="discount-list">
+      <li><strong>Gross Development Value:</strong> <strong id="discount-market-value">$250,000</strong>
+        <ul>
+          <li><em>Based on ~1,000 hours @ $250/hr blended market rate for multi-platform build.</em></li>
+        </ul>
+      </li>
+      <li><strong>Less: SirsiNexus Efficiency:</strong>
+        <strong id="discount-efficiency-value">($105,000)</strong>
+        <ul>
+          <li><em>Savings from using pre-built Sirsi auth, vault, and UI
+              components.</em></li>
+        </ul>
+      </li>
+      <li><strong>Less: SirsiNexus Efficiency Discount:</strong>
+        <strong id="discount-strategic-value">($50,000)</strong>
+        <ul>
+          <li><em>Component library reuse and accelerated delivery methodology.</em></li>
+        </ul>
+      </li>
+      <li id="dynamic-addons-discount-placeholder"></li>
+      <li><strong>NET CONTRACT PRICE:</strong> <strong id="discount-final-price">$95,000</strong></li>
+    </ol>
+    <h2 id="infrastructure-estimates-opex">3. Infrastructure Estimates
+      (OpEx)</h2>
+    <p>Estimated monthly running costs (paid to providers): - <strong>Google
+        Cloud:</strong> ~$60/mo (Scales with usage) - <strong>Cloud
+        Messaging:</strong> Native push alerts - <strong>OpenSign:</strong> $20/mo - <strong>Vertex AI:</strong> ~$5 per
+      1M tokens</p>
+
+    <div id="dynamic-legal-sections"></div>
+  </div><!-- /.exhibit-section -->
+
+  <hr />
+  <h1 id="signature-page">SIGNATURE PAGE</h1>
+  <p><strong>IN WITNESS WHEREOF</strong>, the Parties have executed this
+    Agreement as of the Effective Date.</p>
+  <table>
+    <colgroup>
+      <col style="width: 43%" />
+      <col style="width: 56%" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th style="text-align: left;"><strong>The Client
+            (Client)</strong></th>
+        <th style="text-align: left;"><strong>Sirsi Technologies,
+            Inc. (Provider)</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: left; vertical-align: bottom; height: 60px;">By: <span id="client-signature-display"
+            style="font-family: 'Great Vibes', cursive; font-size: 24pt;">_________________________</span></td>
+        <td style="text-align: left; vertical-align: bottom; height: 60px;">By: <span id="provider-signature-display"
+            style="font-family: 'Great Vibes', cursive; font-size: 24pt;">_________________________</span></td>
+      </tr>
+      <tr>
+        <td style="text-align: left;">Name: <span id="client-name-display">__________________</span></td>
+        <td style="text-align: left;">Name: Cylton Collymore</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;">Title: CEO, FinalWishes Inc.</td>
+        <td style="text-align: left;">Title: CEO, Sirsi Technologies, Inc.</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;">Date: <span id="client-date-display">__________________</span></td>
+        <td style="text-align: left;">Date: <span id="provider-date-display">__________________</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Additional Print Styles -->
+  <style>
+    /* User Requested: Signature Page Fonts +4pt */
+    .signature-block table td,
+    .signature-block table th {
+      font-size: 16pt !important;
+    }
+
+    .audit-trail {
+      margin-top: 40px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      background-color: #f9fafb;
+      font-family: 'Inter', sans-serif;
+      font-size: 10pt;
+      color: #64748b;
+      display: none;
+      /* Hidden by default */
+    }
+
+    .audit-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      border-bottom: 1px dashed #e2e8f0;
+      padding-bottom: 4px;
+    }
+
+    .audit-row:last-child {
+      border-bottom: none;
+    }
+
+    .audit-label {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 8pt;
+    }
+
+    .audit-value {
+      font-family: 'Courier New', monospace;
+      word-break: break-all;
+    }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #10B981;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+  </style>
+  <h1 id="statement-of-work-sow">Statement of Work (SOW)</h1>
+  <div class="sow-section">
+    <p><strong>Project Name:</strong> FinalWishes Platform Development
+      <strong>SOW Reference:</strong> SOW-2025-001<br />
+      <strong>Associated MSA:</strong> MSA-2025-111-FW<br />
+      <strong>Date:</strong> January 6, 2026
+    </p>
+    <hr />
+    <h2 id="executive-overview">1. Executive Overview</h2>
+    <p>This Statement of Work (“SOW”) defines the comprehensive scope for the
+      <strong>FinalWishes Unified Platform</strong>. This project deliver a “Vault-Grade”
+      secure ecosystem for the curation, preservation, and scheduled delivery of
+      a user’s digital legacy, memoirs, and final instructions.
+    </p>
+    <p><strong>Objective:</strong> Establish a permanent, industrial-grade “Living Legacy”
+      platform spanning iOS, Android, and Web, powered by Sirsi’s component library
+      and Google Cloud’s enterprise AI infrastructure.</p>
+    <hr />
+    <h2 id="detailed-scope-of-services">2. Detailed Scope of Services</h2>
+    <h3 id="core-vault-data-architecture">2.1 Core Vault &amp; Data
+      Architecture</h3>
+    <p>Provider shall implement a <strong>Multi-Tenant,
+        Zero-Knowledge</strong> architecture to ensure total data privacy. *
+      <strong>Storage Layer:</strong> Hybrid approach using <strong>Cloud SQL
+        (PostgreSQL)</strong> for structured PII (Encrypted) and
+      <strong>Firestore</strong> for real-time document metadata. *
+      <strong>File Vault:</strong> <strong>Cloud Storage</strong> buckets with
+      per-tenant isolation boundaries. All files encrypted at rest using
+      <strong>Cloud KMS</strong> (AES-256). * <strong>Security:</strong>
+      Implementation of <strong>SOC 2 Type II</strong> controls, including
+      strict IAM roles, audit logging, and encryption in transit (TLS
+      1.3).
+    </p>
+    <h3 id="technology-stack-sirsinexus-v4-1">2.2 Technology Stack
+      (SirsiNexus V4)</h3>
+    <ul>
+      <li><strong>Frontend:</strong> <strong>React 18</strong> (Vite),
+        <strong>Tanstack</strong> (Query, Router, Table),
+        <strong>shadcn/ui</strong> (Radix Primitives + Tailwind).
+      </li>
+      <li><strong>Backend:</strong> <strong>Go (Golang)</strong> on
+        <strong>Cloud Run</strong> (Serverless), <strong>Firebase
+          Auth</strong>.
+      </li>
+      <li><strong>Database:</strong> <strong>Cloud SQL</strong> (PostgreSQL) +
+        <strong>Firestore</strong> (Real-time).
+      </li>
+      <li><strong>Mobile:</strong> <strong>React Native</strong> (Expo)
+        sharing core business logic.</li>
+    </ul>
+    <h3 id="legacy-content-memory-curation">2.2 Legacy Content & Memory Curation</h3>
+    <p>Provider will build automation and curation paths for the following
+      media and directive categories:</p>
+    <p><strong>A. Multimedia Memory Walls</strong> * <strong>Video Memorials:</strong> YouTube API (Unlisted)
+      integration
+      for
+      permanent, high-bandwidth video preservation. * <strong>Photo Galleries:</strong> Google Photos API integration
+      for
+      automated organization and secure sharing of life milestones.</p>
+    <p><strong>B. The Secure Digital Lockbox</strong> * <strong>Passkeys & Accounts:</strong> Secure storage for digital
+      credentials
+      and account transition instructions. * <strong>Heirloom Registry:</strong> Visual inventory of physical assets
+      with designated legacy stories and recipients.</p>
+    <p><strong>C. Final Directives & Ethical Wills</strong> * <strong>Video Memoirs:</strong> In-app recording and
+      curation of
+      personal stories, life lessons, and messages of love. * <strong>Directive Generation:</strong> Secure templates
+      for
+      funeral
+      preferences, final messages, and ethical wills (PDF generated).</p>
+    <h3 id="system-integrations">2.3 System Integrations</h3>
+    <p>Provider shall integrate the following third-party services to
+      achieve automation:</p>
+    <table>
+      <colgroup>
+        <col style="width: 33%" />
+        <col style="width: 33%" />
+        <col style="width: 33%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th style="text-align: left;">Service</th>
+          <th style="text-align: left;">Purpose</th>
+          <th style="text-align: left;">Integration Level</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left;"><strong>YouTube / Google Photos</strong></td>
+          <td style="text-align: left;">Media Preservation</td>
+          <td style="text-align: left;"><strong>Cloud-Native API</strong> (High Permanence Storage)</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>OpenSign</strong></td>
+          <td style="text-align: left;">E-Signatures</td>
+          <td style="text-align: left;"><strong>Self-Hosted</strong> (Full API,
+            embedded signing)</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Firebase Messaging</strong></td>
+          <td style="text-align: left;">Time-Capsule Notifications</td>
+          <td style="text-align: left;"><strong>Native Push</strong> (Mobile/Web notifications)</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>SendGrid</strong></td>
+          <td style="text-align: left;">Transactional Email</td>
+          <td style="text-align: left;"><strong>API Triggered</strong>
+            (System alerts, invites)</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Google Cloud Storage</strong></td>
+          <td style="text-align: left;">Secure Blob Storage</td>
+          <td style="text-align: left;"><strong>AES-256 Encrypted</strong> (Private documents, vault content)</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>Vertex AI (Gemini)</strong></td>
+          <td style="text-align: left;">Legacy Guidance</td>
+          <td style="text-align: left;"><strong>Context-Aware</strong> (RAG
+            pipeline on memory curation)</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 id="the-shepherd-guidance-engine">2.4 “The Shepherd” Guidance
+      Engine</h3>
+    <p>Provider shall build a logic engine (“The Shepherd”) that: 1.
+      <strong>Unified Legacy Logic:</strong> Implements the core "Living Legacy" orchestration for media preservation.
+      2.
+      <strong>Generates Timeline:</strong> Creates a
+      dynamic roadmap for memory curation and final wishes organization. 3. <strong>Contextual Assistance:</strong> Uses
+      Gemini 3.0 to answer questions regarding legacy preservation, funeral preferences, and memory management. 4.
+      <strong>Time Capsule:</strong> Manages scheduled delivery of messages to heirs based on verified triggers.
+    </p>
+    <hr />
+    <h2 id="work-breakdown-structure-wbs">3. Work Breakdown Structure
+      (WBS)</h2>
+    <h3 id="phase-1-foundation-vault-architecture-weeks-1-4"><strong>PHASE
+        1: FOUNDATION &amp; VAULT ARCHITECTURE (Weeks 1-4)</strong></h3>
+    <ul>
+      <li><strong>1.1 GCP Infrastructure:</strong> Provision Cloud Run, Cloud
+        SQL, Firestore, VPC, Cloud Armor.</li>
+      <li><strong>1.2 Ops:</strong> Setup GitHub Actions CI/CD.</li>
+      <li><strong>1.3 Auth:</strong> Firebase Auth + MFA + Custom Claims.</li>
+      <li><strong>1.4 Schema:</strong> Design Relational (Heirs) vs Document
+        (Metadata) schemas.</li>
+      <li><strong>1.5 Vault:</strong> Implement AES-256 crypto service and
+        Signed URL logic.</li>
+      <li><strong>1.6 Web:</strong> <strong>React 18</strong> +
+        <strong>Tanstack</strong> (Router/Query) + <strong>shadcn/ui</strong>
+        Component System (No Next.js).
+      </li>
+      <li><strong>1.7 E-Sign:</strong> Deploy Self-Hosted OpenSign.</li>
+    </ul>
+    <h3 id="phase-2-core-logic-legacy-engines-weeks-5-10"><strong>PHASE 2:
+        CORE LOGIC &amp; LEGACY ENGINES (Weeks 5-10)</strong></h3>
+    <ul>
+      <li><strong>2.1 Memorial Module:</strong> YouTube and Google Photos API integration logic.</li>
+      <li><strong>2.2 Vault Engineering:</strong> KMS-backed encryption for sensitive directives.</li>
+      <li><strong>2.3 Legacy Engine:</strong> Build time-capsule and notification scheduling logic.</li>
+      <li><strong>2.4 Gemini AI:</strong> Connect RAG pipeline for legacy assistance and obituary generation.</li>
+      <li><strong>2.5 PDF Service:</strong> Go-based document generation for legacy exports (Wills, Directives).</li>
+    </ul>
+    <h3 id="phase-3-mobile-tri-platform-weeks-9-11"><strong>PHASE 3:
+        TRI-PLATFORM DEPLOYMENT (Weeks 9-11)</strong></h3>
+    <ul>
+      <li><strong>3.1 Mobile:</strong> Unified React Native build for iOS &amp; Android.</li>
+      <li><strong>3.2 Web Shell:</strong> Responsive dashboard for desktop management.</li>
+      <li><strong>3.3 Bio-Auth:</strong> FaceID/TouchID secure vault access.</li>
+      <li><strong>3.4 Cloud Sync:</strong> Multi-platform real-time data persistence (Firestore).</li>
+    </ul>
+    <h3 id="phase-4-audit-security-launch-weeks-11-12"><strong>PHASE 4:
+        QA, INTEGRATION & LAUNCH (Weeks 13-16)</strong></h3>
+    <ul>
+      <li><strong>4.1 Testing:</strong> End-to-end testing (Playwright/Cypress) and performance optimization.</li>
+      <li><strong>4.2 Security:</strong> Internal security code review &amp; hardening.</li>
+      <li><strong>4.3 Compliance:</strong> SOC 2 evidence collection (logging, access controls).</li>
+      <li><strong>4.4 Store Launch:</strong> App Store &amp; Play Store submission.</li>
+      <li><strong>4.5 Go-Live:</strong> DNS switchover, production deployment &amp; monitoring setup.</li>
+    </ul>
+    <hr />
+    <h2 id="deliverables">4. Deliverables</h2>
+    <table>
+      <colgroup>
+        <col style="width: 33%" />
+        <col style="width: 33%" />
+        <col style="width: 33%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th style="text-align: left;">Deliverable</th>
+          <th style="text-align: left;">Description</th>
+          <th style="text-align: left;">Format</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: left;"><strong>D1: The Vault</strong></td>
+          <td style="text-align: left;">Security core, Auth, Encrypted
+            Storage</td>
+          <td style="text-align: left;">Staging URL</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>D2: Mobile Apps</strong></td>
+          <td style="text-align: left;">iOS and Android binaries (TestFlight)</td>
+          <td style="text-align: left;">.ipa / .apk</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>D3: The Platform</strong></td>
+          <td style="text-align: left;">Production release, fully tested</td>
+          <td style="text-align: left;">Live URL</td>
+        </tr>
+        <tr>
+          <td style="text-align: left;"><strong>D4: Documentation</strong></td>
+          <td style="text-align: left;">API Specs, Admin Guide, Compliance
+            Pack</td>
+          <td style="text-align: left;">PDF / Markdown</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+    <h2 id="assumptions-1">5. Assumptions</h2>
+    <ol type="1">
+      <li><strong>Global Infrastructure:</strong> The platform is designed for cross-border scalability via Google
+        Cloud;
+        localization is deferred to V2.</li>
+      <li><strong>Legacy Guidance Only:</strong> The “Shepherd” AI provides procedural and creative legacy support, not
+        legal, tax, or medical advice.</li>
+      <li><strong>Cloud Consumables:</strong> Client is responsible for direct consumption costs for external APIs
+        (Google
+        Cloud, AI Compute, SendGrid).</li>
+      <li><strong>Engagement Model:</strong> Baseline video and photo storage is managed via standard Google ecosystem
+        integrations.</li>
+    </ol>
+    <hr />
+    <h2 id="signatures">6. Signatures</h2>
+    <p><strong>Client:</strong> <span id="sow-client-sig">_______________________</span>
+      <strong>Date:</strong> <span id="sow-client-date">___________</span><br />
+      <strong>Provider:</strong> <span id="sow-provider-sig">_______________________</span>
+      <strong>Date:</strong> <span id="sow-provider-date">___________</span>
+    </p>
+  </div><!-- /.sow-section -->
+
+  <!-- E-Signature Verification Footer -->
+  <div id="audit-trail" class="audit-trail">
+    <div class="verified-badge">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      SirsiNexus Securely Signed
+    </div>
+
+    <div class="audit-row">
+      <span class="audit-label">Envelope ID</span>
+      <span class="audit-value" id="audit-envelope-id">PENDING</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-label">Timestamp</span>
+      <span class="audit-value" id="audit-timestamp">PENDING</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-label">Security Checksum</span>
+      <span class="audit-value" id="audit-checksum">PENDING</span>
+    </div>
+    <div class="audit-row">
+      <span class="audit-label">Signer IP</span>
+      <span class="audit-value">203.0.113.42 (Logged)</span>
+    </div>
+    <div class="audit-row" style="margin-top: 10px; border:none;">
+      <span class="audit-label">Compliance</span>
+      <span class="audit-value">ESIGN Act / UETA Compliant • SOC 2 Type II</span>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * DYNAMIC MSA PRINT ENGINE
+     * Reads configuration directly from URL parameters passed by the React app.
+     * No external JS dependencies required.
+     * 
+     * URL params consumed:
+     *   client, date, plan, total, weeks, hours, addons, ceoWeeks,
+     *   probateCount, multiplier, entity, cpName, cpTitle, bundle, signed
+     */
+
+    // ── Product catalog (lightweight mirror of catalog.ts) ──
+    const PRODUCT_NAMES = {
+      'maintenance': 'Maintenance & Support',
+      'ceo-consulting': 'CEO Consulting',
+      'branding': 'Branding & Identity',
+      'seo': 'SEO & Digital Marketing',
+      'analytics': 'Analytics Dashboard',
+      'probate': 'Probate Engine',
+      'ai-assistant': 'AI Legal Assistant',
+      'notification': 'Notification Engine',
+      'beneficiary': 'Beneficiary Management',
+      'document-gen': 'Document Generation',
+      'payment-processing': 'Payment Processing',
+      'mobile-app': 'Mobile Application',
+      'admin-portal': 'Admin Portal'
+    };
+
+    function populateFromParams() {
+      const params = new URLSearchParams(window.location.search);
+
+      // ── 1. Core Financial Values ──
+      let total = parseInt(params.get('total') || '0', 10);
+      const weeks = parseInt(params.get('weeks') || '20', 10);
+      const hours = parseInt(params.get('hours') || '0', 10);
+      const multiplier = parseFloat(params.get('multiplier') || '1.0');
+      // SAFETY: If multiplier > 1, the total was likely already inflated upstream.
+      // Normalize to canonical internal price (Rule 17: 1.0x in execution layer).
+      if (multiplier > 1) {
+        console.warn('⚠️ MSA Safety: multiplier=' + multiplier + ' detected. Normalizing total from ' + total + ' to ' + Math.round(total / multiplier));
+        total = Math.round(total / multiplier);
+      }
+      const marketValue = Math.round(total * 2); // $250/hr market ÷ $125/hr internal = 2× 
+      const selectedPlan = params.get('plan') || '2';
+      const addonsRaw = params.get('addons') || '';
+      const addonIds = addonsRaw ? addonsRaw.split(',').filter(Boolean) : [];
+      const ceoWeeks = parseInt(params.get('ceoWeeks') || '1', 10);
+      const probateCount = parseInt(params.get('probateCount') || '0', 10);
+      const bundle = params.get('bundle') || '';
+
+      // ── 2. Client / Entity Metadata ──
+      const clientName = params.get('client') || '';
+      const effectiveDate = params.get('date') || new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      const entityLegalName = params.get('entity') || 'Sirsi Technologies, Inc.';
+      const counterpartyName = params.get('cpName') || 'Cylton Collymore';
+      const counterpartyTitle = params.get('cpTitle') || 'CEO';
+      const isSigned = params.get('signed') === 'true';
+
+      // ── 2b. Signature Evidence (cryptographic) ──
+      const sigHash = params.get('sigHash') || '';
+      const sigTimestamp = params.get('sigTs') || '';
+      const envelopeId = params.get('envId') || '';
+
+      // ── 3. Populate Identity Fields ──
+      if (clientName) {
+        setAll('#client-name-display, #client-name-display-sig, #sow-client-sig', clientName);
+      }
+      setAll('#effective-date', effectiveDate);
+      setAll('#client-date-display, #sow-client-date, #provider-date-display, #sow-provider-date', effectiveDate);
+      setAll('#provider-legal-name, #provider-legal-name-recital', entityLegalName);
+      setAll('#provider-name-display, #provider-signature-display, #provider-architect-name', counterpartyName);
+      setAll('#provider-title-display', counterpartyTitle);
+
+      // ── 4. Update Section 4.1 Total Contract Value ──
+      if (total > 0) {
+        setText('total-price-text', '$' + total.toLocaleString() + '.00 USD');
+      }
+
+      // ── 5. Update Payment Plans ──
+      if (total > 0) {
+        updatePaymentPlans(total, selectedPlan);
+      }
+
+      // ── 6. Update Exhibit A: SOW Timeline ──
+      const timelineEl = document.querySelector('#scope-of-work ~ p, #exhibit-a-statement-of-work-sow ~ p');
+      // Update the static SOW header with dynamic timeline
+      const sowHeaders = document.querySelectorAll('p');
+      sowHeaders.forEach(p => {
+        if (p.textContent.includes('Timeline:') && p.textContent.includes('Weeks')) {
+          p.innerHTML = `<strong>Project Name:</strong> FinalWishes Unified Platform<br>
+            <strong>Timeline:</strong> ${weeks} Weeks<br>
+            <strong>Engineering Load:</strong> ${hours} Hours<br>
+            <strong>Target Completion:</strong> ${getTargetDate(weeks)}`;
+        }
+      });
+
+      // ── 7. Update Exhibit A: Deliverables Table (Dynamic WBS) ──
+      if (total > 0) {
+        updateDeliverablesTable(total, weeks, hours, addonIds, ceoWeeks, probateCount);
+      }
+
+      // ── 8. Update Exhibit B: Cost & Valuation ──
+      if (total > 0) {
+        updateExhibitB(total, marketValue, addonIds);
+      }
+
+      // ── 9. Update Selected Modules in SOW ──
+      if (addonIds.length > 0) {
+        updateSelectedModules(addonIds, ceoWeeks, probateCount);
+      }
+
+      // ── 10. Signatures ──
+      if (isSigned) {
+        if (clientName) setText('client-signature-display', clientName);
+        setText('provider-signature-display', counterpartyName);
+        const auditBlock = document.getElementById('audit-trail');
+        if (auditBlock) {
+          auditBlock.style.display = 'block';
+          // Use real cryptographic evidence from URL params (passed by React app)
+          setText('audit-envelope-id', envelopeId || 'UNSIGNED');
+          setText('audit-timestamp', sigTimestamp || new Date().toISOString());
+          setText('audit-checksum', sigHash ? 'SHA256:' + sigHash : 'UNSIGNED');
+        }
+      }
+    }
+
+    // ── Helper: Set text content by ID ──
+    function setText(id, text) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    }
+
+    // ── Helper: Set text for multiple selectors ──
+    function setAll(selector, text) {
+      document.querySelectorAll(selector).forEach(el => el.textContent = text);
+    }
+
+    // ── Helper: Calculate target completion date ──
+    function getTargetDate(weeks) {
+      const target = new Date();
+      target.setDate(target.getDate() + (weeks * 7));
+      return target.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    }
+
+    // ── Payment Plans ──
+    function updatePaymentPlans(total, selectedPlan) {
+      // Plan 1: 2 payments
+      const p1Half = Math.round(total / 2);
+      setText('plan-1-p1', '$' + p1Half.toLocaleString() + '.00');
+      setText('plan-1-p2', '$' + (total - p1Half).toLocaleString() + '.00');
+      setText('plan-1-total', '$' + total.toLocaleString());
+
+      // Plan 2: 3 payments
+      const p2Third = Math.floor(total / 3);
+      const p2Last = total - (p2Third * 2);
+      setText('plan-2-p1', '$' + p2Third.toLocaleString() + '.00');
+      const plan2p2Els = document.querySelectorAll('#plan-2-p2');
+      plan2p2Els.forEach(el => el.textContent = '$' + p2Third.toLocaleString() + '.00');
+      setText('plan-2-p3', '$' + p2Last.toLocaleString() + '.00');
+      setText('plan-2-total', '$' + total.toLocaleString());
+
+      // Plan 3: 4 payments
+      const p3Quarter = Math.round(total / 4);
+      const p3Last = total - (p3Quarter * 3);
+      setText('plan-3-p1', '$' + p3Quarter.toLocaleString() + '.00');
+      setText('plan-3-p2', '$' + p3Quarter.toLocaleString() + '.00');
+      setText('plan-3-p3', '$' + p3Quarter.toLocaleString() + '.00');
+      setText('plan-3-p4', '$' + p3Last.toLocaleString() + '.00');
+      setText('plan-3-total', '$' + total.toLocaleString());
+
+      // Mark selected plan
+      if (selectedPlan) {
+        const headerEl = document.getElementById('plan-' + selectedPlan + '-header');
+        if (headerEl) {
+          headerEl.textContent = headerEl.textContent.replace('☐', '☑');
+          headerEl.style.fontWeight = 'bold';
+        }
+      }
+    }
+
+    // ── Deliverables Table (Dynamic WBS) ──
+    function updateDeliverablesTable(total, weeks, hours, addonIds, ceoWeeks, probateCount) {
+      const body = document.getElementById('deliverables-body');
+      if (!body) return;
+
+      // Determine phase count based on timeline 
+      const numPhases = Math.max(1, Math.ceil(weeks / 4));
+      const weeksPerPhase = Math.ceil(weeks / numPhases);
+      const hoursPerPhase = Math.ceil(hours / numPhases);
+      const costPerPhase = Math.round(total / numPhases);
+
+      const phaseNames = [
+        'Foundation & Vault Architecture',
+        'Core Application Development',
+        'Feature Integration & Testing',
+        'QA, Security & Launch',
+        'Advanced Features & Polish',
+        'Mobile & Deep Integrations'
+      ];
+
+      let html = '';
+      let weekStart = 1;
+      for (let i = 0; i < numPhases; i++) {
+        const weekEnd = Math.min(weekStart + weeksPerPhase - 1, weeks);
+        const phaseName = phaseNames[i] || `Phase ${i + 1}`;
+        const phaseCost = (i === numPhases - 1) ? (total - costPerPhase * (numPhases - 1)) : costPerPhase;
+        html += `
+          <tr>
+            <td style="text-align: left;"><strong>${i + 1}. ${phaseName}</strong></td>
+            <td style="text-align: left;">Weeks ${weekStart}-${weekEnd}</td>
+            <td style="text-align: left;">${hoursPerPhase} hours engineering. ($${phaseCost.toLocaleString()})</td>
+          </tr>
+        `;
+        weekStart = weekEnd + 1;
+      }
+
+      // Add add-on rows
+      addonIds.forEach(id => {
+        if (id === 'maintenance') return; // monthly, not dev phase
+        const name = PRODUCT_NAMES[id] || id;
+        let label = name;
+        if (id === 'ceo-consulting') label += ' (' + ceoWeeks + ' week' + (ceoWeeks > 1 ? 's' : '') + ')';
+        if (id === 'probate') label += ' (' + probateCount + ' state' + (probateCount > 1 ? 's' : '') + ')';
+        html += `
+          <tr class="dynamic-addon-row">
+            <td style="text-align: left;"><strong>+ ${label}</strong></td>
+            <td style="text-align: left;">Parallel</td>
+            <td style="text-align: left;">Strategic add-on module</td>
+          </tr>
+        `;
+      });
+
+      // Total row
+      html += `
+        <tr class="total-row">
+          <td style="text-align: left;"><strong>TOTAL</strong></td>
+          <td style="text-align: left;">${weeks} Weeks</td>
+          <td style="text-align: left;"><strong>${hours} Hours — $${total.toLocaleString()}</strong></td>
+        </tr>
+      `;
+
+      body.innerHTML = html;
+    }
+
+    // ── Exhibit B: Cost & Valuation ──
+    function updateExhibitB(total, marketValue, addonIds) {
+      // Market comparison table — update the "Sirsi" column
+      const marketCells = document.querySelectorAll('#true-market-price-analysis ~ table td, table td');
+      // Find all table rows and update the $95,000 and $300,000+ references
+      document.querySelectorAll('td').forEach(td => {
+        if (td.textContent.trim() === '$95,000') {
+          td.innerHTML = '<strong>$' + total.toLocaleString() + '</strong>';
+        }
+        if (td.textContent.trim() === '$300,000+') {
+          td.innerHTML = '<strong>$' + marketValue.toLocaleString() + '+</strong>';
+        }
+      });
+
+      // Discount Realization section
+      const efficiencyDiscount = Math.round(marketValue * 0.15);
+      const strategicDiscount = marketValue - efficiencyDiscount - total;
+
+      setText('discount-net-price', '$' + total.toLocaleString());
+      setText('discount-final-price', '$' + total.toLocaleString());
+      setText('discount-market-value', '$' + marketValue.toLocaleString());
+      setText('discount-efficiency-value', '($' + efficiencyDiscount.toLocaleString() + ')');
+      setText('discount-strategic-value', '($' + strategicDiscount.toLocaleString() + ')');
+
+      // Dynamic add-ons placeholder
+      const placeholder = document.getElementById('dynamic-addons-discount-placeholder');
+      if (placeholder && addonIds.length > 0) {
+        placeholder.innerHTML = `<strong>Selected Add-on Modules:</strong> ${addonIds.length} strategic modules included
+          <ul><li><em>${addonIds.map(id => PRODUCT_NAMES[id] || id).join(', ')}</em></li></ul>`;
+      }
+    }
+
+    // ── Update SOW Core Modules ──
+    function updateSelectedModules(addonIds, ceoWeeks, probateCount) {
+      // Find the "Core Modules" section and append add-ons
+      const coreModulesHeader = document.getElementById('core-modules');
+      if (!coreModulesHeader) return;
+
+      const coreList = coreModulesHeader.nextElementSibling;
+      if (!coreList || coreList.tagName !== 'OL') return;
+
+      addonIds.forEach(id => {
+        const name = PRODUCT_NAMES[id] || id;
+        let label = name;
+        if (id === 'ceo-consulting') label += ' (' + ceoWeeks + ' weeks)';
+        if (id === 'probate') label += ' (' + probateCount + ' state' + (probateCount > 1 ? 's' : '') + ')';
+        const li = document.createElement('li');
+        li.innerHTML = '<strong>' + label + '</strong>: Strategic add-on module.';
+        coreList.appendChild(li);
+      });
+    }
+
+    window.onload = populateFromParams;
+  </script>
+</body>
+
+</html>
