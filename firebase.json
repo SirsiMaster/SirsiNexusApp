@@ -26,10 +26,50 @@
                 "**/.git/**",
                 "**/node_modules/**"
             ],
+            "redirects": [
+                {
+                    "source": "/pitch-deck",
+                    "destination": "/pitchdeck.html",
+                    "type": 301
+                },
+                {
+                    "source": "/pitch-deck.html",
+                    "destination": "/pitchdeck.html",
+                    "type": 301
+                },
+                {
+                    "source": "/pitchdeck2",
+                    "destination": "/pitchdeck.html",
+                    "type": 301
+                },
+                {
+                    "source": "/pitchdeck2.html",
+                    "destination": "/pitchdeck.html",
+                    "type": 301
+                },
+                {
+                    "source": "/pitch-deck-2",
+                    "destination": "/pitchdeck.html",
+                    "type": 301
+                },
+                {
+                    "source": "/pitch-deck-2.html",
+                    "destination": "/pitchdeck.html",
+                    "type": 301
+                }
+            ],
             "rewrites": [
                 {
                     "source": "/api/**",
                     "function": "portalApi"
+                },
+                {
+                    "source": "/pitchdeck",
+                    "destination": "/pitchdeck.html"
+                },
+                {
+                    "source": "/pitchdeck.html",
+                    "destination": "/pitchdeck.html"
                 },
                 {
                     "source": "**",
