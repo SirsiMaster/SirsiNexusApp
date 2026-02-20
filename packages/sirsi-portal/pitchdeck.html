@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <!-- v1.0.12-revised-s3 -->
 <html lang="en">
 
 <head>
@@ -976,9 +976,9 @@
                         .s3-dash {
                             display: grid;
                             grid-template-columns: 1fr 1fr 1fr;
-                            gap: 48px;
+                            gap: 50px;
                             width: 100%;
-                            max-width: 1300px;
+                            max-width: 1400px;
                             margin: 0 auto;
                             padding-top: 20px;
                         }
@@ -1126,7 +1126,7 @@
                             function drawGauge(id, target, delay, type) {
                                 var c = document.getElementById(id); if (!c) return;
                                 var ctx = c.getContext('2d'), W = c.width, H = c.height;
-                                var cx = W / 2, cy = H * 0.65, R = W * 0.36;
+                                var cx = W / 2, cy = H * 0.52, R = H * 0.42;
                                 var sa = Math.PI * 0.8, sweep = Math.PI * 1.4;
                                 var rl = (type === 'fuel') ? 0.25 : 0.65;
                                 var cur = 0, vel = 0, go = false, tf = target / 100;
