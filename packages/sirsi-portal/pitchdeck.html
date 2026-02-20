@@ -885,7 +885,8 @@
                                 <p style="font-size: 0.9rem; color: var(--text-slate); line-height: 1.5; margin: 0;">
                                     Your cloud stops bleeding money. Sirsi turns invisible waste into margin you can
                                     see, measure, and reinvest in growth.</p>
-                                <p style="font-size: 0.7rem; color: var(--text-light); margin: 6px 0 0; font-style: italic;">
+                                <p
+                                    style="font-size: 0.7rem; color: var(--text-light); margin: 6px 0 0; font-style: italic;">
                                     Source: Flexera State of the Cloud 2025</p>
                             </div>
                             <div style="border-left: 4px solid var(--primary); padding-left: 20px; text-align: left;">
@@ -898,7 +899,8 @@
                                 <p style="font-size: 0.9rem; color: var(--text-slate); line-height: 1.5; margin: 0;">
                                     Your best engineers go back to building product. Sirsi absorbs the infrastructure
                                     burden — so every hire drives revenue.</p>
-                                <p style="font-size: 0.7rem; color: var(--text-light); margin: 6px 0 0; font-style: italic;">
+                                <p
+                                    style="font-size: 0.7rem; color: var(--text-light); margin: 6px 0 0; font-style: italic;">
                                     Source: Cortex Developer Survey 2024</p>
                             </div>
                             <div style="border-left: 4px solid var(--gold-dark); padding-left: 20px; text-align: left;">
@@ -911,7 +913,8 @@
                                 <p style="font-size: 0.9rem; color: var(--text-slate); line-height: 1.5; margin: 0;">
                                     More runway means more shots on goal. Sirsi recaptures enough capital to extend your
                                     path to the next milestone — by months, not days.</p>
-                                <p style="font-size: 0.7rem; color: var(--text-light); margin: 6px 0 0; font-style: italic;">
+                                <p
+                                    style="font-size: 0.7rem; color: var(--text-light); margin: 6px 0 0; font-style: italic;">
                                     Derived: $480K dev + $96K cloud, 15-person team</p>
                             </div>
                         </div>
@@ -973,9 +976,9 @@
                         .s3-dash {
                             display: grid;
                             grid-template-columns: 1fr 1fr 1fr;
-                            gap: 40px;
+                            gap: 48px;
                             width: 100%;
-                            max-width: 1200px;
+                            max-width: 1300px;
                             margin: 0 auto;
                             padding-top: 20px;
                         }
@@ -992,7 +995,7 @@
                             border: 1px solid rgba(255, 255, 255, 0.4);
                             border-top: 3px solid #C8A951;
                             border-radius: 24px;
-                            padding: 40px 30px;
+                            padding: 40px 35px;
                             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
                             transition: transform 0.3s ease;
                         }
@@ -1002,7 +1005,7 @@
                         }
 
                         .s3-viz {
-                            height: 220px;
+                            height: 250px;
                             width: 100%;
                             display: flex;
                             align-items: center;
@@ -1058,11 +1061,11 @@
                             font-family: 'Inter', sans-serif;
                             font-size: 1.05rem;
                             color: var(--text-slate);
-                            line-height: 1.6;
-                            max-width: 280px;
+                            line-height: 1.5;
+                            max-width: 320px;
                             margin: 0 auto;
                             font-weight: 400;
-                            min-height: 3.5em;
+                            min-height: 3.2em;
                         }
                     </style>
 
@@ -1101,14 +1104,14 @@
                                 </div>
                             </div>
                             <div class="s3-label">Technical Inertia</div>
-                            <div class="s3-desc">Engineering velocity STALLED. High effort, weak progress.</div>
+                            <div class="s3-desc">Engineering velocity STALLED.<br>High effort no momentum</div>
                         </div>
                         <div class="s3-gw" style="animation-delay: 0.6s;">
                             <div class="s3-viz">
                                 <canvas id="s3-tach-gauge" width="440" height="320"
                                     style="width:100%; max-width:320px; height:auto;"></canvas>
                             </div>
-                            <div class="s3-label">Infrastructure Load</div>
+                            <div class="s3-label">Infra Load</div>
                             <div class="s3-desc">Staff and Systems pushed beyond their capacity.</div>
                         </div>
                     </div>
@@ -1130,6 +1133,8 @@
                                 function aFor(f) { return sa + f * sweep; }
                                 function render() {
                                     ctx.clearRect(0, 0, W, H);
+                                    ctx.beginPath(); ctx.arc(cx, cy, R * 1.15, 0, Math.PI * 2);
+                                    ctx.fillStyle = 'rgba(0,0,0,0.015)'; ctx.fill();
                                     for (var i = 0; i < 80; i++) {
                                         var f = i / 80, a1 = sa + f * sweep, a2 = sa + (i + 1.5) / 80 * sweep;
                                         var r, g, b;
@@ -1708,7 +1713,8 @@
                                         TOP-VIEW ARCHITECTURE</div>
                                     <div style="font-size: 1.1rem; color: #000; margin-bottom: 2px;">4x Mac Studio
                                         Cluster</div>
-                                    <p style="font-size: 0.85rem; color: var(--text-slate); line-height: 1.4;">Direct-facing Apple
+                                    <p style="font-size: 0.85rem; color: var(--text-slate); line-height: 1.4;">
+                                        Direct-facing Apple
                                         Silicon mesh utilizing M5 Ultra processing for deterministic local AI
                                         conduction.</p>
                                 </div>
@@ -1718,7 +1724,8 @@
                                         SOVEREIGN FABRIC</div>
                                     <div style="font-size: 1.1rem; color: #000; margin-bottom: 2px;">TB5 Fiber
                                         Interconnect</div>
-                                    <p style="font-size: 0.85rem; color: var(--text-slate); line-height: 1.4;">Gold-braided
+                                    <p style="font-size: 0.85rem; color: var(--text-slate); line-height: 1.4;">
+                                        Gold-braided
                                         120Gbps RDMA fabric with pulsing data synchronization across all nodes.</p>
                                 </div>
                                 <div>
