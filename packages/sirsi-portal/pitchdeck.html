@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- v1.0.13-gauge-fix -->
+<!DOCTYPE html> <!-- v1.0.14-automotive-motifs -->
 <html lang="en">
 
 <head>
@@ -1139,15 +1139,24 @@
                                         var f = i / 80, a1 = sa + f * sweep, a2 = sa + (i + 1.5) / 80 * sweep;
                                         var r, g, b;
                                         if (type === 'fuel') {
-                                            if (f < 0.25) { r = 220; g = 38; b = 38; } else if (f < 0.45) { r = 245; g = 158; b = 11; } else { r = 16; g = 185; b = 129; }
+                                            if (f < 0.25) { r = 220; g = 38; b = 38; }
+                                            else if (f < 0.45) { r = 245; g = 158; b = 11; }
+                                            else { r = 16; g = 185; b = 129; }
+                                        } else if (type === 'temp') {
+                                            if (f < 0.25) { r = 59; g = 130; b = 246; }
+                                            else if (f < 0.75) { r = 148; g = 163; b = 184; }
+                                            else { r = 220; g = 38; b = 38; }
                                         } else {
-                                            if (f < 0.45) { r = 16; g = 185; b = 129; } else if (f < 0.75) { r = 245; g = 158; b = 11; } else { r = 220; g = 38; b = 38; }
+                                            if (f < 0.45) { r = 16; g = 185; b = 129; }
+                                            else if (f < 0.75) { r = 245; g = 158; b = 11; }
+                                            else { r = 220; g = 38; b = 38; }
                                         }
                                         var al = f <= cur ? 1.0 : 0.08;
                                         ctx.beginPath(); ctx.arc(cx, cy, R, a1, a2);
                                         ctx.strokeStyle = 'rgba(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ',' + al + ')';
                                         ctx.lineWidth = 16; ctx.stroke();
                                     }
+                                    var rl = (type === 'fuel') ? 0.25 : 0.75;
                                     var danger = (type === 'fuel') ? (cur < rl) : (cur > rl);
                                     if (danger) {
                                         var p = 0.08 + Math.sin(Date.now() * 0.008) * 0.04;
@@ -1164,18 +1173,22 @@
                                         ctx.lineWidth = maj ? 2.5 : 1.2; ctx.stroke();
                                         if (maj) {
                                             var lr = R - 48;
-                                            var isFuel = (type === 'fuel');
-                                            ctx.font = (isFuel ? '500 22px' : '500 15px') + ' Inter,sans-serif';
+                                            var isFuel = (type === 'fuel'), isTemp = (type === 'temp');
+                                            ctx.font = (isFuel || isTemp ? '500 24px' : '500 15px') + ' "Cinzel",serif';
                                             ctx.fillStyle = atD ? '#B91C1C' : 'rgba(0,0,0,0.45)';
                                             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                                            var txt = (isFuel) ? (f === 0 ? 'E' : (f === 1 ? 'F' : '')) : (Math.round(f * 100));
+                                            var txt = '';
+                                            if (isFuel) txt = (f === 0 ? 'E' : (f === 1 ? 'F' : ''));
+                                            else if (isTemp) txt = (f === 0 ? 'C' : (f === 1 ? 'H' : ''));
+                                            else txt = Math.round(f * 100);
                                             if (txt !== '') ctx.fillText(txt, cx + lr * Math.cos(ang), cy + lr * Math.sin(ang));
                                         }
                                     }
-                                    ctx.font = '500 58px "Cinzel",serif';
-                                    ctx.fillStyle = danger ? '#991B1B' : '#1e293b';
+                                    ctx.font = '500 18px "Cinzel",serif';
+                                    ctx.fillStyle = '#94a3b8';
                                     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                                    ctx.fillText(Math.round(cur * 100) + '%', cx, cy - R * 0.35);
+                                    var label = (type === 'fuel') ? 'FUEL' : (type === 'temp' ? 'TEMP' : 'LOAD');
+                                    ctx.fillText(label, cx, cy - R * 0.35);
                                     var na = aFor(cur);
                                     ctx.save(); ctx.translate(cx, cy); ctx.rotate(na);
                                     ctx.beginPath(); ctx.moveTo(R * 0.86, 0); ctx.lineTo(-18, -4); ctx.lineTo(-18, 4); ctx.closePath();
@@ -1193,7 +1206,7 @@
                                 tk(); setTimeout(function () { go = true; }, delay);
                             }
                             drawGauge('s3-fuel-gauge', 12, 400, 'fuel');
-                            drawGauge('s3-tach-gauge', 92, 1200, 'tach');
+                            drawGauge('s3-tach-gauge', 92, 1200, 'temp');
                         })();
                     </script>
                 </div>
