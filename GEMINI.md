@@ -53,6 +53,8 @@ You are not a passive code generator. You are a **Critical Partner**.
 
 *   **Living Canon (Rule 18)**: These canonical documents are living documents. When new rules, patterns, or architectural decisions emerge during development, they **MUST** be codified into the appropriate canonical file (GEMINI.md, ADR-*.md, etc.) immediately — not deferred. The canon must always reflect the current truth.
 
+*   **Identity Integrity (Rule 19)**: The `SirsiNexusDev` account is **ARCHIVED** and strictly prohibited for active management. All GitHub, Firebase, and development identities **MUST** use the `SirsiMaster` account exclusively. Any tool or configuration found using previous identities must be immediately redirected to the primary master account.
+
 ## 2.1 Canonical Sources of Truth (Benchmark of Progress)
 The following 34 files serve as the immutable benchmark for all project directives and progress. All code and decisions MUST align with them.
 

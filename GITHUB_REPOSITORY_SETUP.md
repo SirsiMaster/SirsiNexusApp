@@ -3,7 +3,7 @@
 ## Repository About Section Configuration
 
 ### 1. Navigate to Repository Settings
-- Go to https://github.com/SirsiNexusDev/SirsiNexus
+- Go to https://github.com/SirsiMaster/SirsiNexusApp
 - Click the gear icon ⚙️ in the "About" section (top right of repository)
 
 ### 2. Repository Description
@@ -13,7 +13,7 @@ Sirsi: World's First Generative AI Infrastructure Assistant. Generate complete c
 
 ### 3. Website URL
 ```
-https://sirsinexusdev.github.io/SirsiNexus
+https://sirsi.ai
 ```
 
 ### 4. Repository Topics (Add ALL of these tags)
