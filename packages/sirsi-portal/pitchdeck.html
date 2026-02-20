@@ -16,8 +16,8 @@
 
     <style>
         :root {
-            --primary: #008A5E;
-            --primary-dark: #006b49;
+            --primary: #059669;
+            --primary-dark: #047857;
             --primary-light: #f0fdf4;
             --gold: #D4AF37;
             --gold-dark: #B8860B;
@@ -36,6 +36,49 @@
             --gold-neo: #C8A951;
             --emerald: #10B981;
             --neo-deco-shadow: 0 10px 40px rgba(0, 51, 102, 0.15);
+        }
+
+        /* Standardized Typography & Casing */
+        h1,
+        h2,
+        h3,
+        h4,
+        .cinzel {
+            font-family: 'Cinzel', serif !important;
+            color: var(--primary);
+            text-transform: none !important;
+            /* Prevents forced CAPS */
+            font-weight: 500 !important;
+            letter-spacing: 0.05em !important;
+            border-bottom: none !important;
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            color: var(--gold-dark);
+            margin-bottom: 10px;
+            font-weight: 700 !important;
+        }
+
+        .slide-header h3 {
+            font-weight: 700 !important;
+            margin-bottom: 0.5rem;
+        }
+
+        .slide-header h2 {
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .presentation h2 span {
+            color: var(--gold-dark) !important;
         }
 
         .royal-bg {
@@ -74,7 +117,7 @@
         }
 
         html {
-            font-size: 16px;
+            font-size: 19px;
             scroll-behavior: smooth;
         }
 
@@ -324,7 +367,7 @@
             color: white;
             border-color: var(--primary);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 138, 94, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 211, 127, 0.05);
         }
 
         .nav-counter {
@@ -364,10 +407,9 @@
         }
 
         .title-logo-large {
-            height: 280px;
-            /* Considerable increase */
+            height: 380px;
             width: auto;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         /* Graph Mockup */
@@ -394,8 +436,15 @@
             background: var(--primary);
         }
 
+        .slide-inner {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
         .slide-footer {
             margin-top: auto;
+            flex-shrink: 0;
             display: flex;
             justify-content: space-between;
             border-top: 1px solid var(--border);
@@ -802,323 +851,564 @@
                     <div>CONFIDENTIAL // SLIDE 01</div>
                 </div>
             </div>
-            </div>
         </div>
-        <!-- Slide 2: Vision - The Cost of Complexity -->
+        <!-- Slide 2: Vision - The World With Sirsi -->
         <div class="slide">
             <div class="slide-inner">
                 <div class="slide-header">
                     <h3>Strategic Vision</h3>
-                    <h2>The Infrastructure Paradox</h2>
+                    <h2>Infrastructure That <span style="color: var(--primary);">Manages Itself.</span></h2>
                 </div>
                 <div class="slide-content">
-                    <div class="grid-2-1" style="align-items: center; gap: 60px;">
-                        <div>
-                            <p class="lead" style="text-align: left; margin: 0 0 20px;">The bottleneck of AI
-                                isn't the code—it's
-                                the Operational Lifecycle. Building is easy. Scaling is crushing.
-                            </p>
-                            <div class="value-highlight" style="padding: 20px;">
-                                <p style="color: var(--primary); font-weight: 600; font-size: 1.2rem;">35% Cloud Waste.
-                                </p>
-                                <p style="font-size: 1.1rem;">Enterprises waste $600K on every $2M spent due to idle
-                                    resources
-                                    and inefficient
-                                    architectural patterns.</p>
+
+                    <!-- Body container -->
+                    <div style="text-align: center;">
+
+                        <p style="font-size: 1.5rem; color: var(--text-dark); line-height: 1.8; margin: 0 0 6px;">
+                            Build <em>product</em>, not plumbing.
+                        </p>
+                        <p
+                            style="font-size: 1.2rem; color: var(--primary); line-height: 1.6; margin: 0 0 50px; font-weight: 600;">
+                            Sirsi makes this real.
+                        </p>
+
+                        <!-- Three Outcome Numbers — defensible, sourced, Sirsi-attributed -->
+                        <div
+                            style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin-left: auto; margin-right: auto;">
+                            <div style="border-left: 4px solid var(--primary); padding-left: 20px; text-align: left;">
+                                <div class="cinzel"
+                                    style="font-size: 3rem; color: var(--primary); line-height: 1; margin-bottom: 8px;">
+                                    32%</div>
+                                <div
+                                    style="font-size: 0.75rem; color: var(--gold-dark); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;">
+                                    Cloud Waste Eliminated</div>
+                                <p style="font-size: 0.9rem; color: var(--text-slate); line-height: 1.5; margin: 0;">
+                                    Your cloud stops bleeding money. Sirsi turns invisible waste into margin you can
+                                    see, measure, and reinvest in growth.</p>
+                                <p style="font-size: 0.7rem; color: #94a3b8; margin: 6px 0 0; font-style: italic;">
+                                    Source: Flexera State of the Cloud 2025</p>
                             </div>
-                            <p style="font-size: 1.1rem;">Sirsi automates the "crushing lifecycle": Migrate,
-                                Optimize, &
-                                Scale. We move
-                                you from reactive firefighting to predictive, autonomous operations instantly.</p>
-                        </div>
-                        <div class="info-card gold" style="text-align: center;">
-                            <div class="stat-large">$6.2M</div>
-                            <h3>5-Year Net TCO Savings</h3>
-                            <p style="font-size: 1rem;">Per Enterprise Instance</p>
+                            <div style="border-left: 4px solid var(--primary); padding-left: 20px; text-align: left;">
+                                <div class="cinzel"
+                                    style="font-size: 3rem; color: var(--primary); line-height: 1; margin-bottom: 8px;">
+                                    $32K</div>
+                                <div
+                                    style="font-size: 0.75rem; color: var(--gold-dark); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;">
+                                    Recovered Per Developer / Year</div>
+                                <p style="font-size: 0.9rem; color: var(--text-slate); line-height: 1.5; margin: 0;">
+                                    Your best engineers go back to building product. Sirsi absorbs the infrastructure
+                                    burden — so every hire drives revenue.</p>
+                                <p style="font-size: 0.7rem; color: #94a3b8; margin: 6px 0 0; font-style: italic;">
+                                    Source: Cortex Developer Survey 2024</p>
+                            </div>
+                            <div style="border-left: 4px solid var(--gold-dark); padding-left: 20px; text-align: left;">
+                                <div class="cinzel"
+                                    style="font-size: 3rem; color: var(--gold-dark); line-height: 1; margin-bottom: 8px;">
+                                    +3 Mo.</div>
+                                <div
+                                    style="font-size: 0.75rem; color: var(--gold-dark); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;">
+                                    Runway Extended</div>
+                                <p style="font-size: 0.9rem; color: var(--text-slate); line-height: 1.5; margin: 0;">
+                                    More runway means more shots on goal. Sirsi recaptures enough capital to extend your
+                                    path to the next milestone — by months, not days.</p>
+                                <p style="font-size: 0.7rem; color: #94a3b8; margin: 6px 0 0; font-style: italic;">
+                                    Derived: $480K dev + $96K cloud, 15-person team</p>
+                            </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
                     <div>CONFIDENTIAL // SLIDE 02</div>
                 </div>
             </div>
-            </div>
         </div>
 
-                <!-- Slide 3: Problem - The DevOps Debt -->
-        <div class="slide">
+        <!-- Slide 3: The Crisis (Gauges) -->
+        <div class="slide" id="slide-crisis">
             <div class="slide-inner">
                 <div class="slide-header">
-                    <h3>Market Gap</h3>
-                    <h2>The Infrastructure Chasm</h2>
+                    <h3>The Crisis</h3>
+                    <h2>Infrastructure Is <span style="color: #EF4444;">Draining Your Startup.</span></h2>
                 </div>
 
-                <div class="slide-content" style="overflow: visible;">
-                    <div style="text-align: center; margin: 40px 0 60px;">
-                        <div class="lead">
-                            "Building the app is only 50% of the battle. <span style="color: #EF4444;">Operational Debt</span> consumes the rest."
-                        </div>
-                    </div>
-
+                <div class="slide-content s3-clean-bg">
                     <style>
-                        .chasm-visual-container {
+                        .s3-clean-bg {
                             position: relative;
-                            width: 100%;
-                            height: 400px;
-                            margin: 40px 0;
-                            display: flex;
-                            justify-content: space-between;
-                            perspective: 1000px;
-                            gap: 20px;
+                            overflow: hidden;
+                            background: #fdfdfd;
+                            background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+                            background-size: 20px 20px;
                         }
 
-                        .cliff-block {
-                            width: 44%;
-                            height: 100%;
-                            background: white;
-                            border: 1px solid #e2e8f0;
-                            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-                            padding: 40px;
+                        @keyframes s3FadeIn {
+                            from {
+                                opacity: 0;
+                                transform: translateY(20px);
+                            }
+
+                            to {
+                                opacity: 1;
+                                transform: translateY(0);
+                            }
+                        }
+
+                        @keyframes s3PulseRed {
+
+                            0%,
+                            100% {
+                                color: #991B1B;
+                                background: rgba(220, 38, 38, 0.04);
+                            }
+
+                            50% {
+                                color: #EF4444;
+                                background: rgba(239, 68, 68, 0.15);
+                                box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
+                            }
+                        }
+
+                        .s3-dash {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr 1fr;
+                            gap: 32px;
+                            width: 100%;
+                            max-width: 1150px;
+                            margin: 0 auto;
+                            padding-top: 40px;
+                        }
+
+                        .s3-gw {
                             display: flex;
                             flex-direction: column;
-                            justify-content: space-around;
-                            z-index: 10;
+                            align-items: center;
+                            text-align: center;
+                            opacity: 0;
+                            animation: s3FadeIn 0.6s ease forwards;
+                            background: rgba(255, 255, 255, 0.7);
+                            backdrop-filter: blur(12px);
+                            border: 1.5px solid rgba(0, 0, 0, 0.04);
+                            border-radius: 28px;
+                            padding: 30px 20px 40px;
+                            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03);
                         }
 
-                        .cliff-left { border-left: 6px solid #EF4444; border-radius: 4px 20px 20px 4px; }
-                        .cliff-right { border-right: 6px solid var(--primary); border-radius: 20px 4px 4px 20px; text-align: right; }
+                        .s3-gw:nth-child(1) {
+                            animation-delay: 0.2s;
+                        }
 
-                        .chasm-void {
-                            flex: 1;
-                            background: repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(239, 68, 68, 0.03) 15px, rgba(239, 68, 68, 0.03) 30px);
+                        .s3-gw:nth-child(2) {
+                            animation-delay: 0.4s;
+                        }
+
+                        .s3-gw:nth-child(3) {
+                            animation-delay: 0.6s;
+                        }
+
+                        .s3-viz {
+                            height: 260px;
+                            width: 100%;
                             display: flex;
                             align-items: center;
                             justify-content: center;
                             position: relative;
-                            overflow: hidden;
+                            margin-bottom: 24px;
                         }
 
-                        .void-text {
-                            font-family: 'Cinzel', serif;
-                            color: #EF4444;
-                            font-weight: 900;
-                            opacity: 0.4;
-                            font-size: 1.5rem;
-                            white-space: nowrap;
-                            letter-spacing: 0.8em;
-                            transform: rotate(-90deg);
+                        .s3-shifter-gate {
+                            position: relative;
+                            width: 95px;
+                            height: 250px;
+                            background: rgba(0, 0, 0, 0.02);
+                            border: 1.5px solid rgba(0, 0, 0, 0.06);
+                            border-radius: 48px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            padding: 30px 0;
+                            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.04);
                         }
 
-                        .val-hero {
-                            font-family: 'Cinzel', serif;
-                            font-size: 3rem;
+                        .s3-shifter-track {
+                            position: absolute;
+                            left: 50%;
+                            top: 30px;
+                            bottom: 30px;
+                            width: 4px;
+                            background: rgba(0, 0, 0, 0.04);
+                            transform: translateX(-50%);
+                            border-radius: 2px;
+                        }
+
+                        .s3-label {
+                            font-size: 1.4rem;
+                            color: #7F1D1D;
+                            letter-spacing: 0.04em;
                             font-weight: 800;
-                            color: #EF4444;
-                            line-height: .9;
-                            margin-bottom: 10px;
+                            text-transform: uppercase;
+                            margin-bottom: 12px;
+                            font-family: 'Inter', sans-serif;
+                            line-height: 1.1;
+                        }
+
+                        .s3-desc {
+                            font-size: 1.1rem;
+                            color: #475569;
+                            line-height: 1.5;
+                            max-width: 310px;
+                            margin: 0 auto;
+                            font-weight: 500;
+                            min-height: 4.5em;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
                         }
                     </style>
 
-                    <div class="chasm-visual-container">
-                        <div class="cliff-block cliff-left">
-                            <div class="impact-metric-row">
-                                <h3 style="margin-bottom: 5px; color: #EF4444; letter-spacing: 0.05em;">The Salary Tax</h3>
-                                <div class="val-hero">$750K</div>
-                                <p style="font-size: 1.1rem; line-height: 1.4;">Annual DevOps overhead killing 60% of startups before PMF.</p>
-                            </div>
-                            <div class="impact-metric-row" style="margin-bottom: 0;">
-                                <h3 style="margin-bottom: 5px; color: #EF4444; letter-spacing: 0.05em;">Innovation Leak</h3>
-                                <div class="val-hero">60%</div>
-                                <p style="font-size: 1.1rem; line-height: 1.4;">Engineering time wasted on manual infrastructure ops.</p>
-                            </div>
-                        </div>
+                    <div style="text-align: center; padding: 10px 0 30px;">
+                        <h3
+                            style="font-size: 1.1rem; color: #991B1B; letter-spacing: 0.4em; text-transform: uppercase; font-weight: 800; margin-bottom: 8px; opacity:0; animation: s3FadeIn 0.8s ease 0.1s forwards;">
+                            The Crisis of Performance</h3>
+                        <p
+                            style="font-size: 0.95rem; color: #64748b; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; opacity:0; animation: s3FadeIn 0.8s ease 0.2s forwards;">
+                            Legacy Friction is Capping Your Potential</p>
+                    </div>
 
-                        <div class="chasm-void">
-                            <div class="void-text">THE CHASM</div>
+                    <div class="s3-dash">
+                        <div class="s3-gw">
+                            <div class="s3-viz">
+                                <canvas id="s3-fuel-gauge" width="440" height="320"
+                                    style="width:100%; max-width:340px; height:auto;"></canvas>
+                            </div>
+                            <div class="s3-label">Capital Runway</div>
+                            <div class="s3-desc"><span>Cash reserves approaching <span
+                                        style="color:#B91C1C; font-weight:700;">Empty</span> as overhead scales
+                                    unchecked.</span></div>
                         </div>
+                        <div class="s3-gw">
+                            <div class="s3-viz">
+                                <div class="s3-shifter-gate">
+                                    <div class="s3-shifter-track"></div>
+                                    <span
+                                        style="font-family:'Cinzel', serif; font-size:2.2rem; font-weight:900; color:#cbd5e1; z-index:1;">P</span>
+                                    <span
+                                        style="font-family:'Cinzel', serif; font-size:2.2rem; font-weight:900; color:#cbd5e1; z-index:1;">R</span>
+                                    <span
+                                        style="font-family:'Cinzel', serif; font-size:2.2rem; font-weight:900; z-index:2; animation: s3PulseRed 1.5s ease-in-out infinite; border: 3px solid #EF4444; border-radius: 50%; width:65px; height:65px; display:flex; align-items:center; justify-content:center; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.06);">N</span>
+                                    <span
+                                        style="font-family:'Cinzel', serif; font-size:2.2rem; font-weight:900; color:#cbd5e1; z-index:1;">D</span>
+                                    <span
+                                        style="font-family:'Cinzel', serif; font-size:2.2rem; font-weight:900; color:#cbd5e1; z-index:1;">L</span>
+                                </div>
+                            </div>
+                            <div class="s3-label">Technical Inertia</div>
+                            <div class="s3-desc"><span>Engineering velocity stalled in <span
+                                        style="color:#B91C1C; font-weight:700;">Neutral</span>. High effort, zero
+                                    forward motion.</span></div>
+                        </div>
+                        <div class="s3-gw">
+                            <div class="s3-viz">
+                                <canvas id="s3-tach-gauge" width="440" height="320"
+                                    style="width:100%; max-width:340px; height:auto;"></canvas>
+                            </div>
+                            <div class="s3-label">Infrastructure Load</div>
+                            <div class="s3-desc"><span>System load at <span
+                                        style="color:#B91C1C; font-weight:700;">Redline</span>. Scalability limits have
+                                    been reached.</span></div>
+                        </div>
+                    </div>
 
-                        <div class="cliff-block cliff-right">
-                            <div class="impact-metric-row">
-                                <h3 style="margin-bottom: 5px; color: var(--primary); letter-spacing: 0.05em;">Resiliency Risk</h3>
-                                <div class="val-hero">$5.6K</div>
-                                <p style="font-size: 1.1rem; line-height: 1.4;">Avg. cost per minute of unmanaged application downtime.</p>
-                            </div>
-                            <div class="impact-metric-row" style="margin-bottom: 0;">
-                                <h3 style="margin-bottom: 5px; color: var(--primary); letter-spacing: 0.05em;">Failure Rate</h3>
-                                <div class="val-hero">75%</div>
-                                <p style="font-size: 1.1rem; line-height: 1.4;">Migration projects that exceed budget or fail entirely.</p>
-                            </div>
+                    <p
+                        style="font-size:1.65rem; color: #059669; font-weight:900; text-align:center; margin:75px 0 0; opacity:0; animation: s3FadeIn 0.7s ease 3s forwards; letter-spacing: -0.01em;">
+                        This is where Sirsi intervenes.
+                    </p>
+
+                    <script>
+                        (function () {
+                            function drawGauge(id, target, delay, type) {
+                                var c = document.getElementById(id); if (!c) return;
+                                var ctx = c.getContext('2d'), W = c.width, H = c.height;
+                                var cx = W / 2, cy = H * 0.65, R = W * 0.36;
+                                var sa = Math.PI * 0.8, sweep = Math.PI * 1.4;
+                                var rl = (type === 'fuel') ? 0.25 : 0.65;
+                                var cur = 0, vel = 0, go = false, tf = target / 100;
+                                function aFor(f) { return sa + f * sweep; }
+                                function render() {
+                                    ctx.clearRect(0, 0, W, H);
+                                    ctx.beginPath(); ctx.arc(cx, cy, R * 1.18, 0, Math.PI * 2);
+                                    ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.fill();
+                                    ctx.strokeStyle = 'rgba(0,0,0,0.03)'; ctx.lineWidth = 1; ctx.stroke();
+                                    for (var i = 0; i < 80; i++) {
+                                        var f = i / 80, a1 = sa + f * sweep, a2 = sa + (i + 1.5) / 80 * sweep;
+                                        var r, g, b;
+                                        if (type === 'fuel') {
+                                            if (f < 0.25) { r = 220; g = 38; b = 38; } else if (f < 0.45) { r = 245; g = 158; b = 11; } else { r = 16; g = 185; b = 129; }
+                                        } else {
+                                            if (f < 0.45) { r = 16; g = 185; b = 129; } else if (f < 0.75) { r = 245; g = 158; b = 11; } else { r = 220; g = 38; b = 38; }
+                                        }
+                                        var al = f <= cur ? 1.0 : 0.08;
+                                        ctx.beginPath(); ctx.arc(cx, cy, R, a1, a2);
+                                        ctx.strokeStyle = 'rgba(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ',' + al + ')';
+                                        ctx.lineWidth = 16; ctx.stroke();
+                                    }
+                                    var danger = (type === 'fuel') ? (cur < rl) : (cur > rl);
+                                    if (danger) {
+                                        var p = 0.08 + Math.sin(Date.now() * 0.008) * 0.04;
+                                        var gs = (type === 'fuel') ? 0 : rl; var ge = (type === 'fuel') ? rl : cur;
+                                        ctx.beginPath(); ctx.arc(cx, cy, R, aFor(gs), aFor(ge));
+                                        ctx.strokeStyle = 'rgba(239,68,68,' + p + ')'; ctx.lineWidth = 26; ctx.stroke();
+                                    }
+                                    for (var i = 0; i <= 10; i++) {
+                                        var f = i / 10, ang = aFor(f), maj = i % 2 === 0;
+                                        var ir = R - (maj ? 26 : 18), orr = R - 10;
+                                        ctx.beginPath(); ctx.moveTo(cx + ir * Math.cos(ang), cy + ir * Math.sin(ang)); ctx.lineTo(cx + orr * Math.cos(ang), cy + orr * Math.sin(ang));
+                                        var atD = (type === 'fuel') ? (f < rl) : (f > rl);
+                                        ctx.strokeStyle = atD ? 'rgba(220,38,38,0.95)' : 'rgba(0,0,0,0.12)';
+                                        ctx.lineWidth = maj ? 2.5 : 1.2; ctx.stroke();
+                                        if (maj) {
+                                            var lr = R - 48;
+                                            var isFuel = (type === 'fuel');
+                                            ctx.font = (isFuel ? '900 22px' : '700 15px') + ' Inter,sans-serif';
+                                            ctx.fillStyle = atD ? '#B91C1C' : 'rgba(0,0,0,0.45)';
+                                            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                                            var txt = (isFuel) ? (f === 0 ? 'E' : (f === 1 ? 'F' : '')) : (Math.round(f * 100));
+                                            if (txt !== '') ctx.fillText(txt, cx + lr * Math.cos(ang), cy + lr * Math.sin(ang));
+                                        }
+                                    }
+                                    ctx.font = '900 58px "Cinzel",serif';
+                                    ctx.fillStyle = danger ? '#991B1B' : '#1e293b';
+                                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                                    ctx.fillText(Math.round(cur * 100) + '%', cx, cy - R * 0.35);
+                                    var na = aFor(cur);
+                                    ctx.save(); ctx.translate(cx, cy); ctx.rotate(na);
+                                    ctx.beginPath(); ctx.moveTo(R * 0.86, 0); ctx.lineTo(-18, -4); ctx.lineTo(-18, 4); ctx.closePath();
+                                    ctx.fillStyle = danger ? '#B91C1C' : '#334155'; ctx.fill();
+                                    ctx.restore();
+                                    ctx.beginPath(); ctx.arc(cx, cy, 14, 0, Math.PI * 2);
+                                    var cg = ctx.createRadialGradient(cx, cy, 2, cx, cy, 14);
+                                    cg.addColorStop(0, '#ffffff'); cg.addColorStop(0.5, '#cbd5e1'); cg.addColorStop(1, '#475569');
+                                    ctx.fillStyle = cg; ctx.fill(); ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke();
+                                }
+                                function tk() {
+                                    if (go) { vel += (tf - cur) * 0.035; vel *= 0.84; cur += vel; if (Math.abs(tf - cur) < 0.0005 && Math.abs(vel) < 0.0005) cur = tf; }
+                                    render(); requestAnimationFrame(tk);
+                                }
+                                tk(); setTimeout(function () { go = true; }, delay);
+                            }
+                            drawGauge('s3-fuel-gauge', 12, 400, 'fuel');
+                            drawGauge('s3-tach-gauge', 92, 1200, 'tach');
+                        })();
+                    </script>
+                </div>
+
+                <div class="slide-footer">
+                    <div>SIRSI TECHNOLOGIES INC.</div>
+                    <div>CONFIDENTIAL // THE CRISIS // SLIDE 03</div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="slide">
+            <div class="slide-inner">
+                <div class="slide-header">
+                    <h3>The Solution</h3>
+                    <h2>Complete Lifecycle Management</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="grid-4" style="gap: 20px; text-align: center;">
+                        <div class="info-card">
+                            <i class="fas fa-drafting-compass"
+                                style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
+                            <h4 class="royal-text">Design</h4>
+                            <p style="font-size: 0.95rem;">Integrated app blueprints and automated environment
+                                architecture.
+                            </p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-layer-group"
+                                style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
+                            <h4 class="royal-text">Infrastructure</h4>
+                            <p style="font-size: 0.95rem;">Multi-Cloud & On-Premise deployment clusters
+                                for
+                                data sovereignty.</p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fab fa-apple"
+                                style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
+                            <h4 class="royal-text">Tri-Silicon</h4>
+                            <p style="font-size: 0.95rem;">Orchestrating NVIDIA, TPU, and Apple Silicon
+                                into a
+                                unified, high-performance neural mesh.</p>
+                        </div>
+                        <div class="info-card gold">
+                            <i class="fas fa-chart-line"
+                                style="font-size: 3rem; color: var(--gold); margin-bottom: 15px;"></i>
+                            <h4 class="royal-text">Optimize</h4>
+                            <p style="font-size: 0.95rem;">Predictive AI scaling that reduces hardware waste by up
+                                to
+                                40%.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="value-highlight" style="margin-top: 30px; text-align: center;">
+                        <div
+                            style="font-style: italic; font-size: 1.15rem; color: var(--text-dark); white-space: nowrap; max-width: none;">
+                            "Sirsi let us build and deploy our AI platform with one developer. No DevOps team
+                            needed."
+                            <span style="color: var(--primary);">— CEO, Assiduous Realty</span>
                         </div>
                     </div>
                 </div>
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // THE CHASM // SLIDE 03</div>
+                    <div>CONFIDENTIAL // SLIDE 04</div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 4: Solution - Design, Build, Host -->
+        <!-- Slide 5: The Intellectual Moat -->
         <div class="slide">
             <div class="slide-inner">
                 <div class="slide-header">
-                        <h3>The Solution</h3>
-                        <h2>Complete Lifecycle Management</h2>
-                    </div>
-                    <div class="slide-content">
-                        <div class="grid-4" style="gap: 20px; text-align: center;">
-                            <div class="info-card">
-                                <i class="fas fa-drafting-compass"
-                                    style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
-                                <h4 class="royal-text">Design</h4>
-                                <p style="font-size: 0.95rem;">Integrated app blueprints and automated environment
-                                    architecture.
-                                </p>
-                            </div>
-                            <div class="info-card">
-                                <i class="fas fa-layer-group"
-                                    style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
-                                <h4 class="royal-text">Infrastructure</h4>
-                                <p style="font-size: 0.95rem;">Multi-Cloud & On-Premise deployment clusters
-                                    for
-                                    data sovereignty.</p>
-                            </div>
-                            <div class="info-card">
-                                <i class="fab fa-apple"
-                                    style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
-                                <h4 class="royal-text">Tri-Silicon</h4>
-                                <p style="font-size: 0.95rem;">Orchestrating NVIDIA, TPU, and Apple Silicon
-                                    into a
-                                    unified, high-performance neural mesh.</p>
-                            </div>
-                            <div class="info-card gold">
-                                <i class="fas fa-chart-line"
-                                    style="font-size: 3rem; color: var(--gold); margin-bottom: 15px;"></i>
-                                <h4 class="royal-text">Optimize</h4>
-                                <p style="font-size: 0.95rem;">Predictive AI scaling that reduces hardware waste by up
-                                    to
-                                    40%.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="value-highlight" style="margin-top: 30px; text-align: center;">
-                            <div
-                                style="font-style: italic; font-size: 1.15rem; color: var(--text-dark); white-space: nowrap; max-width: none;">
-                                "Sirsi let us build and deploy our AI platform with one developer. No DevOps team
-                                needed."
-                                <span style="color: var(--primary);">— CEO, Assiduous Realty</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide-footer">
-                        <div>SIRSI TECHNOLOGIES INC.</div>
-                        <div>CONFIDENTIAL // SLIDE 04</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-            <!-- Slide 5: The Intellectual Moat -->
-        <div class="slide">
-            <div class="slide-inner">
-                <div class="slide-header">
-                    <h3>Technical Advantage</h3>
-                    <h2>3 Patents. One Insight.</h2>
+                    <h3>Intellectual Property</h3>
+                    <h2>3 Patents. <span style="color: var(--gold-dark);">One Defensible Moat.</span></h2>
                 </div>
                 <div class="slide-content">
-                    <p class="lead" style="text-align: left; margin: 8px 0 20px; max-width: none;">
-                        Every competitor is missing this combination.
+                    <p style="font-size: 1.1rem; color: var(--text-slate); margin: 0 0 25px; max-width: 700px;">
+                        No competitor connects these three layers. Together, they form a closed-loop intelligence stack
+                        that is <strong style="color: var(--primary);">architecturally unique</strong>.
                     </p>
 
-                    <div class="content-grid"
-                        style="grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 25px;">
-                        <!-- Patent 1 -->
-                        <div class="info-card" style="padding: 15px;">
-                            <div>
-                                <i class="fas fa-brain"
-                                    style="font-size: 1.8rem; color: var(--primary); margin-bottom: 12px;"></i>
-                                <h4 class="royal-text"
-                                    style="color: var(--primary); margin-bottom: 12px; font-size: 0.9rem;">
-                                    NebuLang Protocol</h4>
-                                <p style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px;">LLM Memory
-                                        Resilience via Knowledge Graphs. Agents communicate in machine-native
-                                    logic
-                                    with zero hallucination risk.</p>
+                    <!-- 3 Patent Cards — Equal Weight -->
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-bottom: 22px;">
+
+                        <!-- Patent 01 -->
+                        <div
+                            style="border: 1px solid var(--border); border-top: 3px solid var(--primary); padding: 28px 24px 20px; display: flex; flex-direction: column; background: linear-gradient(180deg, #f8fdfb 0%, #ffffff 40%);">
+                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+                                <div
+                                    style="width: 44px; height: 44px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fas fa-brain" style="font-size: 1.2rem; color: var(--primary);"></i>
+                                </div>
+                                <div>
+                                    <div class="cinzel"
+                                        style="font-size: 0.6rem; color: var(--gold-dark); letter-spacing: 0.2em; margin-bottom: 2px;">
+                                        PATENT 01</div>
+                                    <h4 style="color: var(--primary); font-size: 0.95rem; margin: 0;">NebuLang Protocol
+                                    </h4>
+                                </div>
                             </div>
                             <div
-                                style="background: var(--gold-light); border: 1px solid var(--gold); padding: 10px; font-size: 0.8rem; border-left: 4px solid var(--gold); margin-top: auto;">
-                                <strong style="color: var(--gold-dark);">Utility: Prevents AI state decay.
-                                <strong style="color: var(--primary);">Permanent Context.
+                                style="font-size: 0.8rem; color: var(--primary); letter-spacing: 0.05em; margin-bottom: 8px; text-transform: uppercase;">
+                                LLM Memory Resilience</div>
+                            <p
+                                style="font-size: 0.85rem; line-height: 1.55; color: var(--text-slate); flex: 1; margin: 0;">
+                                Agents communicate in machine-native logic via Knowledge Graphs. Zero hallucination
+                                risk. Permanent context across sessions.
+                            </p>
+                            <div
+                                style="background: var(--gold-light); border-left: 3px solid var(--gold); padding: 8px 12px; font-size: 0.75rem; margin-top: 16px;">
+                                <span style="color: var(--gold-dark);">Utility:</span> <span
+                                    style="color: var(--primary);">Prevents AI state decay. Permanent Context.</span>
                             </div>
                         </div>
 
-                        <!-- Patent 2 -->
-                        <div class="info-card" style="padding: 15px;">
-                            <div>
-                                <i class="fas fa-network-wired"
-                                    style="font-size: 1.8rem; color: var(--primary); margin-bottom: 12px;"></i>
-                                <h4 class="royal-text"
-                                    style="color: var(--primary); margin-bottom: 12px; font-size: 0.9rem;">
-                                    Neural-Fractal Architecture</h4>
-                                <p style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px;">AI that
-                                    automatically
-                                    converts business needs into verified cloud solutions across AWS, Azure, and Google
-                                    Cloud—delivering 40%+ cost reductions with fault-tolerant
-                                    consistency.
-                                </p>
+                        <!-- Patent 02 -->
+                        <div
+                            style="border: 1px solid var(--border); border-top: 3px solid var(--primary); padding: 28px 24px 20px; display: flex; flex-direction: column; background: linear-gradient(180deg, #f8fdfb 0%, #ffffff 40%);">
+                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+                                <div
+                                    style="width: 44px; height: 44px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fas fa-diagram-project"
+                                        style="font-size: 1.2rem; color: var(--primary);"></i>
+                                </div>
+                                <div>
+                                    <div class="cinzel"
+                                        style="font-size: 0.6rem; color: var(--gold-dark); letter-spacing: 0.2em; margin-bottom: 2px;">
+                                        PATENT 02</div>
+                                    <h4 style="color: var(--primary); font-size: 0.95rem; margin: 0;">Neural-Fractal
+                                        Architecture</h4>
+                                </div>
                             </div>
                             <div
-                                style="background: var(--gold-light); border: 1px solid var(--gold); padding: 10px; font-size: 0.8rem; border-left: 4px solid var(--gold); margin-top: auto;">
-                                <strong style="color: var(--gold-dark);">Utility: Multi-Cloud Trust. <strong
-                                    style="color: var(--primary);">Verified Outcomes.
+                                style="font-size: 0.8rem; color: var(--primary); letter-spacing: 0.05em; margin-bottom: 8px; text-transform: uppercase;">
+                                Multi-Cloud Orchestration</div>
+                            <p
+                                style="font-size: 0.85rem; line-height: 1.55; color: var(--text-slate); flex: 1; margin: 0;">
+                                AI that converts business needs into verified cloud solutions across AWS, Azure, and
+                                GCP—delivering 40%+ cost reductions with fault-tolerant consistency.
+                            </p>
+                            <div
+                                style="background: var(--gold-light); border-left: 3px solid var(--gold); padding: 8px 12px; font-size: 0.75rem; margin-top: 16px;">
+                                <span style="color: var(--gold-dark);">Utility:</span> <span
+                                    style="color: var(--primary);">Multi-Cloud Trust. Verified Outcomes.</span>
                             </div>
                         </div>
 
-                        <!-- Patent 3 -->
-                        <div class="info-card" style="padding: 15px;">
-                            <div>
-                                <i class="fas fa-search-nodes"
-                                    style="font-size: 1.8rem; color: var(--primary); margin-bottom: 12px;"></i>
-                                <h4 class="royal-text"
-                                    style="color: var(--primary); margin-bottom: 12px; font-size: 0.9rem;">
-                                    KG Query Engine</h4>
-                                <p style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px;">
-                                    Infrastructure-as-Data.
-                                    Real-time predictive scaling and cost forecasting through Interactive
-                                        Knowledge
-                                        Graphs.</p>
+                        <!-- Patent 03 -->
+                        <div
+                            style="border: 1px solid var(--border); border-top: 3px solid var(--primary); padding: 28px 24px 20px; display: flex; flex-direction: column; background: linear-gradient(180deg, #f8fdfb 0%, #ffffff 40%);">
+                            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+                                <div
+                                    style="width: 44px; height: 44px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="fas fa-magnifying-glass-chart"
+                                        style="font-size: 1.2rem; color: var(--primary);"></i>
+                                </div>
+                                <div>
+                                    <div class="cinzel"
+                                        style="font-size: 0.6rem; color: var(--gold-dark); letter-spacing: 0.2em; margin-bottom: 2px;">
+                                        PATENT 03</div>
+                                    <h4 style="color: var(--primary); font-size: 0.95rem; margin: 0;">KG Query Engine
+                                    </h4>
+                                </div>
                             </div>
                             <div
-                                style="background: var(--gold-light); border: 1px solid var(--gold); padding: 10px; font-size: 0.8rem; border-left: 4px solid var(--gold); margin-top: auto;">
-                                <strong style="color: var(--gold-dark);">Utility: Observability is dead.
-                                <strong style="color: var(--primary);">Query is King.
+                                style="font-size: 0.8rem; color: var(--primary); letter-spacing: 0.05em; margin-bottom: 8px; text-transform: uppercase;">
+                                Infrastructure-as-Data</div>
+                            <p
+                                style="font-size: 0.85rem; line-height: 1.55; color: var(--text-slate); flex: 1; margin: 0;">
+                                Real-time predictive scaling and cost forecasting through Interactive Knowledge Graphs.
+                                Query your infrastructure like a database.
+                            </p>
+                            <div
+                                style="background: var(--gold-light); border-left: 3px solid var(--gold); padding: 8px 12px; font-size: 0.75rem; margin-top: 16px;">
+                                <span style="color: var(--gold-dark);">Utility:</span> <span
+                                    style="color: var(--primary);">Observability is dead. Query is King.</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="value-highlight" style="padding: 15px 30px; margin-bottom: 20px; border-radius: 4px;">
-                        <p
-                            style="margin: 0; font-size: 1.05rem; color: var(--text-dark); line-height: 1.6; font-weight: 500;">
-                            <strong style="color: var(--primary);">The combination is defensible. None connect
-                            LLM
-                            understanding → multi-agent orchestration → real-time query. Complex platforms deploy in
-                            weeks with one developer.
+                    <!-- Defensibility Callout -->
+                    <div
+                        style="background: var(--primary-light); border-left: 5px solid var(--primary); padding: 14px 28px; margin-bottom: 15px;">
+                        <p style="margin: 0; font-size: 0.95rem; color: var(--text-dark); line-height: 1.5;">
+                            <strong style="color: var(--primary);">The combination is defensible.</strong> No competitor
+                            connects LLM understanding → multi-agent orchestration → real-time query. Complex platforms
+                            deploy in weeks with one developer.
                         </p>
                     </div>
 
                     <!-- LLM Integration Bar -->
                     <div
-                        style="background: var(--primary-light); border: 1px solid var(--primary); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 4px;">
-                        <div
-                            style="font-weight: 600; color: var(--primary); font-size: 0.8rem; letter-spacing: 0.05em;">
-                            UNIVERSAL LLM INTEGRATION PORTAL</div>
-                        <div
-                            style="display: flex; gap: 30px; font-weight: 600; font-size: 0.8rem; color: var(--text-dark);">
-                            <span>■ OPENAI (GPT-5+)</span>
-                            <span>■ ANTHROPIC (CLAUDE 4+)</span>
-                            <span>■ GOOGLE (GEMINI 3+)</span>
-                            <span>■ OPEN SOURCE</span>
+                        style="background: #fafafa; border: 1px solid var(--border); padding: 10px 24px; display: flex; justify-content: space-between; align-items: center;">
+                        <div class="cinzel" style="font-size: 0.7rem; color: var(--primary); letter-spacing: 0.1em;">
+                            UNIVERSAL LLM INTEGRATION</div>
+                        <div style="display: flex; gap: 24px; font-size: 0.75rem; color: var(--text-slate);">
+                            <span><i class="fas fa-circle"
+                                    style="font-size: 0.4rem; color: var(--primary); vertical-align: middle; margin-right: 5px;"></i>OPENAI
+                                (GPT-5+)</span>
+                            <span><i class="fas fa-circle"
+                                    style="font-size: 0.4rem; color: var(--primary); vertical-align: middle; margin-right: 5px;"></i>ANTHROPIC
+                                (CLAUDE 4+)</span>
+                            <span><i class="fas fa-circle"
+                                    style="font-size: 0.4rem; color: var(--primary); vertical-align: middle; margin-right: 5px;"></i>GOOGLE
+                                (GEMINI 3+)</span>
+                            <span><i class="fas fa-circle"
+                                    style="font-size: 0.4rem; color: var(--primary); vertical-align: middle; margin-right: 5px;"></i>OPEN
+                                SOURCE</span>
                         </div>
                     </div>
                 </div>
@@ -1130,7 +1420,7 @@
             </div>
         </div>
 
-            <!-- Slide 6: Tech Stack - Foundational Core Schematic -->
+        <!-- Slide 6: Tech Stack - Foundational Core Schematic -->
         <div class="slide">
             <div class="slide-inner">
                 <div class="slide-header">
@@ -1393,437 +1683,83 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div style="font-size: 0.85rem; font-weight: 600;">CONFIDENTIAL // SLIDE 06</div>
+                    <div style="font-size: 0.85rem; font-weight: 600;">CONFIDENTIAL // PRODUCT ARCHITECTURE // SLIDE 06
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="slide" style="padding: 0; background: #fff; color: #000;">
-                <div class="slide-content"
-                    style="flex-direction: row; display: flex; height: 100%; width: 100%; padding: 0; overflow: hidden;">
-                    <!-- Left: Top-Down Product Realism -->
-                    <div style="flex: 1.3; position: relative; overflow: hidden; height: 100%; background: #f9f9fb;">
-                        <img src="assets/pod_top.png"
-                            style="width: 100%; height: 100%; object-fit: contain; padding: 60px;">
-                        <div
-                            style="position: absolute; bottom: 40px; left: 60px; border-left: 3px solid var(--gold-neo); padding-left: 20px;">
-                            <div class="cinzel"
-                                style="font-size: 0.7rem; font-weight: 600; color: var(--gold-dark); letter-spacing: 0.4em; margin-bottom: 5px;">
-                                UNIT DESIGNATION</div>
-                            <div class="cinzel" style="font-size: 1.4rem; font-weight: 600; color: #000;">
-                                SIRSI-POD-ALPHA
-                            </div>
+        <!-- Slide 07: Hardware Alpha - Neural-Hashgraph -->
+        <div class="slide">
+            <div class="slide-inner">
+                <div class="slide-content" style="padding: 0;">
+                    <div class="grid-2" style="gap: 50px; align-items: start;">
+                        <!-- Left Pillar: Image -->
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <img src="assets/pod_top.png"
+                                style="max-width: 100%; max-height: 100%; object-fit: contain;">
                         </div>
-                    </div>
 
-                    <!-- Right: Professional Specifications -->
-                    <div
-                        style="flex: 1; padding: 120px 80px; display: flex; flex-direction: column; gap: 45px; background: #fff;">
-                        <div>
+                        <!-- Right Pillar: Specs -->
+                        <div style="padding-top: 5px;">
                             <div class="cinzel"
-                                style="font-size: 0.8rem; font-weight: 600; color: var(--gold-dark); letter-spacing: 0.6em; margin-bottom: 25px;">
+                                style="font-size: 0.75rem; color: var(--gold-dark); letter-spacing: 0.3em; margin-bottom: 10px; text-transform: uppercase;">
                                 STUDIO-GRADE CLUSTER</div>
                             <h2 class="cinzel"
-                                style="color: var(--primary); border-bottom: none; font-size: 3.2rem; margin: 0; padding: 0; line-height: 1.0; font-weight: 500;">
-                                Neural-Hashgraph <span style="color: var(--gold-dark);">01.</span></h2>
-                            <div style="width: 80px; height: 3px; background: var(--gold-neo); margin-top: 30px;"></div>
-                        </div>
+                                style="font-size: 2.8rem; color: var(--primary); margin-bottom: 12px; border-bottom: none;">
+                                NEURAL-HASHGRAPH <span style="color: var(--gold-dark);">01.</span></h2>
+                            <div style="width: 70px; height: 3px; background: var(--gold-neo); margin-bottom: 30px;">
+                            </div>
 
-                        <div style="display: flex; flex-direction: column; gap: 30px;">
-                            <div style="padding-bottom: 20px; border-bottom: 1px solid #eee;">
-                                <h4 class="cinzel"
-                                    style="font-size: 0.85rem; font-weight: 600; color: var(--gold-dark); margin-bottom: 10px;">
-                                    Top-View Architecture</h4>
-                                <div style="font-size: 1.1rem; font-weight: 600; color: #000;">4x Mac Studio Cluster
+                            <div style="display: flex; flex-direction: column; gap: 25px;">
+                                <div>
+                                    <div class="cinzel"
+                                        style="font-size: 0.7rem; color: var(--gold-dark); letter-spacing: 0.1em; margin-bottom: 4px;">
+                                        TOP-VIEW ARCHITECTURE</div>
+                                    <div style="font-size: 1.1rem; color: #000; margin-bottom: 2px;">4x Mac Studio
+                                        Cluster</div>
+                                    <p style="font-size: 0.85rem; color: #64748b; line-height: 1.4;">Direct-facing Apple
+                                        Silicon mesh utilizing M5 Ultra processing for deterministic local AI
+                                        conduction.</p>
                                 </div>
-                                <p style="font-size: 0.9rem; color: #666; font-weight: 500; margin-top: 5px;">
-                                    Direct-facing
-                                    Apple Silicon mesh utilizing M5 Ultra processing for deterministic local AI
-                                    conduction.
-                                </p>
-                            </div>
-
-                            <div style="padding-bottom: 20px; border-bottom: 1px solid #eee;">
-                                <h4 class="cinzel"
-                                    style="font-size: 0.85rem; font-weight: 600; color: var(--gold-dark); margin-bottom: 10px;">
-                                    Sovereign Fabric</h4>
-                                <div style="font-size: 1.1rem; font-weight: 600; color: #000;">TB5 Fiber Interconnect
+                                <div>
+                                    <div class="cinzel"
+                                        style="font-size: 0.7rem; color: var(--gold-dark); letter-spacing: 0.1em; margin-bottom: 4px;">
+                                        SOVEREIGN FABRIC</div>
+                                    <div style="font-size: 1.1rem; color: #000; margin-bottom: 2px;">TB5 Fiber
+                                        Interconnect</div>
+                                    <p style="font-size: 0.85rem; color: #64748b; line-height: 1.4;">Gold-braided
+                                        120Gbps RDMA fabric with pulsing data synchronization across all nodes.</p>
                                 </div>
-                                <p style="font-size: 0.9rem; color: #666; font-weight: 500; margin-top: 5px;">
-                                    Gold-braided
-                                    120Gbps RDMA fabric with pulsing data synchronization across all nodes.</p>
-                            </div>
-
-                            <div>
-                                <h4 class="cinzel"
-                                    style="font-size: 0.85rem; font-weight: 600; color: var(--gold-dark); margin-bottom: 10px;">
-                                    Trust Layer</h4>
-                                <div style="font-size: 1.1rem; font-weight: 600; color: #000;">Hedera Local Mirror Node
-                                </div>
-                                <p style="font-size: 0.9rem; color: #666; font-weight: 500; margin-top: 5px;">Local
-                                    consensus-as-a-service. Every inference transaction is hashed and verified
-                                    instantly.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div
-                            style="margin-top: auto; display: flex; gap: 50px; background: #fcfcfd; padding: 25px; border: 1px solid #f0f0f2;">
-                            <div>
-                                <div class="cinzel" style="font-size: 1.8rem; font-weight: 600; color: #000;">2.0 <span
-                                        style="font-size: 0.8rem; color: #999;">TB</span></div>
-                                <div
-                                    style="font-size: 0.6rem; letter-spacing: 0.2em; color: var(--gold-dark); font-weight: 600;">
-                                    TOTAL VRAM</div>
-                            </div>
-                            <div style="width: 1px; height: 100%; background: #eee;"></div>
-                            <div>
-                                <div class="cinzel" style="font-size: 1.8rem; font-weight: 600; color: #000;">152 <span
-                                        style="font-size: 0.8rem; color: #999;">Tops</span></div>
-                                <div
-                                    style="font-size: 0.6rem; letter-spacing: 0.2em; color: var(--gold-dark); font-weight: 600;">
-                                    NPU COMPUTE</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="slide-footer" style="padding: 40px 80px;">
-                    <div
-                        style="font-size: 0.7rem; color: #aaa; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600;">
-                        SIRSI TECHNOLOGIES // HARDWARE CANON // ALPHA SERIES</div>
-                </div>
-            </div>
-
-            <div class="slide" style="padding: 0; background: #fff; color: #000;">
-                <div class="slide-content"
-                    style="flex-direction: row; display: flex; height: 100%; width: 100%; padding: 0; overflow: hidden;">
-                    <!-- Left: High-Fidelity Infrastructure Visual (Preserved) -->
-                    <div
-                        style="flex: 1.6; background: #f8f8fb; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                        <img src="assets/supercluster_mesh_8k.png"
-                            style="width: 100%; height: 100%; object-fit: contain; padding: 40px;">
-                        <!-- Precision ID Label -->
-                        <div
-                            style="position: absolute; bottom: 40px; left: 50px; border-left: 3px solid var(--gold-neo); padding-left: 20px;">
-                            <div class="cinzel"
-                                style="font-size: 0.7rem; font-weight: 600; color: var(--gold-dark); letter-spacing: 0.4em; margin-bottom: 5px;">
-                                MESH ARCHITECTURE</div>
-                            <div class="cinzel" style="font-size: 1.5rem; font-weight: 600; color: #000;">SX-SUPER-CORE
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right: Technical Narrative & Deep-Spec Data Sheet (MAXIMIZED) -->
-                    <div
-                        style="flex: 1.1; padding: 60px; display: flex; flex-direction: column; gap: 30px; background: #fff; border-left: 1px solid #f0f0f2; position: relative; overflow-y: auto;">
-                        <div>
-                            <div class="cinzel"
-                                style="font-size: 0.8rem; font-weight: 600; color: var(--gold-dark); letter-spacing: 0.6em; margin-bottom: 15px;">
-                                THE TECHNOLOGY THAT BREAKS THE WORLD</div>
-                            <h2 class="cinzel"
-                                style="color: var(--primary); border-bottom: none; font-size: 2.8rem; margin: 0; padding: 0; line-height: 1.1; font-weight: 500;">
-                                Sirsi Nexus <span style="color: var(--gold-dark);">Core.</span></h2>
-                            <div style="width: 60px; height: 3px; background: var(--gold-neo); margin-top: 20px;"></div>
-                        </div>
-
-                        <p class="lead"
-                            style="color: #000; font-size: 1.2rem; font-weight: 600; line-height: 1.4; margin: 0; text-align: left;">
-                            The synthesis of Apple Silicon and Sirsi Software. A 32-node sovereign mesh engineered for
-                            absolute
-                            high-concurrency intelligence.
-                        </p>
-
-                        <!-- Product Specification Grid (Filled to the gills) -->
-                        <div style="display: flex; flex-direction: column; gap: 20px;">
-
-                            <!-- Spec Block: Compute Engine -->
-                            <div style="border-left: 2px solid #eee; padding-left: 20px;">
-                                <div class="cinzel"
-                                    style="font-size: 0.7rem; letter-spacing: 0.3em; color: var(--gold-dark); font-weight: 600; margin-bottom: 10px;">
-                                    ENGINE: SOVEREIGN COMPUTE</div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                                    <div>
-                                        <div style="font-size: 1.1rem; font-weight: 600; color: #000;">16.0 TB RAM</div>
-                                        <div style="font-size: 0.65rem; color: #777; font-weight: 600;">512GB UNIFIED
-                                            PER
-                                            NODE
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div style="font-size: 1.1rem; font-weight: 600; color: #000;">4,000+ CORES
-                                        </div>
-                                        <div style="font-size: 0.65rem; color: #777; font-weight: 600;">CPU + GPU +
-                                            NEURAL
-                                            DENSITY</div>
-                                    </div>
-                                    <div
-                                        style="grid-column: span 2; background: rgba(0, 138, 94, 0.05); padding: 10px; border-radius: 4px;">
-                                        <div style="font-size: 1rem; font-weight: 600; color: #008A5E;">APPLE MLX NATIVE
-                                        </div>
-                                        <div style="font-size: 0.65rem; color: #006b49; font-weight: 600;">Unified
-                                            Memory
-                                            Orchestration for sub-millisecond LLM inference</div>
-                                    </div>
+                                <div>
+                                    <div class="cinzel"
+                                        style="font-size: 0.7rem; color: var(--gold-dark); letter-spacing: 0.1em; margin-bottom: 4px;">
+                                        TRUST LAYER</div>
+                                    <div style="font-size: 1.1rem; color: #000; margin-bottom: 2px;">Hedera Local Mirror
+                                        Node</div>
+                                    <p style="font-size: 0.85rem; color: #64748b; line-height: 1.4;">Local
+                                        consensus-as-a-service. Every inference transaction is hashed and verified
+                                        instantly.</p>
                                 </div>
                             </div>
 
-                            <!-- Spec Block: Neural Fabric & Fabric -->
-                            <div style="border-left: 2px solid #eee; padding-left: 20px;">
-                                <div class="cinzel"
-                                    style="font-size: 0.7rem; letter-spacing: 0.3em; color: var(--gold-dark); font-weight: 600; margin-bottom: 10px;">
-                                    FABRIC: NEURAL SYNC</div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                                    <div>
-                                        <div style="font-size: 1.1rem; font-weight: 600; color: #000;">RDMA over TB5
-                                        </div>
-                                        <div style="font-size: 0.65rem; color: #777; font-weight: 600;">120 Gbps
-                                            NODE-TO-NODE
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div style="font-size: 1.1rem; font-weight: 600; color: #000;">256 TB STORAGE
-                                        </div>
-                                        <div style="font-size: 0.65rem; color: #777; font-weight: 600;">SOVEREIGN NVMe
-                                            SWARM
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Spec Block: Trust & Verification -->
-                            <div style="border-left: 2px solid #eee; padding-left: 20px;">
-                                <div class="cinzel"
-                                    style="font-size: 0.7rem; letter-spacing: 0.3em; color: var(--gold-dark); font-weight: 600; margin-bottom: 10px;">
-                                    CONSENSUS: DATA INTEGRITY</div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                                    <div>
-                                        <div style="font-size: 1.1rem; font-weight: 600; color: #000;">aBFT TRUST</div>
-                                        <div style="font-size: 0.65rem; color: #777; font-weight: 600;">HEDERA DLT STATE
-                                            MIRRORING</div>
-                                    </div>
-                                    <div>
-                                        <div style="font-size: 1.1rem; font-weight: 600; color: #000;">ZERO-CLOUD</div>
-                                        <div style="font-size: 0.65rem; color: #777; font-weight: 600;">ISOLATED
-                                            SOVEREIGN
-                                            VAULT
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid #eee;">
-                            <div class="cinzel"
-                                style="font-size: 0.65rem; color: #bbb; text-transform: uppercase; letter-spacing: 0.4em; font-weight: 600; line-height: 1.6;">
-                                GLOBAL SOVEREIGN INFRASTRUCTURE // ALPHA SERIES-32<br>
-                                <span style="color: var(--gold-dark);">SIRSI PERSONA // HYPERVISOR ACTIVE</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="slide" style="position: relative; overflow: hidden;">
-                <!-- Technical Dot Matrix -->
-                <div
-                    style="position: absolute; top: 0; right: 0; width: 400px; height: 400px; background-image: radial-gradient(var(--primary) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity: 0.12; pointer-events: none;">
-                </div>
-                <div
-                    style="position: absolute; bottom: 0; left: 0; width: 400px; height: 400px; background-image: radial-gradient(var(--gold) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity: 0.12; pointer-events: none;">
-                </div>
-
-                <div class="slide-header">
-                    <h3 style="color: var(--gold-neo);">GO TO MARKET STRATEGY</h3>
-                    <h2>Execution Path. <span style="color: var(--primary);">Systemic Adoption.</span></h2>
-                </div>
-
-                <div class="slide-content">
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <!-- Integrated Technical Status Bar (Jazz) -->
-                        <div
-                            style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; color: var(--text-slate);">
-                            <div style="color: var(--gold-dark);">MOAT VALIDATION //</div>
+                            <!-- Stat Box -->
                             <div
-                                style="padding: 4px 12px; border: 1px solid var(--gold); border-radius: 2px; color: var(--text-dark);">
-                                3 PATENTS PENDING</div>
-                            <div
-                                style="padding: 4px 12px; border: 1px solid var(--primary); border-radius: 2px; color: var(--text-dark);">
-                                $135K INITIAL ACV</div>
-                            <div
-                                style="padding: 4px 12px; border: 1px solid var(--text-dark); border-radius: 2px; color: var(--text-dark);">
-                                NVIDIA INCEPTION PARTNER</div>
-                            <div style="flex: 1; height: 1px; background: var(--border); opacity: 0.5;"></div>
-                        </div>
-
-                        <!-- Roadmap Engine (The Arrow Graphic) -->
-                        <div style="display: flex; flex-direction: column; gap: 0; margin-bottom: 15px;">
-                            <!-- Milestones: Top -->
-                            <div
-                                style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 10px; padding-left: 20px;">
-                                <div></div>
+                                style="display: flex; gap: 0; margin-top: 30px; border: 1px solid var(--border); padding: 0;">
                                 <div
-                                    style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
-                                    <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Winter
-                                        2025
-                                    </div>
-                                    <div
-                                        style="font-size: 0.65rem; font-weight: 600; color: var(--gold-dark); text-transform: uppercase;">
-                                        Phase I // Sirsi AI MVP</div>
+                                    style="flex: 1; padding: 15px; border-right: 1px solid var(--border); background: #fcfcfd;">
+                                    <div class="cinzel" style="font-size: 2rem; color: #000;">2.0 <span
+                                            style="font-size: 0.8rem; color: #94a3b8;">TB</span></div>
+                                    <div class="cinzel"
+                                        style="font-size: 0.6rem; color: var(--gold-dark); letter-spacing: 0.1em; margin-top: 3px;">
+                                        TOTAL VRAM</div>
                                 </div>
-                                <div
-                                    style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
-                                    <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Summer
-                                        2026
-                                    </div>
-                                    <div
-                                        style="font-size: 0.65rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
-                                        Phase II // Portal Launch</div>
-                                </div>
-                                <div
-                                    style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
-                                    <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Fall
-                                        2027
-                                    </div>
-                                    <div
-                                        style="font-size: 0.65rem; font-weight: 600; color: var(--text-dark); text-transform: uppercase;">
-                                        Phase III // On-Prem</div>
-                                </div>
-                            </div>
-
-                            <!-- Flow Conduit (Arrow segments) -->
-                            <div
-                                style="display: flex; align-items: stretch; margin-bottom: 10px; gap: 8px; height: 60px;">
-                                <div
-                                    style="width: 60px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; color: var(--text-slate); letter-spacing: 0.2em; writing-mode: vertical-lr; text-transform: uppercase; border-right: 1.5px solid var(--gold); transform: rotate(180deg);">
-                                    START</div>
-
-                                <div
-                                    style="flex: 1; background: var(--primary-light); border: 1.5px solid var(--primary); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%);">
-                                    IP DEVELOPMENT</div>
-
-                                <div
-                                    style="flex: 1; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%, 6% 50%); margin-left: -10px;">
-                                    PUBLIC RELEASE</div>
-
-                                <div
-                                    style="flex: 1; background: var(--gold-light); border: 1.5px solid var(--gold); color: var(--gold-dark); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 6% 50%); margin-left: -10px;">
-                                    SCALE GLOBAL</div>
-                            </div>
-
-                            <!-- Milestones: Bottom -->
-                            <div
-                                style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 10px; padding-left: 20px;">
-                                <div></div>
-                                <div
-                                    style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
-                                    <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">August
-                                        2025
-                                    </div>
-                                    <div style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate);">AI Tech
-                                        Stack POC</div>
-                                </div>
-                                <div
-                                    style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
-                                    <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Spring
-                                        2026
-                                    </div>
-                                    <div style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate);">
-                                        Customer
-                                        Scale-Up</div>
-                                </div>
-                                <div
-                                    style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
-                                    <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Spring
-                                        2027
-                                    </div>
-                                    <div style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate);">Cloud
-                                        Provider Sync</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Market Grid (Phase Boxes) -->
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
-                            <!-- PHASE 01 -->
-                            <div class="info-card" style="border-top: 2.5px solid var(--primary); padding: 18px;">
-                                <div
-                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-                                    <div
-                                        style="font-size: 0.7rem; font-weight: 600; color: var(--primary); letter-spacing: 0.1em;">
-                                        PHASE 01</div>
-                                    <div
-                                        style="background: var(--primary-light); padding: 2px 6px; font-size: 0.55rem; font-weight: 600; color: var(--primary); border-radius: 2px;">
-                                        2024-2025</div>
-                                </div>
-                                <h4
-                                    style="font-size: 0.95rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px;">
-                                    Studio Governance</h4>
-                                <p
-                                    style="font-size: 0.8rem; line-height: 1.4; color: var(--text-slate); margin-bottom: 12px;">
-                                    Deploying the Sirsi Nexus core as a governance engine for
-                                    high-stakes
-                                    ventures.</p>
-                                <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 8px;">
-                                    <div
-                                        style="font-size: 0.6rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
-                                        Focus //</div>
-                                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-dark);">Legal
-                                        Evidence & Vaulting</div>
-                                </div>
-                            </div>
-
-                            <!-- PHASE 02 -->
-                            <div class="info-card" style="border-top: 2.5px solid var(--gold); padding: 18px;">
-                                <div
-                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-                                    <div
-                                        style="font-size: 0.7rem; font-weight: 600; color: var(--gold-dark); letter-spacing: 0.1em;">
-                                        PHASE 02</div>
-                                    <div
-                                        style="background: var(--gold-light); padding: 2px 6px; font-size: 0.55rem; font-weight: 600; color: var(--gold-dark); border-radius: 2px;">
-                                        2025-2026</div>
-                                </div>
-                                <h4
-                                    style="font-size: 0.95rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px;">
-                                    Development Intelligence</h4>
-                                <p
-                                    style="font-size: 0.8rem; line-height: 1.4; color: var(--text-slate); margin-bottom: 12px;">
-                                    Transforming Sirsi from a vault into an active Agentic Operating
-                                        System
-                                    for complex app building.</p>
-                                <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 8px;">
-                                    <div
-                                        style="font-size: 0.6rem; font-weight: 600; color: var(--gold-dark); text-transform: uppercase;">
-                                        Focus //</div>
-                                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-dark);">MD/IL/MN
-                                        Expansion</div>
-                                </div>
-                            </div>
-
-                            <!-- PHASE 03 -->
-                            <div class="info-card" style="border-top: 2.5px solid var(--primary); padding: 18px;">
-                                <div
-                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-                                    <div
-                                        style="font-size: 0.7rem; font-weight: 600; color: var(--primary); letter-spacing: 0.1em;">
-                                        PHASE 03</div>
-                                    <div
-                                        style="background: var(--primary-light); padding: 2px 6px; font-size: 0.55rem; font-weight: 600; color: var(--primary); border-radius: 2px;">
-                                        2026+</div>
-                                </div>
-                                <h4
-                                    style="font-size: 0.95rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px;">
-                                    Sovereign Infrastructure</h4>
-                                <p
-                                    style="font-size: 0.8rem; line-height: 1.4; color: var(--text-slate); margin-bottom: 12px;">
-                                    Global rollout of Sirsi Sovereign Clusters. High-concurrency AI for
-                                    nation-state grade security.</p>
-                                <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 8px;">
-                                    <div
-                                        style="font-size: 0.6rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
-                                        Focus //</div>
-                                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-dark);">The
-                                        Multi-Cloud Mesh</div>
+                                <div style="flex: 1; padding: 15px; background: #fcfcfd;">
+                                    <div class="cinzel" style="font-size: 2rem; color: #000;">152 <span
+                                            style="font-size: 0.8rem; color: #94a3b8;">TOPS</span></div>
+                                    <div class="cinzel"
+                                        style="font-size: 0.6rem; color: var(--gold-dark); letter-spacing: 0.1em; margin-top: 3px;">
+                                        NPU COMPUTE</div>
                                 </div>
                             </div>
                         </div>
@@ -1831,13 +1767,330 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
-                    <div style="font-weight: 500;">CONFIDENTIAL // GO-TO-MARKET // SLIDE 09</div>
+                    <div class="cinzel"
+                        style="font-weight: 700; color: var(--text-slate); letter-spacing: 0.15em; font-size: 0.75rem;">
+                        SIRSI TECHNOLOGIES // HARDWARE CANON // ALPHA SERIES</div>
                 </div>
             </div>
         </div>
 
-            <!-- Slide 8: Market Architecture - The Trillion Dollar Convergence -->
+        <!-- Slide 08: Nexus Core - The 32-Node Apex -->
+        <div class="slide">
+            <div class="slide-inner">
+                <div class="slide-content" style="padding: 0;">
+                    <div class="grid-2" style="gap: 50px; align-items: start;">
+                        <!-- Left Pillar: Image -->
+                        <div style="display: flex; align-items: center; justify-content: center;">
+                            <img src="assets/supercluster_mesh_8k.png"
+                                style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                        </div>
+
+                        <!-- Right Pillar: Specs -->
+                        <div style="padding-top: 5px;">
+                            <div class="cinzel"
+                                style="font-size: 0.75rem; color: var(--gold-dark); letter-spacing: 0.3em; margin-bottom: 10px; text-transform: uppercase;">
+                                THE TECHNOLOGY THAT BREAKS THE WORLD</div>
+                            <h2 class="cinzel"
+                                style="font-size: 2.8rem; color: #111; margin-bottom: 12px; border-bottom: none; text-transform: uppercase;">
+                                SIRSI NEXUS <span style="color: var(--gold-dark);">CORE.</span></h2>
+                            <div style="width: 70px; height: 3px; background: var(--gold-neo); margin-bottom: 25px;">
+                            </div>
+
+                            <p style="font-size: 1.05rem; color: #000; line-height: 1.5; margin-bottom: 25px;">The
+                                synthesis of Apple Silicon and Sirsi Software. A 32-node sovereign mesh engineered for
+                                absolute high-concurrency intelligence.</p>
+
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <!-- ENGINE: SOVEREIGN COMPUTE -->
+                                <div style="border-left: 2px solid #eee; padding-left: 18px;">
+                                    <div class="cinzel"
+                                        style="font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gold-dark); margin-bottom: 6px;">
+                                        ENGINE: SOVEREIGN COMPUTE</div>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                        <div>
+                                            <div style="font-size: 1.1rem; color: #000;">16.0 TB RAM</div>
+                                            <div style="font-size: 0.6rem; color: #888; text-transform: uppercase;">
+                                                512GB UNIFIED PER NODE</div>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 1.1rem; color: #000;">4,000+ CORES</div>
+                                            <div style="font-size: 0.6rem; color: #888; text-transform: uppercase;">CPU
+                                                + GPU + NEURAL DENSITY</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- APPLE MLX NATIVE -->
+                                <div
+                                    style="background: rgba(5, 150, 105, 0.06); padding: 10px 16px; border-left: 3px solid var(--primary);">
+                                    <div style="font-size: 0.8rem; color: var(--primary); letter-spacing: 0.05em;">APPLE
+                                        MLX NATIVE</div>
+                                    <div style="font-size: 0.7rem; color: #555; margin-top: 2px;">Unified Memory
+                                        Orchestration for sub-millisecond LLM Inference</div>
+                                </div>
+
+                                <!-- FABRIC: NEURAL SYNC -->
+                                <div style="border-left: 2px solid #eee; padding-left: 18px;">
+                                    <div class="cinzel"
+                                        style="font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gold-dark); margin-bottom: 6px;">
+                                        FABRIC: NEURAL SYNC</div>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                        <div>
+                                            <div style="font-size: 1rem; color: #000;">RDMA over TB5</div>
+                                            <div style="font-size: 0.6rem; color: #888; text-transform: uppercase;">32
+                                                Gbps NODE-TO-NODE</div>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 1rem; color: #000;">256 TB STORAGE</div>
+                                            <div style="font-size: 0.6rem; color: #888; text-transform: uppercase;">
+                                                SOVEREIGN NVMe SWARM</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CONSENSUS: DATA INTEGRITY -->
+                                <div style="border-left: 2px solid #eee; padding-left: 18px;">
+                                    <div class="cinzel"
+                                        style="font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gold-dark); margin-bottom: 6px;">
+                                        CONSENSUS: DATA INTEGRITY</div>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                        <div>
+                                            <div style="font-size: 1rem; color: #000;">aBFT TRUST</div>
+                                            <div style="font-size: 0.6rem; color: #888; text-transform: uppercase;">
+                                                HEDERA DLT STATE MIRRORING</div>
+                                        </div>
+                                        <div>
+                                            <div style="font-size: 1rem; color: #000;">ZERO-CLOUD</div>
+                                            <div style="font-size: 0.6rem; color: #888; text-transform: uppercase;">
+                                                ISOLATED SOVEREIGN VAULT</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div class="cinzel" style="color: var(--text-slate); letter-spacing: 0.12em; font-size: 0.7rem;">
+                        GLOBAL SOVEREIGN INFRASTRUCTURE // ALPHA SERIES-32 / SIRSI PERSONA // HYPERVISOR ACTIVE</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" style="position: relative; overflow: hidden;">
+            <!-- Technical Dot Matrix -->
+            <div
+                style="position: absolute; top: 0; right: 0; width: 400px; height: 400px; background-image: radial-gradient(var(--primary) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity: 0.12; pointer-events: none;">
+            </div>
+            <div
+                style="position: absolute; bottom: 0; left: 0; width: 400px; height: 400px; background-image: radial-gradient(var(--gold) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity: 0.12; pointer-events: none;">
+            </div>
+
+            <div class="slide-header">
+                <h3 style="color: var(--gold-neo);">GO TO MARKET STRATEGY</h3>
+                <h2>Execution Path. <span style="color: var(--primary);">Systemic Adoption.</span></h2>
+            </div>
+
+            <div class="slide-content">
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <!-- Integrated Technical Status Bar (Jazz) -->
+                    <div
+                        style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; color: var(--text-slate);">
+                        <div style="color: var(--gold-dark);">MOAT VALIDATION //</div>
+                        <div
+                            style="padding: 4px 12px; border: 1px solid var(--gold); border-radius: 2px; color: var(--text-dark);">
+                            3 PATENTS PENDING</div>
+                        <div
+                            style="padding: 4px 12px; border: 1px solid var(--primary); border-radius: 2px; color: var(--text-dark);">
+                            $135K INITIAL ACV</div>
+                        <div
+                            style="padding: 4px 12px; border: 1px solid var(--text-dark); border-radius: 2px; color: var(--text-dark);">
+                            NVIDIA INCEPTION PARTNER</div>
+                        <div style="flex: 1; height: 1px; background: var(--border); opacity: 0.5;"></div>
+                    </div>
+
+                    <!-- Roadmap Engine (The Arrow Graphic) -->
+                    <div style="display: flex; flex-direction: column; gap: 0; margin-bottom: 15px;">
+                        <!-- Milestones: Top -->
+                        <div
+                            style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 10px; padding-left: 20px;">
+                            <div></div>
+                            <div
+                                style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
+                                <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Winter
+                                    2025
+                                </div>
+                                <div
+                                    style="font-size: 0.65rem; font-weight: 600; color: var(--gold-dark); text-transform: uppercase;">
+                                    Phase I // Sirsi AI MVP</div>
+                            </div>
+                            <div
+                                style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
+                                <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Summer
+                                    2026
+                                </div>
+                                <div
+                                    style="font-size: 0.65rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
+                                    Phase II // Portal Launch</div>
+                            </div>
+                            <div
+                                style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
+                                <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Fall
+                                    2027
+                                </div>
+                                <div
+                                    style="font-size: 0.65rem; font-weight: 600; color: var(--text-dark); text-transform: uppercase;">
+                                    Phase III // On-Prem</div>
+                            </div>
+                        </div>
+
+                        <!-- Flow Conduit (Arrow segments) -->
+                        <div style="display: flex; align-items: stretch; margin-bottom: 10px; gap: 8px; height: 60px;">
+                            <div
+                                style="width: 60px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; color: var(--text-slate); letter-spacing: 0.2em; writing-mode: vertical-lr; text-transform: uppercase; border-right: 1.5px solid var(--gold); transform: rotate(180deg);">
+                                START</div>
+
+                            <div
+                                style="flex: 1; background: var(--primary-light); border: 1.5px solid var(--primary); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%);">
+                                IP DEVELOPMENT</div>
+
+                            <div
+                                style="flex: 1; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%, 6% 50%); margin-left: -10px;">
+                                PUBLIC RELEASE</div>
+
+                            <div
+                                style="flex: 1; background: var(--gold-light); border: 1.5px solid var(--gold); color: var(--gold-dark); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 6% 50%); margin-left: -10px;">
+                                SCALE GLOBAL</div>
+                        </div>
+
+                        <!-- Milestones: Bottom -->
+                        <div
+                            style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 10px; padding-left: 20px;">
+                            <div></div>
+                            <div
+                                style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
+                                <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">August
+                                    2025
+                                </div>
+                                <div style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate);">AI Tech
+                                    Stack POC</div>
+                            </div>
+                            <div
+                                style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
+                                <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Spring
+                                    2026
+                                </div>
+                                <div style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate);">
+                                    Customer
+                                    Scale-Up</div>
+                            </div>
+                            <div
+                                style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
+                                <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Spring
+                                    2027
+                                </div>
+                                <div style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate);">Cloud
+                                    Provider Sync</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Market Grid (Phase Boxes) -->
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                        <!-- PHASE 01 -->
+                        <div class="info-card" style="border-top: 2.5px solid var(--primary); padding: 18px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <div
+                                    style="font-size: 0.7rem; font-weight: 600; color: var(--primary); letter-spacing: 0.1em;">
+                                    PHASE 01</div>
+                                <div
+                                    style="background: var(--primary-light); padding: 2px 6px; font-size: 0.55rem; font-weight: 600; color: var(--primary); border-radius: 2px;">
+                                    2024-2025</div>
+                            </div>
+                            <h4
+                                style="font-size: 0.95rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px;">
+                                Studio Governance</h4>
+                            <p
+                                style="font-size: 0.8rem; line-height: 1.4; color: var(--text-slate); margin-bottom: 12px;">
+                                Deploying the Sirsi Nexus core as a governance engine for
+                                high-stakes
+                                ventures.</p>
+                            <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 8px;">
+                                <div
+                                    style="font-size: 0.6rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
+                                    Focus //</div>
+                                <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-dark);">Legal
+                                    Evidence & Vaulting</div>
+                            </div>
+                        </div>
+
+                        <!-- PHASE 02 -->
+                        <div class="info-card" style="border-top: 2.5px solid var(--gold); padding: 18px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <div
+                                    style="font-size: 0.7rem; font-weight: 600; color: var(--gold-dark); letter-spacing: 0.1em;">
+                                    PHASE 02</div>
+                                <div
+                                    style="background: var(--gold-light); padding: 2px 6px; font-size: 0.55rem; font-weight: 600; color: var(--gold-dark); border-radius: 2px;">
+                                    2025-2026</div>
+                            </div>
+                            <h4
+                                style="font-size: 0.95rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px;">
+                                Development Intelligence</h4>
+                            <p
+                                style="font-size: 0.8rem; line-height: 1.4; color: var(--text-slate); margin-bottom: 12px;">
+                                Transforming Sirsi from a vault into an active Agentic Operating
+                                System
+                                for complex app building.</p>
+                            <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 8px;">
+                                <div
+                                    style="font-size: 0.6rem; font-weight: 600; color: var(--gold-dark); text-transform: uppercase;">
+                                    Focus //</div>
+                                <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-dark);">MD/IL/MN
+                                    Expansion</div>
+                            </div>
+                        </div>
+
+                        <!-- PHASE 03 -->
+                        <div class="info-card" style="border-top: 2.5px solid var(--primary); padding: 18px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <div
+                                    style="font-size: 0.7rem; font-weight: 600; color: var(--primary); letter-spacing: 0.1em;">
+                                    PHASE 03</div>
+                                <div
+                                    style="background: var(--primary-light); padding: 2px 6px; font-size: 0.55rem; font-weight: 600; color: var(--primary); border-radius: 2px;">
+                                    2026+</div>
+                            </div>
+                            <h4
+                                style="font-size: 0.95rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px;">
+                                Sovereign Infrastructure</h4>
+                            <p
+                                style="font-size: 0.8rem; line-height: 1.4; color: var(--text-slate); margin-bottom: 12px;">
+                                Global rollout of Sirsi Sovereign Clusters. High-concurrency AI for
+                                nation-state grade security.</p>
+                            <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 8px;">
+                                <div
+                                    style="font-size: 0.6rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
+                                    Focus //</div>
+                                <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-dark);">The
+                                    Multi-Cloud Mesh</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
+                <div style="font-weight: 500;">CONFIDENTIAL // GO-TO-MARKET // SLIDE 09</div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Market Architecture - The Trillion Dollar Convergence -->
         <div class="slide" style="position: relative; overflow: hidden;">
             <div class="slide-inner">
                 <!-- Technical Architecture Background -->
@@ -1938,7 +2191,7 @@
                                                 style="font-size: 0.9rem; color: var(--text-slate); font-weight: 400; line-height: 1.4;">
                                                 $1.55T Public Cloud TAM is shifting from manual dashboards to
                                                 Systemic
-                                                    Autonomous Layers.
+                                                Autonomous Layers.
                                             </div>
                                         </div>
                                     </div>
@@ -1985,238 +2238,236 @@
                     <div style="font-weight: 500;">CONFIDENTIAL // MARKET ARCHITECTURE // SLIDE 10</div>
                 </div>
             </div>
-
-            <div class="slide">
-                <div class="slide-header">
-                    <h3>THE ARCHITECT</h3>
-                    <h2>Cylton Collymore</h2>
-                </div>
-
-                <div class="slide-content">
-                    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 50px; align-items: center;">
-                        <div style="position: relative;">
-                            <div
-                                style="width: 100%; aspect-ratio: 1; background: var(--gold-light); border: 8px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);">
-                                <div style="text-align: center; color: var(--gold-dark); padding: 15px;">
-                                    <i class="fas fa-microchip" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
-                                    <div class="royal-text" style="font-size: 0.8rem; line-height: 1.2;">
-                                        DOMAIN<br>MASTERY
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                style="position: absolute; bottom: 0; right: 0; background: var(--primary); color: white; padding: 8px 15px; border-radius: 30px; font-weight: 600; font-size: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                                MIT xPRO '24
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="royal-text"
-                                style="color: var(--primary); font-size: 1rem; margin-bottom: 15px; letter-spacing: 0.1em; text-transform: uppercase;">
-                                THE CORE TEAM</h4>
-                            <ul style="list-style: none;">
-                                <li style="margin-bottom: 12px; font-size: 0.95rem; line-height: 1.4;">■ Cylton
-                                        Collymore (CEO):
-                                    20+ Yrs Infrastructure. Meta & US State Dept.</li>
-                                <li style="margin-bottom: 12px; font-size: 0.95rem; line-height: 1.4;">■ VP of
-                                        Engineering:
-                                    Specialized in High-Availability & Hardware Mesh.</li>
-                                <li style="margin-bottom: 12px; font-size: 0.95rem; line-height: 1.4;">■ VP of
-                                        Marketing & Sales:
-                                    Focused on Global Enterprise GTM.</li>
-                                <li style="margin-bottom: 12px; font-size: 0.95rem; line-height: 1.4;">■
-                                        Strategic
-                                        Advisors: AI &
-                                    Cloud Infrastructure Veterans.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="slide-footer">
-                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
-                    <div style="font-weight: 500;">CONFIDENTIAL // LEADERSHIP // SLIDE 11</div>
-                </div>
-            </div>
-
-            <div class="slide">
-                <div class="slide-header">
-                    <h3>STRATEGIC TRACTION</h3>
-                    <h2>Proven Performance: $147K Contracted Revenue</h2>
-                </div>
-
-                <div class="slide-content">
-                    <div style="display: flex; flex-direction: column; gap: 30px;">
-                        <div class="grid-2 traction-grid" style="gap: 30px;">
-                            <!-- Case Study: Assiduous -->
-                            <div class="info-card"
-                                style="border: 2px solid #e2e8f0; border-left: 10px solid var(--primary); padding: 25px; background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,0.04); border-radius: 4px; justify-content: flex-start; width: 100%;">
-                                <div style="margin-bottom: 15px;">
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                                        <div>
-                                            <h4 class="royal-text"
-                                                style="color: var(--primary); font-size: 1.2rem; margin: 0; letter-spacing: 0.05em;">
-                                                ASSIDUOUS</h4>
-                                            <div
-                                                style="font-size: 0.7rem; color: var(--text-slate); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
-                                                Real Estate Micro-Flipping</div>
-                                        </div>
-                                        <div
-                                            style="border: 2px solid var(--primary); color: var(--primary); padding: 4px 10px; font-size: 0.65rem; font-weight: 600; border-radius: 2px; text-transform: uppercase;">
-                                            Strategic Rollout</div>
-                                    </div>
-
-                                    <p
-                                        style="font-weight: 600; color: #0f172a; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.25;">
-                                        $2.4B in Analyzed Assets. Production-Ready in 29 Days.</p>
-
-                                    <div
-                                        style="display: flex; gap: 15px; margin-bottom: 15px; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 10px 0;">
-                                        <div style="flex: 1;">
-                                            <div
-                                                style="font-size: 0.65rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
-                                                March 1st Launch</div>
-                                            <div style="font-size: 0.8rem; font-weight: 600; color: #000;">Core Platform
-                                                (v1.0)</div>
-                                        </div>
-                                        <div style="flex: 1; border-left: 1px solid #f1f5f9; padding-left: 15px;">
-                                            <div
-                                                style="font-size: 0.65rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
-                                                May 1st Update</div>
-                                            <div style="font-size: 0.8rem; font-weight: 600; color: #000;">AI Micro-Flip
-                                                Engine</div>
-                                        </div>
-                                    </div>
-
-                                    <ul style="list-style: none; font-size: 0.8rem; color: #475569; padding: 0;">
-                                        <li
-                                            style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
-                                            <span style="color: var(--primary); font-weight: 600;">■</span>
-                                            <span>Universal Component System (UCS): Build-time
-                                                programmable
-                                                tokens eliminating 90% of UI bloat across 780+ production files.</span>
-                                        </li>
-                                        <li
-                                            style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
-                                            <span style="color: var(--primary); font-weight: 600;">■</span>
-                                            <span>Real-Time Dev Telemetry: Automated Git-to-Firestore
-                                                pipeline tracking 650+ commits and project velocity in real-time.</span>
-                                        </li>
-                                        <li style="display: flex; align-items: flex-start; gap: 10px;">
-                                            <span style="color: var(--primary); font-weight: 600;">■</span>
-                                            <span>Autonomous Match Engine: Processing 3,542+ property
-                                                nodes
-                                                with 94.5% AI accuracy and $48.6M in lifecycle value.</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <!-- Case Study: FinalWishes -->
-                            <div class="info-card"
-                                style="border: 2px solid #e2e8f0; border-left: 10px solid var(--gold); padding: 25px; background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,0.04); border-radius: 4px; justify-content: flex-start; width: 100%;">
-                                <div style="margin-bottom: 15px;">
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                                        <div>
-                                            <h4 class="royal-text"
-                                                style="color: var(--gold-dark); font-size: 1.2rem; margin: 0; letter-spacing: 0.05em;">
-                                                FINALWISHES</h4>
-                                            <div
-                                                style="font-size: 0.7rem; color: var(--text-slate); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
-                                                The Legacy Operating System</div>
-                                        </div>
-                                        <div
-                                            style="border: 2px solid var(--gold-dark); color: var(--gold-dark); padding: 4px 10px; font-size: 0.65rem; font-weight: 600; border-radius: 2px; text-transform: uppercase;">
-                                            $147K TOTAL CONTRACTED</div>
-                                    </div>
-
-                                    <p
-                                        style="font-weight: 600; color: #0f172a; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.25;">
-                                        Securing Multi-Generational Wealth & Personal Data.</p>
-
-                                    <div
-                                        style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; background: #f8fafc; padding: 10px; border-radius: 4px;">
-                                        <div
-                                            style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
-                                            <span style="color: #64748b;">SERVICE ARCHITECTURE:</span>
-                                            <span style="color: var(--gold-dark);">CONTRACTS gRPC v1.0</span>
-                                        </div>
-                                        <div
-                                            style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
-                                            <span style="color: #64748b;">SECURITY LAYER:</span>
-                                            <span style="color: var(--gold-dark);">HMAC CRYPTO-TRUST</span>
-                                        </div>
-                                    </div>
-
-                                    <ul style="list-style: none; font-size: 0.8rem; color: #475569; padding: 0;">
-                                        <li
-                                            style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
-                                            <span style="color: var(--gold-dark); font-weight: 600;">■</span>
-                                            <span>Bidirectional Streaming: Real-time event bus for
-                                                mission-critical vault operations and doc execution syncing.</span>
-                                        </li>
-                                        <li
-                                            style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
-                                            <span style="color: var(--gold-dark); font-weight: 600;">■</span>
-                                            <span>Immutable Audit Trails: Firestore-backed
-                                                cryptographic
-                                                verification for high-value document lifecycle management.</span>
-                                        </li>
-                                        <li style="display: flex; align-items: flex-start; gap: 10px;">
-                                            <span style="color: var(--gold-dark); font-weight: 600;">■</span>
-                                            <span>OpenSign Standard: Unified signing engine with global
-                                                bank verification (Plaid) and automated revenue redirects.</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Light Theme Force Multiplier Banner -->
-                        <div class="value-highlight"
-                            style="display: flex; align-items: center; justify-content: space-between; background: #fff; color: #000; padding: 20px 40px; border: 2px solid var(--primary); border-radius: 8px; margin-top: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%;">
-                            <div style="flex: 1; min-width: 250px;">
-                                <h3
-                                    style="color: #059669; margin: 0; font-size: 0.9rem; letter-spacing: 0.3rem; font-weight: 600; text-transform: uppercase;">
-                                    Platform Force Multiplier</h3>
-                            </div>
-                            <div
-                                style="display: flex; gap: 40px; text-align: right; flex-wrap: wrap; justify-content: flex-end;">
-                                <div>
-                                    <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">90%
-                                    </div>
-                                    <div
-                                        style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
-                                        Code Reuse</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">-70%
-                                    </div>
-                                    <div
-                                        style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
-                                        Dev Overhead</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">100%
-                                    </div>
-                                    <div
-                                        style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
-                                        Design Parity</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="slide-footer">
-                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
-                    <div style="font-weight: 500;">CONFIDENTIAL // STRATEGIC TRACTION // SLIDE 12</div>
-                </div>
-            </div>
         </div>
 
-            <!-- Slide 11: Financials - Comprehensive Dashboard -->
+        <div class="slide">
+            <div class="slide-header">
+                <h3>THE ARCHITECT</h3>
+                <h2>Cylton Collymore</h2>
+            </div>
+
+            <div class="slide-content">
+                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 50px; align-items: center;">
+                    <div style="position: relative;">
+                        <div
+                            style="width: 100%; aspect-ratio: 1; background: var(--gold-light); border: 8px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);">
+                            <div style="text-align: center; color: var(--gold-dark); padding: 15px;">
+                                <i class="fas fa-microchip" style="font-size: 2.5rem; margin-bottom: 10px;"></i>
+                                <div class="royal-text" style="font-size: 0.8rem; line-height: 1.2;">
+                                    DOMAIN<br>MASTERY
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            style="position: absolute; bottom: 0; right: 0; background: var(--primary); color: white; padding: 8px 15px; border-radius: 30px; font-weight: 600; font-size: 0.75rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                            MIT xPRO '24
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="royal-text"
+                            style="color: var(--primary); font-size: 1rem; margin-bottom: 15px; letter-spacing: 0.1em; text-transform: uppercase;">
+                            THE CORE TEAM</h4>
+                        <ul style="list-style: none;">
+                            <li style="margin-bottom: 12px; font-size: 0.95rem; line-height: 1.4;">■ Cylton
+                                Collymore (CEO):
+                                20+ Yrs Infrastructure. Meta & US State Dept.</li>
+                            <li style="margin-bottom: 12px; font-size: 0.95rem; line-height: 1.4;">■ VP of
+                                Engineering:
+                                Specialized in High-Availability & Hardware Mesh.</li>
+                            <li style="margin-bottom: 12px; font-size: 0.95rem; line-height: 1.4;">■ VP of
+                                Marketing & Sales:
+                                Focused on Global Enterprise GTM.</li>
+                            <li style="margin-bottom: 12px; font-size: 0.95rem; line-height: 1.4;">■
+                                Strategic
+                                Advisors: AI &
+                                Cloud Infrastructure Veterans.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
+                <div style="font-weight: 500;">CONFIDENTIAL // THE CORE TEAM // SLIDE 11</div>
+            </div>
+        </div>
+        </div>
+
+        <div class="slide">
+            <div class="slide-header">
+                <h3>STRATEGIC TRACTION</h3>
+                <h2>Proven Performance: $147K Contracted Revenue</h2>
+            </div>
+
+            <div class="slide-content">
+                <div style="display: flex; flex-direction: column; gap: 30px;">
+                    <div class="grid-2 traction-grid" style="gap: 30px;">
+                        <!-- Case Study: Assiduous -->
+                        <div class="info-card"
+                            style="border: 2px solid #e2e8f0; border-left: 10px solid var(--primary); padding: 25px; background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,0.04); border-radius: 4px; justify-content: flex-start; width: 100%;">
+                            <div style="margin-bottom: 15px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                    <div>
+                                        <h4 class="royal-text"
+                                            style="color: var(--primary); font-size: 1.2rem; margin: 0; letter-spacing: 0.05em;">
+                                            ASSIDUOUS</h4>
+                                        <div
+                                            style="font-size: 0.7rem; color: var(--text-slate); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+                                            Real Estate Micro-Flipping</div>
+                                    </div>
+                                    <div
+                                        style="border: 2px solid var(--primary); color: var(--primary); padding: 4px 10px; font-size: 0.65rem; font-weight: 600; border-radius: 2px; text-transform: uppercase;">
+                                        Strategic Rollout</div>
+                                </div>
+
+                                <p
+                                    style="font-weight: 600; color: #0f172a; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.25;">
+                                    $2.4B in Analyzed Assets. Production-Ready in 29 Days.</p>
+
+                                <div
+                                    style="display: flex; gap: 15px; margin-bottom: 15px; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 10px 0;">
+                                    <div style="flex: 1;">
+                                        <div
+                                            style="font-size: 0.65rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
+                                            March 1st Launch</div>
+                                        <div style="font-size: 0.8rem; font-weight: 600; color: #000;">Core Platform
+                                            (v1.0)</div>
+                                    </div>
+                                    <div style="flex: 1; border-left: 1px solid #f1f5f9; padding-left: 15px;">
+                                        <div
+                                            style="font-size: 0.65rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
+                                            May 1st Update</div>
+                                        <div style="font-size: 0.8rem; font-weight: 600; color: #000;">AI Micro-Flip
+                                            Engine</div>
+                                    </div>
+                                </div>
+
+                                <ul style="list-style: none; font-size: 0.8rem; color: #475569; padding: 0;">
+                                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                        <span style="color: var(--primary); font-weight: 600;">■</span>
+                                        <span>Universal Component System (UCS): Build-time
+                                            programmable
+                                            tokens eliminating 90% of UI bloat across 780+ production files.</span>
+                                    </li>
+                                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                        <span style="color: var(--primary); font-weight: 600;">■</span>
+                                        <span>Real-Time Dev Telemetry: Automated Git-to-Firestore
+                                            pipeline tracking 650+ commits and project velocity in real-time.</span>
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 10px;">
+                                        <span style="color: var(--primary); font-weight: 600;">■</span>
+                                        <span>Autonomous Match Engine: Processing 3,542+ property
+                                            nodes
+                                            with 94.5% AI accuracy and $48.6M in lifecycle value.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Case Study: FinalWishes -->
+                        <div class="info-card"
+                            style="border: 2px solid #e2e8f0; border-left: 10px solid var(--gold); padding: 25px; background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,0.04); border-radius: 4px; justify-content: flex-start; width: 100%;">
+                            <div style="margin-bottom: 15px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                    <div>
+                                        <h4 class="royal-text"
+                                            style="color: var(--gold-dark); font-size: 1.2rem; margin: 0; letter-spacing: 0.05em;">
+                                            FINALWISHES</h4>
+                                        <div
+                                            style="font-size: 0.7rem; color: var(--text-slate); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+                                            The Legacy Operating System</div>
+                                    </div>
+                                    <div
+                                        style="border: 2px solid var(--gold-dark); color: var(--gold-dark); padding: 4px 10px; font-size: 0.65rem; font-weight: 600; border-radius: 2px; text-transform: uppercase;">
+                                        $147K TOTAL CONTRACTED</div>
+                                </div>
+
+                                <p
+                                    style="font-weight: 600; color: #0f172a; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.25;">
+                                    Securing Multi-Generational Wealth & Personal Data.</p>
+
+                                <div
+                                    style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; background: #f8fafc; padding: 10px; border-radius: 4px;">
+                                    <div
+                                        style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
+                                        <span style="color: #64748b;">SERVICE ARCHITECTURE:</span>
+                                        <span style="color: var(--gold-dark);">CONTRACTS gRPC v1.0</span>
+                                    </div>
+                                    <div
+                                        style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
+                                        <span style="color: #64748b;">SECURITY LAYER:</span>
+                                        <span style="color: var(--gold-dark);">HMAC CRYPTO-TRUST</span>
+                                    </div>
+                                </div>
+
+                                <ul style="list-style: none; font-size: 0.8rem; color: #475569; padding: 0;">
+                                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                        <span style="color: var(--gold-dark); font-weight: 600;">■</span>
+                                        <span>Bidirectional Streaming: Real-time event bus for
+                                            mission-critical vault operations and doc execution syncing.</span>
+                                    </li>
+                                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                        <span style="color: var(--gold-dark); font-weight: 600;">■</span>
+                                        <span>Immutable Audit Trails: Firestore-backed
+                                            cryptographic
+                                            verification for high-value document lifecycle management.</span>
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 10px;">
+                                        <span style="color: var(--gold-dark); font-weight: 600;">■</span>
+                                        <span>OpenSign Standard: Unified signing engine with global
+                                            bank verification (Plaid) and automated revenue redirects.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Light Theme Force Multiplier Banner -->
+                    <div class="value-highlight"
+                        style="display: flex; align-items: center; justify-content: space-between; background: #fff; color: #000; padding: 20px 40px; border: 2px solid var(--primary); border-radius: 8px; margin-top: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%;">
+                        <div style="flex: 1; min-width: 250px;">
+                            <h3
+                                style="color: #059669; margin: 0; font-size: 0.9rem; letter-spacing: 0.3rem; font-weight: 600; text-transform: uppercase;">
+                                Platform Force Multiplier</h3>
+                        </div>
+                        <div
+                            style="display: flex; gap: 40px; text-align: right; flex-wrap: wrap; justify-content: flex-end;">
+                            <div>
+                                <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">90%
+                                </div>
+                                <div
+                                    style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
+                                    Code Reuse</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">-70%
+                                </div>
+                                <div
+                                    style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
+                                    Dev Overhead</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">100%
+                                </div>
+                                <div
+                                    style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
+                                    Design Parity</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
+                <div style="font-weight: 500;">CONFIDENTIAL // STRATEGIC TRACTION // SLIDE 12</div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Slide 11: Financials - Comprehensive Dashboard -->
         <div class="slide">
             <div class="slide-inner">
                 <div class="slide-header">
@@ -2329,7 +2580,7 @@
             </div>
         </div>
 
-            <!-- Slide 14: By The Numbers (Strategic Design Alignment) -->
+        <!-- Slide 14: By The Numbers (Strategic Design Alignment) -->
         <div class="slide">
             <div class="slide-inner">
                 <div class="slide-content" style="padding: 0;">
@@ -2775,7 +3026,7 @@
             </div>
         </div>
 
-            <!-- Slide 15: Seed Offering (The Ask) -->
+        <!-- Slide 15: Seed Offering (The Ask) -->
         <div class="slide">
             <div class="slide-inner">
                 <div class="slide-content" style="padding-top: 50px;">
@@ -2838,7 +3089,7 @@
                                 <li
                                     style="margin-bottom: 12px; font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
                                     <span style="color: var(--gold-dark); font-size: 1.2rem;">■</span> 30.2%
-                                        Equity Contribution
+                                    Equity Contribution
                                 </li>
                                 <li
                                     style="margin-bottom: 12px; font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
@@ -2848,13 +3099,13 @@
                                 <li
                                     style="margin-bottom: 12px; font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
                                     <span style="color: var(--gold-dark); font-size: 1.2rem;">■</span> QSBS
-                                        Qualified (100% Tax Advantage)
+                                    Qualified (100% Tax Advantage)
                                 </li>
                                 <li
                                     style="margin-bottom: 12px; font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
                                     <span style="color: var(--gold-dark); font-size: 1.2rem;">■</span>
                                     Institutional
-                                        Backing: $175K Committed
+                                    Backing: $175K Committed
                                 </li>
                             </ul>
                         </div>
@@ -2868,7 +3119,7 @@
             </div>
         </div>
 
-            <!-- Slide 16: The Partnership -->
+        <!-- Slide 16: The Partnership -->
         <div class="slide">
             <div class="slide-inner">
                 <div class="slide-content"
@@ -2901,7 +3152,7 @@
                         </div>
                         <div style="display: flex; gap: 20px; justify-content: center;">
                             <div
-                                style="border: 1px solid var(--primary); padding: 18px 45px; font-weight: 700; letter-spacing: 0.2em; font-size: 1.1rem; background: var(--primary); color: #fff; border-radius: 4px; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);">
+                                style="border: 1px solid var(--primary); padding: 18px 45px; font-weight: 700; letter-spacing: 0.2em; font-size: 1.1rem; background: var(--primary); color: #fff; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 211, 127, 0.2);">
                                 CYLTON@SIRSI.AI</div>
                             <div
                                 style="border: 1px solid var(--border); padding: 18px 45px; font-weight: 700; letter-spacing: 0.2em; font-size: 1.1rem; background: #fff; color: var(--primary); border-radius: 4px;">
@@ -2918,27 +3169,30 @@
     </main>
 
     <footer class="nav-footer">
-        <div class="nav"> <button class="nav-btn" onclick="changeSlide(-1)" id="prevBtn"><i
-                    class="fas fa-chevron-left"></i></button>
-            <div class="nav-counter"> <span id="currentNum">1</span> / 16 </div> <button class="nav-btn"
-                onclick="changeSlide(1)" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+        <div class="nav">
+            <button class="nav-btn" onclick="changeSlide(-1)" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+            <div class="nav-counter"> <span id="currentNum">1</span> / <span id="totalNum">16</span> </div>
+            <button class="nav-btn" onclick="changeSlide(1)" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <script> let currentSlide = 1;
-        const totalSlides = 16;
+    <script>
+        let currentSlide = 1;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
 
         function showSlide(n) {
-            const slides = document.querySelectorAll('.slide');
-            if (n > totalSlides) currentSlide = totalSlides;
-            if (n < 1) currentSlide = 1;
+            currentSlide = n;
+            if (currentSlide > totalSlides) currentSlide = totalSlides;
+            if (currentSlide < 1) currentSlide = 1;
 
             slides.forEach(slide => slide.classList.remove('active'));
             slides[currentSlide - 1].classList.add('active');
 
             document.getElementById('currentNum').textContent = currentSlide;
+            document.getElementById('totalNum').textContent = totalSlides;
             document.getElementById('prevBtn').disabled = currentSlide === 1;
             document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
 
@@ -2980,14 +3234,14 @@
                     datasets: [{
                         label: 'Revenue ($M)',
                         data: [2.0, 8.0, 18.0, 38.0, 73.0],
-                        borderColor: '#008A5E',
-                        backgroundColor: 'rgba(0, 138, 94, 0.1)',
+                        borderColor: '#059669',
+                        backgroundColor: 'rgba(5, 150, 105, 0.1)',
                         fill: true,
                         tension: 0.4,
                         borderWidth: 4,
                         datalabels: {
                             align: 'top',
-                            color: '#008A5E',
+                            color: '#059669',
                             weight: 'bold',
                             formatter: v => '$' + v + 'M'
                         }
@@ -3086,12 +3340,12 @@
                     datasets: [{
                         label: 'Conservative Users',
                         data: [600, 2500, 5500, 12000, 20000],
-                        backgroundColor: '#008A5E',
+                        backgroundColor: '#059669',
                         borderRadius: 4,
                         datalabels: {
                             anchor: 'end',
                             align: 'top',
-                            color: '#008A5E',
+                            color: '#059669',
                             weight: 'bold',
                             formatter: v => v >= 1000 ? (v / 1000).toFixed(1) + 'K' : v
                         }
