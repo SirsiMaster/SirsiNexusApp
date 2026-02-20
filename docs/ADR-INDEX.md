@@ -15,7 +15,9 @@ This index tracks all significant architectural decisions for the Sirsi ecosyste
 | [ADR-015](ADR-015-UNIFIED-GRPC-CONVERGENCE.md) | Unified gRPC Convergence — Portal ↔ Sign Integration | Proposed | 2026-02-09 |
 | [ADR-016](ADR-016-CANONICAL-MFA-ROUTING-HUB.md) | Canonical MFA Routing Hub & Session Persistence | Accepted | 2026-02-12 |
 | [ADR-017](ADR-017-GOVERNANCE-CONSOLE.md) | Sirsi Governance Console & Dynamic Catalog | Proposed | 2026-02-12 |
+| [ADR-018](ADR-018-TECHNICAL-STACK-CONVERGENCE.md) | Technical Stack Convergence (Stack V4) | Approved | 2026-02-18 |
 | [ADR-019](ADR-019-CONTRACT-LIFECYCLE.md) | Contract Lifecycle & Funding Status | Accepted | 2026-02-13 |
+| [ADR-020](ADR-020-PITCH-DECK-VISUAL-STANDARD.md) | Pitch Deck Visual Standard & Rubric | Accepted | 2026-02-20 |
 
 ## Categories
 
