@@ -76,6 +76,17 @@ export const useSyncGitHub = () => {
     });
 };
 
+// System Overview & Monitoring
+export const useSystemOverview = () => {
+    return useQuery({
+        queryKey: ['system-overview'],
+        queryFn: async () => {
+            return await (client as any).getSystemOverview({});
+        },
+        refetchInterval: 10000, // Sync every 10s
+    });
+};
+
 // System Settings
 export const useSystemSettings = () => {
     return useQuery({

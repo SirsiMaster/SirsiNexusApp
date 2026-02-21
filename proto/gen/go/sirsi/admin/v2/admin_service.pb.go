@@ -1445,6 +1445,134 @@ func (x *SyncGitHubStatsResponse) GetSyncedCount() int32 {
 	return 0
 }
 
+type GetSystemOverviewRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSystemOverviewRequest) Reset() {
+	*x = GetSystemOverviewRequest{}
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSystemOverviewRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSystemOverviewRequest) ProtoMessage() {}
+
+func (x *GetSystemOverviewRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSystemOverviewRequest.ProtoReflect.Descriptor instead.
+func (*GetSystemOverviewRequest) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{25}
+}
+
+type SystemOverview struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	TotalTenants    int32                  `protobuf:"varint,1,opt,name=total_tenants,json=totalTenants,proto3" json:"total_tenants,omitempty"`
+	TotalContracts  int32                  `protobuf:"varint,2,opt,name=total_contracts,json=totalContracts,proto3" json:"total_contracts,omitempty"`
+	RevenueMtd      *v1.Money              `protobuf:"bytes,3,opt,name=revenue_mtd,json=revenueMtd,proto3" json:"revenue_mtd,omitempty"`
+	SirsiMultiplier float64                `protobuf:"fixed64,4,opt,name=sirsi_multiplier,json=sirsiMultiplier,proto3" json:"sirsi_multiplier,omitempty"`
+	MaintenanceMode bool                   `protobuf:"varint,5,opt,name=maintenance_mode,json=maintenanceMode,proto3" json:"maintenance_mode,omitempty"`
+	RecentAlerts    []*Notification        `protobuf:"bytes,6,rep,name=recent_alerts,json=recentAlerts,proto3" json:"recent_alerts,omitempty"`
+	ActivityFeed    []*AuditLogEntry       `protobuf:"bytes,7,rep,name=activity_feed,json=activityFeed,proto3" json:"activity_feed,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *SystemOverview) Reset() {
+	*x = SystemOverview{}
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SystemOverview) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SystemOverview) ProtoMessage() {}
+
+func (x *SystemOverview) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SystemOverview.ProtoReflect.Descriptor instead.
+func (*SystemOverview) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *SystemOverview) GetTotalTenants() int32 {
+	if x != nil {
+		return x.TotalTenants
+	}
+	return 0
+}
+
+func (x *SystemOverview) GetTotalContracts() int32 {
+	if x != nil {
+		return x.TotalContracts
+	}
+	return 0
+}
+
+func (x *SystemOverview) GetRevenueMtd() *v1.Money {
+	if x != nil {
+		return x.RevenueMtd
+	}
+	return nil
+}
+
+func (x *SystemOverview) GetSirsiMultiplier() float64 {
+	if x != nil {
+		return x.SirsiMultiplier
+	}
+	return 0
+}
+
+func (x *SystemOverview) GetMaintenanceMode() bool {
+	if x != nil {
+		return x.MaintenanceMode
+	}
+	return false
+}
+
+func (x *SystemOverview) GetRecentAlerts() []*Notification {
+	if x != nil {
+		return x.RecentAlerts
+	}
+	return nil
+}
+
+func (x *SystemOverview) GetActivityFeed() []*AuditLogEntry {
+	if x != nil {
+		return x.ActivityFeed
+	}
+	return nil
+}
+
 var File_sirsi_admin_v2_admin_service_proto protoreflect.FileDescriptor
 
 const file_sirsi_admin_v2_admin_service_proto_rawDesc = "" +
@@ -1555,9 +1683,19 @@ const file_sirsi_admin_v2_admin_service_proto_rawDesc = "" +
 	"\brepo_url\x18\x01 \x01(\tR\arepoUrl\"V\n" +
 	"\x17SyncGitHubStatsResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12!\n" +
-	"\fsynced_count\x18\x02 \x01(\x05R\vsyncedCount2\xd5\n" +
-	"\n" +
-	"\fAdminService\x12\\\n" +
+	"\fsynced_count\x18\x02 \x01(\x05R\vsyncedCount\"\x1a\n" +
+	"\x18GetSystemOverviewRequest\"\xf4\x02\n" +
+	"\x0eSystemOverview\x12#\n" +
+	"\rtotal_tenants\x18\x01 \x01(\x05R\ftotalTenants\x12'\n" +
+	"\x0ftotal_contracts\x18\x02 \x01(\x05R\x0etotalContracts\x127\n" +
+	"\vrevenue_mtd\x18\x03 \x01(\v2\x16.sirsi.common.v1.MoneyR\n" +
+	"revenueMtd\x12)\n" +
+	"\x10sirsi_multiplier\x18\x04 \x01(\x01R\x0fsirsiMultiplier\x12)\n" +
+	"\x10maintenance_mode\x18\x05 \x01(\bR\x0fmaintenanceMode\x12A\n" +
+	"\rrecent_alerts\x18\x06 \x03(\v2\x1c.sirsi.admin.v2.NotificationR\frecentAlerts\x12B\n" +
+	"\ractivity_feed\x18\a \x03(\v2\x1d.sirsi.admin.v2.AuditLogEntryR\factivityFeed2\xb4\v\n" +
+	"\fAdminService\x12]\n" +
+	"\x11GetSystemOverview\x12(.sirsi.admin.v2.GetSystemOverviewRequest\x1a\x1e.sirsi.admin.v2.SystemOverview\x12\\\n" +
 	"\rLogDevSession\x12$.sirsi.admin.v2.LogDevSessionRequest\x1a%.sirsi.admin.v2.LogDevSessionResponse\x12Q\n" +
 	"\rGetDevMetrics\x12$.sirsi.admin.v2.GetDevMetricsRequest\x1a\x1a.sirsi.admin.v2.DevMetrics\x12b\n" +
 	"\x0fSyncGitHubStats\x12&.sirsi.admin.v2.SyncGitHubStatsRequest\x1a'.sirsi.admin.v2.SyncGitHubStatsResponse\x12V\n" +
@@ -1587,7 +1725,7 @@ func file_sirsi_admin_v2_admin_service_proto_rawDescGZIP() []byte {
 	return file_sirsi_admin_v2_admin_service_proto_rawDescData
 }
 
-var file_sirsi_admin_v2_admin_service_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
+var file_sirsi_admin_v2_admin_service_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_sirsi_admin_v2_admin_service_proto_goTypes = []any{
 	(*LogDevSessionRequest)(nil),      // 0: sirsi.admin.v2.LogDevSessionRequest
 	(*LogDevSessionResponse)(nil),     // 1: sirsi.admin.v2.LogDevSessionResponse
@@ -1614,67 +1752,74 @@ var file_sirsi_admin_v2_admin_service_proto_goTypes = []any{
 	(*DailyActivity)(nil),             // 22: sirsi.admin.v2.DailyActivity
 	(*SyncGitHubStatsRequest)(nil),    // 23: sirsi.admin.v2.SyncGitHubStatsRequest
 	(*SyncGitHubStatsResponse)(nil),   // 24: sirsi.admin.v2.SyncGitHubStatsResponse
-	(*v1.PaginationRequest)(nil),      // 25: sirsi.common.v1.PaginationRequest
-	(*v1.PaginationResponse)(nil),     // 26: sirsi.common.v1.PaginationResponse
-	(*v1.Money)(nil),                  // 27: sirsi.common.v1.Money
-	(*ListEstatesRequest)(nil),        // 28: sirsi.admin.v2.ListEstatesRequest
-	(*GetEstateRequest)(nil),          // 29: sirsi.admin.v2.GetEstateRequest
-	(*CreateEstateRequest)(nil),       // 30: sirsi.admin.v2.CreateEstateRequest
-	(*UpdateEstateRequest)(nil),       // 31: sirsi.admin.v2.UpdateEstateRequest
-	(*DeleteEstateRequest)(nil),       // 32: sirsi.admin.v2.DeleteEstateRequest
-	(*ListEstatesResponse)(nil),       // 33: sirsi.admin.v2.ListEstatesResponse
-	(*Estate)(nil),                    // 34: sirsi.admin.v2.Estate
-	(*DeleteEstateResponse)(nil),      // 35: sirsi.admin.v2.DeleteEstateResponse
+	(*GetSystemOverviewRequest)(nil),  // 25: sirsi.admin.v2.GetSystemOverviewRequest
+	(*SystemOverview)(nil),            // 26: sirsi.admin.v2.SystemOverview
+	(*v1.PaginationRequest)(nil),      // 27: sirsi.common.v1.PaginationRequest
+	(*v1.PaginationResponse)(nil),     // 28: sirsi.common.v1.PaginationResponse
+	(*v1.Money)(nil),                  // 29: sirsi.common.v1.Money
+	(*ListEstatesRequest)(nil),        // 30: sirsi.admin.v2.ListEstatesRequest
+	(*GetEstateRequest)(nil),          // 31: sirsi.admin.v2.GetEstateRequest
+	(*CreateEstateRequest)(nil),       // 32: sirsi.admin.v2.CreateEstateRequest
+	(*UpdateEstateRequest)(nil),       // 33: sirsi.admin.v2.UpdateEstateRequest
+	(*DeleteEstateRequest)(nil),       // 34: sirsi.admin.v2.DeleteEstateRequest
+	(*ListEstatesResponse)(nil),       // 35: sirsi.admin.v2.ListEstatesResponse
+	(*Estate)(nil),                    // 36: sirsi.admin.v2.Estate
+	(*DeleteEstateResponse)(nil),      // 37: sirsi.admin.v2.DeleteEstateResponse
 }
 var file_sirsi_admin_v2_admin_service_proto_depIdxs = []int32{
-	25, // 0: sirsi.admin.v2.ListUsersRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
+	27, // 0: sirsi.admin.v2.ListUsersRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
 	2,  // 1: sirsi.admin.v2.ListUsersResponse.users:type_name -> sirsi.admin.v2.User
-	26, // 2: sirsi.admin.v2.ListUsersResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
-	25, // 3: sirsi.admin.v2.ListNotificationsRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
+	28, // 2: sirsi.admin.v2.ListUsersResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
+	27, // 3: sirsi.admin.v2.ListNotificationsRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
 	7,  // 4: sirsi.admin.v2.ListNotificationsResponse.notifications:type_name -> sirsi.admin.v2.Notification
-	26, // 5: sirsi.admin.v2.ListNotificationsResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
+	28, // 5: sirsi.admin.v2.ListNotificationsResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
 	12, // 6: sirsi.admin.v2.GetSettingsResponse.settings:type_name -> sirsi.admin.v2.SystemSettings
 	12, // 7: sirsi.admin.v2.UpdateSettingsRequest.settings:type_name -> sirsi.admin.v2.SystemSettings
-	25, // 8: sirsi.admin.v2.ListAuditTrailRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
+	27, // 8: sirsi.admin.v2.ListAuditTrailRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
 	19, // 9: sirsi.admin.v2.ListAuditTrailResponse.logs:type_name -> sirsi.admin.v2.AuditLogEntry
-	26, // 10: sirsi.admin.v2.ListAuditTrailResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
-	27, // 11: sirsi.admin.v2.DevMetrics.burn_rate:type_name -> sirsi.common.v1.Money
+	28, // 10: sirsi.admin.v2.ListAuditTrailResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
+	29, // 11: sirsi.admin.v2.DevMetrics.burn_rate:type_name -> sirsi.common.v1.Money
 	22, // 12: sirsi.admin.v2.DevMetrics.activity:type_name -> sirsi.admin.v2.DailyActivity
-	0,  // 13: sirsi.admin.v2.AdminService.LogDevSession:input_type -> sirsi.admin.v2.LogDevSessionRequest
-	20, // 14: sirsi.admin.v2.AdminService.GetDevMetrics:input_type -> sirsi.admin.v2.GetDevMetricsRequest
-	23, // 15: sirsi.admin.v2.AdminService.SyncGitHubStats:input_type -> sirsi.admin.v2.SyncGitHubStatsRequest
-	28, // 16: sirsi.admin.v2.AdminService.ListEstates:input_type -> sirsi.admin.v2.ListEstatesRequest
-	29, // 17: sirsi.admin.v2.AdminService.GetEstate:input_type -> sirsi.admin.v2.GetEstateRequest
-	30, // 18: sirsi.admin.v2.AdminService.CreateEstate:input_type -> sirsi.admin.v2.CreateEstateRequest
-	31, // 19: sirsi.admin.v2.AdminService.UpdateEstate:input_type -> sirsi.admin.v2.UpdateEstateRequest
-	32, // 20: sirsi.admin.v2.AdminService.DeleteEstate:input_type -> sirsi.admin.v2.DeleteEstateRequest
-	3,  // 21: sirsi.admin.v2.AdminService.ListUsers:input_type -> sirsi.admin.v2.ListUsersRequest
-	5,  // 22: sirsi.admin.v2.AdminService.ManageUserRole:input_type -> sirsi.admin.v2.ManageUserRoleRequest
-	8,  // 23: sirsi.admin.v2.AdminService.ListNotifications:input_type -> sirsi.admin.v2.ListNotificationsRequest
-	10, // 24: sirsi.admin.v2.AdminService.SendNotification:input_type -> sirsi.admin.v2.SendNotificationRequest
-	13, // 25: sirsi.admin.v2.AdminService.GetSettings:input_type -> sirsi.admin.v2.GetSettingsRequest
-	15, // 26: sirsi.admin.v2.AdminService.UpdateSettings:input_type -> sirsi.admin.v2.UpdateSettingsRequest
-	17, // 27: sirsi.admin.v2.AdminService.ListAuditTrail:input_type -> sirsi.admin.v2.ListAuditTrailRequest
-	1,  // 28: sirsi.admin.v2.AdminService.LogDevSession:output_type -> sirsi.admin.v2.LogDevSessionResponse
-	21, // 29: sirsi.admin.v2.AdminService.GetDevMetrics:output_type -> sirsi.admin.v2.DevMetrics
-	24, // 30: sirsi.admin.v2.AdminService.SyncGitHubStats:output_type -> sirsi.admin.v2.SyncGitHubStatsResponse
-	33, // 31: sirsi.admin.v2.AdminService.ListEstates:output_type -> sirsi.admin.v2.ListEstatesResponse
-	34, // 32: sirsi.admin.v2.AdminService.GetEstate:output_type -> sirsi.admin.v2.Estate
-	34, // 33: sirsi.admin.v2.AdminService.CreateEstate:output_type -> sirsi.admin.v2.Estate
-	34, // 34: sirsi.admin.v2.AdminService.UpdateEstate:output_type -> sirsi.admin.v2.Estate
-	35, // 35: sirsi.admin.v2.AdminService.DeleteEstate:output_type -> sirsi.admin.v2.DeleteEstateResponse
-	4,  // 36: sirsi.admin.v2.AdminService.ListUsers:output_type -> sirsi.admin.v2.ListUsersResponse
-	6,  // 37: sirsi.admin.v2.AdminService.ManageUserRole:output_type -> sirsi.admin.v2.ManageUserRoleResponse
-	9,  // 38: sirsi.admin.v2.AdminService.ListNotifications:output_type -> sirsi.admin.v2.ListNotificationsResponse
-	11, // 39: sirsi.admin.v2.AdminService.SendNotification:output_type -> sirsi.admin.v2.SendNotificationResponse
-	14, // 40: sirsi.admin.v2.AdminService.GetSettings:output_type -> sirsi.admin.v2.GetSettingsResponse
-	16, // 41: sirsi.admin.v2.AdminService.UpdateSettings:output_type -> sirsi.admin.v2.UpdateSettingsResponse
-	18, // 42: sirsi.admin.v2.AdminService.ListAuditTrail:output_type -> sirsi.admin.v2.ListAuditTrailResponse
-	28, // [28:43] is the sub-list for method output_type
-	13, // [13:28] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	29, // 13: sirsi.admin.v2.SystemOverview.revenue_mtd:type_name -> sirsi.common.v1.Money
+	7,  // 14: sirsi.admin.v2.SystemOverview.recent_alerts:type_name -> sirsi.admin.v2.Notification
+	19, // 15: sirsi.admin.v2.SystemOverview.activity_feed:type_name -> sirsi.admin.v2.AuditLogEntry
+	25, // 16: sirsi.admin.v2.AdminService.GetSystemOverview:input_type -> sirsi.admin.v2.GetSystemOverviewRequest
+	0,  // 17: sirsi.admin.v2.AdminService.LogDevSession:input_type -> sirsi.admin.v2.LogDevSessionRequest
+	20, // 18: sirsi.admin.v2.AdminService.GetDevMetrics:input_type -> sirsi.admin.v2.GetDevMetricsRequest
+	23, // 19: sirsi.admin.v2.AdminService.SyncGitHubStats:input_type -> sirsi.admin.v2.SyncGitHubStatsRequest
+	30, // 20: sirsi.admin.v2.AdminService.ListEstates:input_type -> sirsi.admin.v2.ListEstatesRequest
+	31, // 21: sirsi.admin.v2.AdminService.GetEstate:input_type -> sirsi.admin.v2.GetEstateRequest
+	32, // 22: sirsi.admin.v2.AdminService.CreateEstate:input_type -> sirsi.admin.v2.CreateEstateRequest
+	33, // 23: sirsi.admin.v2.AdminService.UpdateEstate:input_type -> sirsi.admin.v2.UpdateEstateRequest
+	34, // 24: sirsi.admin.v2.AdminService.DeleteEstate:input_type -> sirsi.admin.v2.DeleteEstateRequest
+	3,  // 25: sirsi.admin.v2.AdminService.ListUsers:input_type -> sirsi.admin.v2.ListUsersRequest
+	5,  // 26: sirsi.admin.v2.AdminService.ManageUserRole:input_type -> sirsi.admin.v2.ManageUserRoleRequest
+	8,  // 27: sirsi.admin.v2.AdminService.ListNotifications:input_type -> sirsi.admin.v2.ListNotificationsRequest
+	10, // 28: sirsi.admin.v2.AdminService.SendNotification:input_type -> sirsi.admin.v2.SendNotificationRequest
+	13, // 29: sirsi.admin.v2.AdminService.GetSettings:input_type -> sirsi.admin.v2.GetSettingsRequest
+	15, // 30: sirsi.admin.v2.AdminService.UpdateSettings:input_type -> sirsi.admin.v2.UpdateSettingsRequest
+	17, // 31: sirsi.admin.v2.AdminService.ListAuditTrail:input_type -> sirsi.admin.v2.ListAuditTrailRequest
+	26, // 32: sirsi.admin.v2.AdminService.GetSystemOverview:output_type -> sirsi.admin.v2.SystemOverview
+	1,  // 33: sirsi.admin.v2.AdminService.LogDevSession:output_type -> sirsi.admin.v2.LogDevSessionResponse
+	21, // 34: sirsi.admin.v2.AdminService.GetDevMetrics:output_type -> sirsi.admin.v2.DevMetrics
+	24, // 35: sirsi.admin.v2.AdminService.SyncGitHubStats:output_type -> sirsi.admin.v2.SyncGitHubStatsResponse
+	35, // 36: sirsi.admin.v2.AdminService.ListEstates:output_type -> sirsi.admin.v2.ListEstatesResponse
+	36, // 37: sirsi.admin.v2.AdminService.GetEstate:output_type -> sirsi.admin.v2.Estate
+	36, // 38: sirsi.admin.v2.AdminService.CreateEstate:output_type -> sirsi.admin.v2.Estate
+	36, // 39: sirsi.admin.v2.AdminService.UpdateEstate:output_type -> sirsi.admin.v2.Estate
+	37, // 40: sirsi.admin.v2.AdminService.DeleteEstate:output_type -> sirsi.admin.v2.DeleteEstateResponse
+	4,  // 41: sirsi.admin.v2.AdminService.ListUsers:output_type -> sirsi.admin.v2.ListUsersResponse
+	6,  // 42: sirsi.admin.v2.AdminService.ManageUserRole:output_type -> sirsi.admin.v2.ManageUserRoleResponse
+	9,  // 43: sirsi.admin.v2.AdminService.ListNotifications:output_type -> sirsi.admin.v2.ListNotificationsResponse
+	11, // 44: sirsi.admin.v2.AdminService.SendNotification:output_type -> sirsi.admin.v2.SendNotificationResponse
+	14, // 45: sirsi.admin.v2.AdminService.GetSettings:output_type -> sirsi.admin.v2.GetSettingsResponse
+	16, // 46: sirsi.admin.v2.AdminService.UpdateSettings:output_type -> sirsi.admin.v2.UpdateSettingsResponse
+	18, // 47: sirsi.admin.v2.AdminService.ListAuditTrail:output_type -> sirsi.admin.v2.ListAuditTrailResponse
+	32, // [32:48] is the sub-list for method output_type
+	16, // [16:32] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_sirsi_admin_v2_admin_service_proto_init() }
@@ -1689,7 +1834,7 @@ func file_sirsi_admin_v2_admin_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sirsi_admin_v2_admin_service_proto_rawDesc), len(file_sirsi_admin_v2_admin_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   25,
+			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

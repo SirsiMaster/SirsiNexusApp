@@ -4,7 +4,11 @@
 
 @layer base {
   body {
-    @apply bg-sirsi-dark text-white font-body;
+    @apply bg-gray-50 text-gray-900 transition-colors duration-300 font-body;
+  }
+
+  .dark body {
+    @apply bg-slate-900 text-slate-100;
   }
 
   h1,
@@ -13,38 +17,94 @@
   h4,
   h5,
   h6 {
-    @apply font-heading uppercase tracking-wider;
+    @apply font-body font-bold text-gray-900;
+  }
+
+  .dark h1,
+  .dark h2,
+  .dark h3,
+  .dark h4,
+  .dark h5,
+  .dark h6 {
+    @apply text-white;
   }
 }
 
-.glass-panel {
-  @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-2xl;
+/* Legacy Analytics Components (Pixel Perfect Ports) */
+.analytics-card {
+  @apply bg-white border border-gray-200 rounded-2xl p-8 shadow-lg transition-all duration-300 relative overflow-hidden;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
 }
 
-.gold-border {
-  @apply border border-sirsi-gold/30 hover:border-sirsi-gold/60 transition-colors duration-300;
+.dark .analytics-card {
+  @apply border-slate-700 shadow-2xl;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
 }
 
-.action-btn {
-  @apply bg-sirsi-gold text-white px-6 py-2 rounded font-heading uppercase tracking-widest text-sm hover:brightness-110 active:scale-95 transition-all duration-200;
+.analytics-card::before {
+  content: '';
+  @apply absolute top-0 left-0 right-0 h-1;
+  background: linear-gradient(90deg, #059669, #10b981, #34d399);
 }
 
-.nav-link {
-  @apply flex items-center gap-3 px-4 py-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-all;
+.analytics-card:hover {
+  @apply -translate-y-2 shadow-xl;
+  box-shadow: 0 12px 40px rgba(5, 150, 105, 0.1);
 }
 
-.nav-link.active {
-  @apply text-white bg-white/10 border-r-4 border-sirsi-gold;
+.metric-icon {
+  @apply w-12 h-12 rounded-xl flex items-center justify-center text-2xl text-white;
+  background: linear-gradient(135deg, #059669, #10b981);
 }
 
-::-webkit-scrollbar {
-  width: 8px;
+.metric-trend {
+  @apply flex items-center gap-2 text-sm font-medium;
 }
 
-::-webkit-scrollbar-track {
-  @apply bg-sirsi-dark;
+.trend-up {
+  @apply text-emerald-600;
 }
 
-::-webkit-scrollbar-thumb {
-  @apply bg-sirsi-gold/20 rounded-full hover:bg-sirsi-gold/40 transition-colors;
+.trend-down {
+  @apply text-red-600;
+}
+
+.pulse-dot {
+  @apply w-2 h-2 rounded-full bg-emerald-500;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.btn-primary {
+  @apply bg-emerald-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-emerald-700 transition-all;
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+}
+
+.sidebar-link {
+  @apply flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-colors;
+}
+
+.dark .sidebar-link {
+  @apply text-slate-300 hover:bg-slate-800;
+}
+
+.sidebar-link.active {
+  @apply bg-emerald-50 text-emerald-600;
+}
+
+.dark .sidebar-link.active {
+  @apply bg-emerald-900/20 text-emerald-400;
 }

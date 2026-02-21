@@ -1,7 +1,9 @@
 // src/routes/index.tsx
 import { createRoute } from '@tanstack/react-router'
-import { useSystemSettings } from '../hooks/useAdminService'
+import { useSystemOverview } from '../hooks/useAdminService'
 import { Route as rootRoute } from './__root'
+import { useEffect, useState } from 'react'
+import { DateTime } from 'luxon'
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
@@ -10,71 +12,97 @@ export const Route = createRoute({
 })
 
 function Dashboard() {
-    const { data: settings } = useSystemSettings()
+    const { data: overview, isLoading } = useSystemOverview()
+    const [lastRefresh, setLastRefresh] = useState<string>('Just now')
+
+    useEffect(() => {
+        if (overview) {
+            setLastRefresh(DateTime.now().toLocaleString(DateTime.TIME_WITH_SECONDS))
+        }
+    }, [overview])
+
+    if (isLoading) return <div className="p-8 text-white/20 uppercase tracking-widest text-[10px]">Initialising Command Center...</div>
 
     return (
-        <div className="space-y-8 animate-in fade-in duration-500">
-            <header className="flex justify-between items-end">
+        <div className="space-y-8 animate-in fade-in duration-700">
+            <header className="flex justify-between items-end border-b border-gray-200 dark:border-slate-800 pb-6">
                 <div>
-                    <h1 className="text-3xl">Command Center</h1>
-                    <p className="text-white/40 mt-1">Global System Overview & Telemetry</p>
-                </div>
-                <div className="flex gap-4">
-                    <div className="glass-panel px-4 py-2 border-sirsi-emerald/30 border">
-                        <div className="text-[10px] text-sirsi-emerald uppercase">System Status</div>
-                        <div className="text-sm font-bold">OPERATIONAL</div>
+                    <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Analytics Dashboard</h1>
+                    <div className="flex items-center gap-2 mt-2">
+                        <div className="pulse-dot" />
+                        <span className="text-emerald-600 dark:text-emerald-400 text-xs font-medium uppercase tracking-wider">
+                            Real-time Stream • Last updated: {lastRefresh}
+                        </span>
                     </div>
                 </div>
             </header>
 
-            {/* Stats Grid */}
+            {/* Metrics Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatCard title="Active Tenants" value="12" change="+2" />
-                <StatCard title="Total Contracts" value="142" change="+12" />
-                <StatCard title="Revenue (MTD)" value="$42,500" change="+15%" />
-                <StatCard title="Sirsi Multiplier" value={settings?.sirsiMultiplier.toFixed(1) || "..."} change="Locked" />
+                <AnalyticsCard
+                    title="Total Tenants"
+                    value={overview?.totalTenants.toString() || "0"}
+                    trend="+12.5%"
+                    icon="👥"
+                    subtitle="Platform isolation instances"
+                />
+                <AnalyticsCard
+                    title="Active Contracts"
+                    value={overview?.totalContracts.toString() || "0"}
+                    trend="+8.3%"
+                    icon="📄"
+                    subtitle="Legal execution flow"
+                />
+                <AnalyticsCard
+                    title="Revenue (MTD)"
+                    value={`$${((overview?.revenueMtd?.amountCents || 0) / 100).toLocaleString()}`}
+                    trend="+15.7%"
+                    icon="💰"
+                    subtitle="Processed via Sirsi Sign"
+                />
+                <AnalyticsCard
+                    title="Sirsi Multiplier"
+                    value={overview?.sirsiMultiplier.toFixed(2) || "0.00"}
+                    trend="LOCKED"
+                    icon="⚡"
+                    subtitle="System efficiency index"
+                />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Main Feed */}
-                <div className="lg:col-span-2 space-y-6">
-                    <div className="glass-panel p-6">
-                        <h3 className="text-lg mb-4">Unified Activity Feed</h3>
-                        <div className="space-y-4">
-                            <ActivityItem
-                                time="2m ago"
-                                user="Cylton Collymore"
-                                action="created contract"
-                                meta="FW-992 (FinalWishes)"
-                            />
-                            <ActivityItem
-                                time="15m ago"
-                                user="System"
-                                action="deployed gateway"
-                                meta="v2.1.0-alpha"
-                            />
-                            <ActivityItem
-                                time="1h ago"
-                                user="Tameeka Lockhart"
-                                action="signed contract"
-                                meta="TL-001 (FinalWishes)"
-                            />
+                {/* Unified Activity Feed */}
+                <div className="lg:col-span-2 space-y-4">
+                    <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+                        <div className="px-6 py-4 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/50 flex justify-between items-center">
+                            <h3 className="font-bold text-gray-900 dark:text-white">Unified Activity Feed</h3>
+                            <button className="text-xs text-emerald-600 font-bold hover:underline">View All</button>
+                        </div>
+                        <div className="divide-y divide-gray-100 dark:divide-slate-800">
+                            {overview?.activityFeed?.map((item: any) => (
+                                <ActivityItem
+                                    key={item.id}
+                                    timestamp={DateTime.fromSeconds(Number(item.timestamp)).toRelative() || ""}
+                                    user={item.user}
+                                    message={item.message}
+                                    source={item.source}
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>
 
-                {/* Sidebar Cards */}
+                {/* System Controls */}
                 <div className="space-y-6">
-                    <div className="glass-panel p-6 border-sirsi-gold/20 border">
-                        <h3 className="text-lg mb-4">Maintenance</h3>
-                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10">
-                            <span className="text-sm">Maintenance Mode</span>
-                            <div className={`w-10 h-5 rounded-full relative transition-colors ${settings?.maintenanceMode ? 'bg-sirsi-emerald' : 'bg-white/10'}`}>
-                                <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${settings?.maintenanceMode ? 'left-6' : 'left-1'}`} />
+                    <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+                        <h3 className="font-bold text-gray-900 dark:text-white mb-4">Maintenance Mode</h3>
+                        <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700">
+                            <span className="text-sm font-medium">Global Access</span>
+                            <div className={`w-10 h-5 rounded-full relative transition-colors ${overview?.maintenanceMode ? 'bg-red-500' : 'bg-emerald-500'}`}>
+                                <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${overview?.maintenanceMode ? 'left-6' : 'left-1'}`} />
                             </div>
                         </div>
-                        <p className="text-[10px] text-white/30 mt-3 italic">
-                            * Enabling maintenance mode will block client-facing portals.
+                        <p className="text-[10px] text-gray-400 mt-4 leading-relaxed">
+                            * Maintenance mode will restrict access to all tenant portals and the Sirsi Sign platform for scheduled updates.
                         </p>
                     </div>
                 </div>
@@ -83,28 +111,47 @@ function Dashboard() {
     )
 }
 
-function StatCard({ title, value, change }: { title: string, value: string, change: string }) {
+function AnalyticsCard({ title, value, trend, icon, subtitle }: { title: string, value: string, trend: string, icon: string, subtitle: string }) {
     return (
-        <div className="glass-panel p-6 gold-border">
-            <div className="text-[10px] text-sirsi-gold uppercase tracking-widest mb-1">{title}</div>
-            <div className="text-2xl font-bold">{value}</div>
-            <div className="text-[10px] text-sirsi-emerald mt-2">{change} this month</div>
+        <div className="analytics-card">
+            <div className="flex items-center justify-between mb-4">
+                <div className="metric-icon">{icon}</div>
+                <div className={`metric-trend ${trend.startsWith('+') ? 'trend-up' : 'text-gray-400'}`}>
+                    <span>{trend.startsWith('+') ? '↗' : ''}</span>
+                    <span>{trend}</span>
+                </div>
+            </div>
+            <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">{value}</div>
+            <div className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-1">{title}</div>
+            <div className="text-xs text-gray-400 dark:text-slate-500">{subtitle}</div>
         </div>
     )
 }
 
-function ActivityItem({ time, user, action, meta }: { time: string, user: string, action: string, meta: string }) {
+function ActivityItem({ timestamp, user, message, source }: { timestamp: string, user: string, message: string, source: string }) {
     return (
-        <div className="flex items-start gap-4 p-3 hover:bg-white/5 rounded-lg transition-colors border border-transparent hover:border-white/5">
-            <div className="w-2 h-2 rounded-full bg-sirsi-gold mt-2 shadow-[0_0_10px_#C8A951]" />
+        <div className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors flex items-start gap-4">
+            <div className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-400">
+                <DashboardIcon className="w-4 h-4" />
+            </div>
             <div className="flex-1">
-                <div className="text-xs">
-                    <span className="text-white/80 font-bold">{user}</span>
-                    <span className="text-white/40 ml-2">{action}</span>
-                    <span className="text-sirsi-gold/80 ml-2">{meta}</span>
+                <div className="flex justify-between items-start">
+                    <p className="text-sm">
+                        <span className="font-bold text-gray-900 dark:text-white">{user}</span>
+                        <span className="text-gray-500 dark:text-slate-400 ml-2">{message}</span>
+                    </p>
+                    <span className="text-[10px] text-gray-400 font-medium">{timestamp}</span>
                 </div>
-                <div className="text-[10px] text-white/20 mt-1">{time}</div>
+                <div className="mt-1 flex items-center gap-2">
+                    <span className="text-[10px] px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 rounded-full font-bold uppercase tracking-widest">
+                        {source}
+                    </span>
+                </div>
             </div>
         </div>
     )
 }
+
+// Stub for Icon - should import from lucide-react in __root but re-import here if needed
+import { LayoutDashboard } from 'lucide-react'
+const DashboardIcon = LayoutDashboard as any

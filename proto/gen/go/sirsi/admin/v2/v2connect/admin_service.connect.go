@@ -35,6 +35,9 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
+	// AdminServiceGetSystemOverviewProcedure is the fully-qualified name of the AdminService's
+	// GetSystemOverview RPC.
+	AdminServiceGetSystemOverviewProcedure = "/sirsi.admin.v2.AdminService/GetSystemOverview"
 	// AdminServiceLogDevSessionProcedure is the fully-qualified name of the AdminService's
 	// LogDevSession RPC.
 	AdminServiceLogDevSessionProcedure = "/sirsi.admin.v2.AdminService/LogDevSession"
@@ -82,7 +85,8 @@ const (
 
 // AdminServiceClient is a client for the sirsi.admin.v2.AdminService service.
 type AdminServiceClient interface {
-	// Development & Session Logging
+	// System Monitoring & Stats
+	GetSystemOverview(context.Context, *connect.Request[v2.GetSystemOverviewRequest]) (*connect.Response[v2.SystemOverview], error)
 	LogDevSession(context.Context, *connect.Request[v2.LogDevSessionRequest]) (*connect.Response[v2.LogDevSessionResponse], error)
 	GetDevMetrics(context.Context, *connect.Request[v2.GetDevMetricsRequest]) (*connect.Response[v2.DevMetrics], error)
 	SyncGitHubStats(context.Context, *connect.Request[v2.SyncGitHubStatsRequest]) (*connect.Response[v2.SyncGitHubStatsResponse], error)
@@ -116,6 +120,12 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 	baseURL = strings.TrimRight(baseURL, "/")
 	adminServiceMethods := v2.File_sirsi_admin_v2_admin_service_proto.Services().ByName("AdminService").Methods()
 	return &adminServiceClient{
+		getSystemOverview: connect.NewClient[v2.GetSystemOverviewRequest, v2.SystemOverview](
+			httpClient,
+			baseURL+AdminServiceGetSystemOverviewProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("GetSystemOverview")),
+			connect.WithClientOptions(opts...),
+		),
 		logDevSession: connect.NewClient[v2.LogDevSessionRequest, v2.LogDevSessionResponse](
 			httpClient,
 			baseURL+AdminServiceLogDevSessionProcedure,
@@ -211,6 +221,7 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 
 // adminServiceClient implements AdminServiceClient.
 type adminServiceClient struct {
+	getSystemOverview *connect.Client[v2.GetSystemOverviewRequest, v2.SystemOverview]
 	logDevSession     *connect.Client[v2.LogDevSessionRequest, v2.LogDevSessionResponse]
 	getDevMetrics     *connect.Client[v2.GetDevMetricsRequest, v2.DevMetrics]
 	syncGitHubStats   *connect.Client[v2.SyncGitHubStatsRequest, v2.SyncGitHubStatsResponse]
@@ -226,6 +237,11 @@ type adminServiceClient struct {
 	getSettings       *connect.Client[v2.GetSettingsRequest, v2.GetSettingsResponse]
 	updateSettings    *connect.Client[v2.UpdateSettingsRequest, v2.UpdateSettingsResponse]
 	listAuditTrail    *connect.Client[v2.ListAuditTrailRequest, v2.ListAuditTrailResponse]
+}
+
+// GetSystemOverview calls sirsi.admin.v2.AdminService.GetSystemOverview.
+func (c *adminServiceClient) GetSystemOverview(ctx context.Context, req *connect.Request[v2.GetSystemOverviewRequest]) (*connect.Response[v2.SystemOverview], error) {
+	return c.getSystemOverview.CallUnary(ctx, req)
 }
 
 // LogDevSession calls sirsi.admin.v2.AdminService.LogDevSession.
@@ -305,7 +321,8 @@ func (c *adminServiceClient) ListAuditTrail(ctx context.Context, req *connect.Re
 
 // AdminServiceHandler is an implementation of the sirsi.admin.v2.AdminService service.
 type AdminServiceHandler interface {
-	// Development & Session Logging
+	// System Monitoring & Stats
+	GetSystemOverview(context.Context, *connect.Request[v2.GetSystemOverviewRequest]) (*connect.Response[v2.SystemOverview], error)
 	LogDevSession(context.Context, *connect.Request[v2.LogDevSessionRequest]) (*connect.Response[v2.LogDevSessionResponse], error)
 	GetDevMetrics(context.Context, *connect.Request[v2.GetDevMetricsRequest]) (*connect.Response[v2.DevMetrics], error)
 	SyncGitHubStats(context.Context, *connect.Request[v2.SyncGitHubStatsRequest]) (*connect.Response[v2.SyncGitHubStatsResponse], error)
@@ -335,6 +352,12 @@ type AdminServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	adminServiceMethods := v2.File_sirsi_admin_v2_admin_service_proto.Services().ByName("AdminService").Methods()
+	adminServiceGetSystemOverviewHandler := connect.NewUnaryHandler(
+		AdminServiceGetSystemOverviewProcedure,
+		svc.GetSystemOverview,
+		connect.WithSchema(adminServiceMethods.ByName("GetSystemOverview")),
+		connect.WithHandlerOptions(opts...),
+	)
 	adminServiceLogDevSessionHandler := connect.NewUnaryHandler(
 		AdminServiceLogDevSessionProcedure,
 		svc.LogDevSession,
@@ -427,6 +450,8 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 	)
 	return "/sirsi.admin.v2.AdminService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case AdminServiceGetSystemOverviewProcedure:
+			adminServiceGetSystemOverviewHandler.ServeHTTP(w, r)
 		case AdminServiceLogDevSessionProcedure:
 			adminServiceLogDevSessionHandler.ServeHTTP(w, r)
 		case AdminServiceGetDevMetricsProcedure:
@@ -465,6 +490,10 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 
 // UnimplementedAdminServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedAdminServiceHandler struct{}
+
+func (UnimplementedAdminServiceHandler) GetSystemOverview(context.Context, *connect.Request[v2.GetSystemOverviewRequest]) (*connect.Response[v2.SystemOverview], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.AdminService.GetSystemOverview is not implemented"))
+}
 
 func (UnimplementedAdminServiceHandler) LogDevSession(context.Context, *connect.Request[v2.LogDevSessionRequest]) (*connect.Response[v2.LogDevSessionResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.AdminService.LogDevSession is not implemented"))

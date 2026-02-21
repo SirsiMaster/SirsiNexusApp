@@ -9,7 +9,8 @@ import "sirsi/admin/v2/estate.proto";
 option go_package = "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2";
 
 service AdminService {
-  // Development & Session Logging
+  // System Monitoring & Stats
+  rpc GetSystemOverview(GetSystemOverviewRequest) returns (SystemOverview);
   rpc LogDevSession(LogDevSessionRequest) returns (LogDevSessionResponse);
   rpc GetDevMetrics(GetDevMetricsRequest) returns (DevMetrics);
   rpc SyncGitHubStats(SyncGitHubStatsRequest) returns (SyncGitHubStatsResponse);
@@ -175,4 +176,16 @@ message SyncGitHubStatsRequest {
 message SyncGitHubStatsResponse {
   bool success = 1;
   int32 synced_count = 2;
+}
+
+message GetSystemOverviewRequest {}
+
+message SystemOverview {
+  int32 total_tenants = 1;
+  int32 total_contracts = 2;
+  sirsi.common.v1.Money revenue_mtd = 3;
+  double sirsi_multiplier = 4;
+  bool maintenance_mode = 5;
+  repeated Notification recent_alerts = 6;
+  repeated AuditLogEntry activity_feed = 7;
 }

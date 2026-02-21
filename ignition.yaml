@@ -77,18 +77,16 @@ ignition:
         method: "ping"
 
     # Phase 2: Core Application Services
-    - name: "sirsi_core"
+    - name: "sirsi_admin_service"
       type: "application"
       priority: 4
       timeout: 45
       dependencies: ["redis", "port_registry"]
-      startup_command: "./target/release/sirsi-nexus start"
+      startup_command: "go run packages/sirsi-admin-service/main.go"
       environment:
-        DATABASE_URL: "postgresql://root@localhost:26257/sirsi_nexus?sslmode=disable"
+        PORT: "8080"
         REDIS_URL: "redis://localhost:6379"
-        OPENAI_API_KEY: "${OPENAI_API_KEY}"
-        ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
-        RUST_LOG: "sirsi_core=info,tower_http=info"
+        GEMINI_API_KEY: "${GEMINI_API_KEY}"
       health_check:
         endpoint: "localhost:8080/health"
         method: "http"
@@ -117,17 +115,16 @@ ignition:
         path: "/agent-ws"
 
     # Phase 3: Frontend Services
-    - name: "nextjs_frontend"
+    - name: "sirsi_portal_app"
       type: "frontend"
       priority: 7
       timeout: 60
-      dependencies: ["sirsi_core", "sirsi_grpc", "sirsi_websocket"]
+      dependencies: ["sirsi_admin_service"]
       startup_command: "npm run dev"
-      working_directory: "./ui"
+      working_directory: "./packages/sirsi-portal-app"
       environment:
-        NEXT_PUBLIC_API_URL: "http://localhost:8080"
-        NEXT_PUBLIC_GRPC_URL: "http://localhost:50051"
-        NEXT_PUBLIC_WS_URL: "ws://localhost:8100"
+        VITE_GATEWAY_URL: "http://localhost:8080"
+        VITE_FIREBASE_API_KEY: "${VITE_FIREBASE_API_KEY}"
         PORT: "3000"
       health_check:
         endpoint: "localhost:3000"
