@@ -148,7 +148,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            padding: clamp(80px, 12vh, 120px) clamp(40px, 8vw, 80px) clamp(60px, 10vh, 80px);
+            padding: clamp(80px, 12vh, 120px) clamp(40px, 8vw, 80px) clamp(120px, 15vh, 180px);
             display: none;
             flex-direction: column;
             background: white;
@@ -443,17 +443,31 @@
         }
 
         .slide-footer {
-            margin-top: auto;
-            flex-shrink: 0;
+            display: none;
+            /* Hide individual footers in favor of global one */
+        }
+
+        .doc-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 80px;
             display: flex;
             justify-content: space-between;
-            border-top: 1px solid var(--border);
-            padding-top: 12px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
+            align-items: center;
+            background: transparent;
+            z-index: 1000;
+            font-size: 0.7rem;
+            font-weight: 700;
             color: var(--text-light);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+
+        .doc-footer>div {
+            pointer-events: auto;
         }
 
         /* Analysis Memo Style (Slide 12) */
@@ -829,6 +843,11 @@
         <div class="memo-tag">PRIVATE SEED MEMORANDUM // INVESTOR RELATIONS</div>
     </header>
 
+    <footer class="doc-footer" id="mainFooter">
+        <div>SIRSI TECHNOLOGIES INC.</div>
+        <div id="footerSlideInfo">CONFIDENTIAL // THE VISION // SLIDE 01</div>
+    </footer>
+
     <main class="presentation"><!-- Slide 1: Title -->
         <div class="slide title-slide active">
             <div class="slide-inner">
@@ -933,14 +952,13 @@
             <div class="slide-inner">
                 <div class="slide-header">
                     <h3>The Crisis</h3>
-                    <h2>F1 Ambition. <span style="color: #EF4444;">Salvage Reality.</span></h2>
+                    <h2>Infrastructure is the Engine of Operations</h2>
                 </div>
 
                 <div class="slide-content s3-clean-bg">
                     <style>
                         .s3-clean-bg {
                             position: relative;
-                            overflow: hidden;
                             background: #fdfdfd;
                             background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
                             background-size: 20px 20px;
@@ -976,7 +994,7 @@
                         .s3-dash {
                             display: grid;
                             grid-template-columns: 1fr 1fr 1fr;
-                            gap: 55px;
+                            gap: 30px;
                             width: 100%;
                             max-width: 1450px;
                             margin: 0 auto;
@@ -995,7 +1013,7 @@
                             border: 1px solid rgba(255, 255, 255, 0.4);
                             border-top: 3px solid #C8A951;
                             border-radius: 24px;
-                            padding: 40px 40px;
+                            padding: 25px 25px;
                             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
                             transition: transform 0.3s ease;
                         }
@@ -1005,7 +1023,7 @@
                         }
 
                         .s3-viz {
-                            height: 250px;
+                            height: 180px;
                             width: 100%;
                             display: flex;
                             align-items: center;
@@ -1059,10 +1077,10 @@
 
                         .s3-desc {
                             font-family: 'Inter', sans-serif;
-                            font-size: 1.05rem;
+                            font-size: 1rem;
                             color: var(--text-slate);
                             line-height: 1.5;
-                            max-width: 320px;
+                            max-width: 340px;
                             margin: 0 auto 20px;
                             font-weight: 400;
                             min-height: 3.2em;
@@ -1070,18 +1088,19 @@
 
                         .s3-impact {
                             font-family: 'Cinzel', serif;
-                            font-size: 1.15rem;
+                            font-size: 1.1rem;
                             color: #C8A951;
                             letter-spacing: 0.05em;
                             font-weight: 500;
-                            margin-top: auto;
+                            margin-top: 15px;
                         }
                     </style>
 
-                    <div style="text-align: center; padding: 20px 0 40px;">
-                        <h3
-                            style="font-family: 'Cinzel', serif; font-size: 1.1rem; color: #C8A951; letter-spacing: 0.5em; text-transform: uppercase; font-weight: 500; margin-bottom: 12px; opacity:0; animation: s3FadeIn 0.8s ease 0.1s forwards;">
-                            Infrastructure is the Engine of Operations</h3>
+                    <div style="text-align: center; padding: 10px 0 25px;">
+                        <h3 style="font-family: 'Cinzel', serif; font-size: 1.1rem; color: #EF4444; letter-spacing: 0.5em;
+                        text-transform: uppercase; font-weight: 500; margin-bottom: 12px; opacity:0; animation: s3FadeIn
+                        0.8s ease 0.1s forwards;">
+                            F1 Ambition. Salvage Reality.</h3>
                         <p
                             style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text-light); font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; opacity:0; animation: s3FadeIn 0.8s ease 0.2s forwards;">
                             Legacy Debt is the Brake on Your Velocity</p>
@@ -1114,7 +1133,7 @@
                                         style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; color: var(--text-light); z-index:1;">L</span>
                                 </div>
                             </div>
-                            <div class="s3-desc">Engineers spend 60% of their day "plumbing" instead of core IP.</div>
+                            <div class="s3-desc">Engineers lose 60% of their day to "plumbing" vs. core IP.</div>
                             <div class="s3-impact">4.5 MONTHS LOST / YR</div>
                         </div>
                         <div class="s3-gw" style="animation-delay: 0.6s;">
@@ -1130,7 +1149,7 @@
                     </div>
 
                     <p
-                        style="font-family:'Cinzel', serif; font-size:1.5rem; color: #10B981; font-weight:500; text-align:center; margin:80px 0 20px; opacity:0; animation: s3FadeIn 0.7s ease 3s forwards; letter-spacing: 0.05em; text-transform: uppercase;">
+                        style="font-family:'Cinzel', serif; font-size:1.5rem; color: #10B981; font-weight:500; text-align:center; margin:40px 0 20px; opacity:0; animation: s3FadeIn 0.7s ease 3s forwards; letter-spacing: 0.05em; text-transform: uppercase;">
                         This is where Sirsi intervenes.
                     </p>
 
@@ -3238,6 +3257,24 @@
             if (currentSlide === 13) {
                 setTimeout(drawRevenueChart, 400);
                 setTimeout(drawUserChart, 600);
+            }
+
+            updateGlobalFooter();
+        }
+
+        const slideTitles = [
+            "THE VISION", "STRATEGIC VISION", "THE CRISIS", "THE SOLUTION",
+            "INTELLECTUAL PROPERTY", "PLATFORM INFRASTRUCTURE", "HARDWARE ALPHA", "NEXUS CORE",
+            "GO-TO-MARKET", "MARKET ARCHITECTURE", "THE CORE TEAM", "STRATEGIC TRACTION",
+            "GROWTH TRAJECTORY", "FINANCIAL TRAJECTORY", "THE OPPORTUNITY", "THE LEGACY"
+        ];
+
+        function updateGlobalFooter() {
+            const footerInfo = document.getElementById('footerSlideInfo');
+            if (footerInfo) {
+                const title = slideTitles[currentSlide - 1] || "SIRSI PLATFORM";
+                const slideNum = String(currentSlide).padStart(2, '0');
+                footerInfo.textContent = `CONFIDENTIAL // ${title} // SLIDE ${slideNum}`;
             }
         }
 
