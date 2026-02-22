@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- v1.0.19-standard-footers -->
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -23,8 +23,8 @@
             --gold-dark: #B8860B;
             --gold-light: #FFF9E5;
             --text-dark: #0f172a;
-            --text-slate: #334155;
-            --text-light: #526175;
+            --text-slate: #475569;
+            --text-light: #94a3b8;
             --border: #e2e8f0;
             --bg-page: #ffffff;
             --glass: rgba(255, 255, 255, 0.9);
@@ -148,7 +148,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            padding: clamp(80px, 12vh, 120px) clamp(40px, 8vw, 80px) clamp(120px, 15vh, 180px);
+            padding: clamp(80px, 12vh, 120px) clamp(40px, 8vw, 80px) clamp(60px, 10vh, 80px);
             display: none;
             flex-direction: column;
             background: white;
@@ -443,31 +443,17 @@
         }
 
         .slide-footer {
-            display: none;
-            /* Hide individual footers in favor of global one */
-        }
-
-        .doc-footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px 80px;
+            margin-top: auto;
+            flex-shrink: 0;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            background: transparent;
-            z-index: 1000;
-            font-size: 0.7rem;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+            font-size: 0.8rem;
             font-weight: 700;
-            color: var(--text-light);
-            letter-spacing: 0.15em;
             text-transform: uppercase;
-            pointer-events: none;
-        }
-
-        .doc-footer>div {
-            pointer-events: auto;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
         }
 
         /* Analysis Memo Style (Slide 12) */
@@ -843,11 +829,6 @@
         <div class="memo-tag">PRIVATE SEED MEMORANDUM // INVESTOR RELATIONS</div>
     </header>
 
-    <footer class="doc-footer" id="mainFooter">
-        <div>SIRSI TECHNOLOGIES INC.</div>
-        <div id="footerSlideInfo">CONFIDENTIAL // THE VISION // SLIDE 01</div>
-    </footer>
-
     <main class="presentation"><!-- Slide 1: Title -->
         <div class="slide title-slide active">
             <div class="slide-inner">
@@ -867,7 +848,7 @@
                 </div>
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // THE VISION // SLIDE 01</div>
+                    <div>CONFIDENTIAL // SLIDE 01</div>
                 </div>
             </div>
         </div>
@@ -904,8 +885,7 @@
                                 <p style="font-size: 0.9rem; color: var(--text-slate); line-height: 1.5; margin: 0;">
                                     Your cloud stops bleeding money. Sirsi turns invisible waste into margin you can
                                     see, measure, and reinvest in growth.</p>
-                                <p
-                                    style="font-size: 0.7rem; color: var(--text-light); margin: 6px 0 0; font-style: italic;">
+                                <p style="font-size: 0.7rem; color: #94a3b8; margin: 6px 0 0; font-style: italic;">
                                     Source: Flexera State of the Cloud 2025</p>
                             </div>
                             <div style="border-left: 4px solid var(--primary); padding-left: 20px; text-align: left;">
@@ -918,8 +898,7 @@
                                 <p style="font-size: 0.9rem; color: var(--text-slate); line-height: 1.5; margin: 0;">
                                     Your best engineers go back to building product. Sirsi absorbs the infrastructure
                                     burden — so every hire drives revenue.</p>
-                                <p
-                                    style="font-size: 0.7rem; color: var(--text-light); margin: 6px 0 0; font-style: italic;">
+                                <p style="font-size: 0.7rem; color: #94a3b8; margin: 6px 0 0; font-style: italic;">
                                     Source: Cortex Developer Survey 2024</p>
                             </div>
                             <div style="border-left: 4px solid var(--gold-dark); padding-left: 20px; text-align: left;">
@@ -932,8 +911,7 @@
                                 <p style="font-size: 0.9rem; color: var(--text-slate); line-height: 1.5; margin: 0;">
                                     More runway means more shots on goal. Sirsi recaptures enough capital to extend your
                                     path to the next milestone — by months, not days.</p>
-                                <p
-                                    style="font-size: 0.7rem; color: var(--text-light); margin: 6px 0 0; font-style: italic;">
+                                <p style="font-size: 0.7rem; color: #94a3b8; margin: 6px 0 0; font-style: italic;">
                                     Derived: $480K dev + $96K cloud, 15-person team</p>
                             </div>
                         </div>
@@ -942,7 +920,7 @@
                 </div>
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // STRATEGIC VISION // SLIDE 02</div>
+                    <div>CONFIDENTIAL // SLIDE 02</div>
                 </div>
             </div>
         </div>
@@ -952,13 +930,14 @@
             <div class="slide-inner">
                 <div class="slide-header">
                     <h3>The Crisis</h3>
-                    <h2>Infrastructure is the Engine of Operations</h2>
+                    <h2>Infrastructure Is <span style="color: #EF4444;">Draining Your Startup.</span></h2>
                 </div>
 
                 <div class="slide-content s3-clean-bg">
                     <style>
                         .s3-clean-bg {
                             position: relative;
+                            overflow: hidden;
                             background: #fdfdfd;
                             background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
                             background-size: 20px 20px;
@@ -994,11 +973,11 @@
                         .s3-dash {
                             display: grid;
                             grid-template-columns: 1fr 1fr 1fr;
-                            gap: 30px;
+                            gap: 32px;
                             width: 100%;
-                            max-width: 1450px;
+                            max-width: 1150px;
                             margin: 0 auto;
-                            padding-top: 20px;
+                            padding-top: 40px;
                         }
 
                         .s3-gw {
@@ -1008,34 +987,34 @@
                             text-align: center;
                             opacity: 0;
                             animation: s3FadeIn 0.6s ease forwards;
-                            background: rgba(255, 255, 255, 0.6);
-                            backdrop-filter: blur(16px);
-                            border: 1px solid rgba(255, 255, 255, 0.4);
-                            border-top: 3px solid #C8A951;
-                            border-radius: 24px;
-                            padding: 25px 25px;
-                            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
-                            transition: transform 0.3s ease;
+                            background: rgba(255, 255, 255, 0.7);
+                            backdrop-filter: blur(12px);
+                            border: 1.5px solid rgba(0, 0, 0, 0.04);
+                            border-radius: 28px;
+                            padding: 30px 20px 40px;
+                            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03);
                         }
 
-                        .s3-gw:hover {
-                            transform: translateY(-5px);
+                        .s3-gw:nth-child(1) {
+                            animation-delay: 0.2s;
+                        }
+
+                        .s3-gw:nth-child(2) {
+                            animation-delay: 0.4s;
+                        }
+
+                        .s3-gw:nth-child(3) {
+                            animation-delay: 0.6s;
                         }
 
                         .s3-viz {
-                            height: 180px;
+                            height: 260px;
                             width: 100%;
                             display: flex;
                             align-items: center;
                             justify-content: center;
                             position: relative;
-                            margin-bottom: 30px;
-                        }
-
-
-                        #slide-crisis h2,
-                        #slide-crisis h3 {
-                            font-weight: 500 !important;
+                            margin-bottom: 24px;
                         }
 
                         .s3-shifter-gate {
@@ -1065,55 +1044,60 @@
                         }
 
                         .s3-label {
-                            font-family: 'Cinzel', serif;
-                            font-size: 1.25rem;
-                            color: #1e293b;
-                            letter-spacing: 0.12em;
-                            font-weight: 500;
+                            font-size: 1.4rem;
+                            color: #7F1D1D;
+                            letter-spacing: 0.04em;
+                            font-weight: 800;
                             text-transform: uppercase;
-                            margin-bottom: 24px;
-                            line-height: 1.2;
+                            margin-bottom: 12px;
+                            font-family: 'Inter', sans-serif;
+                            line-height: 1.1;
                         }
 
                         .s3-desc {
-                            font-family: 'Inter', sans-serif;
-                            font-size: 1rem;
-                            color: var(--text-slate);
-                            line-height: 1.5;
-                            max-width: 340px;
-                            margin: 0 auto 20px;
-                            font-weight: 400;
-                            min-height: 3.2em;
-                        }
-
-                        .s3-impact {
-                            font-family: 'Cinzel', serif;
                             font-size: 1.1rem;
-                            color: #C8A951;
-                            letter-spacing: 0.05em;
+                            color: #475569;
+                            line-height: 1.5;
+                            max-width: 310px;
+                            margin: 0 auto;
                             font-weight: 500;
-                            margin-top: 15px;
+                            min-height: 4.5em;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
                         }
                     </style>
 
-                    <div style="text-align: center; padding: 10px 0 25px;">
+                    <div style="text-align: center; padding: 10px 0 30px;">
+                        <h3
+                            style="font-size: 1.1rem; color: #C8A951; letter-spacing: 0.4em; text-transform: uppercase; font-weight: 800; margin-bottom: 8px;">
+                            The Crisis</h3>
                         <p
-                            style="font-family: 'Inter', sans-serif; font-size: 1rem; color: #EF4444; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; opacity:0; animation: s3FadeIn 0.8s ease 0.2s forwards;">
-                            Legacy Debt is the Parasitic Drag on Your Innovation Engine</p>
+                            style="font-size: 2.5rem; font-family: 'Cinzel', serif; font-weight: 700; color: #1e293b; margin-bottom: 15px; text-transform: uppercase; letter-spacing: -0.02em;">
+                            Your Infrastructure Engine is <span style="color: #991B1B;">Redlining</span></p>
+
+                        <div style="text-align: center; margin-bottom: 10px;">
+                            <p
+                                style="font-family:'Cinzel', serif; font-size: 1.1rem; color: #64748b; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;">
+                                Manual Infra Consumes <span style="color: #991B1B;">up to 60% of revenue</span> before
+                                you
+                                get moving</p>
+                        </div>
                     </div>
 
                     <div class="s3-dash">
-                        <div class="s3-gw" style="animation-delay: 0.2s;">
-                            <div class="s3-label">Capital Runway</div>
+                        <div class="s3-gw">
+                            <div class="s3-label">Capital Efficiency</div>
                             <div class="s3-viz">
                                 <canvas id="s3-fuel-gauge" width="440" height="320"
                                     style="width:100%; max-width:320px; height:auto;"></canvas>
                             </div>
-                            <div class="s3-desc">Over-provisioned AWS/GCP clusters burn capital needlessly.</div>
+                            <div class="s3-desc">Silent over-provisioning and idle clusters incinerate your burn rate.
+                            </div>
                             <div class="s3-impact">$180K/YR CLOUD WASTE</div>
                         </div>
-                        <div class="s3-gw" style="animation-delay: 0.4s;">
-                            <div class="s3-label">Deployment Inertia</div>
+                        <div class="s3-gw">
+                            <div class="s3-label">Technical Velocity</div>
                             <div class="s3-viz">
                                 <div class="s3-shifter-gate">
                                     <div class="s3-shifter-track"></div>
@@ -1122,30 +1106,30 @@
                                     <span
                                         style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; color: var(--text-light); z-index:1;">R</span>
                                     <span
-                                        style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; z-index:2; animation: s3PulseRed 1.5s ease-in-out infinite; border: 2.5px solid #EF4444; border-radius: 50%; width:54px; height:54px; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 15px rgba(239,68,68,0.15);">N</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; z-index:2; color: #EF4444; border: 2.5px solid #EF4444; border-radius: 50%; width:54px; height:54px; display:flex; align-items:center; justify-content:center; background: rgba(239, 68, 68, 0.15);">N</span>
                                     <span
                                         style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; color: var(--text-light); z-index:1;">D</span>
                                     <span
                                         style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; color: var(--text-light); z-index:1;">L</span>
                                 </div>
                             </div>
-                            <div class="s3-desc">Simple feature updates now take 14 days to clear legacy friction.</div>
-                            <div class="s3-impact">336HR INNOVATION LAG</div>
+                            <div class="s3-desc">Simple feature updates turn into multi-week engineering marathons.
+                            </div>
+                            <div class="s3-impact">4.5 MONTHS LOST / YR</div>
                         </div>
-                        <div class="s3-gw" style="animation-delay: 0.6s;">
-                            <div class="s3-label">Infra Load</div>
+                        <div class="s3-gw">
+                            <div class="s3-label">Operational Redline</div>
                             <div class="s3-viz">
                                 <canvas id="s3-tach-gauge" width="440" height="320"
                                     style="width:100%; max-width:320px; height:auto;"></canvas>
                             </div>
-                            <div class="s3-desc">12 hours of infra "noise" for every 1 hour of core business logic.
-                            </div>
+                            <div class="s3-desc">Manual maintenance traps elite talent, stalling revenue growth.</div>
                             <div class="s3-impact">$1.1M LABOR TAX</div>
                         </div>
                     </div>
 
                     <p
-                        style="font-family:'Cinzel', serif; font-size:1.5rem; color: #10B981; font-weight:500; text-align:center; margin:40px 0 20px; opacity:0; animation: s3FadeIn 0.7s ease 3s forwards; letter-spacing: 0.05em; text-transform: uppercase;">
+                        style="font-family:'Cinzel', serif; font-size: 1.5rem; color: #10B981; font-weight:500; text-align:center; margin:40px 0 20px; letter-spacing: 0.05em; text-transform: uppercase;">
                         This is where Sirsi intervenes.
                     </p>
 
@@ -1154,37 +1138,29 @@
                             function drawGauge(id, target, delay, type) {
                                 var c = document.getElementById(id); if (!c) return;
                                 var ctx = c.getContext('2d'), W = c.width, H = c.height;
-                                var cx = W / 2, cy = H * 0.52, R = H * 0.42;
+                                var cx = W / 2, cy = H * 0.65, R = W * 0.36;
                                 var sa = Math.PI * 0.8, sweep = Math.PI * 1.4;
                                 var rl = (type === 'fuel') ? 0.25 : 0.65;
-                                var cur = 0, vel = 0, go = false, tf = target / 100;
+                                var cur = target / 100, vel = 0, go = true, tf = target / 100;
                                 function aFor(f) { return sa + f * sweep; }
                                 function render() {
                                     ctx.clearRect(0, 0, W, H);
-                                    ctx.beginPath(); ctx.arc(cx, cy, R * 1.15, 0, Math.PI * 2);
-                                    ctx.fillStyle = 'rgba(0,0,0,0.015)'; ctx.fill();
+                                    ctx.beginPath(); ctx.arc(cx, cy, R * 1.18, 0, Math.PI * 2);
+                                    ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.fill();
+                                    ctx.strokeStyle = 'rgba(0,0,0,0.03)'; ctx.lineWidth = 1; ctx.stroke();
                                     for (var i = 0; i < 80; i++) {
                                         var f = i / 80, a1 = sa + f * sweep, a2 = sa + (i + 1.5) / 80 * sweep;
                                         var r, g, b;
                                         if (type === 'fuel') {
-                                            if (f < 0.25) { r = 220; g = 38; b = 38; }
-                                            else if (f < 0.45) { r = 245; g = 158; b = 11; }
-                                            else { r = 16; g = 185; b = 129; }
-                                        } else if (type === 'temp') {
-                                            if (f < 0.25) { r = 59; g = 130; b = 246; }
-                                            else if (f < 0.75) { r = 148; g = 163; b = 184; }
-                                            else { r = 220; g = 38; b = 38; }
+                                            if (f < 0.25) { r = 220; g = 38; b = 38; } else if (f < 0.45) { r = 245; g = 158; b = 11; } else { r = 16; g = 185; b = 129; }
                                         } else {
-                                            if (f < 0.45) { r = 16; g = 185; b = 129; }
-                                            else if (f < 0.75) { r = 245; g = 158; b = 11; }
-                                            else { r = 220; g = 38; b = 38; }
+                                            if (f < 0.45) { r = 16; g = 185; b = 129; } else if (f < 0.75) { r = 245; g = 158; b = 11; } else { r = 220; g = 38; b = 38; }
                                         }
                                         var al = f <= cur ? 1.0 : 0.08;
                                         ctx.beginPath(); ctx.arc(cx, cy, R, a1, a2);
                                         ctx.strokeStyle = 'rgba(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ',' + al + ')';
                                         ctx.lineWidth = 16; ctx.stroke();
                                     }
-                                    var rl = (type === 'fuel') ? 0.25 : 0.75;
                                     var danger = (type === 'fuel') ? (cur < rl) : (cur > rl);
                                     if (danger) {
                                         var p = 0.08 + Math.sin(Date.now() * 0.008) * 0.04;
@@ -1201,22 +1177,18 @@
                                         ctx.lineWidth = maj ? 2.5 : 1.2; ctx.stroke();
                                         if (maj) {
                                             var lr = R - 48;
-                                            var isFuel = (type === 'fuel'), isTemp = (type === 'temp');
-                                            ctx.font = (isFuel || isTemp ? '500 24px' : '500 15px') + ' "Cinzel",serif';
+                                            var isFuel = (type === 'fuel');
+                                            ctx.font = (isFuel ? '900 22px' : '700 15px') + ' Inter,sans-serif';
                                             ctx.fillStyle = atD ? '#B91C1C' : 'rgba(0,0,0,0.45)';
                                             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                                            var txt = '';
-                                            if (isFuel) txt = (f === 0 ? 'E' : (f === 1 ? 'F' : ''));
-                                            else if (isTemp) txt = (f === 0 ? 'C' : (f === 1 ? 'H' : ''));
-                                            else txt = Math.round(f * 100);
+                                            var txt = (isFuel) ? (f === 0 ? 'E' : (f === 1 ? 'F' : '')) : (Math.round(f * 100));
                                             if (txt !== '') ctx.fillText(txt, cx + lr * Math.cos(ang), cy + lr * Math.sin(ang));
                                         }
                                     }
-                                    ctx.font = '500 18px "Cinzel",serif';
-                                    ctx.fillStyle = '#94a3b8';
+                                    ctx.font = '900 58px "Cinzel",serif';
+                                    ctx.fillStyle = danger ? '#991B1B' : '#1e293b';
                                     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                                    var label = (type === 'fuel') ? 'FUEL' : (type === 'temp' ? 'TEMP' : 'LOAD');
-                                    ctx.fillText(label, cx, cy - R * 0.35);
+                                    ctx.fillText(Math.round(cur * 100) + '%', cx, cy - R * 0.35);
                                     var na = aFor(cur);
                                     ctx.save(); ctx.translate(cx, cy); ctx.rotate(na);
                                     ctx.beginPath(); ctx.moveTo(R * 0.86, 0); ctx.lineTo(-18, -4); ctx.lineTo(-18, 4); ctx.closePath();
@@ -1224,17 +1196,16 @@
                                     ctx.restore();
                                     ctx.beginPath(); ctx.arc(cx, cy, 14, 0, Math.PI * 2);
                                     var cg = ctx.createRadialGradient(cx, cy, 2, cx, cy, 14);
-                                    cg.addColorStop(0, '#ffffff'); cg.addColorStop(0.5, '#526175'); cg.addColorStop(1, '#475569');
+                                    cg.addColorStop(0, '#ffffff'); cg.addColorStop(0.5, '#cbd5e1'); cg.addColorStop(1, '#475569');
                                     ctx.fillStyle = cg; ctx.fill(); ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke();
                                 }
                                 function tk() {
-                                    if (go) { vel += (tf - cur) * 0.035; vel *= 0.84; cur += vel; if (Math.abs(tf - cur) < 0.0005 && Math.abs(vel) < 0.0005) cur = tf; }
-                                    render(); requestAnimationFrame(tk);
+                                    render();
                                 }
-                                tk(); setTimeout(function () { go = true; }, delay);
+                                tk();
                             }
                             drawGauge('s3-fuel-gauge', 12, 400, 'fuel');
-                            drawGauge('s3-tach-gauge', 92, 1200, 'temp');
+                            drawGauge('s3-tach-gauge', 92, 1200, 'tach');
                         })();
                     </script>
                 </div>
@@ -1300,7 +1271,7 @@
                 </div>
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // THE SOLUTION // SLIDE 04</div>
+                    <div>CONFIDENTIAL // SLIDE 04</div>
                 </div>
             </div>
         </div>
@@ -1451,7 +1422,7 @@
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // INTELLECTUAL PROPERTY // SLIDE 05</div>
+                    <div>CONFIDENTIAL // SLIDE 05</div>
                 </div>
             </div>
         </div>
@@ -1719,8 +1690,8 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // PLATFORM INFRASTRUCTURE // SLIDE 06</div>
+                    <div style="font-size: 0.85rem; font-weight: 600;">CONFIDENTIAL // PRODUCT ARCHITECTURE // SLIDE 06
+                    </div>
                 </div>
             </div>
         </div>
@@ -1754,8 +1725,7 @@
                                         TOP-VIEW ARCHITECTURE</div>
                                     <div style="font-size: 1.1rem; color: #000; margin-bottom: 2px;">4x Mac Studio
                                         Cluster</div>
-                                    <p style="font-size: 0.85rem; color: var(--text-slate); line-height: 1.4;">
-                                        Direct-facing Apple
+                                    <p style="font-size: 0.85rem; color: #64748b; line-height: 1.4;">Direct-facing Apple
                                         Silicon mesh utilizing M5 Ultra processing for deterministic local AI
                                         conduction.</p>
                                 </div>
@@ -1765,8 +1735,7 @@
                                         SOVEREIGN FABRIC</div>
                                     <div style="font-size: 1.1rem; color: #000; margin-bottom: 2px;">TB5 Fiber
                                         Interconnect</div>
-                                    <p style="font-size: 0.85rem; color: var(--text-slate); line-height: 1.4;">
-                                        Gold-braided
+                                    <p style="font-size: 0.85rem; color: #64748b; line-height: 1.4;">Gold-braided
                                         120Gbps RDMA fabric with pulsing data synchronization across all nodes.</p>
                                 </div>
                                 <div>
@@ -1775,7 +1744,7 @@
                                         TRUST LAYER</div>
                                     <div style="font-size: 1.1rem; color: #000; margin-bottom: 2px;">Hedera Local Mirror
                                         Node</div>
-                                    <p style="font-size: 0.85rem; color: var(--text-slate); line-height: 1.4;">Local
+                                    <p style="font-size: 0.85rem; color: #64748b; line-height: 1.4;">Local
                                         consensus-as-a-service. Every inference transaction is hashed and verified
                                         instantly.</p>
                                 </div>
@@ -1787,14 +1756,14 @@
                                 <div
                                     style="flex: 1; padding: 15px; border-right: 1px solid var(--border); background: #fcfcfd;">
                                     <div class="cinzel" style="font-size: 2rem; color: #000;">2.0 <span
-                                            style="font-size: 0.8rem; color: var(--text-light);">TB</span></div>
+                                            style="font-size: 0.8rem; color: #94a3b8;">TB</span></div>
                                     <div class="cinzel"
                                         style="font-size: 0.6rem; color: var(--gold-dark); letter-spacing: 0.1em; margin-top: 3px;">
                                         TOTAL VRAM</div>
                                 </div>
                                 <div style="flex: 1; padding: 15px; background: #fcfcfd;">
                                     <div class="cinzel" style="font-size: 2rem; color: #000;">152 <span
-                                            style="font-size: 0.8rem; color: var(--text-light);">TOPS</span></div>
+                                            style="font-size: 0.8rem; color: #94a3b8;">TOPS</span></div>
                                     <div class="cinzel"
                                         style="font-size: 0.6rem; color: var(--gold-dark); letter-spacing: 0.1em; margin-top: 3px;">
                                         NPU COMPUTE</div>
@@ -1805,8 +1774,9 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // HARDWARE ALPHA // SLIDE 07</div>
+                    <div class="cinzel"
+                        style="font-weight: 700; color: var(--text-slate); letter-spacing: 0.15em; font-size: 0.75rem;">
+                        SIRSI TECHNOLOGIES // HARDWARE CANON // ALPHA SERIES</div>
                 </div>
             </div>
         </div>
@@ -1909,8 +1879,8 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // NEXUS CORE // SLIDE 08</div>
+                    <div class="cinzel" style="color: var(--text-slate); letter-spacing: 0.12em; font-size: 0.7rem;">
+                        GLOBAL SOVEREIGN INFRASTRUCTURE // ALPHA SERIES-32 / SIRSI PERSONA // HYPERVISOR ACTIVE</div>
                 </div>
             </div>
         </div>
@@ -2122,8 +2092,8 @@
             </div>
 
             <div class="slide-footer">
-                <div>SIRSI TECHNOLOGIES INC.</div>
-                <div>CONFIDENTIAL // GO-TO-MARKET // SLIDE 09</div>
+                <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
+                <div style="font-weight: 500;">CONFIDENTIAL // GO-TO-MARKET // SLIDE 09</div>
             </div>
         </div>
 
@@ -2144,7 +2114,7 @@
                 </div>
 
                 <div class="slide-content">
-                    <div style="display: grid; grid-template-columns: 1fr 1.15fr; gap: 40px; align-items: center;">
+                    <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 40px; align-items: center;">
 
                         <!-- Left Column: Supporting Architecture Mesh (Visible & Scaled) -->
                         <div
@@ -2271,8 +2241,8 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // MARKET ARCHITECTURE // SLIDE 10</div>
+                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
+                    <div style="font-weight: 500;">CONFIDENTIAL // MARKET ARCHITECTURE // SLIDE 10</div>
                 </div>
             </div>
         </div>
@@ -2324,8 +2294,8 @@
             </div>
 
             <div class="slide-footer">
-                <div>SIRSI TECHNOLOGIES INC.</div>
-                <div>CONFIDENTIAL // THE CORE TEAM // SLIDE 11</div>
+                <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
+                <div style="font-weight: 500;">CONFIDENTIAL // THE CORE TEAM // SLIDE 11</div>
             </div>
         </div>
         </div>
@@ -2429,12 +2399,12 @@
                                     style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; background: #f8fafc; padding: 10px; border-radius: 4px;">
                                     <div
                                         style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
-                                        <span style="color: var(--text-slate);">SERVICE ARCHITECTURE:</span>
+                                        <span style="color: #64748b;">SERVICE ARCHITECTURE:</span>
                                         <span style="color: var(--gold-dark);">CONTRACTS gRPC v1.0</span>
                                     </div>
                                     <div
                                         style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
-                                        <span style="color: var(--text-slate);">SECURITY LAYER:</span>
+                                        <span style="color: #64748b;">SECURITY LAYER:</span>
                                         <span style="color: var(--gold-dark);">HMAC CRYPTO-TRUST</span>
                                     </div>
                                 </div>
@@ -2475,32 +2445,33 @@
                                 <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">90%
                                 </div>
                                 <div
-                                    style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate); text-transform: uppercase; letter-spacing: 1px;">
+                                    style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
                                     Code Reuse</div>
                             </div>
                             <div>
                                 <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">-70%
                                 </div>
                                 <div
-                                    style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate); text-transform: uppercase; letter-spacing: 1px;">
+                                    style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
                                     Dev Overhead</div>
                             </div>
                             <div>
                                 <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">100%
                                 </div>
                                 <div
-                                    style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate); text-transform: uppercase; letter-spacing: 1px;">
+                                    style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
                                     Design Parity</div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // STRATEGIC TRACTION // SLIDE 12</div>
-                </div>
             </div>
+
+            <div class="slide-footer">
+                <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
+                <div style="font-weight: 500;">CONFIDENTIAL // STRATEGIC TRACTION // SLIDE 12</div>
+            </div>
+        </div>
         </div>
 
         <!-- Slide 11: Financials - Comprehensive Dashboard -->
@@ -2563,32 +2534,32 @@
                                     <div
                                         style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
                                         <span>Target ARR (Year 5):</span> <strong
-                                            style="color: var(--primary); font-weight: 600;">$73M+</strong>
+                                            style="color: var(--primary); font-weight: 600;">$73M+
                                     </div>
                                     <div
                                         style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
                                         <span>Scale Milestone:</span> <strong
-                                            style="color: var(--text-dark); font-weight: 600;">20,000 Customers</strong>
+                                            style="color: var(--text-dark); font-weight: 600;">20,000 Customers
                                     </div>
                                     <div
                                         style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
                                         <span>IP Milestones:</span> <strong
                                             style="color: var(--gold-dark); font-weight: 600;">3 Patents
-                                            Pending</strong>
+                                            Pending
                                     </div>
                                     <div
                                         style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
                                         <span>Platform Gross Margin:</span> <strong
-                                            style="color: var(--primary); font-weight: 600;">88.4%</strong>
+                                            style="color: var(--primary); font-weight: 600;">88.4%
                                     </div>
                                     <div
                                         style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
                                         <span>CAC Payback Period:</span> <strong
-                                            style="color: var(--text-dark); font-weight: 600;">4.2 Months</strong>
+                                            style="color: var(--text-dark); font-weight: 600;">4.2 Months
                                     </div>
                                     <div style="display: flex; justify-content: space-between;">
                                         <span>LTV / CAC Ratio:</span> <strong
-                                            style="color: var(--primary); font-weight: 600;">9.8x</strong>
+                                            style="color: var(--primary); font-weight: 600;">9.8x
                                     </div>
                                 </div>
                             </div>
@@ -2606,16 +2577,15 @@
                                         Cash Runway post-Seed financing.</p>
                                 </div>
                             </div>
-                            <div class="slide-footer">
-                                <div>SIRSI TECHNOLOGIES INC.</div>
-                                <div>CONFIDENTIAL // GROWTH TRAJECTORY // SLIDE 13</div>
-                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="slide-footer">
+                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
+                    <div style="font-weight: 500;">CONFIDENTIAL // GROWTH TRAJECTORY // SLIDE 13</div>
+                </div>
             </div>
         </div>
-
 
         <!-- Slide 14: By The Numbers (Strategic Design Alignment) -->
         <div class="slide">
@@ -2876,10 +2846,8 @@
                         <p class="strat-obj-text">
                             <span style="color: var(--primary);">STRATEGIC OBJECTIVE:</span> Commercialize
                             patent-protected
-                            AI technology, accelerate technical infrastructure build-out, and reach
-                            product-market fit
-                            toward a $500M+ enterprise valuation while maximizing insider equity and capital
-                            efficiency.
+                            AI technology, accelerate technical infrastructure build-out, and reach product-market fit
+                            toward a $500M+ enterprise valuation while maximizing insider equity and capital efficiency.
                         </p>
                     </div>
 
@@ -2973,8 +2941,7 @@
 
                             <div class="num-milestone-box dark">
                                 <span class="num-milestone-val">$1.0M</span>
-                                <span class="num-milestone-lab">TARGET ARR RUN-RATE<br>BY Q4 2026
-                                    MILESTONE</span>
+                                <span class="num-milestone-lab">TARGET ARR RUN-RATE<br>BY Q4 2026 MILESTONE</span>
                             </div>
 
                             <div class="num-eff-box">
@@ -3027,8 +2994,7 @@
                             <div class="num-qsbs-box">
                                 <span class="qsbs-tag">QSBS REGULATORY ADVANTAGE</span>
                                 <p class="qsbs-desc">
-                                    Qualified Small Business Stock (Sec 1202) provides 100% Tax-Free Capital
-                                    Gains
+                                    Qualified Small Business Stock (Sec 1202) provides 100% Tax-Free Capital Gains
                                     Exclusion.
                                 </p>
                                 <table class="num-table" style="margin-top: 5px;">
@@ -3061,8 +3027,8 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // FINANCIAL TRAJECTORY // SLIDE 14</div>
+                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
+                    <div style="font-weight: 500;">CONFIDENTIAL // BY THE NUMBERS // SLIDE 14</div>
                 </div>
             </div>
         </div>
@@ -3075,8 +3041,7 @@
                         <h3 class="cinzel"
                             style="color: var(--gold-neo); letter-spacing: 0.4em; font-size: 0.85rem; margin-bottom: 15px;">
                             SEED OFFERING</h3>
-                        <h2 style="font-size: 3.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 20px;">
-                            Join the
+                        <h2 style="font-size: 3.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 20px;">Join the
                             AI
                             Infrastructure Revolution</h2>
                     </div>
@@ -3100,27 +3065,23 @@
                             <ul style="list-style: none; padding: 0; margin: 0;">
                                 <li
                                     style="margin-bottom: 12px; font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
-                                    <span style="color: var(--primary); font-size: 1.2rem;">■</span> Core AI
-                                    Technology
+                                    <span style="color: var(--primary); font-size: 1.2rem;">■</span> Core AI Technology
                                     Development
                                 </li>
                                 <li
                                     style="margin-bottom: 12px; font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
-                                    <span style="color: var(--primary); font-size: 1.2rem;">■</span>
-                                    Technical Talent
+                                    <span style="color: var(--primary); font-size: 1.2rem;">■</span> Technical Talent
                                     Expansion (6-10 engineers)
                                 </li>
                                 <li
                                     style="margin-bottom: 12px; font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
-                                    <span style="color: var(--primary); font-size: 1.2rem;">■</span>
-                                    Proprietary IP &
+                                    <span style="color: var(--primary); font-size: 1.2rem;">■</span> Proprietary IP &
                                     Patent
                                     Expansion
                                 </li>
                                 <li
                                     style="margin-bottom: 12px; font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
-                                    <span style="color: var(--primary); font-size: 1.2rem;">■</span>
-                                    Strategic GTM &
+                                    <span style="color: var(--primary); font-size: 1.2rem;">■</span> Strategic GTM &
                                     Global
                                     Market Entry
                                 </li>
@@ -3158,18 +3119,15 @@
                     </div>
                 </div>
 
-            </div> <!-- Close slide-content -->
-            <div class="slide-footer">
-                <div>SIRSI TECHNOLOGIES INC.</div>
-                <div>CONFIDENTIAL // THE OPPORTUNITY // SLIDE 15</div>
+                <div class="slide-footer">
+                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
+                    <div style="font-weight: 500;">CONFIDENTIAL // THE OPPORTUNITY // SLIDE 15</div>
+                </div>
             </div>
-        </div> <!-- Close slide-inner -->
-        </div> <!-- Close slide -->
-
-
+        </div>
 
         <!-- Slide 16: The Partnership -->
-        <div class="slide" id="slide-partnership">
+        <div class="slide">
             <div class="slide-inner">
                 <div class="slide-content"
                     style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, rgba(200, 169, 81, 0.05) 0%, transparent 70%);">
@@ -3187,8 +3145,7 @@
                         <div style="display: flex; flex-direction: column; gap: 30px;">
                             <p
                                 style="font-size: 1.4rem; color: var(--text-dark); font-weight: 500; line-height: 1.6; max-width: 700px; margin: 0 auto; letter-spacing: 0.02em;">
-                                "We are not just building software; we are architecting the substrate of the
-                                second
+                                "We are not just building software; we are architecting the substrate of the second
                                 industrial revolution."
                             </p>
                             <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 10px;">
@@ -3209,13 +3166,13 @@
                                 WWW.SIRSI.AI</div>
                         </div>
                     </div>
-                </div> <!-- Close slide-content -->
-                <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // THE LEGACY // SLIDE 16</div>
                 </div>
-            </div> <!-- Close slide-inner -->
-        </div> <!-- Close slide -->
+                <div class="slide-footer">
+                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
+                    <div style="font-weight: 500;">EST. 2025 // THE LEGACY // SLIDE 16</div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="nav-footer">
@@ -3253,24 +3210,6 @@
             if (currentSlide === 13) {
                 setTimeout(drawRevenueChart, 400);
                 setTimeout(drawUserChart, 600);
-            }
-
-            updateGlobalFooter();
-        }
-
-        const slideTitles = [
-            "THE VISION", "STRATEGIC VISION", "THE CRISIS", "THE SOLUTION",
-            "INTELLECTUAL PROPERTY", "PLATFORM INFRASTRUCTURE", "HARDWARE ALPHA", "NEXUS CORE",
-            "GO-TO-MARKET", "MARKET ARCHITECTURE", "THE CORE TEAM", "STRATEGIC TRACTION",
-            "GROWTH TRAJECTORY", "FINANCIAL TRAJECTORY", "THE OPPORTUNITY", "THE LEGACY"
-        ];
-
-        function updateGlobalFooter() {
-            const footerInfo = document.getElementById('footerSlideInfo');
-            if (footerInfo) {
-                const title = slideTitles[currentSlide - 1] || "SIRSI PLATFORM";
-                const slideNum = String(currentSlide).padStart(2, '0');
-                footerInfo.textContent = `CONFIDENTIAL // ${title} // SLIDE ${slideNum}`;
             }
         }
 
