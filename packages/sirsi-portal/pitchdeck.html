@@ -939,24 +939,6 @@
                             background-size: 20px 20px;
                         }
 
-                        /* Override global .presentation h2 span gold !important */
-                        .s3-clean-bg h2 span {
-                            color: #B91C1C !important;
-                        }
-
-                        .s3-clean-bg h3 {
-                            color: #0D7377 !important;
-                            font-family: 'Inter', sans-serif !important;
-                            font-weight: 800 !important;
-                            font-size: 0.75rem !important;
-                            letter-spacing: 0.35em !important;
-                        }
-
-                        .s3-clean-bg h2 {
-                            font-weight: 400 !important;
-                            letter-spacing: 0.02em !important;
-                            color: #1e293b !important;
-                        }
 
                         @keyframes s3PulseRed {
 
@@ -976,9 +958,9 @@
                         .s3-dash {
                             display: grid;
                             grid-template-columns: 1fr 1fr 1fr;
-                            gap: 24px;
+                            gap: 32px;
                             width: 100%;
-                            max-width: 1100px;
+                            max-width: 1150px;
                             margin: 0 auto;
                             padding-top: 20px;
                         }
@@ -988,16 +970,17 @@
                             flex-direction: column;
                             align-items: center;
                             text-align: center;
-                            background: rgba(255, 255, 255, 0.85);
+                            background: rgba(255, 255, 255, 0.7);
                             backdrop-filter: blur(12px);
-                            border: 1.5px solid #C8A951;
-                            border-radius: 18px;
+                            border: 1.5px solid rgba(0, 0, 0, 0.04);
+                            border-radius: 28px;
                             padding: 20px 16px 24px;
-                            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+                            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03);
                         }
 
+
                         .s3-viz {
-                            height: 180px;
+                            height: 200px;
                             width: 100%;
                             display: flex;
                             align-items: center;
@@ -1008,48 +991,48 @@
 
                         .s3-shifter-gate {
                             position: relative;
-                            width: 240px;
-                            height: 70px;
+                            width: 280px;
+                            height: 95px;
                             background: rgba(0, 0, 0, 0.02);
                             border: 1.5px solid rgba(0, 0, 0, 0.06);
-                            border-radius: 36px;
+                            border-radius: 48px;
                             display: flex;
                             flex-direction: row;
                             align-items: center;
                             justify-content: space-between;
-                            padding: 0 24px;
+                            padding: 0 30px;
                             box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.04);
                         }
 
                         .s3-shifter-track {
                             position: absolute;
                             top: 50%;
-                            left: 24px;
-                            right: 24px;
-                            height: 3px;
+                            left: 30px;
+                            right: 30px;
+                            height: 4px;
                             background: rgba(0, 0, 0, 0.04);
                             transform: translateY(-50%);
                             border-radius: 2px;
                         }
 
                         .s3-label {
-                            font-size: 0.95rem;
-                            color: #1e293b;
-                            letter-spacing: 0.15em;
+                            font-size: 1.4rem;
+                            color: #7F1D1D;
+                            letter-spacing: 0.04em;
                             font-weight: 800;
                             text-transform: uppercase;
-                            margin-bottom: 8px;
+                            margin-bottom: 12px;
                             font-family: 'Inter', sans-serif;
-                            line-height: 1.2;
+                            line-height: 1.1;
                         }
 
                         .s3-desc {
-                            font-size: 0.88rem;
+                            font-size: 1.1rem;
                             color: #475569;
-                            line-height: 1.45;
-                            max-width: 280px;
+                            line-height: 1.5;
+                            max-width: 310px;
                             margin: 0 auto;
-                            font-weight: 400;
+                            font-weight: 500;
                             min-height: 3em;
                             display: flex;
                             align-items: center;
@@ -1058,30 +1041,30 @@
 
                         .s3-impact {
                             font-family: 'Inter', sans-serif;
-                            font-size: 0.85rem;
+                            font-size: 0.9rem;
                             font-weight: 700;
                             color: #0D7377;
                             letter-spacing: 0.08em;
-                            margin-top: 10px;
+                            margin-top: 8px;
                             text-transform: uppercase;
                         }
                     </style>
 
-                    <div style="text-align: left; padding: 20px 0 10px; max-width: 1100px; margin: 0 auto;">
+                    <div style="text-align: center; padding: 10px 0 15px;">
                         <h3
-                            style="font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #0D7377; letter-spacing: 0.35em; text-transform: uppercase; font-weight: 800; margin-bottom: 6px;">
+                            style="font-size: 1.1rem; color: #C8A951; letter-spacing: 0.4em; text-transform: uppercase; font-weight: 800; margin-bottom: 8px;">
                             The Crisis</h3>
-                        <h2
-                            style="font-size: 2.2rem; font-family: 'Cinzel', serif; font-weight: 400; color: #1e293b; margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.02em;">
-                            Your Infrastructure engine is <span style="color: #B91C1C;">redlining</span></h2>
-                    </div>
-
-                    <div style="text-align: center; margin-bottom: 10px;">
                         <p
-                            style="font-family:'Inter', sans-serif; font-size: 0.85rem; color: #334155; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;">
-                            Manual Infra Consumes <span style="color: #0D7377; font-weight: 800;">up to 60% of
-                                revenue</span> before
-                            you get moving</p>
+                            style="font-size: 2.5rem; font-family: 'Cinzel', serif; font-weight: 700; color: #1e293b; margin-bottom: 15px; text-transform: uppercase; letter-spacing: -0.02em;">
+                            Your Infrastructure Engine is <span style="color: #991B1B;">Redlining</span></p>
+
+                        <div style="text-align: center; margin-bottom: 10px;">
+                            <p
+                                style="font-family:'Cinzel', serif; font-size: 1.1rem; color: #64748b; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;">
+                                Manual Infra Consumes <span style="color: #991B1B;">up to 60% of revenue</span> before
+                                you
+                                get moving</p>
+                        </div>
                     </div>
 
                     <div class="s3-dash">
@@ -1089,7 +1072,7 @@
                             <div class="s3-label">Capital Efficiency</div>
                             <div class="s3-viz">
                                 <canvas id="s3-fuel-gauge" width="440" height="320"
-                                    style="width:100%; max-width:240px; height:auto;"></canvas>
+                                    style="width:100%; max-width:320px; height:auto;"></canvas>
                             </div>
                             <div class="s3-desc">Silent over-provisioning and idle clusters incinerate your burn rate.
                             </div>
@@ -1101,15 +1084,15 @@
                                 <div class="s3-shifter-gate">
                                     <div class="s3-shifter-track"></div>
                                     <span
-                                        style="font-family:'Inter',sans-serif; font-size:1.2rem; font-weight:600; color:#94a3b8; z-index:1;">P</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; color: var(--text-light); z-index:1;">P</span>
                                     <span
-                                        style="font-family:'Inter',sans-serif; font-size:1.2rem; font-weight:600; color:#94a3b8; z-index:1;">R</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; color: var(--text-light); z-index:1;">R</span>
                                     <span
-                                        style="font-family:'Inter',sans-serif; font-size:1.2rem; font-weight:700; z-index:2; color:#EF4444; border:2px solid #EF4444; border-radius:50%; width:42px; height:42px; display:flex; align-items:center; justify-content:center; animation: s3PulseRed 1.5s ease-in-out infinite;">N</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; z-index:2; color: #EF4444; border: 2.5px solid #EF4444; border-radius: 50%; width:54px; height:54px; display:flex; align-items:center; justify-content:center; background: rgba(239, 68, 68, 0.15);">N</span>
                                     <span
-                                        style="font-family:'Inter',sans-serif; font-size:1.2rem; font-weight:600; color:#94a3b8; z-index:1;">D</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; color: var(--text-light); z-index:1;">D</span>
                                     <span
-                                        style="font-family:'Inter',sans-serif; font-size:1.2rem; font-weight:600; color:#94a3b8; z-index:1;">L</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; color: var(--text-light); z-index:1;">L</span>
                                 </div>
                             </div>
                             <div class="s3-desc">Simple feature updates turn into multi-week engineering marathons.
@@ -1120,7 +1103,7 @@
                             <div class="s3-label">Operational Redline</div>
                             <div class="s3-viz">
                                 <canvas id="s3-tach-gauge" width="440" height="320"
-                                    style="width:100%; max-width:240px; height:auto;"></canvas>
+                                    style="width:100%; max-width:320px; height:auto;"></canvas>
                             </div>
                             <div class="s3-desc">Manual maintenance traps elite talent, stalling revenue growth.</div>
                             <div class="s3-impact">$1.1M LABOR TAX</div>
@@ -1128,7 +1111,7 @@
                     </div>
 
                     <p
-                        style="font-family:'Cinzel', serif; font-size: 1.15rem; color: #10B981; font-weight:500; text-align:center; margin:20px 0 10px; letter-spacing: 0.12em; text-transform: uppercase;">
+                        style="font-family:'Cinzel', serif; font-size: 1.5rem; color: #10B981; font-weight:500; text-align:center; margin:40px 0 20px; letter-spacing: 0.05em; text-transform: uppercase;">
                         This is where Sirsi intervenes.
                     </p>
 
@@ -1152,10 +1135,6 @@
                                         var r, g, b;
                                         if (type === 'fuel') {
                                             if (f < 0.25) { r = 220; g = 38; b = 38; } else if (f < 0.45) { r = 245; g = 158; b = 11; } else { r = 16; g = 185; b = 129; }
-                                        } else if (type === 'temp') {
-                                            if (f < 0.25) { r = 59; g = 130; b = 246; }
-                                            else if (f < 0.75) { r = 148; g = 163; b = 184; }
-                                            else { r = 220; g = 38; b = 38; }
                                         } else {
                                             if (f < 0.45) { r = 16; g = 185; b = 129; } else if (f < 0.75) { r = 245; g = 158; b = 11; } else { r = 220; g = 38; b = 38; }
                                         }
@@ -1178,25 +1157,7 @@
                                         var atD = (type === 'fuel') ? (f < rl) : (f > rl);
                                         ctx.strokeStyle = atD ? 'rgba(220,38,38,0.95)' : 'rgba(0,0,0,0.12)';
                                         ctx.lineWidth = maj ? 2.5 : 1.2; ctx.stroke();
-                                        if (maj) {
-                                            var lr = R - 48;
-                                            var isFuel = (type === 'fuel');
-                                            ctx.font = (isFuel ? '900 22px' : '700 15px') + ' Inter,sans-serif';
-                                            ctx.fillStyle = atD ? '#B91C1C' : 'rgba(0,0,0,0.45)';
-                                            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                                            var txt = (isFuel) ? (f === 0 ? 'E' : (f === 1 ? 'F' : '')) : (Math.round(f * 100));
-                                            if (txt !== '') ctx.fillText(txt, cx + lr * Math.cos(ang), cy + lr * Math.sin(ang));
-                                        }
                                     }
-                                    ctx.font = '900 58px "Cinzel",serif';
-                                    ctx.fillStyle = danger ? '#991B1B' : '#1e293b';
-                                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                                    ctx.fillText(Math.round(cur * 100) + '%', cx, cy - R * 0.35);
-
-                                    var label = (type === 'fuel') ? 'FUEL' : 'LOAD';
-                                    ctx.font = '700 14px "Inter",sans-serif';
-                                    ctx.fillStyle = 'rgba(0,0,0,0.3)';
-                                    ctx.fillText(label, cx, cy - R * 0.55);
                                     var na = aFor(cur);
                                     ctx.save(); ctx.translate(cx, cy); ctx.rotate(na);
                                     ctx.beginPath(); ctx.moveTo(R * 0.86, 0); ctx.lineTo(-18, -4); ctx.lineTo(-18, 4); ctx.closePath();
@@ -1213,7 +1174,7 @@
                                 tk();
                             }
                             drawGauge('s3-fuel-gauge', 12, 400, 'fuel');
-                            drawGauge('s3-tach-gauge', 92, 1200, 'load');
+                            drawGauge('s3-tach-gauge', 92, 1200, 'tach');
                         })();
                     </script>
                 </div>
