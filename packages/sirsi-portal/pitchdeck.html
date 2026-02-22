@@ -929,8 +929,9 @@
         <div class="slide" id="slide-crisis">
             <div class="slide-inner">
                 <div class="slide-header">
-                    <h3 style="color: var(--gold-neo);">THE CRISIS</h3>
-                    <h2>YOUR INFRASTRUCTURE ENGINE IS <span style="color: #991B1B !important;">REDLINING</span></h2>
+                    <h3 style="color: var(--gold-neo); font-weight: 500; letter-spacing: 0.1em;">THE CRISIS</h3>
+                    <h2 style="color: var(--primary); font-size: 3.2rem;">INFRASTRUCTURE IS THE ENGINE OF OPERATIONS
+                    </h2>
                 </div>
 
                 <div class="slide-content s3-clean-bg">
@@ -974,15 +975,20 @@
                             flex-direction: column;
                             align-items: center;
                             text-align: center;
-                            background: rgba(255, 255, 255, 0.7);
-                            backdrop-filter: blur(12px);
-                            border: 1.5px solid #C8A951;
-                            border-bottom: none;
-                            border-bottom-left-radius: 0;
-                            border-bottom-right-radius: 0;
-                            border-radius: 28px 28px 0 0;
-                            padding: 16px 14px 28px;
-                            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+                            background: transparent;
+                            padding: 36px 10px 10px;
+                            width: 100%;
+                            position: relative;
+                        }
+
+                        .s3-gw::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 15px;
+                            right: 15px;
+                            height: 1px;
+                            background: #C8A951;
                         }
 
 
@@ -1057,59 +1063,75 @@
                         }
                     </style>
 
-                    <div style="text-align: center; padding: 10px 0 10px;">
+
+
+                    <div style="text-align: center; padding: 20px 0 25px;">
                         <p
-                            style="font-family:'Cinzel', serif; font-size: 1.25rem; color: #991B1B; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;">
-                            MANUAL INFRA CONSUMES 60% OF REVENUE BEFORE YOU GET MOVING</p>
+                            style="font-family:'Inter', sans-serif; font-size: 1.15rem; color: #EF4444; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;">
+                            LEGACY DEBT IS THE PARASITIC DRAG ON YOUR INNOVATION ENGINE</p>
                     </div>
 
                     <div class="s3-dash">
                         <div class="s3-gw">
                             <div class="s3-label"
-                                style="font-family:'Cinzel', serif; font-weight: 500; font-size: 1.6rem; color: #1e293b; letter-spacing: 0.1em;">
+                                style="font-family:'Cinzel', serif; font-weight: 500; font-size: 1.2rem; color: #1e293b; letter-spacing: 0.15em; margin-bottom: 20px;">
                                 CAPITAL RUNWAY</div>
                             <div class="s3-viz">
                                 <canvas id="s3-fuel-gauge" width="440" height="320"
-                                    style="width:100%; max-width:320px; height:auto;"></canvas>
+                                    style="width:100%; max-width:280px; height:auto;"></canvas>
                             </div>
-                            <div class="s3-desc">Over-provisioned AWS/GCP clusters burn capital needlessly.
+                            <div class="s3-desc"
+                                style="font-size: 1rem; color: #475569; line-height: 1.5; max-width: 280px; font-weight: 500;">
+                                Over-provisioned AWS/GCP clusters burn capital needlessly.
                             </div>
-                            <div class="s3-impact">$180K/YR CLOUD WASTE</div>
+                            <div class="s3-impact"
+                                style="color: var(--gold-neo); font-size: 0.95rem; margin-top: 20px; font-weight: 700;">
+                                $180K/YR CLOUD
+                                WASTE</div>
                         </div>
                         <div class="s3-gw">
                             <div class="s3-label"
-                                style="font-family:'Cinzel', serif; font-weight: 500; font-size: 1.6rem; color: #1e293b; letter-spacing: 0.1em;">
-                                TECHNICAL INERTIA</div>
+                                style="font-family:'Cinzel', serif; font-weight: 500; font-size: 1.2rem; color: #1e293b; letter-spacing: 0.15em; margin-bottom: 20px;">
+                                DEPLOYMENT INERTIA</div>
                             <div class="s3-viz">
-                                <div class="s3-shifter-gate">
+                                <div class="s3-shifter-gate"
+                                    style="width: 260px; height: 90px; background: rgba(0,0,0,0.015); border: 1px solid rgba(0,0,0,0.04);">
                                     <div class="s3-shifter-track"></div>
                                     <span
-                                        style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; color: var(--text-light); z-index:1;">P</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.5rem; font-weight:500; color: #cbd5e1; z-index:1;">P</span>
                                     <span
-                                        style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; color: var(--text-light); z-index:1;">R</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.5rem; font-weight:500; color: #cbd5e1; z-index:1;">R</span>
                                     <span
-                                        style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; z-index:2; color: #991B1B; border: 2px solid #991B1B; border-radius: 50%; width:54px; height:54px; display:flex; align-items:center; justify-content:center; background: rgba(220, 38, 38, 0.04);">N</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.5rem; font-weight:500; z-index:2; color: #EF4444; border: 2.2px solid #EF4444; border-radius: 50%; width:50px; height:50px; display:flex; align-items:center; justify-content:center; background: rgba(239, 68, 68, 0.03);">N</span>
                                     <span
-                                        style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; color: var(--text-light); z-index:1;">D</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.5rem; font-weight:500; color: #cbd5e1; z-index:1;">D</span>
                                     <span
-                                        style="font-family:'Cinzel', serif; font-size:1.6rem; font-weight:500; color: var(--text-light); z-index:1;">L</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.5rem; font-weight:500; color: #cbd5e1; z-index:1;">L</span>
                                 </div>
                             </div>
-                            <div class="s3-desc">simple feature updates turn into multi-week engineering marathons.
+                            <div class="s3-desc"
+                                style="font-size: 1rem; color: #475569; line-height: 1.5; max-width: 280px; font-weight: 500;">
+                                Simple feature updates now take 14 days to clear legacy friction.
                             </div>
-                            <div class="s3-impact">4.5 MONTHS LOST / YR</div>
+                            <div class="s3-impact"
+                                style="color: var(--gold-neo); font-size: 0.95rem; margin-top: 20px; font-weight: 700;">
+                                336HR INNOVATION LAG</div>
                         </div>
                         <div class="s3-gw">
                             <div class="s3-label"
-                                style="font-family:'Cinzel', serif; font-weight: 500; font-size: 1.6rem; color: #1e293b; letter-spacing: 0.1em;">
+                                style="font-family:'Cinzel', serif; font-weight: 500; font-size: 1.2rem; color: #1e293b; letter-spacing: 0.15em; margin-bottom: 20px;">
                                 INFRA LOAD</div>
                             <div class="s3-viz">
                                 <canvas id="s3-tach-gauge" width="440" height="320"
-                                    style="width:100%; max-width:320px; height:auto;"></canvas>
+                                    style="width:100%; max-width:280px; height:auto;"></canvas>
                             </div>
-                            <div class="s3-desc">12 hours of infra "noise" for every 1 hour of core business logic.
+                            <div class="s3-desc"
+                                style="font-size: 1rem; color: #475569; line-height: 1.5; max-width: 280px; font-weight: 500;">
+                                12 hours of infra "noise" for every 1 hour of core business logic.</div>
+                            <div class="s3-impact"
+                                style="color: var(--gold-neo); font-size: 0.95rem; margin-top: 20px; font-weight: 700;">
+                                $1.1M LABOR TAX
                             </div>
-                            <div class="s3-impact">$1.1M LABOR TAX</div>
                         </div>
                     </div>
 
