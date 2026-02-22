@@ -928,6 +928,10 @@
         <!-- Slide 3: The Crisis (Gauges) -->
         <div class="slide" id="slide-crisis">
             <div class="slide-inner">
+                <div class="slide-header">
+                    <h3 style="color: #0D7377;">The Crisis</h3>
+                    <h2>Your Infrastructure Engine is <span style="color: #991B1B !important;">redlining</span></h2>
+                </div>
 
                 <div class="slide-content s3-clean-bg">
                     <style>
@@ -972,7 +976,7 @@
                             text-align: center;
                             background: rgba(255, 255, 255, 0.7);
                             backdrop-filter: blur(12px);
-                            border: 1.5px solid rgba(0, 0, 0, 0.04);
+                            border: 1.5px solid #C8A951;
                             border-radius: 28px;
                             padding: 20px 16px 24px;
                             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03);
@@ -1050,21 +1054,12 @@
                         }
                     </style>
 
-                    <div style="text-align: center; padding: 10px 0 15px;">
-                        <h3
-                            style="font-size: 1.1rem; color: #C8A951; letter-spacing: 0.4em; text-transform: uppercase; font-weight: 800; margin-bottom: 8px;">
-                            The Crisis</h3>
+                    <div style="text-align: center; padding: 10px 0 10px;">
                         <p
-                            style="font-size: 2.5rem; font-family: 'Cinzel', serif; font-weight: 700; color: #1e293b; margin-bottom: 15px; text-transform: uppercase; letter-spacing: -0.02em;">
-                            Your Infrastructure Engine is <span style="color: #991B1B;">Redlining</span></p>
-
-                        <div style="text-align: center; margin-bottom: 10px;">
-                            <p
-                                style="font-family:'Cinzel', serif; font-size: 1.1rem; color: #64748b; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;">
-                                Manual Infra Consumes <span style="color: #991B1B;">up to 60% of revenue</span> before
-                                you
-                                get moving</p>
-                        </div>
+                            style="font-family:'Cinzel', serif; font-size: 1.05rem; color: #64748b; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;">
+                            Manual Infra Consumes <span style="color: #991B1B;">up to 60% of revenue</span> before
+                            you
+                            get moving</p>
                     </div>
 
                     <div class="s3-dash">
@@ -1157,6 +1152,15 @@
                                         var atD = (type === 'fuel') ? (f < rl) : (f > rl);
                                         ctx.strokeStyle = atD ? 'rgba(220,38,38,0.95)' : 'rgba(0,0,0,0.12)';
                                         ctx.lineWidth = maj ? 2.5 : 1.2; ctx.stroke();
+                                        if (maj) {
+                                            var lr = R - 48;
+                                            var isFuel = (type === 'fuel');
+                                            ctx.font = (isFuel ? '900 22px' : '700 15px') + ' Inter,sans-serif';
+                                            ctx.fillStyle = atD ? '#B91C1C' : 'rgba(0,0,0,0.45)';
+                                            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                                            var txt = (isFuel) ? (f === 0 ? 'E' : (f === 1 ? 'F' : '')) : (Math.round(f * 100));
+                                            if (txt !== '') ctx.fillText(txt, cx + lr * Math.cos(ang), cy + lr * Math.sin(ang));
+                                        }
                                     }
                                     var na = aFor(cur);
                                     ctx.save(); ctx.translate(cx, cy); ctx.rotate(na);
@@ -1167,6 +1171,11 @@
                                     var cg = ctx.createRadialGradient(cx, cy, 2, cx, cy, 14);
                                     cg.addColorStop(0, '#ffffff'); cg.addColorStop(0.5, '#cbd5e1'); cg.addColorStop(1, '#475569');
                                     ctx.fillStyle = cg; ctx.fill(); ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke();
+                                    var lbl = (type === 'fuel') ? 'FUEL' : 'LOAD';
+                                    ctx.font = '700 13px Inter,sans-serif';
+                                    ctx.fillStyle = 'rgba(0,0,0,0.35)';
+                                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                                    ctx.fillText(lbl, cx, cy + R * 0.55);
                                 }
                                 function tk() {
                                     render();
