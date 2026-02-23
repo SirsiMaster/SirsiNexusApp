@@ -32,21 +32,60 @@
             --gold-light: #FFF9E5;
             --text-dark: #0f172a;
             --text-slate: #334155;
-            --text-light: #526175;
+            --text-light: #475569;
+            /* Medium Gray */
             --border: #e2e8f0;
             --bg-page: #ffffff;
             --glass: rgba(255, 255, 255, 0.9);
-            --glass-gold: rgba(212, 175, 55, 0.05);
             --royal-blue: #003366;
-            /* Deep Royal, NOT black */
-            --royal-blue-dark: #001a33;
-            --royal-blue-light: #004080;
             --gold-neo: #C8A951;
             --emerald: #10B981;
-            --neo-deco-shadow: 0 10px 40px rgba(0, 51, 102, 0.15);
         }
 
-        /* Standardized Typography & Casing */
+        /* Above-the-Fold Enforcement */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        html,
+        body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden !important;
+            /* STRICT: No scrolling */
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            /* Rule: No bold */
+            background: var(--bg-page);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Universal Bold Removal */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        strong,
+        b,
+        .cinzel,
+        span,
+        div {
+            font-weight: 400 !important;
+            /* Strict: No bold on any slide */
+        }
+
+        h3,
+        .slide-header h3 {
+            font-weight: 500 !important;
+            /* Medium weight for headers but not bold */
+        }
+
         h1,
         h2,
         h3,
@@ -54,95 +93,31 @@
         .cinzel {
             font-family: 'Cinzel', serif !important;
             color: var(--primary);
-            text-transform: none !important;
-            /* Prevents forced CAPS */
-            font-weight: 500 !important;
-            letter-spacing: 0.05em !important;
-            border-bottom: none !important;
+            text-transform: none;
+            letter-spacing: 0.05em;
         }
 
         h2 {
             font-size: 1.32rem;
             line-height: 1.1;
-            margin-bottom: 20px;
+            margin-bottom: 1.2rem;
         }
 
         h3 {
             font-size: 0.66rem;
             letter-spacing: 0.3em;
             color: var(--gold-dark);
-            margin-bottom: 10px;
-            font-weight: 700 !important;
-            text-transform: uppercase !important;
+            margin-bottom: 0.6rem;
+            text-transform: uppercase;
         }
 
-        .slide-header h3 {
-            font-weight: 700 !important;
-            margin-bottom: 0.5rem;
+        .slide-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 0.8rem;
+            flex-shrink: 0;
         }
 
-        .slide-header h2 {
-            margin: 0;
-            line-height: 1.2;
-        }
-
-        .presentation h2 span {
-            color: var(--gold-dark) !important;
-        }
-
-        .royal-bg {
-            background: radial-gradient(circle at center, var(--royal-blue-light) 0%, var(--royal-blue) 100%);
-            color: #fff;
-        }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(200, 169, 81, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        }
-
-        .cinzel {
-            font-family: 'Cinzel', serif;
-            letter-spacing: 0.1em;
-        }
-
-        .gold-border {
-            border: 1px solid var(--gold-neo);
-        }
-
-        .gold-text-neo {
-            color: var(--gold-neo);
-        }
-
-        .emerald-text {
-            color: var(--emerald);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            font-size: 19px;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-page);
-            color: var(--text-dark);
-            line-height: 1.6;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Presentation Wrapper */
         .presentation {
             position: relative;
             flex: 1;
@@ -151,18 +126,22 @@
             overflow: hidden;
         }
 
+        /* Locked Slide Layout */
         .slide {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            padding: clamp(80px, 12vh, 120px) clamp(40px, 8vw, 80px) clamp(60px, 10vh, 80px);
+            padding: 100px 80px 100px;
+            /* Large bottom padding for footer */
             display: none;
             flex-direction: column;
             background: white;
             opacity: 0;
             transition: opacity 0.4s ease;
+            overflow: hidden;
+            /* No content scroll */
         }
 
         .slide.active {
@@ -170,61 +149,54 @@
             opacity: 1;
         }
 
-        /* Base Typography Reset */
-        p {
-            font-size: 1rem;
-            color: var(--text-slate);
-        }
-
-        strong,
-        b {
-            font-weight: 600;
-        }
-
-        .lead {
-            font-size: 1.3rem;
-            font-weight: 500;
-            color: var(--text-dark);
-            line-height: 1.4;
-        }
-
-        .slide-header {
-            margin-bottom: clamp(1.2rem, 3vh, 2rem);
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 0.8rem;
-            flex-shrink: 0;
+        .slide-inner {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0;
         }
 
         .slide-content {
             flex: 1;
-            min-height: 0;
-            overflow-y: auto;
-            padding-right: 10px;
-            /* Space for scrollbar */
+            overflow: hidden;
+            /* Strict: Content must fit or be hidden */
+            position: relative;
         }
 
-        /* Custom Scrollbar for slide content */
-        .slide-content::-webkit-scrollbar {
-            width: 6px;
+        /* LOCKED Standardized Footer */
+        .slide-footer {
+            position: absolute;
+            bottom: 40px;
+            left: 80px;
+            right: 80px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 40px;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            /* Medium Gray */
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            z-index: 1000;
+            pointer-events: none;
         }
 
-        .slide-content::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.05);
+        .slide-footer div {
+            font-weight: 400 !important;
         }
 
-        .slide-content::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
-        }
-
-        /* Document Header Overlay */
+        /* Doc Header */
         .doc-header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            padding: 15px 50px;
-            /* Reduced from 25px */
+            padding: 0 80px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -233,30 +205,18 @@
             z-index: 2000;
             border-bottom: 1px solid var(--border);
             height: 80px;
-            /* Set fixed height for predictability */
         }
 
         .header-logo {
-            height: 40px;
-            /* Reduced from 55px */
+            height: 35px;
             width: auto;
         }
 
         .memo-tag {
             font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             letter-spacing: 0.15em;
             color: var(--text-slate);
-            text-transform: uppercase;
-        }
-
-        /* Cards & Containers */
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin: 20px 0;
         }
 
         /* Standardized Components */
@@ -264,173 +224,88 @@
             background: white;
             border: 1px solid var(--border);
             padding: 1.5rem;
-            position: relative;
-            background: linear-gradient(135deg, #ffffff, #fcfcfc);
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
             border-left: 3px solid var(--primary);
-        }
-
-        .info-card.gold {
-            border-left-color: var(--gold);
-        }
-
-        .info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
-            border-color: var(--primary);
-        }
-
-        .stat-large {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 900;
-            color: var(--primary);
-            line-height: 1;
-            margin-bottom: 0.2em;
         }
 
         .value-highlight {
             background: var(--primary-light);
             border-left: 8px solid var(--primary);
             padding: 1.25rem 2rem;
-            margin: 1.5rem 0;
         }
 
-        /* Refined Navigation Footer */
-        .nav-footer {
-            position: fixed;
-            bottom: 20px;
-            /* Adjusted position */
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(15px);
-            padding: 8px 18px;
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            z-index: 5000;
-            /* Ensure it is on top */
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            border-radius: 60px;
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .nav-btn {
-            width: 44px;
-            height: 44px;
-            border: 1px solid var(--border);
-            background: white;
-            color: var(--text-dark);
-            border-radius: 50% !important;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.9rem;
-        }
-
-        .nav-btn:hover:not(:disabled) {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 211, 127, 0.05);
-        }
-
-        .nav-counter {
-            font-weight: 800;
-            font-size: 0.9rem;
-            color: var(--text-dark);
-            letter-spacing: 0.1em;
-            min-width: 80px;
-            text-align: center;
-        }
-
-        /* Progress Bar */
+        /* Progress & Nav Management */
         .progress-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px;
-            background: #eef2f7;
-            z-index: 1001;
+            height: 4px;
+            background: #f1f5f9;
+            z-index: 3000;
         }
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--gold) 100%);
+            background: var(--primary);
             width: 0%;
             transition: width 0.4s ease;
         }
 
-        /* Title Slide Special */
-        .title-slide {
-            justify-content: center;
+        .nav-footer {
+            position: fixed;
+            bottom: 15px;
+            right: 25px;
+            z-index: 5000;
+            display: flex;
             align-items: center;
-            text-align: center;
-            padding: 160px 80px 100px;
-            /* Increased top padding to clear header */
-        }
-
-        .title-logo-large {
-            height: 380px;
-            width: auto;
-            margin-bottom: 40px;
-        }
-
-        /* Graph Mockup */
-        .graph-container {
-            height: 250px;
-            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 40px;
+            padding: 5px;
             border: 1px solid var(--border);
-            position: relative;
-            background: linear-gradient(to bottom, #fff, #f9fafb);
-            margin: 20px 0;
-            overflow: hidden;
         }
 
-        /* Custom Scrollbar */
-        .slide::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .slide::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        .slide::-webkit-scrollbar-thumb {
-            background: var(--primary);
-        }
-
-        .slide-inner {
+        .nav-btn {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            cursor: pointer;
             display: flex;
-            flex-direction: column;
-            height: 100%;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-slate);
+            border-radius: 50%;
         }
 
-        .slide-footer {
-            margin-top: auto;
-            flex-shrink: 0;
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid var(--border);
-            padding-top: 10px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-light);
+        .nav-btn:hover:not(:disabled) {
+            background: #f1f5f9;
         }
+
+        .nav-counter {
+            font-size: 0.7rem;
+            padding: 0 10px;
+            color: var(--text-slate);
+        }
+
+        /* Utilities */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
 
         /* Analysis Memo Style (Slide 12) */
         .memo-wrap {
@@ -823,8 +698,8 @@
                     </div>
                 </div>
                 <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // SLIDE 01</div>
+                    <div>Sirsi Technologies, Inc.</div>
+                    <div>CONFIDENTIAL // TITLE // SLIDE 01</div>
                 </div>
             </div>
         </div>
@@ -843,8 +718,7 @@
                         <p style="font-size: 1.5rem; color: var(--text-dark); line-height: 1.8; margin: 0 0 6px;">
                             Build <em>product</em>, not plumbing.
                         </p>
-                        <p
-                            style="font-size: 1.2rem; color: var(--primary); line-height: 1.6; margin: 0 0 50px; font-weight: 600;">
+                        <p style="font-size: 1.2rem; color: var(--primary); line-height: 1.6; margin: 0 0 50px;">
                             Sirsi makes this real.
                         </p>
 
@@ -895,8 +769,8 @@
 
                 </div>
                 <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // SLIDE 02</div>
+                    <div>Sirsi Technologies, Inc.</div>
+                    <div>CONFIDENTIAL // STRATEGIC VISION // SLIDE 02</div>
                 </div>
             </div>
         </div>
@@ -1022,7 +896,7 @@
                         .s3-impact {
                             font-family: 'Inter', sans-serif;
                             font-size: 0.95rem;
-                            font-weight: 700;
+                            font-weight: 400;
                             color: var(--gold-neo);
                             letter-spacing: 0.05em;
                             margin-top: 24px;
@@ -1184,7 +1058,7 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
+                    <div>Sirsi Technologies, Inc.</div>
                     <div>CONFIDENTIAL // THE CRISIS // SLIDE 03</div>
                 </div>
             </div>
@@ -1243,8 +1117,8 @@
                     </div>
                 </div>
                 <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // SLIDE 04</div>
+                    <div>Sirsi Technologies, Inc.</div>
+                    <div>CONFIDENTIAL // SOLUTION // SLIDE 04</div>
                 </div>
             </div>
         </div>
@@ -1259,7 +1133,7 @@
                 <div class="slide-content">
                     <p style="font-size: 1.1rem; color: var(--text-slate); margin: 0 0 25px; max-width: 700px;">
                         No competitor connects these three layers. Together, they form a closed-loop intelligence stack
-                        that is <strong style="color: var(--primary);">architecturally unique</strong>.
+                        that is <span style="color: var(--primary);">architecturally unique</span>.
                     </p>
 
                     <!-- 3 Patent Cards — Equal Weight -->
@@ -1365,7 +1239,7 @@
                     <div
                         style="background: var(--primary-light); border-left: 5px solid var(--primary); padding: 14px 28px; margin-bottom: 15px;">
                         <p style="margin: 0; font-size: 0.95rem; color: var(--text-dark); line-height: 1.5;">
-                            <strong style="color: var(--primary);">The combination is defensible.</strong> No competitor
+                            <span style="color: var(--primary);">The combination is defensible.</span> No competitor
                             connects LLM understanding → multi-agent orchestration → real-time query. Complex platforms
                             deploy in weeks with one developer.
                         </p>
@@ -1394,8 +1268,8 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // SLIDE 05</div>
+                    <div>Sirsi Technologies, Inc.</div>
+                    <div>CONFIDENTIAL // INTELLECTUAL PROPERTY // SLIDE 05</div>
                 </div>
             </div>
         </div>
@@ -1663,8 +1537,8 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div style="font-size: 0.85rem; font-weight: 600;">CONFIDENTIAL // PRODUCT ARCHITECTURE // SLIDE 06
-                    </div>
+                    <div>Sirsi Technologies, Inc.</div>
+                    <div>CONFIDENTIAL // PLATFORM INFRASTRUCTURE // SLIDE 06</div>
                 </div>
             </div>
         </div>
@@ -1747,9 +1621,8 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div class="cinzel"
-                        style="font-weight: 700; color: var(--text-slate); letter-spacing: 0.15em; font-size: 0.75rem;">
-                        SIRSI TECHNOLOGIES // HARDWARE CANON // ALPHA SERIES</div>
+                    <div>Sirsi Technologies, Inc.</div>
+                    <div>CONFIDENTIAL // HARDWARE ALPHA // SLIDE 07</div>
                 </div>
             </div>
         </div>
@@ -1852,8 +1725,8 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div class="cinzel" style="color: var(--text-slate); letter-spacing: 0.12em; font-size: 0.7rem;">
-                        GLOBAL SOVEREIGN INFRASTRUCTURE // ALPHA SERIES-32 / SIRSI PERSONA // HYPERVISOR ACTIVE</div>
+                    <div>Sirsi Technologies, Inc.</div>
+                    <div>CONFIDENTIAL // NEXUS CORE // SLIDE 08</div>
                 </div>
             </div>
         </div>
@@ -2065,8 +1938,8 @@
             </div>
 
             <div class="slide-footer">
-                <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
-                <div style="font-weight: 500;">CONFIDENTIAL // GO-TO-MARKET // SLIDE 09</div>
+                <div>Sirsi Technologies, Inc.</div>
+                <div>CONFIDENTIAL // GO TO MARKET STRATEGY // SLIDE 09</div>
             </div>
         </div>
 
@@ -2214,8 +2087,8 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
-                    <div style="font-weight: 500;">CONFIDENTIAL // MARKET ARCHITECTURE // SLIDE 10</div>
+                    <div>Sirsi Technologies, Inc.</div>
+                    <div>CONFIDENTIAL // MARKET ARCHITECTURE // SLIDE 10</div>
                 </div>
             </div>
         </div>
@@ -2267,8 +2140,8 @@
             </div>
 
             <div class="slide-footer">
-                <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
-                <div style="font-weight: 500;">CONFIDENTIAL // THE CORE TEAM // SLIDE 11</div>
+                <div>Sirsi Technologies, Inc.</div>
+                <div>CONFIDENTIAL // THE CORE TEAM // SLIDE 11</div>
             </div>
         </div>
         </div>
@@ -2441,8 +2314,8 @@
             </div>
 
             <div class="slide-footer">
-                <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
-                <div style="font-weight: 500;">CONFIDENTIAL // STRATEGIC TRACTION // SLIDE 12</div>
+                <div>Sirsi Technologies, Inc.</div>
+                <div>CONFIDENTIAL // PROVEN PERFORMANCE // SLIDE 12</div>
             </div>
         </div>
         </div>
@@ -2554,8 +2427,8 @@
                     </div>
                 </div>
                 <div class="slide-footer">
-                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
-                    <div style="font-weight: 500;">CONFIDENTIAL // GROWTH TRAJECTORY // SLIDE 13</div>
+                    <div>Sirsi Technologies, Inc.</div>
+                    <div>CONFIDENTIAL // FINANCIALS // SLIDE 13</div>
                 </div>
             </div>
         </div>
@@ -2576,7 +2449,7 @@
                             color: var(--gold-neo);
                             font-size: 0.8rem;
                             letter-spacing: 0.3em;
-                            font-weight: 700;
+                            font-weight: 400;
                             margin-bottom: 4px;
                             display: block;
                         }
@@ -2584,7 +2457,7 @@
                         .num-title-main {
                             font-size: 3rem;
                             color: var(--primary);
-                            font-weight: 800;
+                            font-weight: 400;
                             margin: 0;
                             letter-spacing: -0.02em;
                         }
@@ -2592,7 +2465,7 @@
                         .num-right-top {
                             color: var(--text-light);
                             font-size: 0.65rem;
-                            font-weight: 700;
+                            font-weight: 400;
                             letter-spacing: 0.1em;
                             margin-bottom: 2px;
                         }
@@ -2600,7 +2473,7 @@
                         .num-right-deploy {
                             color: var(--primary);
                             font-size: 0.95rem;
-                            font-weight: 800;
+                            font-weight: 400;
                         }
 
                         .strat-obj-bar {
@@ -2613,7 +2486,7 @@
                         .strat-obj-text {
                             margin: 0;
                             font-size: 0.78rem;
-                            font-weight: 700;
+                            font-weight: 400;
                             color: var(--text-dark);
                             line-height: 1.4;
                         }
@@ -2627,7 +2500,7 @@
                         .num-section-title {
                             color: var(--primary);
                             font-size: 0.8rem;
-                            font-weight: 800;
+                            font-weight: 400;
                             letter-spacing: 0.1em;
                             margin-bottom: 15px;
                             display: block;
@@ -2644,7 +2517,7 @@
                             background: var(--primary);
                             color: #fff;
                             font-size: 0.6rem;
-                            font-weight: 700;
+                            font-weight: 400;
                             padding: 8px 6px;
                             text-align: left;
                             text-transform: uppercase;
@@ -2659,7 +2532,7 @@
 
                         .num-table tr.active-row {
                             color: var(--primary);
-                            font-weight: 800;
+                            font-weight: 400;
                         }
 
                         .num-active-offering {
@@ -2681,7 +2554,7 @@
 
                         .offering-item strong {
                             color: var(--text-dark);
-                            font-weight: 800;
+                            font-weight: 400;
                         }
 
                         .num-stats-grid {
@@ -2705,13 +2578,13 @@
                         .num-stat-val {
                             display: block;
                             font-size: 1.3rem;
-                            font-weight: 800;
+                            font-weight: 400;
                             margin-bottom: 4px;
                         }
 
                         .num-stat-lab {
                             font-size: 0.6rem;
-                            font-weight: 700;
+                            font-weight: 400;
                             text-transform: uppercase;
                             letter-spacing: 0.05em;
                             color: inherit;
@@ -2725,7 +2598,7 @@
 
                         .num-check-list li {
                             font-size: 0.8rem;
-                            font-weight: 700;
+                            font-weight: 400;
                             margin-bottom: 10px;
                             display: flex;
                             align-items: center;
@@ -2748,13 +2621,13 @@
                         .num-milestone-val {
                             display: block;
                             font-size: 1.2rem;
-                            font-weight: 800;
+                            font-weight: 400;
                             margin-bottom: 4px;
                         }
 
                         .num-milestone-lab {
                             font-size: 0.6rem;
-                            font-weight: 700;
+                            font-weight: 400;
                             text-transform: uppercase;
                             letter-spacing: 0.05em;
                         }
@@ -2767,7 +2640,7 @@
 
                         .eff-header {
                             font-size: 0.6rem;
-                            font-weight: 800;
+                            font-weight: 400;
                             text-transform: uppercase;
                             letter-spacing: 0.05em;
                             margin-bottom: 10px;
@@ -2778,7 +2651,7 @@
                             display: flex;
                             justify-content: space-between;
                             font-size: 0.75rem;
-                            font-weight: 700;
+                            font-weight: 400;
                             margin-bottom: 5px;
                         }
 
@@ -2790,7 +2663,7 @@
                             background: var(--gold-light);
                             color: var(--gold-dark);
                             font-size: 0.65rem;
-                            font-weight: 800;
+                            font-weight: 400;
                             padding: 4px 10px;
                             display: inline-block;
                             margin-bottom: 8px;
@@ -2984,11 +2857,11 @@
                                         </tr>
                                         <tr style="background: rgba(16, 185, 129, 0.05); color: var(--primary);">
                                             <td>QSBS Optimized Return</td>
-                                            <td style="text-align: right; font-weight: 800;">$17.6M</td>
+                                            <td style="text-align: right; font-weight: 400;">$17.6M</td>
                                         </tr>
                                         <tr style="background: #f1f5f9;">
                                             <td>Savings Edge</td>
-                                            <td style="text-align: right; font-weight: 800; color: var(--primary);">
+                                            <td style="text-align: right; font-weight: 400; color: var(--primary);">
                                                 $5.1M
                                             </td>
                                         </tr>
@@ -3000,8 +2873,8 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
-                    <div style="font-weight: 500;">CONFIDENTIAL // BY THE NUMBERS // SLIDE 14</div>
+                    <div>Sirsi Technologies, Inc.</div>
+                    <div>CONFIDENTIAL // BY THE NUMBERS // SLIDE 14</div>
                 </div>
             </div>
         </div>
@@ -3014,7 +2887,7 @@
                         <h3 class="cinzel"
                             style="color: var(--gold-neo); letter-spacing: 0.4em; font-size: 0.85rem; margin-bottom: 15px;">
                             SEED OFFERING</h3>
-                        <h2 style="font-size: 3.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 20px;">Join the
+                        <h2 style="font-size: 3.5rem; font-weight: 400; line-height: 1.1; margin-bottom: 20px;">Join the
                             AI
                             Infrastructure Revolution</h2>
                     </div>
@@ -3022,10 +2895,10 @@
                     <div
                         style="background: rgba(16, 185, 129, 0.05); border: 2px solid var(--primary); padding: 30px; border-radius: 8px; margin-bottom: 40px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.05);">
                         <h1 class="text-primary"
-                            style="margin-bottom: 10px; font-size: 4.5rem; font-weight: 800; letter-spacing: -0.02em;">
+                            style="margin-bottom: 10px; font-size: 4.5rem; font-weight: 400; letter-spacing: -0.02em;">
                             Raising $12.1M</h1>
                         <p
-                            style="font-weight: 700; font-size: 1.5rem; color: var(--text-dark); letter-spacing: 0.05em;">
+                            style="font-weight: 400; font-size: 1.5rem; color: var(--text-dark); letter-spacing: 0.05em;">
                             SEED ROUND @ $28.0M PRE-MONEY</p>
                     </div>
 
@@ -3077,12 +2950,12 @@
                                     Patent-First Competitive Moat
                                 </li>
                                 <li
-                                    style="margin-bottom: 12px; font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+                                    style="margin-bottom: 12px; font-size: 1rem; font-weight: 400; display: flex; align-items: center; gap: 10px;">
                                     <span style="color: var(--gold-dark); font-size: 1.2rem;">■</span> QSBS
                                     Qualified (100% Tax Advantage)
                                 </li>
                                 <li
-                                    style="margin-bottom: 12px; font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+                                    style="margin-bottom: 12px; font-size: 1rem; font-weight: 400; display: flex; align-items: center; gap: 10px;">
                                     <span style="color: var(--gold-dark); font-size: 1.2rem;">■</span>
                                     Institutional
                                     Backing: $175K Committed
@@ -3093,8 +2966,8 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
-                    <div style="font-weight: 500;">CONFIDENTIAL // THE OPPORTUNITY // SLIDE 15</div>
+                    <div>Sirsi Technologies, Inc.</div>
+                    <div>CONFIDENTIAL // SEED OFFERING // SLIDE 15</div>
                 </div>
             </div>
         </div>
@@ -3110,7 +2983,7 @@
                                 style="color: var(--gold-neo); letter-spacing: 0.6em; font-size: 1rem; margin-bottom: 25px;">
                                 THE PARTNERSHIP</h3>
                             <h2
-                                style="font-size: 6.5rem; line-height: 0.85; font-weight: 600; margin: 0; letter-spacing: -0.05em;">
+                                style="font-size: 6.5rem; line-height: 0.85; font-weight: 400; margin: 0; letter-spacing: -0.05em;">
                                 Let's <span style="color: var(--primary);">Build.</span></h2>
                             <div style="width: 120px; height: 1px; background: var(--gold-neo); margin: 40px auto;">
                             </div>
@@ -3123,26 +2996,26 @@
                             </p>
                             <div style="display: flex; flex-direction: column; gap: 5px; margin-top: 10px;">
                                 <p class="cinzel"
-                                    style="font-size: 2.8rem; margin: 0; font-weight: 600; color: var(--text-dark); letter-spacing: 0.05em;">
+                                    style="font-size: 2.8rem; margin: 0; font-weight: 400; color: var(--text-dark); letter-spacing: 0.05em;">
                                     Cylton Collymore</p>
                                 <p
-                                    style="margin: 0; color: var(--gold-dark); font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.2em;">
-                                    Founder & CEO // SIRSI TECHNOLOGIES INC.</p>
+                                    style="margin: 0; color: var(--gold-dark); font-weight: 400; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.2em;">
+                                    Founder & CEO // Sirsi Technologies, Inc.</p>
                             </div>
                         </div>
                         <div style="display: flex; gap: 20px; justify-content: center;">
                             <div
-                                style="border: 1px solid var(--primary); padding: 18px 45px; font-weight: 700; letter-spacing: 0.2em; font-size: 1.1rem; background: var(--primary); color: #fff; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 211, 127, 0.2);">
+                                style="border: 1px solid var(--primary); padding: 18px 45px; font-weight: 400; letter-spacing: 0.2em; font-size: 1.1rem; background: var(--primary); color: #fff; border-radius: 4px; box-shadow: 0 10px 30px rgba(0, 211, 127, 0.2);">
                                 CYLTON@SIRSI.AI</div>
                             <div
-                                style="border: 1px solid var(--border); padding: 18px 45px; font-weight: 700; letter-spacing: 0.2em; font-size: 1.1rem; background: #fff; color: var(--primary); border-radius: 4px;">
+                                style="border: 1px solid var(--border); padding: 18px 45px; font-weight: 400; letter-spacing: 0.2em; font-size: 1.1rem; background: #fff; color: var(--primary); border-radius: 4px;">
                                 WWW.SIRSI.AI</div>
                         </div>
                     </div>
                 </div>
                 <div class="slide-footer">
-                    <div style="font-weight: 600;">SIRSI TECHNOLOGIES INC.</div>
-                    <div style="font-weight: 500;">EST. 2025 // THE LEGACY // SLIDE 16</div>
+                    <div>Sirsi Technologies, Inc.</div>
+                    <div>CONFIDENTIAL // THE PARTNERSHIP // SLIDE 16</div>
                 </div>
             </div>
         </div>
