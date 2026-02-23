@@ -154,8 +154,8 @@
             flex-direction: column;
             height: 100%;
             width: 100%;
-            max-width: 1400px;
-            margin: 0;
+            max-width: 1600px;
+            margin: 0 auto;
         }
 
         .slide-content {
@@ -180,7 +180,6 @@
             font-size: 0.75rem;
             color: #94a3b8;
             /* Medium Gray */
-            text-transform: uppercase;
             letter-spacing: 0.15em;
             z-index: 1000;
             pointer-events: none;
@@ -254,7 +253,8 @@
         .nav-footer {
             position: fixed;
             bottom: 15px;
-            right: 25px;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 5000;
             display: flex;
             align-items: center;
@@ -262,6 +262,7 @@
             border-radius: 40px;
             padding: 5px;
             border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .nav-btn {
