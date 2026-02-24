@@ -626,8 +626,9 @@
         }
 
         .num-grid {
-            display: grid;
-            grid-template-columns: 1.15fr 0.9fr 1fr;
+            display: grid !important;
+            grid-template-columns: 1.15fr 0.9fr 1fr !important;
+            grid-template-rows: auto;
             gap: 30px;
         }
 
@@ -1805,7 +1806,7 @@
             </div>
         </div>
 
-        <div class="slide" style="position: relative; overflow: hidden;">
+        <div class="slide">
             <div class="slide-inner">
                 <!-- Technical Dot Matrix -->
                 <div
@@ -2023,7 +2024,7 @@
         </div> <!-- End slide -->
 
         <!-- Slide 8: Market Architecture - The Trillion Dollar Convergence -->
-        <div class="slide" style="position: relative; overflow: hidden;">
+        <div class="slide">
             <div class="slide-inner">
                 <!-- Technical Architecture Background -->
                 <div
@@ -2217,13 +2218,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // THE CORE TEAM // SLIDE 11</div>
-                </div>
-            </div>
-        </div>
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
