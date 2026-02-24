@@ -586,6 +586,208 @@
         }
 
         /* Print State */
+        /* 8. Slide 14: By The Numbers */
+        .num-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 5px;
+        }
+
+        .num-title-cap {
+            color: var(--gold-neo);
+            font-size: 0.66rem;
+            letter-spacing: 0.1em;
+            font-weight: 400;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .num-title-main {
+            font-size: 2.2rem;
+            color: var(--primary);
+            font-weight: 400;
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+
+        .num-right-top {
+            color: var(--text-light);
+            font-size: 0.65rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            margin-bottom: 2px;
+        }
+
+        .num-right-deploy {
+            color: var(--primary);
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        .num-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.9fr 1fr;
+            gap: 30px;
+        }
+
+        .num-section-title {
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            margin-bottom: 15px;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        .num-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        .num-table th {
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.6rem;
+            font-weight: 400;
+            padding: 8px 6px;
+            text-align: left;
+            text-transform: uppercase;
+        }
+
+        .num-table td {
+            padding: 8px 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .num-table tr.active-row {
+            color: var(--primary);
+            font-weight: 400;
+        }
+
+        .num-active-offering {
+            background: #fff;
+            border: 1px solid var(--primary);
+            padding: 12px;
+            border-radius: 4px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .offering-item {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-slate);
+        }
+
+        .num-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .num-stat-card {
+            border: 1px solid var(--border);
+            padding: 15px 10px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .num-stat-card.green {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .num-stat-val {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+
+        .num-stat-lab {
+            font-size: 0.6rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: inherit;
+        }
+
+        .num-check-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .num-check-list li {
+            font-size: 0.8rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .num-milestone-box {
+            background: var(--primary);
+            color: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .num-milestone-box.dark {
+            background: var(--text-dark);
+        }
+
+        .num-milestone-val {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+
+        .num-milestone-lab {
+            font-size: 0.6rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .num-eff-box {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .num-qsbs-box {
+            margin-top: 20px;
+        }
+
+        .qsbs-tag {
+            background: var(--gold-light);
+            color: var(--gold-dark);
+            font-size: 0.65rem;
+            font-weight: 400;
+            padding: 4px 10px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .qsbs-desc {
+            font-size: 0.65rem;
+            color: var(--text-slate);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
         @media print {
 
             html,
@@ -1604,209 +1806,215 @@
         </div>
 
         <div class="slide" style="position: relative; overflow: hidden;">
-            <!-- Technical Dot Matrix -->
-            <div
-                style="position: absolute; top: 0; right: 0; width: 400px; height: 400px; background-image: radial-gradient(var(--primary) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity: 0.12; pointer-events: none;">
-            </div>
-            <div
-                style="position: absolute; bottom: 0; left: 0; width: 400px; height: 400px; background-image: radial-gradient(var(--gold) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity: 0.12; pointer-events: none;">
-            </div>
-
-            <div class="slide-header">
-                <h3>GO TO MARKET STRATEGY</h3>
-                <h2>Execution Path. <span style="color: var(--primary);">Systemic Adoption.</span></h2>
-            </div>
-
-            <div class="slide-content">
-                <!-- Technical Status Header -->
-                <div class="grid grid-center"
-                    style="grid-template-columns: auto auto auto auto 1fr; gap: 15px; margin-bottom: 25px;">
-                    <div
-                        style="font-size: 0.7rem; font-weight: 500; color: var(--gold-dark); letter-spacing: 0.1em; text-transform: uppercase;">
-                        MOAT VALIDATION //</div>
-                    <div
-                        style="padding: 4px 12px; border: 1px solid var(--gold-neo); font-size: 0.7rem; color: var(--text-dark); border-radius: 2px;">
-                        3 PATENTS PENDING</div>
-                    <div
-                        style="padding: 4px 12px; border: 1px solid var(--primary); font-size: 0.7rem; color: var(--text-dark); border-radius: 2px;">
-                        $147K INITIAL ACV</div>
-                    <div
-                        style="padding: 4px 12px; border: 1px solid var(--text-dark); font-size: 0.7rem; color: var(--text-dark); border-radius: 2px;">
-                        NVIDIA PARTNER</div>
-                    <div style="height: 1px; background: var(--border); opacity: 0.5;"></div>
+            <div class="slide-inner">
+                <!-- Technical Dot Matrix -->
+                <div
+                    style="position: absolute; top: 0; right: 0; width: 400px; height: 400px; background-image: radial-gradient(var(--primary) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity: 0.12; pointer-events: none;">
+                </div>
+                <div
+                    style="position: absolute; bottom: 0; left: 0; width: 400px; height: 400px; background-image: radial-gradient(var(--gold) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity: 0.12; pointer-events: none;">
                 </div>
 
-                <div style="margin-bottom: 30px;">
-                    <!-- Roadmap Header: Years -->
-                    <div class="grid grid-3 gap-0" style="text-align: center; margin-bottom: 10px;">
-                        <div style="border-right: 1px solid var(--border); padding: 5px;">
-                            <div style="font-size: 0.9rem; font-weight: 500; color: var(--primary);">2025</div>
-                            <div style="font-size: 0.65rem; color: var(--text-slate); text-transform: uppercase;">Phase
-                                I // Core</div>
-                        </div>
-                        <div style="border-right: 1px solid var(--border); padding: 5px;">
-                            <div style="font-size: 0.9rem; font-weight: 500; color: var(--primary);">2026</div>
-                            <div style="font-size: 0.65rem; color: var(--text-slate); text-transform: uppercase;">Phase
-                                II // Scale</div>
-                        </div>
-                        <div style="padding: 5px;">
-                            <div style="font-size: 0.9rem; font-weight: 500; color: var(--primary);">2027</div>
-                            <div style="font-size: 0.65rem; color: var(--text-slate); text-transform: uppercase;">Phase
-                                III // On-Prem</div>
-                        </div>
-                    </div>
+                <div class="slide-header">
+                    <h3>GO TO MARKET STRATEGY</h3>
+                    <h2>Execution Path. <span style="color: var(--primary);">Systemic Adoption.</span></h2>
+                </div>
 
-                    <!-- Roadmap Engine (The Arrow Graphic) -->
-                    <div style="display: flex; flex-direction: column; gap: 0; margin-bottom: 15px;">
-                        <!-- Milestones: Top -->
+                <div class="slide-content">
+                    <!-- Technical Status Header -->
+                    <div class="grid grid-center"
+                        style="grid-template-columns: auto auto auto auto 1fr; gap: 15px; margin-bottom: 25px;">
                         <div
-                            style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 10px; padding-left: 20px;">
-                            <div></div>
-                            <div
-                                style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
-                                <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Winter
-                                    2025
-                                </div>
-                                <div
-                                    style="font-size: 0.65rem; font-weight: 600; color: var(--gold-dark); text-transform: uppercase;">
-                                    Phase I // Sirsi AI MVP</div>
-                            </div>
-                            <div
-                                style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
-                                <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Summer
-                                    2026
-                                </div>
-                                <div
-                                    style="font-size: 0.65rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
-                                    Phase II // Portal Launch</div>
-                            </div>
-                            <div
-                                style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
-                                <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Fall
-                                    2027
-                                </div>
-                                <div
-                                    style="font-size: 0.65rem; font-weight: 600; color: var(--text-dark); text-transform: uppercase;">
-                                    Phase III // On-Prem</div>
-                            </div>
-                        </div>
-
-                        <!-- Flow Conduit (Arrow segments) -->
-                        <div style="display: flex; align-items: stretch; margin-bottom: 10px; gap: 8px; height: 60px;">
-                            <div
-                                style="width: 60px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; color: var(--text-slate); letter-spacing: 0.2em; writing-mode: vertical-lr; text-transform: uppercase; border-right: 1.5px solid var(--gold); transform: rotate(180deg);">
-                                START</div>
-
-                            <div
-                                style="flex: 1; background: var(--primary-light); border: 1.5px solid var(--primary); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%);">
-                                IP DEVELOPMENT</div>
-
-                            <div
-                                style="flex: 1; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%, 6% 50%); margin-left: -10px;">
-                                PUBLIC RELEASE</div>
-
-                            <div
-                                style="flex: 1; background: var(--gold-light); border: 1.5px solid var(--gold); color: var(--gold-dark); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 6% 50%); margin-left: -10px;">
-                                SCALE GLOBAL</div>
-                        </div>
-
-                        <!-- Milestones: Bottom -->
+                            style="font-size: 0.7rem; font-weight: 500; color: var(--gold-dark); letter-spacing: 0.1em; text-transform: uppercase;">
+                            MOAT VALIDATION //</div>
                         <div
-                            style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 10px; padding-left: 20px;">
-                            <div></div>
-                            <div
-                                style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
-                                <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">August
-                                    2025
-                                </div>
-                                <div style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate);">AI Tech
-                                    Stack POC</div>
-                            </div>
-                            <div
-                                style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
-                                <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Spring
-                                    2026
-                                </div>
-                                <div style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate);">
-                                    Customer
-                                    Scale-Up</div>
-                            </div>
-                            <div
-                                style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
-                                <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Spring
-                                    2027
-                                </div>
-                                <div style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate);">Cloud
-                                    Provider Sync</div>
-                            </div>
-                        </div>
+                            style="padding: 4px 12px; border: 1px solid var(--gold-neo); font-size: 0.7rem; color: var(--text-dark); border-radius: 2px;">
+                            3 PATENTS PENDING</div>
+                        <div
+                            style="padding: 4px 12px; border: 1px solid var(--primary); font-size: 0.7rem; color: var(--text-dark); border-radius: 2px;">
+                            $147K INITIAL ACV</div>
+                        <div
+                            style="padding: 4px 12px; border: 1px solid var(--text-dark); font-size: 0.7rem; color: var(--text-dark); border-radius: 2px;">
+                            NVIDIA PARTNER</div>
+                        <div style="height: 1px; background: var(--border); opacity: 0.5;"></div>
                     </div>
-                </div>
 
-                <!-- Market Grid -->
-                <div class="grid grid-3 gap-20">
-                    <div class="info-card" style="border-top: 2.5px solid var(--primary);">
-                        <div class="flex-between" style="margin-bottom: 8px;">
-                            <div
-                                style="font-size: 0.65rem; color: var(--primary); letter-spacing: 0.1em; font-weight: 500;">
-                                PHASE 01</div>
-                            <div
-                                style="background: var(--primary-light); color: var(--primary); font-size: 0.55rem; padding: 2px 6px; border-radius: 2px;">
-                                2024-2025</div>
-                        </div>
-                        <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Studio Governance</h4>
-                        <p style="font-size: 0.8rem; color: var(--text-slate); margin-bottom: 15px;">Deploying the Sirsi
-                            Nexus core as a governance engine for high-stakes ventures.</p>
-                        <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 10px;">
-                            <div style="font-size: 0.6rem; color: var(--primary); text-transform: uppercase;">Focus //
+                    <div style="margin-bottom: 30px;">
+                        <!-- Roadmap Header: Years -->
+                        <div class="grid grid-3 gap-0" style="text-align: center; margin-bottom: 10px;">
+                            <div style="border-right: 1px solid var(--border); padding: 5px;">
+                                <div style="font-size: 0.9rem; font-weight: 500; color: var(--primary);">2025</div>
+                                <div style="font-size: 0.65rem; color: var(--text-slate); text-transform: uppercase;">
+                                    Phase
+                                    I // Core</div>
                             </div>
-                            <div class="medium" style="font-size: 0.75rem;">Legal Evidence & Vaulting</div>
+                            <div style="border-right: 1px solid var(--border); padding: 5px;">
+                                <div style="font-size: 0.9rem; font-weight: 500; color: var(--primary);">2026</div>
+                                <div style="font-size: 0.65rem; color: var(--text-slate); text-transform: uppercase;">
+                                    Phase
+                                    II // Scale</div>
+                            </div>
+                            <div style="padding: 5px;">
+                                <div style="font-size: 0.9rem; font-weight: 500; color: var(--primary);">2027</div>
+                                <div style="font-size: 0.65rem; color: var(--text-slate); text-transform: uppercase;">
+                                    Phase
+                                    III // On-Prem</div>
+                            </div>
+                        </div>
+
+                        <!-- Roadmap Engine (The Arrow Graphic) -->
+                        <div style="display: flex; flex-direction: column; gap: 0; margin-bottom: 15px;">
+                            <!-- Milestones: Top -->
+                            <div
+                                style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 10px; padding-left: 20px;">
+                                <div></div>
+                                <div
+                                    style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
+                                    <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Winter
+                                        2025
+                                    </div>
+                                    <div
+                                        style="font-size: 0.65rem; font-weight: 600; color: var(--gold-dark); text-transform: uppercase;">
+                                        Phase I // Sirsi AI MVP</div>
+                                </div>
+                                <div
+                                    style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
+                                    <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Summer
+                                        2026
+                                    </div>
+                                    <div
+                                        style="font-size: 0.65rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
+                                        Phase II // Portal Launch</div>
+                                </div>
+                                <div
+                                    style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
+                                    <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Fall
+                                        2027
+                                    </div>
+                                    <div
+                                        style="font-size: 0.65rem; font-weight: 600; color: var(--text-dark); text-transform: uppercase;">
+                                        Phase III // On-Prem</div>
+                                </div>
+                            </div>
+
+                            <!-- Flow Conduit (Arrow segments) -->
+                            <div
+                                style="display: flex; align-items: stretch; margin-bottom: 10px; gap: 8px; height: 60px;">
+                                <div
+                                    style="width: 60px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; color: var(--text-slate); letter-spacing: 0.2em; writing-mode: vertical-lr; text-transform: uppercase; border-right: 1.5px solid var(--gold); transform: rotate(180deg);">
+                                    START</div>
+
+                                <div
+                                    style="flex: 1; background: var(--primary-light); border: 1.5px solid var(--primary); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%);">
+                                    IP DEVELOPMENT</div>
+
+                                <div
+                                    style="flex: 1; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%, 6% 50%); margin-left: -10px;">
+                                    PUBLIC RELEASE</div>
+
+                                <div
+                                    style="flex: 1; background: var(--gold-light); border: 1.5px solid var(--gold); color: var(--gold-dark); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 6% 50%); margin-left: -10px;">
+                                    SCALE GLOBAL</div>
+                            </div>
+
+                            <!-- Milestones: Bottom -->
+                            <div
+                                style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 10px; padding-left: 20px;">
+                                <div></div>
+                                <div
+                                    style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
+                                    <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">August
+                                        2025
+                                    </div>
+                                    <div style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate);">AI Tech
+                                        Stack POC</div>
+                                </div>
+                                <div
+                                    style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
+                                    <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Spring
+                                        2026
+                                    </div>
+                                    <div style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate);">
+                                        Customer
+                                        Scale-Up</div>
+                                </div>
+                                <div
+                                    style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
+                                    <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-dark);">Spring
+                                        2027
+                                    </div>
+                                    <div style="font-size: 0.65rem; font-weight: 600; color: var(--text-slate);">Cloud
+                                        Provider Sync</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="info-card" style="border-top: 2.5px solid var(--gold-neo);">
-                        <div class="flex-between" style="margin-bottom: 8px;">
-                            <div
-                                style="font-size: 0.65rem; color: var(--gold-dark); letter-spacing: 0.1em; font-weight: 500;">
-                                PHASE 02</div>
-                            <div
-                                style="background: var(--gold-light); color: var(--gold-dark); font-size: 0.55rem; padding: 2px 6px; border-radius: 2px;">
-                                2025-2026</div>
-                        </div>
-                        <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Dev Intelligence</h4>
-                        <p style="font-size: 0.8rem; color: var(--text-slate); margin-bottom: 15px;">Transforming Sirsi
-                            from a vault into an active Agentic Operating System.</p>
-                        <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 10px;">
-                            <div style="font-size: 0.6rem; color: var(--gold-dark); text-transform: uppercase;">Focus //
+
+                    <!-- Market Grid -->
+                    <div class="grid grid-3 gap-20">
+                        <div class="info-card" style="border-top: 2.5px solid var(--primary);">
+                            <div class="flex-between" style="margin-bottom: 8px;">
+                                <div
+                                    style="font-size: 0.65rem; color: var(--primary); letter-spacing: 0.1em; font-weight: 500;">
+                                    PHASE 01</div>
+                                <div
+                                    style="background: var(--primary-light); color: var(--primary); font-size: 0.55rem; padding: 2px 6px; border-radius: 2px;">
+                                    2024-2025</div>
                             </div>
-                            <div class="medium" style="font-size: 0.75rem;">MD/IL/MN Expansion</div>
-                        </div>
-                    </div>
-                    <div class="info-card" style="border-top: 2.5px solid var(--primary);">
-                        <div class="flex-between" style="margin-bottom: 8px;">
-                            <div
-                                style="font-size: 0.65rem; color: var(--primary); letter-spacing: 0.1em; font-weight: 500;">
-                                PHASE 03</div>
-                            <div
-                                style="background: var(--primary-light); color: var(--primary); font-size: 0.55rem; padding: 2px 6px; border-radius: 2px;">
-                                2026+</div>
-                        </div>
-                        <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Sovereign Infra</h4>
-                        <p style="font-size: 0.8rem; color: var(--text-slate); margin-bottom: 15px;">Global rollout of
-                            Sirsi Sovereign Clusters. High-concurrency AI for nation-state grade security.</p>
-                        <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 10px;">
-                            <div style="font-size: 0.6rem; color: var(--primary); text-transform: uppercase;">Focus //
+                            <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Studio Governance</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-slate); margin-bottom: 15px;">Deploying the
+                                Sirsi
+                                Nexus core as a governance engine for high-stakes ventures.</p>
+                            <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 10px;">
+                                <div style="font-size: 0.6rem; color: var(--primary); text-transform: uppercase;">Focus
+                                    //
+                                </div>
+                                <div class="medium" style="font-size: 0.75rem;">Legal Evidence & Vaulting</div>
                             </div>
-                            <div class="medium" style="font-size: 0.75rem;">The Multi-Cloud Mesh</div>
+                        </div>
+                        <div class="info-card" style="border-top: 2.5px solid var(--gold-neo);">
+                            <div class="flex-between" style="margin-bottom: 8px;">
+                                <div
+                                    style="font-size: 0.65rem; color: var(--gold-dark); letter-spacing: 0.1em; font-weight: 500;">
+                                    PHASE 02</div>
+                                <div
+                                    style="background: var(--gold-light); color: var(--gold-dark); font-size: 0.55rem; padding: 2px 6px; border-radius: 2px;">
+                                    2025-2026</div>
+                            </div>
+                            <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Dev Intelligence</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-slate); margin-bottom: 15px;">Transforming
+                                Sirsi
+                                from a vault into an active Agentic Operating System.</p>
+                            <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 10px;">
+                                <div style="font-size: 0.6rem; color: var(--gold-dark); text-transform: uppercase;">
+                                    Focus //
+                                </div>
+                                <div class="medium" style="font-size: 0.75rem;">MD/IL/MN Expansion</div>
+                            </div>
+                        </div>
+                        <div class="info-card" style="border-top: 2.5px solid var(--primary);">
+                            <div class="flex-between" style="margin-bottom: 8px;">
+                                <div
+                                    style="font-size: 0.65rem; color: var(--primary); letter-spacing: 0.1em; font-weight: 500;">
+                                    PHASE 03</div>
+                                <div
+                                    style="background: var(--primary-light); color: var(--primary); font-size: 0.55rem; padding: 2px 6px; border-radius: 2px;">
+                                    2026+</div>
+                            </div>
+                            <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Sovereign Infra</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-slate); margin-bottom: 15px;">Global rollout
+                                of
+                                Sirsi Sovereign Clusters. High-concurrency AI for nation-state grade security.</p>
+                            <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 10px;">
+                                <div style="font-size: 0.6rem; color: var(--primary); text-transform: uppercase;">Focus
+                                    //
+                                </div>
+                                <div class="medium" style="font-size: 0.75rem;">The Multi-Cloud Mesh</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="slide-footer">
-            <div>SIRSI TECHNOLOGIES INC.</div>
-            <div>CONFIDENTIAL // GO TO MARKET STRATEGY // SLIDE 09</div>
-        </div>
         </div>
 
         <!-- Slide 8: Market Architecture - The Trillion Dollar Convergence -->
@@ -1938,236 +2146,240 @@
         </div>
 
         <div class="slide">
-            <div class="slide-header">
-                <h3>THE ARCHITECT</h3>
-                <h2>Cylton Collymore</h2>
-            </div>
+            <div class="slide-inner">
+                <div class="slide-header">
+                    <h3>THE ARCHITECT</h3>
+                    <h2>Cylton Collymore</h2>
+                </div>
 
-            <div class="slide-content">
-                <div class="grid grid-2 gap-50 grid-center">
-                    <div style="position: relative; width: 280px; margin: 0 auto;">
-                        <div
-                            style="width: 100%; aspect-ratio: 1; background: var(--gold-light); border: 8px solid var(--gold-neo); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);">
-                            <div style="text-align: center; color: var(--gold-dark); padding: 15px;">
-                                <i class="fas fa-microchip" style="font-size: 2.2rem; margin-bottom: 8px;"></i>
-                                <h3
-                                    style="font-size: 0.8rem; line-height: 1.2; color: var(--gold-dark); font-weight: 600;">
-                                    DOMAIN<br>MASTERY</h3>
+                <div class="slide-content">
+                    <div class="grid grid-2 gap-50 grid-center">
+                        <div style="position: relative; width: 280px; margin: 0 auto;">
+                            <div
+                                style="width: 100%; aspect-ratio: 1; background: var(--gold-light); border: 8px solid var(--gold-neo); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 15px 40px rgba(212, 175, 55, 0.2);">
+                                <div style="text-align: center; color: var(--gold-dark); padding: 15px;">
+                                    <i class="fas fa-microchip" style="font-size: 2.2rem; margin-bottom: 8px;"></i>
+                                    <h3
+                                        style="font-size: 0.8rem; line-height: 1.2; color: var(--gold-dark); font-weight: 600;">
+                                        DOMAIN<br>MASTERY</h3>
+                                </div>
+                            </div>
+                            <div
+                                style="position: absolute; bottom: 10px; right: 10px; background: var(--primary); color: white; padding: 6px 14px; border-radius: 30px; font-weight: 600; font-size: 0.7rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                                MIT xPRO '24
                             </div>
                         </div>
-                        <div
-                            style="position: absolute; bottom: 10px; right: 10px; background: var(--primary); color: white; padding: 6px 14px; border-radius: 30px; font-weight: 600; font-size: 0.7rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-                            MIT xPRO '24
+                        <div>
+                            <h4 class="cinzel"
+                                style="color: var(--primary); font-size: 1rem; margin-bottom: 20px; letter-spacing: 0.2em; text-transform: uppercase;">
+                                The Core Team</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li
+                                    style="margin-bottom: 12px; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px;">
+                                    <span style="color: var(--primary);">■</span>
+                                    <span><strong>Cylton Collymore (CEO):</strong> 20+ Yrs Infrastructure. Meta & US
+                                        State
+                                        Dept. Systems architecture veteran.</span>
+                                </li>
+                                <li
+                                    style="margin-bottom: 12px; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px;">
+                                    <span style="color: var(--primary);">■</span>
+                                    <span><strong>VP Engineering:</strong> High-Availability & Hardware Mesh Expert.
+                                        Specialized in deterministic compute.</span>
+                                </li>
+                                <li
+                                    style="margin-bottom: 12px; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px;">
+                                    <span style="color: var(--primary);">■</span>
+                                    <span><strong>VP Marketing:</strong> Global Enterprise GTM Specialist. Focused on
+                                        technical platform adoption.</span>
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.95rem;">
+                                    <span style="color: var(--primary);">■</span>
+                                    <span><strong>Strategic Advisors:</strong> AI & Cloud Infrastructure Veterans from
+                                        top-tier research institutions.</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <div>
-                        <h4 class="cinzel"
-                            style="color: var(--primary); font-size: 1rem; margin-bottom: 20px; letter-spacing: 0.2em; text-transform: uppercase;">
-                            The Core Team</h4>
-                        <ul style="list-style: none; padding: 0;">
-                            <li
-                                style="margin-bottom: 12px; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px;">
-                                <span style="color: var(--primary);">■</span>
-                                <span><strong>Cylton Collymore (CEO):</strong> 20+ Yrs Infrastructure. Meta & US State
-                                    Dept. Systems architecture veteran.</span>
-                            </li>
-                            <li
-                                style="margin-bottom: 12px; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px;">
-                                <span style="color: var(--primary);">■</span>
-                                <span><strong>VP Engineering:</strong> High-Availability & Hardware Mesh Expert.
-                                    Specialized in deterministic compute.</span>
-                            </li>
-                            <li
-                                style="margin-bottom: 12px; font-size: 0.95rem; display: flex; align-items: flex-start; gap: 10px;">
-                                <span style="color: var(--primary);">■</span>
-                                <span><strong>VP Marketing:</strong> Global Enterprise GTM Specialist. Focused on
-                                    technical platform adoption.</span>
-                            </li>
-                            <li style="display: flex; align-items: flex-start; gap: 10px; font-size: 0.95rem;">
-                                <span style="color: var(--primary);">■</span>
-                                <span><strong>Strategic Advisors:</strong> AI & Cloud Infrastructure Veterans from
-                                    top-tier research institutions.</span>
-                            </li>
-                        </ul>
-                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div>SIRSI TECHNOLOGIES INC.</div>
+                    <div>CONFIDENTIAL // THE CORE TEAM // SLIDE 11</div>
                 </div>
             </div>
-
-            <div class="slide-footer">
-                <div>SIRSI TECHNOLOGIES INC.</div>
-                <div>CONFIDENTIAL // THE CORE TEAM // SLIDE 11</div>
-            </div>
-        </div>
         </div>
 
         <!-- Slide 12: Strategic Traction -->
         <div class="slide">
-            <div class="slide-header">
-                <h3>STRATEGIC TRACTION</h3>
-                <h2>Proven Performance: $147K Contracted Revenue</h2>
-            </div>
-            <div class="slide-content">
-                <div class="grid grid-2 gap-30">
-                    <!-- Case Study: Assiduous -->
-                    <div class="info-card"
-                        style="border: 2px solid #e2e8f0; border-left: 10px solid var(--primary); padding: 25px; background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,0.04); border-radius: 4px; justify-content: flex-start; width: 100%;">
-                        <div style="margin-bottom: 15px; width: 100%;">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                                <div>
-                                    <h4 class="cinzel"
-                                        style="color: var(--primary); font-size: 1.2rem; margin: 0; letter-spacing: 0.05em; font-weight: 600;">
-                                        ASSIDUOUS</h4>
-                                    <div
-                                        style="font-size: 0.7rem; color: var(--text-slate); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
-                                        Real Estate Micro-Flipping</div>
-                                </div>
+            <div class="slide-inner">
+                <div class="slide-header">
+                    <h3>STRATEGIC TRACTION</h3>
+                    <h2>Proven Performance: $147K Contracted Revenue</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="grid grid-2 gap-30">
+                        <!-- Case Study: Assiduous -->
+                        <div class="info-card"
+                            style="border: 2px solid #e2e8f0; border-left: 10px solid var(--primary); padding: 25px; background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,0.04); border-radius: 4px; justify-content: flex-start; width: 100%;">
+                            <div style="margin-bottom: 15px; width: 100%;">
                                 <div
-                                    style="border: 2px solid var(--primary); color: var(--primary); padding: 4px 10px; font-size: 0.65rem; font-weight: 600; border-radius: 2px; text-transform: uppercase;">
-                                    Strategic Rollout</div>
-                            </div>
-
-                            <p
-                                style="font-weight: 600; color: #0f172a; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.25;">
-                                $2.4B in Analyzed Assets. Production-Ready in 29 Days.</p>
-
-                            <div
-                                style="display: flex; gap: 15px; margin-bottom: 15px; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 10px 0;">
-                                <div style="flex: 1;">
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                    <div>
+                                        <h4 class="cinzel"
+                                            style="color: var(--primary); font-size: 1.2rem; margin: 0; letter-spacing: 0.05em; font-weight: 600;">
+                                            ASSIDUOUS</h4>
+                                        <div
+                                            style="font-size: 0.7rem; color: var(--text-slate); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+                                            Real Estate Micro-Flipping</div>
+                                    </div>
                                     <div
-                                        style="font-size: 0.65rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
-                                        March 1st Launch</div>
-                                    <div style="font-size: 0.8rem; font-weight: 600; color: #000;">Core Platform
-                                        (v1.0)</div>
+                                        style="border: 2px solid var(--primary); color: var(--primary); padding: 4px 10px; font-size: 0.65rem; font-weight: 600; border-radius: 2px; text-transform: uppercase;">
+                                        Strategic Rollout</div>
                                 </div>
-                                <div style="flex: 1; border-left: 1px solid #f1f5f9; padding-left: 15px;">
-                                    <div
-                                        style="font-size: 0.65rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
-                                        May 1st Update</div>
-                                    <div style="font-size: 0.8rem; font-weight: 600; color: #000;">AI Micro-Flip
-                                        Engine</div>
-                                </div>
-                            </div>
 
-                            <ul style="list-style: none; font-size: 0.8rem; color: #475569; padding: 0;">
-                                <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
-                                    <span style="color: var(--primary); font-weight: 600;">■</span>
-                                    <span>Universal Component System (UCS): Build-time
-                                        programmable
-                                        tokens eliminating 90% of UI bloat across 780+ production files.</span>
-                                </li>
-                                <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
-                                    <span style="color: var(--primary); font-weight: 600;">■</span>
-                                    <span>Real-Time Dev Telemetry: Automated Git-to-Firestore
-                                        pipeline tracking 650+ commits and project velocity in real-time.</span>
-                                </li>
-                                <li style="display: flex; align-items: flex-start; gap: 10px;">
-                                    <span style="color: var(--primary); font-weight: 600;">■</span>
-                                    <span>Autonomous Match Engine: Processing 3,542+ property
-                                        nodes
-                                        with 94.5% AI accuracy and $48.6M in lifecycle value.</span>
-                                </li>
-                            </ul>
+                                <p
+                                    style="font-weight: 600; color: #0f172a; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.25;">
+                                    $2.4B in Analyzed Assets. Production-Ready in 29 Days.</p>
+
+                                <div
+                                    style="display: flex; gap: 15px; margin-bottom: 15px; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; padding: 10px 0;">
+                                    <div style="flex: 1;">
+                                        <div
+                                            style="font-size: 0.65rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
+                                            March 1st Launch</div>
+                                        <div style="font-size: 0.8rem; font-weight: 600; color: #000;">Core Platform
+                                            (v1.0)</div>
+                                    </div>
+                                    <div style="flex: 1; border-left: 1px solid #f1f5f9; padding-left: 15px;">
+                                        <div
+                                            style="font-size: 0.65rem; font-weight: 600; color: var(--primary); text-transform: uppercase;">
+                                            May 1st Update</div>
+                                        <div style="font-size: 0.8rem; font-weight: 600; color: #000;">AI Micro-Flip
+                                            Engine</div>
+                                    </div>
+                                </div>
+
+                                <ul style="list-style: none; font-size: 0.8rem; color: #475569; padding: 0;">
+                                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                        <span style="color: var(--primary); font-weight: 600;">■</span>
+                                        <span>Universal Component System (UCS): Build-time
+                                            programmable
+                                            tokens eliminating 90% of UI bloat across 780+ production files.</span>
+                                    </li>
+                                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                        <span style="color: var(--primary); font-weight: 600;">■</span>
+                                        <span>Real-Time Dev Telemetry: Automated Git-to-Firestore
+                                            pipeline tracking 650+ commits and project velocity in real-time.</span>
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 10px;">
+                                        <span style="color: var(--primary); font-weight: 600;">■</span>
+                                        <span>Autonomous Match Engine: Processing 3,542+ property
+                                            nodes
+                                            with 94.5% AI accuracy and $48.6M in lifecycle value.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Case Study: FinalWishes -->
+                        <div class="info-card"
+                            style="border: 2px solid #e2e8f0; border-left: 10px solid var(--gold-neo); padding: 25px; background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,0.04); border-radius: 4px; justify-content: flex-start; width: 100%;">
+                            <div style="margin-bottom: 15px; width: 100%;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                    <div>
+                                        <h4 class="cinzel"
+                                            style="color: var(--gold-dark); font-size: 1.2rem; margin: 0; letter-spacing: 0.05em; font-weight: 600;">
+                                            FINALWISHES</h4>
+                                        <div
+                                            style="font-size: 0.7rem; color: var(--text-slate); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+                                            The Legacy Operating System</div>
+                                    </div>
+                                    <div
+                                        style="border: 2px solid var(--gold-dark); color: var(--gold-dark); padding: 4px 10px; font-size: 0.65rem; font-weight: 600; border-radius: 2px; text-transform: uppercase;">
+                                        $147K TOTAL CONTRACTED</div>
+                                </div>
+
+                                <p
+                                    style="font-weight: 600; color: #0f172a; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.25;">
+                                    Securing Multi-Generational Wealth & Personal Data.</p>
+
+                                <div
+                                    style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; background: #f8fafc; padding: 10px; border-radius: 4px;">
+                                    <div
+                                        style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
+                                        <span style="color: #64748b;">SERVICE ARCHITECTURE:</span>
+                                        <span style="color: var(--gold-dark);">CONTRACTS gRPC v1.0</span>
+                                    </div>
+                                    <div
+                                        style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
+                                        <span style="color: #64748b;">SECURITY LAYER:</span>
+                                        <span style="color: var(--gold-dark);">HMAC CRYPTO-TRUST</span>
+                                    </div>
+                                </div>
+
+                                <ul style="list-style: none; font-size: 0.8rem; color: #475569; padding: 0;">
+                                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                        <span style="color: var(--gold-dark); font-weight: 600;">■</span>
+                                        <span>Bidirectional Streaming: Real-time event bus for
+                                            mission-critical vault operations and doc execution syncing.</span>
+                                    </li>
+                                    <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
+                                        <span style="color: var(--gold-dark); font-weight: 600;">■</span>
+                                        <span>Immutable Audit Trails: Firestore-backed
+                                            cryptographic
+                                            verification for high-value document lifecycle management.</span>
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 10px;">
+                                        <span style="color: var(--gold-dark); font-weight: 600;">■</span>
+                                        <span>OpenSign Standard: Unified signing engine with global
+                                            bank verification (Plaid) and automated revenue redirects.</span>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Case Study: FinalWishes -->
-                    <div class="info-card"
-                        style="border: 2px solid #e2e8f0; border-left: 10px solid var(--gold-neo); padding: 25px; background: #fff; box-shadow: 0 12px 40px rgba(0,0,0,0.04); border-radius: 4px; justify-content: flex-start; width: 100%;">
-                        <div style="margin-bottom: 15px; width: 100%;">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                                <div>
-                                    <h4 class="cinzel"
-                                        style="color: var(--gold-dark); font-size: 1.2rem; margin: 0; letter-spacing: 0.05em; font-weight: 600;">
-                                        FINALWISHES</h4>
-                                    <div
-                                        style="font-size: 0.7rem; color: var(--text-slate); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
-                                        The Legacy Operating System</div>
-                                </div>
+                    <!-- Force Multiplier Banner -->
+                    <div
+                        style="display: flex; align-items: center; justify-content: space-between; background: #fff; color: #000; padding: 20px 40px; border: 2px solid var(--primary); border-radius: 8px; margin-top: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%;">
+                        <div>
+                            <h3
+                                style="color: #10b981; margin: 0; font-size: 0.9rem; letter-spacing: 0.3rem; font-weight: 600; text-transform: uppercase;">
+                                Platform Force Multiplier</h3>
+                        </div>
+                        <div style="display: flex; gap: 40px; text-align: right;">
+                            <div>
+                                <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">90%</div>
                                 <div
-                                    style="border: 2px solid var(--gold-dark); color: var(--gold-dark); padding: 4px 10px; font-size: 0.65rem; font-weight: 600; border-radius: 2px; text-transform: uppercase;">
-                                    $147K TOTAL CONTRACTED</div>
+                                    style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
+                                    Code Reuse</div>
                             </div>
-
-                            <p
-                                style="font-weight: 600; color: #0f172a; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.25;">
-                                Securing Multi-Generational Wealth & Personal Data.</p>
-
-                            <div
-                                style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; background: #f8fafc; padding: 10px; border-radius: 4px;">
-                                <div
-                                    style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
-                                    <span style="color: #64748b;">SERVICE ARCHITECTURE:</span>
-                                    <span style="color: var(--gold-dark);">CONTRACTS gRPC v1.0</span>
+                            <div>
+                                <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">-70%
                                 </div>
                                 <div
-                                    style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
-                                    <span style="color: #64748b;">SECURITY LAYER:</span>
-                                    <span style="color: var(--gold-dark);">HMAC CRYPTO-TRUST</span>
-                                </div>
+                                    style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
+                                    Dev Overhead</div>
                             </div>
-
-                            <ul style="list-style: none; font-size: 0.8rem; color: #475569; padding: 0;">
-                                <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
-                                    <span style="color: var(--gold-dark); font-weight: 600;">■</span>
-                                    <span>Bidirectional Streaming: Real-time event bus for
-                                        mission-critical vault operations and doc execution syncing.</span>
-                                </li>
-                                <li style="margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px;">
-                                    <span style="color: var(--gold-dark); font-weight: 600;">■</span>
-                                    <span>Immutable Audit Trails: Firestore-backed
-                                        cryptographic
-                                        verification for high-value document lifecycle management.</span>
-                                </li>
-                                <li style="display: flex; align-items: flex-start; gap: 10px;">
-                                    <span style="color: var(--gold-dark); font-weight: 600;">■</span>
-                                    <span>OpenSign Standard: Unified signing engine with global
-                                        bank verification (Plaid) and automated revenue redirects.</span>
-                                </li>
-                            </ul>
+                            <div>
+                                <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">100%
+                                </div>
+                                <div
+                                    style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
+                                    Design Parity</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Force Multiplier Banner -->
-                <div
-                    style="display: flex; align-items: center; justify-content: space-between; background: #fff; color: #000; padding: 20px 40px; border: 2px solid var(--primary); border-radius: 8px; margin-top: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%;">
-                    <div>
-                        <h3
-                            style="color: #10b981; margin: 0; font-size: 0.9rem; letter-spacing: 0.3rem; font-weight: 600; text-transform: uppercase;">
-                            Platform Force Multiplier</h3>
-                    </div>
-                    <div style="display: flex; gap: 40px; text-align: right;">
-                        <div>
-                            <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">90%</div>
-                            <div
-                                style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
-                                Code Reuse</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">-70%</div>
-                            <div
-                                style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
-                                Dev Overhead</div>
-                        </div>
-                        <div>
-                            <div style="font-size: 1.6rem; font-weight: 600; color: #000; line-height: 1;">100%</div>
-                            <div
-                                style="font-size: 0.65rem; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">
-                                Design Parity</div>
-                        </div>
-                    </div>
+                <div class="slide-footer">
+                    <div>SIRSI TECHNOLOGIES INC.</div>
+                    <div>CONFIDENTIAL // PROVEN PERFORMANCE // SLIDE 12</div>
                 </div>
             </div>
-            <div class="slide-footer">
-                <div>SIRSI TECHNOLOGIES INC.</div>
-                <div>CONFIDENTIAL // PROVEN PERFORMANCE // SLIDE 12</div>
-            </div>
-        </div>
         </div>
 
-        <!-- Slide 11: Financials - Comprehensive Dashboard -->
         <!-- Slide 13: Financials - Comprehensive Dashboard -->
         <div class="slide">
             <div class="slide-inner">
@@ -2273,264 +2485,16 @@
         <!-- Slide 14: By The Numbers (Strategic Design Alignment) -->
         <div class="slide">
             <div class="slide-inner">
-                <div class="slide-content" style="padding: 0;">
-                    <style>
-                        .num-header {
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: flex-end;
-                            margin-bottom: 5px;
-                        }
-
-                        .num-title-cap {
-                            color: var(--gold-neo);
-                            font-size: 0.66rem;
-                            letter-spacing: 0.1em;
-                            font-weight: 400;
-                            margin-bottom: 4px;
-                            display: block;
-                        }
-
-                        .num-title-main {
-                            font-size: 2.2rem;
-                            color: var(--primary);
-                            font-weight: 400;
-                            margin: 0;
-                            letter-spacing: -0.01em;
-                        }
-
-                        .num-right-top {
-                            color: var(--text-light);
-                            font-size: 0.65rem;
-                            font-weight: 400;
-                            letter-spacing: 0.1em;
-                            margin-bottom: 2px;
-                        }
-
-                        .num-right-deploy {
-                            color: var(--primary);
-                            font-size: 0.95rem;
-                            font-weight: 400;
-                        }
-
-                        .strat-obj-bar {
-                            background: rgba(16, 185, 129, 0.05);
-                            border-left: 5px solid var(--primary);
-                            padding: 12px 20px;
-                            margin-bottom: 25px;
-                        }
-
-                        .strat-obj-text {
-                            margin: 0;
-                            font-size: 0.78rem;
-                            font-weight: 400;
-                            color: var(--text-dark);
-                            line-height: 1.4;
-                        }
-
-                        .num-grid {
-                            display: grid;
-                            grid-template-columns: 1.15fr 0.9fr 1fr;
-                            gap: 30px;
-                        }
-
-                        .num-section-title {
-                            color: var(--primary);
-                            font-size: 0.8rem;
-                            font-weight: 400;
-                            letter-spacing: 0.1em;
-                            margin-bottom: 15px;
-                            display: block;
-                            text-transform: uppercase;
-                        }
-
-                        .num-table {
-                            width: 100%;
-                            border-collapse: collapse;
-                            margin-bottom: 15px;
-                        }
-
-                        .num-table th {
-                            background: var(--primary);
-                            color: #fff;
-                            font-size: 0.6rem;
-                            font-weight: 400;
-                            padding: 8px 6px;
-                            text-align: left;
-                            text-transform: uppercase;
-                        }
-
-                        .num-table td {
-                            padding: 8px 6px;
-                            font-size: 0.72rem;
-                            font-weight: 600;
-                            border-bottom: 1px solid var(--border);
-                        }
-
-                        .num-table tr.active-row {
-                            color: var(--primary);
-                            font-weight: 400;
-                        }
-
-                        .num-active-offering {
-                            background: #fff;
-                            border: 1px solid var(--primary);
-                            padding: 12px;
-                            border-radius: 4px;
-                            display: grid;
-                            grid-template-columns: 1fr 1fr;
-                            gap: 10px;
-                            margin-bottom: 20px;
-                        }
-
-                        .offering-item {
-                            font-size: 0.75rem;
-                            font-weight: 600;
-                            color: var(--text-slate);
-                        }
-
-                        .offering-item strong {
-                            color: var(--text-dark);
-                            font-weight: 400;
-                        }
-
-                        .num-stats-grid {
-                            display: grid;
-                            grid-template-columns: 1fr 1fr;
-                            gap: 15px;
-                        }
-
-                        .num-stat-card {
-                            border: 1px solid var(--border);
-                            padding: 15px 10px;
-                            text-align: center;
-                            border-radius: 4px;
-                        }
-
-                        .num-stat-card.green {
-                            border: 2px solid var(--primary);
-                            color: var(--primary);
-                        }
-
-                        .num-stat-val {
-                            display: block;
-                            font-size: 1.3rem;
-                            font-weight: 400;
-                            margin-bottom: 4px;
-                        }
-
-                        .num-stat-lab {
-                            font-size: 0.6rem;
-                            font-weight: 400;
-                            text-transform: uppercase;
-                            letter-spacing: 0.05em;
-                            color: inherit;
-                        }
-
-                        .num-check-list {
-                            list-style: none;
-                            padding: 0;
-                            margin: 0 0 20px 0;
-                        }
-
-                        .num-check-list li {
-                            font-size: 0.8rem;
-                            font-weight: 400;
-                            margin-bottom: 10px;
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                        }
-
-                        .num-milestone-box {
-                            background: var(--primary);
-                            color: #fff;
-                            padding: 15px;
-                            border-radius: 4px;
-                            text-align: center;
-                            margin-bottom: 15px;
-                        }
-
-                        .num-milestone-box.dark {
-                            background: var(--text-dark);
-                        }
-
-                        .num-milestone-val {
-                            display: block;
-                            font-size: 1.2rem;
-                            font-weight: 400;
-                            margin-bottom: 4px;
-                        }
-
-                        .num-milestone-lab {
-                            font-size: 0.6rem;
-                            font-weight: 400;
-                            text-transform: uppercase;
-                            letter-spacing: 0.05em;
-                        }
-
-                        .num-eff-box {
-                            background: #f8fafc;
-                            padding: 15px;
-                            border-radius: 4px;
-                        }
-
-                        .eff-header {
-                            font-size: 0.6rem;
-                            font-weight: 400;
-                            text-transform: uppercase;
-                            letter-spacing: 0.05em;
-                            margin-bottom: 10px;
-                            display: block;
-                        }
-
-                        .eff-row {
-                            display: flex;
-                            justify-content: space-between;
-                            font-size: 0.75rem;
-                            font-weight: 400;
-                            margin-bottom: 5px;
-                        }
-
-                        .num-qsbs-box {
-                            margin-top: 20px;
-                        }
-
-                        .qsbs-tag {
-                            background: var(--gold-light);
-                            color: var(--gold-dark);
-                            font-size: 0.65rem;
-                            font-weight: 400;
-                            padding: 4px 10px;
-                            display: inline-block;
-                            margin-bottom: 8px;
-                        }
-
-                        .qsbs-desc {
-                            font-size: 0.65rem;
-                            color: var(--text-slate);
-                            margin-bottom: 12px;
-                            line-height: 1.4;
-                        }
-                    </style>
-
-                    <div class="num-header">
-                        <div>
-                            <span class="num-title-cap">INVESTMENT SUMMARY</span>
-                            <h2 class="num-title-main">By The Numbers.</h2>
-                        </div>
-                        <div style="text-align: right;">
-                            <div class="num-right-top">PRIVATE SEED MEMORANDUM // INVESTOR RELATIONS</div>
-                            <div class="num-right-deploy">EST. $37.3M AGGREGATE DEPLOYMENT</div>
-                        </div>
-                    </div>
-
+                <div class="slide-header">
+                    <h2 style="margin: 0; font-size: 2.2rem; color: var(--primary);">By The Numbers.</h2>
+                </div>
+                <div class="slide-content">
                     <div class="strat-obj-bar">
                         <p class="strat-obj-text">
                             <span style="color: var(--primary);">STRATEGIC OBJECTIVE:</span> Commercialize
-                            patent-protected
-                            AI technology, accelerate technical infrastructure build-out, and reach product-market fit
-                            toward a $500M+ enterprise valuation while maximizing insider equity and capital efficiency.
+                            patent-protected AI technology, accelerate technical infrastructure build-out, and reach
+                            product-market fit toward a $500M+ enterprise valuation while maximizing insider equity and
+                            capital efficiency.
                         </p>
                     </div>
 
@@ -2607,33 +2571,33 @@
                                 <li><i class="fas fa-check" style="color: var(--primary); font-size: 0.7rem;"></i>
                                     Enterprise AI Infrastructure Core</li>
                                 <li><i class="fas fa-check" style="color: var(--primary); font-size: 0.7rem;"></i>
-                                    Technical
-                                    Talent Expansion</li>
+                                    Technical Talent Expansion</li>
                                 <li><i class="fas fa-check" style="color: var(--primary); font-size: 0.7rem;"></i>
                                     Proprietary IP Development</li>
                                 <li><i class="fas fa-check" style="color: var(--primary); font-size: 0.7rem;"></i>
-                                    Strategic
-                                    GTM / Market Entry</li>
+                                    Strategic GTM / Market Entry</li>
                             </ul>
 
                             <div class="num-milestone-box">
                                 <span class="num-milestone-val">Q3 2026</span>
-                                <span class="num-milestone-lab">BETA LAUNCH: APPLE CLUSTER<br>HYPERVISOR
-                                    MILESTONE</span>
+                                <span class="num-milestone-lab">BETA LAUNCH: APPLE CLUSTER MILESTONE</span>
                             </div>
 
                             <div class="num-milestone-box dark">
                                 <span class="num-milestone-val">$1.0M</span>
-                                <span class="num-milestone-lab">TARGET ARR RUN-RATE<br>BY Q4 2026 MILESTONE</span>
+                                <span class="num-milestone-lab">TARGET ARR RUN-RATE BY Q4 2026</span>
                             </div>
 
-                            <div class="num-eff-box">
-                                <span class="eff-header">EFFICIENCY RATIO</span>
-                                <div class="eff-row">
-                                    <span style="color: var(--text-slate);">Capital Efficiency:</span>
+                            <div class="num-eff-box"
+                                style="padding: 10px; border-radius: 4px; border: 1px solid var(--border);">
+                                <span class="num-section-title"
+                                    style="font-size: 0.6rem; margin-bottom: 8px;">EFFICIENCY RATIO</span>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                                    <span>Capital Efficiency:</span>
                                     <span>0.84x</span>
                                 </div>
-                                <div class="eff-row" style="color: var(--primary); margin-top: 5px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--primary); margin-top: 4px;">
                                     <span>Initial ROI Signal:</span>
                                     <span>1:1 ALPHA</span>
                                 </div>
@@ -2676,42 +2640,30 @@
 
                             <div class="num-qsbs-box">
                                 <span class="qsbs-tag">QSBS REGULATORY ADVANTAGE</span>
-                                <p class="qsbs-desc">
-                                    Qualified Small Business Stock (Sec 1202) provides 100% Tax-Free Capital Gains
-                                    Exclusion.
-                                </p>
-                                <table class="num-table" style="margin-top: 5px;">
-                                    <thead>
-                                        <tr>
-                                            <th>RETURN ANALYSIS</th>
-                                            <th style="text-align: right;">QUANTUM</th>
-                                        </tr>
-                                    </thead>
+                                <p class="qsbs-desc">Sec 1202 provides 100% Tax-Free Capital Gains Exclusion.</p>
+                                <table class="num-table" style="margin-top: 10px;">
                                     <tbody>
                                         <tr>
-                                            <td>Standard Capital Base</td>
+                                            <td>Standard Return</td>
                                             <td style="text-align: right;">$12.5M</td>
                                         </tr>
                                         <tr style="background: rgba(16, 185, 129, 0.05); color: var(--primary);">
-                                            <td>QSBS Optimized Return</td>
-                                            <td style="text-align: right; font-weight: 400;">$17.6M</td>
+                                            <td>QSBS Optimized</td>
+                                            <td style="text-align: right;">$17.6M</td>
                                         </tr>
-                                        <tr style="background: #f1f5f9;">
+                                        <tr style="background: #f1f5f9; font-weight: 500;">
                                             <td>Savings Edge</td>
-                                            <td style="text-align: right; font-weight: 400; color: var(--primary);">
-                                                $5.1M
-                                            </td>
+                                            <td style="text-align: right; color: var(--primary);">$5.1M</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-
-                    <div class="slide-footer">
-                        <div>SIRSI TECHNOLOGIES INC.</div>
-                        <div>CONFIDENTIAL // BY THE NUMBERS // SLIDE 14</div>
-                    </div>
+                </div>
+                <div class="slide-footer">
+                    <div>SIRSI TECHNOLOGIES INC.</div>
+                    <div>CONFIDENTIAL // BY THE NUMBERS // SLIDE 14</div>
                 </div>
             </div>
         </div>
