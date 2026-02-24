@@ -2273,7 +2273,247 @@
         <!-- Slide 14: By The Numbers (Strategic Design Alignment) -->
         <div class="slide">
             <div class="slide-inner">
-                <div class="slide-content">
+                <div class="slide-content" style="padding: 0;">
+                    <style>
+                        .num-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-end;
+                            margin-bottom: 5px;
+                        }
+
+                        .num-title-cap {
+                            color: var(--gold-neo);
+                            font-size: 0.66rem;
+                            letter-spacing: 0.1em;
+                            font-weight: 400;
+                            margin-bottom: 4px;
+                            display: block;
+                        }
+
+                        .num-title-main {
+                            font-size: 2.2rem;
+                            color: var(--primary);
+                            font-weight: 400;
+                            margin: 0;
+                            letter-spacing: -0.01em;
+                        }
+
+                        .num-right-top {
+                            color: var(--text-light);
+                            font-size: 0.65rem;
+                            font-weight: 400;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 2px;
+                        }
+
+                        .num-right-deploy {
+                            color: var(--primary);
+                            font-size: 0.95rem;
+                            font-weight: 400;
+                        }
+
+                        .strat-obj-bar {
+                            background: rgba(16, 185, 129, 0.05);
+                            border-left: 5px solid var(--primary);
+                            padding: 12px 20px;
+                            margin-bottom: 25px;
+                        }
+
+                        .strat-obj-text {
+                            margin: 0;
+                            font-size: 0.78rem;
+                            font-weight: 400;
+                            color: var(--text-dark);
+                            line-height: 1.4;
+                        }
+
+                        .num-grid {
+                            display: grid;
+                            grid-template-columns: 1.15fr 0.9fr 1fr;
+                            gap: 30px;
+                        }
+
+                        .num-section-title {
+                            color: var(--primary);
+                            font-size: 0.8rem;
+                            font-weight: 400;
+                            letter-spacing: 0.1em;
+                            margin-bottom: 15px;
+                            display: block;
+                            text-transform: uppercase;
+                        }
+
+                        .num-table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-bottom: 15px;
+                        }
+
+                        .num-table th {
+                            background: var(--primary);
+                            color: #fff;
+                            font-size: 0.6rem;
+                            font-weight: 400;
+                            padding: 8px 6px;
+                            text-align: left;
+                            text-transform: uppercase;
+                        }
+
+                        .num-table td {
+                            padding: 8px 6px;
+                            font-size: 0.72rem;
+                            font-weight: 600;
+                            border-bottom: 1px solid var(--border);
+                        }
+
+                        .num-table tr.active-row {
+                            color: var(--primary);
+                            font-weight: 400;
+                        }
+
+                        .num-active-offering {
+                            background: #fff;
+                            border: 1px solid var(--primary);
+                            padding: 12px;
+                            border-radius: 4px;
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 10px;
+                            margin-bottom: 20px;
+                        }
+
+                        .offering-item {
+                            font-size: 0.75rem;
+                            font-weight: 600;
+                            color: var(--text-slate);
+                        }
+
+                        .offering-item strong {
+                            color: var(--text-dark);
+                            font-weight: 400;
+                        }
+
+                        .num-stats-grid {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 15px;
+                        }
+
+                        .num-stat-card {
+                            border: 1px solid var(--border);
+                            padding: 15px 10px;
+                            text-align: center;
+                            border-radius: 4px;
+                        }
+
+                        .num-stat-card.green {
+                            border: 2px solid var(--primary);
+                            color: var(--primary);
+                        }
+
+                        .num-stat-val {
+                            display: block;
+                            font-size: 1.3rem;
+                            font-weight: 400;
+                            margin-bottom: 4px;
+                        }
+
+                        .num-stat-lab {
+                            font-size: 0.6rem;
+                            font-weight: 400;
+                            text-transform: uppercase;
+                            letter-spacing: 0.05em;
+                            color: inherit;
+                        }
+
+                        .num-check-list {
+                            list-style: none;
+                            padding: 0;
+                            margin: 0 0 20px 0;
+                        }
+
+                        .num-check-list li {
+                            font-size: 0.8rem;
+                            font-weight: 400;
+                            margin-bottom: 10px;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        }
+
+                        .num-milestone-box {
+                            background: var(--primary);
+                            color: #fff;
+                            padding: 15px;
+                            border-radius: 4px;
+                            text-align: center;
+                            margin-bottom: 15px;
+                        }
+
+                        .num-milestone-box.dark {
+                            background: var(--text-dark);
+                        }
+
+                        .num-milestone-val {
+                            display: block;
+                            font-size: 1.2rem;
+                            font-weight: 400;
+                            margin-bottom: 4px;
+                        }
+
+                        .num-milestone-lab {
+                            font-size: 0.6rem;
+                            font-weight: 400;
+                            text-transform: uppercase;
+                            letter-spacing: 0.05em;
+                        }
+
+                        .num-eff-box {
+                            background: #f8fafc;
+                            padding: 15px;
+                            border-radius: 4px;
+                        }
+
+                        .eff-header {
+                            font-size: 0.6rem;
+                            font-weight: 400;
+                            text-transform: uppercase;
+                            letter-spacing: 0.05em;
+                            margin-bottom: 10px;
+                            display: block;
+                        }
+
+                        .eff-row {
+                            display: flex;
+                            justify-content: space-between;
+                            font-size: 0.75rem;
+                            font-weight: 400;
+                            margin-bottom: 5px;
+                        }
+
+                        .num-qsbs-box {
+                            margin-top: 20px;
+                        }
+
+                        .qsbs-tag {
+                            background: var(--gold-light);
+                            color: var(--gold-dark);
+                            font-size: 0.65rem;
+                            font-weight: 400;
+                            padding: 4px 10px;
+                            display: inline-block;
+                            margin-bottom: 8px;
+                        }
+
+                        .qsbs-desc {
+                            font-size: 0.65rem;
+                            color: var(--text-slate);
+                            margin-bottom: 12px;
+                            line-height: 1.4;
+                        }
+                    </style>
+
                     <div class="num-header">
                         <div>
                             <span class="num-title-cap">INVESTMENT SUMMARY</span>
@@ -2288,9 +2528,9 @@
                     <div class="strat-obj-bar">
                         <p class="strat-obj-text">
                             <span style="color: var(--primary);">STRATEGIC OBJECTIVE:</span> Commercialize
-                            patent-protected AI technology, accelerate technical infrastructure build-out, and reach
-                            product-market fit toward a $500M+ enterprise valuation while maximizing insider equity and
-                            capital efficiency.
+                            patent-protected
+                            AI technology, accelerate technical infrastructure build-out, and reach product-market fit
+                            toward a $500M+ enterprise valuation while maximizing insider equity and capital efficiency.
                         </p>
                     </div>
 
@@ -2456,42 +2696,26 @@
                                             <td>QSBS Optimized Return</td>
                                             <td style="text-align: right; font-weight: 400;">$17.6M</td>
                                         </tr>
+                                        <tr style="background: #f1f5f9;">
+                                            <td>Savings Edge</td>
+                                            <td style="text-align: right; font-weight: 400; color: var(--primary);">
+                                                $5.1M
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="num-qsbs-box">
-                            <span class="qsbs-tag">QSBS REGULATORY ADVANTAGE</span>
-                            <p class="qsbs-desc">Sec 1202 provides 100% Tax-Free Capital Gains Exclusion.</p>
-                            <table class="num-table" style="margin-top: 10px;">
-                                <tbody>
-                                    <tr>
-                                        <td>Standard Return</td>
-                                        <td style="text-align: right;">$12.5M</td>
-                                    </tr>
-                                    <tr style="background: rgba(16, 185, 129, 0.05); color: var(--primary);">
-                                        <td>QSBS Optimized</td>
-                                        <td style="text-align: right;">$17.6M</td>
-                                    </tr>
-                                    <tr style="background: #f1f5f9; font-weight: 500;">
-                                        <td>Savings Edge</td>
-                                        <td style="text-align: right; color: var(--primary);">$5.1M</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="slide-footer">
+                        <div>SIRSI TECHNOLOGIES INC.</div>
+                        <div>CONFIDENTIAL // BY THE NUMBERS // SLIDE 14</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="slide-footer">
-            <div>SIRSI TECHNOLOGIES INC.</div>
-            <div>CONFIDENTIAL // BY THE NUMBERS // SLIDE 14</div>
-        </div>
-        </div>
-        </div>
 
         <!-- Slide 15: Seed Offering (The Ask) -->
         <div class="slide">
