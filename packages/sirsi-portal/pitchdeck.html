@@ -784,21 +784,27 @@
         .num-eff-box {
             background: #f8fafc;
             padding: 15px;
-            border-radius: 4px;
+            border-left: 3px solid var(--primary);
+            margin-top: auto;
         }
 
         .num-qsbs-box {
-            margin-top: 20px;
+            margin-top: auto;
+            border-top: 2px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .num-baseline-bottom {
+            margin-top: auto;
         }
 
         .qsbs-tag {
-            background: var(--gold-light);
-            color: var(--gold-dark);
-            font-size: 0.65rem;
-            font-weight: 400;
-            padding: 4px 10px;
-            display: inline-block;
+            color: var(--gold-neo);
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: block;
             margin-bottom: 8px;
+            letter-spacing: 0.05em;
         }
 
         .qsbs-desc {
@@ -2543,9 +2549,11 @@
                 </div>
 
                 <div class="slide-content">
-                    <div class="strat-obj-bar">
-                        <p class="strat-obj-text">
-                            <span style="color: var(--gold-neo); font-weight: 700;">STRATEGIC OBJECTIVE:</span>
+                    <div class="strat-obj-bar"
+                        style="background: rgba(200, 169, 81, 0.05); border-left: 4px solid var(--gold-neo); padding: 15px 20px;">
+                        <p class="strat-obj-text" style="color: var(--text-dark); margin: 0;">
+                            <span style="color: var(--gold-neo); font-weight: 700; letter-spacing: 0.1em;">STRATEGIC
+                                OBJECTIVE:</span>
                             Commercialize patent-protected AI technology, accelerate technical infrastructure build-out,
                             and reach product-market fit toward a $500M+ enterprise valuation while maximizing insider
                             equity and capital efficiency.
@@ -2598,9 +2606,7 @@
                                 <div class="offering-item">Type: QSBS</div>
                             </div>
 
-                            <div style="flex-grow: 1;"></div>
-
-                            <div class="num-stats-grid">
+                            <div class="num-stats-grid num-baseline-bottom">
                                 <div class="num-stat-card">
                                     <span class="num-stat-val">$147K</span>
                                     <span class="num-stat-lab">Contracted Revenue</span>
@@ -2644,9 +2650,7 @@
                                 <span class="num-milestone-lab">TARGET ARR RUN-RATE BY Q4 2026</span>
                             </div>
 
-                            <div style="flex-grow: 1;"></div>
-
-                            <div class="num-eff-box">
+                            <div class="num-eff-box num-baseline-bottom">
                                 <span class="num-section-title"
                                     style="font-size: 0.6rem; border: none; padding: 0; margin-bottom: 10px; color: var(--text-slate);">EFFICIENCY
                                     RATIO</span>
@@ -2697,7 +2701,7 @@
                                 </tbody>
                             </table>
 
-                            <div class="num-qsbs-box" style="margin-top: 25px;">
+                            <div class="num-qsbs-box num-baseline-bottom">
                                 <span class="qsbs-tag"
                                     style="color: var(--gold-neo); font-weight: 700; font-size: 0.75rem; letter-spacing: 0.05em; display: block; margin-bottom: 8px;">QSBS
                                     REGULATORY ADVANTAGE</span>
