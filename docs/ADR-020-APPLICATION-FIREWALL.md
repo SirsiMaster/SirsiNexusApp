@@ -28,11 +28,11 @@ Each repo has its own `GEMINI.md` (and equivalent AI config files) containing ON
 | Single GEMINI.md for all portfolio context | Each repo has its own scoped GEMINI.md |
 
 ### 3. Design Language Firewall
-| Application | Design Language | Boundary |
-| :--- | :--- | :--- |
-| SirsiNexusApp (Portal) | Swiss Financial | NEVER apply Royal Neo-Deco or Assiduous Modern |
-| FinalWishes | Royal Neo-Deco | NEVER apply Swiss Financial or Assiduous Modern |
-| Assiduous | Assiduous Modern | NEVER apply Royal Neo-Deco or Swiss Financial |
+| Application | Design Language | Accent Colors | Boundary |
+| :--- | :--- | :--- | :--- |
+| SirsiNexusApp (all packages) | **Swiss Neo-Deco** | **Emerald + Gold** | NEVER apply Royal Blue or Assiduous Modern |
+| FinalWishes | **Royal Neo-Deco** | **Royal Blue + Gold** | NEVER apply Emerald or Assiduous Modern |
+| Assiduous | **Assiduous Modern** | Own palette | NEVER apply Swiss Neo-Deco or Royal Neo-Deco |
 
 ### 4. Shared Services Architecture
 Sirsi Sign, UCS, and auth modules remain in SirsiNexusApp as shared infrastructure. Tenant apps consume these via:

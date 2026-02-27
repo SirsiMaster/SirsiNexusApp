@@ -9,6 +9,9 @@
 This is the **SirsiNexusApp** repository — the Sirsi Technologies master monorepo.
 It contains the core platform infrastructure, shared components, and shared services that tenant applications consume.
 
+- **GitHub**: `https://github.com/SirsiMaster/SirsiNexusApp`
+- **Local Path**: `/Users/thekryptodragon/Development/SirsiNexusApp`
+
 **This repo is NOT FinalWishes. This repo is NOT Assiduous.**
 Rules, design tokens, and business logic from tenant applications do NOT apply here.
 
@@ -123,20 +126,22 @@ The following files serve as the immutable benchmark for this repo:
 
 > ⚠️ **REMOVED**: Rust/WASM (decommissioned — ADR-019), Hedera/HCS (never operationalized), CockroachDB (decommissioned — ADR-017)
 
-## 4. Design Languages (Package-Scoped)
+## 4. Design Language: "Swiss Neo-Deco"
 
-> **FIREWALL**: SirsiNexusApp does NOT have a single global design system. Each package has its own visual identity.
+SirsiNexusApp uses the **Swiss Neo-Deco** design language across ALL packages — a fusion of Swiss Financial institutional clarity with Neo-Deco elegance.
 
-| Package | Design Language | Description |
-| :--- | :--- | :--- |
-| `packages/sirsi-portal/` | **Swiss Financial** | Clean, institutional, data-focused |
-| `packages/sirsi-sign/` | **Sirsi Sign Brand** | Professional signing experience |
-| `packages/sirsi-portal/pitchdeck.html` | **Investor Presentation** | Custom per-deck styling |
-| `packages/sirsi-ui/` | **Neutral/Themeable** | Components adapt to consuming app's theme |
+*   **Aesthetic**: "Clean, Institutional, Elegant"
+*   **Colors**:
+    *   Accents: **Emerald** (`#059669`, `#10B981`) + **Gold** (`#C8A951`). These are ALWAYS the Sirsi brand colors.
+    *   Backgrounds: Deep Emerald gradients (`#022c22` → `#000000`) for dark mode, clean whites for light mode.
+    *   Success: Emerald Green (`#10B981`)
+*   **Typography**:
+    *   Headings: `Cinzel` (Serif, Uppercase tracking)
+    *   Body: `Inter` (Sans-serif, clean)
+*   **Components**: Glass panels, Gold borders, backdrop blur, sidebar navigation.
+*   **Base Stylesheet**: `packages/sirsi-ui/styles/swiss-neo-deco.css`
 
-> **Royal Neo-Deco** belongs to the **FinalWishes** repo. Never apply Cinzel, Gold (#C8A951), or film grain to packages in this repo unless explicitly for Sirsi Sign contract flows that serve FinalWishes tenants.
->
-> **Assiduous Modern** belongs to the **Assiduous** repo. Never apply Sky Blue or Assiduous styling here.
+> **FIREWALL**: Swiss Neo-Deco is the Sirsi brand language. **Royal Neo-Deco** (Royal Blue + Gold) belongs to **FinalWishes**. **Assiduous Modern** belongs to **Assiduous**. Never apply tenant design languages to this repo.
 
 ## 5. Architecture Rules
 *   **Defense in Depth**: Every API endpoint must have AuthZ checks. PII is always encrypted at rest.
