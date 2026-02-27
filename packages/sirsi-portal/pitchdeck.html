@@ -947,17 +947,7 @@
                             background-size: 20px 20px;
                         }
 
-                        @keyframes s3FadeIn {
-                            from {
-                                opacity: 0;
-                                transform: translateY(10px);
-                            }
 
-                            to {
-                                opacity: 1;
-                                transform: translateY(0);
-                            }
-                        }
 
                         .s3-dash {
                             display: grid;
@@ -983,7 +973,7 @@
                             width: 100%;
                             position: relative;
                             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
-                            animation: s3FadeIn 0.6s ease forwards;
+
                         }
 
                         .s3-viz {
@@ -1055,21 +1045,6 @@
                             margin-top: 24px;
                             text-transform: uppercase;
                         }
-
-                        @keyframes s3PulseRed {
-
-                            0%,
-                            100% {
-                                color: #991B1B;
-                                background: rgba(220, 38, 38, 0.04);
-                            }
-
-                            50% {
-                                color: #EF4444;
-                                background: rgba(239, 68, 68, 0.15);
-                                box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
-                            }
-                        }
                     </style>
 
                     <div class="strategic-bridge">
@@ -1078,7 +1053,7 @@
                     </div>
 
                     <div class="s3-dash">
-                        <div class="s3-gw" style="animation-delay: 0.2s;">
+                        <div class="s3-gw">
                             <div class="s3-label">CAPITAL EFFICIENCY</div>
                             <div class="s3-viz">
                                 <canvas id="s3-fuel-gauge" width="440" height="320"
@@ -1089,7 +1064,7 @@
                             <div class="s3-impact">$180K/YR CLOUD WASTE</div>
                         </div>
 
-                        <div class="s3-gw" style="animation-delay: 0.4s;">
+                        <div class="s3-gw">
                             <div class="s3-label">TECHNICAL VELOCITY</div>
                             <div class="s3-viz">
                                 <div class="s3-shifter-gate">
@@ -1099,7 +1074,7 @@
                                     <span
                                         style="font-family:'Cinzel', serif; font-size:1.5rem; color: #cbd5e1; z-index:1;">R</span>
                                     <span
-                                        style="font-family:'Cinzel', serif; font-size:1.5rem; z-index:2; color: #EF4444; border: 2.5px solid #EF4444; border-radius: 50%; width:54px; height:54px; display:flex; align-items:center; justify-content:center; animation: s3PulseRed 1.5s ease-in-out infinite;">N</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.5rem; z-index:2; color: #EF4444; border: 2.5px solid #EF4444; border-radius: 50%; width:54px; height:54px; display:flex; align-items:center; justify-content:center; background: rgba(220, 38, 38, 0.04);">N</span>
                                     <span
                                         style="font-family:'Cinzel', serif; font-size:1.5rem; color: #cbd5e1; z-index:1;">D</span>
                                     <span
@@ -1111,7 +1086,7 @@
                             <div class="s3-impact">4.5 MONTHS LOST / YR</div>
                         </div>
 
-                        <div class="s3-gw" style="animation-delay: 0.6s;">
+                        <div class="s3-gw">
                             <div class="s3-label">OPERATIONAL REDLINE</div>
                             <div class="s3-viz">
                                 <canvas id="s3-tach-gauge" width="440" height="320"
@@ -1158,7 +1133,7 @@
                                     }
                                     var danger = (type === 'fuel') ? (cur < rl) : (cur > rl);
                                     if (danger) {
-                                        var p = 0.08 + Math.sin(Date.now() * 0.008) * 0.04;
+                                        var p = 0.10;
                                         var gs = (type === 'fuel') ? 0 : rl; var ge = (type === 'fuel') ? rl : cur;
                                         ctx.beginPath(); ctx.arc(cx, cy, R, aFor(gs), aFor(ge));
                                         ctx.strokeStyle = 'rgba(239,68,68,' + p + ')'; ctx.lineWidth = 26; ctx.stroke();
