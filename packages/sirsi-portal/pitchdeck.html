@@ -942,17 +942,15 @@
                         .s3-clean-bg {
                             position: relative;
                             overflow: hidden;
-                            background: #fdfdfd;
-                            background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-                            background-size: 20px 20px;
+                            background: #f8f8f7;
+                            background-image: radial-gradient(rgba(0, 0, 0, 0.025) 1px, transparent 1px);
+                            background-size: 24px 24px;
                         }
-
-
 
                         .s3-dash {
                             display: grid;
                             grid-template-columns: 1fr 1fr 1fr;
-                            gap: 30px;
+                            gap: 28px;
                             width: 100%;
                             max-width: 1450px;
                             margin: 0 auto;
@@ -964,143 +962,168 @@
                             flex-direction: column;
                             align-items: center;
                             text-align: center;
-                            background: rgba(255, 255, 255, 0.6);
-                            backdrop-filter: blur(16px);
-                            border: 1px solid rgba(255, 255, 255, 0.4);
-                            border-top: 3.5px solid #C8A951;
-                            border-radius: 24px;
-                            padding: 25px 25px;
+                            background: rgba(255, 255, 255, 0.85);
+                            backdrop-filter: blur(20px);
+                            border: 1px solid rgba(0, 0, 0, 0.06);
+                            border-left: 3px solid #DC2626;
+                            border-radius: 16px;
+                            padding: 28px 24px 24px;
                             width: 100%;
                             position: relative;
-                            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
+                            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+                            overflow: hidden;
+                        }
 
+                        .s3-gw::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            height: 60px;
+                            background: linear-gradient(180deg, rgba(220, 38, 38, 0.04), transparent);
+                            pointer-events: none;
+                        }
+
+                        .s3-hero-stat {
+                            font-family: 'Cinzel', serif;
+                            font-size: 2.4rem;
+                            font-weight: 700;
+                            color: #B91C1C;
+                            letter-spacing: 0.02em;
+                            line-height: 1;
+                            margin-bottom: 2px;
+                        }
+
+                        .s3-hero-sub {
+                            font-family: 'Inter', sans-serif;
+                            font-size: 0.6rem;
+                            font-weight: 600;
+                            color: #DC2626;
+                            letter-spacing: 0.18em;
+                            text-transform: uppercase;
+                            margin-bottom: 14px;
+                            opacity: 0.55;
+                        }
+
+                        .s3-label {
+                            font-family: 'Cinzel', serif;
+                            font-size: 0.8rem;
+                            color: var(--gold-neo, #C8A951);
+                            letter-spacing: 0.14em;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            margin-bottom: 8px;
+                            line-height: 1.1;
                         }
 
                         .s3-viz {
-                            height: 180px;
+                            height: 130px;
                             width: 100%;
                             display: flex;
                             align-items: center;
                             justify-content: center;
                             position: relative;
-                            margin-bottom: 12px;
+                            margin-bottom: 10px;
                         }
 
                         .s3-shifter-gate {
                             position: relative;
-                            width: 280px;
-                            height: 95px;
-                            background: rgba(0, 0, 0, 0.02);
-                            border: 1.5px solid rgba(0, 0, 0, 0.06);
-                            border-radius: 48px;
+                            width: 260px;
+                            height: 80px;
+                            background: rgba(0, 0, 0, 0.015);
+                            border: 1.5px solid rgba(0, 0, 0, 0.05);
+                            border-radius: 40px;
                             display: flex;
                             flex-direction: row;
                             align-items: center;
                             justify-content: space-between;
-                            padding: 0 30px;
-                            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.04);
+                            padding: 0 28px;
+                            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03);
                         }
 
                         .s3-shifter-track {
                             position: absolute;
                             top: 50%;
-                            left: 30px;
-                            right: 30px;
-                            height: 4px;
-                            background: rgba(0, 0, 0, 0.04);
+                            left: 28px;
+                            right: 28px;
+                            height: 3px;
+                            background: rgba(0, 0, 0, 0.03);
                             transform: translateY(-50%);
                             border-radius: 2px;
                         }
 
-                        .s3-label {
-                            font-family: 'Cinzel', serif;
-                            font-size: 1.1rem;
-                            color: #1e293b;
-                            letter-spacing: 0.12em;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            margin-bottom: 20px;
-                            line-height: 1.1;
-                        }
-
                         .s3-desc {
                             font-family: 'Inter', sans-serif;
-                            font-size: 0.95rem;
-                            color: #475569;
+                            font-size: 0.85rem;
+                            color: #64748b;
                             line-height: 1.5;
-                            max-width: 310px;
+                            max-width: 300px;
                             margin: 0 auto;
                             font-weight: 400;
-                            min-height: 3em;
+                            min-height: 2.5em;
                             display: flex;
                             align-items: center;
                             justify-content: center;
                         }
-
-                        .s3-impact {
-                            font-family: 'Cinzel', serif;
-                            font-size: 0.9rem;
-                            font-weight: 600;
-                            color: #B91C1C;
-                            letter-spacing: 0.08em;
-                            margin-top: 20px;
-                            text-transform: uppercase;
-                        }
                     </style>
 
-                    <div class="strategic-bridge">
-                        <p>Manual infra consumes <span class="metric-red">up to 60% of revenue</span> before you get
-                            moving</p>
+                    <div style="text-align: center; margin-bottom: 16px;">
+                        <p
+                            style="font-family: 'Inter', sans-serif; font-size: 1.05rem; color: #475569; font-weight: 400; margin: 0;">
+                            Manual infrastructure consumes <span style="color: #DC2626; font-weight: 600;">up to 60% of
+                                revenue</span> before you ship a single feature.
+                        </p>
                     </div>
 
                     <div class="s3-dash">
                         <div class="s3-gw">
-                            <div class="s3-label">CAPITAL EFFICIENCY</div>
+                            <div class="s3-label">Capital Efficiency</div>
+                            <div class="s3-hero-stat">$180K</div>
+                            <div class="s3-hero-sub">Wasted Per Year</div>
                             <div class="s3-viz">
                                 <canvas id="s3-fuel-gauge" width="440" height="320"
-                                    style="width:100%; max-width:280px; height:auto;"></canvas>
+                                    style="width:100%; max-width:220px; height:auto;"></canvas>
                             </div>
-                            <div class="s3-desc">Idle clusters and over-provisioning silently incinerate your burn rate.
-                            </div>
-                            <div class="s3-impact">$180K/YR CLOUD WASTE</div>
+                            <div class="s3-desc">Over-provisioned clusters silently incinerate your burn rate.</div>
                         </div>
 
                         <div class="s3-gw">
-                            <div class="s3-label">TECHNICAL VELOCITY</div>
+                            <div class="s3-label">Technical Velocity</div>
+                            <div class="s3-hero-stat">4.5 Mo</div>
+                            <div class="s3-hero-sub">Lost Per Year</div>
                             <div class="s3-viz">
                                 <div class="s3-shifter-gate">
                                     <div class="s3-shifter-track"></div>
                                     <span
-                                        style="font-family:'Cinzel', serif; font-size:1.5rem; color: #cbd5e1; z-index:1;">P</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.3rem; color: #d1d5db; z-index:1;">P</span>
                                     <span
-                                        style="font-family:'Cinzel', serif; font-size:1.5rem; color: #cbd5e1; z-index:1;">R</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.3rem; color: #d1d5db; z-index:1;">R</span>
                                     <span
-                                        style="font-family:'Cinzel', serif; font-size:1.5rem; z-index:2; color: #EF4444; border: 2.5px solid #EF4444; border-radius: 50%; width:54px; height:54px; display:flex; align-items:center; justify-content:center; background: rgba(220, 38, 38, 0.04);">N</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.3rem; z-index:2; color: #DC2626; border: 2px solid #DC2626; border-radius: 50%; width:46px; height:46px; display:flex; align-items:center; justify-content:center; background: rgba(220, 38, 38, 0.05); box-shadow: 0 0 12px rgba(220,38,38,0.08);">N</span>
                                     <span
-                                        style="font-family:'Cinzel', serif; font-size:1.5rem; color: #cbd5e1; z-index:1;">D</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.3rem; color: #d1d5db; z-index:1;">D</span>
                                     <span
-                                        style="font-family:'Cinzel', serif; font-size:1.5rem; color: #cbd5e1; z-index:1;">L</span>
+                                        style="font-family:'Cinzel', serif; font-size:1.3rem; color: #d1d5db; z-index:1;">L</span>
                                 </div>
                             </div>
-                            <div class="s3-desc">Routine updates become multi-week marathons. Innovation stalls.
-                            </div>
-                            <div class="s3-impact">4.5 MONTHS LOST / YR</div>
+                            <div class="s3-desc">Routine updates become multi-week marathons. Innovation stalls.</div>
                         </div>
 
                         <div class="s3-gw">
-                            <div class="s3-label">OPERATIONAL REDLINE</div>
+                            <div class="s3-label">Operational Redline</div>
+                            <div class="s3-hero-stat">$1.1M</div>
+                            <div class="s3-hero-sub">Labor Tax Per Year</div>
                             <div class="s3-viz">
                                 <canvas id="s3-tach-gauge" width="440" height="320"
-                                    style="width:100%; max-width:280px; height:auto;"></canvas>
+                                    style="width:100%; max-width:220px; height:auto;"></canvas>
                             </div>
-                            <div class="s3-desc">Manual ops trap elite engineers, stalling growth.
-                            </div>
-                            <div class="s3-impact">$1.1M LABOR TAX</div>
+                            <div class="s3-desc">Manual ops trap elite engineers, stalling revenue growth.</div>
                         </div>
                     </div>
 
                     <p
-                        style="font-family:'Cinzel', serif; font-size: 1.3rem; color: var(--primary); font-weight:600; text-align:center; margin-top:32px; text-transform: uppercase; letter-spacing: 0.08em;">
+                        style="font-family:'Cinzel', serif; font-size: 1.2rem; color: var(--primary); font-weight: 600; text-align:center; margin-top: 28px; text-transform: uppercase; letter-spacing: 0.1em;">
                         This is where Sirsi intervenes.
                     </p>
 
