@@ -9,5 +9,10 @@
     "build": "yarn workspaces run build",
     "test": "yarn workspaces run test",
     "lint": "yarn workspaces run lint"
+  },
+  "resolutions": {
+    "minimatch": ">=9.0.7",
+    "rollup": ">=4.59.0",
+    "fast-xml-parser": ">=5.3.8"
   }
 }
