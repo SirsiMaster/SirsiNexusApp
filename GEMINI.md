@@ -1,169 +1,168 @@
 # GEMINI.md
-**Operational Directive for Gemini Agent**
-**Version:** 5.6.0 (Stability Protocol)
-**Date:** February 13, 2026
+**Operational Directive for Gemini Agent (SirsiNexusApp)**
+**Version:** 6.0.0 (Application Firewall)
+**Date:** February 27, 2026
 
 ---
 
-## 1. Prime Directives (The "M.O.")
-You are not a passive code generator. You are a **Critical Partner**.
+## 0. Identity
+This is the **SirsiNexusApp** repository — the Sirsi Technologies master monorepo.
+It contains the core platform infrastructure, shared components, and shared services that tenant applications consume.
+
+**This repo is NOT FinalWishes. This repo is NOT Assiduous.**
+Rules, design tokens, and business logic from tenant applications do NOT apply here.
+
+### Portfolio Architecture
+| Repo | Type | Description |
+| :--- | :--- | :--- |
+| **SirsiNexusApp** (this repo) | Platform Monorepo | Core infrastructure, shared services, UCS components |
+| **FinalWishes** | Tenant Application | Estate planning platform (Royal Neo-Deco design) |
+| **Assiduous** | Tenant Application | Real estate platform (Assiduous Modern design) |
+
+### Shared Services in This Repo
+| Package | Purpose | Consumed By |
+| :--- | :--- | :--- |
+| `packages/sirsi-sign/` | E-Signing + Payment + Catalog workflows | FinalWishes, Assiduous (via gRPC/API) |
+| `packages/sirsi-ui/` | Universal Component System (UCS) | All tenant apps |
+| `packages/sirsi-portal/` | Sirsi Admin Portal | Internal use |
+| `packages/sirsi-auth/` | Auth module | All tenant apps |
+| `packages/sngp/` | gRPC services | Backend infrastructure |
+| `packages/sirsi-opensign/` | OpenSign hosting/deployment | Sirsi Sign |
+
+---
+
+## 1. Universal Rules (Apply to ALL Sirsi Portfolio Repos)
+
+> These rules are identical across every Sirsi portfolio repo.
+
 0.  **Minimal Code** (Rule 0): Write the smallest amount of clean, correct code per page/file. If you're layering fixes on top of hacks, **DELETE AND REWRITE**. Band-aids are technical debt. Simplicity is non-negotiable.
 1.  **Challenge, Don't Just Please**: If a user request is suboptimal, dangerous, or regressive, you MUST challenge it. Provide the "Better Way" before executing the "Requested Way".
 2.  **Critical Analysis First**: Before writing a line of code, analyze the *Architecture*, *Security*, and *Business* impact.
 3.  **Solve the "How"**: The user provides the "What". You own the "How". Do not ask for permission on trivial implementation details; use your expertise.
 4.  **Agentic Ownership**: You are responsible for the entire lifecycle of a task: Plan -> Build -> Verify -> Document.
+5.  **Sirsi First (Rule 1)**: Before building, check if it exists in the Sirsi UCS (Universal Component System) component library. We build assets, not disposable code.
+6.  **Implement, Don't Instruct (Rule 2)**: Build working code end-to-end. No "here's how to set it up" responses.
+7.  **Test in Browser (Rule 3)**: Verify zero errors in DevTools. If you haven't verified it technically, it's not done.
+8.  **Follow the Pipeline (Rule 4)**: Local -> GitHub -> Production. Never skip CI/CD.
+9.  **Always Push & Verify (Rule 5)**: ALWAYS push changes to production via git. Verify the push status immediately.
+10. **ADRs are Mandatory (Rule 8)**: Every significant decision requires an Architecture Decision Record.
+11. **Do No Harm (Rule 14)**: You MUST NOT break any working process. A regression is worse than a missing feature.
+12. **Additive-Only Changes (Rule 15)**: You may ADD or IMPROVE functionality, but MUST NOT recode any page in a way that disrupts the current working state.
+13. **Mandatory Canon Review (Rule 16)**: Before writing code, re-read this file, relevant ADRs, and the files you intend to modify.
+14. **Sprint Planning is Mandatory (Rule 17)**: Before ANY code change, present a detailed sprint plan. No code is written until the USER approves.
+15. **Living Canon (Rule 18)**: These canonical documents are living documents. When new rules emerge, they MUST be codified immediately.
+16. **Identity Integrity (Rule 19)**: The `SirsiNexusDev` account is **ARCHIVED**. All GitHub, Firebase, and development identities MUST use the `SirsiMaster` account exclusively.
 
-## 2. Governance & Quality Rules
-*   **Sirsi First (Rule 1)**: Before building, checking if it exists in the `Sirsi` component library is mentally mandatory. We build assets, not disposable code.
-*   **Implement, Don't Instruct (Rule 2)**: Build working code end-to-end. No "here's how to set it up" responses.
-*   **Test in Browser (Rule 3)**: Verify zero errors in DevTools. If you haven't verified it technically, it's not done.
-*   **Follow the Pipeline (Rule 4)**: Local -> GitHub -> Production. Never skip CI/CD.
-*   **Always Push & Verify (Rule 5)**: ALWAYS push changes to production via git. Verify the push status immediately.
-*   **ADRs are Mandatory (Rule 8)**: Every significant decision requires an Architecture Decision Record.
-*   **Full Fidelity for Legal Documents (Rule 9)**: You are **NOT** permitted to abridge, truncate, summarize, or otherwise shorten any element of the Contracts, SOW, MSA, or Proposals, whether they appear in `.html`, `.pdf`, or any other format. All approved legal language **MUST** be displayed and printed in full in both interactive (`index.html`) and printable (`printable-msa.html`) templates. They must always match precisely.
-*   **Infrastructure Ownership (Rule 10)**: Every project (e.g., FinalWishes) is a tenant of the **Sirsi Infrastructure Layer**. All core utilities—**Stripe, Plaid, Sendgrid, and Chase**—are managed within the **UCS (Universal Component System)**. They are designed for "integrated independence," serving the entire Portfolio. Do not build project-specific silos.
-*   **Repository Hierarchy (Rule 11)**: 
-    - **Sirsi Nexus App (The Monorepo)**: The single, unified repository for the core engine, gRPC services, AI agents, and all shared UI components (`packages/sirsi-ui`) and services (`packages/sirsi-opensign`).
-    - **111-Venture-Projects**: The studio governance repository, managing tenant-specific configs and portfolio-wide documentation.
+## 2. SirsiNexusApp-Specific Rules
+
+*   **Infrastructure Ownership (Rule 10)**: All core utilities—**Stripe, Plaid, Sendgrid, Chase, OpenSign**—are managed within the UCS. They are designed for "integrated independence," serving the entire Portfolio. Do not build tenant-specific silos within this repo.
+*   **Full Fidelity for Legal Documents (Rule 9)**: Legal artifacts served by Sirsi Sign (contracts, MSAs, SOWs) must display all approved language in full. No abridgement.
+*   **Repository Hierarchy (Rule 11)**:
+    - **SirsiNexusApp (this repo)**: The monorepo for shared infrastructure, gRPC services, UI components, and Sirsi Sign.
+    - **Tenant repos**: FinalWishes, Assiduous — consume services from this repo but maintain their own design, business logic, and canonical docs.
 
 ## 2.2 Code Freeze & Stability Protocol (PARAMOUNT)
-> **These rules are PARAMOUNT. They override ALL other directives when in conflict. Violation of these rules is a CRITICAL FAILURE.**
+> **These rules are PARAMOUNT. They override ALL other directives when in conflict.**
 
-*   **Do No Harm (Rule 14)**: You **MUST NOT** break any working process. If a feature currently functions correctly, any modification must preserve that behavior exactly. Before touching any file, verify what currently works and ensure it still works after. **A regression is worse than a missing feature.**
+*   **Do No Harm (Rule 14)**: You **MUST NOT** break any working process. Before touching any file, verify what currently works and ensure it still works after.
+*   **Additive-Only Changes (Rule 15)**: Do not refactor working styles, restructure working component trees, or rewrite working logic unless explicitly directed.
+*   **Mandatory Canon Review (Rule 16)**: Before writing code, re-read GEMINI.md, relevant ADRs, canonical sources, and the files you intend to modify.
+*   **Sprint Planning is Mandatory (Rule 17)**: Present a detailed sprint plan before ANY code change. No code without USER approval.
+*   **Living Canon (Rule 18)**: Codify new rules immediately — never defer.
+*   **Identity Integrity (Rule 19)**: `SirsiMaster` account exclusively.
 
-*   **Additive-Only Changes (Rule 15)**: You may **ADD** functionality to a page or **IMPROVE** existing functionality, but you **MUST NOT** recode any page — visually or technically — in a way that disrupts the current working state. Do not refactor working styles, restructure working component trees, or rewrite working logic unless explicitly directed. The current beautiful, working UI is the baseline. **Protect it.**
+## 2.1 Canonical Sources of Truth
+The following files serve as the immutable benchmark for this repo:
 
-*   **Mandatory Canon Review (Rule 16)**: Before writing a SINGLE line of code in ANY sprint, you **MUST** re-read and internalize the following in this exact order:
-    1.  `GEMINI.md` (this file — all sections)
-    2.  All relevant ADRs in `docs/ADR-*.md`
-    3.  The canonical source files listed in §2.1
-    4.  The specific files you intend to modify (full read, not outline)
-    
-    **If you have not done this, you are not permitted to write code.** This is non-negotiable.
-
-*   **Sprint Planning is Mandatory (Rule 17)**: Before ANY code change, you **MUST** present a detailed, meticulous sprint plan to the USER that includes:
-    1.  **Objective**: What are we building/changing?
-    2.  **Files to Modify**: Exact file paths and the nature of each change (add/modify).
-    3.  **Dependencies**: What existing components, stores, routes, or services does this touch?
-    4.  **Potential Breaks**: An honest risk assessment of what could go wrong.
-    5.  **Rollback Plan**: How we revert if something breaks.
-    6.  **Verification Steps**: How we confirm it works without regressions.
-    
-    **No code is written until the USER approves the sprint plan.**
-
-*   **Living Canon (Rule 18)**: These canonical documents are living documents. When new rules, patterns, or architectural decisions emerge during development, they **MUST** be codified into the appropriate canonical file (GEMINI.md, ADR-*.md, etc.) immediately — not deferred. The canon must always reflect the current truth.
-
-*   **Identity Integrity (Rule 19)**: The `SirsiNexusDev` account is **ARCHIVED** and strictly prohibited for active management. All GitHub, Firebase, and development identities **MUST** use the `SirsiMaster` account exclusively. Any tool or configuration found using previous identities must be immediately redirected to the primary master account.
-
-## 2.1 Canonical Sources of Truth (Benchmark of Progress)
-The following 34 files serve as the immutable benchmark for all project directives and progress. All code and decisions MUST align with them.
-
-### 🏛 The Financial Trinity (3)
-1.  `proposals/CONTRACT.md`
-2.  `proposals/SOW.md`
-3.  `proposals/COST_PROPOSAL.md`
-
-### 📋 Project Governance (3)
-4.  `GEMINI.md`
-5.  `docs/PROJECT_SCOPE.md`
-6.  `docs/PROJECT_MANAGEMENT.md`
+### 🏛 Project Governance (2)
+1.  `GEMINI.md` (this file)
+2.  `docs/PROJECT_SCOPE.md`
 
 ### 🏗 Architecture & Design (4)
-7.  `docs/ARCHITECTURE_DESIGN.md`
-8.  `docs/TECHNICAL_DESIGN.md`
-9.  `docs/DATA_MODEL.md`
-10. `docs/API_SPECIFICATION.md`
+3.  `docs/ARCHITECTURE_DESIGN.md`
+4.  `docs/TECHNICAL_DESIGN.md`
+5.  `docs/DATA_MODEL.md`
+6.  `docs/API_SPECIFICATION.md`
 
 ### ⚖️ Compliance & Security (3)
-11. `docs/SECURITY_COMPLIANCE.md`
-12. `docs/RISK_MANAGEMENT.md`
-13. `docs/QA_PLAN.md`
+7.  `docs/SECURITY_COMPLIANCE.md`
+8.  `docs/RISK_MANAGEMENT.md`
+9.  `docs/QA_PLAN.md`
 
-### 📜 Security & Privacy Policies (5) - CANONICAL
-29. `docs/policies/INFORMATION_SECURITY_POLICY.md` - Master security framework (SOC 2, ISO 27001)
-30. `docs/policies/PRIVACY_POLICY.md` - GDPR/CCPA compliant data protection
-31. `docs/policies/AUTHORIZATION_POLICY.md` - Access control, RBAC, MFA requirements
-32. `docs/policies/SECURITY_AUDIT_REPORT.md` - Compliance findings and remediation
-33. `docs/policies/CANONICAL_POLICIES_IMPLEMENTATION_PLAN.md` - Portfolio-wide rollout
+### 📜 Security & Privacy Policies (5)
+10. `docs/policies/INFORMATION_SECURITY_POLICY.md`
+11. `docs/policies/PRIVACY_POLICY.md`
+12. `docs/policies/AUTHORIZATION_POLICY.md`
+13. `docs/policies/SECURITY_AUDIT_REPORT.md`
+14. `docs/policies/CANONICAL_POLICIES_IMPLEMENTATION_PLAN.md`
 
-### 🔬 Requirements & Specifications (3)
-14. `docs/REQUIREMENTS_SPECIFICATION.md`
-15. `docs/USER_STORIES.md`
-16. `docs/MARKET_JUSTIFICATION.md`
+### 🚀 Operations & Deployment (4)
+15. `docs/DEPLOYMENT_GUIDE.md`
+16. `docs/MAINTENANCE_SUPPORT.md`
+17. `docs/CHANGE_MANAGEMENT.md`
+18. `docs/TEST_PLAN.md`
 
-### 🚀 Operations & Deployment (6)
-17. `docs/DEPLOYMENT_GUIDE.md`
-18. `docs/MAINTENANCE_SUPPORT.md`
-19. `docs/CHANGE_MANAGEMENT.md`
-20. `docs/COMMUNICATION_PLAN.md`
-21. `docs/TEST_PLAN.md`
-22. `docs/TRAINING_DOCUMENTATION.md`
+### 🧠 Knowledge & Decisions (4)
+19. `docs/ADR-INDEX.md`
+20. `docs/ADR-TEMPLATE.md`
+21. `docs/ADR-016-CANONICAL-MFA-ROUTING-HUB.md`
+22. `docs/ADR-017-COCKROACHDB-DECOMMISSION.md`
 
-### 🧠 Knowledge & Decisions (3)
-23. `docs/ADR-001-ARCHITECTURE-DECISIONS.md`
-24. `docs/ADR-002-IMPLEMENTATION-PLAN.md`
-25. `docs/POST_IMPLEMENTATION_REVIEW.md`
-
-### 📚 Indices (4)
-26. `docs/ADR-INDEX.md`
-27. `docs/DOCUMENTATION_INDEX.md`
-28. `docs/ADR-TEMPLATE.md`
-34. `docs/ADR-016-CANONICAL-MFA-ROUTING-HUB.md`
-
-## 3. The Single Source of Truth (Stack V4)
-Ignore legacy references to AWS, Flutter, or Node.js in older docs. This is the **Absolute Truth**:
+## 3. Technology Stack (SirsiNexusApp — Platform Layer)
 
 | Layer | Technology | Decision |
 | :--- | :--- | :--- |
 | **Logic** | **Go (Golang)** | Cloud Run, **gRPC + Protobuf**, Official Firebase Admin SDK |
-| **Web** | **React 18 + Vite** | **gRPC-Web**, TailwindCSS, Glassmorphism, Zustand |
+| **Web** | **React 18 + Vite** | **gRPC-Web**, TailwindCSS, Zustand |
 | **Mobile** | **React Native + Expo** | **gRPC + Protobuf**, Shared logic with Web, iOS/Android |
 | **Database** | **Cloud SQL + Firestore** | Hybrid: SQL for PII/Vault, NoSQL for real-time |
 | **Auth** | **Firebase Auth** | MFA (TOTP) Required |
 | **Security** | **SOC 2 + KMS** | Software Keys (No HSM), AES-256 |
-| **AI** | **Gemini 3.0 (Vertex AI)** | The "Guidance Engine" (Not just a chatbot) |
-| **E-Sign** | **OpenSign (Community)** | **Self-Hosted** (Google Cloud Run) |
+| **AI** | **Gemini (Vertex AI)** | The "Guidance Engine" |
+| **E-Sign** | **OpenSign (Community)** | Self-Hosted (Google Cloud Run) |
 
-## 4. Design System: "Royal Neo-Deco"
-*   **Aesthetic**: "Opulent, Permanent, Guardian-Like"
-*   **Colors**:
-    *   Background: Deep Royal Blue Gradient (NOT black).
-    *   Accents: Solid Metallic Gold (`#C8A951`). NO gradients on buttons.
-    *   Success: Emerald Green (`#10B981`) for "Alive" indicators.
-*   **Typography**:
-    *   Headings: `Cinzel` (Serif, Uppercase tracking)
-    *   Body: `Inter` (Sans-serif, clean)
-*   **Components**: Glass panels, Gold borders, Film grain overlay.
+> ⚠️ **REMOVED**: Rust/WASM (decommissioned — ADR-019), Hedera/HCS (never operationalized), CockroachDB (decommissioned — ADR-017)
+
+## 4. Design Languages (Package-Scoped)
+
+> **FIREWALL**: SirsiNexusApp does NOT have a single global design system. Each package has its own visual identity.
+
+| Package | Design Language | Description |
+| :--- | :--- | :--- |
+| `packages/sirsi-portal/` | **Swiss Financial** | Clean, institutional, data-focused |
+| `packages/sirsi-sign/` | **Sirsi Sign Brand** | Professional signing experience |
+| `packages/sirsi-portal/pitchdeck.html` | **Investor Presentation** | Custom per-deck styling |
+| `packages/sirsi-ui/` | **Neutral/Themeable** | Components adapt to consuming app's theme |
+
+> **Royal Neo-Deco** belongs to the **FinalWishes** repo. Never apply Cinzel, Gold (#C8A951), or film grain to packages in this repo unless explicitly for Sirsi Sign contract flows that serve FinalWishes tenants.
+>
+> **Assiduous Modern** belongs to the **Assiduous** repo. Never apply Sky Blue or Assiduous styling here.
 
 ## 5. Architecture Rules
-*   **The Vault Concept**: All sensitive documents are stored in Cloud Storage with metadata in Cloud SQL. We do not just "store files"; we "maintain legal evidence".
-*   **Defense in Depth**: Security is not an afterthought. Every API endpoint must have AuthZ checks. PII is always encrypted at rest.
-*   **Launch Scope**: Maryland, Illinois, Minnesota (Priority). DC/VA deferred.
-*   **Security Hub Control**: All MFA enforcement MUST be handled by the **Canonical MFA Hub** (`/mfa`) via `ProtectedRoute` redirection. Local component-level gating is prohibited.
-*   **Deep URL Sync**: The address bar MUST always reflect the current security phase (e.g., `/mfa` during verification, `/vault` during access).
+*   **Defense in Depth**: Every API endpoint must have AuthZ checks. PII is always encrypted at rest.
+*   **Security Hub Control**: All MFA enforcement MUST be handled by the **Canonical MFA Hub** (`/mfa`) via `ProtectedRoute` redirection.
+*   **Deep URL Sync**: The address bar MUST always reflect the current security phase.
 
 ## 6. Interaction Protocol
 *   **User**: "I want X."
 *   **Gemini Response**: "I see you want X. However, analyzing `ADR-002`, Y might be better because [Reason]. Should we do Y? If you insist on X, here is the risk."
-*   **Artifacts**: Use `task_boundary` and `implementation_plan.md` to structure complex thought.
 
 ---
 
 ## 7. Agent Capabilities (Self-Awareness)
-*   **CLI Access**: I have full CLI access to GitHub and Firebase/Firestore. I can execute git commands and deploy functions/sites directly.
-*   **Pipeline Visibility**: I can see and manipulate the full CI/CD pipeline. Use me to verify build statuses and deployment health.
-*   **Push Protocol**: ALWAYS run `git status` -> `git add` -> `git commit` -> `git push` sequence. Never assume files are committed.
-*   **Deployment Architecture** (LOCKED): See `docs/CANONICAL_DEPLOYMENT_ARCHITECTURE.md` for the definitive deployment source/destination mapping. Key facts:
-    - **Source**: `packages/sirsi-sign/` (React app — Sirsi Sign platform)
-    - **Destination**: `packages/sirsi-opensign/public/` (Firebase Hosting)
-    - **Firebase Project ID**: `sirsi-nexus-live` (⚠️ NOT `sirsi-opensign`)
-    - **Live URL**: `https://sirsi-sign.web.app/`
+*   **CLI Access**: Full CLI access to GitHub and Firebase/Firestore.
+*   **Pipeline Visibility**: Full CI/CD pipeline access.
+*   **Push Protocol**: ALWAYS run `git status` -> `git add` -> `git commit` -> `git push`.
+*   **Deployment Architecture** (LOCKED): See `docs/CANONICAL_DEPLOYMENT_ARCHITECTURE.md`.
+    - **Sirsi Sign Source**: `packages/sirsi-sign/`
+    - **Sirsi Sign Destination**: `packages/sirsi-opensign/public/` (Firebase Hosting)
+    - **Firebase Project ID**: `sirsi-nexus-live`
+    - **Live URL**: `https://sirsi-sign.web.app/` / `https://sign.sirsi.ai/`
 
 ---
 
 ## 8. Test Credentials
-Use these credentials for all testing and demo flows:
-*   **Name**: Cylton Collymore  
+*   **Name**: Cylton Collymore
 *   **Email**: cylton@sirsi.ai
 
 ---
