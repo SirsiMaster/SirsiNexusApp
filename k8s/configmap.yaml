@@ -15,7 +15,7 @@ data:
       metrics_port: 9091
     
     database:
-      url: "postgresql://root@cockroachdb-service:26257/sirsi_nexus?sslmode=disable"
+      url: "postgresql://root@postgres-service:5432/sirsi_nexus?sslmode=disable"
       max_connections: 20
       min_connections: 5
       connection_timeout: 30
@@ -106,9 +106,9 @@ data:
         metrics_path: /metrics
         scrape_interval: 10s
       
-      - job_name: 'cockroachdb'
+      - job_name: 'postgres'
         static_configs:
-          - targets: ['cockroachdb-service:8081']
+          - targets: ['postgres-service:8081']
         metrics_path: /_status/vars
         scrape_interval: 10s
       

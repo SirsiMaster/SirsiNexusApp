@@ -51,7 +51,7 @@ spec:
         - name: RUST_LOG
           value: "info"
         - name: DATABASE_URL
-          value: "postgresql://root@cockroachdb-service:26257/sirsi_nexus?sslmode=disable"
+          value: "postgresql://root@postgres-service:5432/sirsi_nexus?sslmode=disable"
         - name: REDIS_URL
           value: "redis://redis-service:6379"
         - name: ENVIRONMENT

@@ -103,9 +103,9 @@ deploy_databases() {
     kubectl wait --for=condition=ready pod -l app=redis -n ${NAMESPACE} --timeout=${KUBECTL_TIMEOUT}
     
     # Deploy CockroachDB
-    kubectl apply -f cockroachdb-deployment.yaml --timeout=${KUBECTL_TIMEOUT}
+    kubectl apply -f postgres-deployment.yaml --timeout=${KUBECTL_TIMEOUT}
     log "Waiting for CockroachDB to be ready..."
-    kubectl wait --for=condition=ready pod -l app=cockroachdb -n ${NAMESPACE} --timeout=${KUBECTL_TIMEOUT}
+    kubectl wait --for=condition=ready pod -l app=postgres -n ${NAMESPACE} --timeout=${KUBECTL_TIMEOUT}
     
     success "Databases deployed and ready"
 }

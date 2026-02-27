@@ -50,7 +50,7 @@ spec:
         - name: CORE_ENGINE_URL
           value: "http://core-engine-service:8080"
         - name: DATABASE_URL
-          value: "postgresql://root@cockroachdb-service:26257/sirsi_nexus?sslmode=disable"
+          value: "postgresql://root@postgres-service:5432/sirsi_nexus?sslmode=disable"
         resources:
           requests:
             memory: "128Mi"

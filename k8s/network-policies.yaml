@@ -129,7 +129,7 @@ spec:
   - to:
     - podSelector:
         matchLabels:
-          app: cockroachdb
+          app: postgres
     ports:
     - protocol: TCP
       port: 26257
@@ -155,11 +155,11 @@ metadata:
   name: database-network-policy
   namespace: sirsi-nexus
   labels:
-    app: cockroachdb
+    app: postgres
 spec:
   podSelector:
     matchLabels:
-      app: cockroachdb
+      app: postgres
   policyTypes:
   - Ingress
   - Egress
@@ -182,7 +182,7 @@ spec:
   - from:
     - podSelector:
         matchLabels:
-          app: cockroachdb
+          app: postgres
     ports:
     - protocol: TCP
       port: 26257
@@ -192,7 +192,7 @@ spec:
   - to:
     - podSelector:
         matchLabels:
-          app: cockroachdb
+          app: postgres
     ports:
     - protocol: TCP
       port: 26257
