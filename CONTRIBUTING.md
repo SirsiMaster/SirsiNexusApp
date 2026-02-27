@@ -43,7 +43,7 @@ git clone https://github.com/SirsiNexusDev/SirsiNexus.git
 cd SirsiNexus
 
 # Start development environment
-docker-compose up -d  # Start CockroachDB and Redis
+docker-compose up -d  # Start PostgreSQL and Redis
 
 # Backend (Rust)
 cd core-engine

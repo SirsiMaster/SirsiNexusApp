@@ -66,11 +66,6 @@ echo -e "${BLUE}📍 Project root: $(pwd)${NC}"
 echo -e "${BLUE}🔍 Checking prerequisites...${NC}"
 
 # Check for required services
-echo "Checking CockroachDB..."
-if ! curl -s "http://localhost:8080" > /dev/null 2>&1; then
-    echo -e "${YELLOW}⚠️  CockroachDB may not be running. Please start it manually.${NC}"
-fi
-
 echo "Checking Redis..."
 if ! redis-cli ping > /dev/null 2>&1; then
     echo -e "${YELLOW}⚠️  Redis may not be running. Please start it manually.${NC}"
@@ -84,7 +79,7 @@ echo -e "${BLUE}🔧 Starting backend services...${NC}"
 cd "$PROJECT_ROOT"
 
 # Set environment variables for backend
-export DATABASE_URL="postgresql://sirsi:sirsi@localhost:26257/sirsi_nexus?sslmode=require"
+export DATABASE_URL="postgresql://sirsi:sirsi@localhost:5432/sirsi_nexus?sslmode=require"
 export REDIS_URL="redis://localhost:6379"
 export HTTP_PORT="8080"
 export CREDENTIAL_ENCRYPTION_KEY="this-is-a-32-byte-key-for-dev!"

@@ -7,7 +7,6 @@ console.log('🔍 SirsiNexus Service Verification Started');
 console.log('==========================================\n');
 
 const services = [
-  { name: 'CockroachDB', host: 'localhost', port: 26257, type: 'tcp' },
   { name: 'Redis', host: 'localhost', port: 6379, type: 'tcp' },
   { name: 'REST API', host: 'localhost', port: 8082, path: '/health', type: 'http' },
   { name: 'WebSocket', host: 'localhost', port: 8081, type: 'tcp' },
@@ -43,40 +42,40 @@ async function testTCP(host, port) {
   return new Promise((resolve) => {
     const net = require('net');
     const socket = new net.Socket();
-    
+
     socket.setTimeout(5000);
-    
+
     socket.on('connect', () => {
       socket.destroy();
       resolve({ success: true });
     });
-    
+
     socket.on('error', (err) => {
       resolve({ success: false, error: err.message });
     });
-    
+
     socket.on('timeout', () => {
       socket.destroy();
       resolve({ success: false, error: 'Timeout' });
     });
-    
+
     socket.connect(port, host);
   });
 }
 
 async function verifyServices() {
   const results = [];
-  
+
   for (const service of services) {
     process.stdout.write(`Testing ${service.name.padEnd(15)} `);
-    
+
     let result;
     if (service.type === 'http') {
       result = await testHTTP(service.host, service.port, service.path);
     } else {
       result = await testTCP(service.host, service.port);
     }
-    
+
     if (result.success) {
       console.log('✅ PASS');
       results.push({ ...service, status: 'PASS' });
@@ -85,23 +84,23 @@ async function verifyServices() {
       results.push({ ...service, status: 'FAIL', error: result.error });
     }
   }
-  
+
   console.log('\n📊 Service Status Summary:');
   console.log('========================');
-  
+
   const passed = results.filter(r => r.status === 'PASS').length;
   const failed = results.filter(r => r.status === 'FAIL').length;
-  
+
   console.log(`✅ Passed: ${passed}/${results.length}`);
   console.log(`❌ Failed: ${failed}/${results.length}`);
-  
+
   if (failed > 0) {
     console.log('\n🔧 Failed Services:');
     results.filter(r => r.status === 'FAIL').forEach(service => {
       console.log(`   - ${service.name}: ${service.error}`);
     });
   }
-  
+
   console.log('\n🚀 Next Steps:');
   if (passed === results.length) {
     console.log('✅ All services operational! Platform ready for use.');

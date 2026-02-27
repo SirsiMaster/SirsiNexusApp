@@ -1027,19 +1027,21 @@ impl SirsiInterface {
       - "8081:8081"    # WebSocket
       - "50051:50051"  # gRPC
     environment:
-      - DATABASE_URL=postgresql://root@cockroachdb:26257/sirsi_nexus
+      - DATABASE_URL=postgresql://root@postgres:5432/sirsi_nexus
       - REDIS_URL=redis://redis:6379
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
     
-  cockroachdb:
-    image: cockroachdb/cockroach:latest
-    command: start-single-node --insecure
+  postgres:
+    image: postgres:15-alpine
     ports:
-      - "26257:26257"
-      - "8080:8080"
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=sirsi_nexus
+      - POSTGRES_USER=root
+      - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
-      - cockroach-data:/cockroach/cockroach-data
+      - postgres-data:/var/lib/postgresql/data
       
   redis:
     image: redis:7-alpine
@@ -1049,7 +1051,7 @@ impl SirsiInterface {
       - redis-data:/data
 
 volumes:
-  cockroach-data:
+  postgres-data:
   redis-data:
 ```
 
