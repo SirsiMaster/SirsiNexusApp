@@ -20,6 +20,7 @@ This index tracks all significant architectural decisions for the SirsiNexusApp 
 | [ADR-022](ADR-022-GOVERNANCE-CONSOLE.md) | Sirsi Governance Console & Dynamic Catalog | Proposed | 2026-02-12 |
 | [ADR-023](ADR-023-CONTRACT-LIFECYCLE.md) | Contract Lifecycle & Funding Status | Accepted | 2026-02-13 |
 | [ADR-024](ADR-024-PITCH-DECK-VISUAL-STANDARD.md) | Pitch Deck Visual Standard & Rubric | Accepted | 2026-02-20 |
+| [ADR-025](ADR-025-UNIFIED-APP-ARCHITECTURE.md) | Unified App Architecture — Web + Desktop (Tauri) | Accepted | 2026-02-27 |
 
 ## Categories
 
@@ -27,6 +28,7 @@ This index tracks all significant architectural decisions for the SirsiNexusApp 
 - ADR-017: CockroachDB Decommission — removed from all runtime, k8s, health checks
 - ADR-019: Rust/WASM Decommission — Go confirmed as sole backend language
 - ADR-020: Application Firewall — repo-scoped AI directives, design language firewalls
+- ADR-025: Unified App Architecture — Single React codebase, Tauri desktop, Sirsi Rail UCS
 
 ### Contract Execution & Signing
 - ADR-014: Bipartite Dual-Signature Ceremony (Provider/Client Workflows)
