@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    KPI / UNIT METRICS — Investor KPI Dashboard
+    Created: Mar 1, 2026
+
+    Layout follows Rule 20 (Admin Page Layout Contract)
+    Standardized to Swiss Neo-Deco and shared.css
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI Metrics — SirsiNexus Admin</title>
+    <meta name="description"
+        content="Key performance indicators and unit economics — ARR, CAC, LTV, churn, retention, and margins.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/common-styles.css">
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-inter bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <admin-header breadcrumbs="Investor" user-name="Administrator"></admin-header>
+    <admin-sidebar></admin-sidebar>
+
+    <main class="sidebar-content">
+        <div class="content-wrapper">
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>KPI / Unit Metrics</h1>
+                <p class="page-subtitle">Strategic performance indicators and unit economics oversight</p>
+            </div>
+
+            <!-- KPI Cards -->
+            <h3
+                class="text-sm font-medium text-gray-900 uppercase tracking-wider mb-6 border-l-4 border-emerald-600 pl-4">
+                Institutional KPIs</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+
+                <!-- ARR -->
+                <div class="sirsi-card group">
+                    <div class="flex items-center justify-between mb-4">
+                        <div
+                            class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center border border-emerald-100 italic font-semibold text-xs">
+                            ARR</div>
+                        <span class="sirsi-badge sirsi-badge-success font-semibold">Y3 GOAL</span>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900 mb-1">$33M</div>
+                    <div class="text-[10px] text-gray-400 uppercase tracking-widest font-medium mb-4">Annual Recurring
+                        Revenue</div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-[10px] font-medium text-gray-500 uppercase">
+                            <span>Target Path: $40M</span>
+                            <span class="text-emerald-600">82%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                            <div class="bg-emerald-600 h-full rounded-full" style="width: 82%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customers -->
+                <div class="sirsi-card group">
+                    <div class="flex items-center justify-between mb-4">
+                        <div
+                            class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center border border-emerald-100 italic font-semibold text-xs">
+                            C#</div>
+                        <span class="sirsi-badge sirsi-badge-success font-semibold">ACTIVE</span>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900 mb-1">280</div>
+                    <div class="text-[10px] text-gray-400 uppercase tracking-widest font-medium mb-4">Global Customer
+                        Count</div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-[10px] font-medium text-gray-500 uppercase">
+                            <span>Target Path: 500</span>
+                            <span class="text-emerald-600">56%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                            <div class="bg-emerald-600 h-full rounded-full" style="width: 56%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROI -->
+                <div class="sirsi-card group">
+                    <div class="flex items-center justify-between mb-4">
+                        <div
+                            class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center border border-emerald-100 italic font-semibold text-xs">
+                            ROI</div>
+                        <span class="sirsi-badge sirsi-badge-success font-semibold">VALUE</span>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900 mb-1">8.5x</div>
+                    <div class="text-[10px] text-gray-400 uppercase tracking-widest font-medium mb-4">Average Return on
+                        Investment</div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-[10px] font-medium text-gray-500 uppercase">
+                            <span>Target Path: 10x</span>
+                            <span class="text-emerald-600">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                            <div class="bg-emerald-600 h-full rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Unit Economics Table -->
+            <h3
+                class="text-sm font-medium text-gray-900 uppercase tracking-wider mb-6 border-l-4 border-emerald-600 pl-4">
+                Unit Economics Ledger</h3>
+            <div class="sirsi-table-wrap">
+                <table class="sirsi-table">
+                    <thead>
+                        <tr>
+                            <th class="ps-6">Strategic Metric</th>
+                            <th>Current Value</th>
+                            <th class="text-right pe-6">Rolling Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="ps-6"><span class="font-medium text-gray-900">Customer Acquisition Cost
+                                    (CAC)</span></td>
+                            <td class="font-mono">$2,400</td>
+                            <td class="text-right pe-6"><span class="text-emerald-600 font-semibold italic">▼ 12%</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-6"><span class="font-medium text-gray-900">Lifetime Value (LTV)</span></td>
+                            <td class="font-mono">$48,000</td>
+                            <td class="text-right pe-6"><span class="text-emerald-600 font-semibold italic">▲ 18%</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-6"><span class="font-medium text-gray-900">LTV/CAC Ratio</span></td>
+                            <td class="font-mono">20:1</td>
+                            <td class="text-right pe-6"><span class="text-emerald-600 font-semibold italic">▲ 3.2x</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-6"><span class="font-medium text-gray-900">Monthly Revenue Churn</span></td>
+                            <td class="font-mono">1.8%</td>
+                            <td class="text-right pe-6"><span class="text-emerald-600 font-semibold italic">▼ 0.3%</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-6"><span class="font-medium text-gray-900">Net Revenue Retention (NRR)</span>
+                            </td>
+                            <td class="font-mono">118%</td>
+                            <td class="text-right pe-6"><span class="text-emerald-600 font-semibold italic">▲ 5%</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-6"><span class="font-medium text-gray-900">Gross Platform Margin</span></td>
+                            <td class="font-mono">82%</td>
+                            <td class="text-right pe-6"><span class="text-emerald-600 font-semibold italic">▲ 2%</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Load Admin Components -->
+    <script src="../components/admin-header.js"></script>
+    <script src="../components/admin-sidebar.js"></script>
+</body>
+
+</html>

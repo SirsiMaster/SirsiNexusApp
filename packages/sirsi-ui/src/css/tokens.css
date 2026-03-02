@@ -1,16 +1,192 @@
-/* Design tokens for Sirsi UI */
-:root{
-  --sirsi-color-primary:#60A3D9;
-  --sirsi-color-primary-dark:#0B1F41;
-  --sirsi-color-accent:#FFD940;
-  --sirsi-radius-sm:6px;
-  --sirsi-radius-md:10px;
-  --sirsi-radius-lg:14px;
-  --sirsi-shadow-card:0 20px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04);
+/**
+ * Sirsi UI — Design Tokens
+ * Swiss Neo-Deco Design System v1.0.0
+ *
+ * 3-Layer Architecture:
+ *   Layer 1: --snd-*        → Swiss Neo-Deco canonical defaults
+ *   Layer 2: --sirsi-*      → Backward-compatible mapping
+ *   Layer 3: --snd-tenant-* → Tenant palette (available on request)
+ *
+ * @see docs/SWISS_NEO_DECO_STYLE_GUIDE.md
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* ═══════════════════════════════════════════
+     LAYER 1: SWISS NEO-DECO (Canonical Defaults)
+     ═══════════════════════════════════════════ */
+
+  /* Brand Colors — Emerald + Gold */
+  --snd-emerald: #059669;
+  --snd-emerald-light: #10B981;
+  --snd-emerald-dark: #047857;
+  --snd-emerald-bg: #022c22;
+  --snd-gold: #C8A951;
+  --snd-gold-bright: #E2C76B;
+  --snd-gold-dim: #F0E6D2;
+  --snd-gold-dark: #A08332;
+
+  /* Semantic Colors */
+  --snd-success: #10B981;
+  --snd-danger: #dc2626;
+  --snd-warning: #f59e0b;
+  --snd-info: #0284c7;
+
+  /* Light Theme (Default) */
+  --snd-bg-primary: #fcfdfd;
+  --snd-bg-secondary: #ffffff;
+  --snd-bg-tertiary: #f8fafc;
+  --snd-bg-hover: #f1f5f9;
+  --snd-bg-active: rgba(5, 150, 105, 0.06);
+  --snd-text-primary: #111827;
+  --snd-text-body: #334155;
+  --snd-text-muted: #64748b;
+  --snd-text-faint: #94a3b8;
+  --snd-text-inverse: #ffffff;
+  --snd-border: #e5e7eb;
+  --snd-border-light: rgba(0, 0, 0, 0.06);
+  --snd-border-focus: #059669;
+
+  /* Glass Effects */
+  --snd-glass-bg: rgba(255, 255, 255, 0.8);
+  --snd-glass-border: rgba(255, 255, 255, 0.1);
+
+  /* Typography */
+  --snd-font-heading: 'Cinzel', serif;
+  --snd-font-body: 'Inter', sans-serif;
+
+  /* Type Scale */
+  --snd-text-3xl: 2.25rem;
+  /* 36px — hero stats */
+  --snd-text-2xl: 1.75rem;
+  /* 28px — page titles */
+  --snd-text-xl: 1.375rem;
+  /* 22px — card/modal titles */
+  --snd-text-lg: 1.125rem;
+  /* 18px — section headers */
+  --snd-text-md: 1rem;
+  /* 16px — sidebar links, buttons */
+  --snd-text-base: 0.9375rem;
+  /* 15px — body text, inputs */
+  --snd-text-sm: 0.8125rem;
+  /* 13px — captions, breadcrumbs */
+  --snd-text-xs: 0.75rem;
+  /* 12px — minimum: group labels, micro-badges */
+
+  /* Spacing */
+  --snd-space-1: 0.25rem;
+  /* 4px */
+  --snd-space-2: 0.5rem;
+  /* 8px */
+  --snd-space-3: 0.75rem;
+  /* 12px */
+  --snd-space-4: 1rem;
+  /* 16px */
+  --snd-space-5: 1.25rem;
+  /* 20px */
+  --snd-space-6: 1.5rem;
+  /* 24px */
+  --snd-space-8: 2rem;
+  /* 32px */
+  --snd-space-10: 2.5rem;
+  /* 40px */
+  --snd-space-12: 3rem;
+  /* 48px */
+
+  /* Radius */
+  --snd-radius-sm: 4px;
+  --snd-radius-md: 8px;
+  --snd-radius-lg: 12px;
+  --snd-radius-xl: 16px;
+  --snd-radius-full: 9999px;
+
+  /* Shadows */
+  --snd-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --snd-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --snd-shadow-md: 0 4px 8px -2px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --snd-shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.10), 0 4px 8px -4px rgba(0, 0, 0, 0.04);
+  --snd-shadow-xl: 0 24px 48px -8px rgba(0, 0, 0, 0.12);
+  --snd-shadow-focus: 0 0 0 3px rgba(5, 150, 105, 0.15);
+
+  /* Z-Index */
+  --snd-z-base: 0;
+  --snd-z-dropdown: 100;
+  --snd-z-sticky: 200;
+  --snd-z-sidebar: 300;
+  --snd-z-header: 400;
+  --snd-z-overlay: 500;
+  --snd-z-modal: 600;
+  --snd-z-toast: 700;
+  --snd-z-tooltip: 800;
+
+  /* Transitions */
+  --snd-transition-fast: 100ms ease;
+  --snd-transition-base: 150ms ease;
+  --snd-transition-smooth: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --snd-transition-modal: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Icon Sizes */
+  --snd-icon-sm: 16px;
+  --snd-icon-md: 20px;
+  --snd-icon-lg: 24px;
+  --snd-icon-xl: 32px;
+
+  /* ═══════════════════════════════════════════
+     LAYER 2: LEGACY COMPATIBILITY
+     Map --sirsi-* to --snd-* so existing components
+     continue working without code changes.
+     ═══════════════════════════════════════════ */
+  --sirsi-color-primary: var(--snd-emerald);
+  --sirsi-color-primary-dark: var(--snd-emerald-bg);
+  --sirsi-color-accent: var(--snd-gold);
+  --sirsi-radius-sm: var(--snd-radius-sm);
+  --sirsi-radius-md: var(--snd-radius-md);
+  --sirsi-radius-lg: var(--snd-radius-lg);
+  --sirsi-shadow-card: var(--snd-shadow-md);
+  --sirsi-font-sans: var(--snd-font-body);
+  --sirsi-font-display: var(--snd-font-heading);
+
+  /* ═══════════════════════════════════════════
+     LAYER 3: TENANT PALETTE
+     Available for tenant-specific overrides.
+     Not the SirsiNexusApp default.
+     ═══════════════════════════════════════════ */
+  --snd-tenant-blue: #60A3D9;
+  --snd-tenant-blue-dark: #0B1F41;
+  --snd-tenant-royal-blue: #1E3A5F;
+  --snd-tenant-royal-bright: #2563EB;
+  --snd-tenant-yellow: #FFD940;
+  --snd-tenant-orange: #ff5e00;
+  --snd-tenant-font-geist: "Geist Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --snd-tenant-font-dm-serif: "DM Serif Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
-:root{
-  --sirsi-font-sans:"Geist Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif;
-  --sirsi-font-display:"DM Serif Display",ui-serif,Georgia,Cambria,"Times New Roman",Times,serif;
+/* ═══ Dark Theme Overrides ═══ */
+.theme-dark,
+[data-theme="dark"] {
+  --snd-bg-primary: #022c22;
+  --snd-bg-secondary: #011a14;
+  --snd-bg-tertiary: #03382b;
+  --snd-bg-hover: rgba(255, 255, 255, 0.08);
+  --snd-bg-active: rgba(16, 185, 129, 0.12);
+  --snd-text-primary: #ffffff;
+  --snd-text-body: rgba(255, 255, 255, 0.85);
+  --snd-text-muted: rgba(255, 255, 255, 0.6);
+  --snd-text-faint: rgba(255, 255, 255, 0.4);
+  --snd-text-inverse: #022c22;
+  --snd-border: rgba(255, 255, 255, 0.12);
+  --snd-border-light: rgba(255, 255, 255, 0.06);
+  --snd-border-focus: #10B981;
+  --snd-glass-bg: rgba(2, 44, 34, 0.4);
+  --snd-glass-border: rgba(255, 255, 255, 0.08);
 }
 
+/* ═══ Tenant Override Example ═══ */
+/* FinalWishes: Royal Neo-Deco (Royal Blue + Gold) */
+[data-tenant="finalwishes"] {
+  --snd-emerald: var(--snd-tenant-royal-blue);
+  --snd-emerald-light: var(--snd-tenant-royal-bright);
+  --snd-emerald-dark: #1E3A5F;
+  --snd-emerald-bg: #0B1F41;
+}

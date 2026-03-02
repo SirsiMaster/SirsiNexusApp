@@ -9,17 +9,17 @@
  * Uses CSS custom properties for theming and responsive design
  */
 
-/* CSS Custom Properties */
+/* CSS Custom Properties — Swiss Neo-Deco Aligned */
 :root {
-  /* Colors */
-  --primary: #60A3D9;
-  --primary-dark: #4A8BC2;
-  --secondary: #0B1F41;
+  /* Colors — SND Emerald + Gold */
+  --primary: var(--snd-emerald, #059669);
+  --primary-dark: var(--snd-emerald-dark, #047857);
+  --secondary: var(--snd-emerald-bg, #022c22);
   --success: #059669;
   --warning: #d97706;
   --danger: #dc2626;
   --info: #0ea5e9;
-  
+
   /* Neutral Colors */
   --white: #ffffff;
   --gray-50: #f9fafb;
@@ -32,14 +32,14 @@
   --gray-700: #374151;
   --gray-800: #1f2937;
   --gray-900: #111827;
-  
+
   /* Semantic Colors */
   --text-primary: var(--gray-900);
   --text-secondary: var(--gray-500);
   --border: var(--gray-200);
   --background: var(--white);
   --background-alt: var(--gray-50);
-  
+
   /* Spacing */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -48,21 +48,22 @@
   --space-xl: 1.5rem;
   --space-2xl: 2rem;
   --space-3xl: 3rem;
-  
+
   /* Border Radius */
   --radius: 0.375rem;
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
-  
+
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  
+
   /* Typography */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family: var(--snd-font-body, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  --font-family-heading: var(--snd-font-heading, 'Cinzel', serif);
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-md: 1rem;
@@ -88,10 +89,10 @@ body {
 
 /* Universal Header Styles */
 .universal-header {
-  background: rgba(255,255,255,0.78);
+  background: rgba(255, 255, 255, 0.78);
   backdrop-filter: saturate(1.2) blur(10px);
   -webkit-backdrop-filter: saturate(1.2) blur(10px);
-  border-bottom: 1px solid rgba(229,231,235,0.7);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.7);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -111,7 +112,13 @@ body {
 }
 
 /* Public header uses inner container for perfect alignment */
-.header-public { padding: 0 var(--space-lg); height: 64px; display:flex; align-items:center; }
+.header-public {
+  padding: 0 var(--space-lg);
+  height: 64px;
+  display: flex;
+  align-items: center;
+}
+
 .header-public-inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -230,15 +237,31 @@ body {
 }
 
 /* Navigation (Public Header) */
-.header-public .brand-subtitle{font-size: var(--font-size-xs);opacity:0.65}
-.header-public .brand-name{letter-spacing:-0.01em}
+.header-public .brand-subtitle {
+  font-size: var(--font-size-xs);
+  opacity: 0.65
+}
+
+.header-public .brand-name {
+  letter-spacing: -0.01em
+}
+
 .main-nav {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
-.main-nav .nav-link{padding: .4rem .6rem;border-radius:8px;line-height:1;}
-.main-nav .nav-link:hover{background: var(--gray-100);color: var(--dark)}
+
+.main-nav .nav-link {
+  padding: .4rem .6rem;
+  border-radius: 8px;
+  line-height: 1;
+}
+
+.main-nav .nav-link:hover {
+  background: var(--gray-100);
+  color: var(--dark)
+}
 
 .nav-link {
   font-size: var(--font-size-sm);
@@ -262,7 +285,10 @@ body {
   align-items: center;
   gap: 0.4rem;
 }
-.auth-buttons sirsi-button{--btn-size: xs}
+
+.auth-buttons sirsi-button {
+  --btn-size: xs
+}
 
 .auth-link {
   padding: var(--space-sm) var(--space-md);
@@ -456,54 +482,70 @@ body {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
+
   .header-admin .page-info,
   .client-welcome {
     display: none;
   }
-  
+
   .header-center {
-    display:none;
+    display: none;
   }
 }
 
 /* Compact desktop spacing for large viewports */
 @media (min-width: 1024px) {
-  .header-public { padding: 0.5rem 1rem; }
-  .header-public .brand-subtitle{display:none}
-  .main-nav { gap: 0.9rem; }
-  .auth-buttons sirsi-button { --btn-size: xs; }
-  .header-public-inner{max-width: 1200px}
+  .header-public {
+    padding: 0.5rem 1rem;
+  }
+
+  .header-public .brand-subtitle {
+    display: none
+  }
+
+  .main-nav {
+    gap: 0.9rem;
+  }
+
+  .auth-buttons sirsi-button {
+    --btn-size: xs;
+  }
+
+  .header-public-inner {
+    max-width: 1200px
+  }
 }
 
 @media (max-width: 768px) {
+
   .header-admin,
   .header-client,
   .header-public {
     padding: var(--space-md);
     gap: var(--space-md);
   }
-  
+
   .main-nav {
     display: none;
   }
-  
+
   .header-center {
     max-width: 200px;
   }
-  
+
   .brand-text {
     display: none;
   }
-  
+
   .header-actions {
     gap: var(--space-xs);
   }
-  
+
   .header-action-btn {
     padding: var(--space-xs);
     font-size: 0;
   }
-  
+
   .header-action-btn svg {
     margin: 0;
   }
@@ -513,7 +555,7 @@ body {
   .sidebar {
     display: none;
   }
-  
+
   .page-content {
     padding: var(--space-lg);
   }
@@ -521,6 +563,7 @@ body {
 
 /* Print Styles */
 @media print {
+
   .universal-header,
   .sidebar,
   .header-actions,

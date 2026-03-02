@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    AI AGENT TASKFORCE — Multi-Tenant Agent Registry
+    Created: Mar 1, 2026
+
+    Layout follows Rule 20 (Admin Page Layout Contract)
+    Standardized to Swiss Neo-Deco (Hardened)
+    Consumes shared.css and common-styles.css
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agents — SirsiNexus Admin</title>
+    <meta name="description" content="Manage and deploy AI agents across multi-tenant heterogeneous stacks.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/common-styles.css">
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-inter bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <admin-header breadcrumbs="Intelligence" user-name="Administrator"></admin-header>
+    <admin-sidebar></admin-sidebar>
+
+    <main class="sidebar-content">
+        <div class="content-wrapper">
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <h1>Agent Taskforce</h1>
+                        <p class="page-subtitle">Orchestrating specialized AI entities
+                            deployed across the tenant portfolio.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="btn-primary flex items-center gap-2 px-6 py-2.5" id="deployAgentBtn">
+                            <i class="fas fa-robot text-xs"></i>
+                            Deploy Specialized Agent
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agent Registry Split (Host vs Tenant) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+
+                <!-- Category 1: Platform Sentinels (Core) -->
+                <div class="lg:col-span-1">
+                    <h3
+                        class="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                        Platform Sentinels
+                        <span class="h-[1px] flex-1 bg-gray-100"></span>
+                    </h3>
+                    <div class="space-y-4">
+                        <div
+                            class="sirsi-card border-l-4 border-emerald-600 p-5 group hover:bg-emerald-50/5 transition-all">
+                            <div class="flex justify-between items-start mb-4">
+                                <div
+                                    class="w-10 h-10 bg-emerald-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                                    <i class="fas fa-shield-alt text-lg"></i>
+                                </div>
+                                <span
+                                    class="bg-emerald-50 text-emerald-600 text-[9px] font-semibold px-2 py-0.5 rounded italic">ACTIVE</span>
+                            </div>
+                            <h4 class="text-xs font-semibold text-gray-900 uppercase tracking-tight m-0">Aegis Sentinel
+                            </h4>
+                            <p class="text-[10px] text-gray-400 font-medium mt-1 leading-relaxed">Secures global gRPC
+                                gateways & MFA routing protocols.</p>
+                            <div
+                                class="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center text-[10px] font-medium text-gray-400">
+                                <span>Core Architecture</span>
+                                <span class="text-emerald-600">v1.2.0</span>
+                            </div>
+                        </div>
+                        <div
+                            class="sirsi-card border-l-4 border-emerald-600 p-5 group hover:bg-emerald-50/5 transition-all">
+                            <div class="flex justify-between items-start mb-4">
+                                <div
+                                    class="w-10 h-10 bg-emerald-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-emerald-600/20">
+                                    <i class="fas fa-microchip text-lg"></i>
+                                </div>
+                                <span
+                                    class="bg-emerald-50 text-emerald-600 text-[9px] font-semibold px-2 py-0.5 rounded italic">ACTIVE</span>
+                            </div>
+                            <h4 class="text-xs font-semibold text-gray-900 uppercase tracking-tight m-0">Nexus Optimizer
+                            </h4>
+                            <p class="text-[10px] text-gray-400 font-medium mt-1 leading-relaxed">Manages global token
+                                density & multi-cloud cost delta.</p>
+                            <div
+                                class="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center text-[10px] font-medium text-gray-400">
+                                <span>Platform Infra</span>
+                                <span class="text-emerald-600">v0.9.4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 2: Tenant Operatives (FinalWishes Focus) -->
+                <div class="lg:col-span-1">
+                    <h3
+                        class="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                        FinalWishes Operatives
+                        <span class="h-[1px] flex-1 bg-gray-100"></span>
+                    </h3>
+                    <div class="space-y-4">
+                        <div
+                            class="sirsi-card border-l-4 border-amber-600 p-5 group hover:bg-amber-50/5 transition-all">
+                            <div class="flex justify-between items-start mb-4">
+                                <div
+                                    class="w-10 h-10 bg-amber-500 text-white rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/20">
+                                    <i class="fas fa-balance-scale text-lg"></i>
+                                </div>
+                                <div class="flex flex-col items-end">
+                                    <span
+                                        class="bg-amber-50 text-amber-600 text-[9px] font-semibold px-2 py-0.5 rounded italic">PROVISIONED</span>
+                                    <span
+                                        class="text-[8px] text-gray-400 font-semibold uppercase tracking-widest mt-1">Tenant:
+                                        finalwishes</span>
+                                </div>
+                            </div>
+                            <h4 class="text-xs font-semibold text-gray-900 uppercase tracking-tight m-0">Lexicon Auditor
+                            </h4>
+                            <p class="text-[10px] text-gray-400 font-medium mt-1 leading-relaxed">Bespoke: Analyzes
+                                estate complexity & legal document integrity.</p>
+                            <div
+                                class="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center text-[10px] font-medium text-gray-400">
+                                <span>Bespoke Domain</span>
+                                <span class="text-amber-600 italic">Legal Execution</span>
+                            </div>
+                        </div>
+                        <div
+                            class="sirsi-card border-l-4 border-amber-600 p-5 group hover:bg-amber-50/5 transition-all">
+                            <div class="flex justify-between items-start mb-4">
+                                <div
+                                    class="w-10 h-10 bg-amber-500 text-white rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/20">
+                                    <i class="fas fa-signature text-lg"></i>
+                                </div>
+                                <span
+                                    class="bg-amber-50 text-amber-600 text-[9px] font-semibold px-2 py-0.5 rounded italic">STANDBY</span>
+                            </div>
+                            <h4 class="text-xs font-semibold text-gray-900 uppercase tracking-tight m-0">Witness Syncer
+                            </h4>
+                            <p class="text-[10px] text-gray-400 font-medium mt-1 leading-relaxed">Bespoke: Synchronizes
+                                cryptographic evidence for legal acks.</p>
+                            <div
+                                class="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center text-[10px] font-medium text-gray-400">
+                                <span>Bespoke Domain</span>
+                                <span class="text-amber-600 italic">Signature Evidence</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 3: Tenant Operatives (Assiduous Focus) -->
+                <div class="lg:col-span-1">
+                    <h3
+                        class="text-[10px] font-semibold text-gray-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                        Assiduous Operatives
+                        <span class="h-[1px] flex-1 bg-gray-100"></span>
+                    </h3>
+                    <div class="space-y-4">
+                        <div
+                            class="sirsi-card border-l-4 border-blue-600 p-5 group hover:bg-blue-50/5 transition-all opacity-80">
+                            <div class="flex justify-between items-start mb-4">
+                                <div
+                                    class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
+                                    <i class="fas fa-home text-lg"></i>
+                                </div>
+                                <div class="flex flex-col items-end">
+                                    <span
+                                        class="bg-blue-50 text-blue-600 text-[9px] font-semibold px-2 py-0.5 rounded italic">PENDING</span>
+                                    <span
+                                        class="text-[8px] text-gray-400 font-semibold uppercase tracking-widest mt-1">Tenant:
+                                        assiduous</span>
+                                </div>
+                            </div>
+                            <h4 class="text-xs font-semibold text-gray-900 uppercase tracking-tight m-0">Portfolio Valuator
+                            </h4>
+                            <p class="text-[10px] text-gray-400 font-medium mt-1 leading-relaxed">Bespoke: Predictive
+                                market yield & property valuations.</p>
+                            <div
+                                class="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center text-[10px] font-medium text-gray-400">
+                                <span>Bespoke Domain</span>
+                                <span class="text-blue-600 italic">Real Estate Delta</span>
+                            </div>
+                        </div>
+                        <div
+                            class="sirsi-card border-l-4 border-blue-600 p-5 group hover:bg-blue-50/5 transition-all opacity-80">
+                            <div class="flex justify-between items-start mb-4">
+                                <div
+                                    class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
+                                    <i class="fas fa-chart-pie text-lg"></i>
+                                </div>
+                                <span
+                                    class="bg-blue-50 text-blue-600 text-[9px] font-semibold px-2 py-0.5 rounded italic">QUEUED</span>
+                            </div>
+                            <h4 class="text-xs font-semibold text-gray-900 uppercase tracking-tight m-0">Conversion
+                                Strategist</h4>
+                            <p class="text-[10px] text-gray-400 font-medium mt-1 leading-relaxed">Bespoke:
+                                Lead-to-Ledger conversion optimization agent.</p>
+                            <div
+                                class="mt-4 pt-4 border-t border-gray-50 flex justify-between items-center text-[10px] font-medium text-gray-400">
+                                <span>Bespoke Domain</span>
+                                <span class="text-blue-600 italic">User Acquisition</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Taskforce Performance Table (Consolidated) -->
+            <div class="sirsi-table-wrap">
+                <table class="sirsi-table">
+                    <thead>
+                        <tr>
+                            <th class="ps-6">Agent Identity</th>
+                            <th>Tenant Context</th>
+                            <th>Active Task</th>
+                            <th>Execution Delta</th>
+                            <th class="text-right pe-6">Routing Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
+                            <td class="ps-6">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center text-[10px] font-semibold border border-emerald-100 italic">
+                                        AS-01</div>
+                                    <span class="font-medium text-gray-900">Aegis Sentinel</span>
+                                </div>
+                            </td>
+                            <td><span
+                                    class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest italic">Sirsi
+                                    Master</span></td>
+                            <td class="text-xs font-medium text-gray-600">Global Firewall Audit</td>
+                            <td><span class="text-[9px] font-semibold text-emerald-600">✓ 42ms</span></td>
+                            <td class="text-right pe-6">
+                                <button class="text-gray-300 hover:text-emerald-600 transition-colors"><i
+                                        class="fas fa-sliders-h"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
+                            <td class="ps-6">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-8 h-8 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center text-[10px] font-semibold border border-amber-100 italic">
+                                        LA-04</div>
+                                    <span class="font-medium text-gray-900">Lexicon Auditor</span>
+                                </div>
+                            </td>
+                            <td><span
+                                    class="text-[10px] font-semibold text-amber-600 uppercase tracking-widest italic tracking-tight">finalwishes</span>
+                            </td>
+                            <td class="text-xs font-medium text-gray-600">Complex Will Evaluation #FW-2026</td>
+                            <td><span class="text-[9px] font-semibold text-blue-600">▲ 1.4s</span></td>
+                            <td class="text-right pe-6">
+                                <button class="text-gray-300 hover:text-emerald-600 transition-colors"><i
+                                        class="fas fa-sliders-h"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../components/admin-header.js"></script>
+    <script src="../components/admin-sidebar.js"></script>
+</body>
+
+</html>

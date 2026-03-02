@@ -81,35 +81,36 @@ The following files serve as the immutable benchmark for this repo:
 1.  `GEMINI.md` (this file)
 2.  `docs/PROJECT_SCOPE.md`
 
-### 🏗 Architecture & Design (4)
+### 🏗 Architecture & Design (5)
 3.  `docs/ARCHITECTURE_DESIGN.md`
 4.  `docs/TECHNICAL_DESIGN.md`
 5.  `docs/DATA_MODEL.md`
 6.  `docs/API_SPECIFICATION.md`
+7.  `docs/SWISS_NEO_DECO_STYLE_GUIDE.md`
 
 ### ⚖️ Compliance & Security (3)
-7.  `docs/SECURITY_COMPLIANCE.md`
-8.  `docs/RISK_MANAGEMENT.md`
-9.  `docs/QA_PLAN.md`
+8.  `docs/SECURITY_COMPLIANCE.md`
+9.  `docs/RISK_MANAGEMENT.md`
+10. `docs/QA_PLAN.md`
 
 ### 📜 Security & Privacy Policies (5)
-10. `docs/policies/INFORMATION_SECURITY_POLICY.md`
-11. `docs/policies/PRIVACY_POLICY.md`
-12. `docs/policies/AUTHORIZATION_POLICY.md`
-13. `docs/policies/SECURITY_AUDIT_REPORT.md`
-14. `docs/policies/CANONICAL_POLICIES_IMPLEMENTATION_PLAN.md`
+11. `docs/policies/INFORMATION_SECURITY_POLICY.md`
+12. `docs/policies/PRIVACY_POLICY.md`
+13. `docs/policies/AUTHORIZATION_POLICY.md`
+14. `docs/policies/SECURITY_AUDIT_REPORT.md`
+15. `docs/policies/CANONICAL_POLICIES_IMPLEMENTATION_PLAN.md`
 
 ### 🚀 Operations & Deployment (4)
-15. `docs/DEPLOYMENT_GUIDE.md`
-16. `docs/MAINTENANCE_SUPPORT.md`
-17. `docs/CHANGE_MANAGEMENT.md`
-18. `docs/TEST_PLAN.md`
+16. `docs/DEPLOYMENT_GUIDE.md`
+17. `docs/MAINTENANCE_SUPPORT.md`
+18. `docs/CHANGE_MANAGEMENT.md`
+19. `docs/TEST_PLAN.md`
 
 ### 🧠 Knowledge & Decisions (4)
-19. `docs/ADR-INDEX.md`
-20. `docs/ADR-TEMPLATE.md`
-21. `docs/ADR-016-CANONICAL-MFA-ROUTING-HUB.md`
-22. `docs/ADR-017-COCKROACHDB-DECOMMISSION.md`
+20. `docs/ADR-INDEX.md`
+21. `docs/ADR-TEMPLATE.md`
+22. `docs/ADR-016-CANONICAL-MFA-ROUTING-HUB.md`
+23. `docs/ADR-017-COCKROACHDB-DECOMMISSION.md`
 
 ## 3. Technology Stack (SirsiNexusApp — Platform Layer)
 
@@ -130,6 +131,8 @@ The following files serve as the immutable benchmark for this repo:
 
 SirsiNexusApp uses the **Swiss Neo-Deco** design language across ALL packages — a fusion of Swiss Financial institutional clarity with Neo-Deco elegance.
 
+> 📐 **CANONICAL STYLE GUIDE**: `docs/SWISS_NEO_DECO_STYLE_GUIDE.md` is the definitive reference for ALL design tokens, typography scales, component specs, and interactive states. Every CSS rule in this repo MUST conform to it.
+
 *   **Aesthetic**: "Clean, Institutional, Elegant"
 *   **Colors**:
     *   Accents: **Emerald** (`#059669`, `#10B981`) + **Gold** (`#C8A951`). These are ALWAYS the Sirsi brand colors.
@@ -138,8 +141,13 @@ SirsiNexusApp uses the **Swiss Neo-Deco** design language across ALL packages �
 *   **Typography**:
     *   Headings: `Cinzel` (Serif, Uppercase tracking)
     *   Body: `Inter` (Sans-serif, clean)
+    *   **Minimum size**: 12px (`--snd-text-xs`). No text smaller than this ANYWHERE.
+    *   **Body text**: 15px (`--snd-text-base`) minimum for all readable content.
 *   **Components**: Glass panels, Gold borders, backdrop blur, sidebar navigation.
+*   **Token Prefix**: `--snd-` (Swiss Neo-Deco) for all design tokens.
 *   **Base Stylesheet**: `packages/sirsi-ui/styles/swiss-neo-deco.css`
+*   **TENANT PALETTE**: `#ff5e00` (orange), `#60A3D9` (blue), `#FFD940` (yellow) are preserved as `--snd-tenant-*` tokens for tenant overrides — NOT the SirsiNexusApp default.
+*   **TENANT FONTS**: `Geist Sans`, `DM Serif Display` available as `--snd-tenant-font-*` — Cinzel + Inter are the SirsiNexusApp default.
 
 > **FIREWALL**: Swiss Neo-Deco is the Sirsi brand language. **Royal Neo-Deco** (Royal Blue + Gold) belongs to **FinalWishes**. **Assiduous Modern** belongs to **Assiduous**. Never apply tenant design languages to this repo.
 
@@ -147,6 +155,26 @@ SirsiNexusApp uses the **Swiss Neo-Deco** design language across ALL packages �
 *   **Defense in Depth**: Every API endpoint must have AuthZ checks. PII is always encrypted at rest.
 *   **Security Hub Control**: All MFA enforcement MUST be handled by the **Canonical MFA Hub** (`/mfa`) via `ProtectedRoute` redirection.
 *   **Deep URL Sync**: The address bar MUST always reflect the current security phase.
+*   **Admin Page Layout Contract (Rule 20)**: Every HTML page in `packages/sirsi-portal/admin/` MUST use the following canonical layout structure. **No exceptions. No invented class names.**
+
+    ```html
+    <admin-header breadcrumbs="PAGE_NAME" user-name="Administrator"></admin-header>
+    <admin-sidebar></admin-sidebar>
+
+    <main class="sidebar-content">
+        <div class="content-wrapper">
+            <!-- Page content here -->
+        </div>
+    </main>
+    ```
+
+    | Class | Source | Purpose |
+    | :--- | :--- | :--- |
+    | `sidebar-content` | `common-styles.css` | `margin-left: 250px; padding-top: 92px;` — offsets for fixed header + sidebar |
+    | `content-wrapper` | `common-styles.css` | `max-width: 1400px` — constrains content width |
+
+    > ❌ **BANNED**: `admin-layout`, `admin-main`, `page-wrapper`, `main-content`, or any other invented layout class.
+    > ✅ **REQUIRED**: Copy from `packages/sirsi-portal/admin/_template.html` when creating new pages.
 
 ## 6. Interaction Protocol
 *   **User**: "I want X."

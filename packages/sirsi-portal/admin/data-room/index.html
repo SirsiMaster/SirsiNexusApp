@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    ADMIN DATA ROOM — RWXD Management Interface
+    Created: Mar 1, 2026
+
+    Layout follows Rule 20 (Admin Page Layout Contract)
+    Standardized to Swiss Neo-Deco and shared.css
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Room — SirsiNexus Admin</title>
+    <meta name="description" content="Admin Data Room — Manage, upload, edit, and control investor-facing documents.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/common-styles.css">
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-inter bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <admin-header breadcrumbs="Data Room" user-name="Administrator"></admin-header>
+    <admin-sidebar></admin-sidebar>
+
+    <main class="sidebar-content">
+        <div class="content-wrapper">
+
+            <!-- Page Header -->
+            <div class="page-header flex justify-between items-end">
+                <div>
+                    <h1>Data Room Management</h1>
+                    <p class="page-subtitle">Governance of the secure investor document registry and due diligence
+                        artifacts.</p>
+                </div>
+                <div class="flex gap-3">
+                    <button class="btn-secondary flex items-center gap-2 px-6 py-2.5" onclick="exportDataRoom()">
+                        <i class="fas fa-download text-xs"></i>
+                        Export Registry
+                    </button>
+                    <button class="btn-primary flex items-center gap-2 px-6 py-2.5" id="uploadBtn">
+                        <i class="fas fa-file-upload text-xs"></i>
+                        Ingest Document
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <div class="sirsi-card">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Total
+                            Artifacts</span>
+                        <i class="fas fa-folder-open text-emerald-600"></i>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900" id="totalDocuments">8</div>
+                    <div class="text-[9px] text-emerald-600 font-medium mt-2 italic">✓ Indexed and searchable</div>
+                </div>
+                <div class="sirsi-card">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Recent Syncs</span>
+                        <i class="fas fa-history text-emerald-600"></i>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900" id="recentUploads">3</div>
+                    <div class="text-[9px] text-emerald-600 font-medium mt-2 italic">▲ Within last 7 cycles</div>
+                </div>
+                <div class="sirsi-card">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Vault Volume</span>
+                        <i class="fas fa-hdd text-emerald-600"></i>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900" id="totalSize">14 MB</div>
+                    <div class="text-[9px] text-emerald-600 font-medium mt-2 italic">✓ Storage utilization: 2%</div>
+                </div>
+                <div class="sirsi-card">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Live Assets</span>
+                        <i class="fas fa-globe text-emerald-600"></i>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900" id="publishedCount">6</div>
+                    <div class="text-[9px] text-emerald-600 font-medium mt-2 italic">✓ Investor visibility active</div>
+                </div>
+            </div>
+
+            <!-- Controls: Filter & Search -->
+            <div
+                class="flex flex-col md:flex-row gap-4 mb-8 items-center justify-between bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                <div class="relative flex-1 max-w-md w-full">
+                    <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" id="searchInput"
+                        class="w-full pl-12 pr-4 py-2.5 bg-gray-50 border border-transparent rounded-lg text-sm focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none transition-all"
+                        placeholder="Search identities, tags, or CID hashes...">
+                </div>
+                <div class="flex gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0">
+                    <button
+                        class="px-4 py-2 text-[10px] font-semibold uppercase tracking-widest bg-emerald-600 text-white rounded-lg shadow-lg shadow-emerald-600/10">All</button>
+                    <button
+                        class="px-4 py-2 text-[10px] font-semibold uppercase tracking-widest text-gray-400 hover:text-emerald-600 transition-colors bg-gray-50 rounded-lg">Financial</button>
+                    <button
+                        class="px-4 py-2 text-[10px] font-semibold uppercase tracking-widest text-gray-400 hover:text-emerald-600 transition-colors bg-gray-50 rounded-lg">Legal</button>
+                    <button
+                        class="px-4 py-2 text-[10px] font-semibold uppercase tracking-widest text-gray-400 hover:text-emerald-600 transition-colors bg-gray-50 rounded-lg">Technical</button>
+                </div>
+            </div>
+
+            <!-- Documents Ledger -->
+            <div class="sirsi-table-wrap">
+                <table class="sirsi-table font-inter">
+                    <thead>
+                        <tr>
+                            <th class="ps-6">Document Registry</th>
+                            <th>Class</th>
+                            <th>Protocol Level</th>
+                            <th>Sync State</th>
+                            <th class="text-right pe-6">System Proxy</th>
+                        </tr>
+                    </thead>
+                    <tbody id="documentsGrid">
+                        <tr class="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
+                            <td class="ps-6 py-5">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center border border-emerald-100">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">Financial Report Q4 2025</div>
+                                        <div class="text-[9px] font-semibold text-gray-400 uppercase tracking-widest mt-1">
+                                            ID: #DR-2025-092 • 2.4 MB</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span
+                                    class="text-[10px] font-semibold text-gray-500 uppercase tracking-widest">Financial</span>
+                            </td>
+                            <td><span class="sirsi-badge sirsi-badge-warning">Restricted</span></td>
+                            <td><span class="text-xs font-medium text-gray-400">Jan 10, 2026</span></td>
+                            <td class="text-right pe-6 space-x-2">
+                                <button class="text-gray-300 hover:text-emerald-600 transition-colors"><i
+                                        class="fas fa-eye"></i></button>
+                                <button class="text-gray-300 hover:text-blue-600 transition-colors"><i
+                                        class="fas fa-download"></i></button>
+                                <button class="text-gray-300 hover:text-red-600 transition-colors"><i
+                                        class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
+                            <td class="ps-6 py-5">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center border border-emerald-100">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">SOC 2 Compliance Framework</div>
+                                        <div class="text-[9px] font-semibold text-gray-400 uppercase tracking-widest mt-1">
+                                            ID: #DR-2025-081 • 1.8 MB</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span
+                                    class="text-[10px] font-semibold text-gray-500 uppercase tracking-widest">Legal</span>
+                            </td>
+                            <td><span class="sirsi-badge sirsi-badge-error">Confidential</span></td>
+                            <td><span class="text-xs font-medium text-gray-400">Jan 05, 2026</span></td>
+                            <td class="text-right pe-6 space-x-2">
+                                <button class="text-gray-300 hover:text-emerald-600 transition-colors"><i
+                                        class="fas fa-eye"></i></button>
+                                <button class="text-gray-300 hover:text-blue-600 transition-colors"><i
+                                        class="fas fa-download"></i></button>
+                                <button class="text-gray-300 hover:text-red-600 transition-colors"><i
+                                        class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
+                            <td class="ps-6 py-5">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center border border-emerald-100">
+                                        <i class="fas fa-code-branch"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-gray-900">Platform Scaling Specification</div>
+                                        <div class="text-[9px] font-semibold text-gray-400 uppercase tracking-widest mt-1">
+                                            ID: #DR-2026-004 • 3.2 MB</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span
+                                    class="text-[10px] font-semibold text-gray-500 uppercase tracking-widest">Technical</span>
+                            </td>
+                            <td><span class="sirsi-badge sirsi-badge-success">Operational</span></td>
+                            <td><span class="text-xs font-medium text-gray-400">Feb 28, 2026</span></td>
+                            <td class="text-right pe-6 space-x-2">
+                                <button class="text-gray-300 hover:text-emerald-600 transition-colors"><i
+                                        class="fas fa-eye"></i></button>
+                                <button class="text-gray-300 hover:text-blue-600 transition-colors"><i
+                                        class="fas fa-download"></i></button>
+                                <button class="text-gray-300 hover:text-red-600 transition-colors"><i
+                                        class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../components/admin-header.js"></script>
+    <script src="../components/admin-sidebar.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    TENANT CONTROL TOWER — FTCI Operations Command
+    Created: Mar 1, 2026
+
+    Governed by ADR-021 (Host of Hosts) & ADR-022 (FTCI Protocol)
+    Layout follows Rule 20 (Admin Page Layout Contract)
+    Standardized to Swiss Neo-Deco (Institutional)
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operations Dashboard — SirsiNexus Admin</title>
+    <meta name="description" content="FTCI Protocol — Code-to-Cloud traceability and operational orchestration.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/common-styles.css">
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* FTCI Highlight Signature */
+        .tech-stack-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tech-stack-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #059669;
+            transform: scaleY(0);
+            transition: transform 0.2s ease;
+        }
+
+        .tech-stack-btn:hover::before,
+        .tech-stack-btn.active::before {
+            transform: scaleY(1);
+        }
+
+        .tech-stack-btn:hover {
+            background: rgba(5, 150, 105, 0.04);
+            color: #059669;
+        }
+
+        .tech-stack-btn.active {
+            background: rgba(5, 150, 105, 0.08);
+            color: #059669;
+        }
+
+        /* Ledger UI */
+        .ledger-row {
+            border-left: 2px solid #e2e8f0;
+            padding-left: 2rem;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .ledger-row:hover {
+            border-left-color: #10b981;
+            background: #f8fafc;
+        }
+
+        .ledger-row::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            border: 2px solid #fff;
+            transition: all 0.2s ease;
+        }
+
+        .ledger-row.live::before {
+            background: #10b981;
+        }
+
+        .ledger-row.active {
+            border-left-color: #10b981;
+        }
+
+        .ledger-detail {
+            display: none;
+            overflow: hidden;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .ledger-row.active .ledger-detail {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cloud-badge {
+            font-size: 8px;
+            font-weight: 500;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .badge-gcp {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .badge-firebase {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .badge-aws {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+    </style>
+</head>
+
+<body class="font-inter bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <admin-header breadcrumbs="Operations Dashboard" user-name="Administrator"></admin-header>
+    <admin-sidebar></admin-sidebar>
+
+    <main class="sidebar-content">
+        <div class="content-wrapper">
+
+            <!-- Executive Control Header -->
+            <div class="page-header">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <h1>Portfolio Control Tower
+                        </h1>
+                        <p class="page-subtitle">Git-to-Cloud Integrity (FTCI)
+                            — Every commit tied to ADRs and Performance Canons.</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <div
+                            class="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100 text-[10px] font-semibold uppercase tracking-widest italic">
+                            <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                            FTCI Reconciliation: ACTIVE
+                        </div>
+                        <button class="btn-primary flex items-center gap-2">
+                            <i class="fas fa-plus text-[10px]"></i>
+                            Sync New Tenant
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Tech Stack Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                <div class="sirsi-card p-6 border-l-4 border-emerald-600">
+                    <span
+                        class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest block mb-4 italic">Aggregated
+                        Commit Velocity</span>
+                    <div class="flex items-end gap-2">
+                        <span class="text-4xl font-semibold text-gray-900">142</span>
+                        <span class="text-[10px] text-emerald-600 font-medium mb-2">commits / 24h</span>
+                    </div>
+                </div>
+                <div class="sirsi-card p-6 border-l-4 border-blue-600">
+                    <span
+                        class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest block mb-4 italic">Push-to-Prod
+                        Frequency</span>
+                    <div class="flex items-end gap-2">
+                        <span class="text-4xl font-semibold text-gray-900">12h</span>
+                        <span class="text-[10px] text-blue-600 font-medium mb-2">avg latency</span>
+                    </div>
+                </div>
+                <div class="sirsi-card p-6 border-l-4 border-amber-600">
+                    <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest block mb-4 italic">ADR
+                        Coverage</span>
+                    <div class="flex items-end gap-2">
+                        <span class="text-4xl font-semibold text-gray-900">100%</span>
+                        <span class="text-[10px] text-amber-600 font-medium mb-2">Architectural Integrity</span>
+                    </div>
+                </div>
+                <div class="sirsi-card p-6 border-l-4 border-purple-600">
+                    <span
+                        class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest block mb-4 italic">Portfolio
+                        Availability</span>
+                    <div class="flex items-end gap-2">
+                        <span class="text-4xl font-semibold text-gray-900">99.98%</span>
+                        <span class="sirsi-badge sirsi-badge-success mb-2 uppercase italic font-medium">LIVE</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tenant Command Deck -->
+            <div class="grid grid-cols-1 gap-12">
+
+                <!-- Tenant: FinalWishes (Integrated FTCI) -->
+                <div class="sirsi-card p-0 overflow-hidden group shadow-xl">
+                    <div class="p-8 border-b border-gray-100 flex justify-between items-center bg-gray-50/20">
+                        <div class="flex items-center gap-6">
+                            <div class="relative">
+                                <div
+                                    class="w-16 h-16 bg-white border border-gray-200 rounded-2xl flex items-center justify-center shadow-lg group-hover:border-emerald-200 transition-all">
+                                    <i class="fas fa-at text-emerald-600 text-3xl"></i>
+                                </div>
+                                <div class="absolute -top-2 -right-2 flex flex-col gap-1">
+                                    <span class="cloud-badge badge-gcp text-[6px]">GCP</span>
+                                    <span class="cloud-badge badge-firebase text-[6px]">FB</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-semibold text-gray-900 m-0 tracking-tight">Final Wishes LLC</h3>
+                                <p class="text-[10px] text-gray-400 font-medium uppercase tracking-[0.2em] mt-2 italic">
+                                    Repo: /Development/FinalWishes • Staging/Production</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button
+                                class="tech-stack-btn w-10 h-10 border border-gray-100 rounded-xl flex items-center justify-center text-gray-400"
+                                title="Local Repo"><i class="fas fa-code-branch"></i></button>
+                            <button
+                                class="tech-stack-btn w-10 h-10 border border-gray-100 rounded-xl flex items-center justify-center text-gray-400"
+                                title="Live Site" onclick="window.open('https://sign.sirsi.ai', '_blank')"><i
+                                    class="fas fa-external-link-alt"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="grid lg:grid-cols-12">
+                        <!-- Left: Stack Navigation (Shims) -->
+                        <div class="lg:col-span-3 border-r border-gray-100 p-2 space-y-1 bg-gray-50/10">
+                            <div class="px-5 py-4 mb-2">
+                                <h4 class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest italic m-0">
+                                    Reconciliation Shims</h4>
+                            </div>
+                            <button
+                                class="tech-stack-btn active w-full px-5 py-5 rounded-xl text-left flex items-center gap-4">
+                                <i class="fas fa-history text-[14px]"></i>
+                                <div class="flex flex-col">
+                                    <span class="text-[11px] font-semibold uppercase tracking-tight">FTCI Ledger</span>
+                                    <span class="text-[9px] text-gray-400 font-medium uppercase italic">History &
+                                        Traceability</span>
+                                </div>
+                            </button>
+                            <button
+                                class="tech-stack-btn w-full px-5 py-5 rounded-xl text-left flex items-center gap-4">
+                                <i class="fas fa-chart-line text-[14px]"></i>
+                                <div class="flex flex-col">
+                                    <span class="text-[11px] font-semibold uppercase tracking-tight">Operating
+                                        Health</span>
+                                    <span class="text-[9px] text-gray-400 font-medium uppercase italic">60/40
+                                        Telemetry</span>
+                                </div>
+                            </button>
+                            <button
+                                class="tech-stack-btn w-full px-5 py-5 rounded-xl text-left flex items-center gap-4">
+                                <i class="fas fa-database text-[14px]"></i>
+                                <div class="flex flex-col">
+                                    <span class="text-[11px] font-semibold uppercase tracking-tight">Cloud SQL</span>
+                                    <span class="text-[9px] text-gray-400 font-medium uppercase italic">Database
+                                        Status</span>
+                                </div>
+                            </button>
+                            <button
+                                class="tech-stack-btn w-full px-5 py-5 rounded-xl text-left flex items-center gap-4">
+                                <i class="fas fa-shield-alt text-[14px]"></i>
+                                <div class="flex flex-col">
+                                    <span class="text-[11px] font-semibold uppercase tracking-tight">Security
+                                        Posture</span>
+                                    <span class="text-[9px] text-gray-400 font-medium uppercase italic">MFA Audits</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- Right: Dynamic Content (Ledger Focus) -->
+                        <div class="lg:col-span-9 p-8 bg-white min-h-[500px]">
+                            <!-- Operational Metrics Summary (60/40) -->
+                            <div class="grid grid-cols-3 gap-6 mb-10 pb-10 border-b border-gray-100">
+                                <div>
+                                    <span
+                                        class="text-[9px] font-semibold text-gray-400 uppercase tracking-widest block mb-2">Core
+                                        Health (60%)</span>
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                            <div class="h-full bg-emerald-500 w-[98%]"></div>
+                                        </div>
+                                        <span class="text-[10px] font-semibold text-emerald-600">STABLE</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span
+                                        class="text-[9px] font-semibold text-gray-400 uppercase tracking-widest block mb-2">Bespoke
+                                        Flow (40%)</span>
+                                    <div class="flex items-center gap-3 text-emerald-600">
+                                        <i class="fas fa-signature text-[10px]"></i>
+                                        <span class="text-[10px] font-semibold uppercase tracking-tight">Wills Engine:
+                                            Processing</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span
+                                        class="text-[9px] font-semibold text-gray-400 uppercase tracking-widest block mb-2">Git-to-Cloud
+                                        Sync</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                        <span class="text-[10px] font-semibold text-emerald-600 uppercase italic">100%
+                                            Reconciled</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FTCI Lifecycle Ledger -->
+                            <div class="flex justify-between items-center mb-10">
+                                <h4
+                                    class="text-xs font-semibold text-gray-900 uppercase tracking-widest italic border-l-4 border-emerald-600 ps-4">
+                                    FTCI Pulse: origin/master</h4>
+                                <span class="text-[9px] font-semibold text-emerald-600 italic">RECONCILING LIVE</span>
+                            </div>
+
+                            <div class="space-y-6 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+                                <div class="ledger-row live pb-8 active" onclick="this.classList.toggle('active')">
+                                    <div class="flex justify-between items-start mb-2 pointer-events-none">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-3 mb-1">
+                                                <span
+                                                    class="text-[9px] font-semibold text-emerald-600 uppercase tracking-widest font-mono">f8d2c1</span>
+                                                <span
+                                                    class="text-[10px] font-semibold text-gray-400 uppercase tracking-tight">FEATURE:
+                                                    PDF Evidence Engine</span>
+                                            </div>
+                                            <h5 class="text-sm font-semibold text-gray-900 leading-tight">Implement SHA-256
+                                                Cryptographic Signature Evidence</h5>
+                                        </div>
+                                        <div class="text-right">
+                                            <span
+                                                class="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded block mb-1">PROD
+                                                LIVE</span>
+                                            <span class="text-[8px] font-medium text-gray-400 italic">Mar 1, 12:31
+                                                PM</span>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="ledger-detail pt-4 bg-gray-50/50 p-6 rounded-xl border border-gray-100 mt-2">
+                                        <div class="grid grid-cols-2 gap-8">
+                                            <div>
+                                                <span
+                                                    class="text-[9px] font-semibold text-gray-400 uppercase tracking-[0.2em] block mb-2">Technical
+                                                    Manifest</span>
+                                                <p class="text-[10px] text-gray-600 leading-relaxed font-medium italic">
+                                                    Standardized legal execution environment. Captured envelope hashes
+                                                    for gRPC Status payloads.</p>
+                                            </div>
+                                            <div class="space-y-3">
+                                                <div class="flex items-center gap-3 text-blue-600"><i
+                                                        class="fas fa-file-contract text-[10px]"></i><span
+                                                        class="text-[10px] font-semibold uppercase">ADR-013: URL Sync
+                                                        Protocol</span></div>
+                                                <div class="flex items-center gap-3 text-amber-600"><i
+                                                        class="fas fa-book-open text-[10px]"></i><span
+                                                        class="text-[10px] font-semibold uppercase italic">Performance
+                                                        Canon (Rule 18)</span></div>
+                                                <div class="flex items-center gap-3 text-purple-600"><i
+                                                        class="fas fa-check-circle text-[10px]"></i><span
+                                                        class="text-[10px] font-semibold uppercase">Changelog:
+                                                        v6.0.4</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="ledger-row live pb-8" onclick="this.classList.toggle('active')">
+                                    <div class="flex justify-between items-start mb-2 pointer-events-none">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-3 mb-1">
+                                                <span
+                                                    class="text-[9px] font-semibold text-emerald-600 uppercase tracking-widest font-mono">e4a112</span>
+                                                <span
+                                                    class="text-[10px] font-semibold text-gray-400 uppercase tracking-tight">FEATURE:
+                                                    MFA Security Gate</span>
+                                            </div>
+                                            <h5 class="text-sm font-semibold text-gray-900 leading-tight">Hardened TOTP
+                                                Verification Handshake</h5>
+                                        </div>
+                                        <div class="text-right">
+                                            <span
+                                                class="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded block mb-1">PROD
+                                                LIVE</span>
+                                            <span class="text-[8px] font-medium text-gray-400 italic">Mar 1, 10:15
+                                                AM</span>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="ledger-detail pt-4 bg-gray-50/50 p-6 rounded-xl border border-gray-100 mt-2">
+                                        <div class="grid grid-cols-2 gap-8">
+                                            <div>
+                                                <span
+                                                    class="text-[9px] font-semibold text-gray-400 uppercase tracking-[0.2em] block mb-2">Technical
+                                                    Manifest</span>
+                                                <p class="text-[10px] text-gray-600 leading-relaxed font-medium italic">
+                                                    Closed claim lag vulnerability in Firebase Custom Claims sync.</p>
+                                            </div>
+                                            <div class="space-y-3">
+                                                <div class="flex items-center gap-3 text-blue-600"><i
+                                                        class="fas fa-file-contract text-[10px]"></i><span
+                                                        class="text-[10px] font-semibold uppercase">ADR-016: Canonical MFA
+                                                        Hub</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tenant: Assiduous (Integrated FTCI) -->
+                <div
+                    class="sirsi-card p-0 overflow-hidden group shadow-lg opacity-80 hover:opacity-100 transition-all border-t-4 border-blue-600">
+                    <div class="p-8 border-b border-gray-100 flex justify-between items-center bg-gray-50/20">
+                        <div class="flex items-center gap-6">
+                            <div class="relative">
+                                <div
+                                    class="w-16 h-16 bg-white border border-gray-200 rounded-2xl flex items-center justify-center shadow-lg group-hover:border-blue-200 transition-all">
+                                    <i class="fas fa-home text-blue-600 text-3xl"></i>
+                                </div>
+                                <div class="absolute -top-2 -right-2 flex flex-col gap-1">
+                                    <span class="cloud-badge badge-aws text-[6px]">AWS</span>
+                                    <span class="cloud-badge bg-blue-600 text-white border-none text-[6px]">AZURE</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-semibold text-gray-900 m-0 tracking-tight">Assiduous Portfolio
+                                </h3>
+                                <p class="text-[10px] text-gray-400 font-medium uppercase tracking-[0.2em] mt-2 italic">
+                                    Repo: /Development/Assiduous • Provisioning</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid lg:grid-cols-12">
+                        <div class="lg:col-span-3 border-r border-gray-100 p-2 space-y-1 bg-gray-50/10">
+                            <button
+                                class="tech-stack-btn active w-full px-5 py-5 rounded-xl text-left flex items-center gap-4">
+                                <i class="fas fa-history text-[14px]"></i>
+                                <span class="text-[11px] font-semibold uppercase tracking-tight">FTCI Ledger</span>
+                            </button>
+                            <button
+                                class="tech-stack-btn w-full px-5 py-5 rounded-xl text-left flex items-center gap-4">
+                                <i class="fas fa-chart-line text-[14px]"></i>
+                                <span class="text-[11px] font-semibold uppercase tracking-tight">Operating Health</span>
+                            </button>
+                        </div>
+                        <div
+                            class="lg:col-span-9 p-8 bg-white min-h-[300px] flex flex-col items-center justify-center text-center">
+                            <i class="fas fa-satellite-dish text-4xl text-blue-200 mb-6 animate-pulse"></i>
+                            <h4 class="text-xs font-semibold text-gray-900 uppercase tracking-widest italic">Awaiting Azure
+                                Handshake</h4>
+                            <p class="text-[10px] text-gray-400 mt-2 max-w-[220px]">Heterogeneous stack reconciliation
+                                pending bootstrap completion. commits queued at: origin/main.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../components/admin-header.js"></script>
+    <script src="../components/admin-sidebar.js"></script>
+
+    <script>
+        // Interactive Selection Logic
+        document.querySelectorAll('.tech-stack-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                if (this.onclick) return;
+                const parentGroup = this.closest('.lg\\:col-span-3');
+                if (parentGroup) {
+                    parentGroup.querySelectorAll('.tech-stack-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

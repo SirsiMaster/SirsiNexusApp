@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    CONTRACT LEDGER — Cross-Tenant Execution Tracking
+    Created: Mar 1, 2026
+
+    Layout follows Rule 20 (Admin Page Layout Contract)
+    Standardized to Swiss Neo-Deco and shared.css
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Ledger — SirsiNexus Admin</title>
+    <meta name="description"
+        content="Cross-tenant contract execution tracking with digital evidence and financial ledger.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/common-styles.css">
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-inter bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <admin-header breadcrumbs="Contracts" user-name="Administrator"></admin-header>
+    <admin-sidebar></admin-sidebar>
+
+    <main class="sidebar-content">
+        <div class="content-wrapper">
+
+            <!-- Page Header -->
+            <div class="page-header flex justify-between items-end">
+                <div>
+                    <h1>Contract Ledger</h1>
+                    <p class="page-subtitle">Cross-tenant execution tracking, legal compliance assertions, and
+                        cryptographic evidence registry.</p>
+                </div>
+                <button class="btn-primary flex items-center gap-2" id="newContractBtn">
+                    <i class="fas fa-file-signature text-xs"></i>
+                    Execute Protocol
+                </button>
+            </div>
+
+            <!-- Dashboard Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <div class="sirsi-card border-none bg-emerald-950 text-white shadow-xl shadow-emerald-500/10">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-semibold text-emerald-300 uppercase tracking-widest">Global
+                            Documents</span>
+                        <i class="fas fa-file-contract text-emerald-400"></i>
+                    </div>
+                    <div class="text-3xl font-semibold">4</div>
+                    <div class="text-[9px] text-emerald-400 font-medium mt-2">✓ Permanent Ledger Sync</div>
+                </div>
+                <div class="sirsi-card">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Active
+                            Signatures</span>
+                        <i class="fas fa-pen-nib text-emerald-600"></i>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900">2</div>
+                    <div class="text-[9px] text-emerald-600 font-medium mt-2 italic">✓ Enforceable State</div>
+                </div>
+                <div class="sirsi-card">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Pending
+                            Verification</span>
+                        <i class="fas fa-clock text-amber-500"></i>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900">1</div>
+                    <div class="text-[9px] text-amber-500 font-medium mt-2 italic">Awaiting hash confirmation</div>
+                </div>
+                <div class="sirsi-card">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Financial
+                            Impact</span>
+                        <i class="fas fa-chart-line text-emerald-600"></i>
+                    </div>
+                    <div class="text-3xl font-semibold text-gray-900">$17.5K</div>
+                    <div class="text-[9px] text-emerald-600 font-medium mt-2 italic">✓ Total Commitment</div>
+                </div>
+            </div>
+
+            <!-- Contract Ledger Table -->
+            <div class="sirsi-table-wrap">
+                <table class="sirsi-table font-inter">
+                    <thead>
+                        <tr>
+                            <th class="ps-6">Protocol ID / Template</th>
+                            <th>Identity / Counterparty</th>
+                            <th class="text-center">Execution State</th>
+                            <th class="hidden md:table-cell">Cryptographic Evidence</th>
+                            <th class="text-right pe-6">Value Assertion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
+                            <td class="ps-6">
+                                <div class="font-medium text-gray-900">FinalWishes MSA</div>
+                                <div class="text-[9px] font-semibold text-gray-400 uppercase tracking-widest mt-1">Ref CID:
+                                    MSA-2026-001</div>
+                            </td>
+                            <td><span class="text-xs font-medium text-emerald-600 italic">Cylton Collymore</span></td>
+                            <td class="text-center"><span class="sirsi-badge sirsi-badge-success">Operational</span>
+                            </td>
+                            <td class="hidden md:table-cell font-mono text-[9px] text-gray-400">SHA-256: 8a3b7f91...c4e2
+                            </td>
+                            <td class="text-right pe-6 font-semibold text-gray-900">$15,000.00</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
+                            <td class="ps-6">
+                                <div class="font-medium text-gray-900">Assiduous NDA</div>
+                                <div class="text-[9px] font-semibold text-gray-400 uppercase tracking-widest mt-1">Ref CID:
+                                    NDA-2026-042</div>
+                            </td>
+                            <td><span class="text-xs font-medium text-gray-600 italic">Global Partners</span></td>
+                            <td class="text-center"><span class="sirsi-badge sirsi-badge-success">Operational</span>
+                            </td>
+                            <td class="hidden md:table-cell font-mono text-[9px] text-gray-400">SHA-256: 4f12d9b8...e5f1
+                            </td>
+                            <td class="text-right pe-6 font-semibold text-gray-900">$2,500.00</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
+                            <td class="ps-6">
+                                <div class="font-medium text-gray-900">Sirsi SOW v2</div>
+                                <div class="text-[9px] font-semibold text-gray-400 uppercase tracking-widest mt-1">Ref CID:
+                                    SOW-2026-009</div>
+                            </td>
+                            <td><span class="text-xs font-medium text-amber-600 italic">Vertex Systems</span></td>
+                            <td class="text-center"><span class="sirsi-badge sirsi-badge-warning">Syncing...</span></td>
+                            <td class="hidden md:table-cell font-mono text-[9px] text-gray-400">SHA-256: --pending--
+                            </td>
+                            <td class="text-right pe-6 font-semibold text-gray-900">--TBD--</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../components/admin-header.js"></script>
+    <script src="../components/admin-sidebar.js"></script>
+</body>
+
+</html>

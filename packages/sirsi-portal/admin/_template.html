@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  ADMIN PAGE TEMPLATE — SirsiNexus Admin Portal              ║
+    ║                                                              ║
+    ║  CANONICAL STRUCTURE — DO NOT DEVIATE                        ║
+    ║                                                              ║
+    ║  Every new admin page MUST follow this exact structure:      ║
+    ║                                                              ║
+    ║  1. <admin-header> — Sticky header (z-index: 100, h: 72px)  ║
+    ║  2. <admin-sidebar> — Fixed sidebar (w: 250px)              ║
+    ║  3. <main class="sidebar-content"> — Offset container       ║
+    ║       └─ <div class="content-wrapper"> — Max-width 1400px   ║
+    ║           └─ Your page content here                          ║
+    ║                                                              ║
+    ║  CSS comes from:                                             ║
+    ║    assets/css/shared.css      (resets, fonts)                 ║
+    ║    assets/css/common-styles.css (sidebar-content, wrapper)   ║
+    ║                                                              ║
+    ║  ❌ NEVER USE: admin-layout, admin-main, page-wrapper,      ║
+    ║     main-content, or any other invented layout classes.      ║
+    ║                                                              ║
+    ║  ✅ ALWAYS USE: sidebar-content + content-wrapper            ║
+    ╚══════════════════════════════════════════════════════════════╝
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAGE_TITLE — SirsiNexus Admin</title>
+    <meta name="description" content="PAGE_DESCRIPTION">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Shared Styles (REQUIRED — provides sidebar-content + content-wrapper) -->
+    <link rel="stylesheet" href="assets/css/shared.css">
+    <link rel="stylesheet" href="assets/css/common-styles.css">
+
+    <!--
+        NOTE ON PATHS:
+        If this file is in admin/         → use "assets/css/..." and "components/..."
+        If this file is in admin/subdir/  → use "../assets/css/..." and "../components/..."
+    -->
+
+    <style>
+        /* ── Page-Specific Styles ── */
+        /* Add your page styles here */
+    </style>
+</head>
+
+<body>
+    <!-- ═══ 1. HEADER (sticky, z-100, full-width) ═══ -->
+    <admin-header breadcrumbs="PAGE_NAME" user-name="Administrator"></admin-header>
+
+    <!-- ═══ 2. SIDEBAR (fixed, 250px wide) ═══ -->
+    <admin-sidebar></admin-sidebar>
+
+    <!-- ═══ 3. MAIN CONTENT ═══
+         sidebar-content: margin-left: 250px, padding-top: 92px
+         content-wrapper: max-width: 1400px
+    -->
+    <main class="sidebar-content">
+        <div class="content-wrapper">
+
+            <!-- Your page content goes here -->
+            <h1>Page Title</h1>
+
+        </div>
+    </main>
+
+    <!-- ═══ SCRIPTS ═══ -->
+    <!-- Adjust path based on depth: "components/..." or "../components/..." -->
+    <script src="components/admin-header.js"></script>
+    <script src="components/admin-sidebar.js"></script>
+
+    <script>
+        // Page-specific JavaScript
+    </script>
+</body>
+
+</html>

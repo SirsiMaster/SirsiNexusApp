@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    SYSTEM CONSOLE — Interactive Terminal
+    Created: Mar 1, 2026
+
+    Layout follows Rule 20 (Admin Page Layout Contract)
+    Standardized to Swiss Neo-Deco and shared.css
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console — SirsiNexus Admin</title>
+    <meta name="description"
+        content="SirsiNexus interactive system console — command-line interface for administration.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/common-styles.css">
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'mono': ['Monaco', 'Menlo', 'Consolas', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-inter bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <admin-header breadcrumbs="Console" user-name="Administrator"></admin-header>
+    <admin-sidebar></admin-sidebar>
+
+    <main class="sidebar-content">
+        <div class="content-wrapper">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>System Console</h1>
+                <p class="page-subtitle">Low-level command execution and platform orchestration interface</p>
+            </div>
+
+            <!-- Console Terminal Component -->
+            <div
+                class="sirsi-card border-none bg-slate-950 p-0 overflow-hidden shadow-2xl flex flex-col h-[calc(100vh-280px)]">
+                <!-- Toolbar -->
+                <div class="flex items-center justify-between px-5 py-3 border-b border-slate-800 bg-slate-900/50">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-terminal text-emerald-500 text-xs"></i>
+                        <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-widest">Sirsi Console —
+                            Nexus Node 1</span>
+                    </div>
+                    <button class="text-slate-500 hover:text-red-400 transition-colors" id="clearConsoleBtn"
+                        title="Purge Buffer">
+                        <i class="fas fa-trash-alt text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Output Space -->
+                <div class="flex-1 overflow-y-auto p-6 font-mono text-[13px] leading-relaxed text-slate-300"
+                    id="consoleOutput">
+                    <!-- Dynamic Log Generation -->
+                </div>
+
+                <!-- Input Field -->
+                <div class="border-t border-slate-800 bg-slate-900 p-4 flex items-center gap-4">
+                    <span class="font-mono font-medium text-emerald-500 select-none">$</span>
+                    <input type="text"
+                        class="flex-1 bg-transparent border-none outline-none font-mono text-emerald-400 placeholder-slate-700"
+                        id="consoleInput" placeholder="Await command..." autocomplete="off" autofocus>
+                    <button class="text-emerald-500 hover:text-emerald-400 transition-colors" id="runBtn">
+                        <i class="fas fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Context Hint -->
+            <div class="mt-6 flex justify-between items-center px-2">
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                        <span class="text-[9px] font-medium text-gray-400 uppercase tracking-widest">Write Access
+                            Enabled</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                        <span class="text-[9px] font-medium text-gray-400 uppercase tracking-widest">Log level:
+                            Debug</span>
+                    </div>
+                </div>
+                <div class="text-[9px] font-medium text-gray-300 uppercase italic">Type 'help' to review authorized
+                    protocols</div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../components/admin-header.js"></script>
+    <script src="../components/admin-sidebar.js"></script>
+
+    <script>
+        const output = document.getElementById('consoleOutput');
+        const input = document.getElementById('consoleInput');
+        const runBtn = document.getElementById('runBtn');
+        const clearBtn = document.getElementById('clearConsoleBtn');
+
+        const initialLogs = [
+            { type: 'system', text: 'SirsiNexus Console v6.0.0 — Establishing Vault Handshake...' },
+            { type: 'system', text: 'Handshake Verified. Environment: production-live-01' },
+            { type: 'info', text: '→ Auth Identity: Administrator (Root)' },
+            { type: 'info', text: '→ Cluster Status: Operational' },
+            { type: 'info', text: '→ Audit Logging: ACTIVE' },
+            { type: 'system', text: 'Node ready. Authorized commands available.' },
+        ];
+
+        let logs = [...initialLogs];
+
+        function renderLogs() {
+            output.innerHTML = logs.map(l => {
+                let color = 'text-slate-400';
+                if (l.type === 'error') color = 'text-red-400';
+                if (l.type === 'info') color = 'text-blue-400';
+                if (l.type === 'input') color = 'text-emerald-500 font-medium';
+                if (l.type === 'output') color = 'text-slate-100';
+                if (l.type === 'warning') color = 'text-amber-400';
+
+                return `<div class="mb-1 ${color}">${escapeHtml(l.text)}</div>`;
+            }).join('');
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function execCommand() {
+            const cmd = input.value.trim();
+            if (!cmd) return;
+
+            logs.push({ type: 'input', text: `$ ${cmd}` });
+            const c = cmd.toLowerCase();
+
+            if (c === 'help') {
+                logs.push({ type: 'output', text: 'Authorized Protocols:' });
+                logs.push({ type: 'output', text: '  status    — Retrieve cluster health metrics' });
+                logs.push({ type: 'output', text: '  deploy    — Review rolling deployment history' });
+                logs.push({ type: 'output', text: '  users     — Inspect authorized identity registry' });
+                logs.push({ type: 'output', text: '  clear     — Purge console buffer' });
+            } else if (c === 'status') {
+                logs.push({ type: 'output', text: 'System Integrity: 99.2% Operational' });
+                logs.push({ type: 'info', text: '  Handshake Service ✓ Verified' });
+                logs.push({ type: 'info', text: '  Vault Encrtpyion  ✓ Active' });
+            } else if (c === 'clear') {
+                logs = [{ type: 'system', text: 'Buffer purged.' }];
+                input.value = '';
+                renderLogs();
+                return;
+            } else {
+                logs.push({ type: 'error', text: `Protocol Error: Command '${cmd}' not recognized.` });
+            }
+
+            input.value = '';
+            renderLogs();
+        }
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') execCommand();
+        });
+        runBtn.addEventListener('click', execCommand);
+        clearBtn.addEventListener('click', () => {
+            logs = [{ type: 'system', text: 'Buffer purged.' }];
+            renderLogs();
+        });
+
+        renderLogs();
+        input.focus();
+    </script>
+</body>
+
+</html>

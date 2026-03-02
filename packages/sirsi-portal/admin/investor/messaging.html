@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    INVESTOR MESSAGING — Secure Communications
+    Created: Mar 1, 2026
+
+    Layout follows Rule 20 (Admin Page Layout Contract)
+    Standardized to Swiss Neo-Deco and shared.css
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messaging — SirsiNexus Admin</title>
+    <meta name="description" content="Secure communications and identity-verified messaging.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/shared.css">
+    <link rel="stylesheet" href="../assets/css/common-styles.css">
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-inter bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <admin-header breadcrumbs="Investor" user-name="Administrator"></admin-header>
+    <admin-sidebar></admin-sidebar>
+
+    <main class="sidebar-content">
+        <div class="content-wrapper">
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Investor Messaging</h1>
+                <p class="page-subtitle">Identity-verified secure communications with the primary investor cluster</p>
+            </div>
+
+            <!-- Messaging Interface Wrap -->
+            <div class="sirsi-card p-0 overflow-hidden flex h-[700px] border-none shadow-2xl">
+
+                <!-- Left: Thread Registry -->
+                <div class="w-80 border-r border-gray-100 bg-gray-50/30 flex flex-col">
+                    <div class="p-6 border-b border-gray-50 flex items-center justify-between">
+                        <h3 class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest italic">Registry</h3>
+                        <i class="fas fa-edit text-emerald-600 cursor-pointer"></i>
+                    </div>
+                    <div class="p-4 border-b border-gray-50">
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <input type="text"
+                                class="w-full pl-9 pr-3 py-2 bg-white border border-gray-100 rounded-lg text-xs outline-none focus:ring-1 focus:ring-emerald-500 transition-all font-medium"
+                                placeholder="Filter threads...">
+                        </div>
+                    </div>
+                    <div class="flex-1 overflow-y-auto" id="threadList">
+                        <!-- Active Thread -->
+                        <div
+                            class="p-4 bg-white border-b border-gray-50 border-l-4 border-l-emerald-600 cursor-pointer group hover:bg-white transition-colors">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-[11px] font-semibold text-gray-900 uppercase tracking-tight">Investment
+                                    Committee</span>
+                                <span class="text-[9px] font-medium text-gray-400">2H AGO</span>
+                            </div>
+                            <p class="text-[10px] text-gray-500 truncate font-medium">Series A timeline update shared
+                                for review...</p>
+                        </div>
+                        <!-- Other Threads -->
+                        <div class="p-4 border-b border-gray-50 cursor-pointer group hover:bg-white transition-colors">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-[11px] font-semibold text-gray-900 uppercase tracking-tight">Cylton
+                                    Collymore</span>
+                                <span class="text-[9px] font-medium text-gray-400">4H AGO</span>
+                            </div>
+                            <p class="text-[10px] text-gray-500 truncate font-medium">Contract MSA-2026-001 finalized...
+                            </p>
+                        </div>
+                        <div class="p-4 border-b border-gray-50 cursor-pointer group hover:bg-white transition-colors">
+                            <div class="flex justify-between items-start mb-1 text-gray-400">
+                                <span class="text-[11px] font-semibold uppercase tracking-tight">Legal Team</span>
+                                <span class="text-[9px] font-medium">1D AGO</span>
+                            </div>
+                            <p class="text-[10px] text-gray-400 truncate font-medium">Privacy policy v2.4 approved by
+                                board...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Exchange Area -->
+                <div class="flex-1 flex flex-col bg-white">
+                    <!-- Session Header -->
+                    <div class="px-8 py-5 border-b border-gray-50 flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center">
+                                <i class="fas fa-shield-alt text-emerald-600 text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-semibold text-gray-900 uppercase tracking-widest italic">Encrypted
+                                    Session: Committee</h4>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                    <span
+                                        class="text-[9px] font-semibold text-emerald-600 uppercase tracking-tighter">Verified
+                                        Protocol Level 4</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <i
+                                class="fas fa-phone-alt text-gray-300 hover:text-emerald-600 cursor-pointer transition-colors"></i>
+                            <i
+                                class="fas fa-video text-gray-300 hover:text-emerald-600 cursor-pointer transition-colors"></i>
+                            <i
+                                class="fas fa-info-circle text-gray-300 hover:text-emerald-600 cursor-pointer transition-colors"></i>
+                        </div>
+                    </div>
+
+                    <!-- Scrollable Logs -->
+                    <div class="flex-1 overflow-y-auto p-10 space-y-8" id="chatEngine">
+
+                        <div class="flex flex-col items-start max-w-[80%]">
+                            <div
+                                class="px-5 py-4 bg-gray-50 rounded-2xl rounded-tl-none border border-gray-100 text-sm leading-relaxed text-gray-700 font-medium">
+                                The Series A timeline has been updated. Please review the latest projection in the data
+                                room.
+                            </div>
+                            <span class="text-[9px] font-semibold text-gray-400 uppercase tracking-widest mt-2 ps-2">Cylton
+                                • 2:30 PM</span>
+                        </div>
+
+                        <div class="flex flex-col items-end max-w-[80%] ms-auto">
+                            <div
+                                class="px-5 py-4 bg-emerald-600 text-white rounded-2xl rounded-tr-none border border-emerald-500 text-sm leading-relaxed font-medium shadow-lg shadow-emerald-500/10">
+                                Thanks Cylton. I'll review the updated projections today. Can we schedule a follow-up
+                                call?
+                            </div>
+                            <span
+                                class="text-[9px] font-semibold text-emerald-600 uppercase tracking-widest mt-2 pe-2">ADMIN
+                                • 2:45 PM</span>
+                        </div>
+
+                        <div class="flex flex-col items-start max-w-[80%]">
+                            <div
+                                class="px-5 py-4 bg-gray-50 rounded-2xl rounded-tl-none border border-gray-100 text-sm leading-relaxed text-gray-700 font-medium">
+                                Absolutely. Let's do Thursday at 3 PM EST. I'll send a calendar invite.
+                            </div>
+                            <span class="text-[9px] font-semibold text-gray-400 uppercase tracking-widest mt-2 ps-2">Cylton
+                                • 3:01 PM</span>
+                        </div>
+
+                    </div>
+
+                    <!-- Composition Field -->
+                    <div class="p-8 border-t border-gray-50">
+                        <div
+                            class="flex items-center gap-4 bg-gray-50 border border-gray-100 rounded-2xl p-2 pr-4 focus-within:ring-2 focus-within:ring-emerald-500/10 focus-within:border-emerald-500/30 transition-all">
+                            <button
+                                class="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-emerald-600 transition-colors">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <input type="text"
+                                class="flex-1 bg-transparent border-none outline-none text-sm py-2 font-medium text-gray-900 placeholder-gray-400"
+                                id="msgInput" placeholder="Draft encrypted message...">
+                            <button
+                                class="w-10 h-10 bg-emerald-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 transition-all"
+                                id="sendAction">
+                                <i class="fas fa-paper-plane text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../components/admin-header.js"></script>
+    <script src="../components/admin-sidebar.js"></script>
+
+    <script>
+        const input = document.getElementById('msgInput');
+        const btn = document.getElementById('sendAction');
+        const chat = document.getElementById('chatEngine');
+
+        function pushMsg() {
+            const val = input.value.trim();
+            if (!val) return;
+
+            const wrap = document.createElement('div');
+            wrap.className = 'flex flex-col items-end max-w-[80%] ms-auto';
+            wrap.innerHTML = `
+                <div class="px-5 py-4 bg-emerald-600 text-white rounded-2xl rounded-tr-none border border-emerald-500 text-sm leading-relaxed font-medium shadow-lg shadow-emerald-500/10">
+                    ${val}
+                </div>
+                <span class="text-[9px] font-semibold text-emerald-600 uppercase tracking-widest mt-2 pe-2">ADMIN • JUST NOW</span>
+            `;
+            chat.appendChild(wrap);
+            chat.scrollTop = chat.scrollHeight;
+            input.value = '';
+        }
+
+        btn.addEventListener('click', pushMsg);
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') pushMsg(); });
+    </script>
+</body>
+
+</html>

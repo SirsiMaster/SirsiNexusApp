@@ -1,357 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+    SYSTEM MONITORING — Real-time Telemetry & Performance
+    Created: Mar 1, 2026
+
+    Layout follows Rule 20 (Admin Page Layout Contract)
+    Standardized to Swiss Neo-Deco and shared.css
+-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-    <title>System Monitoring - SirsiNexus Admin</title>
-    
-    <!-- Google Fonts - Inter -->
+    <title>System Monitoring — SirsiNexus Admin</title>
+    <meta name="description"
+        content="Real-time system logs, telemetry, and performance metrics for the Sirsi Nexus infrastructure.">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Shared Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="../assets/css/shared.css">
     <link rel="stylesheet" href="../assets/css/common-styles.css">
-    
+
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
-    
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Theme Toggle Script -->
-    <script src="../assets/js/fresh-theme-toggle.js"></script>
-    
-    <style>
-        .monitoring-tab {
-            @apply px-6 py-3 rounded-lg font-medium transition-all duration-200;
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    }
+                }
+            }
         }
-        .monitoring-tab.active {
-            @apply bg-emerald-500 text-white shadow-lg;
-        }
-        .monitoring-tab:not(.active) {
-            @apply bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600;
-        }
-        
-        .log-entry {
-            @apply border-l-4 pl-4 py-3 mb-2 rounded-r bg-gray-50 dark:bg-gray-800;
-        }
-        .log-entry.info {
-            @apply border-blue-400 bg-blue-50 dark:bg-blue-900/20;
-        }
-        .log-entry.warning {
-            @apply border-yellow-400 bg-yellow-50 dark:bg-yellow-900/20;
-        }
-        .log-entry.error {
-            @apply border-red-400 bg-red-50 dark:bg-red-900/20;
-        }
-        
-        .metric-card {
-            @apply bg-gradient-to-r p-6 rounded-lg text-white;
-        }
-        .metric-card.success {
-            @apply from-emerald-500 to-emerald-600;
-        }
-        .metric-card.warning {
-            @apply from-amber-500 to-amber-600;
-        }
-        .metric-card.error {
-            @apply from-red-500 to-red-600;
-        }
-        .metric-card.info {
-            @apply from-blue-500 to-blue-600;
-        }
-        
-        .status-indicator {
-            @apply inline-block w-3 h-3 rounded-full mr-2;
-        }
-        .status-indicator.online {
-            @apply bg-green-500;
-        }
-        .status-indicator.offline {
-            @apply bg-red-500;
-        }
-        .status-indicator.warning {
-            @apply bg-yellow-500;
-        }
-        
-        .log-search-container {
-            @apply relative;
-        }
-        .log-search-input {
-            @apply w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100;
-        }
-        
-        .filter-pill {
-            @apply px-3 py-1 rounded-full text-sm font-medium cursor-pointer transition-all duration-200;
-        }
-        .filter-pill.active {
-            @apply bg-emerald-500 text-white;
-        }
-        .filter-pill:not(.active) {
-            @apply bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600;
-        }
-        
-        .chart-container {
-            @apply relative h-64 w-full;
-        }
-        
-        .real-time-indicator {
-            @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium;
-        }
-        .real-time-indicator.live {
-            @apply bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400;
-        }
-        
-        .export-button {
-            @apply px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors duration-200 flex items-center gap-2;
-        }
-        
-        .tab-content {
-            @apply hidden;
-        }
-        .tab-content.active {
-            @apply block;
-        }
-        
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        .pulse-dot {
-            animation: pulse-dot 2s infinite;
-        }
-    </style>
+    </script>
 </head>
+
 <body class="font-inter bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-    <!-- Admin Sidebar Navigation -->
+    <admin-header breadcrumbs="Security" user-name="Administrator"></admin-header>
     <admin-sidebar></admin-sidebar>
-    
-    <!-- Professional Admin Header -->
-    <admin-header 
-        breadcrumbs="Monitoring"
-        user-name="System Administrator"
-        user-email="admin@sirsinexus.com">
-    </admin-header>
-    
-    <!-- Main Monitoring Content -->
-    <main class="sidebar-content content-wrapper py-8">
-        <!-- Monitoring Header -->
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">System Monitoring</h1>
-                <p class="text-gray-600 dark:text-gray-400">Real-time system logs, telemetry, and performance metrics</p>
-            </div>
-            <div class="real-time-indicator live">
-                <span class="inline-block w-2 h-2 bg-green-500 rounded-full pulse-dot mr-2"></span>
-                Live Monitoring
-            </div>
-        </div>
-        
-        <!-- Tab Navigation -->
-        <div class="flex flex-wrap gap-2 mb-8">
-            <button class="monitoring-tab active" onclick="switchTab('logs', this)">
-                <i class="fas fa-list-alt mr-2"></i>System Logs
-            </button>
-            <button class="monitoring-tab" onclick="switchTab('telemetry', this)">
-                <i class="fas fa-chart-line mr-2"></i>Telemetry
-            </button>
-            <button class="monitoring-tab" onclick="switchTab('performance', this)">
-                <i class="fas fa-tachometer-alt mr-2"></i>Performance
-            </button>
-            <button class="monitoring-tab" onclick="switchTab('errors', this)">
-                <i class="fas fa-exclamation-triangle mr-2"></i>Error Monitoring
-            </button>
-        </div>
-        
-        <!-- System Logs Tab -->
-        <div id="logs-tab" class="tab-content active">
-            <!-- Log Controls -->
-            <div class="card mb-6">
-                <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
-                    <!-- Search -->
-                    <div class="log-search-container flex-1 max-w-md">
-                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" id="log-search" class="log-search-input" placeholder="Search logs...">
-                    </div>
-                    
-                    <!-- Filters -->
-                    <div class="flex flex-wrap gap-2">
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by level:</span>
-                        <div class="filter-pill active" data-level="all" onclick="filterLogs('all', this)">All</div>
-                        <div class="filter-pill" data-level="info" onclick="filterLogs('info', this)">Info</div>
-                        <div class="filter-pill" data-level="warning" onclick="filterLogs('warning', this)">Warning</div>
-                        <div class="filter-pill" data-level="error" onclick="filterLogs('error', this)">Error</div>
-                    </div>
-                    
-                    <!-- Export Button -->
-                    <button class="export-button" onclick="exportLogs()">
-                        <i class="fas fa-download"></i>
-                        Export Logs
-                    </button>
+
+    <main class="sidebar-content">
+        <div class="content-wrapper">
+
+            <!-- Page Header -->
+            <div class="page-header flex justify-between items-end">
+                <div>
+                    <h1>System Monitoring</h1>
+                    <p class="page-subtitle">Real-time telemetry, synchronized logs, and performance audit trails.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span
+                        class="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-semibold uppercase tracking-widest border border-emerald-100">
+                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                        Live Telemetry
+                    </span>
                 </div>
             </div>
-            
-            <!-- Log Entries -->
-            <div class="card">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold mb-0">Real-time System Logs</h3>
-                    <div class="text-sm text-gray-500 dark:text-gray-400">
-                        Last updated: <span id="logs-timestamp">--</span>
-                    </div>
-                </div>
-                <div id="log-container" class="max-h-96 overflow-y-auto">
-                    <!-- Log entries will be populated here -->
-                </div>
+
+            <!-- Tab Registry -->
+            <div class="flex gap-4 mb-8">
+                <button
+                    class="px-5 py-2.5 bg-emerald-600 text-white rounded-xl text-xs font-semibold uppercase tracking-widest shadow-lg shadow-emerald-600/10">Logs
+                    Registry</button>
+                <button
+                    class="px-5 py-2.5 bg-gray-50 text-gray-400 hover:text-emerald-600 transition-colors rounded-xl text-xs font-semibold uppercase tracking-widest">Telemetry
+                    Charts</button>
+                <button
+                    class="px-5 py-2.5 bg-gray-50 text-gray-400 hover:text-emerald-600 transition-colors rounded-xl text-xs font-semibold uppercase tracking-widest">Error
+                    Density</button>
             </div>
-        </div>
-        
-        <!-- Telemetry Tab -->
-        <div id="telemetry-tab" class="tab-content">
-            <!-- Telemetry Overview Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="metric-card success">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-white/80 text-sm">System Status</p>
-                            <p class="text-2xl font-bold" id="system-status">Online</p>
+
+            <!-- Logs Interface -->
+            <div class="sirsi-card p-0 overflow-hidden">
+                <div class="p-6 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
+                    <h3 class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest italic">Encrypted Log
+                        Stream</h3>
+                    <div class="flex items-center gap-4">
+                        <div class="relative">
+                            <i
+                                class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[10px]"></i>
+                            <input type="text"
+                                class="pl-9 pr-3 py-1.5 bg-white border border-gray-100 rounded-lg text-xs outline-none focus:ring-1 focus:ring-emerald-500 transition-all font-medium min-w-[200px]"
+                                placeholder="Filter identifiers...">
                         </div>
-                        <i class="fas fa-server text-2xl opacity-80"></i>
+                        <button
+                            class="px-4 py-1.5 bg-white border border-gray-100 text-[10px] font-medium text-gray-900 rounded-lg hover:border-emerald-200 transition-colors">Export
+                            .LOG</button>
                     </div>
                 </div>
-                <div class="metric-card info">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-white/80 text-sm">Active Sessions</p>
-                            <p class="text-2xl font-bold" id="active-sessions">1,234</p>
-                        </div>
-                        <i class="fas fa-users text-2xl opacity-80"></i>
+
+                <div class="h-[500px] overflow-y-auto p-6 font-mono text-[11px] space-y-3 bg-gray-900 text-gray-300"
+                    id="logRegistry">
+                    <div class="flex gap-4 hover:bg-white/5 transition-colors p-1 rounded">
+                        <span class="text-emerald-500 font-medium shrink-0">[14:20:31]</span>
+                        <span class="text-blue-400 font-medium shrink-0">AUTH-INF:</span>
+                        <span class="flex-1">MFA handshake verified for identity: cylton@sirsi.ai (CID: #USR-001)</span>
                     </div>
-                </div>
-                <div class="metric-card warning">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-white/80 text-sm">CPU Usage</p>
-                            <p class="text-2xl font-bold" id="cpu-usage">65%</p>
-                        </div>
-                        <i class="fas fa-microchip text-2xl opacity-80"></i>
+                    <div class="flex gap-4 hover:bg-white/5 transition-colors p-1 rounded">
+                        <span class="text-emerald-500 font-medium shrink-0">[14:21:05]</span>
+                        <span class="text-blue-400 font-medium shrink-0">DB-SYNC:</span>
+                        <span class="flex-1">Postgres-Firebase synchronization complete for /contracts
+                            collection.</span>
                     </div>
-                </div>
-                <div class="metric-card info">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-white/80 text-sm">Memory Usage</p>
-                            <p class="text-2xl font-bold" id="memory-usage">4.2 GB</p>
-                        </div>
-                        <i class="fas fa-memory text-2xl opacity-80"></i>
+                    <div class="flex gap-4 hover:bg-white/5 transition-colors p-1 rounded">
+                        <span class="text-emerald-500 font-medium shrink-0">[14:25:12]</span>
+                        <span class="text-amber-500 font-medium shrink-0">API-WRN:</span>
+                        <span class="flex-1">Elevated latency detected in GCP-Central region gateway (85ms).</span>
                     </div>
-                </div>
-            </div>
-            
-            <!-- Telemetry Charts -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="card">
-                    <h3 class="text-lg font-semibold mb-4">System Resources</h3>
-                    <div class="chart-container">
-                        <canvas id="resourcesChart"></canvas>
+                    <div class="flex gap-4 hover:bg-white/5 transition-colors p-1 rounded">
+                        <span class="text-emerald-500 font-medium shrink-0">[14:28:44]</span>
+                        <span class="text-emerald-400 font-medium shrink-0">VAULT-INF:</span>
+                        <span class="flex-1">SHA-256 evidence committed for document #DR-2026-004.</span>
                     </div>
-                </div>
-                <div class="card">
-                    <h3 class="text-lg font-semibold mb-4">Network Traffic</h3>
-                    <div class="chart-container">
-                        <canvas id="networkChart"></canvas>
+                    <div class="flex gap-4 hover:bg-white/5 transition-colors p-1 rounded italic text-gray-500">
+                        <span class="shrink-0">[--:--:--]</span>
+                        <span class="flex-1">Stream synchronized... awaiting next protocol cycle.</span>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Performance Tab -->
-        <div id="performance-tab" class="tab-content">
-            <!-- API Response Time Tracking -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                <div class="card">
-                    <h3 class="text-lg font-semibold mb-4">API Response Times</h3>
-                    <div class="chart-container">
-                        <canvas id="responseTimeChart"></canvas>
+
+            <!-- Performance Metrics Peek -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                <div class="sirsi-card">
+                    <h3
+                        class="text-xs font-semibold text-gray-900 uppercase tracking-widest mb-6 border-l-4 border-emerald-600 ps-4 italic">
+                        Response Latency</h3>
+                    <div class="h-48 flex items-end gap-2 pb-2">
+                        <!-- Simple visual chart representation -->
+                        <div class="flex-1 bg-emerald-100 rounded-t h-[40%]"></div>
+                        <div class="flex-1 bg-emerald-200 rounded-t h-[35%]"></div>
+                        <div class="flex-1 bg-emerald-300 rounded-t h-[55%]"></div>
+                        <div class="flex-1 bg-emerald-400 rounded-t h-[45%]"></div>
+                        <div class="flex-1 bg-emerald-500 rounded-t h-[65%]"></div>
+                        <div class="flex-1 bg-emerald-600 rounded-t h-[60%]"></div>
+                        <div class="flex-1 bg-emerald-500 rounded-t h-[40%]"></div>
+                        <div class="flex-1 bg-emerald-400 rounded-t h-[30%]"></div>
+                    </div>
+                    <div class="flex justify-between text-[9px] font-medium text-gray-400 uppercase mt-4">
+                        <span>T-minus 8H</span>
+                        <span>Now (Synced)</span>
                     </div>
                 </div>
-                <div class="card">
-                    <h3 class="text-lg font-semibold mb-4">Throughput</h3>
-                    <div class="chart-container">
-                        <canvas id="throughputChart"></canvas>
+                <div class="sirsi-card">
+                    <h3
+                        class="text-xs font-semibold text-gray-900 uppercase tracking-widest mb-6 border-l-4 border-amber-600 ps-4 italic">
+                        Error Density</h3>
+                    <div class="h-48 flex items-end gap-2 pb-2">
+                        <div class="flex-1 bg-gray-50 rounded-t h-[10%]"></div>
+                        <div class="flex-1 bg-gray-50 rounded-t h-[5%]"></div>
+                        <div class="flex-1 bg-amber-200 rounded-t h-[25%]"></div>
+                        <div class="flex-1 bg-gray-50 rounded-t h-[10%]"></div>
+                        <div class="flex-1 bg-gray-50 rounded-t h-[8%]"></div>
+                        <div class="flex-1 bg-gray-50 rounded-t h-[12%]"></div>
+                        <div class="flex-1 bg-gray-50 rounded-t h-[15%]"></div>
+                        <div class="flex-1 bg-gray-50 rounded-t h-[5%]"></div>
+                    </div>
+                    <div class="flex justify-between text-[9px] font-medium text-gray-400 uppercase mt-4">
+                        <span>T-minus 8H</span>
+                        <span>Now (Healthy)</span>
                     </div>
                 </div>
             </div>
-            
-            <!-- Performance Metrics Table -->
-            <div class="card">
-                <h3 class="text-lg font-semibold mb-4">Performance Metrics</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full">
-                        <thead>
-                            <tr class="border-b dark:border-gray-700">
-                                <th class="text-left py-3 px-4">Endpoint</th>
-                                <th class="text-left py-3 px-4">Avg Response Time</th>
-                                <th class="text-left py-3 px-4">P95</th>
-                                <th class="text-left py-3 px-4">P99</th>
-                                <th class="text-left py-3 px-4">Requests/min</th>
-                                <th class="text-left py-3 px-4">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="performance-metrics-table">
-                            <!-- Performance data will be populated here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Error Monitoring Tab -->
-        <div id="errors-tab" class="tab-content">
-            <!-- Error Rate Overview -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="card text-center">
-                    <div class="text-3xl font-bold text-red-500 mb-2" id="total-errors">23</div>
-                    <div class="text-gray-600 dark:text-gray-400">Total Errors (24h)</div>
-                </div>
-                <div class="card text-center">
-                    <div class="text-3xl font-bold text-yellow-500 mb-2" id="error-rate">0.12%</div>
-                    <div class="text-gray-600 dark:text-gray-400">Error Rate</div>
-                </div>
-                <div class="card text-center">
-                    <div class="text-3xl font-bold text-emerald-500 mb-2" id="mttr">45m</div>
-                    <div class="text-gray-600 dark:text-gray-400">MTTR (Avg)</div>
-                </div>
-            </div>
-            
-            <!-- Error Trends Chart -->
-            <div class="card mb-6">
-                <h3 class="text-lg font-semibold mb-4">Error Trends</h3>
-                <div class="chart-container">
-                    <canvas id="errorTrendsChart"></canvas>
-                </div>
-            </div>
-            
-            <!-- Recent Errors -->
-            <div class="card">
-                <h3 class="text-lg font-semibold mb-4">Recent Errors</h3>
-                <div class="space-y-3" id="recent-errors">
-                    <!-- Recent errors will be populated here -->
-                </div>
-            </div>
+
         </div>
     </main>
-    
-    <!-- Load Admin Components -->
+
     <script src="../components/admin-header.js"></script>
     <script src="../components/admin-sidebar.js"></script>
-    
-    <!-- Monitoring System JavaScript -->
-    <script src="../assets/js/monitoring-system.js"></script>
-<script src="../../js/telemetry.js"></script>
 </body>
+
 </html>
