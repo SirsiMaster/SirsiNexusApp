@@ -1,72 +1,131 @@
-/** AI Agents — AI agent management */
+/**
+ * AI Agent Taskforce — Pixel-perfect port of intelligence/ai-agents.html
+ * Canonical CSS: page-header, page-subtitle, sirsi-card, sirsi-table-wrap, sirsi-table, btn-primary
+ */
 import { createRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './__root'
-import { Bot, Zap, Activity, Settings } from 'lucide-react'
+import { Shield, Cpu, Scale, PenTool, Home, PieChart, SlidersHorizontal, Bot } from 'lucide-react'
 
-const BotIcon = Bot as any
-const ZapIcon = Zap as any
-const ActivityIcon = Activity as any
-const SettingsIcon = Settings as any
+export const Route = createRoute({
+    getParentRoute: () => rootRoute as any,
+    path: '/ai-agents',
+    component: AiAgents,
+})
 
-export const Route = createRoute({ getParentRoute: () => rootRoute as any, path: '/ai-agents', component: AIAgents })
+interface AgentCard {
+    icon: any; name: string; desc: string; status: string
+    statusBg: string; statusText: string; borderColor: string
+    iconBg: string; footer: [string, string]; footerColor: string
+    tenant?: string; opacity?: boolean
+}
 
-const agents = [
-    { id: '1', name: 'Guidance Engine', status: 'active', model: 'Gemini 2.5', tasks: 142, rate: '98.7%', desc: 'Primary AI assistant for contract guidance' },
-    { id: '2', name: 'Document Analyzer', status: 'active', model: 'Gemini 2.5', tasks: 89, rate: '99.2%', desc: 'Legal document parsing and risk analysis' },
-    { id: '3', name: 'Cost Optimizer', status: 'idle', model: 'Gemini 2.5', tasks: 34, rate: '97.1%', desc: 'Cloud cost analysis and optimization' },
-    { id: '4', name: 'Compliance Monitor', status: 'active', model: 'Gemini 2.5', tasks: 67, rate: '100%', desc: 'SOC 2 compliance monitoring' },
+const platformAgents: AgentCard[] = [
+    { icon: Shield, name: 'Aegis Sentinel', desc: 'Secures global gRPC gateways & MFA routing protocols.', status: 'ACTIVE', statusBg: 'bg-emerald-50', statusText: 'text-emerald-600', borderColor: 'border-emerald-600', iconBg: 'bg-emerald-600', footer: ['Core Architecture', 'v1.2.0'], footerColor: 'text-emerald-600' },
+    { icon: Cpu, name: 'Nexus Optimizer', desc: 'Manages global token density & multi-cloud cost delta.', status: 'ACTIVE', statusBg: 'bg-emerald-50', statusText: 'text-emerald-600', borderColor: 'border-emerald-600', iconBg: 'bg-emerald-600', footer: ['Platform Infra', 'v0.9.4'], footerColor: 'text-emerald-600' },
+]
+const fwAgents: AgentCard[] = [
+    { icon: Scale, name: 'Lexicon Auditor', desc: 'Bespoke: Analyzes estate complexity & legal document integrity.', status: 'PROVISIONED', statusBg: 'bg-amber-50', statusText: 'text-amber-600', borderColor: 'border-amber-600', iconBg: 'bg-amber-500', footer: ['Bespoke Domain', 'Legal Execution'], footerColor: 'text-amber-600', tenant: 'finalwishes' },
+    { icon: PenTool, name: 'Witness Syncer', desc: 'Bespoke: Synchronizes cryptographic evidence for legal acks.', status: 'STANDBY', statusBg: 'bg-amber-50', statusText: 'text-amber-600', borderColor: 'border-amber-600', iconBg: 'bg-amber-500', footer: ['Bespoke Domain', 'Signature Evidence'], footerColor: 'text-amber-600' },
+]
+const assAgents: AgentCard[] = [
+    { icon: Home, name: 'Portfolio Valuator', desc: 'Bespoke: Predictive market yield & property valuations.', status: 'PENDING', statusBg: 'bg-blue-50', statusText: 'text-blue-600', borderColor: 'border-blue-600', iconBg: 'bg-blue-600', footer: ['Bespoke Domain', 'Real Estate Delta'], footerColor: 'text-blue-600', tenant: 'assiduous', opacity: true },
+    { icon: PieChart, name: 'Conversion Strategist', desc: 'Bespoke: Lead-to-Ledger conversion optimization agent.', status: 'QUEUED', statusBg: 'bg-blue-50', statusText: 'text-blue-600', borderColor: 'border-blue-600', iconBg: 'bg-blue-600', footer: ['Bespoke Domain', 'User Acquisition'], footerColor: 'text-blue-600', opacity: true },
 ]
 
-function AIAgents() {
+const tableRows = [
+    { id: 'AS-01', name: 'Aegis Sentinel', tenant: 'Sirsi Master', tenantColor: 'text-gray-400', task: 'Global Firewall Audit', delta: '✓ 42ms', deltaColor: 'text-emerald-600', idBg: 'bg-emerald-50 text-emerald-600 border-emerald-100' },
+    { id: 'LA-04', name: 'Lexicon Auditor', tenant: 'finalwishes', tenantColor: 'text-amber-600', task: 'Complex Will Evaluation #FW-2026', delta: '▲ 1.4s', deltaColor: 'text-blue-600', idBg: 'bg-amber-50 text-amber-600 border-amber-100' },
+]
+
+function AgentCardComp({ agent }: { agent: AgentCard }) {
+    const Icon = agent.icon as any
     return (
-        <div className="space-y-8 animate-in fade-in duration-700">
-            <header className="border-b border-gray-200 dark:border-slate-800 pb-6">
-                <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white" style={{ fontFamily: "'Cinzel', serif" }}>AI AGENTS</h1>
-                <p className="text-gray-500 dark:text-slate-400 mt-2 text-sm">Sirsi Guidance Engine — Vertex AI powered intelligence</p>
-            </header>
-
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <SC icon={<BotIcon className="w-5 h-5 text-purple-600" />} title="Active Agents" value="3" bg="purple" />
-                <SC icon={<ZapIcon className="w-5 h-5 text-emerald-600" />} title="Tasks Today" value="332" bg="emerald" />
-                <SC icon={<ActivityIcon className="w-5 h-5 text-blue-600" />} title="Avg Latency" value="1.2s" bg="blue" />
-                <SC icon={<SettingsIcon className="w-5 h-5 text-amber-600" />} title="Success Rate" value="98.9%" bg="amber" />
+        <div className={`sirsi-card border-l-4 ${agent.borderColor} group hover:bg-emerald-50/5 transition-all`} style={{ padding: 20, ...(agent.opacity ? { opacity: 0.8 } : {}) }}>
+            <div className="flex justify-between items-start mb-4">
+                <div className={`w-10 h-10 ${agent.iconBg} text-white rounded-xl flex items-center justify-center shadow-lg`}>
+                    <Icon size={18} />
+                </div>
+                <div className="flex flex-col items-end">
+                    <span className={`${agent.statusBg} ${agent.statusText}`} style={{ fontSize: 9, fontWeight: 600, padding: '2px 8px', borderRadius: 4, fontStyle: 'italic' }}>{agent.status}</span>
+                    {agent.tenant && <span style={{ fontSize: 8, color: '#9ca3af', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>Tenant: {agent.tenant}</span>}
+                </div>
             </div>
-
-            <div className="space-y-4">
-                {agents.map(a => (
-                    <div key={a.id} className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all group">
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${a.status === 'active' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-gray-100 dark:bg-slate-800'}`}>
-                                    <BotIcon className={`w-6 h-6 ${a.status === 'active' ? 'text-emerald-600' : 'text-gray-400'}`} />
-                                </div>
-                                <div>
-                                    <h3 className="text-sm font-bold text-gray-900 dark:text-white">{a.name}</h3>
-                                    <p className="text-xs text-gray-500 mt-0.5">{a.desc}</p>
-                                    <div className="flex items-center gap-3 mt-2">
-                                        <span className="text-[10px] font-bold bg-gray-100 dark:bg-slate-800 px-2 py-0.5 rounded text-gray-500">{a.model}</span>
-                                        <span className="text-[10px] text-gray-400">{a.tasks} tasks</span>
-                                        <span className="text-[10px] font-bold text-emerald-600">{a.rate}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${a.status === 'active' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600' : 'bg-gray-100 dark:bg-slate-800 text-gray-400'}`}>
-                                {a.status}
-                            </div>
-                        </div>
-                    </div>
-                ))}
+            <h4 style={{ fontSize: 12, fontWeight: 600, color: '#111827', textTransform: 'uppercase', letterSpacing: '-0.02em', margin: 0 }}>{agent.name}</h4>
+            <p style={{ fontSize: 10, color: '#9ca3af', fontWeight: 500, marginTop: 4, lineHeight: 1.6 }}>{agent.desc}</p>
+            <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid #f9fafb', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 10, fontWeight: 500, color: '#9ca3af' }}>
+                <span>{agent.footer[0]}</span>
+                <span className={agent.footerColor} style={{ fontStyle: 'italic' }}>{agent.footer[1]}</span>
             </div>
         </div>
     )
 }
 
-function SC({ icon, title, value, bg }: any) {
+function AiAgents() {
     return (
-        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-4 shadow-sm">
-            <div className={`w-9 h-9 bg-${bg}-100 dark:bg-${bg}-900/30 rounded-lg flex items-center justify-center mb-3`}>{icon}</div>
-            <div className="text-xl font-bold text-gray-900 dark:text-white">{value}</div>
-            <div className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">{title}</div>
+        <div>
+            <div className="page-header">
+                <div className="flex justify-between items-end">
+                    <div>
+                        <h1>Agent Taskforce</h1>
+                        <p className="page-subtitle">Orchestrating specialized AI entities deployed across the tenant portfolio.</p>
+                    </div>
+                    <button className="btn-primary flex items-center gap-2" style={{ padding: '10px 24px' }}>
+                        <Bot size={14} /> Deploy Specialized Agent
+                    </button>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                {[
+                    { title: 'Platform Sentinels', agents: platformAgents },
+                    { title: 'FinalWishes Operatives', agents: fwAgents },
+                    { title: 'Assiduous Operatives', agents: assAgents },
+                ].map(col => (
+                    <div key={col.title}>
+                        <h3 className="flex items-center gap-3 mb-6" style={{ fontSize: 10, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.2em' }}>
+                            {col.title}
+                            <span style={{ height: 1, flex: 1, background: '#f3f4f6' }} />
+                        </h3>
+                        <div className="space-y-4">
+                            {col.agents.map(a => <AgentCardComp key={a.name} agent={a} />)}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <div className="sirsi-table-wrap">
+                <table className="sirsi-table">
+                    <thead>
+                        <tr>
+                            <th style={{ paddingLeft: 24 }}>Agent Identity</th>
+                            <th>Tenant Context</th>
+                            <th>Active Task</th>
+                            <th>Execution Delta</th>
+                            <th style={{ textAlign: 'right', paddingRight: 24 }}>Routing Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tableRows.map(r => (
+                            <tr key={r.id} className="hover:bg-gray-50/50 transition-colors">
+                                <td style={{ paddingLeft: 24 }}>
+                                    <div className="flex items-center gap-3">
+                                        <div className={`${r.idBg} border`} style={{ width: 32, height: 32, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 600, fontStyle: 'italic' }}>{r.id}</div>
+                                        <span style={{ fontWeight: 500, color: '#111827' }}>{r.name}</span>
+                                    </div>
+                                </td>
+                                <td><span className={r.tenantColor} style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>{r.tenant}</span></td>
+                                <td style={{ fontSize: 12, fontWeight: 500, color: '#4b5563' }}>{r.task}</td>
+                                <td><span className={r.deltaColor} style={{ fontSize: 9, fontWeight: 600 }}>{r.delta}</span></td>
+                                <td style={{ textAlign: 'right', paddingRight: 24 }}>
+                                    <button style={{ color: '#d1d5db', background: 'none', border: 'none', cursor: 'pointer' }} className="hover:text-emerald-600 transition-colors">
+                                        <SlidersHorizontal size={16} />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }

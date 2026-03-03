@@ -1,88 +1,138 @@
-/** Messaging — Internal secure messaging */
+/**
+ * Investor Messaging — Pixel-perfect port of investor/messaging.html
+ * Canonical CSS: page-header, page-subtitle, sirsi-card
+ * Features: Thread registry sidebar, encrypted chat session, real-time compose
+ */
 import { createRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './__root'
-import { useState } from 'react'
-import { Send, Search, User } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { Shield, Search, Paperclip, Send, Phone, Video, Info, Edit } from 'lucide-react'
 
-const SendIcon = Send as any
-const SearchIcon = Search as any
-const UserIcon = User as any
+export const Route = createRoute({
+    getParentRoute: () => rootRoute as any,
+    path: '/messaging',
+    component: Messaging,
+})
 
-export const Route = createRoute({ getParentRoute: () => rootRoute as any, path: '/messaging', component: Messaging })
+interface Message {
+    sender: 'admin' | 'cylton'
+    text: string
+    time: string
+}
 
 const threads = [
-    { id: '1', name: 'Investment Committee', lastMsg: 'Series A timeline update shared', time: '2h ago', unread: 2 },
-    { id: '2', name: 'Cylton Collymore', lastMsg: 'Contract MSA-2026-001 ready for review', time: '4h ago', unread: 0 },
-    { id: '3', name: 'Legal Team', lastMsg: 'Privacy policy v2.4 approved', time: '1d ago', unread: 0 },
-    { id: '4', name: 'Product Team', lastMsg: 'Roadmap Q2 priorities finalized', time: '2d ago', unread: 1 },
+    { name: 'Investment Committee', time: '2H AGO', preview: 'Series A timeline update shared for review...', active: true },
+    { name: 'Cylton Collymore', time: '4H AGO', preview: 'Contract MSA-2026-001 finalized...' },
+    { name: 'Legal Team', time: '1D AGO', preview: 'Privacy policy v2.4 approved by board...', faded: true },
 ]
 
-const messages = [
-    { id: '1', sender: 'Cylton Collymore', text: 'The Series A timeline has been updated. Please review the latest projection in the data room.', time: '2:30 PM', self: false },
-    { id: '2', sender: 'You', text: "Thanks Cylton. I'll review the updated projections today. Can we schedule a follow-up call?", time: '2:45 PM', self: true },
-    { id: '3', sender: 'Cylton Collymore', text: "Absolutely. Let's do Thursday at 3 PM EST. I'll send a calendar invite.", time: '3:01 PM', self: false },
+const initialMessages: Message[] = [
+    { sender: 'cylton', text: 'The Series A timeline has been updated. Please review the latest projection in the data room.', time: '2:30 PM' },
+    { sender: 'admin', text: 'Thanks Cylton. I\'ll review the updated projections today. Can we schedule a follow-up call?', time: '2:45 PM' },
+    { sender: 'cylton', text: 'Absolutely. Let\'s do Thursday at 3 PM EST. I\'ll send a calendar invite.', time: '3:01 PM' },
 ]
 
 function Messaging() {
-    const [selected, setSelected] = useState('1')
+    const [messages, setMessages] = useState<Message[]>(initialMessages)
     const [draft, setDraft] = useState('')
+    const chatRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => { if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight }, [messages])
+
+    const send = () => {
+        if (!draft.trim()) return
+        setMessages([...messages, { sender: 'admin', text: draft.trim(), time: 'JUST NOW' }])
+        setDraft('')
+    }
 
     return (
-        <div className="space-y-0 animate-in fade-in duration-700 -m-10">
-            <div className="flex h-[calc(100vh-6rem)] bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm m-10">
-                {/* Thread List */}
-                <div className="w-80 border-r border-gray-200 dark:border-slate-800 flex flex-col">
-                    <div className="p-4 border-b border-gray-100 dark:border-slate-800">
-                        <h2 className="font-bold text-gray-900 dark:text-white mb-3" style={{ fontFamily: "'Cinzel', serif", fontSize: '14px', letterSpacing: '0.03em' }}>MESSAGES</h2>
-                        <div className="relative">
-                            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                            <input type="text" placeholder="Search..." className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-lg pl-10 pr-4 py-2 text-sm outline-none" />
+        <div>
+            <div className="page-header">
+                <h1>Investor Messaging</h1>
+                <p className="page-subtitle">Identity-verified secure communications with the primary investor cluster</p>
+            </div>
+
+            <div className="sirsi-card overflow-hidden flex border-none shadow-2xl" style={{ padding: 0, height: 700 }}>
+                {/* Left: Thread Registry */}
+                <div style={{ width: 320, borderRight: '1px solid #f3f4f6', background: 'rgba(249,250,251,0.3)', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ padding: 24, borderBottom: '1px solid #f9fafb', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <h3 style={{ fontSize: 10, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Registry</h3>
+                        <Edit size={14} style={{ color: '#059669', cursor: 'pointer' }} />
+                    </div>
+                    <div style={{ padding: 16, borderBottom: '1px solid #f9fafb' }}>
+                        <div style={{ position: 'relative' }}>
+                            <Search size={12} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+                            <input type="text" placeholder="Filter threads..." style={{ width: '100%', paddingLeft: 36, paddingRight: 12, padding: '8px 12px 8px 36px', background: 'white', border: '1px solid #f3f4f6', borderRadius: 8, fontSize: 12, fontWeight: 500, outline: 'none' }} />
                         </div>
                     </div>
-                    <div className="flex-1 overflow-y-auto divide-y divide-gray-100 dark:divide-slate-800">
+                    <div style={{ flex: 1, overflowY: 'auto' }}>
                         {threads.map(t => (
-                            <button key={t.id} onClick={() => setSelected(t.id)}
-                                className={`w-full text-left p-4 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors ${selected === t.id ? 'bg-emerald-50 dark:bg-emerald-950/20 border-l-2 border-emerald-500' : ''}`}>
-                                <div className="flex items-center justify-between mb-1">
-                                    <span className="text-sm font-bold text-gray-900 dark:text-white">{t.name}</span>
-                                    <span className="text-[10px] text-gray-400">{t.time}</span>
+                            <div key={t.name} style={{
+                                padding: 16, borderBottom: '1px solid #f9fafb', cursor: 'pointer',
+                                ...(t.active ? { background: 'white', borderLeft: '4px solid #059669' } : {}),
+                            }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
+                                    <span style={{ fontSize: 11, fontWeight: 600, color: t.faded ? '#9ca3af' : '#111827', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{t.name}</span>
+                                    <span style={{ fontSize: 9, fontWeight: 500, color: '#9ca3af' }}>{t.time}</span>
                                 </div>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-xs text-gray-500 truncate">{t.lastMsg}</span>
-                                    {t.unread > 0 && <span className="w-5 h-5 bg-emerald-600 text-white rounded-full text-[10px] flex items-center justify-center font-bold">{t.unread}</span>}
-                                </div>
-                            </button>
+                                <p style={{ fontSize: 10, color: t.faded ? '#9ca3af' : '#6b7280', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.preview}</p>
+                            </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Message Area */}
-                <div className="flex-1 flex flex-col">
-                    <div className="p-4 border-b border-gray-100 dark:border-slate-800 flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                            <UserIcon className="w-4 h-4 text-emerald-600" />
+                {/* Right: Chat */}
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: 'white' }}>
+                    {/* Session Header */}
+                    <div style={{ padding: '20px 32px', borderBottom: '1px solid #f9fafb', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div className="flex items-center gap-4">
+                            <div style={{ width: 40, height: 40, borderRadius: 12, background: '#f9fafb', border: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <Shield size={14} style={{ color: '#059669' }} />
+                            </div>
+                            <div>
+                                <h4 style={{ fontSize: 12, fontWeight: 600, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Encrypted Session: Committee</h4>
+                                <div className="flex items-center gap-2">
+                                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                                    <span style={{ fontSize: 9, fontWeight: 600, color: '#059669', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Verified Protocol Level 4</span>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <div className="text-sm font-bold text-gray-900 dark:text-white">{threads.find(t => t.id === selected)?.name}</div>
-                            <div className="text-[10px] text-gray-400">Encrypted • Secure Channel</div>
+                        <div className="flex gap-4">
+                            {[Phone, Video, Info].map((Icon, i) => (
+                                <Icon key={i} size={16} style={{ color: '#d1d5db', cursor: 'pointer' }} className="hover:text-emerald-600 transition-colors" />
+                            ))}
                         </div>
                     </div>
-                    <div className="flex-1 overflow-y-auto p-6 space-y-4">
-                        {messages.map(m => (
-                            <div key={m.id} className={`flex ${m.self ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`max-w-md px-4 py-3 rounded-2xl ${m.self ? 'bg-emerald-600 text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-white'}`}>
-                                    <p className="text-sm">{m.text}</p>
-                                    <p className={`text-[10px] mt-1 ${m.self ? 'text-emerald-200' : 'text-gray-400'}`}>{m.time}</p>
-                                </div>
+
+                    {/* Messages */}
+                    <div ref={chatRef} style={{ flex: 1, overflowY: 'auto', padding: 40 }} className="space-y-8">
+                        {messages.map((msg, i) => (
+                            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: msg.sender === 'admin' ? 'flex-end' : 'flex-start', maxWidth: '80%', ...(msg.sender === 'admin' ? { marginLeft: 'auto' } : {}) }}>
+                                <div style={{
+                                    padding: '16px 20px', fontSize: 14, lineHeight: 1.7, fontWeight: 500,
+                                    ...(msg.sender === 'admin'
+                                        ? { background: '#059669', color: 'white', borderRadius: '16px 16px 0 16px', border: '1px solid #059669', boxShadow: '0 4px 6px rgba(5,150,105,0.1)' }
+                                        : { background: '#f9fafb', color: '#374151', borderRadius: '16px 16px 16px 0', border: '1px solid #f3f4f6' }),
+                                }}>{msg.text}</div>
+                                <span style={{
+                                    fontSize: 9, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 8,
+                                    color: msg.sender === 'admin' ? '#059669' : '#9ca3af',
+                                    ...(msg.sender === 'admin' ? { paddingRight: 8 } : { paddingLeft: 8 }),
+                                }}>{msg.sender === 'admin' ? 'ADMIN' : 'Cylton'} • {msg.time}</span>
                             </div>
                         ))}
                     </div>
-                    <div className="p-4 border-t border-gray-100 dark:border-slate-800">
-                        <div className="flex gap-2">
-                            <input type="text" value={draft} onChange={e => setDraft(e.target.value)} placeholder="Type a message..."
-                                className="flex-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-emerald-600/20" />
-                            <button className="px-4 py-2.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
-                                <SendIcon className="w-4 h-4" />
+
+                    {/* Compose */}
+                    <div style={{ padding: 32, borderTop: '1px solid #f9fafb' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 16, background: '#f9fafb', border: '1px solid #f3f4f6', borderRadius: 16, padding: '8px 16px 8px 8px' }}>
+                            <button style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af', background: 'none', border: 'none', cursor: 'pointer' }}>
+                                <Paperclip size={16} />
+                            </button>
+                            <input value={draft} onChange={e => setDraft(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()}
+                                placeholder="Draft encrypted message..." style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 14, fontWeight: 500, color: '#111827' }} />
+                            <button onClick={send} style={{ width: 40, height: 40, background: '#059669', color: 'white', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer', boxShadow: '0 4px 6px rgba(5,150,105,0.2)' }}>
+                                <Send size={14} />
                             </button>
                         </div>
                     </div>

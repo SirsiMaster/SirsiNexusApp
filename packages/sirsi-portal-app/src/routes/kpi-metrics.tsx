@@ -1,97 +1,85 @@
 /**
- * KPI Metrics — Investor KPI Dashboard
- * Merged from: portal.html KPI banner + kpi-unit-metrics.html
+ * KPI / Unit Metrics — Pixel-perfect port of investor/kpi-metrics.html
+ * Canonical CSS: page-header, page-subtitle, sirsi-card, sirsi-badge, sirsi-table-wrap, sirsi-table
  */
 import { createRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './__root'
-import { TrendingUp, DollarSign, Users, Clock, Zap, Target } from 'lucide-react'
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
     path: '/kpi-metrics',
-    component: KPIMetrics,
+    component: KpiMetrics,
 })
 
-const metrics = [
-    { label: 'Annual Recurring Revenue (Y3)', value: '$33M', target: '$40M', pct: 82, icon: DollarSign, color: 'emerald' },
-    { label: 'Customer Count', value: '280', target: '500', pct: 56, icon: Users, color: 'blue' },
-    { label: 'Average Cost Savings', value: '25%', target: '30%', pct: 83, icon: TrendingUp, color: 'purple' },
-    { label: 'Platform Uptime', value: '99.2%', target: '99.9%', pct: 99, icon: Zap, color: 'orange' },
-    { label: 'Return on Investment', value: '8.5x', target: '10x', pct: 85, icon: Target, color: 'indigo' },
-    { label: 'Payback Period', value: '3.2 mo', target: '< 6 mo', pct: 100, icon: Clock, color: 'green' },
+const kpiCards = [
+    { code: 'ARR', badge: 'Y3 GOAL', value: '$33M', label: 'Annual Recurring Revenue', target: 'Target Path: $40M', pct: 82 },
+    { code: 'C#', badge: 'ACTIVE', value: '280', label: 'Global Customer Count', target: 'Target Path: 500', pct: 56 },
+    { code: 'ROI', badge: 'VALUE', value: '8.5x', label: 'Average Return on Investment', target: 'Target Path: 10x', pct: 85 },
 ]
 
 const unitEconomics = [
-    { label: 'Customer Acquisition Cost (CAC)', value: '$2,400', trend: '-12%', good: true },
-    { label: 'Lifetime Value (LTV)', value: '$48,000', trend: '+18%', good: true },
-    { label: 'LTV/CAC Ratio', value: '20:1', trend: '+3.2', good: true },
-    { label: 'Monthly Churn', value: '1.8%', trend: '-0.3%', good: true },
-    { label: 'Net Revenue Retention', value: '118%', trend: '+5%', good: true },
-    { label: 'Gross Margin', value: '82%', trend: '+2%', good: true },
+    { metric: 'Customer Acquisition Cost (CAC)', value: '$2,400', trend: '▼ 12%' },
+    { metric: 'Lifetime Value (LTV)', value: '$48,000', trend: '▲ 18%' },
+    { metric: 'LTV/CAC Ratio', value: '20:1', trend: '▲ 3.2x' },
+    { metric: 'Monthly Revenue Churn', value: '1.8%', trend: '▼ 0.3%' },
+    { metric: 'Net Revenue Retention (NRR)', value: '118%', trend: '▲ 5%' },
+    { metric: 'Gross Platform Margin', value: '82%', trend: '▲ 2%' },
 ]
 
-function KPIMetrics() {
+function KpiMetrics() {
     return (
-        <div className="space-y-8 animate-in fade-in duration-700">
-            <header className="border-b border-gray-200 dark:border-slate-800 pb-6">
-                <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white" style={{ fontFamily: "'Cinzel', serif" }}>KPI / UNIT METRICS</h1>
-                <p className="text-gray-500 dark:text-slate-400 mt-2 text-sm">Key performance indicators and unit economics</p>
-            </header>
+        <div>
+            <div className="page-header">
+                <h1>KPI / Unit Metrics</h1>
+                <p className="page-subtitle">Strategic performance indicators and unit economics oversight</p>
+            </div>
 
-            {/* KPI Cards */}
-            <section>
-                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4" style={{ fontFamily: "'Cinzel', serif" }}>KEY PERFORMANCE INDICATORS</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {metrics.map(m => {
-                        const Icon = m.icon as any
-                        return (
-                            <div key={m.label} className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <div className={`w-10 h-10 bg-${m.color}-100 dark:bg-${m.color}-900/30 rounded-lg flex items-center justify-center`}>
-                                        <Icon className={`w-5 h-5 text-${m.color}-600`} />
-                                    </div>
-                                    <div className="text-xs text-gray-500 font-medium">{m.label}</div>
-                                </div>
-                                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{m.value}</div>
-                                <div className="flex justify-between mb-2">
-                                    <span className="text-[10px] text-gray-400">Target: {m.target}</span>
-                                    <span className="text-[10px] font-bold text-emerald-600">{m.pct}%</span>
-                                </div>
-                                <div className="w-full h-2 bg-gray-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                                    <div className={`h-full bg-${m.color}-500 rounded-full transition-all duration-1000`} style={{ width: `${m.pct}%` }} />
-                                </div>
+            <h3 className="border-l-4 border-emerald-600 pl-4 mb-6" style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Institutional KPIs</h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                {kpiCards.map(kpi => (
+                    <div key={kpi.code} className="sirsi-card group">
+                        <div className="flex items-center justify-between mb-4">
+                            <div style={{ width: 40, height: 40, background: '#ecfdf5', color: '#059669', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #d1fae5', fontStyle: 'italic', fontWeight: 600, fontSize: 12 }}>{kpi.code}</div>
+                            <span className="sirsi-badge sirsi-badge-success" style={{ fontWeight: 600 }}>{kpi.badge}</span>
+                        </div>
+                        <div style={{ fontSize: 30, fontWeight: 600, color: '#111827', marginBottom: 4 }}>{kpi.value}</div>
+                        <div style={{ fontSize: 10, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 500, marginBottom: 16 }}>{kpi.label}</div>
+                        <div className="space-y-2">
+                            <div className="flex justify-between items-center" style={{ fontSize: 10, fontWeight: 500, color: '#6b7280', textTransform: 'uppercase' }}>
+                                <span>{kpi.target}</span>
+                                <span style={{ color: '#059669' }}>{kpi.pct}%</span>
                             </div>
-                        )
-                    })}
-                </div>
-            </section>
+                            <div className="w-full bg-gray-100 rounded-full overflow-hidden" style={{ height: 6 }}>
+                                <div className="bg-emerald-600 rounded-full" style={{ height: '100%', width: `${kpi.pct}%` }} />
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
 
-            {/* Unit Economics */}
-            <section>
-                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4" style={{ fontFamily: "'Cinzel', serif" }}>UNIT ECONOMICS</h2>
-                <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
-                    <table className="w-full text-left">
-                        <thead>
-                            <tr className="bg-gray-50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-slate-800">
-                                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">Metric</th>
-                                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">Value</th>
-                                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">Trend</th>
+            <h3 className="border-l-4 border-emerald-600 pl-4 mb-6" style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Unit Economics Ledger</h3>
+
+            <div className="sirsi-table-wrap">
+                <table className="sirsi-table">
+                    <thead>
+                        <tr>
+                            <th style={{ paddingLeft: 24 }}>Strategic Metric</th>
+                            <th>Current Value</th>
+                            <th style={{ textAlign: 'right', paddingRight: 24 }}>Rolling Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {unitEconomics.map(row => (
+                            <tr key={row.metric}>
+                                <td style={{ paddingLeft: 24 }}><span style={{ fontWeight: 500, color: '#111827' }}>{row.metric}</span></td>
+                                <td style={{ fontFamily: 'monospace' }}>{row.value}</td>
+                                <td style={{ textAlign: 'right', paddingRight: 24 }}><span style={{ color: '#059669', fontWeight: 600, fontStyle: 'italic' }}>{row.trend}</span></td>
                             </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100 dark:divide-slate-800">
-                            {unitEconomics.map(u => (
-                                <tr key={u.label} className="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors">
-                                    <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{u.label}</td>
-                                    <td className="px-6 py-4 text-sm font-bold text-gray-900 dark:text-white">{u.value}</td>
-                                    <td className="px-6 py-4">
-                                        <span className={`text-xs font-bold ${u.good ? 'text-emerald-600' : 'text-red-600'}`}>{u.trend}</span>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }

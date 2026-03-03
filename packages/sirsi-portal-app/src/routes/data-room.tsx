@@ -1,95 +1,136 @@
-/** Data Room — Secure document repository */
+/**
+ * Data Room Management — Pixel-perfect port of data-room/index.html
+ * Canonical CSS: page-header, page-subtitle, sirsi-card, sirsi-table-wrap, sirsi-table, sirsi-badge, btn-primary, btn-secondary
+ */
 import { createRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './__root'
 import { useState } from 'react'
-import { Search, Download, Eye, Upload, FileText } from 'lucide-react'
+import {
+    FolderOpen, History, HardDrive, Globe, Search,
+    Eye, Download, Trash2, FileText, Shield, GitBranch, Upload
+} from 'lucide-react'
 
-const SearchIcon = Search as any
-const DownloadIcon = Download as any
-const EyeIcon = Eye as any
-const UploadIcon = Upload as any
-const FileTextIcon = FileText as any
+export const Route = createRoute({
+    getParentRoute: () => rootRoute as any,
+    path: '/data-room',
+    component: DataRoom,
+})
 
-export const Route = createRoute({ getParentRoute: () => rootRoute as any, path: '/data-room', component: DataRoom })
-
-const docs = [
-    { id: '1', name: 'Business Case Analysis', cat: 'Financial', type: 'PDF', size: '2.4 MB', date: 'Feb 2026' },
-    { id: '2', name: 'Market Analysis Report', cat: 'Metrics', type: 'PDF', size: '1.8 MB', date: 'Feb 2026' },
-    { id: '3', name: 'Privacy Policy v2.4', cat: 'Legal', type: 'PDF', size: '540 KB', date: 'Jan 2026' },
-    { id: '4', name: 'Product Roadmap 2026', cat: 'Strategic', type: 'PDF', size: '3.1 MB', date: 'Feb 2026' },
-    { id: '5', name: 'MSA Template v6', cat: 'Legal', type: 'DOCX', size: '125 KB', date: 'Feb 2026' },
-    { id: '6', name: 'Investor Pitch Deck', cat: 'Comms', type: 'HTML', size: '4.2 MB', date: 'Feb 2026' },
-    { id: '7', name: 'Q4 Financial Summary', cat: 'Financial', type: 'PDF', size: '1.2 MB', date: 'Jan 2026' },
-    { id: '8', name: 'Investment Terms Sheet', cat: 'Investment', type: 'PDF', size: '340 KB', date: 'Jan 2026' },
+const statCards = [
+    { label: 'Total Artifacts', icon: FolderOpen, value: '8', note: '✓ Indexed and searchable' },
+    { label: 'Recent Syncs', icon: History, value: '3', note: '▲ Within last 7 cycles' },
+    { label: 'Vault Volume', icon: HardDrive, value: '14 MB', note: '✓ Storage utilization: 2%' },
+    { label: 'Live Assets', icon: Globe, value: '6', note: '✓ Investor visibility active' },
 ]
 
-const cats = ['All', 'Financial', 'Metrics', 'Legal', 'Strategic', 'Comms', 'Investment']
+const documents = [
+    { icon: FileText, name: 'Financial Report Q4 2025', id: '#DR-2025-092 • 2.4 MB', category: 'Financial', access: 'Restricted', accessClass: 'sirsi-badge-warning', date: 'Jan 10, 2026' },
+    { icon: Shield, name: 'SOC 2 Compliance Framework', id: '#DR-2025-081 • 1.8 MB', category: 'Legal', access: 'Confidential', accessClass: 'sirsi-badge-error', date: 'Jan 05, 2026' },
+    { icon: GitBranch, name: 'Platform Scaling Specification', id: '#DR-2026-004 • 3.2 MB', category: 'Technical', access: 'Operational', accessClass: 'sirsi-badge-success', date: 'Feb 28, 2026' },
+]
+
+const filters = ['All', 'Financial', 'Legal', 'Technical']
 
 function DataRoom() {
-    const [q, setQ] = useState('')
-    const [cat, setCat] = useState('All')
-    const filtered = docs.filter(d =>
-        (cat === 'All' || d.cat === cat) && d.name.toLowerCase().includes(q.toLowerCase())
-    )
+    const [activeFilter, setActiveFilter] = useState('All')
+    const [searchTerm, setSearchTerm] = useState('')
 
     return (
-        <div className="space-y-8 animate-in fade-in duration-700">
-            <header className="flex justify-between items-end border-b border-gray-200 dark:border-slate-800 pb-6">
+        <div>
+            <div className="page-header flex justify-between items-end">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white" style={{ fontFamily: "'Cinzel', serif" }}>DATA ROOM</h1>
-                    <p className="text-gray-500 dark:text-slate-400 mt-2 text-sm">Secure document repository — {docs.length} documents</p>
+                    <h1>Data Room Management</h1>
+                    <p className="page-subtitle">Governance of the secure investor document registry and due diligence artifacts.</p>
                 </div>
-                <button className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm font-bold">
-                    <UploadIcon className="w-4 h-4" /> Upload
-                </button>
-            </header>
-
-            <div className="flex flex-wrap gap-2">
-                {cats.map(c => (
-                    <button key={c} onClick={() => setCat(c)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${cat === c ? 'bg-emerald-600 text-white' : 'border border-gray-200 dark:border-slate-800 text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800'}`}>
-                        {c}
+                <div className="flex gap-3">
+                    <button className="btn-secondary flex items-center gap-2" style={{ padding: '10px 24px' }}>
+                        <Download size={14} /> Export Registry
                     </button>
-                ))}
+                    <button className="btn-primary flex items-center gap-2" style={{ padding: '10px 24px' }}>
+                        <Upload size={14} /> Ingest Document
+                    </button>
+                </div>
             </div>
 
-            <div className="relative">
-                <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input type="text" placeholder="Search documents..." value={q} onChange={e => setQ(e.target.value)}
-                    className="w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-lg pl-10 pr-4 py-3 text-sm focus:ring-2 focus:ring-emerald-600/20 outline-none" />
+            {/* Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                {statCards.map(card => {
+                    const Icon = card.icon as any
+                    return (
+                        <div key={card.label} className="sirsi-card">
+                            <div className="flex items-center justify-between mb-4">
+                                <span style={{ fontSize: 10, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{card.label}</span>
+                                <Icon size={16} style={{ color: '#059669' }} />
+                            </div>
+                            <div style={{ fontSize: 30, fontWeight: 600, color: '#111827' }}>{card.value}</div>
+                            <div style={{ fontSize: 9, color: '#059669', fontWeight: 500, marginTop: 8, fontStyle: 'italic' }}>{card.note}</div>
+                        </div>
+                    )
+                })}
             </div>
 
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
-                <table className="w-full text-left">
+            {/* Filter Bar */}
+            <div className="flex flex-col md:flex-row gap-4 mb-8 items-center justify-between" style={{ background: 'white', padding: 16, borderRadius: 12, border: '1px solid #f3f4f6', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
+                <div style={{ position: 'relative', flex: 1, maxWidth: 448, width: '100%' }}>
+                    <Search size={16} style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+                    <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
+                        placeholder="Search identities, tags, or CID hashes..."
+                        style={{ width: '100%', paddingLeft: 48, paddingRight: 16, padding: '10px 16px 10px 48px', background: '#f9fafb', border: '1px solid transparent', borderRadius: 8, fontSize: 14, outline: 'none' }} />
+                </div>
+                <div className="flex gap-2 overflow-x-auto w-full md:w-auto">
+                    {filters.map(f => (
+                        <button key={f} onClick={() => setActiveFilter(f)} style={{
+                            padding: '8px 16px', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em',
+                            borderRadius: 8, border: 'none', cursor: 'pointer',
+                            ...(activeFilter === f
+                                ? { background: '#059669', color: 'white', boxShadow: '0 4px 6px rgba(5,150,105,0.1)' }
+                                : { background: '#f9fafb', color: '#9ca3af' }),
+                        }}>{f}</button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Documents Table */}
+            <div className="sirsi-table-wrap">
+                <table className="sirsi-table">
                     <thead>
-                        <tr className="bg-gray-50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-slate-800">
-                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">Document</th>
-                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">Category</th>
-                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">Type</th>
-                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">Size</th>
-                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400 text-right">Actions</th>
+                        <tr>
+                            <th style={{ paddingLeft: 24 }}>Document Registry</th>
+                            <th>Class</th>
+                            <th>Protocol Level</th>
+                            <th>Sync State</th>
+                            <th style={{ textAlign: 'right', paddingRight: 24 }}>System Proxy</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100 dark:divide-slate-800">
-                        {filtered.map(d => (
-                            <tr key={d.id} className="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors group">
-                                <td className="px-6 py-4">
-                                    <div className="flex items-center gap-3">
-                                        <FileTextIcon className="w-5 h-5 text-gray-300" />
-                                        <div className="text-sm font-bold text-gray-900 dark:text-white group-hover:text-emerald-600 transition-colors">{d.name}</div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 text-xs text-gray-500">{d.cat}</td>
-                                <td className="px-6 py-4"><span className="text-[10px] font-bold bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 px-2 py-0.5 rounded">{d.type}</span></td>
-                                <td className="px-6 py-4 text-xs text-gray-400">{d.size}</td>
-                                <td className="px-6 py-4 text-right">
-                                    <div className="flex gap-2 justify-end opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <button className="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/20 rounded-lg" title="Preview"><EyeIcon className="w-4 h-4" /></button>
-                                        <button className="p-1.5 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/20 rounded-lg" title="Download"><DownloadIcon className="w-4 h-4" /></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
+                    <tbody>
+                        {documents.map(doc => {
+                            const Icon = doc.icon as any
+                            return (
+                                <tr key={doc.id} className="hover:bg-gray-50/50 transition-colors">
+                                    <td style={{ paddingLeft: 24, paddingTop: 20, paddingBottom: 20 }}>
+                                        <div className="flex items-center gap-4">
+                                            <div style={{ width: 40, height: 40, background: '#ecfdf5', color: '#059669', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #d1fae5' }}>
+                                                <Icon size={16} />
+                                            </div>
+                                            <div>
+                                                <div style={{ fontWeight: 500, color: '#111827' }}>{doc.name}</div>
+                                                <div style={{ fontSize: 9, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>ID: {doc.id}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span style={{ fontSize: 10, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{doc.category}</span></td>
+                                    <td><span className={`sirsi-badge ${doc.accessClass}`}>{doc.access}</span></td>
+                                    <td><span style={{ fontSize: 12, fontWeight: 500, color: '#9ca3af' }}>{doc.date}</span></td>
+                                    <td style={{ textAlign: 'right', paddingRight: 24 }}>
+                                        <div className="flex gap-2 justify-end">
+                                            <button style={{ color: '#d1d5db', background: 'none', border: 'none', cursor: 'pointer' }} className="hover:text-emerald-600 transition-colors"><Eye size={16} /></button>
+                                            <button style={{ color: '#d1d5db', background: 'none', border: 'none', cursor: 'pointer' }} className="hover:text-blue-600 transition-colors"><Download size={16} /></button>
+                                            <button style={{ color: '#d1d5db', background: 'none', border: 'none', cursor: 'pointer' }} className="hover:text-red-600 transition-colors"><Trash2 size={16} /></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )
+                        })}
                     </tbody>
                 </table>
             </div>
