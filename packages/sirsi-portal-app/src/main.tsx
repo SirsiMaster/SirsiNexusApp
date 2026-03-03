@@ -28,6 +28,15 @@ import { Route as messagingRoute } from './routes/messaging'
 import { Route as aiAgentsRoute } from './routes/ai-agents'
 import { Route as hypervisorRoute } from './routes/hypervisor'
 import { Route as consoleRoute } from './routes/console'
+// Dashboard group
+import { Route as analyticsRoute } from './routes/analytics'
+// Security sub-pages
+import { Route as monitoringRoute } from './routes/monitoring'
+// System Status sub-pages
+import { Route as cacheStatusRoute } from './routes/cache-status'
+import { Route as apiServerRoute } from './routes/api-server'
+import { Route as databaseHealthRoute } from './routes/database-health'
+import { Route as backupStatusRoute } from './routes/backup-status'
 
 // Create the route tree manually
 const routeTree = (rootRoute as any).addChildren([
@@ -42,6 +51,7 @@ const routeTree = (rootRoute as any).addChildren([
   securityRoute as any,
   systemLogsRoute as any,
   siteAdminRoute as any,
+  monitoringRoute as any,
   // Investor
   portalRoute as any,
   dataRoomRoute as any,
@@ -52,6 +62,13 @@ const routeTree = (rootRoute as any).addChildren([
   aiAgentsRoute as any,
   hypervisorRoute as any,
   consoleRoute as any,
+  // Dashboard
+  analyticsRoute as any,
+  // System Status
+  cacheStatusRoute as any,
+  apiServerRoute as any,
+  databaseHealthRoute as any,
+  backupStatusRoute as any,
 ])
 
 // Create the router

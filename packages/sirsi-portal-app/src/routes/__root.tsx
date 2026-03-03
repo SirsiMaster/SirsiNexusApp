@@ -1,68 +1,75 @@
-// src/routes/__root.tsx — Unified Sidebar with all dashboard sections
+/**
+ * Root Layout — Pixel-perfect port of admin-header.js + admin-sidebar.js
+ *
+ * Uses ONLY canonical CSS classes from common-styles.css (already in index.css):
+ *  - .admin-header / .admin-header-inner / .admin-header-left / .admin-header-center / .admin-header-right
+ *  - .admin-sidebar / .admin-sidebar-scroll / .sidebar-group / .admin-sidebar-link
+ *  - .sidebar-content / .content-wrapper
+ *
+ * Layout contract (Rule 20):
+ *  - Header: fixed, 60px, full-width
+ *  - Sidebar: fixed, 250px, top: 60px (below header)
+ *  - Content: margin-left: 250px, padding-top: 92px
+ *
+ * Typography: Inter (body ≤ 500, Rule 21), brand name uses font-semibold
+ */
+
 import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
-    LayoutDashboard, Terminal, Users, ShieldCheck, LogOut, Settings2, Activity, Search,
-    Building2, FileText, FolderOpen, ScrollText, Lock, Eye, Landmark, BarChart3,
-    MessageSquare, Bot, Sparkles, Monitor, ChevronDown
+    LayoutDashboard, Users, Building2, FileText, Activity, FolderOpen,
+    Lock, ScrollText, ShieldCheck, Landmark, BarChart3, Eye, MessageSquare,
+    Bot, Sparkles, Monitor, Settings2, LogOut, Search, ChevronDown,
+    Sun, Moon, PanelLeftClose, UserPlus, Upload, Sliders, HelpCircle,
+    MessageCircle, User, TrendingUp, Radio, Server, Database, HardDrive, Archive
 } from 'lucide-react'
 import { CommandPalette } from '../components/command-palette/CommandPalette'
 import { NotificationCenter } from '../components/notifications/NotificationCenter'
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts'
 
-// Wrapped components to avoid TS generics issues with lucide-react
+// Wrapped components to avoid TS generics issues
 const LinkComp = Link as any
 const OutletComp = Outlet as any
 const DevtoolsComp = TanStackRouterDevtools as any
-const SearchIcon = Search as any
-const SettingsIcon = Settings2 as any
-const LogOutIcon = LogOut as any
-const ChevronDownIcon = ChevronDown as any
 
-// ── Sidebar Config ─────────────────────────────────────────────
-interface NavItem {
-    to: string
-    label: string
-    icon: any
-}
-
-interface NavGroup {
-    title: string
-    items: NavItem[]
-    defaultOpen?: boolean
-}
+// ── Sidebar config (matches admin-sidebar.js nav groups exactly) ──
+interface NavItem { to: string; label: string; icon: any }
+interface NavGroup { title: string; items: NavItem[]; defaultOpen?: boolean }
 
 const sidebarGroups: NavGroup[] = [
     {
-        title: '',
+        title: 'MAIN',
         defaultOpen: true,
         items: [
-            { to: '/', label: 'Command Center', icon: LayoutDashboard },
-        ],
-    },
-    {
-        title: 'Operations',
-        defaultOpen: true,
-        items: [
-            { to: '/users', label: 'Users', icon: Users },
-            { to: '/tenants', label: 'Tenants', icon: Building2 },
-            { to: '/contracts', label: 'Contracts', icon: FileText },
-            { to: '/telemetry', label: 'Telemetry', icon: Activity },
+            { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+            { to: '/users', label: 'User Management', icon: Users },
             { to: '/data-room', label: 'Data Room', icon: FolderOpen },
+            { to: '/tenants', label: 'Operations', icon: Building2 },
+            { to: '/contracts', label: 'Contracts', icon: FileText },
+            { to: '/security', label: 'Security & Settings', icon: Lock },
+            { to: '/ai-agents', label: 'AI Agents', icon: Bot },
+            { to: '/hypervisor', label: 'Sirsi Hypervisor', icon: Sparkles },
         ],
     },
     {
-        title: 'Security',
+        title: 'SYSTEM STATUS',
         defaultOpen: false,
         items: [
-            { to: '/security', label: 'Security', icon: Lock },
+            { to: '/telemetry', label: 'Telemetry', icon: Activity },
+            { to: '/analytics', label: 'Analytics', icon: TrendingUp },
             { to: '/system-logs', label: 'System Logs', icon: ScrollText },
-            { to: '/site-admin', label: 'Site Admin', icon: ShieldCheck },
+            { to: '/monitoring', label: 'Monitoring', icon: Radio },
+            { to: '/site-admin', label: 'System Status', icon: Server },
+            { to: '/cache-status', label: 'Cache Status', icon: HardDrive },
+            { to: '/api-server', label: 'API Server', icon: Server },
+            { to: '/database-health', label: 'Database Health', icon: Database },
+            { to: '/backup-status', label: 'Backup Status', icon: Archive },
+            { to: '/console', label: 'Console', icon: Monitor },
         ],
     },
     {
-        title: 'Investor',
+        title: 'INVESTOR',
         defaultOpen: false,
         items: [
             { to: '/portal', label: 'Portal', icon: Landmark },
@@ -72,161 +79,214 @@ const sidebarGroups: NavGroup[] = [
         ],
     },
     {
-        title: 'Intelligence',
+        title: 'QUICK ACTIONS',
         defaultOpen: false,
         items: [
-            { to: '/ai-agents', label: 'AI Agents', icon: Bot },
-            { to: '/hypervisor', label: 'Hypervisor', icon: Sparkles },
-            { to: '/console', label: 'Console', icon: Monitor },
+            { to: '/users', label: 'Add User', icon: UserPlus },
+            { to: '/security', label: 'Security Settings', icon: ShieldCheck },
+            { to: '/system-logs', label: 'View Logs', icon: Eye },
+            { to: '/data-room', label: 'Upload Documents', icon: Upload },
+            { to: '/security', label: 'Configure Site', icon: Sliders },
+        ],
+    },
+    {
+        title: 'HELP & RESOURCES',
+        defaultOpen: false,
+        items: [
+            { to: '/', label: 'Quick Help', icon: HelpCircle },
+            { to: '/', label: 'Contact Support', icon: MessageCircle },
         ],
     },
 ]
 
-// ── NavLink ────────────────────────────────────────────────────
-function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
+// ── Chevron SVG (matches admin-sidebar.js exactly) ──
+function ChevronIcon({ collapsed }: { collapsed: boolean }) {
     return (
-        <LinkComp
-            to={to}
-            className="sidebar-link group"
-            activeProps={{ className: 'active' }}
-        >
-            {children}
-        </LinkComp>
+        <span className={`sidebar-group-chevron ${collapsed ? 'collapsed-chevron' : ''}`}
+            style={{ transition: 'transform 0.2s ease', transform: collapsed ? 'rotate(-90deg)' : 'rotate(0)' }}>
+            <ChevronDown size={12} />
+        </span>
     )
 }
 
-// ── Collapsible Group ──────────────────────────────────────────
+// ── Sidebar Group (matches sidebar-group structure) ──
 function SidebarGroup({ group }: { group: NavGroup }) {
-    const [open, setOpen] = useState(group.defaultOpen ?? true)
-
-    // Top-level items (no group title) render flat
-    if (!group.title) {
-        return (
-            <div className="space-y-0.5">
-                {group.items.map((item) => (
-                    <NavLink key={item.to} to={item.to}>
-                        <item.icon className="w-4 h-4" />
-                        <span>{item.label}</span>
-                    </NavLink>
-                ))}
-            </div>
-        )
-    }
+    const [collapsed, setCollapsed] = useState(!group.defaultOpen)
 
     return (
-        <div className="mt-4">
+        <div className={`sidebar-group ${collapsed ? 'collapsed' : ''}`}>
             <button
-                onClick={() => setOpen(!open)}
-                className="w-full flex items-center justify-between px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.15em] text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 transition-colors"
+                className="sidebar-group-header"
+                onClick={() => setCollapsed(!collapsed)}
             >
-                <span>{group.title}</span>
-                <ChevronDownIcon
-                    className={`w-3 h-3 transition-transform duration-200 ${open ? '' : '-rotate-90'}`}
-                />
+                <span className="sidebar-group-header-label">{group.title}</span>
+                <ChevronIcon collapsed={collapsed} />
             </button>
-            {open && (
-                <div className="space-y-0.5 mt-1">
-                    {group.items.map((item) => (
-                        <NavLink key={item.to} to={item.to}>
-                            <item.icon className="w-4 h-4" />
-                            <span>{item.label}</span>
-                        </NavLink>
-                    ))}
-                </div>
-            )}
+            <div className="sidebar-group-items">
+                {group.items.map((item) => (
+                    <LinkComp
+                        key={`${group.title}-${item.label}`}
+                        to={item.to}
+                        className="admin-sidebar-link"
+                        activeProps={{ className: 'admin-sidebar-link active' }}
+                        activeOptions={{ exact: item.to === '/' }}
+                    >
+                        <span className="admin-sidebar-icon">
+                            <item.icon size={16} />
+                        </span>
+                        <span className="admin-sidebar-link-label">{item.label}</span>
+                    </LinkComp>
+                ))}
+            </div>
         </div>
     )
 }
 
-// ── Root Layout ────────────────────────────────────────────────
+// ── Root Layout ──
 function RootLayout() {
     const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
+    const [sidebarMini, setSidebarMini] = useState(() =>
+        localStorage.getItem('sirsi_sidebar_collapsed') === 'true'
+    )
+    const [clock, setClock] = useState('--:--')
+    const [isDark, setIsDark] = useState(() =>
+        document.documentElement.classList.contains('dark')
+    )
 
     useKeyboardShortcuts([
-        {
-            key: 'k',
-            metaKey: true,
-            action: () => setCommandPaletteOpen(true),
-            description: 'Open Command Palette',
-        },
+        { key: 'k', metaKey: true, action: () => setCommandPaletteOpen(true), description: 'Open Command Palette' },
     ])
 
+    // Live clock
+    useEffect(() => {
+        const tick = () => {
+            const now = new Date()
+            setClock(
+                String(now.getHours()).padStart(2, '0') + ':' +
+                String(now.getMinutes()).padStart(2, '0')
+            )
+        }
+        tick()
+        const id = setInterval(tick, 1000)
+        return () => clearInterval(id)
+    }, [])
+
+    // Sidebar collapse
+    const toggleSidebar = () => {
+        const next = !sidebarMini
+        setSidebarMini(next)
+        localStorage.setItem('sirsi_sidebar_collapsed', String(next))
+    }
+
+    // Theme toggle
+    const toggleTheme = () => {
+        const next = !isDark
+        setIsDark(next)
+        document.documentElement.classList.toggle('dark', next)
+        localStorage.setItem('theme', next ? 'dark' : 'light')
+    }
+
     return (
-        <div className="flex min-h-screen">
-            {/* ── Sidebar ────────────────────────────────── */}
-            <aside
-                className="w-64 border-r border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col fixed inset-y-0 z-50"
-                style={{ borderRight: '1px solid rgba(200, 169, 81, 0.15)' }}
-            >
-                {/* Brand */}
-                <div className="p-6 border-b border-gray-100 dark:border-slate-800 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-xs ring-4 ring-emerald-600/10">S</div>
-                    <div>
-                        <span
-                            className="font-bold text-gray-900 dark:text-white tracking-tight"
-                            style={{ fontFamily: "'Cinzel', serif", letterSpacing: '0.05em' }}
-                        >
-                            SirsiNexus
-                        </span>
-                        <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest leading-none">Admin Console</p>
+        <>
+            {/* ── HEADER (canonical: admin-header from common-styles.css) ── */}
+            <header className="admin-header">
+                <div className="admin-header-inner">
+                    {/* LEFT: Brand + Live */}
+                    <div className="admin-header-left">
+                        <div className="admin-header-brand">
+                            <div className="admin-header-logo">
+                                <img src="/sirsi-icon.png" alt="Sirsi" style={{ width: 36, height: 36, objectFit: 'contain' }} />
+                            </div>
+                            <div className="admin-header-brand-text">
+                                <span className="admin-header-brand-name">SirsiNexus</span>
+                                <span className="admin-header-brand-role">ADMIN CONSOLE</span>
+                            </div>
+                        </div>
+                        <div className="admin-header-status">
+                            <span className="admin-header-dot" />
+                            <span>Live</span>
+                        </div>
+                    </div>
+
+                    {/* CENTER: Sitewide Search */}
+                    <div className="admin-header-center">
+                        <div className="admin-header-search">
+                            <Search size={16} className="admin-header-search-icon" />
+                            <input
+                                type="text"
+                                placeholder="Search users, documents, settings..."
+                                autoComplete="off"
+                                onFocus={() => setCommandPaletteOpen(true)}
+                                readOnly
+                            />
+                            <span className="admin-header-search-kbd">⌘K</span>
+                        </div>
+                    </div>
+
+                    {/* RIGHT: Clock + Controls */}
+                    <div className="admin-header-right">
+                        <span className="admin-header-clock">{clock}</span>
+
+                        {/* Theme Toggle */}
+                        <button className="admin-header-btn" onClick={toggleTheme} aria-label="Toggle theme">
+                            {isDark ? <Moon size={18} className="admin-header-icon" /> : <Sun size={18} className="admin-header-icon" />}
+                        </button>
+
+                        {/* Logout */}
+                        <button className="admin-header-btn" aria-label="Logout" onClick={() => {
+                            if (confirm('Are you sure you want to logout?')) {
+                                window.location.href = '/'
+                            }
+                        }}>
+                            <LogOut size={18} className="admin-header-icon" />
+                        </button>
+
+                        {/* User */}
+                        <div className="admin-header-user">
+                            <span className="admin-header-user-label">Administrator</span>
+                            <div className="admin-header-avatar">
+                                <User size={18} className="admin-header-icon" />
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </header>
 
-                {/* Navigation */}
-                <nav className="flex-1 overflow-y-auto p-4 space-y-0">
+            {/* ── SIDEBAR (canonical: admin-sidebar from common-styles.css) ── */}
+            <nav className={`admin-sidebar ${sidebarMini ? 'sidebar-mini' : ''}`}>
+                <div className="sidebar-top-toggle">
+                    <button className="sidebar-toggle-btn" onClick={toggleSidebar}
+                        title={sidebarMini ? 'Expand sidebar' : 'Collapse sidebar'}>
+                        <span className="admin-sidebar-icon" style={sidebarMini ? { transform: 'scaleX(-1)' } : undefined}>
+                            <PanelLeftClose size={16} />
+                        </span>
+                        <span className="admin-sidebar-link-label">{sidebarMini ? 'Expand' : 'Collapse'}</span>
+                    </button>
+                </div>
+                <div className="admin-sidebar-scroll">
                     {sidebarGroups.map((group, i) => (
                         <SidebarGroup key={i} group={group} />
                     ))}
-                </nav>
-
-                {/* Bottom: Settings + Sign Out */}
-                <div className="p-4 border-t border-gray-100 dark:border-slate-800 space-y-1">
-                    <NavLink to="/settings">
-                        <SettingsIcon className="w-4 h-4" />
-                        <span>Settings</span>
-                    </NavLink>
-                    <button className="flex items-center gap-3 px-4 py-2 w-full text-sm text-gray-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors group">
-                        <LogOutIcon className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                        <span className="font-medium">Sign Out</span>
+                </div>
+                <div className="admin-sidebar-footer">
+                    <LinkComp to="/settings" className="admin-sidebar-link" activeProps={{ className: 'admin-sidebar-link active' }}>
+                        <span className="admin-sidebar-icon"><Settings2 size={16} /></span>
+                        <span className="admin-sidebar-link-label">Settings</span>
+                    </LinkComp>
+                    <button className="admin-sidebar-link sidebar-signout" onClick={() => {
+                        if (confirm('Are you sure you want to sign out?')) {
+                            window.location.href = '/'
+                        }
+                    }}>
+                        <span className="admin-sidebar-icon"><LogOut size={16} /></span>
+                        <span className="admin-sidebar-link-label">Sign Out</span>
                     </button>
                 </div>
-            </aside>
+            </nav>
 
-            {/* ── Main Content ────────────────────────────── */}
-            <main className="pl-64 flex-1 min-h-screen bg-gray-50 dark:bg-slate-950">
-                {/* Header */}
-                <header className="h-16 border-b border-gray-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-40">
-                    <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-2">
-                            <div className="pulse-dot" />
-                            <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Live Integration</span>
-                        </div>
-
-                        {/* Command Palette Trigger */}
-                        <button
-                            onClick={() => setCommandPaletteOpen(true)}
-                            className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-slate-700 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:border-emerald-300 dark:hover:border-emerald-700 transition-all text-xs"
-                        >
-                            <SearchIcon className="w-3.5 h-3.5" />
-                            <span>Search or command...</span>
-                            <kbd className="text-[10px] bg-gray-100 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-gray-200 dark:border-slate-700 ml-2">⌘K</kbd>
-                        </button>
-                    </div>
-                    <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-3 border-r border-gray-200 dark:border-slate-800 pr-6">
-                            <div className="text-right">
-                                <p className="text-xs font-bold text-gray-900 dark:text-white">Cylton Collymore</p>
-                                <p className="text-[10px] text-gray-400 font-medium italic">Systems Administrator</p>
-                            </div>
-                            <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 flex items-center justify-center text-xs font-bold text-gray-400">CC</div>
-                        </div>
-                        <button className="text-gray-400 hover:text-emerald-600 transition-colors">
-                            <SettingsIcon className="w-5 h-5" />
-                        </button>
-                    </div>
-                </header>
-
-                <div className="p-10 max-w-7xl mx-auto">
+            {/* ── MAIN CONTENT (canonical: sidebar-content + content-wrapper) ── */}
+            <main className={`sidebar-content ${sidebarMini ? 'sidebar-collapsed' : ''}`}>
+                <div className="content-wrapper">
                     <OutletComp />
                 </div>
             </main>
@@ -241,7 +301,7 @@ function RootLayout() {
             <NotificationCenter />
 
             <DevtoolsComp />
-        </div>
+        </>
     )
 }
 
