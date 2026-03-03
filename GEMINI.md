@@ -108,18 +108,19 @@ The following files serve as the immutable benchmark for this repo:
 18. `docs/CHANGE_MANAGEMENT.md`
 19. `docs/TEST_PLAN.md`
 
-### 🧠 Knowledge & Decisions (4)
+### 🧠 Knowledge & Decisions (5)
 20. `docs/ADR-INDEX.md`
 21. `docs/ADR-TEMPLATE.md`
 22. `docs/ADR-016-CANONICAL-MFA-ROUTING-HUB.md`
 23. `docs/ADR-017-COCKROACHDB-DECOMMISSION.md`
+24. `docs/ADR-026-HYPERVISOR-COMMAND-PROTOCOL.md`
 
 ## 3. Technology Stack (SirsiNexusApp — Platform Layer)
 
 | Layer | Technology | Decision |
 | :--- | :--- | :--- |
 | **Logic** | **Go (Golang)** | Cloud Run, **gRPC + Protobuf**, Official Firebase Admin SDK |
-| **Web** | **React 19 + Vite 7** | **gRPC-Web**, TailwindCSS, Zustand, shadcn/ui |
+| **Web** | **React 19 + Vite 7** | **gRPC-Web**, TailwindCSS, Zustand, shadcn/ui, **recharts** |
 | **Mobile** | **React Native + Expo** | **gRPC + Protobuf**, Shared logic with Web, iOS/Android |
 | **Database** | **Cloud SQL + Firestore** | Hybrid: SQL for PII/Vault, NoSQL for real-time |
 | **Auth** | **Firebase Auth** | MFA (TOTP) Required |
@@ -158,6 +159,7 @@ SirsiNexusApp uses the **Swiss Neo-Deco** design language across ALL packages �
 *   **Defense in Depth**: Every API endpoint must have AuthZ checks. PII is always encrypted at rest.
 *   **Security Hub Control**: All MFA enforcement MUST be handled by the **Canonical MFA Hub** (`/mfa`) via `ProtectedRoute` redirection.
 *   **Deep URL Sync**: The address bar MUST always reflect the current security phase.
+*   **Hypervisor Command Protocol (Rule 23)**: All operational telemetry MUST flow through `HypervisorService` ConnectRPC endpoints (ADR-026). No ad-hoc REST endpoints for operational data. Mock data is permitted ONLY for instruments whose backend infrastructure is not yet provisioned (Tier 3), and must be typed to the proto contract shape.
 *   **Admin Page Layout Contract (Rule 20)**: Every HTML page in `packages/sirsi-portal/admin/` MUST use the following canonical layout structure. **No exceptions. No invented class names.**
 
     ```html
