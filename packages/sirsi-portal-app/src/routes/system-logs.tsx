@@ -1,19 +1,18 @@
 /**
- * System Logs — Audit trail and activity monitoring
- * Merged from: sirsinexusportal/system-logs.html + dashboard activity feed
+ * System Logs — Pixel-perfect port of dashboard/system-logs.html
+ *
+ * Canonical CSS: page-header, page-subtitle, stat-card, card
+ * Typography: Inter body ≤ 500 (Rule 21), monospace for log entries
+ * Features: Log statistics, filters, searchable log viewer, export, real-time simulation
  */
+
 import { createRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './__root'
-import { useState } from 'react'
-import { Filter, Download, Search, CheckCircle, AlertTriangle, Info, XCircle } from 'lucide-react'
-
-const FilterIcon = Filter as any
-const DownloadIcon = Download as any
-const SearchIcon = Search as any
-const CheckCircleIcon = CheckCircle as any
-const AlertTriangleIcon = AlertTriangle as any
-const InfoIcon = Info as any
-const XCircleIcon = XCircle as any
+import { useState, useEffect, useRef, useCallback } from 'react'
+import {
+    Info, AlertTriangle, XCircle, Bug, CheckCircle,
+    Search, Pause, Play, Trash2, RefreshCw, FileText, FileCode, FileDown
+} from 'lucide-react'
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
@@ -21,106 +20,304 @@ export const Route = createRoute({
     component: SystemLogs,
 })
 
-type LogLevel = 'info' | 'success' | 'warning' | 'error'
-
+// ── Types ──
 interface LogEntry {
-    id: string; timestamp: string; level: LogLevel; source: string; message: string; user: string; ip: string
+    timestamp: string
+    level: 'INFO' | 'WARNING' | 'ERROR' | 'DEBUG' | 'SUCCESS'
+    message: string
+    source: string
 }
 
-const mockLogs: LogEntry[] = [
-    { id: '1', timestamp: '2026-02-28 12:01:42', level: 'success', source: 'Auth', message: 'User cylton@sirsi.ai authenticated via MFA', user: 'Cylton Collymore', ip: '192.168.1.xxx' },
-    { id: '2', timestamp: '2026-02-28 11:58:03', level: 'info', source: 'System', message: 'Deployment pipeline triggered for sirsi-sign', user: 'CI/CD', ip: '10.0.0.1' },
-    { id: '3', timestamp: '2026-02-28 11:45:22', level: 'warning', source: 'Stripe', message: 'Webhook delivery delayed by 3s (threshold: 2s)', user: 'Stripe', ip: '54.187.xxx.xxx' },
-    { id: '4', timestamp: '2026-02-28 11:30:11', level: 'success', source: 'Contracts', message: 'Contract MSA-2026-001 executed and signed', user: 'Cylton Collymore', ip: '192.168.1.xxx' },
-    { id: '5', timestamp: '2026-02-28 10:15:07', level: 'error', source: 'gRPC', message: 'AdminService.getSystemOverview: connection refused (backend offline)', user: 'System', ip: 'localhost' },
-    { id: '6', timestamp: '2026-02-28 09:00:00', level: 'info', source: 'Firebase', message: 'Firestore security rules deployed v2.4.1', user: 'SirsiMaster', ip: '10.0.0.1' },
-    { id: '7', timestamp: '2026-02-27 23:30:00', level: 'success', source: 'Deploy', message: 'sirsi-sign.web.app deployed successfully (build #247)', user: 'GitHub Actions', ip: '140.82.xxx.xxx' },
-    { id: '8', timestamp: '2026-02-27 18:12:33', level: 'warning', source: 'Auth', message: 'Failed login attempt for admin@sirsi.ai (2FA timeout)', user: 'Unknown', ip: '45.33.xxx.xxx' },
+// ── Sample Data (matches HTML exactly) ──
+const sampleLogs: LogEntry[] = [
+    { timestamp: '7/22/2025, 8:09:34 PM', level: 'SUCCESS', message: 'Email sent successfully [system]', source: 'system' },
+    { timestamp: '7/22/2025, 8:09:29 PM', level: 'ERROR', message: 'Email sent successfully [application]', source: 'application' },
+    { timestamp: '7/22/2025, 8:09:24 PM', level: 'SUCCESS', message: 'Background job completed [api]', source: 'api' },
+    { timestamp: '7/22/2025, 8:09:19 PM', level: 'INFO', message: 'User login attempt from IP 192.168.1.100', source: 'system' },
+    { timestamp: '7/22/2025, 8:09:14 PM', level: 'WARNING', message: 'High memory usage detected: 85%', source: 'system' },
+    { timestamp: '7/22/2025, 8:09:09 PM', level: 'ERROR', message: 'Database connection timeout', source: 'database' },
+    { timestamp: '7/22/2025, 8:09:04 PM', level: 'DEBUG', message: 'Cache cleared successfully', source: 'system' },
+    { timestamp: '7/22/2025, 8:08:59 PM', level: 'INFO', message: 'API request: GET /api/users', source: 'api' },
+    { timestamp: '7/22/2025, 8:08:54 PM', level: 'SUCCESS', message: 'Backup completed successfully', source: 'system' },
+    { timestamp: '7/22/2025, 8:08:49 PM', level: 'ERROR', message: 'Failed to send notification email', source: 'application' },
 ]
 
-function SystemLogs() {
-    const [filter, setFilter] = useState<LogLevel | 'all'>('all')
-    const [searchQuery, setSearchQuery] = useState('')
+const realtimeMessages = [
+    'New user registration', 'API rate limit warning', 'Database query executed',
+    'Cache invalidated', 'File uploaded successfully', 'Background job started',
+    'Email notification sent', 'Security scan completed', 'Configuration updated',
+    'Memory usage threshold reached',
+]
 
-    const filtered = mockLogs.filter(log => {
-        const matchesFilter = filter === 'all' || log.level === filter
-        const matchesSearch = log.message.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            log.source.toLowerCase().includes(searchQuery.toLowerCase())
-        return matchesFilter && matchesSearch
+const levelColors: Record<string, string> = {
+    INFO: '#059669',
+    WARNING: '#C8A951',
+    ERROR: '#ef4444',
+    DEBUG: '#6b7280',
+    SUCCESS: '#10b981',
+}
+
+function SystemLogs() {
+    const [logs, setLogs] = useState<LogEntry[]>([...sampleLogs])
+    const [levelFilter, setLevelFilter] = useState('all')
+    const [sourceFilter, setSourceFilter] = useState('all')
+    const [searchTerm, setSearchTerm] = useState('')
+    const [isPaused, setIsPaused] = useState(false)
+    const [isRealtime, setIsRealtime] = useState(true)
+    const logContainerRef = useRef<HTMLDivElement>(null)
+
+    // Realtime log simulation
+    useEffect(() => {
+        if (!isRealtime || isPaused) return
+        const interval = setInterval(() => {
+            const levels: LogEntry['level'][] = ['INFO', 'WARNING', 'ERROR', 'DEBUG', 'SUCCESS']
+            const sources = ['system', 'application', 'api', 'database']
+            const newLog: LogEntry = {
+                timestamp: new Date().toLocaleString(),
+                level: levels[Math.floor(Math.random() * levels.length)],
+                message: realtimeMessages[Math.floor(Math.random() * realtimeMessages.length)],
+                source: sources[Math.floor(Math.random() * sources.length)],
+            }
+            setLogs(prev => {
+                const updated = [newLog, ...prev]
+                return updated.length > 100 ? updated.slice(0, 100) : updated
+            })
+        }, 3000 + Math.random() * 4000)
+        return () => clearInterval(interval)
+    }, [isRealtime, isPaused])
+
+    // Filter logs
+    const filteredLogs = logs.filter(log => {
+        if (levelFilter !== 'all' && log.level.toLowerCase() !== levelFilter) return false
+        if (sourceFilter !== 'all' && log.source !== sourceFilter) return false
+        if (searchTerm && !log.message.toLowerCase().includes(searchTerm.toLowerCase()) && !log.level.toLowerCase().includes(searchTerm.toLowerCase())) return false
+        return true
     })
 
-    return (
-        <div className="space-y-8 animate-in fade-in duration-700">
-            <header className="flex justify-between items-end border-b border-gray-200 dark:border-slate-800 pb-6">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white"
-                        style={{ fontFamily: "'Cinzel', serif", letterSpacing: '0.02em' }}>
-                        SYSTEM LOGS
-                    </h1>
-                    <p className="text-gray-500 dark:text-slate-400 mt-2 text-sm">Platform-wide audit trail and event monitoring</p>
-                </div>
-                <button className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm font-bold">
-                    <DownloadIcon className="w-4 h-4" />
-                    Export Logs
-                </button>
-            </header>
+    // Statistics
+    const stats = logs.reduce((acc, log) => {
+        const key = log.level.toLowerCase()
+        acc[key] = (acc[key] || 0) + 1
+        return acc
+    }, {} as Record<string, number>)
 
-            {/* Filter Bar */}
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-4 flex flex-wrap gap-4 items-center justify-between shadow-sm">
-                <div className="flex-1 min-w-[300px] relative">
-                    <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                        type="text"
-                        placeholder="Search logs by message or source..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-emerald-600/20 outline-none transition-all"
-                    />
+    const clearLogs = useCallback(() => {
+        if (window.confirm('Are you sure you want to clear all logs?')) {
+            setLogs([])
+        }
+    }, [])
+
+    const refreshLogs = useCallback(() => { setLogs([...sampleLogs]) }, [])
+
+    // Export
+    const exportLogs = useCallback((format: string) => {
+        let content = ''
+        let filename = `system-logs-${new Date().toISOString().slice(0, 10)}`
+        let mimeType = ''
+        const data = filteredLogs
+
+        if (format === 'csv') {
+            content = 'Timestamp,Level,Message,Source\n'
+            content += data.map(l => `"${l.timestamp}","${l.level}","${l.message}","${l.source}"`).join('\n')
+            mimeType = 'text/csv'; filename += '.csv'
+        } else if (format === 'json') {
+            content = JSON.stringify(data, null, 2)
+            mimeType = 'application/json'; filename += '.json'
+        } else {
+            content = data.map(l => `[${l.timestamp}] ${l.level}: ${l.message} (${l.source})`).join('\n')
+            mimeType = 'text/plain'; filename += '.txt'
+        }
+
+        const blob = new Blob([content], { type: mimeType })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url; a.download = filename; a.click()
+        URL.revokeObjectURL(url)
+    }, [filteredLogs])
+
+    const statCards = [
+        { icon: <Info size={28} className="text-emerald-500" />, count: stats.info || 0, label: 'Info' },
+        { icon: <AlertTriangle size={28} className="text-yellow-500" />, count: stats.warning || 0, label: 'Warnings' },
+        { icon: <XCircle size={28} className="text-red-500" />, count: stats.error || 0, label: 'Errors' },
+        { icon: <Bug size={28} className="text-gray-500" />, count: stats.debug || 0, label: 'Debug' },
+        { icon: <CheckCircle size={28} className="text-green-500" />, count: stats.success || 0, label: 'Success' },
+    ]
+
+    return (
+        <div>
+            {/* ── Page Header (canonical) ── */}
+            <div className="page-header">
+                <h1>System Logs</h1>
+                <p className="page-subtitle">Real-time event stream, error tracking, and audit trail across platform nodes.</p>
+            </div>
+
+            {/* ── Log Statistics ── */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+                {statCards.map(card => (
+                    <div key={card.label} className="stat-card" style={{
+                        background: 'white', borderRadius: 12, padding: 20,
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.1)', textAlign: 'center',
+                    }}>
+                        <div style={{ marginBottom: 8, display: 'flex', justifyContent: 'center' }}>{card.icon}</div>
+                        <h3 className="text-2xl font-medium">{card.count}</h3>
+                        <p style={{ fontSize: 14, color: '#4b5563' }}>{card.label}</p>
+                    </div>
+                ))}
+            </div>
+
+            {/* ── Filters and Controls ── */}
+            <div style={{
+                background: 'white', borderRadius: 12, padding: 24,
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)', marginBottom: 24,
+            }}>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                    <div>
+                        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>Log Level</label>
+                        <select value={levelFilter} onChange={e => setLevelFilter(e.target.value)}
+                            style={{
+                                width: '100%', padding: '8px 12px', border: '1px solid #d1d5db',
+                                borderRadius: 6, fontSize: 14, outline: 'none',
+                            }}>
+                            <option value="all">All Levels</option>
+                            <option value="info">Info</option>
+                            <option value="warning">Warning</option>
+                            <option value="error">Error</option>
+                            <option value="debug">Debug</option>
+                            <option value="success">Success</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>Source</label>
+                        <select value={sourceFilter} onChange={e => setSourceFilter(e.target.value)}
+                            style={{
+                                width: '100%', padding: '8px 12px', border: '1px solid #d1d5db',
+                                borderRadius: 6, fontSize: 14, outline: 'none',
+                            }}>
+                            <option value="all">All Sources</option>
+                            <option value="system">System</option>
+                            <option value="application">Application</option>
+                            <option value="api">API</option>
+                            <option value="database">Database</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>From Date</label>
+                        <input type="datetime-local" style={{
+                            width: '100%', padding: '8px 12px', border: '1px solid #d1d5db',
+                            borderRadius: 6, fontSize: 14, outline: 'none',
+                        }} />
+                    </div>
+                    <div>
+                        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>To Date</label>
+                        <input type="datetime-local" style={{
+                            width: '100%', padding: '8px 12px', border: '1px solid #d1d5db',
+                            borderRadius: 6, fontSize: 14, outline: 'none',
+                        }} />
+                    </div>
                 </div>
-                <div className="flex gap-2">
-                    {(['all', 'info', 'success', 'warning', 'error'] as const).map((level) => (
-                        <button
-                            key={level}
-                            onClick={() => setFilter(level)}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-colors ${filter === level
-                                    ? 'bg-emerald-600 text-white'
-                                    : 'border border-gray-200 dark:border-slate-800 text-gray-500 hover:bg-gray-50 dark:hover:bg-slate-800'
-                                }`}
-                        >
-                            {level}
+
+                {/* Search + Actions */}
+                <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <div style={{ position: 'relative', flex: 1, maxWidth: 448 }}>
+                        <Search size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+                        <input
+                            type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
+                            placeholder="Search logs..."
+                            style={{
+                                width: '100%', paddingLeft: 40, paddingRight: 16, padding: '8px 16px 8px 40px',
+                                border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14, outline: 'none',
+                            }}
+                        />
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <label className="flex items-center" style={{ cursor: 'pointer' }}>
+                            <input type="checkbox" checked={isRealtime} onChange={e => setIsRealtime(e.target.checked)} style={{ marginRight: 8 }} />
+                            <span className="flex items-center" style={{ fontSize: 14 }}>
+                                <span style={{
+                                    display: 'inline-block', width: 8, height: 8, background: '#10b981',
+                                    borderRadius: '50%', marginRight: 6, animation: 'pulse 2s infinite',
+                                }} />
+                                Real-time
+                            </span>
+                        </label>
+                        <button onClick={() => setIsPaused(!isPaused)} style={{
+                            padding: '8px 16px', background: '#e5e7eb', color: '#374151',
+                            borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', gap: 8,
+                        }}>
+                            {isPaused ? <Play size={14} /> : <Pause size={14} />}
+                            {isPaused ? 'Resume' : 'Pause'}
                         </button>
-                    ))}
+                        <button onClick={clearLogs} style={{
+                            padding: '8px 16px', background: '#e5e7eb', color: '#374151',
+                            borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', gap: 8,
+                        }}>
+                            <Trash2 size={14} />Clear
+                        </button>
+                        <button onClick={refreshLogs} style={{
+                            padding: '8px 16px', background: '#059669', color: 'white',
+                            borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', gap: 8,
+                        }}>
+                            <RefreshCw size={14} />Refresh
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            {/* Log Entries */}
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
-                <div className="divide-y divide-gray-100 dark:divide-slate-800">
-                    {filtered.map((log) => (
-                        <div key={log.id} className="px-6 py-4 hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors flex items-start gap-4">
-                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${log.level === 'success' ? 'bg-emerald-100 dark:bg-emerald-900/30' :
-                                    log.level === 'warning' ? 'bg-amber-100 dark:bg-amber-900/30' :
-                                        log.level === 'error' ? 'bg-red-100 dark:bg-red-900/30' :
-                                            'bg-blue-100 dark:bg-blue-900/30'
-                                }`}>
-                                {log.level === 'success' ? <CheckCircleIcon className="w-4 h-4 text-emerald-600" /> :
-                                    log.level === 'warning' ? <AlertTriangleIcon className="w-4 h-4 text-amber-600" /> :
-                                        log.level === 'error' ? <XCircleIcon className="w-4 h-4 text-red-600" /> :
-                                            <InfoIcon className="w-4 h-4 text-blue-600" />}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <div className="flex justify-between items-start">
-                                    <p className="text-sm text-gray-900 dark:text-white">{log.message}</p>
-                                    <span className="text-[10px] text-gray-400 font-mono whitespace-nowrap ml-4">{log.timestamp}</span>
-                                </div>
-                                <div className="flex items-center gap-3 mt-1.5">
-                                    <span className="inline-block text-[10px] px-2 py-0.5 bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400 rounded-full font-bold uppercase tracking-widest">{log.source}</span>
-                                    <span className="text-[10px] text-gray-400">{log.user}</span>
-                                    <span className="text-[10px] text-gray-400 font-mono">{log.ip}</span>
-                                </div>
-                            </div>
+            {/* ── Log Entries ── */}
+            <div style={{
+                background: 'white', borderRadius: 12, padding: 24,
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+            }}>
+                <div ref={logContainerRef} className="log-container" style={{
+                    background: '#f9fafb', borderRadius: 8, padding: 16,
+                    maxHeight: 384, overflowY: 'auto',
+                }}>
+                    {filteredLogs.map((log, i) => (
+                        <div key={i} style={{
+                            fontFamily: "'Monaco', 'Menlo', 'Consolas', monospace",
+                            fontSize: 13, display: 'flex', alignItems: 'flex-start', gap: 12,
+                            padding: '8px 0',
+                            borderBottom: i < filteredLogs.length - 1 ? '1px solid #e5e7eb' : 'none',
+                        }}>
+                            <span style={{ color: '#6b7280', minWidth: 180 }}>{log.timestamp}</span>
+                            <span style={{ color: levelColors[log.level], fontWeight: 500, minWidth: 80 }}>{log.level}</span>
+                            <span style={{ flex: 1, color: '#374151' }}>{log.message}</span>
                         </div>
                     ))}
+                    {filteredLogs.length === 0 && (
+                        <p style={{ textAlign: 'center', color: '#9ca3af', padding: 24, fontSize: 14 }}>No log entries match your filters</p>
+                    )}
+                </div>
+
+                {/* Export Footer */}
+                <div style={{
+                    marginTop: 16, paddingTop: 16,
+                    borderTop: '1px solid #e5e7eb',
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                }}>
+                    <span style={{ fontSize: 14, color: '#4b5563' }}>
+                        Showing {filteredLogs.length} entries
+                    </span>
+                    <div className="flex gap-2">
+                        <button onClick={() => exportLogs('csv')} style={{
+                            padding: '8px 16px', fontSize: 14, background: '#e5e7eb', color: '#374151',
+                            borderRadius: 6, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
+                        }}>
+                            <FileText size={14} />Export CSV
+                        </button>
+                        <button onClick={() => exportLogs('json')} style={{
+                            padding: '8px 16px', fontSize: 14, background: '#e5e7eb', color: '#374151',
+                            borderRadius: 6, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
+                        }}>
+                            <FileCode size={14} />Export JSON
+                        </button>
+                        <button onClick={() => exportLogs('txt')} style={{
+                            padding: '8px 16px', fontSize: 14, background: '#e5e7eb', color: '#374151',
+                            borderRadius: 6, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
+                        }}>
+                            <FileDown size={14} />Export TXT
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

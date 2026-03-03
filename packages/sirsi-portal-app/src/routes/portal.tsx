@@ -1,22 +1,17 @@
 /**
- * Investor Portal — Unified stakeholder dashboard
- * Merged from: portal.html (investor KPI banner, data room, executive summary)
+ * Investor Portal — Pixel-perfect port of investor/portal.html
+ *
+ * Canonical CSS: page-header, page-subtitle, sirsi-card
+ * Features: KPI banner, executive summary, strategic modules grid,
+ * Virtual Data Room taxonomy, compliance footer
+ * Typography: Inter body ≤ 500 (Rule 21), font-semibold only for KPI values
  */
-import { createRoute } from '@tanstack/react-router'
-import { Route as rootRoute } from './__root'
-import { useNavigate } from '@tanstack/react-router'
-import { TrendingUp, Users, Zap, Eye, Clock, DollarSign, FileText, BarChart3, MessageSquare, FolderOpen } from 'lucide-react'
 
-const TrendingUpIcon = TrendingUp as any
-const UsersIcon = Users as any
-const ZapIcon = Zap as any
-const EyeIcon = Eye as any
-const ClockIcon = Clock as any
-const DollarSignIcon = DollarSign as any
-const FileTextIcon = FileText as any
-const BarChart3Icon = BarChart3 as any
-const MessageSquareIcon = MessageSquare as any
-const FolderOpenIcon = FolderOpen as any
+import { createRoute, Link } from '@tanstack/react-router'
+import { Route as rootRoute } from './__root'
+import {
+    Users, FolderOpen, PieChart, MessageCircle
+} from 'lucide-react'
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
@@ -24,128 +19,133 @@ export const Route = createRoute({
     component: InvestorPortal,
 })
 
-const kpiBanner = [
-    { label: 'ARR Y3', value: '$33M', color: 'emerald' },
-    { label: 'Customers', value: '280', color: 'blue' },
-    { label: 'Savings', value: '25%', color: 'purple' },
-    { label: 'Uptime', value: '99.2%', color: 'orange' },
-    { label: 'ROI', value: '8.5x', color: 'indigo' },
-    { label: 'Payback', value: '3.2mo', color: 'rose' },
+// ── KPI Data ──
+const kpis = [
+    { value: '$33M', label: 'ARR Y3' },
+    { value: '280', label: 'Customers' },
+    { value: '25%', label: 'Savings' },
+    { value: '99.2%', label: 'Uptime' },
+    { value: '8.5x', label: 'ROI' },
+    { value: '3.2m', label: 'Payback' },
 ]
 
-const dataRoomSections = [
-    { title: 'Financial Reports', count: 4, icon: DollarSignIcon, color: 'blue', desc: 'Comprehensive business case and projections' },
-    { title: 'Business Metrics', count: 3, icon: TrendingUpIcon, color: 'emerald', desc: 'Market analysis and competitive positioning' },
-    { title: 'Legal Documents', count: 5, icon: FileTextIcon, color: 'purple', desc: 'Privacy, terms, compliance' },
-    { title: 'Strategic Plans', count: 2, icon: ZapIcon, color: 'orange', desc: 'Product roadmap and milestones' },
-    { title: 'Communications', count: 6, icon: MessageSquareIcon, color: 'red', desc: 'Committee meeting summaries' },
-    { title: 'Investment Terms', count: 3, icon: DollarSignIcon, color: 'green', desc: 'Terms, conditions, and offering details' },
+const strategicModules = [
+    { icon: Users, label: 'Committee Hub', route: '/committee' as const, bg: 'bg-emerald-600', hover: 'hover:bg-emerald-700' },
+    { icon: FolderOpen, label: 'Data Room', route: '/data-room' as const, bg: 'bg-blue-600', hover: 'hover:bg-blue-700' },
+    { icon: PieChart, label: 'KPI Ledger', route: '/kpi-metrics' as const, bg: 'bg-emerald-800', hover: 'hover:bg-emerald-900' },
+    { icon: MessageCircle, label: 'Messaging', route: '/messaging' as const, bg: 'bg-amber-600', hover: 'hover:bg-amber-700' },
+]
+
+const dataRoomCategories = [
+    { letter: 'F', name: 'Financial Reports', sub: 'Business Case & Projections', letterBg: 'bg-blue-50 text-blue-600 border-blue-100', audit: 'Q1 2026', docs: 4 },
+    { letter: 'M', name: 'Market Metrics', sub: 'Analysis & Competitive Position', letterBg: 'bg-emerald-50 text-emerald-600 border-emerald-100', audit: 'FEB 2026', docs: 3 },
+    { letter: 'L', name: 'Legal Ledger', sub: 'Compliance & Terms', letterBg: 'bg-purple-50 text-purple-600 border-purple-100', audit: 'JAN 2026', docs: 5 },
 ]
 
 function InvestorPortal() {
-    const navigate = useNavigate()
-
     return (
-        <div className="space-y-8 animate-in fade-in duration-700">
-            {/* KPI Banner */}
-            <div className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-950/20 dark:to-blue-950/20 rounded-2xl border border-emerald-200/50 dark:border-emerald-800/20 p-6">
-                <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                        <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Live KPIs</span>
+        <div>
+            {/* ── Page Header (canonical) ── */}
+            <div className="page-header">
+                <h1>Investor Portal</h1>
+                <p className="page-subtitle">Your secure gateway to platform insights, projections, and strategic documentation</p>
+            </div>
+
+            {/* ── KPI Banner ── */}
+            <div className="sirsi-card mb-8" style={{
+                background: 'linear-gradient(135deg, #ecfdf5, #eff6ff)',
+                borderColor: '#d1fae5', padding: 40,
+            }}>
+                <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center gap-3">
+                        <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse" />
+                        <span style={{ fontSize: 10, fontWeight: 600, color: '#065f46', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Live Platform KPIs</span>
                     </div>
-                    <span className="text-[10px] text-gray-400">Updated 2 min ago</span>
+                    <span style={{ fontSize: 10, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Synchronized 2m Ago</span>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                    {kpiBanner.map((kpi) => (
+
+                <div className="grid grid-cols-2 lg:grid-cols-6 gap-8">
+                    {kpis.map(kpi => (
                         <div key={kpi.label} className="text-center">
-                            <div className={`text-2xl font-bold text-${kpi.color}-600 dark:text-${kpi.color}-400`}>{kpi.value}</div>
-                            <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">{kpi.label}</div>
+                            <div style={{ fontSize: 24, fontWeight: 600, color: '#064e3b' }}>{kpi.value}</div>
+                            <div style={{ fontSize: 9, fontWeight: 500, color: 'rgba(5,150,105,0.6)', textTransform: 'uppercase', letterSpacing: '-0.02em', marginTop: 4 }}>{kpi.label}</div>
                         </div>
                     ))}
                 </div>
             </div>
 
-            {/* Header */}
-            <header className="text-center border-b border-gray-200 dark:border-slate-800 pb-8">
-                <h1 className="text-4xl font-bold text-gray-900 dark:text-white"
-                    style={{ fontFamily: "'Cinzel', serif", letterSpacing: '0.02em' }}>
-                    SIRSINEXUS PORTAL
-                </h1>
-                <p className="text-gray-500 dark:text-slate-400 mt-3 max-w-2xl mx-auto text-sm leading-relaxed">
-                    Your secure gateway to comprehensive platform insights, financial projections, and strategic documentation
-                </p>
-            </header>
-
-            {/* Executive Summary */}
-            <div className="bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-950/10 dark:to-slate-900 rounded-2xl p-8 border-l-4 border-emerald-500 shadow-sm">
-                <h2 className="text-xs font-bold uppercase tracking-widest text-emerald-600 mb-3" style={{ fontFamily: "'Cinzel', serif" }}>
-                    EXECUTIVE SUMMARY
-                </h2>
-                <p className="text-gray-700 dark:text-slate-300 leading-relaxed">
+            {/* ── Executive Summary ── */}
+            <div className="bg-white border-l-4 border-emerald-600 rounded-r-xl p-8 shadow-sm mb-10">
+                <h3 style={{ fontSize: 12, fontWeight: 600, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>Executive Summary</h3>
+                <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.7, fontWeight: 500 }}>
                     SirsiNexus represents a unique convergence of technological innovation and strategic market positioning.
-                    With a proven AI-powered cloud optimization platform and exceptional network access through Techstars
-                    Universe, academic partnerships, and VC connections, we are positioned to capture significant market share
-                    in the rapidly growing cloud cost optimization space.
+                    With a proven AI-powered cloud optimization platform and exceptional network access through Techstars Universe,
+                    academic partnerships, and VC connections, we are positioned to capture significant market share in the
+                    rapidly growing cloud cost optimization space.
                 </p>
             </div>
 
-            {/* Quick Navigation */}
-            <section>
-                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500 mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
-                    QUICK ACCESS
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <QuickAction icon={<EyeIcon className="w-5 h-5" />} label="Committee Documents" color="blue" onClick={() => navigate({ to: '/committee' })} />
-                    <QuickAction icon={<FolderOpenIcon className="w-5 h-5" />} label="Data Room" color="purple" onClick={() => navigate({ to: '/data-room' })} />
-                    <QuickAction icon={<BarChart3Icon className="w-5 h-5" />} label="KPI / Unit Metrics" color="emerald" onClick={() => navigate({ to: '/kpi-metrics' })} />
-                    <QuickAction icon={<MessageSquareIcon className="w-5 h-5" />} label="Messaging" color="orange" onClick={() => navigate({ to: '/messaging' })} />
-                </div>
-            </section>
-
-            {/* Secure Data Room */}
-            <section>
-                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500 mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
-                    SECURE DATA ROOM
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {dataRoomSections.map((section) => (
-                        <div key={section.title}
-                            className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-6 shadow-sm hover:shadow-md transition-all cursor-pointer group hover:border-emerald-400 dark:hover:border-emerald-600"
+            {/* ── Strategic Modules Grid ── */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                {strategicModules.map(mod => {
+                    const Icon = mod.icon as any
+                    return (
+                        <Link key={mod.label} to={mod.route}
+                            className={`sirsi-card ${mod.bg} ${mod.hover} transition-all shadow-lg`}
+                            style={{ borderColor: 'transparent', padding: 24, display: 'flex', alignItems: 'center', gap: 16, textDecoration: 'none' }}
                         >
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className={`w-12 h-12 bg-${section.color}-100 dark:bg-${section.color}-900/20 rounded-xl flex items-center justify-center`}>
-                                    <section.icon className={`w-6 h-6 text-${section.color}-600`} />
-                                </div>
+                            <div style={{
+                                width: 40, height: 40, background: 'rgba(255,255,255,0.1)',
+                                borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                color: 'white', border: '1px solid rgba(255,255,255,0.2)',
+                            }}>
+                                <Icon size={18} />
                             </div>
-                            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 group-hover:text-emerald-600 transition-colors">{section.title}</h3>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">{section.desc}</p>
-                            <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{section.count} documents</div>
-                        </div>
-                    ))}
-                </div>
-            </section>
+                            <span style={{ fontSize: 12, fontWeight: 600, color: 'white', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{mod.label}</span>
+                        </Link>
+                    )
+                })}
+            </div>
 
-            {/* Document Control Footer */}
-            <div className="bg-gray-50 dark:bg-slate-800 rounded-xl p-4 text-center border border-gray-200 dark:border-slate-700">
-                <p className="text-xs text-gray-500">
-                    <strong className="text-gray-700 dark:text-gray-300">Document Control:</strong> Confidential — For Investment Committee Review Only
+            {/* ── Virtual Data Room Taxonomy ── */}
+            <h3 className="border-l-4 border-emerald-600 pl-4 mb-8" style={{
+                fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em',
+            }}>Virtual Data Room Taxonomy</h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                {dataRoomCategories.map(cat => (
+                    <div key={cat.letter} className="sirsi-card group cursor-pointer hover:border-emerald-200 transition-all">
+                        <div className="flex items-center gap-5 mb-4">
+                            <div className={`w-12 h-12 ${cat.letterBg} rounded-xl flex items-center justify-center border`}
+                                style={{ fontStyle: 'italic', fontWeight: 600, fontSize: 20 }}>
+                                {cat.letter}
+                            </div>
+                            <div>
+                                <h4 style={{ fontWeight: 500, color: '#111827' }} className="group-hover:text-emerald-600 transition-colors">{cat.name}</h4>
+                                <p style={{ fontSize: 10, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{cat.sub}</p>
+                            </div>
+                        </div>
+                        <div className="flex justify-between items-center" style={{ fontSize: 10, fontWeight: 500, color: '#9ca3af' }}>
+                            <span>LATEST AUDIT: {cat.audit}</span>
+                            <span style={{ color: '#059669' }}>{cat.docs} DOCUMENTS</span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* ── Compliance Footer ── */}
+            <div className="sirsi-card bg-gray-50 border-gray-100 text-center" style={{ paddingTop: 24, paddingBottom: 24 }}>
+                <p style={{ fontSize: 11, fontWeight: 600, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>Institutional Compliance Disclaimer</p>
+                <p style={{ fontSize: 12, color: '#6b7280', fontStyle: 'italic', maxWidth: 672, margin: '0 auto' }}>
+                    This portal contains highly confidential strategic data. Unauthorized access or reproduction is strictly
+                    prohibited and subject to legal enforcement under the Sirsi Nexus Non-Disclosure Agreement.
                 </p>
-                <p className="text-[10px] text-gray-400 mt-1">
-                    Prepared by: SirsiNexus Strategy Team | Review Date: Quarterly | Distribution: Executive Team, Investment Committee
-                </p>
+                <div className="mt-4 flex justify-center gap-8" style={{ fontSize: 9, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase' }}>
+                    <span>PREPARED BY: STRATEGY TEAM</span>
+                    <span>REVIEW: QUARTERLY</span>
+                    <span>DISTRIBUTION: COMMITTEE ONLY</span>
+                </div>
             </div>
         </div>
-    )
-}
-
-function QuickAction({ icon, label, color, onClick }: any) {
-    return (
-        <button onClick={onClick}
-            className={`p-5 bg-${color}-600 text-white rounded-xl hover:bg-${color}-700 transition-all font-medium text-sm flex items-center gap-3 shadow-sm hover:shadow-md`}
-        >
-            {icon}
-            {label}
-        </button>
     )
 }

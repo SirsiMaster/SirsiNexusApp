@@ -1,26 +1,19 @@
 /**
- * Security — MFA, Access Control, Audit
- * Merged from: sirsinexusportal/security.html + ui/security/page.tsx
+ * Security & Settings — Pixel-perfect port of security/index.html
+ *
+ * Canonical CSS: page-header, page-subtitle, sirsi-card, sirsi-table-wrap,
+ * sirsi-table, sirsi-badge, btn-primary, btn-secondary
+ * Typography: Inter body ≤ 500 (Rule 21)
  */
+
 import { createRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './__root'
 import { useState } from 'react'
 import {
-    Shield, Lock, Key, AlertTriangle, CheckCircle, Clock, Monitor, Smartphone,
-    Globe, UserCheck, XCircle
+    ShieldCheck, Ban, UserCheck, Lock, Clock,
+    XCircle, Trash2, Plus, History, AlertTriangle,
+    Key, UserX
 } from 'lucide-react'
-
-const ShieldIcon = Shield as any
-const LockIcon = Lock as any
-const KeyIcon = Key as any
-const AlertTriangleIcon = AlertTriangle as any
-const CheckCircleIcon = CheckCircle as any
-const ClockIcon = Clock as any
-const MonitorIcon = Monitor as any
-const SmartphoneIcon = Smartphone as any
-const GlobeIcon = Globe as any
-const UserCheckIcon = UserCheck as any
-const XCircleIcon = XCircle as any
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
@@ -28,128 +21,246 @@ export const Route = createRoute({
     component: Security,
 })
 
-const activeSessions = [
-    { id: '1', device: 'MacBook Pro 16"', browser: 'Chrome 122', location: 'New York, US', ip: '192.168.1.xxx', lastActive: 'Now', current: true },
-    { id: '2', device: 'iPhone 15 Pro', browser: 'Safari Mobile', location: 'New York, US', ip: '10.0.0.xxx', lastActive: '2 min ago', current: false },
+// ── Mock Data ──
+const sessions = [
+    { email: 'admin@sirsinexus.com', ip: '192.168.1.100', location: 'New York, US', time: '2 hours ago' },
+    { email: 'john.doe@example.com', ip: '192.168.1.101', location: 'Los Angeles, US', time: '30 minutes ago' },
 ]
 
-const securityEvents = [
-    { id: '1', event: 'Successful login via MFA', time: '2 hours ago', status: 'success' as const, ip: '192.168.1.xxx' },
-    { id: '2', event: 'MFA TOTP enrollment completed', time: '1 day ago', status: 'success' as const, ip: '192.168.1.xxx' },
-    { id: '3', event: 'Failed login attempt (wrong password)', time: '3 days ago', status: 'warning' as const, ip: '45.33.xxx.xxx' },
-    { id: '4', event: 'Password changed successfully', time: '1 week ago', status: 'success' as const, ip: '192.168.1.xxx' },
-    { id: '5', event: 'API key rotated', time: '2 weeks ago', status: 'info' as const, ip: '192.168.1.xxx' },
+const initialWhitelist = [
+    { ip: '192.168.1.100', label: 'Admin Office Gateway' },
+    { ip: '10.0.0.0/24', label: 'Corporate Intra-Network' },
+]
+
+const firewallRules = [
+    { name: 'SQL Injection Mitigation', desc: 'Real-time pattern analysis for malicious query detection', enabled: true },
+]
+
+const governanceRules = [
+    { name: 'Admin Panel IP Lock', desc: 'Restrict administrative console to whitelisted secure networks', enabled: true },
 ]
 
 function Security() {
-    const [mfaEnabled] = useState(true)
+    const [whitelist, setWhitelist] = useState(initialWhitelist)
+    const [newIP, setNewIP] = useState('')
+    const [toggles, setToggles] = useState<Record<string, boolean>>({
+        'Admin Panel IP Lock': true,
+        'SQL Injection Mitigation': true,
+    })
+
+    const addIP = () => {
+        if (newIP.trim()) {
+            setWhitelist([...whitelist, { ip: newIP.trim(), label: '' }])
+            setNewIP('')
+        }
+    }
+
+    const removeIP = (ip: string) => {
+        if (window.confirm('Remove this IP from whitelist?')) {
+            setWhitelist(whitelist.filter(w => w.ip !== ip))
+        }
+    }
+
+    const toggleRule = (name: string) => {
+        setToggles(prev => ({ ...prev, [name]: !prev[name] }))
+    }
 
     return (
-        <div className="space-y-8 animate-in fade-in duration-700">
-            <header className="flex justify-between items-end border-b border-gray-200 dark:border-slate-800 pb-6">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white"
-                        style={{ fontFamily: "'Cinzel', serif", letterSpacing: '0.02em' }}>
-                        SECURITY CENTER
-                    </h1>
-                    <p className="text-gray-500 dark:text-slate-400 mt-2 text-sm">MFA enforcement, session management, and audit trail</p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <ShieldIcon className="w-4 h-4 text-emerald-600" />
-                    <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">SOC 2 Compliant</span>
-                </div>
-            </header>
-
-            {/* Security Status Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <SecurityCard icon={<ShieldIcon className="w-5 h-5 text-emerald-600" />} title="Security Score" value="94/100" subtitle="Excellent" color="emerald" />
-                <SecurityCard icon={<LockIcon className="w-5 h-5 text-blue-600" />} title="MFA Status" value={mfaEnabled ? 'Enabled' : 'Disabled'} subtitle="TOTP Verified" color="blue" />
-                <SecurityCard icon={<ClockIcon className="w-5 h-5 text-amber-600" />} title="Last Audit" value="2 days ago" subtitle="No issues found" color="amber" />
-                <SecurityCard icon={<AlertTriangleIcon className="w-5 h-5 text-red-600" />} title="Threats Blocked" value="3" subtitle="Last 30 days" color="red" />
+        <div>
+            {/* ── Page Header (canonical) ── */}
+            <div className="page-header">
+                <h1>Security & Settings</h1>
+                <p className="page-subtitle">Access control, firewall rules, and security audit configuration</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* MFA Configuration */}
-                <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
-                    <h2 className="font-bold text-gray-900 dark:text-white mb-6" style={{ fontFamily: "'Cinzel', serif", letterSpacing: '0.03em' }}>
-                        MULTI-FACTOR AUTHENTICATION
-                    </h2>
-                    <div className="space-y-4">
-                        <MFAOption icon={<SmartphoneIcon className="w-5 h-5" />} title="TOTP Authenticator" desc="Use Google Authenticator or Authy" enabled={true} />
-                        <MFAOption icon={<KeyIcon className="w-5 h-5" />} title="Hardware Security Key" desc="YubiKey or FIDO2 compatible device" enabled={false} />
-                        <MFAOption icon={<GlobeIcon className="w-5 h-5" />} title="Recovery Codes" desc="One-time use backup codes" enabled={true} />
-                    </div>
-                    <div className="mt-6 p-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl border border-emerald-200 dark:border-emerald-800/30">
-                        <div className="flex items-center gap-2">
-                            <CheckCircleIcon className="w-4 h-4 text-emerald-600" />
-                            <span className="text-sm font-bold text-emerald-700 dark:text-emerald-400">MFA is enforced for all admin accounts</span>
-                        </div>
-                        <p className="text-xs text-emerald-600/70 mt-1">Per ADR-016 Canonical MFA Routing Hub protocol</p>
-                    </div>
+            {/* ── Threat Level Alert ── */}
+            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-5 mb-8 flex items-center gap-5 transition-all hover:shadow-md">
+                <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+                    <ShieldCheck size={28} />
+                </div>
+                <div>
+                    <h2 style={{ fontSize: 20, fontWeight: 500, color: '#064e3b', margin: 0 }}>System Status: Optimal</h2>
+                    <p style={{ color: '#047857', fontSize: 14, marginTop: 4 }}>No immediate security threats detected. All encryption valid and Vault protocols secured.</p>
+                </div>
+            </div>
+
+            {/* ── Security Metrics ── */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+                <div className="sirsi-card text-center" style={{ paddingTop: 32, paddingBottom: 32 }}>
+                    <div className="text-red-500 mb-3"><Ban size={28} /></div>
+                    <div style={{ fontSize: 36, fontWeight: 800, color: '#111827', marginBottom: 4 }}>23</div>
+                    <div style={{ fontSize: 11, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Blocked Attempts</div>
+                </div>
+                <div className="sirsi-card text-center border-emerald-100 bg-emerald-50/20" style={{ paddingTop: 32, paddingBottom: 32 }}>
+                    <div className="text-emerald-600 mb-3"><UserCheck size={28} /></div>
+                    <div style={{ fontSize: 36, fontWeight: 800, color: '#111827', marginBottom: 4 }}>100%</div>
+                    <div style={{ fontSize: 11, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Users with MFA</div>
+                </div>
+                <div className="sirsi-card text-center" style={{ paddingTop: 32, paddingBottom: 32 }}>
+                    <div className="text-emerald-500 mb-3"><Lock size={28} /></div>
+                    <div style={{ fontSize: 36, fontWeight: 800, color: '#111827', marginBottom: 4 }}>SSL A+</div>
+                    <div style={{ fontSize: 11, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Encryption Rating</div>
+                </div>
+                <div className="sirsi-card text-center" style={{ paddingTop: 32, paddingBottom: 32 }}>
+                    <div className="text-amber-500 mb-3"><Clock size={28} /></div>
+                    <div style={{ fontSize: 36, fontWeight: 800, color: '#111827', marginBottom: 4 }}>2d</div>
+                    <div style={{ fontSize: 11, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Since Last Audit</div>
+                </div>
+            </div>
+
+            {/* ── Access Control ── */}
+            <div className="sirsi-card mb-8">
+                <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24 }}>Active Administrative Sessions</h3>
+                <div className="sirsi-table-wrap mb-8">
+                    <table className="sirsi-table">
+                        <thead>
+                            <tr>
+                                <th>Authorized User</th>
+                                <th>IP Address</th>
+                                <th>Location Context</th>
+                                <th>Session Start</th>
+                                <th style={{ textAlign: 'right' }}>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {sessions.map((s) => (
+                                <tr key={s.ip}>
+                                    <td style={{ fontWeight: 500, color: '#111827', fontStyle: 'italic' }}>{s.email}</td>
+                                    <td><code style={{ fontSize: 12, fontFamily: 'monospace' }}>{s.ip}</code></td>
+                                    <td>{s.location}</td>
+                                    <td style={{ color: '#6b7280' }}>{s.time}</td>
+                                    <td style={{ textAlign: 'right' }}>
+                                        <button className="btn-secondary group hover:border-red-500 hover:text-red-500"
+                                            onClick={() => window.confirm('Terminate this session?') && alert('Session terminated')}>
+                                            <XCircle size={14} style={{ marginRight: 4 }} /> Terminate
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
 
-                {/* Active Sessions */}
-                <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
-                    <h2 className="font-bold text-gray-900 dark:text-white mb-6" style={{ fontFamily: "'Cinzel', serif", letterSpacing: '0.03em' }}>
-                        ACTIVE SESSIONS
-                    </h2>
-                    <div className="space-y-3">
-                        {activeSessions.map((session) => (
-                            <div key={session.id} className={`p-4 rounded-xl border ${session.current ? 'border-emerald-200 dark:border-emerald-800/30 bg-emerald-50/50 dark:bg-emerald-950/10' : 'border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/50'}`}>
-                                <div className="flex justify-between items-start">
-                                    <div className="flex items-center gap-3">
-                                        {session.device.includes('Mac') ? <MonitorIcon className="w-5 h-5 text-gray-400" /> : <SmartphoneIcon className="w-5 h-5 text-gray-400" />}
-                                        <div>
-                                            <div className="text-sm font-bold text-gray-900 dark:text-white">{session.device}</div>
-                                            <div className="text-xs text-gray-500">{session.browser} • {session.location}</div>
-                                            <div className="text-[10px] text-gray-400 mt-0.5 font-mono">{session.ip}</div>
-                                        </div>
-                                    </div>
-                                    <div className="text-right">
-                                        <span className="text-[10px] text-gray-400">{session.lastActive}</span>
-                                        {session.current && (
-                                            <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 rounded-full text-[10px] font-bold mt-1">
-                                                <div className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse" />
-                                                Current
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                                {!session.current && (
-                                    <button className="mt-3 text-xs font-bold text-red-500 hover:text-red-600">Revoke Session</button>
-                                )}
+                <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 16 }}>Governance & Access Rules</h3>
+                <div className="space-y-4">
+                    {governanceRules.map(rule => (
+                        <div key={rule.name} className="flex items-center justify-between p-5 bg-gray-50 rounded-xl border border-gray-100 hover:border-emerald-200 transition-all">
+                            <div>
+                                <p style={{ fontWeight: 500, color: '#111827' }}>{rule.name}</p>
+                                <p style={{ fontSize: 12, color: '#6b7280', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{rule.desc}</p>
+                            </div>
+                            <ToggleSwitch checked={toggles[rule.name]} onChange={() => toggleRule(rule.name)} />
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* ── Firewall & IP Management ── */}
+            <div className="sirsi-card mb-8">
+                <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24 }}>Firewall & Perimeter Defense</h3>
+
+                <div className="mb-8">
+                    <h4 style={{ fontSize: 11, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 16 }}>IP Whitelist Context</h4>
+                    <div className="space-y-3 mb-6">
+                        {whitelist.map(w => (
+                            <div key={w.ip} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
+                                <span style={{ fontSize: 14, fontWeight: 500, color: '#374151', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>
+                                    {w.ip}
+                                    {w.label && <span style={{ color: '#9ca3af', fontWeight: 400, marginLeft: 8, fontStyle: 'italic', fontFamily: 'Inter, sans-serif' }}>— {w.label}</span>}
+                                </span>
+                                <button onClick={() => removeIP(w.ip)} style={{ color: '#9ca3af', background: 'none', border: 'none', cursor: 'pointer' }} className="hover:text-red-500 transition-colors">
+                                    <Trash2 size={14} />
+                                </button>
                             </div>
                         ))}
                     </div>
+                    <div className="flex gap-3">
+                        <input
+                            type="text" value={newIP} onChange={e => setNewIP(e.target.value)}
+                            placeholder="Enter CIDR range or specific IP"
+                            style={{
+                                flex: 1, padding: '8px 16px', border: '1px solid #e5e7eb',
+                                borderRadius: 8, fontSize: 14, outline: 'none',
+                            }}
+                        />
+                        <button className="btn-primary flex items-center gap-2" onClick={addIP}>
+                            <Plus size={14} /> Authorize IP
+                        </button>
+                    </div>
+                </div>
+
+                <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 16 }}>Active Firewall Protocols</h3>
+                <div className="space-y-4">
+                    {firewallRules.map(rule => (
+                        <div key={rule.name} className="flex items-center justify-between p-5 rounded-xl" style={{ background: 'rgba(236, 253, 245, 0.3)', border: '1px solid #d1fae5' }}>
+                            <div>
+                                <p style={{ fontWeight: 500, color: '#111827' }}>{rule.name}</p>
+                                <p style={{ fontSize: 12, color: '#6b7280', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{rule.desc}</p>
+                            </div>
+                            <ToggleSwitch checked={toggles[rule.name]} onChange={() => toggleRule(rule.name)} />
+                        </div>
+                    ))}
                 </div>
             </div>
 
-            {/* Security Event Log */}
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
-                <div className="px-6 py-4 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/50">
-                    <h3 className="font-bold text-gray-900 dark:text-white" style={{ fontFamily: "'Cinzel', serif", letterSpacing: '0.03em' }}>
-                        SECURITY EVENT LOG
-                    </h3>
+            {/* ── Security Audit Log ── */}
+            <div className="sirsi-card mb-8">
+                <div className="flex justify-between items-center mb-6">
+                    <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Historical Audit Ledger</h3>
                 </div>
-                <div className="divide-y divide-gray-100 dark:divide-slate-800">
-                    {securityEvents.map((evt) => (
-                        <div key={evt.id} className="px-6 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
-                            <div className="flex items-center gap-3">
-                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${evt.status === 'success' ? 'bg-emerald-100 dark:bg-emerald-900/30' :
-                                        evt.status === 'warning' ? 'bg-amber-100 dark:bg-amber-900/30' :
-                                            'bg-blue-100 dark:bg-blue-900/30'
-                                    }`}>
-                                    {evt.status === 'success' ? <CheckCircleIcon className="w-4 h-4 text-emerald-600" /> :
-                                        evt.status === 'warning' ? <AlertTriangleIcon className="w-4 h-4 text-amber-600" /> :
-                                            <UserCheckIcon className="w-4 h-4 text-blue-600" />}
-                                </div>
-                                <div>
-                                    <div className="text-sm font-medium text-gray-900 dark:text-white">{evt.event}</div>
-                                    <div className="text-[10px] text-gray-400 font-mono">{evt.ip}</div>
-                                </div>
-                            </div>
-                            <span className="text-xs text-gray-400">{evt.time}</span>
+                <div className="space-y-3">
+                    <div className="p-4 bg-gray-50 border border-gray-100 rounded-xl flex justify-between items-start">
+                        <div>
+                            <h6 style={{ fontWeight: 500, color: '#111827', marginBottom: 4 }}>Failed Login Attempt</h6>
+                            <p style={{ fontSize: 12, color: '#6b7280', fontStyle: 'italic' }}>Multiple invalid handshakes detected from IP 45.142.182.112</p>
+                            <p style={{ fontSize: 10, color: '#9ca3af', marginTop: 8, textTransform: 'uppercase', fontWeight: 500, letterSpacing: '-0.02em' }}>10 mins ago • Vector: Brute Force</p>
                         </div>
+                        <span className="sirsi-badge sirsi-badge-error">Critical</span>
+                    </div>
+                </div>
+                <div className="text-center mt-6">
+                    <button className="btn-secondary px-8" style={{ fontWeight: 500, fontSize: 12, textTransform: 'uppercase' }}>
+                        <History size={14} style={{ display: 'inline', marginRight: 8 }} />
+                        Access Historical Audit Trail
+                    </button>
+                </div>
+            </div>
+
+            {/* ── Emergency Protocols ── */}
+            <div className="sirsi-card" style={{
+                borderColor: 'transparent', background: 'linear-gradient(135deg, #dc2626, #991b1b)',
+                padding: 32, color: 'white', position: 'relative', overflow: 'hidden',
+            }}>
+                <div style={{
+                    position: 'absolute', right: -40, bottom: -40,
+                    fontSize: 180, color: 'rgba(255,255,255,0.05)',
+                }}>
+                    <AlertTriangle size={180} />
+                </div>
+                <h3 style={{ fontSize: 24, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '-0.02em', marginBottom: 8 }}>Emergency Protocols</h3>
+                <p style={{ color: '#fecaca', fontSize: 14, marginBottom: 32, fontWeight: 500, fontStyle: 'italic', opacity: 0.8 }}>Use these actions only in case of verified security breach.</p>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6" style={{ position: 'relative', zIndex: 10 }}>
+                    {[
+                        { icon: <Lock size={18} />, label: 'System Lockdown', action: 'block all non-admin access' },
+                        { icon: <UserX size={18} />, label: 'Flush Sessions', action: 'terminate all active sessions' },
+                        { icon: <Key size={18} />, label: 'Reset Passwords', action: 'force all users to reset their passwords' },
+                    ].map(btn => (
+                        <button key={btn.label}
+                            onClick={() => window.confirm(`This will ${btn.action}. Are you sure?`) && alert(`${btn.label} activated!`)}
+                            style={{
+                                padding: '16px 24px', background: 'rgba(255,255,255,0.1)',
+                                backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.2)',
+                                borderRadius: 12, fontWeight: 600, textTransform: 'uppercase',
+                                fontSize: 12, letterSpacing: '0.1em', color: 'white',
+                                cursor: 'pointer', display: 'flex', alignItems: 'center',
+                                justifyContent: 'center', gap: 12, boxShadow: '0 10px 25px -5px rgba(0,0,0,0.25)',
+                                transition: 'all 0.2s',
+                            }}
+                            className="hover:bg-white hover:text-red-700"
+                        >
+                            {btn.icon} {btn.label}
+                        </button>
                     ))}
                 </div>
             </div>
@@ -157,32 +268,22 @@ function Security() {
     )
 }
 
-function SecurityCard({ icon, title, value, subtitle, color }: any) {
+// ── Toggle Switch (matches HTML .toggle-switch exactly) ──
+function ToggleSwitch({ checked, onChange }: { checked: boolean; onChange: () => void }) {
     return (
-        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-4 shadow-sm">
-            <div className="flex items-center gap-3 mb-3">
-                <div className={`w-9 h-9 bg-${color}-100 dark:bg-${color}-900/30 rounded-lg flex items-center justify-center`}>{icon}</div>
-            </div>
-            <div className="text-xl font-bold text-gray-900 dark:text-white">{value}</div>
-            <div className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">{title}</div>
-            <div className="text-[10px] text-gray-500 mt-1 italic">{subtitle}</div>
-        </div>
-    )
-}
-
-function MFAOption({ icon, title, desc, enabled }: any) {
-    return (
-        <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700">
-            <div className="flex items-center gap-3">
-                <div className="text-gray-400">{icon}</div>
-                <div>
-                    <div className="text-sm font-bold text-gray-900 dark:text-white">{title}</div>
-                    <div className="text-xs text-gray-500">{desc}</div>
-                </div>
-            </div>
-            <div className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest ${enabled ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600' : 'bg-gray-200 dark:bg-slate-700 text-gray-400'}`}>
-                {enabled ? 'Active' : 'Configure'}
-            </div>
-        </div>
+        <label style={{ position: 'relative', display: 'inline-block', width: 44, height: 24, cursor: 'pointer' }}>
+            <input type="checkbox" checked={checked} onChange={onChange} style={{ opacity: 0, width: 0, height: 0 }} />
+            <span style={{
+                position: 'absolute', cursor: 'pointer', top: 0, left: 0, right: 0, bottom: 0,
+                backgroundColor: checked ? '#059669' : '#e5e7eb',
+                transition: '0.4s', borderRadius: 34,
+            }}>
+                <span style={{
+                    position: 'absolute', content: '""', height: 18, width: 18,
+                    left: checked ? 23 : 3, bottom: 3,
+                    backgroundColor: 'white', transition: '0.4s', borderRadius: '50%',
+                }} />
+            </span>
+        </label>
     )
 }

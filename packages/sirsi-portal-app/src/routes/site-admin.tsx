@@ -1,139 +1,240 @@
 /**
- * Site Admin — Platform Configuration
- * Merged from: sirsinexusportal/site-admin.html
+ * System Status Dashboard — Pixel-perfect port of system-status/index.html
+ *
+ * Canonical CSS: page-header, page-subtitle, sirsi-card, sirsi-badge
+ * Features: SVG ring gauges, core/external service grid, recharts 24h latency & error,
+ * audit trail with border-l-4 incident cards
+ * Typography: Inter body ≤ 500 (Rule 21)
  */
+
 import { createRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './__root'
-import { useState } from 'react'
-import { Globe, Server, Database, Cloud, RefreshCw, CheckCircle } from 'lucide-react'
-
-const GlobeIcon = Globe as any
-const ServerIcon = Server as any
-const DatabaseIcon = Database as any
-const CloudIcon = Cloud as any
-const RefreshCwIcon = RefreshCw as any
-const CheckCircleIcon = CheckCircle as any
+import { useState, useEffect } from 'react'
+import {
+    Server, Database as DatabaseIcon, Cpu, Mail, CreditCard, TrendingUp,
+    ChevronRight
+} from 'lucide-react'
+import {
+    LineChart, Line, BarChart, Bar,
+    XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+} from 'recharts'
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
     path: '/site-admin',
-    component: SiteAdmin,
+    component: SystemStatus,
 })
 
-const services = [
-    { name: 'Firebase Hosting', status: 'operational' as const, url: 'sirsi-sign.web.app', uptime: '99.97%', icon: CloudIcon },
-    { name: 'Cloud Run (gRPC)', status: 'operational' as const, url: 'api.sirsi.ai', uptime: '99.85%', icon: ServerIcon },
-    { name: 'Cloud SQL', status: 'operational' as const, url: 'postgres-primary', uptime: '99.99%', icon: DatabaseIcon },
-    { name: 'Firestore', status: 'operational' as const, url: 'sirsi-nexus-live', uptime: '99.99%', icon: DatabaseIcon },
-    { name: 'Custom Domains', status: 'operational' as const, url: 'sign.sirsi.ai / sirsi.ai', uptime: '100%', icon: GlobeIcon },
+// ── Mock Data ──
+const gauges = [
+    { label: 'System Uptime', sub: '30-Day Rolling Average', value: 90, color: '#10b981' },
+    { label: 'Latency Optima', sub: 'Inference & Response', value: 75, color: '#059669' },
+    { label: 'Security Posture', sub: 'Threat Mitigation Rate', value: 85, color: '#C8A951' },
+    { label: 'Resource Velocity', sub: 'Compute & Storage Flow', value: 95, color: '#C8A951' },
 ]
 
-const deployments = [
-    { id: '#247', target: 'sirsi-sign.web.app', status: 'success', time: '2 hours ago', commit: 'ecaf1af' },
-    { id: '#246', target: 'sirsi-ai.web.app', status: 'success', time: '1 day ago', commit: '081cee6' },
-    { id: '#245', target: 'Cloud Functions', status: 'success', time: '3 days ago', commit: 'a3b2c1d' },
+const coreServices = [
+    { icon: Server, name: 'API Architecture', status: 'Operational', detail: 'Response: 45ms • Cloud Run' },
+    { icon: DatabaseIcon, name: 'Database Cluster', status: 'Healthy', detail: '3 Active Nodes • Cloud SQL' },
+    { icon: Cpu, name: 'Cache Architecture', status: 'Optimal', detail: '94% Hit Ratio • Redis' },
 ]
 
-function SiteAdmin() {
-    const [maintenanceMode, setMaintenanceMode] = useState(false)
+const externalServices = [
+    { icon: Mail, name: 'Communication Gateway', status: 'Connected', detail: 'SendGrid • 1,234 Sent Today' },
+    { icon: CreditCard, name: 'Financial Settlement', status: 'Active', detail: 'Stripe • 99.9% Success' },
+    { icon: TrendingUp, name: 'Intelligence Engine', status: 'Operational', detail: 'Mixpanel • Normal Flow' },
+]
+
+const incidents = [
+    {
+        title: 'CDN Peripheral Latency',
+        subtitle: 'Detected in European Region Gateway',
+        desc: 'Telemetry indicates minor throughput degradation. Engineering team is currently performing localized packet analysis.',
+        time: 'Initiated: 2h Ago • Persistence: Ongoing',
+        badge: 'Investigating', badgeClass: 'sirsi-badge-warning',
+        borderColor: 'border-amber-500', bgColor: 'bg-amber-50/20',
+    },
+    {
+        title: 'Database Maintenance Cycle',
+        subtitle: 'High-availability cluster patch completed',
+        desc: 'Successfully optimized indexing for legal artifact searches. Zero downtime maintenance protocol verified.',
+        time: 'Resolved: 6h Ago • Duration: 45m',
+        badge: 'Operational', badgeClass: 'sirsi-badge-success',
+        borderColor: 'border-emerald-600', bgColor: 'bg-emerald-50/20',
+        titleItalic: true,
+    },
+]
+
+// Generate 24h chart data
+const genChartData = () => Array.from({ length: 24 }, (_, i) => ({
+    hour: `${i}:00`,
+    responseTime: Math.floor(Math.random() * 50) + 30,
+    errors: Math.floor(Math.random() * 10),
+}))
+
+function SystemStatus() {
+    const [clockTime, setClockTime] = useState('--:--:--')
+    const [chartData] = useState(genChartData)
+
+    useEffect(() => {
+        const update = () => {
+            const now = new Date()
+            setClockTime(`${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`)
+        }
+        update()
+        const id = setInterval(update, 5000)
+        return () => clearInterval(id)
+    }, [])
 
     return (
-        <div className="space-y-8 animate-in fade-in duration-700">
-            <header className="flex justify-between items-end border-b border-gray-200 dark:border-slate-800 pb-6">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white"
-                        style={{ fontFamily: "'Cinzel', serif", letterSpacing: '0.02em' }}>
-                        SITE ADMIN
-                    </h1>
-                    <p className="text-gray-500 dark:text-slate-400 mt-2 text-sm">Platform infrastructure and deployment configuration</p>
-                </div>
-            </header>
+        <div>
+            {/* ── Page Header (canonical) ── */}
+            <div className="page-header">
+                <h1>System Status Dashboard</h1>
+                <p className="page-subtitle">Real-time telemetry and health monitoring across the Sirsi Nexus infrastructure</p>
+            </div>
 
-            {/* Service Status Grid */}
-            <section>
-                <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500 mb-4" style={{ fontFamily: "'Cinzel', serif" }}>
-                    SERVICE STATUS
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {services.map((svc) => (
-                        <div key={svc.name} className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-5 shadow-sm">
-                            <div className="flex items-center justify-between mb-3">
-                                <div className="flex items-center gap-2">
-                                    <svc.icon className="w-4 h-4 text-gray-400" />
-                                    <span className="text-sm font-bold text-gray-900 dark:text-white">{svc.name}</span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <div className="w-2 h-2 bg-emerald-500 rounded-full" />
-                                    <span className="text-[10px] font-bold text-emerald-600 uppercase">Operational</span>
-                                </div>
-                            </div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400 font-mono">{svc.url}</div>
-                            <div className="text-[10px] text-gray-400 mt-1">Uptime: {svc.uptime}</div>
-                        </div>
-                    ))}
+            {/* ── Overall Health — SVG Ring Gauges ── */}
+            <div className="sirsi-card mb-8">
+                <div className="flex items-center justify-between mb-8">
+                    <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Perimeter & Core Infrastructure Health</h3>
+                    <div className="flex items-center space-x-2">
+                        <span style={{ fontSize: 10, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase' }}>Synchronized:</span>
+                        <span style={{ fontSize: 12, fontFamily: 'monospace', fontWeight: 500, color: '#059669' }}>{clockTime}</span>
+                    </div>
                 </div>
-            </section>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Recent Deployments */}
-                <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
-                    <h2 className="font-bold text-gray-900 dark:text-white mb-6" style={{ fontFamily: "'Cinzel', serif", letterSpacing: '0.03em' }}>
-                        RECENT DEPLOYMENTS
-                    </h2>
-                    <div className="space-y-3">
-                        {deployments.map((dep) => (
-                            <div key={dep.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800 rounded-xl">
-                                <div className="flex items-center gap-3">
-                                    <CheckCircleIcon className="w-4 h-4 text-emerald-600" />
-                                    <div>
-                                        <div className="text-sm font-bold text-gray-900 dark:text-white">{dep.id} → {dep.target}</div>
-                                        <div className="text-[10px] text-gray-400 font-mono">commit {dep.commit}</div>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    {gauges.map(g => {
+                        const circumference = 2 * Math.PI * 34 // ~213.6
+                        const offset = circumference * (1 - g.value / 100)
+                        return (
+                            <div key={g.label} className="text-center">
+                                <div style={{ width: 80, height: 80, margin: '0 auto 16px', position: 'relative' }}>
+                                    <svg width="80" height="80" style={{ transform: 'rotate(-90deg)' }}>
+                                        <circle cx="40" cy="40" r="34" stroke="#f3f4f6" strokeWidth="6" fill="none" />
+                                        <circle cx="40" cy="40" r="34" stroke={g.color} strokeWidth="6" fill="none"
+                                            strokeDasharray={circumference} strokeDashoffset={offset} />
+                                    </svg>
+                                    <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <span style={{ fontSize: 18, fontWeight: 600, color: '#111827' }}>{g.value}%</span>
                                     </div>
                                 </div>
-                                <span className="text-xs text-gray-400">{dep.time}</span>
+                                <h4 style={{ fontSize: 12, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{g.label}</h4>
+                                <p style={{ fontSize: 10, color: '#9ca3af', marginTop: 4, fontStyle: 'italic' }}>{g.sub}</p>
                             </div>
-                        ))}
+                        )
+                    })}
+                </div>
+            </div>
+
+            {/* ── Service Status Grid ── */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div className="sirsi-card">
+                    <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24 }}>Internal Core Clusters</h3>
+                    <div className="space-y-4">
+                        {coreServices.map(svc => {
+                            const Icon = svc.icon as any
+                            return (
+                                <div key={svc.name} className="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-white transition-all group cursor-pointer" style={{ background: 'rgba(249,250,251,0.5)' }}>
+                                    <div className="flex items-center">
+                                        <div style={{ width: 40, height: 40, background: '#ecfdf5', color: '#059669', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 16, border: '1px solid #d1fae5' }}>
+                                            <Icon size={18} />
+                                        </div>
+                                        <div>
+                                            <h4 style={{ fontWeight: 500, color: '#111827', fontStyle: 'italic' }} className="group-hover:text-emerald-600 transition-colors">{svc.name}</h4>
+                                            <p style={{ fontSize: 10, color: '#6b7280', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '-0.02em' }}>{svc.detail}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <span className="sirsi-badge sirsi-badge-success">{svc.status}</span>
+                                        <ChevronRight size={10} style={{ color: '#d1d5db' }} className="group-hover:text-emerald-600 transition-colors" />
+                                    </div>
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
 
-                {/* Platform Config */}
-                <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
-                    <h2 className="font-bold text-gray-900 dark:text-white mb-6" style={{ fontFamily: "'Cinzel', serif", letterSpacing: '0.03em' }}>
-                        PLATFORM CONFIG
-                    </h2>
+                <div className="sirsi-card">
+                    <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24 }}>External Service Integrity</h3>
                     <div className="space-y-4">
-                        <ConfigRow label="Firebase Project" value="sirsi-nexus-live" />
-                        <ConfigRow label="Auth Domain" value="sirsi-nexus-live.firebaseapp.com" />
-                        <ConfigRow label="Live URL" value="sign.sirsi.ai" />
-                        <ConfigRow label="API Endpoint" value="api.sirsi.ai" />
-                        <ConfigRow label="Environment" value="Production" />
-                        <ConfigRow label="Version" value="v6.0.0" />
-                    </div>
-                    <div className="mt-6 pt-6 border-t border-gray-100 dark:border-slate-800">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <div className="text-sm font-bold text-gray-900 dark:text-white">Maintenance Mode</div>
-                                <div className="text-xs text-gray-500 mt-0.5">Restrict all tenant portal access</div>
-                            </div>
-                            <button
-                                onClick={() => setMaintenanceMode(!maintenanceMode)}
-                                className={`w-10 h-5 rounded-full relative transition-colors ${maintenanceMode ? 'bg-red-500' : 'bg-emerald-500'}`}
-                            >
-                                <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${maintenanceMode ? 'left-6' : 'left-1'}`} />
-                            </button>
-                        </div>
+                        {externalServices.map(svc => {
+                            const Icon = svc.icon as any
+                            return (
+                                <div key={svc.name} className="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-white transition-all group cursor-pointer" style={{ background: 'rgba(249,250,251,0.5)' }}>
+                                    <div className="flex items-center">
+                                        <div style={{ width: 40, height: 40, background: '#ecfdf5', color: '#059669', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 16, border: '1px solid #d1fae5' }}>
+                                            <Icon size={18} />
+                                        </div>
+                                        <div>
+                                            <h4 style={{ fontWeight: 500, color: '#111827', fontStyle: 'italic' }} className="group-hover:text-emerald-600 transition-colors">{svc.name}</h4>
+                                            <p style={{ fontSize: 10, color: '#6b7280', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '-0.02em' }}>{svc.detail}</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <span className="sirsi-badge sirsi-badge-success">{svc.status}</span>
+                                        <ChevronRight size={10} style={{ color: '#d1d5db' }} className="group-hover:text-emerald-600 transition-colors" />
+                                    </div>
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
             </div>
-        </div>
-    )
-}
 
-function ConfigRow({ label, value }: { label: string; value: string }) {
-    return (
-        <div className="flex items-center justify-between py-2 border-b border-gray-50 dark:border-slate-800 last:border-0">
-            <span className="text-xs font-medium text-gray-500">{label}</span>
-            <span className="text-xs font-bold text-gray-900 dark:text-white font-mono">{value}</span>
+            {/* ── Performance Charts ── */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div className="sirsi-card">
+                    <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24, fontStyle: 'italic' }}>Internal Response Latency (24h)</h3>
+                    <div style={{ height: 256 }}>
+                        <ResponsiveContainer width="100%" height="100%">
+                            <LineChart data={chartData}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+                                <XAxis dataKey="hour" tick={{ fontSize: 10, fill: '#9ca3af' }} />
+                                <YAxis tick={{ fontSize: 10, fill: '#9ca3af' }} />
+                                <Tooltip />
+                                <Line type="monotone" dataKey="responseTime" stroke="#10b981" strokeWidth={2} dot={{ r: 2 }} fill="rgba(16,185,129,0.05)" />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                <div className="sirsi-card">
+                    <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24, fontStyle: 'italic' }}>Infrastructure Error Density (24h)</h3>
+                    <div style={{ height: 256 }}>
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={chartData}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+                                <XAxis dataKey="hour" tick={{ fontSize: 10, fill: '#9ca3af' }} />
+                                <YAxis tick={{ fontSize: 10, fill: '#9ca3af' }} />
+                                <Tooltip />
+                                <Bar dataKey="errors" fill="rgba(5,150,105,0.8)" radius={[4, 4, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+            </div>
+
+            {/* ── Audit Trail ── */}
+            <div className="sirsi-card">
+                <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 32 }}>System Audit Trail & Service Logs</h3>
+                <div className="space-y-6">
+                    {incidents.map(inc => (
+                        <div key={inc.title} className={`p-6 ${inc.bgColor} border-l-4 ${inc.borderColor} rounded-r-xl`}>
+                            <div className="flex items-start justify-between">
+                                <div>
+                                    <h4 style={{ fontWeight: 500, color: '#111827', fontStyle: inc.titleItalic ? 'italic' : 'normal' }}>{inc.title}</h4>
+                                    <p style={{ fontSize: 10, color: '#6b7280', textTransform: 'uppercase', fontWeight: 500, letterSpacing: '-0.02em', marginTop: 4, fontStyle: 'italic' }}>{inc.subtitle}</p>
+                                    <p style={{ fontSize: 12, color: '#4b5563', marginTop: 8, fontWeight: 500 }}>{inc.desc}</p>
+                                    <p style={{ fontSize: 9, color: '#9ca3af', marginTop: 12, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 500 }}>{inc.time}</p>
+                                </div>
+                                <span className={`sirsi-badge ${inc.badgeClass}`}>{inc.badge}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     )
 }
