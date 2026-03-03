@@ -21,6 +21,7 @@ This index tracks all significant architectural decisions for the SirsiNexusApp 
 | [ADR-023](ADR-023-CONTRACT-LIFECYCLE.md) | Contract Lifecycle & Funding Status | Accepted | 2026-02-13 |
 | [ADR-024](ADR-024-PITCH-DECK-VISUAL-STANDARD.md) | Pitch Deck Visual Standard & Rubric | Accepted | 2026-02-20 |
 | [ADR-025](ADR-025-UNIFIED-APP-ARCHITECTURE.md) | Unified App Architecture — Web + Desktop (Tauri) | Accepted | 2026-02-27 |
+| [ADR-026](ADR-026-HYPERVISOR-COMMAND-PROTOCOL.md) | Hypervisor Command Protocol — Operational Telemetry via gRPC | Accepted | 2026-03-02 |
 
 ## Categories
 

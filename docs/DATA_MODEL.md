@@ -46,6 +46,10 @@ SirsiNexusApp uses a **hybrid database architecture**: Cloud SQL for structured/
 | `notifications` | Real-time alerts | sirsi-portal |
 | `audit_log` | Security event stream | sirsi-portal |
 | `catalog` | Product/feature catalog for Sirsi Sign | sirsi-sign |
+| `deployments` | Deployment history per tenant/env | sirsi-admin-service (Hypervisor) |
+| `security_events` | Real-time auth and security events | sirsi-admin-service (Hypervisor) |
+| `telemetry_snapshots` | Periodic metric snapshots for sparklines | sirsi-admin-service (Hypervisor) |
+| `incidents` | Incident tracking and SLA records | sirsi-admin-service (Hypervisor) |
 
 ## PII Encryption
 All PII fields are encrypted at rest using AES-256 via Cloud KMS. See `SECURITY_COMPLIANCE.md` for key management details.

@@ -31,6 +31,41 @@ SirsiNexusApp exposes shared services via **gRPC + Protobuf** for backend-to-bac
 | `CreatePaymentIntent` | `PaymentIntentRequest` | `PaymentIntentResponse` | Initiate payment |
 | `GetPaymentStatus` | `GetPaymentStatusRequest` | `PaymentStatusResponse` | Check payment status |
 
+## Sirsi Admin API (gRPC)
+
+### HypervisorService (ADR-026 — Operational Telemetry)
+| RPC | Request | Response | Description |
+|-----|---------|----------|-------------|
+| `GetOverview` | `OverviewRequest` | `OverviewResponse` | Executive summary: uptime, tenant health, deployments, cost MTD |
+| `GetDevOpsMetrics` | `DevOpsRequest` | `DevOpsResponse` | DORA metrics, pipeline status, deployment frequency |
+| `GetInfrastructure` | `InfraRequest` | `InfraResponse` | IaC state, drift detection, environment parity, Cloud Run |
+| `GetSecurity` | `SecurityRequest` | `SecurityResponse` | MFA compliance, auth activity, vulnerability score, SSL certs |
+| `GetDatabaseHealth` | `DatabaseRequest` | `DatabaseResponse` | Connection pools, slow queries, replication lag, backups |
+| `GetFrontendMetrics` | `FrontendRequest` | `FrontendResponse` | Core Web Vitals, bundle size, page inventory, error tracking |
+| `GetBackendMetrics` | `BackendRequest` | `BackendResponse` | API endpoints, service health, gRPC throughput, Go runtime |
+| `GetIntegrations` | `IntegrationsRequest` | `IntegrationsResponse` | Stripe/Plaid/SendGrid/OpenSign health, webhooks, API keys |
+| `GetCostAnalysis` | `CostRequest` | `CostResponse` | Monthly spend, budget vs actual, idle resources, forecast |
+| `GetIncidents` | `IncidentsRequest` | `IncidentsResponse` | Open incidents, SLA compliance, runbook log, postmortems |
+
+### AdminService
+| RPC | Request | Response | Description |
+|-----|---------|----------|-------------|
+| `GetSystemOverview` | `GetSystemOverviewRequest` | `SystemOverview` | Aggregated system KPIs |
+| `ListUsers` | `ListUsersRequest` | `ListUsersResponse` | Paginated user list |
+| `ListAuditTrail` | `ListAuditTrailRequest` | `ListAuditTrailResponse` | Security audit log |
+| `GetDevMetrics` | `GetDevMetricsRequest` | `DevMetrics` | Dev velocity and activity |
+| `GetSettings` | `GetSettingsRequest` | `GetSettingsResponse` | System settings |
+| `UpdateSettings` | `UpdateSettingsRequest` | `UpdateSettingsResponse` | Modify system settings |
+
+### TenantService
+| RPC | Request | Response | Description |
+|-----|---------|----------|-------------|
+| `ListTenants` | `ListTenantsRequest` | `ListTenantsResponse` | List all tenants with status |
+| `GetTenant` | `GetTenantRequest` | `Tenant` | Single tenant details |
+| `CreateTenant` | `CreateTenantRequest` | `Tenant` | Provision new tenant |
+| `UpdateTenant` | `UpdateTenantRequest` | `Tenant` | Update tenant config |
+| `DeactivateTenant` | `DeactivateTenantRequest` | `DeactivateTenantResponse` | Deactivate tenant |
+
 ## REST Endpoints (Firebase Cloud Functions)
 
 ### Auth

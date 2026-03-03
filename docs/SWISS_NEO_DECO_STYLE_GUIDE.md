@@ -1060,6 +1060,91 @@ Firefox:
 
 ---
 
+### 3.21 Radial Gauges (Hypervisor Instruments — ADR-026)
+
+```
+Size:          80×80px (Standard), 60×60px (Compact). SVG element.
+Track:         Circle, stroke-width 6px, color --snd-bg-tertiary (gray-100/200)
+Fill:          Circle, stroke-width 6px, stroke-dasharray for percentage
+               stroke-linecap: round
+Fill Color:    Semantic ONLY:
+               Green (#10b981) — value within normal range
+               Amber (#f59e0b) — value in warning range
+               Red   (#ef4444) — value in critical range
+Center Value:  Inter, 18px, weight 600, --snd-text-primary
+Center Label:  Inter, 10px, weight 600, uppercase, tracking 0.08em, --snd-text-muted
+Animation:     stroke-dashoffset transition 800ms ease-out on mount
+```
+
+### 3.22 Sparklines (Hypervisor Instruments — ADR-026)
+
+```
+Dimensions:    120×24px inline SVG
+Stroke:        1.5px, stroke-linecap round, stroke-linejoin round
+Color:         Emerald (#10b981) default, or semantic per context
+Fill:          Optional gradient from stroke color to transparent (opacity 0.1)
+Curve:         Smooth bezier (catmull-rom or monotone interpolation)
+Style:         No axes, no labels, no grid — pure trend visualization
+Context:       Embedded within sirsi-table rows or inside MetricCards
+Padding:       2px internal (prevents stroke clipping)
+```
+
+### 3.23 Status LEDs (Hypervisor Instruments — ADR-026)
+
+```
+Size:          8×8px circle (border-radius: 50%)
+Colors:
+  Emerald:     #10b981 — Operational / Healthy
+  Amber:       #f59e0b — Degraded / Attention Required
+  Red:         #ef4444 — Down / Critical Fault
+  Gray:        #9ca3af — Unknown / Maintenance Mode
+
+Animation:     animate-pulse ONLY when status is Critical (Red)
+               No animation for other states.
+               @keyframes led-pulse {
+                 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+                 50%      { opacity: 0.8; box-shadow: 0 0 0 4px rgba(239,68,68,0); }
+               }
+Label:         Inter, 12px, weight 500, --snd-text-body, gap 8px from LED
+```
+
+### 3.24 Progress Gauges (Hypervisor Instruments — ADR-026)
+
+```
+Height:        6px
+Width:         100% of container
+Track:         --snd-bg-tertiary (faint gray), border-radius --snd-radius-full
+Fill:          border-radius --snd-radius-full
+               Default: linear-gradient(90deg, --snd-emerald-light, --snd-emerald)
+               Warning (>80%): --snd-warning
+               Critical (>90%): --snd-danger
+Transition:    width 300ms ease, background-color 200ms ease
+```
+
+### 3.25 Instrument Tab Bar (Hypervisor — ADR-026)
+
+```
+Container:     border-bottom 2px solid --snd-border, overflow-x auto
+Tab Trigger:   Inter, 12px, weight 600, uppercase, tracking 0.06em
+               Color: --snd-text-muted (default)
+               Padding: 12px 16px
+               Border-bottom: 2px solid transparent
+               Cursor: pointer
+               Transition: --snd-transition-base
+
+  Active:
+    Color:       --snd-emerald
+    Border-bottom: 2px solid --snd-emerald
+
+  Hover:
+    Color:       --snd-text-primary
+
+Tab Panel:     padding-top 20px, min-height 400px
+Scroll:        Horizontal scroll with hidden scrollbar for overflow on small screens
+```
+
+---
+
 ## 4. Layout System
 
 ### Content Regions

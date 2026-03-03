@@ -1,124 +1,189 @@
-// src/routes/users.tsx
+/**
+ * User Management — Pixel-perfect port of admin/users/index.html
+ * 
+ * Structure: page-header → 4 stat cards → action bar (search + buttons) → table → pagination
+ * Typography: Inter, body ≤ 500 weight (Rule 21)
+ */
+
 import { createRoute } from '@tanstack/react-router'
 import { useState } from 'react'
-import { useUsers } from '../hooks/useAdminService'
 import { Route as rootRoute } from './__root'
-import { Search as SearchIcon, MoreVertical as MoreVerticalIcon } from 'lucide-react'
+import {
+    Users, UserCheck, Clock, ShieldCheck,
+    Search, Plus, Download, Fingerprint, Trash2
+} from 'lucide-react'
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
     path: '/users',
-    component: Users,
+    component: UsersPage,
 })
 
-const SearchComp = SearchIcon as any
-const MoreVerticalComp = MoreVerticalIcon as any
+// ── Sample data (matches HTML exactly) ────────────────────────────
+interface User {
+    id: number
+    name: string
+    email: string
+    status: 'active' | 'pending' | 'inactive'
+    role: string
+}
 
-function Users() {
-    const [selectedTenant, setSelectedTenant] = useState("finalwishes")
-    const { data: users, isLoading } = useUsers(selectedTenant)
-    const [searchQuery, setSearchQuery] = useState("")
+const initialUsers: User[] = [
+    { id: 101, name: 'Cylton Collymore', email: 'cylton@sirsi.ai', status: 'active', role: 'super-admin' },
+    { id: 102, name: 'John Doe', email: 'j.doe@example.com', status: 'active', role: 'investor' },
+    { id: 103, name: 'Jane Smith', email: 'j.smith@nexus.co', status: 'pending', role: 'partner' },
+    { id: 104, name: 'Robert Vance', email: 'rvance@sirsi.ai', status: 'active', role: 'admin' },
+    { id: 105, name: 'Alice Cooper', email: 'a.cooper@rock.com', status: 'inactive', role: 'investor' },
+]
 
-    if (isLoading) return <div className="p-8 text-gray-400 uppercase tracking-widest text-[10px]">Loading Identity Management...</div>
+// ── Component ─────────────────────────────────────────────────────
+function UsersPage() {
+    const [users, setUsers] = useState<User[]>(initialUsers)
+    const [searchQuery, setSearchQuery] = useState('')
+    const [showModal, setShowModal] = useState(false)
+    const [editingUser, setEditingUser] = useState<User | null>(null)
+
+    // Form state
+    const [formName, setFormName] = useState('')
+    const [formEmail, setFormEmail] = useState('')
+    const [formRole, setFormRole] = useState('investor')
+    const [formStatus, setFormStatus] = useState('active')
+
+    const filteredUsers = users.filter(u =>
+        u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        u.email.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+
+    // Stats
+    const totalUsers = users.length
+    const activeUsers = users.filter(u => u.status === 'active').length
+    const pendingUsers = users.filter(u => u.status === 'pending').length
+    const adminUsers = users.filter(u => u.role.includes('admin')).length
+
+    const openNewUser = () => {
+        setEditingUser(null)
+        setFormName('')
+        setFormEmail('')
+        setFormRole('investor')
+        setFormStatus('active')
+        setShowModal(true)
+    }
+
+    const openEditUser = (user: User) => {
+        setEditingUser(user)
+        setFormName(user.name)
+        setFormEmail(user.email)
+        setFormRole(user.role)
+        setFormStatus(user.status)
+        setShowModal(true)
+    }
+
+    const saveUser = () => {
+        if (editingUser) {
+            setUsers(prev => prev.map(u =>
+                u.id === editingUser.id
+                    ? { ...u, name: formName, email: formEmail, role: formRole, status: formStatus as User['status'] }
+                    : u
+            ))
+        } else {
+            const newId = Math.max(...users.map(u => u.id)) + 1
+            setUsers(prev => [...prev, { id: newId, name: formName, email: formEmail, role: formRole, status: formStatus as User['status'] }])
+        }
+        setShowModal(false)
+    }
+
+    const deleteUser = (id: number) => {
+        if (confirm('Authorized request: Proceed with identity purge?')) {
+            setUsers(prev => prev.filter(u => u.id !== id))
+        }
+    }
 
     return (
-        <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
-            <header className="flex justify-between items-end border-b border-gray-200 dark:border-slate-800 pb-6">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">User Management</h1>
-                    <p className="text-gray-500 dark:text-slate-400 mt-2 text-sm tracking-wide">Identity & RBAC Access Control Hub</p>
-                </div>
-                <div className="flex gap-3">
-                    <select
-                        value={selectedTenant}
-                        onChange={(e) => setSelectedTenant(e.target.value)}
-                        className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-lg px-4 py-2 text-xs font-bold focus:ring-2 focus:ring-emerald-600/20 outline-none transition-all"
-                    >
-                        <option value="finalwishes">FinalWishes</option>
-                        <option value="assiduous">Assiduous</option>
-                    </select>
-                    <button className="btn-primary flex items-center gap-2">
-                        <span>+</span>
-                        <span>Add New User</span>
-                    </button>
-                </div>
-            </header>
-
-            {/* User Statistics */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <StatCard title="Total Identities" value={users?.length.toString() || "0"} icon="👥" color="text-blue-600" />
-                <StatCard title="Active Sessions" value={users?.filter((u: any) => u.status === 'active').length.toString() || "0"} icon="🟢" color="text-emerald-600" />
-                <StatCard title="Pending Invite" value="12" icon="✉️" color="text-amber-600" />
-                <StatCard title="Flagged Actions" value="0" icon="🚩" color="text-red-600" />
+        <div>
+            {/* ── Page Header ──────────────────────────────────── */}
+            <div className="page-header">
+                <h1>User Management</h1>
+                <p className="page-subtitle">
+                    Unified registry for platform identities, role synchronization, and security assertions
+                </p>
             </div>
 
-            {/* Action Bar */}
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl p-4 flex flex-wrap gap-4 items-center justify-between shadow-sm">
-                <div className="flex-1 min-w-[300px] relative">
-                    <SearchComp className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            {/* ── User Statistics (4 cards) ────────────────────── */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <StatCard icon={Users} value={totalUsers} label="Total Registry" color="emerald" />
+                <StatCard icon={UserCheck} value={activeUsers} label="Synchronized" color="emerald" />
+                <StatCard icon={Clock} value={pendingUsers} label="Awaiting Verification" color="amber" />
+                <StatCard icon={ShieldCheck} value={adminUsers} label="Privileged" color="emerald" />
+            </div>
+
+            {/* ── Action Bar ───────────────────────────────────── */}
+            <div className="flex flex-col md:flex-row gap-4 mb-8 items-center">
+                <div className="flex-1 relative w-full">
+                    <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
                     <input
                         type="text"
-                        placeholder="Search by name, email, or role..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-emerald-600/20 outline-none transition-all"
+                        className="w-full pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition-all"
+                        placeholder="Filter identities by name, email, or system ID..."
                     />
                 </div>
-                <div className="flex gap-2">
-                    <button className="px-4 py-2 rounded-lg border border-gray-200 dark:border-slate-800 text-xs font-bold hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">Bulk Actions</button>
-                    <button className="px-4 py-2 rounded-lg border border-gray-200 dark:border-slate-800 text-xs font-bold hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">Export CSV</button>
+                <div className="flex gap-3 w-full md:w-auto">
+                    <button className="btn-primary flex items-center gap-2 whitespace-nowrap px-6 py-3" onClick={openNewUser}>
+                        <Plus size={12} />
+                        Provision Identity
+                    </button>
+                    <button className="btn-secondary flex items-center gap-2 whitespace-nowrap px-6 py-3">
+                        <Download size={12} />
+                        Export Ledger
+                    </button>
                 </div>
             </div>
 
-            {/* User Table */}
-            <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-lg">
-                <table className="w-full text-left border-collapse">
+            {/* ── User Table ───────────────────────────────────── */}
+            <div className="sirsi-table-wrap">
+                <table className="sirsi-table">
                     <thead>
-                        <tr className="bg-gray-50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-slate-800">
-                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">User Identity</th>
-                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">Access Role</th>
-                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">Status</th>
-                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">Last Activity</th>
-                            <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-gray-400 text-right">Actions</th>
+                        <tr>
+                            <th className="ps-6">ID</th>
+                            <th>Identity</th>
+                            <th>Email Address</th>
+                            <th>Status</th>
+                            <th>Role Proxy</th>
+                            <th className="text-right pe-6">System Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100 dark:divide-slate-800">
-                        {users?.filter((u: any) =>
-                            u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            u.email.toLowerCase().includes(searchQuery.toLowerCase())
-                        ).map((user: any) => (
-                            <tr key={user.id} className="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors group">
-                                <td className="px-6 py-5">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-emerald-600/10 flex items-center justify-center text-emerald-600 font-bold text-xs border border-emerald-600/20">
-                                            {user.name.split(' ').map((n: string) => n[0]).join('')}
-                                        </div>
-                                        <div>
-                                            <div className="font-bold text-gray-900 dark:text-white group-hover:text-emerald-600 transition-colors">{user.name}</div>
-                                            <div className="text-xs text-gray-400 mt-0.5">{user.email}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-5">
-                                    <span className="text-xs font-bold text-gray-600 dark:text-slate-300 bg-gray-100 dark:bg-slate-800 px-2 py-1 rounded ring-1 ring-gray-200 dark:ring-slate-700 uppercase tracking-tighter">
-                                        {user.role}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-5">
-                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border ${user.status === 'active'
-                                        ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 border-emerald-200 dark:border-emerald-800/30'
-                                        : 'bg-red-50 dark:bg-red-950/20 text-red-600 border-red-200 dark:border-red-800/30'
+                    <tbody>
+                        {filteredUsers.map(user => (
+                            <tr key={user.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
+                                <td className="ps-6 font-mono text-[11px] text-gray-400">#{user.id}</td>
+                                <td className="font-medium text-gray-900">{user.name}</td>
+                                <td className="text-gray-500 font-medium">{user.email}</td>
+                                <td>
+                                    <span className={`sirsi-badge ${user.status === 'active' ? 'sirsi-badge-success' :
+                                            user.status === 'pending' ? 'sirsi-badge-warning' :
+                                                'sirsi-badge-error'
                                         }`}>
-                                        <span className={`w-1 h-1 rounded-full ${user.status === 'active' ? 'bg-emerald-600' : 'bg-red-600'}`} />
-                                        {user.status}
+                                        {user.status.toUpperCase()}
                                     </span>
                                 </td>
-                                <td className="px-6 py-5">
-                                    <span className="text-xs text-gray-500 dark:text-slate-400">2 hours ago</span>
+                                <td>
+                                    <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-widest">
+                                        {user.role.replace('-', ' ')}
+                                    </span>
                                 </td>
-                                <td className="px-6 py-5 text-right">
-                                    <button className="text-gray-400 hover:text-emerald-600 p-2 transition-colors">
-                                        <MoreVerticalComp className="w-4 h-4" />
+                                <td className="text-right pe-6 space-x-2">
+                                    <button
+                                        onClick={() => openEditUser(user)}
+                                        className="text-gray-300 hover:text-emerald-600 transition-colors"
+                                    >
+                                        <Fingerprint size={14} />
+                                    </button>
+                                    <button
+                                        onClick={() => deleteUser(user.id)}
+                                        className="text-gray-300 hover:text-red-600 transition-colors"
+                                    >
+                                        <Trash2 size={14} />
                                     </button>
                                 </td>
                             </tr>
@@ -126,20 +191,99 @@ function Users() {
                     </tbody>
                 </table>
             </div>
+
+            {/* ── Pagination Footer ────────────────────────────── */}
+            <div className="mt-6 flex items-center justify-between px-2">
+                <div className="text-[10px] font-medium text-gray-400 uppercase tracking-widest">
+                    Showing 1 to {filteredUsers.length} of {users.length} Entries
+                </div>
+            </div>
+
+            {/* ── Modal: Identity Provisioning ─────────────────── */}
+            {showModal && (
+                <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden border border-gray-100">
+                        {/* Header */}
+                        <div className="px-8 py-6 border-b border-gray-50 flex items-center justify-between">
+                            <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-widest italic">
+                                {editingUser ? 'Re-provisioning Entry' : 'Identity Provisioning'}
+                            </h2>
+                            <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-900 transition-colors">
+                                ✕
+                            </button>
+                        </div>
+
+                        {/* Form */}
+                        <div className="p-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Full Legal Name</label>
+                                    <input type="text" value={formName} onChange={e => setFormName(e.target.value)}
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm" />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Email Identity</label>
+                                    <input type="email" value={formEmail} onChange={e => setFormEmail(e.target.value)}
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm" />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Assigned Role</label>
+                                    <select value={formRole} onChange={e => setFormRole(e.target.value)}
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                                        <option value="investor">Investor</option>
+                                        <option value="partner">Partner</option>
+                                        <option value="admin">Administrator</option>
+                                        <option value="super-admin">Super Administrator</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Active State</label>
+                                    <select value={formStatus} onChange={e => setFormStatus(e.target.value)}
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm">
+                                        <option value="active">Operational</option>
+                                        <option value="pending">Awaiting Sync</option>
+                                        <option value="inactive">Deactivated</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="px-8 py-6 bg-gray-50 border-t border-gray-50 flex justify-end gap-3">
+                            <button onClick={() => setShowModal(false)}
+                                className="px-6 py-2.5 text-xs font-semibold text-gray-400 uppercase tracking-widest hover:text-gray-900 transition-colors">
+                                Cancel
+                            </button>
+                            <button onClick={saveUser} className="btn-primary px-8 py-2.5">
+                                Confirm Identity
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
 
-function StatCard({ title, value, icon, color }: { title: string, value: string, icon: string, color: string }) {
+// ── Stat Card ─────────────────────────────────────────────────────
+function StatCard({ icon: Icon, value, label, color }: {
+    icon: any; value: number; label: string; color: 'emerald' | 'amber'
+}) {
+    const colorMap = {
+        emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-100' },
+        amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-100' },
+    }
+    const c = colorMap[color]
+
     return (
-        <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow group">
+        <div className="sirsi-card">
             <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-xl bg-gray-50 dark:bg-slate-800 flex items-center justify-center text-xl`}>
-                    {icon}
+                <div className={`w-12 h-12 rounded-xl ${c.bg} ${c.text} flex items-center justify-center border ${c.border}`}>
+                    <Icon size={20} />
                 </div>
                 <div>
-                    <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{title}</div>
-                    <div className={`text-2xl font-bold ${color}`}>{value}</div>
+                    <h3 className="text-2xl font-semibold text-gray-900">{value}</h3>
+                    <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">{label}</p>
                 </div>
             </div>
         </div>

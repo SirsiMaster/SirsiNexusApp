@@ -8,6 +8,8 @@ export default defineConfig({
   resolve: {
     dedupe: ['react', 'react-dom'],
     alias: {
+      // shadcn/ui path alias
+      '@': path.resolve(__dirname, './src'),
       // Force single React instance in monorepo
       react: path.resolve(__dirname, 'node_modules/react'),
       'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
