@@ -30,10 +30,10 @@ const kpis = [
 ]
 
 const strategicModules = [
-    { icon: Users, label: 'Committee Hub', route: '/committee' as const, bg: 'bg-emerald-600', hover: 'hover:bg-emerald-700' },
-    { icon: FolderOpen, label: 'Data Room', route: '/data-room' as const, bg: 'bg-blue-600', hover: 'hover:bg-blue-700' },
-    { icon: PieChart, label: 'KPI Ledger', route: '/kpi-metrics' as const, bg: 'bg-emerald-800', hover: 'hover:bg-emerald-900' },
-    { icon: MessageCircle, label: 'Messaging', route: '/messaging' as const, bg: 'bg-amber-600', hover: 'hover:bg-amber-700' },
+    { icon: Users, label: 'Committee Hub', route: '/committee' as const, bg: '#059669', hoverBg: '#047857' },
+    { icon: FolderOpen, label: 'Data Room', route: '/data-room' as const, bg: '#2563eb', hoverBg: '#1d4ed8' },
+    { icon: PieChart, label: 'KPI Ledger', route: '/kpi-metrics' as const, bg: '#065f46', hoverBg: '#064e3b' },
+    { icon: MessageCircle, label: 'Messaging', route: '/messaging' as const, bg: '#d97706', hoverBg: '#b45309' },
 ]
 
 const dataRoomCategories = [
@@ -91,8 +91,10 @@ function InvestorPortal() {
                     const Icon = mod.icon as any
                     return (
                         <Link key={mod.label} to={mod.route}
-                            className={`sirsi-card ${mod.bg} ${mod.hover} transition-all shadow-lg`}
-                            style={{ borderColor: 'transparent', padding: 24, display: 'flex', alignItems: 'center', gap: 16, textDecoration: 'none' }}
+                            className="sirsi-card transition-all shadow-lg"
+                            style={{ background: mod.bg, borderColor: 'transparent', padding: 24, display: 'flex', alignItems: 'center', gap: 16, textDecoration: 'none' }}
+                            onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => { (e.currentTarget as HTMLElement).style.background = mod.hoverBg }}
+                            onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => { (e.currentTarget as HTMLElement).style.background = mod.bg }}
                         >
                             <div style={{
                                 width: 40, height: 40, background: 'rgba(255,255,255,0.1)',
