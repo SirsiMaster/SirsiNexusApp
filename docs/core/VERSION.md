@@ -1,6 +1,96 @@
 # Sirsi Nexus Version History
 
-## Version 0.7.5-alpha (2025-07-11)
+## Version 0.8.0-alpha (2026-03-03)
+
+### 🚀 MAJOR MILESTONE: React Admin Portal Migration Complete
+
+This release marks the completion of the **React Portal Migration** — a full conversion of the HTML Admin Console into a React 19 SPA with TanStack Router, code splitting, dark mode, and pixel-perfect Swiss Neo-Deco parity. See **ADR-027** for the full decision record.
+
+#### 🏆 **Migration Achievement Summary**
+
+| Metric | Value |
+|:-------|:------|
+| Routes Ported | 25 |
+| TypeScript/CSS Files | 64 |
+| Lines of Code | ~6,100 |
+| Commits | 13 |
+| Build Output (Core) | ~390 KB (code-split) |
+| Dark Mode | ✅ Persistent + System Preference |
+| Visual QA | 11 pages audited, 100% parity |
+
+#### 📦 **Phase 1: Core Route Porting** (Feb 2026)
+- `31d4f42` — Pixel-perfect parity for Security, Site Admin, Portal, Telemetry, System Logs
+- Root layout (`__root.tsx`) with admin-header + admin-sidebar + content-wrapper
+- All canonical CSS from `common-styles.css` ported to `index.css`
+
+#### 📦 **Phase 2: Extended Routes** (Feb 2026)
+- `870d3a5` — Analytics, KPI Metrics, Committee, Messaging, Monitoring, Console
+- Recharts integration for all chart-heavy pages
+
+#### 📦 **Phase 3: System Status Pages** (Mar 2026)
+- `3c2a8cb` — Cache Status, API Server, Database Health, Backup Status
+- `9bcd4d9` — All 25 routes registered in TanStack Router + sidebar navigation
+
+#### 📦 **Phase 4: QA, Polish & Performance** (Mar 2026)
+- `2bb42e9` — **Bug Fix**: Portal strategic module cards rendering blank (CSS specificity)
+- `48cd5dc` — **Code Splitting**: 24 routes lazy-loaded with `React.lazy()` + Suspense
+- `be3afe5` — **Dark Mode**: Persistent toggle, system preference detection, no FOUC
+
+#### 🏗️ **Infrastructure & Stack Updates** (Feb-Mar 2026)
+- `bb2f112` — GEMINI.md v6.1.0: Typography Canon (Rule 21) + React Migration (Rule 22)
+- `ad77595` — Typography standardization: bold purge + header canonization
+- `4d576d5` — Dependency updates, shared components, ADR-026 compliance
+- `1905dfd` — React dedupe fix in monorepo workspaces
+
+#### 🏗️ **Updated Technology Stack (Stack V4)**
+
+| Layer | Before (Jul 2025) | After (Mar 2026) |
+|:------|:-------------------|:------------------|
+| **Frontend** | Next.js + React (in `/ui`) | React 19 + Vite 7 + TanStack Router (in `/packages/sirsi-portal-app`) |
+| **Backend** | Rust + Axum | Go + ConnectRPC (ADR-018, ADR-019) |
+| **Database** | CockroachDB | Cloud SQL + Firestore (ADR-017) |
+| **Styling** | Tailwind + custom CSS | Tailwind + shadcn/ui + Swiss Neo-Deco tokens |
+| **Router** | Next.js App Router | TanStack Router v1 (type-safe) |
+| **Charts** | Recharts | Recharts (unchanged) |
+| **Icons** | Mixed | Lucide React (unified) |
+
+#### 📜 **ADRs Issued Since v0.7.5**
+
+| ADR | Title | Date |
+|:----|:------|:-----|
+| ADR-017 | CockroachDB Decommission | 2026-02-27 |
+| ADR-018 | Technical Stack Convergence (Stack V4) | 2026-02-18 |
+| ADR-019 | Rust/WASM Decommission — Go-Only Stack | 2026-02-27 |
+| ADR-020 | Application Firewall | 2026-02-27 |
+| ADR-024 | Pitch Deck Visual Standard & Rubric | 2026-02-20 |
+| ADR-025 | Unified App Architecture — Web + Desktop | 2026-02-27 |
+| ADR-026 | Hypervisor Command Protocol | 2026-03-02 |
+| ADR-027 | React Portal Migration | 2026-03-03 |
+
+#### 🎯 **Next Phase Targets**
+
+- **Phase 5**: ConnectRPC Integration — replace hardcoded mock data with live gRPC backend
+- **Phase 6**: Authentication & MFA Gate — Firebase Auth + ProtectedRoute wiring
+- **Phase 7**: Hypervisor Command Center — live operational telemetry dashboards
+
+#### 📊 **Development Statistics**
+
+**Lines of Code (React Admin Portal):**
+- Route Components: ~5,100 lines (25 files)
+- Root Layout: ~315 lines
+- CSS (index.css): ~1,023 lines
+- Hooks & Services: ~400 lines
+- UI Components: ~300 lines
+
+**File Count:**
+- React route files: 25
+- TypeScript source files: 64 total
+- Configuration files: 8 (vite.config, tsconfig, tailwind, postcss, etc.)
+- Documentation files: 28 canonical docs
+
+---
+
+
 
 ### 🚨 CRITICAL ARCHITECTURAL AUDIT: Complete SirsiNexus Vision Implementation
 

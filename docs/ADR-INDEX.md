@@ -22,6 +22,7 @@ This index tracks all significant architectural decisions for the SirsiNexusApp 
 | [ADR-024](ADR-024-PITCH-DECK-VISUAL-STANDARD.md) | Pitch Deck Visual Standard & Rubric | Accepted | 2026-02-20 |
 | [ADR-025](ADR-025-UNIFIED-APP-ARCHITECTURE.md) | Unified App Architecture — Web + Desktop (Tauri) | Accepted | 2026-02-27 |
 | [ADR-026](ADR-026-HYPERVISOR-COMMAND-PROTOCOL.md) | Hypervisor Command Protocol — Operational Telemetry via gRPC | Accepted | 2026-03-02 |
+| [ADR-027](ADR-027-REACT-PORTAL-MIGRATION.md) | React Portal Migration — HTML-to-React Admin Console | Accepted | 2026-03-03 |
 
 ## Categories
 
@@ -30,6 +31,11 @@ This index tracks all significant architectural decisions for the SirsiNexusApp 
 - ADR-019: Rust/WASM Decommission — Go confirmed as sole backend language
 - ADR-020: Application Firewall — repo-scoped AI directives, design language firewalls
 - ADR-025: Unified App Architecture — Single React codebase, Tauri desktop, Sirsi Rail UCS
+
+### React Migration & Frontend Architecture
+- ADR-027: React Portal Migration — 25 routes ported, code splitting, dark mode, responsive sidebar
+- ADR-025: Unified App Architecture — Single React codebase, Tauri desktop, Sirsi Rail UCS
+- ADR-018: Technical Stack Convergence (Stack V4 — Go, React, Firebase, Cloud SQL)
 
 ### Contract Execution & Signing
 - ADR-014: Bipartite Dual-Signature Ceremony (Provider/Client Workflows)
