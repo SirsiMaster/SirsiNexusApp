@@ -1,44 +1,87 @@
 // src/main.tsx
-import { StrictMode } from 'react'
+import { StrictMode, lazy, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+import { RouterProvider, createRouter, createRoute } from '@tanstack/react-router'
 import './index.css'
 
-// Import route components
+// ── Root layout (always loaded) ──
 import { Route as rootRoute } from './routes/__root'
-import { Route as indexRoute } from './routes/index'
-import { Route as tenantsRoute } from './routes/tenants'
-import { Route as usersRoute } from './routes/users'
-import { Route as contractsRoute } from './routes/contracts'
-import { Route as settingsRoute } from './routes/settings'
-import { Route as developmentRoute } from './routes/development'
-import { Route as telemetryRoute } from './routes/telemetry'
-// Security group
-import { Route as securityRoute } from './routes/security'
-import { Route as systemLogsRoute } from './routes/system-logs'
-import { Route as siteAdminRoute } from './routes/site-admin'
-// Investor group
-import { Route as portalRoute } from './routes/portal'
-import { Route as dataRoomRoute } from './routes/data-room'
-import { Route as kpiMetricsRoute } from './routes/kpi-metrics'
-import { Route as committeeRoute } from './routes/committee'
-import { Route as messagingRoute } from './routes/messaging'
-// Intelligence group
-import { Route as aiAgentsRoute } from './routes/ai-agents'
-import { Route as hypervisorRoute } from './routes/hypervisor'
-import { Route as consoleRoute } from './routes/console'
-// Dashboard group
-import { Route as analyticsRoute } from './routes/analytics'
-// Security sub-pages
-import { Route as monitoringRoute } from './routes/monitoring'
-// System Status sub-pages
-import { Route as cacheStatusRoute } from './routes/cache-status'
-import { Route as apiServerRoute } from './routes/api-server'
-import { Route as databaseHealthRoute } from './routes/database-health'
-import { Route as backupStatusRoute } from './routes/backup-status'
 
-// Create the route tree manually
+// ── Eagerly loaded: Dashboard (landing page — must be instant) ──
+import { Route as indexRoute } from './routes/index'
+
+// ── Lazy-loaded route factory ──
+function lazyRoute(path: string, importFn: () => Promise<{ Route: any }>) {
+  const LazyComponent = lazy(() =>
+    importFn().then(mod => ({
+      default: (mod.Route as any).options.component
+    }))
+  )
+  return createRoute({
+    getParentRoute: () => rootRoute as any,
+    path,
+    component: () => (
+      <Suspense fallback={<LazyLoadFallback />}>
+        <LazyComponent />
+      </Suspense>
+    ),
+  })
+}
+
+function LazyLoadFallback() {
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      minHeight: 400, color: '#9ca3af', fontSize: 13, letterSpacing: '0.05em',
+      fontWeight: 500, textTransform: 'uppercase' as const,
+    }}>
+      <div style={{
+        width: 20, height: 20, border: '2px solid #d1d5db',
+        borderTopColor: '#059669', borderRadius: '50%',
+        animation: 'spin 0.8s linear infinite', marginRight: 12,
+      }} />
+      Loading Module...
+    </div>
+  )
+}
+
+// ── Route definitions (code-split per route) ──
+const tenantsRoute = lazyRoute('/tenants', () => import('./routes/tenants'))
+const usersRoute = lazyRoute('/users', () => import('./routes/users'))
+const contractsRoute = lazyRoute('/contracts', () => import('./routes/contracts'))
+const settingsRoute = lazyRoute('/settings', () => import('./routes/settings'))
+const developmentRoute = lazyRoute('/development', () => import('./routes/development'))
+const telemetryRoute = lazyRoute('/telemetry', () => import('./routes/telemetry'))
+
+// Security
+const securityRoute = lazyRoute('/security', () => import('./routes/security'))
+const systemLogsRoute = lazyRoute('/system-logs', () => import('./routes/system-logs'))
+const siteAdminRoute = lazyRoute('/site-admin', () => import('./routes/site-admin'))
+const monitoringRoute = lazyRoute('/monitoring', () => import('./routes/monitoring'))
+
+// Investor
+const portalRoute = lazyRoute('/portal', () => import('./routes/portal'))
+const dataRoomRoute = lazyRoute('/data-room', () => import('./routes/data-room'))
+const kpiMetricsRoute = lazyRoute('/kpi-metrics', () => import('./routes/kpi-metrics'))
+const committeeRoute = lazyRoute('/committee', () => import('./routes/committee'))
+const messagingRoute = lazyRoute('/messaging', () => import('./routes/messaging'))
+
+// Intelligence
+const aiAgentsRoute = lazyRoute('/ai-agents', () => import('./routes/ai-agents'))
+const hypervisorRoute = lazyRoute('/hypervisor', () => import('./routes/hypervisor'))
+const consoleRoute = lazyRoute('/console', () => import('./routes/console'))
+
+// Dashboard
+const analyticsRoute = lazyRoute('/analytics', () => import('./routes/analytics'))
+
+// System Status
+const cacheStatusRoute = lazyRoute('/cache-status', () => import('./routes/cache-status'))
+const apiServerRoute = lazyRoute('/api-server', () => import('./routes/api-server'))
+const databaseHealthRoute = lazyRoute('/database-health', () => import('./routes/database-health'))
+const backupStatusRoute = lazyRoute('/backup-status', () => import('./routes/backup-status'))
+
+// ── Route tree ──
 const routeTree = (rootRoute as any).addChildren([
   indexRoute as any,
   tenantsRoute as any,
