@@ -1,8 +1,4 @@
-version: v1
-plugins:
-  - plugin: es
-    out: gen/ts
-    opt: target=ts
-  - plugin: connect-es
-    out: gen/ts
-    opt: target=ts
+# DEPRECATED: This package no longer has local buf generation.
+# All proto generation runs from the root /proto/ directory.
+# Command: cd /proto && buf generate
+# See ADR-028 for the proto versioning decision.

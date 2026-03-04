@@ -23,6 +23,7 @@ This index tracks all significant architectural decisions for the SirsiNexusApp 
 | [ADR-025](ADR-025-UNIFIED-APP-ARCHITECTURE.md) | Unified App Architecture — Web + Desktop (Tauri) | Accepted | 2026-02-27 |
 | [ADR-026](ADR-026-HYPERVISOR-COMMAND-PROTOCOL.md) | Hypervisor Command Protocol — Operational Telemetry via gRPC | Accepted | 2026-03-02 |
 | [ADR-027](ADR-027-REACT-PORTAL-MIGRATION.md) | React Portal Migration — HTML-to-React Admin Console | Accepted | 2026-03-03 |
+| [ADR-028](ADR-028-PROTO-VERSIONING-ALIGNMENT.md) | Proto/gRPC Versioning Alignment — v2 Canonical | Accepted | 2026-03-03 |
 
 ## Categories
 
@@ -44,6 +45,7 @@ This index tracks all significant architectural decisions for the SirsiNexusApp 
 - ADR-023: Funding Sub-States (Unfunded / Partially Funded / Fully Funded)
 
 ### Platform Architecture
+- ADR-028: Proto/gRPC Versioning Alignment — v2 canonical, v1 retired, single `/proto/` source of truth
 - ADR-021: Unified gRPC Gateway (Single Go service for Portal + Sign)
 - ADR-013: Hierarchical URL Routing (`sign.sirsi.ai/vault/:user/:type/:entity/:docId`)
 - ADR-011: Universal Component System (UCS) — Integrated Independence

@@ -30,7 +30,7 @@ Stack: Go + ConnectRPC | React 19 + Vite 7 | Cloud SQL + Firestore | Firebase Au
 > **Stack**: Go (Golang) + ConnectRPC ⟶ React 19 + Vite 7 + TanStack Router  
 > **Database**: Cloud SQL (PostgreSQL) + Firestore  
 > **Design**: Swiss Neo-Deco (Emerald + Gold, Cinzel + Inter)  
-> **Key ADRs**: ADR-027 (React Migration), ADR-026 (Hypervisor Protocol)
+> **Key ADRs**: ADR-027 (React Migration), ADR-026 (Hypervisor Protocol), ADR-028 (Proto Versioning)
 
 ---
 
@@ -76,6 +76,14 @@ Full conversion of the HTML Admin Console into a React 19 SPA with TanStack Rout
 - `4d576d5` — Dependency updates, shared components, ADR-026 compliance
 - `1905dfd` — React dedupe fix in monorepo workspaces
 - `d2bd4f3` — ADR-027, VERSION bump, Dev Intelligence dashboard rewrite
+- `3bd5d06` — Synoptic VERSION.md unification + version badges in both headers
+- `e3ad48f` — Purge all stale version references (11 files: v0.5.0, v0.7.9, v1.0.0 → v0.8.0)
+
+#### Proto/gRPC Alignment (ADR-028)
+- Deleted legacy v1 proto and generated output from `packages/sirsi-admin-service/`
+- Confirmed all consumers (Go backend, React app) already use v2 from root `/proto/`
+- Synced React `src/gen/` with canonical `proto/gen/ts/` (SystemOverview types were missing)
+- Annotated Sirsi Sign v1 contracts proto as separate service boundary
 
 #### Stack Comparison
 

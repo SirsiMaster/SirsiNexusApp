@@ -1,3 +1,6 @@
-version: v1
-name: buf.build/sirsi/admin
-deps: []
+# DEPRECATED: This package no longer has local proto definitions.
+# All proto sources live in the root /proto/ directory.
+# Generated Go output: /proto/gen/go/sirsi/admin/v2/
+# Generated TS output: /proto/gen/ts/sirsi/admin/v2/
+# Buf generation: cd /proto && buf generate
+# See ADR-028 for the proto versioning decision.
