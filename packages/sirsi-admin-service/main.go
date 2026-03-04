@@ -204,7 +204,7 @@ func (s *AdminServer) ListUsers(
 	users := []*adminv2.User{
 		{
 			Id:       "ADMIN",
-			Email:    "sirsimaster@gmail.com",
+			Email:    "cylton@sirsi.ai",
 			Name:     "Cylton Collymore",
 			Role:     "Admin",
 			TenantId: "sirsi-core",
