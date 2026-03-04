@@ -78,7 +78,7 @@ class AdminSidebar extends HTMLElement {
                 title: 'MAIN',
                 defaultOpen: false,
                 items: [
-                    { href: `${base}index.html`, label: 'Dashboard', icon: 'dashboard', match: '/admin/index.html' },
+                    { href: `${base}admin-portal.html`, label: 'Dashboard', icon: 'dashboard', match: '/admin/admin-portal' },
                     { href: `${base}users/index.html`, label: 'User Management', icon: 'users', match: '/users/' },
                     { href: `${base}data-room/index.html`, label: 'Data Room', icon: 'dataRoom', match: '/data-room/' },
                     { href: `${base}tenants/index.html`, label: 'Operations', icon: 'tenants', match: '/tenants/' },

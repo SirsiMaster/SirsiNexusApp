@@ -4,7 +4,7 @@
  * @version 1.0.0
  */
 
-(function() {
+(function () {
     'use strict';
 
     // Wait for secure auth to be ready
@@ -43,13 +43,13 @@
     };
 
     // Enhanced login function that integrates security
-    window.enhancedLogin = async function(email, password, options = {}) {
+    window.enhancedLogin = async function (email, password, options = {}) {
         return new Promise((resolve, reject) => {
             whenAuthReady(async () => {
                 try {
                     // First try secure auth
                     const result = await window.secureAuth.login(email, password);
-                    
+
                     if (result.requires2FA) {
                         // Handle 2FA flow
                         const tfaCode = await prompt2FA();
@@ -67,7 +67,7 @@
                 } catch (secureError) {
                     // Fallback to legacy auth if secure auth fails
                     console.warn('Secure auth failed, trying legacy:', secureError);
-                    
+
                     if (originalAuth.login) {
                         try {
                             const legacyResult = await originalAuth.login(email, password);
@@ -93,7 +93,7 @@
     };
 
     // Enhanced registration function
-    window.enhancedRegister = async function(userData, options = {}) {
+    window.enhancedRegister = async function (userData, options = {}) {
         return new Promise((resolve, reject) => {
             whenAuthReady(async () => {
                 try {
@@ -110,20 +110,20 @@
 
                     // Use secure auth
                     const result = await window.secureAuth.register(registrationData);
-                    
+
                     if (result.success) {
                         // Store additional data if needed
                         if (options.additionalData) {
                             storeAdditionalUserData(result.userId, options.additionalData);
                         }
-                        
+
                         // Show email verification message
                         if (options.onEmailVerificationRequired) {
                             options.onEmailVerificationRequired(result);
                         } else {
                             showEmailVerificationMessage();
                         }
-                        
+
                         resolve(result);
                     }
                 } catch (error) {
@@ -134,7 +134,7 @@
     };
 
     // Intercept form submissions
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Find all login forms
         const loginForms = document.querySelectorAll('[id*="login"], [class*="login"], form[action*="login"]');
         loginForms.forEach(form => {
@@ -167,38 +167,38 @@
     // Enhance login form
     function enhanceLoginForm(form) {
         const originalSubmit = form.onsubmit;
-        
-        form.onsubmit = async function(e) {
+
+        form.onsubmit = async function (e) {
             e.preventDefault();
-            
+
             // Get form data
             const emailField = form.querySelector('[type="email"], [name*="email"], [name*="user"], [id*="email"], [id*="user"]');
             const passwordField = form.querySelector('[type="password"], [name*="password"], [id*="password"]');
-            
+
             if (!emailField || !passwordField) {
                 console.warn('Could not find email/password fields in form');
                 if (originalSubmit) return originalSubmit.call(form, e);
                 return;
             }
-            
+
             const email = emailField.value;
             const password = passwordField.value;
-            
+
             // Find submit button
             const submitBtn = form.querySelector('[type="submit"], button[onclick*="submit"]');
             const originalBtnText = submitBtn ? submitBtn.textContent : '';
-            
+
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Authenticating...';
             }
-            
+
             try {
                 const result = await window.enhancedLogin(email, password, {
                     form: form,
                     redirect: form.dataset.redirect || determineRedirectUrl()
                 });
-                
+
                 // Handle successful login
                 if (result.success) {
                     if (form.dataset.onSuccess) {
@@ -214,7 +214,7 @@
                     submitBtn.textContent = originalBtnText;
                 }
             }
-            
+
             return false;
         };
     }
@@ -222,24 +222,24 @@
     // Enhance registration form
     function enhanceRegistrationForm(form) {
         const originalSubmit = form.onsubmit;
-        
-        form.onsubmit = async function(e) {
+
+        form.onsubmit = async function (e) {
             e.preventDefault();
-            
+
             // Collect all form data
             const formData = new FormData(form);
             const userData = {};
-            
+
             for (let [key, value] of formData.entries()) {
                 userData[key] = value;
             }
-            
+
             // Map common field names
             userData.email = userData.email || userData.Email || userData.user_email;
             userData.password = userData.password || userData.Password || userData.user_password;
             userData.firstName = userData.firstName || userData.first_name || userData.fname;
             userData.lastName = userData.lastName || userData.last_name || userData.lname;
-            
+
             // Validate passwords match
             if (userData.confirmPassword || userData.confirm_password || userData.password_confirm) {
                 const confirmPass = userData.confirmPassword || userData.confirm_password || userData.password_confirm;
@@ -248,25 +248,25 @@
                     return false;
                 }
             }
-            
+
             // Find submit button
             const submitBtn = form.querySelector('[type="submit"], button[onclick*="submit"]');
             const originalBtnText = submitBtn ? submitBtn.textContent : '';
-            
+
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Creating Account...';
             }
-            
+
             try {
                 const result = await window.enhancedRegister(userData, {
                     form: form,
                     additionalData: extractAdditionalData(userData)
                 });
-                
+
                 if (result.success) {
                     showSuccess(form, result.message);
-                    
+
                     // Redirect after delay
                     setTimeout(() => {
                         window.location.href = '/verify-email-sent.html';
@@ -279,7 +279,7 @@
                     submitBtn.textContent = originalBtnText;
                 }
             }
-            
+
             return false;
         };
     }
@@ -288,8 +288,8 @@
     function enhanceInvestorLogin() {
         whenAuthReady(() => {
             const originalValidation = window.validateInvestorCredentials;
-            
-            window.validateInvestorCredentials = async function(investorId, accessCode) {
+
+            window.validateInvestorCredentials = async function (investorId, accessCode) {
                 try {
                     // Try secure auth first
                     const result = await window.enhancedLogin(investorId, accessCode, {
@@ -324,11 +324,11 @@
         // Store session
         sessionStorage.setItem('authToken', result.sessionId);
         sessionStorage.setItem('userId', result.user?.id || result.userId);
-        
+
         // Store in multiple places for compatibility
         localStorage.setItem('authenticated', 'true');
         localStorage.setItem('userRole', result.user?.role || 'user');
-        
+
         // Trigger any callbacks
         if (window.onAuthSuccess) {
             window.onAuthSuccess(result);
@@ -342,9 +342,9 @@
             { email: 'investor@example.com', password: 'Investor123!', role: 'investor' },
             { email: 'demo@example.com', password: 'Demo123!', role: 'user' }
         ];
-        
+
         const user = demoUsers.find(u => u.email === email && u.password === password);
-        
+
         if (user) {
             return {
                 success: true,
@@ -352,7 +352,7 @@
                 sessionId: generateSessionId()
             };
         }
-        
+
         return { success: false };
     }
 
@@ -362,28 +362,28 @@
 
     function determineRedirectUrl() {
         const path = window.location.pathname;
-        
+
         if (path.includes('investor')) {
             return '/investor-portal/index.html';
         } else if (path.includes('admin')) {
-            return '/admin/index.html';
+            return '/admin/admin-portal.html';
         } else if (path.includes('developer')) {
             return '/developer-portal/index.html';
         }
-        
+
         return '/dashboard.html';
     }
 
     function showError(form, message) {
         // Look for existing error container
         let errorDiv = form.querySelector('.error-message, .alert-error, [id*="error"]');
-        
+
         if (!errorDiv) {
             errorDiv = document.createElement('div');
             errorDiv.className = 'error-message p-4 mb-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg';
             form.insertBefore(errorDiv, form.firstChild);
         }
-        
+
         errorDiv.innerHTML = `
             <div class="flex items-center gap-2">
                 <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 20 20">
@@ -392,19 +392,19 @@
                 <span class="text-sm text-red-700 dark:text-red-300">${message}</span>
             </div>
         `;
-        
+
         errorDiv.style.display = 'block';
     }
 
     function showSuccess(form, message) {
         let successDiv = form.querySelector('.success-message, .alert-success, [id*="success"]');
-        
+
         if (!successDiv) {
             successDiv = document.createElement('div');
             successDiv.className = 'success-message p-4 mb-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg';
             form.insertBefore(successDiv, form.firstChild);
         }
-        
+
         successDiv.innerHTML = `
             <div class="flex items-center gap-2">
                 <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
@@ -413,7 +413,7 @@
                 <span class="text-sm text-emerald-700 dark:text-emerald-300">${message}</span>
             </div>
         `;
-        
+
         successDiv.style.display = 'block';
     }
 
@@ -457,20 +457,20 @@
                     </div>
                 </div>
             `;
-            
+
             document.body.appendChild(modal);
-            
+
             window.submit2FA = () => {
                 const code = document.getElementById('tfaCode').value;
                 modal.remove();
                 resolve(code);
             };
-            
+
             window.cancel2FA = () => {
                 modal.remove();
                 resolve(null);
             };
-            
+
             // Auto-submit on 6 digits
             document.getElementById('tfaCode').addEventListener('input', (e) => {
                 if (e.target.value.length === 6) {
@@ -502,13 +502,13 @@
         // Extract non-auth fields for separate storage
         const authFields = ['email', 'password', 'confirmPassword', 'firstName', 'lastName', 'username'];
         const additional = {};
-        
+
         for (let key in userData) {
             if (!authFields.includes(key)) {
                 additional[key] = userData[key];
             }
         }
-        
+
         return additional;
     }
 
