@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"connectrpc.com/connect"
 	"golang.org/x/net/http2"
@@ -353,6 +354,29 @@ func (s *TenantServer) DeactivateTenant(
 	return nil, connect.NewError(connect.CodeUnimplemented, fmt.Errorf("unimplemented"))
 }
 
+// corsMiddleware wraps a handler with permissive CORS for local development.
+// In production, Cloud Run handles CORS via IAP/Load Balancer config.
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		// Allow localhost origins for development
+		if origin == "" || strings.HasPrefix(origin, "http://localhost") || strings.HasPrefix(origin, "https://sirsi") {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+		} else {
+			w.Header().Set("Access-Control-Allow-Origin", "http://localhost:5174")
+		}
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Connect-Protocol-Version, Connect-Timeout-Ms, Authorization, X-Grpc-Web, X-User-Agent")
+		w.Header().Set("Access-Control-Expose-Headers", "Grpc-Status, Grpc-Message, Grpc-Status-Details-Bin")
+		w.Header().Set("Access-Control-Max-Age", "86400")
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	loadSettings()
 	mux := http.NewServeMux()
@@ -364,10 +388,10 @@ func main() {
 		port = "8080"
 	}
 
-	fmt.Printf("Admin Service listening on :%s\n", port)
+	fmt.Printf("Sirsi Admin Service v0.8.0-alpha listening on :%s\n", port)
 	err := http.ListenAndServe(
 		":"+port,
-		h2c.NewHandler(mux, &http2.Server{}),
+		h2c.NewHandler(corsMiddleware(mux), &http2.Server{}),
 	)
 	if err != nil {
 		log.Fatalf("failed to serve: %v", err)
