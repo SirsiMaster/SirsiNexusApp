@@ -58,7 +58,7 @@ const GOVERNANCE_DOCS = [
     { name: 'GEMINI.md v6.1.0', path: '/GEMINI.md', type: 'Canon' },
     { name: 'Swiss Neo-Deco Style Guide', path: '/docs/SWISS_NEO_DECO_STYLE_GUIDE.md', type: 'Design' },
     { name: 'Version History (v0.8.0-alpha)', path: '/docs/core/VERSION.md', type: 'Version' },
-    { name: 'ADR Index (18 ADRs)', path: '/docs/ADR-INDEX.md', type: 'Index' },
+    { name: 'ADR Index (23 ADRs)', path: '/docs/ADR-INDEX.md', type: 'Index' },
 ]
 
 // ── Commit type config ───────────────────────────────────────────
