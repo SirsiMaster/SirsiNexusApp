@@ -199,14 +199,57 @@ func (s *AdminServer) ListUsers(
 	ctx context.Context,
 	req *connect.Request[adminv2.ListUsersRequest],
 ) (*connect.Response[adminv2.ListUsersResponse], error) {
+	// Canonical user registry — matches HTML admin portal users/index.html
+	// All accounts are ACTIVE per operational directive
 	users := []*adminv2.User{
 		{
-			Id:    "user_1",
-			Email: "cylton@sirsi.ai",
-			Name:  "Cylton Collymore",
-			Role:  "Admin",
+			Id:       "user_1",
+			Email:    "cylton@sirsi.ai",
+			Name:     "Cylton Collymore",
+			Role:     "Super Admin",
+			TenantId: "sirsi-core",
+		},
+		{
+			Id:       "user_2",
+			Email:    "j.doe@example.com",
+			Name:     "John Doe",
+			Role:     "Investor",
+			TenantId: "finalwishes",
+		},
+		{
+			Id:       "user_3",
+			Email:    "j.smith@nexus.co",
+			Name:     "Jane Smith",
+			Role:     "Partner",
+			TenantId: "assiduous",
+		},
+		{
+			Id:       "user_4",
+			Email:    "rvance@sirsi.ai",
+			Name:     "Robert Vance",
+			Role:     "Admin",
+			TenantId: "sirsi-core",
+		},
+		{
+			Id:       "user_5",
+			Email:    "a.cooper@rock.com",
+			Name:     "Alice Cooper",
+			Role:     "Investor",
+			TenantId: "finalwishes",
 		},
 	}
+
+	// Filter by tenant if requested
+	if req.Msg.TenantId != "" {
+		filtered := make([]*adminv2.User, 0)
+		for _, u := range users {
+			if u.TenantId == req.Msg.TenantId {
+				filtered = append(filtered, u)
+			}
+		}
+		users = filtered
+	}
+
 	res := connect.NewResponse(&adminv2.ListUsersResponse{
 		Users: users,
 		Pagination: &commonv1.PaginationResponse{
@@ -235,10 +278,46 @@ func (s *AdminServer) ListNotifications(
 		{
 			Id:          "notif_1",
 			RecipientId: "all",
-			Title:       "System Maintenance",
-			Body:        "Scheduled maintenance in 2 hours.",
-			Type:        "warning",
-			SentAt:      1706482800,
+			Title:       "System Maintenance Complete",
+			Body:        "Cloud Run backend upgraded to v0.8.0-alpha. All services operational.",
+			Type:        "info",
+			SentAt:      1709510400,
+			Status:      "delivered",
+		},
+		{
+			Id:          "notif_2",
+			RecipientId: "user_2",
+			Title:       "Contract Ready for Review",
+			Body:        "FinalWishes MSA (MSA-2026-001) is awaiting your signature.",
+			Type:        "action",
+			SentAt:      1709424000,
+			Status:      "delivered",
+		},
+		{
+			Id:          "notif_3",
+			RecipientId: "user_1",
+			Title:       "MFA Enrollment Verified",
+			Body:        "TOTP handshake for cylton@sirsi.ai confirmed. Custom claims synced.",
+			Type:        "success",
+			SentAt:      1709337600,
+			Status:      "delivered",
+		},
+		{
+			Id:          "notif_4",
+			RecipientId: "user_3",
+			Title:       "Assiduous Tenant Provisioned",
+			Body:        "Staging environment is live. Production deployment pending approval.",
+			Type:        "info",
+			SentAt:      1709251200,
+			Status:      "delivered",
+		},
+		{
+			Id:          "notif_5",
+			RecipientId: "all",
+			Title:       "Security Audit Passed",
+			Body:        "SOC 2 Type II readiness assessment: 23/23 controls verified.",
+			Type:        "success",
+			SentAt:      1709164800,
 			Status:      "delivered",
 		},
 	}
@@ -280,13 +359,81 @@ func (s *AdminServer) ListAuditTrail(
 	logs := []*adminv2.AuditLogEntry{
 		{
 			Id:        "audit_1",
-			Timestamp: 1706482800,
+			Timestamp: 1709510400,
 			Level:     "INFO",
-			Source:    "AdminService",
-			Message:   "Admin service initialized",
+			Source:    "ContractsService",
+			Message:   "New contract created: FW-MSA-2026-001",
+			User:      "Cylton Collymore",
+		},
+		{
+			Id:        "audit_2",
+			Timestamp: 1709506800,
+			Level:     "INFO",
+			Source:    "AuthService",
+			Message:   "MFA handshake verified for identity: cylton@sirsi.ai (CID: #USR-001)",
+			User:      "Cylton Collymore",
+		},
+		{
+			Id:        "audit_3",
+			Timestamp: 1709503200,
+			Level:     "INFO",
+			Source:    "UserService",
+			Message:   "User provisioned: John Doe (j.doe@example.com) — role: Investor",
+			User:      "Cylton Collymore",
+		},
+		{
+			Id:        "audit_4",
+			Timestamp: 1709499600,
+			Level:     "WARN",
+			Source:    "DeploymentService",
+			Message:   "Cloud Run revision sirsi-admin-00042 scaled to 0 instances (cold start expected)",
+			User:      "system",
+		},
+		{
+			Id:        "audit_5",
+			Timestamp: 1709496000,
+			Level:     "INFO",
+			Source:    "ContractsService",
+			Message:   "Contract fully executed: Assiduous NDA (NDA-2026-042) — SHA-256 sealed",
+			User:      "Jane Smith",
+		},
+		{
+			Id:        "audit_6",
+			Timestamp: 1709492400,
+			Level:     "INFO",
+			Source:    "SettingsService",
+			Message:   "Sirsi Multiplier updated: 1.8x → 2.0x",
+			User:      "Cylton Collymore",
+		},
+		{
+			Id:        "audit_7",
+			Timestamp: 1709488800,
+			Level:     "INFO",
+			Source:    "TenantService",
+			Message:   "Tenant 'Assiduous' provisioned — staging environment active",
+			User:      "Robert Vance",
+		},
+		{
+			Id:        "audit_8",
+			Timestamp: 1709485200,
+			Level:     "ERROR",
+			Source:    "PaymentService",
+			Message:   "Stripe webhook signature verification failed (retried successfully)",
 			User:      "system",
 		},
 	}
+
+	// Filter by level if requested
+	if req.Msg.FilterLevel != "" {
+		filtered := make([]*adminv2.AuditLogEntry, 0)
+		for _, l := range logs {
+			if strings.EqualFold(l.Level, req.Msg.FilterLevel) {
+				filtered = append(filtered, l)
+			}
+		}
+		logs = filtered
+	}
+
 	res := connect.NewResponse(&adminv2.ListAuditTrailResponse{
 		Logs: logs,
 		Pagination: &commonv1.PaginationResponse{

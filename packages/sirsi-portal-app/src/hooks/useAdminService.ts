@@ -123,3 +123,55 @@ export const useUsers = (tenantId?: string) => {
         },
     });
 };
+
+export const useManageUserRole = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (req: { userId: string; role: string }) => {
+            return await (client as any).manageUserRole(req);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin-users'] });
+        },
+    });
+};
+
+// Audit Trail
+export const useAuditTrail = (filterLevel?: string) => {
+    return useQuery({
+        queryKey: ['audit-trail', filterLevel],
+        queryFn: async () => {
+            const res = await (client as any).listAuditTrail({
+                filterLevel: filterLevel || '',
+                pagination: { pageSize: 100, pageToken: "" }
+            });
+            return res.logs;
+        },
+    });
+};
+
+// Notifications
+export const useNotifications = (recipientId?: string) => {
+    return useQuery({
+        queryKey: ['notifications', recipientId],
+        queryFn: async () => {
+            const res = await (client as any).listNotifications({
+                recipientId: recipientId || '',
+                pagination: { pageSize: 50, pageToken: "" }
+            });
+            return res.notifications;
+        },
+    });
+};
+
+export const useSendNotification = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (req: any) => {
+            return await (client as any).sendNotification(req);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['notifications'] });
+        },
+    });
+};

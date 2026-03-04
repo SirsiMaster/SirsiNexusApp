@@ -60,8 +60,8 @@ function UsersPage() {
                 id: i + 101,
                 name: u.name || 'Unknown',
                 email: u.email || '',
-                status: (u.role === 'Admin' ? 'active' : 'pending') as User['status'],
-                role: u.role?.toLowerCase() || 'investor',
+                status: 'active' as User['status'], // All accounts in registry are active
+                role: (u.role || 'investor').toLowerCase().replace(/\s+/g, '-'),
             }))
             // Merge: backend users first, then append any local-only additions
             setUsers(prev => {
