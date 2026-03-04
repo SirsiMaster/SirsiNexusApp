@@ -93,8 +93,8 @@ function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center px-4"
-            style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%)' }}>
+        <div className="flex flex-col items-center justify-center px-4 py-16"
+            style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%)', minHeight: 'calc(100vh - 200px)' }}>
 
             {/* Logo */}
             <div className="mb-6 flex flex-col items-center">
@@ -215,7 +215,7 @@ function LoginPage() {
             </div>
 
             {/* Back link */}
-            <a href="/" className="mt-6 text-emerald-600 hover:text-emerald-800 text-sm font-medium transition-colors">
+            <a href="/home" className="mt-6 text-emerald-600 hover:text-emerald-800 text-sm font-medium transition-colors">
                 ← Back to Home
             </a>
         </div>

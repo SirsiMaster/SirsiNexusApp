@@ -14,7 +14,7 @@
  * Typography: Inter (body ≤ 500, Rule 21), brand name uses font-semibold
  */
 
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
+import { createRootRoute, Link, Outlet, useRouterState } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { useState, useEffect } from 'react'
 import {
@@ -142,8 +142,174 @@ function SidebarGroup({ group }: { group: NavGroup }) {
     )
 }
 
+// ── Public page paths (no sidebar, standalone site header + footer) ──
+const PUBLIC_PATHS = ['/home', '/login', '/signup', '/documentation']
+
+// ── Public Site Header (pixel-perfect match to sirsi.ai index.html header) ──
+function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: () => void }) {
+    return (
+        <header className="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700" style={{ backdropFilter: 'blur(8px)' }}>
+            <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
+                <div style={{ display: 'flex', height: 64, alignItems: 'center', justifyContent: 'space-between' }}>
+                    {/* LEFT: Brand */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <div style={{ width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <img src="/sirsi-icon.png" alt="Sirsi Logo" style={{ width: 48, height: 48, objectFit: 'contain' }} />
+                        </div>
+                        <div>
+                            <h1 style={{ fontSize: 18, fontWeight: 600, color: isDark ? '#f1f5f9' : '#0f172a', margin: 0, lineHeight: 1.2 }}>
+                                SirsiNexus
+                            </h1>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                <span style={{ fontSize: 11, color: isDark ? '#94a3b8' : '#64748b', background: isDark ? '#1e293b' : '#f1f5f9', padding: '1px 8px', borderRadius: 4 }}>v0.7.10-alpha</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                                    <div style={{ width: 6, height: 6, background: '#10b981', borderRadius: '50%' }} />
+                                    <span style={{ fontSize: 11, color: isDark ? '#cbd5e1' : '#475569' }}>Live</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* RIGHT: Nav Links */}
+                    <nav style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+                        <LinkComp to="/home" style={{ fontSize: 14, color: isDark ? '#94a3b8' : '#475569', textDecoration: 'none', fontWeight: 400 }}>
+                            Forum
+                        </LinkComp>
+                        <a href="https://github.com/SirsiMaster/SirsiNexusApp" target="_blank" rel="noopener"
+                            style={{ fontSize: 14, color: isDark ? '#94a3b8' : '#475569', textDecoration: 'none', fontWeight: 400 }}>
+                            App Repository
+                        </a>
+                        <LinkComp to="/documentation" style={{ fontSize: 14, color: isDark ? '#94a3b8' : '#475569', textDecoration: 'none', fontWeight: 400 }}>
+                            Documentation
+                        </LinkComp>
+                        <LinkComp to="/login" style={{ fontSize: 14, color: '#059669', textDecoration: 'none', fontWeight: 500 }}>
+                            Login
+                        </LinkComp>
+                        <button
+                            onClick={toggleTheme}
+                            style={{
+                                padding: 8, border: `1px solid ${isDark ? '#475569' : '#cbd5e1'}`,
+                                borderRadius: 8, background: 'transparent', cursor: 'pointer',
+                                color: isDark ? '#94a3b8' : '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            }}
+                            title="Toggle theme"
+                        >
+                            {isDark ? <Moon size={16} /> : <Sun size={16} />}
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </header>
+    )
+}
+
+// ── Public Site Footer (pixel-perfect match to sirsi.ai footer) ──
+function PublicFooter({ isDark }: { isDark: boolean }) {
+    const linkStyle = { fontSize: 14, color: isDark ? '#94a3b8' : '#475569', textDecoration: 'none' as const, fontWeight: 400 as const }
+    return (
+        <footer style={{ background: isDark ? '#0f172a' : '#ffffff', color: isDark ? '#ffffff' : '#475569', padding: '48px 0' }}>
+            <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 32 }}>
+                    {/* Brand */}
+                    <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+                            <img src="/sirsi-icon.png" alt="Sirsi" style={{ width: 32, height: 32, objectFit: 'contain' }} />
+                            <span style={{ fontSize: 20, fontWeight: 600, color: isDark ? '#f1f5f9' : '#0f172a' }}>SirsiNexus</span>
+                        </div>
+                        <p style={{ ...linkStyle, lineHeight: 1.6 }}>Agent-embedded infrastructure platform for enterprise cloud operations.</p>
+                    </div>
+                    {/* Platform */}
+                    <div>
+                        <h4 style={{ fontWeight: 600, marginBottom: 16, color: isDark ? '#f1f5f9' : '#0f172a', fontSize: 14 }}>Platform</h4>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                            <li style={{ marginBottom: 8 }}><a href="#features" style={linkStyle}>Features</a></li>
+                            <li style={{ marginBottom: 8 }}><a href="#platform" style={linkStyle}>Architecture</a></li>
+                            <li style={{ marginBottom: 8 }}><LinkComp to="/documentation" style={{ ...linkStyle, fontWeight: 600 }}>Documentation</LinkComp></li>
+                            <li style={{ marginBottom: 8 }}><a href="#pricing" style={linkStyle}>Pricing</a></li>
+                        </ul>
+                    </div>
+                    {/* Company */}
+                    <div>
+                        <h4 style={{ fontWeight: 600, marginBottom: 16, color: isDark ? '#f1f5f9' : '#0f172a', fontSize: 14 }}>Company</h4>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                            <li style={{ marginBottom: 8 }}><a href="#about" style={linkStyle}>About</a></li>
+                            <li style={{ marginBottom: 8 }}><a href="#careers" style={linkStyle}>Careers</a></li>
+                            <li style={{ marginBottom: 8 }}><a href="#blog" style={linkStyle}>Blog</a></li>
+                            <li style={{ marginBottom: 8 }}><a href="#contact" style={linkStyle}>Contact</a></li>
+                        </ul>
+                    </div>
+                    {/* Legal */}
+                    <div>
+                        <h4 style={{ fontWeight: 600, marginBottom: 16, color: '#059669', fontSize: 14 }}>Compliance &amp; Legal</h4>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                            <li style={{ marginBottom: 8 }}><a href="/privacy" style={{ ...linkStyle, fontWeight: 600 }}>Privacy Policy</a></li>
+                            <li style={{ marginBottom: 8 }}><a href="/terms" style={{ ...linkStyle, fontWeight: 600 }}>Terms of Service</a></li>
+                            <li style={{ marginBottom: 8 }}><a href="/security" style={{ ...linkStyle, fontWeight: 600 }}>Security Portal</a></li>
+                            <li style={{ marginBottom: 8 }}><LinkComp to="/login" style={linkStyle}>Portal Login</LinkComp></li>
+                        </ul>
+                    </div>
+                </div>
+                <div style={{ borderTop: `1px solid ${isDark ? '#1e293b' : '#e2e8f0'}`, marginTop: 32, paddingTop: 32, textAlign: 'center' as const }}>
+                    <p style={{ color: isDark ? '#94a3b8' : '#475569', fontSize: 14, margin: 0 }}>
+                        © 2026 Sirsi Technologies Inc. All rights reserved.
+                    </p>
+                    <p style={{ color: isDark ? '#64748b' : '#94a3b8', fontSize: 12, marginTop: 8 }}>
+                        SirsiNexus is a product of Sirsi Technologies Inc.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    )
+}
+
+// ── Public Layout Wrapper ──
+function PublicLayout() {
+    const [isDark, setIsDark] = useState(() => {
+        const saved = localStorage.getItem('theme')
+        const prefersDark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.classList.toggle('dark', prefersDark)
+        return prefersDark
+    })
+
+    const toggleTheme = () => {
+        const next = !isDark
+        setIsDark(next)
+        document.documentElement.classList.toggle('dark', next)
+        localStorage.setItem('theme', next ? 'dark' : 'light')
+    }
+
+    return (
+        <div className="font-inter" style={{ background: isDark ? '#0f172a' : '#f8fafc', minHeight: '100vh' }}>
+            <PublicHeader isDark={isDark} toggleTheme={toggleTheme} />
+            <OutletComp />
+            <PublicFooter isDark={isDark} />
+        </div>
+    )
+}
+
 // ── Root Layout ──
 function RootLayout() {
+    const routerState = useRouterState()
+    const currentPath = routerState.location.pathname
+
+    // Check if this is a public page (NOT inside admin/portal directory)
+    const isPublicPage = PUBLIC_PATHS.some(p => currentPath === p || currentPath.startsWith(p + '/'))
+
+    if (isPublicPage) {
+        return (
+            <>
+                <PublicLayout />
+                <DevtoolsComp />
+            </>
+        )
+    }
+
+    // Otherwise render admin layout
+    return <AdminLayout />
+}
+
+// ── Admin Layout (sidebar + header — portal pages only) ──
+function AdminLayout() {
     const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
     const [sidebarMini, setSidebarMini] = useState(() =>
         localStorage.getItem('sirsi_sidebar_collapsed') === 'true'

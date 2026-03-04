@@ -86,6 +86,11 @@ const loginRoute = lazyRoute('/login', () => import('./routes/login'))
 const investorPortalRoute = lazyRoute('/investor-portal', () => import('./routes/investor-portal'))
 const clientPortalRoute = lazyRoute('/client-portal', () => import('./routes/client-portal'))
 
+// Public Pages (sirsi.ai)
+const landingRoute = lazyRoute('/home', () => import('./routes/landing'))
+const signupRoute = lazyRoute('/signup', () => import('./routes/signup'))
+const documentationRoute = lazyRoute('/documentation', () => import('./routes/documentation'))
+
 // ── Route tree ──
 const routeTree = (rootRoute as any).addChildren([
   indexRoute as any,
@@ -121,6 +126,10 @@ const routeTree = (rootRoute as any).addChildren([
   loginRoute as any,
   investorPortalRoute as any,
   clientPortalRoute as any,
+  // Public Pages
+  landingRoute as any,
+  signupRoute as any,
+  documentationRoute as any,
 ])
 
 // Create the router
