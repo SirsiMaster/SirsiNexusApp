@@ -100,10 +100,10 @@ function DevelopmentIntelligence() {
 
             {/* ── KPI Cards ────────────────────────────────────── */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <KpiCard icon={GitCommit} label="Total Commits" value={String(totalCommits)} unit="pushed" accent="text-emerald-600" />
-                <KpiCard icon={RouteIcon} label="Routes Ported" value="25" unit="of 25" accent="text-emerald-600" />
-                <KpiCard icon={FileCode} label="Source Files" value="64" unit=".tsx/.ts/.css" accent="text-blue-600" />
-                <KpiCard icon={Code2} label="Lines of Code" value="6,135" unit="total" accent="text-gray-600" />
+                <KpiCard icon={GitCommit} label="Total Commits" value={String(totalCommits)} unit="pushed" />
+                <KpiCard icon={RouteIcon} label="Routes Ported" value="25" unit="of 25" />
+                <KpiCard icon={FileCode} label="Source Files" value="64" unit=".tsx/.ts/.css" />
+                <KpiCard icon={Code2} label="Lines of Code" value="6,135" unit="total" />
             </div>
 
             {/* ── Two-column layout ───────────────────────────── */}
@@ -285,8 +285,8 @@ function DevelopmentIntelligence() {
 
 // ── Sub-Components ───────────────────────────────────────────────
 
-function KpiCard({ icon: Icon, label, value, unit, accent }: {
-    icon: any; label: string; value: string; unit: string; accent: string
+function KpiCard({ icon: Icon, label, value, unit }: {
+    icon: any; label: string; value: string; unit: string
 }) {
     return (
         <div className="sirsi-card">

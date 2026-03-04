@@ -13,6 +13,15 @@
   "resolutions": {
     "minimatch": ">=9.0.7",
     "rollup": ">=4.59.0",
-    "fast-xml-parser": ">=5.3.8"
+    "fast-xml-parser": ">=5.3.8",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3"
+  },
+  "overrides": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3"
+  },
+  "dependencies": {
+    "immer": "^11.1.4"
   }
 }

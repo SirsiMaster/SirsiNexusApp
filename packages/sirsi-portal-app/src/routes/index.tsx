@@ -47,8 +47,6 @@ function Dashboard() {
 
     // Derived KPIs — live when backend is up, fallback when down
     const totalContracts = overview?.totalContracts ?? 142
-    const totalTenants = overview?.totalTenants ?? 12
-    const multiplier = overview?.sirsiMultiplier ?? 2.0
     const maintenanceMode = overview?.maintenanceMode ?? false
 
     return (
@@ -63,8 +61,8 @@ function Dashboard() {
                 </div>
                 <div className="flex items-center gap-3">
                     <span className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-medium uppercase tracking-widest border ${maintenanceMode
-                            ? 'bg-amber-50 text-amber-600 border-amber-100'
-                            : 'bg-emerald-50 text-emerald-600 border-emerald-100'
+                        ? 'bg-amber-50 text-amber-600 border-amber-100'
+                        : 'bg-emerald-50 text-emerald-600 border-emerald-100'
                         }`}>
                         <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${maintenanceMode ? 'bg-amber-500' : 'bg-emerald-500'
                             }`} />

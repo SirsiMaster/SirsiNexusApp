@@ -14,7 +14,7 @@
 
 import { createRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './__root'
-import * as Tabs from '@radix-ui/react-tabs'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import {
     Activity, Shield, Database, Globe, Server, DollarSign, AlertTriangle,
     GitBranch, Monitor, Cpu, Clock, CheckCircle, Plus,
@@ -88,27 +88,27 @@ function HypervisorCommandCenter() {
 
                 {/* Right: Tab Cluster */}
                 <div className="flex-1 min-w-0">
-                    <Tabs.Root value={activeTab} onValueChange={setTab}>
-                        <Tabs.List className="hyp-tab-list">
+                    <Tabs value={activeTab} onValueChange={setTab}>
+                        <TabsList className="hyp-tab-list">
                             {TABS.map((tab) => (
-                                <Tabs.Trigger key={tab.id} value={tab.id} className="hyp-tab-trigger">
+                                <TabsTrigger key={tab.id} value={tab.id} className="hyp-tab-trigger">
                                     <tab.icon size={14} />
                                     <span>{tab.label}</span>
-                                </Tabs.Trigger>
+                                </TabsTrigger>
                             ))}
-                        </Tabs.List>
+                        </TabsList>
 
-                        <Tabs.Content value="overview"><OverviewTab filters={filters} /></Tabs.Content>
-                        <Tabs.Content value="devops"><DevOpsTab filters={filters} /></Tabs.Content>
-                        <Tabs.Content value="infrastructure"><InfrastructureTab filters={filters} /></Tabs.Content>
-                        <Tabs.Content value="security"><SecurityTab filters={filters} /></Tabs.Content>
-                        <Tabs.Content value="database"><DatabaseTab filters={filters} /></Tabs.Content>
-                        <Tabs.Content value="frontend"><FrontendTab filters={filters} /></Tabs.Content>
-                        <Tabs.Content value="backend"><BackendTab filters={filters} /></Tabs.Content>
-                        <Tabs.Content value="integrations"><IntegrationsTab filters={filters} /></Tabs.Content>
-                        <Tabs.Content value="cost"><CostTab filters={filters} /></Tabs.Content>
-                        <Tabs.Content value="incidents"><IncidentsTab filters={filters} /></Tabs.Content>
-                    </Tabs.Root>
+                        <TabsContent value="overview"><OverviewTab filters={filters} /></TabsContent>
+                        <TabsContent value="devops"><DevOpsTab filters={filters} /></TabsContent>
+                        <TabsContent value="infrastructure"><InfrastructureTab filters={filters} /></TabsContent>
+                        <TabsContent value="security"><SecurityTab filters={filters} /></TabsContent>
+                        <TabsContent value="database"><DatabaseTab filters={filters} /></TabsContent>
+                        <TabsContent value="frontend"><FrontendTab filters={filters} /></TabsContent>
+                        <TabsContent value="backend"><BackendTab filters={filters} /></TabsContent>
+                        <TabsContent value="integrations"><IntegrationsTab filters={filters} /></TabsContent>
+                        <TabsContent value="cost"><CostTab filters={filters} /></TabsContent>
+                        <TabsContent value="incidents"><IncidentsTab filters={filters} /></TabsContent>
+                    </Tabs>
                 </div>
             </div>
         </div>
@@ -523,7 +523,7 @@ function FrontendTab({ filters }: TabProps) {
                     <ProgressGauge value={data.bundleSize.current} max={data.bundleSize.budget} className="mb-4" />
                     <ResponsiveContainer width="100%" height={200}>
                         <PieChart>
-                            <Pie data={data.bundleSize.byModule} dataKey="size" nameKey="name" cx="50%" cy="50%" outerRadius={80} label={({ name, size }) => `${name}: ${size}KB`} labelLine={false}>
+                            <Pie data={data.bundleSize.byModule} dataKey="size" nameKey="name" cx="50%" cy="50%" outerRadius={80} label={(props: { name?: string; payload?: { size?: number } }) => `${props.name ?? ''}: ${props.payload?.size ?? 0}KB`} labelLine={false}>
                                 {data.bundleSize.byModule.map((_, i) => <Cell key={i} fill={EMERALD_PALETTE[i % EMERALD_PALETTE.length]} />)}
                             </Pie>
                             <Tooltip />
@@ -698,7 +698,7 @@ function CostTab({ filters }: TabProps) {
                     <ResponsiveContainer width="100%" height={220}>
                         <AreaChart data={data.costTrend6m}>
                             <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#94a3b8' }} />
-                            <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} tickFormatter={v => `$${v}`} />
+                            <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} tickFormatter={(v: number) => `$${v}`} />
                             <Tooltip />
                             <Area type="monotone" dataKey="finalwishes" stackId="1" stroke="#059669" fill="#059669" fillOpacity={0.2} name="FinalWishes" />
                             <Area type="monotone" dataKey="assiduous" stackId="1" stroke="#C8A951" fill="#C8A951" fillOpacity={0.2} name="Assiduous" />
