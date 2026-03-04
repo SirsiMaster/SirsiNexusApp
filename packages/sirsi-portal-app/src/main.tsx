@@ -81,6 +81,11 @@ const apiServerRoute = lazyRoute('/api-server', () => import('./routes/api-serve
 const databaseHealthRoute = lazyRoute('/database-health', () => import('./routes/database-health'))
 const backupStatusRoute = lazyRoute('/backup-status', () => import('./routes/backup-status'))
 
+// Role Portals
+const loginRoute = lazyRoute('/login', () => import('./routes/login'))
+const investorPortalRoute = lazyRoute('/investor-portal', () => import('./routes/investor-portal'))
+const clientPortalRoute = lazyRoute('/client-portal', () => import('./routes/client-portal'))
+
 // ── Route tree ──
 const routeTree = (rootRoute as any).addChildren([
   indexRoute as any,
@@ -112,6 +117,10 @@ const routeTree = (rootRoute as any).addChildren([
   apiServerRoute as any,
   databaseHealthRoute as any,
   backupStatusRoute as any,
+  // Role Portals
+  loginRoute as any,
+  investorPortalRoute as any,
+  clientPortalRoute as any,
 ])
 
 // Create the router
