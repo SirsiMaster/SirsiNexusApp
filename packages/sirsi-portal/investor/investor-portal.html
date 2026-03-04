@@ -39,7 +39,7 @@
       }
 
       if (!auth) {
-        window.location.href = 'login.html';
+        window.location.href = '../login.html';
         return;
       }
 
@@ -52,7 +52,7 @@
         if (hoursSinceLogin > 24) {
           sessionStorage.removeItem('investorAuth');
           document.cookie = "sirsi_auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.sirsi.ai";
-          window.location.href = 'login.html';
+          window.location.href = '../login.html';
           return;
         }
 
@@ -60,7 +60,7 @@
       } catch (error) {
         console.error('❌ Authentication error:', error);
         sessionStorage.removeItem('investorAuth');
-        window.location.href = 'login.html';
+        window.location.href = '../login.html';
         return;
       }
     })();
@@ -380,9 +380,9 @@
         <div class="flex items-center gap-6">
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 flex items-center justify-center">
-              <img src="assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo"
+              <img src="../assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo"
                 class="w-12 h-12 object-contain dark:hidden">
-              <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo"
+              <img src="../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo"
                 class="w-12 h-12 object-contain hidden dark:block">
             </div>
             <div>
@@ -422,7 +422,7 @@
         </div>
 
         <nav class="hidden md:flex items-center gap-6">
-          <a href="index.html"
+          <a href="../index.html"
             class="text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors">Home</a>
           <span class="text-sm text-emerald-600 dark:text-emerald-400 font-medium">Portal</span>
           <button onclick="logout()"
@@ -639,7 +639,7 @@
 
     async function loadDataRoomConfig() {
       try {
-        const response = await fetch('investor-portal/assets/data-room-config.json');
+        const response = await fetch('../investor-portal/assets/data-room-config.json');
         dataRoomConfig = await response.json();
         renderDataRoomSections();
       } catch (error) {
@@ -802,7 +802,7 @@
       localStorage.removeItem('investor-authenticated');
 
       // Redirect to login
-      window.location.href = 'login.html';
+      window.location.href = '../login.html';
     }
 
     // Initialize theme immediately
