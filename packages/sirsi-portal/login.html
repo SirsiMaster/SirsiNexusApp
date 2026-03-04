@@ -254,11 +254,14 @@
                     // Success - redirect based on role
                     buttonText.textContent = 'Access Granted!';
 
-                    // Determine portal destination
+                    // Determine portal destination based on role
                     let portalUrl = 'portal.html';
                     let portalLabel = 'Portal';
-                    if (validCredential.role === 'investor') {
-                        portalUrl = 'admin/investor/portal.html';
+                    if (validCredential.role === 'admin') {
+                        portalUrl = 'admin/index.html';
+                        portalLabel = 'Admin Portal';
+                    } else if (validCredential.role === 'investor') {
+                        portalUrl = 'portal.html';
                         portalLabel = 'Investor Portal';
                     } else if (validCredential.role === 'client') {
                         portalUrl = 'client-portal.html';
