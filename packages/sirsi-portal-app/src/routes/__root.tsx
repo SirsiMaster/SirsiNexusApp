@@ -210,6 +210,7 @@ function RootLayout() {
                             <span className="admin-header-dot" />
                             <span>Live</span>
                         </div>
+                        <span style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginLeft: 8 }}>v0.8.0-α</span>
                     </div>
 
                     {/* CENTER: Sitewide Search */}

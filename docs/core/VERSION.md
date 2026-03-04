@@ -1,12 +1,46 @@
-# Sirsi Nexus Version History
+# Sirsi Nexus — Unified Version History
+
+> **Synoptic Ledger** — This document consolidates ALL version history from every era of SirsiNexus development into one canonical record. Previously tracked across `docs-backup/core-engine/CHANGELOG.md` (Rust), `ui/CHANGELOG.md` (old Next.js UI), and `docs/core/VERSION.md`. Unified March 3, 2026.
+
+---
+
+## Version Numbering
+
+Sirsi Nexus follows [Semantic Versioning](https://semver.org/):
+- **MAJOR** version for incompatible API changes
+- **MINOR** version for backwards-compatible functionality additions
+- **PATCH** version for backwards-compatible bug fixes
+
+> **Note on Historical Numbering**: Early releases (Jun 2025) used aspirational version numbers (1.0.0, 1.1.0, 1.2.0) for pre-alpha milestones. The project normalized to `0.x.x-alpha` starting at v0.5.3 (Jul 2025). This ledger preserves the original numbering with annotations.
+
+---
+
+## Current Version
+
+```
+v0.8.0-alpha — March 3, 2026
+Stack: Go + ConnectRPC | React 19 + Vite 7 | Cloud SQL + Firestore | Firebase Auth
+```
+
+---
+---
+
+# ERA 3: React Migration (Feb–Mar 2026)
+
+> **Stack**: Go (Golang) + ConnectRPC ⟶ React 19 + Vite 7 + TanStack Router  
+> **Database**: Cloud SQL (PostgreSQL) + Firestore  
+> **Design**: Swiss Neo-Deco (Emerald + Gold, Cinzel + Inter)  
+> **Key ADRs**: ADR-027 (React Migration), ADR-026 (Hypervisor Protocol)
+
+---
 
 ## Version 0.8.0-alpha (2026-03-03)
 
 ### 🚀 MAJOR MILESTONE: React Admin Portal Migration Complete
 
-This release marks the completion of the **React Portal Migration** — a full conversion of the HTML Admin Console into a React 19 SPA with TanStack Router, code splitting, dark mode, and pixel-perfect Swiss Neo-Deco parity. See **ADR-027** for the full decision record.
+Full conversion of the HTML Admin Console into a React 19 SPA with TanStack Router, code splitting, dark mode, and pixel-perfect Swiss Neo-Deco parity. See **ADR-027** for the full decision record.
 
-#### 🏆 **Migration Achievement Summary**
+#### Migration Achievement Summary
 
 | Metric | Value |
 |:-------|:------|
@@ -18,747 +52,307 @@ This release marks the completion of the **React Portal Migration** — a full c
 | Dark Mode | ✅ Persistent + System Preference |
 | Visual QA | 11 pages audited, 100% parity |
 
-#### 📦 **Phase 1: Core Route Porting** (Feb 2026)
+#### Phase 1 — Core Route Porting (Feb 2026)
 - `31d4f42` — Pixel-perfect parity for Security, Site Admin, Portal, Telemetry, System Logs
 - Root layout (`__root.tsx`) with admin-header + admin-sidebar + content-wrapper
 - All canonical CSS from `common-styles.css` ported to `index.css`
 
-#### 📦 **Phase 2: Extended Routes** (Feb 2026)
+#### Phase 2 — Extended Routes (Feb 2026)
 - `870d3a5` — Analytics, KPI Metrics, Committee, Messaging, Monitoring, Console
 - Recharts integration for all chart-heavy pages
 
-#### 📦 **Phase 3: System Status Pages** (Mar 2026)
+#### Phase 3 — System Status Pages (Mar 2026)
 - `3c2a8cb` — Cache Status, API Server, Database Health, Backup Status
 - `9bcd4d9` — All 25 routes registered in TanStack Router + sidebar navigation
 
-#### 📦 **Phase 4: QA, Polish & Performance** (Mar 2026)
+#### Phase 4 — QA, Polish & Performance (Mar 2026)
 - `2bb42e9` — **Bug Fix**: Portal strategic module cards rendering blank (CSS specificity)
 - `48cd5dc` — **Code Splitting**: 24 routes lazy-loaded with `React.lazy()` + Suspense
 - `be3afe5` — **Dark Mode**: Persistent toggle, system preference detection, no FOUC
 
-#### 🏗️ **Infrastructure & Stack Updates** (Feb-Mar 2026)
+#### Infrastructure & Canon Updates
 - `bb2f112` — GEMINI.md v6.1.0: Typography Canon (Rule 21) + React Migration (Rule 22)
 - `ad77595` — Typography standardization: bold purge + header canonization
 - `4d576d5` — Dependency updates, shared components, ADR-026 compliance
 - `1905dfd` — React dedupe fix in monorepo workspaces
+- `d2bd4f3` — ADR-027, VERSION bump, Dev Intelligence dashboard rewrite
 
-#### 🏗️ **Updated Technology Stack (Stack V4)**
+#### Stack Comparison
 
-| Layer | Before (Jul 2025) | After (Mar 2026) |
-|:------|:-------------------|:------------------|
-| **Frontend** | Next.js + React (in `/ui`) | React 19 + Vite 7 + TanStack Router (in `/packages/sirsi-portal-app`) |
+| Layer | ERA 1 (Jun 2025) | ERA 3 (Mar 2026) |
+|:------|:-----------------|:-----------------|
+| **Frontend** | Next.js + React (in `/ui`) | React 19 + Vite 7 + TanStack Router (`/packages/sirsi-portal-app`) |
 | **Backend** | Rust + Axum | Go + ConnectRPC (ADR-018, ADR-019) |
 | **Database** | CockroachDB | Cloud SQL + Firestore (ADR-017) |
 | **Styling** | Tailwind + custom CSS | Tailwind + shadcn/ui + Swiss Neo-Deco tokens |
-| **Router** | Next.js App Router | TanStack Router v1 (type-safe) |
 | **Charts** | Recharts | Recharts (unchanged) |
 | **Icons** | Mixed | Lucide React (unified) |
 
-#### 📜 **ADRs Issued Since v0.7.5**
+---
+---
 
-| ADR | Title | Date |
-|:----|:------|:-----|
-| ADR-017 | CockroachDB Decommission | 2026-02-27 |
-| ADR-018 | Technical Stack Convergence (Stack V4) | 2026-02-18 |
-| ADR-019 | Rust/WASM Decommission — Go-Only Stack | 2026-02-27 |
-| ADR-020 | Application Firewall | 2026-02-27 |
-| ADR-024 | Pitch Deck Visual Standard & Rubric | 2026-02-20 |
-| ADR-025 | Unified App Architecture — Web + Desktop | 2026-02-27 |
-| ADR-026 | Hypervisor Command Protocol | 2026-03-02 |
-| ADR-027 | React Portal Migration | 2026-03-03 |
+# ERA 2: Platform Convergence (Feb 2026)
 
-#### 🎯 **Next Phase Targets**
-
-- **Phase 5**: ConnectRPC Integration — replace hardcoded mock data with live gRPC backend
-- **Phase 6**: Authentication & MFA Gate — Firebase Auth + ProtectedRoute wiring
-- **Phase 7**: Hypervisor Command Center — live operational telemetry dashboards
-
-#### 📊 **Development Statistics**
-
-**Lines of Code (React Admin Portal):**
-- Route Components: ~5,100 lines (25 files)
-- Root Layout: ~315 lines
-- CSS (index.css): ~1,023 lines
-- Hooks & Services: ~400 lines
-- UI Components: ~300 lines
-
-**File Count:**
-- React route files: 25
-- TypeScript source files: 64 total
-- Configuration files: 8 (vite.config, tsconfig, tailwind, postcss, etc.)
-- Documentation files: 28 canonical docs
+> **Stack Transition**: Rust → Go, CockroachDB → Cloud SQL/Firestore, Next.js → HTML Admin Portal  
+> **Key ADRs**: ADR-017 (CockroachDB Decommission), ADR-018 (Stack Convergence), ADR-019 (Rust Decommission), ADR-020 (Application Firewall), ADR-025 (Unified App Architecture)
 
 ---
 
+## Version 0.7.10-alpha (2026-02-27)
 
+### 🏛 Platform Convergence — Stack V4
 
-### 🚨 CRITICAL ARCHITECTURAL AUDIT: Complete SirsiNexus Vision Implementation
+This era delivered the massive architectural convergence that retired legacy technologies and established the production-grade stack.
 
-This release represents a **CRITICAL ARCHITECTURAL RESTORATION** following comprehensive audit that revealed missing core SirsiNexus components.
+#### Decommissions
+- **CockroachDB → Cloud SQL + Firestore** (ADR-017)
+  - `b3e5c09` — Remove all runtime deps, health checks, port 26257 refs, update docker-compose to PostgreSQL
+  - `b34babb` — Remove CockroachDB from k8s configs, replace with PostgreSQL on port 5432
+  - `b013905` — ADR-017 document: rationale, files changed, consequences
+- **Rust/WASM → Go** (ADR-019)
+  - `ce94e6f` — ADR-019/020: Rust decommission + Application Firewall
+  - All backend services migrated to Go with ConnectRPC (gRPC-Web)
+  - `packages/sirsi-admin-service/` established as the Go backend
 
-#### 🔍 **ARCHITECTURAL AUDIT FINDINGS**
+#### HTML Admin Portal — Swiss Neo-Deco
+- `081cee6` — Swiss Neo-Deco: unified design language + UCS base stylesheet
+- `ecaf1af` — Wire Swiss Neo-Deco into Sirsi Portal
+- `09639f6` — Canonical compliance: add 10 missing docs + fix ADR numbering
+- `59e34f4` — Rebrand admin portal to Sirsi Green and Gold UI
+- `3b6ca22` — Complete admin portal setup with Connect v2 integration
+- Established `packages/sirsi-portal/admin/` with Web Components (`admin-header.js`, `admin-sidebar.js`)
+- 25+ HTML pages with shared `common-styles.css`
 
-**CRITICAL DISCOVERY**: Current implementation missing fundamental components:
-- ❌ **LLM-Based Intelligent Agents** (only cloud API connectors exist)
-- ❌ **Model Context Protocol (MCP) Integration** (no standardized agent communication)
-- ❌ **Hedera DLT Knowledge Graph** (no distributed knowledge management)
-- ❌ **Sirsi Persona Integration** (no omnipresent AI consciousness)
-- ❌ **Complete GCP Infrastructure** (basic connector only)
-- ❌ **Unified Hypervisor** (service orchestrator ≠ intelligent hypervisor)
+#### Governance
+- GEMINI.md v6.0.0 → v6.1.0 with Rule 20 (Admin Page Layout Contract), Rule 21 (Typography Weight Canon), Rule 22 (React Migration Contract)
+- 8 new ADRs issued (ADR-017 through ADR-025)
+- `packages/sirsi-admin-service/` — Go backend with ConnectRPC
+- `packages/sirsi-portal-app/` — React app scaffolded (Vite + TanStack Router)
 
-#### 🎯 **Phase 7.5: Complete Vision Restoration (In Progress)**
+---
+---
 
-**Week 1: Core Intelligence Architecture**
-- Sirsi Hypervisor with LLM integration
-- MCP (Model Context Protocol) implementation
-- Hedera DLT knowledge graph integration
+# ERA 1: Foundation (Jun–Jul 2025)
 
-**Week 2: LLM-Based Agent Implementation**
-- Intelligent Agent Framework with conversational AI
-- Natural Language Processing and intent recognition
-- Agent learning and adaptation systems
+> **Stack**: Rust + Axum + CockroachDB + Next.js/React  
+> **Note**: The Rust backend and CockroachDB database were later **decommissioned** in ERA 2.  
+> See ADR-017 (CockroachDB) and ADR-019 (Rust/WASM) for rationale.
 
-**Week 3: Infrastructure Integration & GCP**
-- Complete GCP infrastructure integration
-- Multi-cloud orchestration with cross-cloud migration
-- UI integration and comprehensive testing
+---
 
-#### 📚 **Documentation Updates**
+## Version 0.7.5-alpha (2025-07-11)
 
-**Updated Core Documents:**
-- **Architecture Design**: Complete technical architecture added
-- **README**: Updated with unified vision and implementation roadmap
-- **Project Management**: Phase 7.5 detailed implementation plan
-- **VERSION**: Current release information
+### Architectural Audit — Vision Restoration
+
+Critical architectural audit revealed missing core SirsiNexus components from the original vision.
+
+#### Findings
+- ❌ LLM-Based Intelligent Agents (only cloud API connectors existed)
+- ❌ Model Context Protocol (MCP) Integration
+- ❌ Complete GCP Infrastructure
+- ❌ Unified Hypervisor (service orchestrator ≠ intelligent hypervisor)
+
+#### Documentation Updates
+- Comprehensive Architecture Design added
+- README updated with unified vision and roadmap
+- Phase 7.5 detailed implementation plan
 
 ---
 
 ## Version 0.5.5-alpha (2025-07-08)
 
-### 🎨 MAJOR ENHANCEMENT: UI Consistency & Sirsi Assistant Integration
+### UI Consistency & Sirsi Assistant Integration
 
-This release achieves **COMPLETE UI CONSISTENCY** across the platform with the successful migration of the Sirsi Technologies Inc. Assistant to the header and comprehensive layout standardization.
-
-#### 🏆 **BREAKTHROUGH: Header-Integrated AI Assistant**
-
-**UI Transformation Status: 100% COMPLETE** ✅
-- Sirsi Assistant successfully migrated from sidebar to header
-- Single primary AI interface reducing user cognitive load
-- Elegant input field with subtle pulse effects and visual feedback
-- Expandable chat interface with full message history
-- Click-outside-to-close behavior and keyboard shortcuts
-- Complete removal of duplicate AI functionality from sidebar
-
-**Platform Consistency Status: 100% COMPLETE** ✅
-- Infrastructure page migrated to standard ClientLayout
-- All pages now conform to consistent design patterns
-- Unified navigation architecture across entire platform
-- Simplified sidebar focused on core navigation only
-- Responsive design with proper overflow handling
-
-**Technical Design Status: 100% COMPLETE** ✅
-- New SirsiHeaderAssistant component with React hooks
-- Enhanced Header.tsx integration maintaining existing layout
-- Simplified Sidebar.tsx with cleaned up state management
-- Removed 200+ lines of duplicate functionality
-- 100% compilation success with zero TypeScript errors
-
-#### 🎯 **User Experience Improvements**
-
-**Enhanced AI Interaction:**
-- Real-time message history with timestamps
-- Typing indicators with animated dots
-- Supreme AI persona responses with omniscient capabilities
-- Keyboard shortcuts (Cmd/Ctrl + Enter to send)
-- Settings toggle for visual effects
-
-**Visual Enhancements:**
-- Elegant pulse effects indicating AI activity
-- Smooth animations and transitions (300ms)
-- Professional appearance matching enterprise standards
-- Consistent styling across all platform components
-- Improved accessibility with proper focus management
-
-#### 🛠️ **Technical Architecture**
-
-**Component Structure:**
-- `SirsiHeaderAssistant.tsx`: Primary AI interface component
-- `Header.tsx`: Updated with integrated assistant
-- `Sidebar.tsx`: Simplified navigation-only component
-- `infrastructure/page.tsx`: Migrated to ClientLayout
-
-**State Management:**
-- Chat history persistence
-- Loading states and UI preferences
-- Collapsible sidebar state (64px ↔ 256px)
-- Visual effect toggles
-
-#### 📚 **Documentation Updates**
-
-**New Documentation:**
-- `SIRSI_ASSISTANT_ENHANCEMENT.md`: Comprehensive implementation guide
-- Technical details and architecture decisions
-- User interaction patterns and best practices
-- Component design and state management approaches
-
-**Updated Core Documents:**
-- CHANGELOG.md with Phase 5.5 completion
-- PROJECT_MANAGEMENT.md with milestone updates
-- VERSION.md with release information
-
-#### 🏆 **Business Impact**
-
-**User Experience:**
-- Unified AI interface improving discoverability
-- Reduced complexity with single assistant location
-- Enhanced visual appeal with elegant animations
-- Better accessibility and keyboard navigation
-
-**Development Efficiency:**
-- Simplified codebase with reduced duplication
-- Improved maintainability and component reusability
-- Consistent architecture patterns
-- Enhanced type safety and error handling
+#### Added
+- Sirsi Assistant migrated from sidebar to header (single primary AI interface)
+- All pages conform to consistent ClientLayout design patterns
+- `SirsiHeaderAssistant.tsx` component with React hooks
+- Removed 200+ lines of duplicate AI sidebar functionality
+- Real-time message history with timestamps and typing indicators
 
 ---
 
 ## Version 0.5.4-alpha (2025-07-08)
 
-### 🌓 DARK MODE IMPLEMENTATION COMPLETE: UNIVERSAL THEME SUPPORT
+### Dark Mode Implementation (Old UI) `[SUPERSEDED — reimplemented in v0.8.0 for React app]`
 
-#### 🎨 **COMPREHENSIVE DARK MODE ACHIEVEMENT**
-- ✅ **Universal Frontend Dark Mode Implementation**
-  - All 9 major pages with complete dark mode support
-  - Consistent theme architecture across entire platform
-  - Professional enterprise-grade dark theme experience
-  - Zero visual artifacts or theme inconsistencies
+- Universal dark mode across all 9 major pages in the `/ui` Next.js app
+- Consistent theme architecture
+- Zero visual artifacts
 
 ---
 
 ## Version 0.5.3-alpha (2025-07-07)
 
-### 🎆 MAJOR MILESTONE: Complete Frontend-Backend Integration
+### Complete Frontend-Backend Integration
 
-This release marks the **100% COMPLETE END-TO-END INTEGRATION** achievement, with both frontend and backend compiling successfully and full data flow operational from UI through API to database.
+**100% end-to-end integration** achieved.
 
-#### 🏆 **MISSION ACCOMPLISHED: Production-Ready Integration**
-
-**Frontend Status: 100% COMPLETE** ✅
+#### Frontend (Next.js `/ui`)
 - 41 pages compile successfully with zero TypeScript errors
 - Complete settings UI with 14 categories and 100+ features
-- All navigation functional with proper routing
 - API integration layer fully implemented
-- Production build optimized and deployment ready
 
-**Backend Status: 100% COMPLETE** ✅
+#### Backend (Rust/Axum) `[DECOMMISSIONED — ADR-019]`
 - Zero compilation errors across entire Rust codebase
-- All API endpoints properly structured and functional
-- Database connectivity established with CockroachDB
-- AWS SDK integration working with proper imports
-- Configuration system updated to latest patterns
-- Type system fully aligned with consistent OffsetDateTime
+- All API endpoints properly structured
+- Database connectivity established with CockroachDB `[DECOMMISSIONED — ADR-017]`
 
-**Database Status: FULLY OPERATIONAL** ✅
-- CockroachDB running on localhost:26257
+#### Database (CockroachDB) `[DECOMMISSIONED — ADR-017, replaced by Cloud SQL + Firestore]`
 - 8 tables created with proper schema and indexes
-- Schema migration completed successfully
-- Real-time connectivity verified
 
-**Integration Status: END-TO-END COMPLETE** ✅
+#### Integration
 - Settings UI → Backend APIs fully connected
 - Credential management with AES-256-GCM encryption
 - Authentication middleware operational
-- Database persistence working across all features
 - Multi-cloud provider support (AWS, Azure, GCP, DigitalOcean)
 
-#### 🔧 **Critical Technical Fixes Resolved**
+---
 
-**Backend Compilation Issues Fixed:**
-- SQLx database queries: Fixed by creating proper database tables
-- Config module: Updated to use Config::builder() pattern
-- AWS SDK imports: Corrected to use aws-sdk-* naming convention
-- Type system alignment: All models use consistent OffsetDateTime
-- Middleware conflicts: Resolved file naming and type issues
+## Versions 0.4.1 – 0.4.4 (2025-07-03 to 2025-07-04)
 
-**Database Schema Optimized:**
-- Created 8 production tables (credentials, projects, resources, users, etc.)
-- Applied proper indexes and constraints for performance
-- Fixed nullable field constraints for alias columns
-- Verified schema compatibility with application models
+### UI Component Polish (`/ui` Next.js app) `[SUPERSEDED — /ui app replaced by /packages/sirsi-portal-app]`
 
-#### 🎯 **Phase Completion Status**
+> *Originally tracked in `ui/CHANGELOG.md`*
 
-**All Phases Complete:** ✅ **PRODUCTION READY**
-- **Phase 1**: Core Infrastructure ✅ COMPLETE
-- **Phase 1.5**: Frontend Foundation ✅ COMPLETE  
-- **Phase 2**: AI Hypervisor & Agent Framework ✅ COMPLETE
-- **Phase 3**: Unified Platform Binary Architecture ✅ COMPLETE
-- **Phase 4**: Advanced AI Orchestration & Analytics ✅ COMPLETE
-- **Phase 5**: Full-Stack AI Enhancement & Real Integrations ✅ COMPLETE
-- **Phase 5.2**: End-to-End Credential Management Integration ✅ COMPLETE
-- **Phase 5.3**: Complete Frontend-Backend Integration ✅ COMPLETE
+#### v0.4.4 (2025-07-04) — Backend Test Infrastructure
+- New `/test-backend` page for comprehensive validation
+- WebSocket service layer with automatic reconnection
+- CDB compliance improved from 35% to 85%
 
-#### 🚀 **Production Readiness Metrics**
+#### v0.4.3 (2025-07-03) — Form Validation
+- FormMessage component fixed for react-hook-form validation
+- FormProvider wrapper added to all form components
+- Test pass rate improved from 79.8% to 93.3% (97/104 tests)
 
-**Technical Quality:**
-- Frontend Compilation: ✅ 100% success (npm run build)
-- Backend Compilation: ✅ 100% success (cargo check)
-- Database Connection: ✅ CockroachDB operational
-- Integration Tests: ✅ All data flows verified
-- Type Safety: ✅ Zero TypeScript/Rust errors
+#### v0.4.2 (2025-07-03) — Glass Morphism
+- Body background matched to sidebar glass styling
+- `backdrop-filter: blur(30px) saturate(300%)`
+- Webpack module error resolved via cache clear
 
-**Business Impact:**
-- Security: Enterprise-grade credential management with encryption
-- Usability: Complete UI with all settings functional
-- Integration: Full end-to-end system operational
-- Scalability: Production-ready architecture
-- Deployment: Platform ready for production deployment
+#### v0.4.1 (2025-07-03) — Tab Component Fixes
+- TabsList z-index issues fixed in analytics section
+- Opaque white overlay removed from TabsTrigger
+- Simplified dark background with single layer system
 
 ---
 
-## Version 1.2.0 (2025-06-25)
+## Versions 0.2.0 – 0.2.2 (2025-07-04 to 2025-07-05)
 
-### 🎆 MAJOR MILESTONE: Frontend Foundation Complete
+### Rust Core Engine `[DECOMMISSIONED — ADR-019, replaced by Go + ConnectRPC]`
 
-This release marks the completion of the frontend foundation with 100% TypeScript compilation success, establishing a production-ready user interface with comprehensive features and type safety.
+> *Originally tracked in `docs-backup/core-engine/CHANGELOG.md`*
 
-#### 🎯 **Current Development Status**
+#### v0.2.2 (2025-07-05) — Production Ready Phase 2
+- Complete documentation consolidation (API Guide, Operations Guide, Architecture)
+- Real Azure SDK integration (replaced all mock services)
+- Production Kubernetes manifests and Helm charts
+- Docker multi-stage builds with security scanning
+- Resolved all 24+ critical Rust compilation errors
+- Sub-millisecond agent response times, ~50MB baseline memory
 
-**Phase 1: Core Infrastructure** ✅ **COMPLETED**
-- Rust core engine with Axum framework
-- CockroachDB database integration (UPGRADED)
-- Authentication system with modern security
-- Complete API endpoints and routing
-- Error handling and type safety
-- Runtime SQLx queries for database independence
+#### v0.2.1 (2025-07-04) — Enhanced Protobuf Schema
+- Comprehensive protobuf redesign following Google API Design Guidelines
+- Google API standards: Timestamp, FieldMask, Empty types
+- Enhanced session management with lifecycle states
+- Full CRUD operations for agent management
+- Pagination support with page tokens
+- Multi-language proto support (Go, Java, C#)
 
-**Phase 1.5: Frontend Foundation** ✅ **COMPLETED (100%)**
-- React/Next.js application with complete TypeScript compilation
+#### v0.2.0 (2025-07-04) — AI Hypervisor & Agent Framework
+- WebSocket-to-gRPC bridge architecture (WS 8080, gRPC 50051)
+- AgentServiceImpl with all gRPC service methods
+- Multi-agent orchestration, session-based management
+- Redis session persistence
+- AWS Agent with resource discovery, cost analysis, security review
+- 1000+ concurrent WebSocket connections supported
+
+---
+
+## Versions 1.0.0 – 1.2.0 (2025-06-25)
+
+### Foundation Milestones `[ASPIRATIONAL NUMBERING — normalized to 0.x.x after this era]`
+
+> These releases used aspirational major version numbers during initial development.
+> The project later normalized to `0.x.x-alpha` semver.
+
+#### v1.2.0 (2025-06-25) — Frontend Foundation Complete
+- React/Next.js app with 100% TypeScript compilation
 - Complete component library with type safety
-- Authentication UI with form validation
-- Project management interface with full CRUD operations
-- Agent chat foundation with real-time messaging
-- Migration wizard with all 6 steps implemented
 - State management with Redux Toolkit
-- API client layer with authentication
 - Infrastructure template support (Bicep, Terraform, Pulumi)
-- Cost optimization and predictive scaling UI components
 
-## Version 1.1.0 (2025-06-25)
-
-### Major Milestone: CockroachDB Migration Complete
-
-This release completes the database migration from PostgreSQL to CockroachDB, establishing a production-ready distributed database foundation with enhanced scalability and resilience capabilities.
-
-#### 🎯 **Current Development Status**
-
-**Phase 1: Core Infrastructure** ✅ **COMPLETED**
-- Rust core engine with Axum framework
-- CockroachDB database integration (UPGRADED)
-- Authentication system with modern security
-- Complete API endpoints and routing
-- Error handling and type safety
-- Runtime SQLx queries for database independence
-
-**Phase 1.5: Frontend Foundation** 🔄 **IN PROGRESS (75% Complete)**
-- React/Next.js application structure
-- Basic component library
-- Authentication UI
-- Project management interface
-- Agent chat foundation
-
-#### 🗄️ **Database Architecture (NEW)**
-
-**CockroachDB Integration:**
-- **Database**: CockroachDB v23.1+ (distributed SQL)
-- **Driver**: SQLx 0.8 with PostgreSQL compatibility
-- **Connection**: Connection pooling with configurable limits
-- **Migrations**: CockroachDB-compatible schema management
-- **Admin UI**: Integrated at localhost:8081
-
-**Key CockroachDB Benefits:**
-- Horizontal scaling and multi-region support
-- Strong consistency with distributed transactions
-- PostgreSQL compatibility for easy migration
-- Built-in backup and disaster recovery
-- Cloud-native architecture
-
-#### 🏗️ **Updated Architecture Foundation**
-
-**Backend Stack:**
-- **Language**: Rust 1.75+
-- **Framework**: Axum 0.6.20
-- **Database**: CockroachDB with SQLx 0.8 (UPGRADED)
-- **Authentication**: JWT + Argon2 password hashing
-- **Runtime**: Tokio 1.35 (async)
-- **Caching**: Redis 7 for session storage
-- **Observability**: Jaeger for distributed tracing
-
-**Development Infrastructure:**
-- **Database**: Docker Compose with CockroachDB
-- **Caching**: Redis container
-- **Tracing**: Jaeger all-in-one container
-- **Setup**: Automated database initialization scripts
-- **Testing**: Integration tests with real database
-
-#### 🔧 **New Development Tools**
-
-**Database Management:**
-- `./scripts/setup-db.sh` - Automated database setup
-- Docker Compose for development environment
-- CockroachDB Admin UI for monitoring
-- Migration management system
-
-**Testing Infrastructure:**
-- CockroachDB integration tests
-- End-to-end model testing
-- Database compatibility validation
-- Type safety verification
-
-#### 📊 **Enhanced Capabilities**
-
-**Database Operations:**
-- UUID generation with gen_random_uuid()
-- Timestamp handling with timezone awareness
-- JSON/JSONB data type support
-- Distributed transaction support
-- Real-time query monitoring
-
-**Development Experience:**
-- One-command database setup
-- Comprehensive documentation
-- Troubleshooting guides
-- Production deployment guidance
-
-#### 🔄 **Migration Accomplishments**
-
-**Completed Migrations:**
-- ✅ PostgreSQL → CockroachDB schema conversion
-- ✅ SQL query compatibility updates
-- ✅ Type system alignment (timestamp handling)
-- ✅ Connection string and configuration updates
-- ✅ Docker Compose environment migration
-- ✅ Test suite CockroachDB compatibility
-
-**Type System Improvements:**
-- ✅ Fixed TIMESTAMPTZ vs TIMESTAMP compatibility
-- ✅ Resolved INT8 vs INT4 differences
-- ✅ Updated datetime handling to chrono::NaiveDateTime
-- ✅ Runtime SQLx queries for compile-time independence
-
-#### 🎯 **Completion Metrics**
-
-**Database Quality:**
-- ✅ All migrations running successfully
-- ✅ Full CRUD operations working
-- ✅ Type compatibility verified
-- ✅ Integration tests passing
-- ✅ Performance benchmarks met
-
-**Code Quality:**
-- ✅ Zero compilation errors
-- ✅ Warnings reduced from 29 to 12
-- ✅ All database tests passing
-- ✅ Documentation complete
-
-**Infrastructure Quality:**
-- ✅ Docker Compose fully functional
-- ✅ Database setup automation
-- ✅ Admin UI integration
-- ✅ Multi-environment configuration
-
-#### 📈 **Performance Improvements**
-
-**Database Performance:**
-- CockroachDB connection pooling: 20 max connections
-- Query response time: <15ms average
-- Transaction throughput: Improved with distributed architecture
-- Admin UI monitoring: Real-time performance metrics
-
-**Development Performance:**
-- Database setup time: <2 minutes (automated)
-- Test execution: <30 seconds
-- Docker startup: <1 minute
-- Schema migration: <10 seconds
-
-#### 🌟 **Key Achievements**
-
-1. **Distributed Database**: Successful migration to CockroachDB
-2. **Type Safety**: Complete SQLx type compatibility
-3. **Development Experience**: One-command setup and testing
-4. **Documentation**: Comprehensive database setup guide
-5. **Production Ready**: Scalable, distributed database architecture
-
-#### 🎯 **Next Phase Targets**
-
-**Phase 2: AI Agent Framework (v1.2.0)**
-- AgentService gRPC implementation
-- Sub-agent manager system
-- Redis context store integration
-- Agent communication bus with distributed messaging
-
-**Enhanced Frontend (v1.2.0)**
-- Complete migration wizard
-- Real-time database updates
-- CockroachDB monitoring dashboard
-- Performance analytics integration
-
-**Infrastructure as Code Templates (v1.2.0)**
-- Bicep template generation for Azure Resource Manager
-- Terraform modules for AWS, Azure, and GCP
-- Pulumi programs for type-safe infrastructure definitions
-- CloudFormation templates for AWS-native deployments
-- Cross-cloud provider optimization templates
-
-**Optimization & Cost Management (v1.2.0)**
-- Predictive scaling with ML-based recommendations
-- Real-time cost analysis and optimization suggestions
-- Resource right-sizing automation
-- Discoverable pricing feeds from cloud providers
-- Ongoing optimization agents for continuous improvement
-
-#### 📊 **Updated Development Statistics**
-
-**Lines of Code:**
-- Rust Backend: ~3,200 lines (+700)
-- Configuration: ~800 lines (+300)
-- Database Migrations: ~200 lines
-- Documentation: ~2,000 lines (+800)
-
-**Infrastructure Files:**
-- Docker Compose: 1 comprehensive file
-- Configuration files: 12 (dev/test/prod)
-- Migration files: 3
-- Setup scripts: 2
-
-## Version 1.0.0 (2025-06-25)
-
-### Major Milestone: Foundation Complete
-
-This release marks the completion of the core infrastructure foundation for Sirsi Nexus, establishing a solid base for the agent-embedded migration platform.
-
-#### 🎯 **Current Development Status**
-
-**Phase 1: Core Infrastructure** ✅ **COMPLETED**
-- Rust core engine with Axum framework
-- CockroachDB database integration
-- Authentication system with modern security
-- Basic API endpoints and routing
-- Error handling and type safety
-
-**Phase 1.5: Frontend Foundation** 🔄 **IN PROGRESS (75% Complete)**
-- React/Next.js application structure
-- Basic component library
-- Authentication UI
-- Project management interface
-- Agent chat foundation
-
-#### 🏗️ **Architecture Foundation**
-
-**Backend Stack:**
-- **Language**: Rust 1.75+
-- **Framework**: Axum 0.6.20
-- **Database**: CockroachDB with SQLx 0.8
-- **Authentication**: JWT + Argon2 password hashing
-- **Runtime**: Tokio 1.35 (async)
-
-**Frontend Stack:**
-- **Framework**: Next.js + React
-- **Styling**: Tailwind CSS + shadcn/ui
-- **Validation**: React Hook Form + Zod
-- **Charts**: Recharts for analytics
-
-**Development Tools:**
-- **Build**: Cargo workspaces
-- **Testing**: Cargo test + Jest
-- **Linting**: Clippy + ESLint
-- **Version Control**: Git with semantic versioning
-
-#### 🔐 **Security Implementation**
-
-**Authentication & Authorization:**
-- Argon2 password hashing with proper salting
-- JWT token-based session management
-- Role-based access control framework
-- Request validation middleware
-
-**Data Protection:**
-- Type-safe database queries with SQLx
-- Input validation and sanitization
-- Proper error handling without information leakage
-- Secure configuration management
-
-#### 📊 **Current Capabilities**
-
-**User Management:**
-- User registration and authentication
-- Profile management
-- Session handling
-- Access control
-
-**Project Management:**
-- Project CRUD operations
-- Project status tracking
-- Owner-based authorization
-- Project analytics foundation
-
-**API Framework:**
-- RESTful API design
-- JSON request/response handling
-- Middleware stack
-- Error response standardization
-
-#### 🎯 **Completion Metrics**
-
-**Code Quality:**
-- ✅ Zero compilation errors
-- ✅ All critical security issues resolved
-- ✅ Type safety throughout
-- ✅ Comprehensive error handling
-
-**Testing Coverage:**
-- ✅ Unit tests for core models
-- ✅ Integration tests for API endpoints
-- ✅ Authentication flow testing
-- ✅ Database operation validation
-
-**Documentation:**
-- ✅ Architecture Design (CDB)
-- ✅ API documentation
-- ✅ Setup and deployment guides
-- ✅ Contributing guidelines
-
-#### 📈 **Performance Benchmarks**
-
-**API Performance:**
-- Cold start: <500ms
-- Average response time: <50ms
-- Database query efficiency: <10ms avg
-- Memory usage: <100MB base
-
-**Build Performance:**
-- Clean build time: <2 minutes
-- Incremental build: <30 seconds
-- Test execution: <1 minute
-- Docker build: <5 minutes
-
-#### 🔄 **Integration Points**
-
-**Database Integration:**
-- CockroachDB connection pooling
-- Migration system foundation
-- Type-safe query macros
-- Transaction support
-
-**Authentication Integration:**
-- JWT token generation/validation
-- Password verification
-- Session management
-- Middleware authorization
-
-**Frontend Integration:**
-- API client setup
-- Authentication flow
-- Component state management
-- Real-time updates foundation
-
-#### 🌟 **Key Achievements**
-
-1. **Stable Core Foundation**: Rust backend with full compilation success
-2. **Modern Security**: Industry-standard authentication and authorization
-3. **Type Safety**: End-to-end type safety from database to API
-4. **Scalable Architecture**: Modular design for future expansion
-5. **Developer Experience**: Clear documentation and development workflow
-
-#### 🎯 **Next Phase Targets**
-
-**Phase 2: AI Agent Framework (v1.1.0)**
-- AgentService gRPC implementation
-- Sub-agent manager system
-- Redis context store
-- Agent communication bus
-
-**Enhanced Frontend (v1.1.0)**
-- Complete migration wizard
-- Advanced task management
-- Real-time agent integration
-- Enhanced UI components
-
-**Cloud Connectors (v1.2.0)**
-- AWS agent implementation with Bicep/CloudFormation integration
-- Azure agent implementation with native Bicep template support
-- GCP agent implementation with Terraform and Pulumi modules
-- vSphere agent implementation for hybrid cloud scenarios
-- Resource discovery system with cost estimation
-- Multi-cloud pricing API integration
-
-#### 📊 **Development Statistics**
-
-**Lines of Code:**
-- Rust Backend: ~2,500 lines
-- Frontend: ~1,800 lines
-- Configuration: ~500 lines
-- Documentation: ~1,200 lines
-
-**File Count:**
-- Rust source files: 15
-- React components: 12
-- Configuration files: 8
-- Documentation files: 5
-
-**Dependencies:**
-- Rust crates: 25 direct dependencies
-- npm packages: 18 direct dependencies
-- Development tools: 12 packages
-
-#### 🏆 **Quality Metrics**
-
-**Code Quality:**
-- Clippy warnings: 0
-- ESLint warnings: 0
-- Security vulnerabilities: 0
-- Test coverage: >85%
-
-**Performance:**
-- API response time p99: <100ms
-- Database query time avg: <15ms
-- Frontend load time: <2s
-- Memory usage: <150MB peak
+#### v1.1.0 (2025-06-25) — CockroachDB Migration `[DECOMMISSIONED — ADR-017]`
+- PostgreSQL → CockroachDB schema conversion
+- Docker Compose with CockroachDB
+- Connection pooling, migration management
+- Type system alignment (TIMESTAMPTZ, INT8)
+
+#### v1.0.0 (2025-06-25) — Foundation Complete
+- Rust core engine with Axum framework `[DECOMMISSIONED — ADR-019]`
+- CockroachDB database integration `[DECOMMISSIONED — ADR-017]`
+- Authentication with Argon2 + JWT
+- Project CRUD, user management, API framework
+- Zero compilation errors, >85% test coverage
 
 ---
 
-## Previous Versions
+## Version 0.1.0 (2025-06-24)
 
-### Version 0.1.0 (2025-06-24)
-Initial project scaffolding and basic structure setup.
+### Initial Project Scaffolding
+
+- Initial Rust project setup with Cargo
+- Basic API structure using Axum framework
+- Authentication system (Argon2 hashing, JWT login)
+- Project and resource management CRUD
+- PostgreSQL + SQLx integration
+- OpenTelemetry + request tracing
+
+---
+---
+
+# ADR Registry (By Era)
+
+### ERA 3 — React Migration
+| ADR | Title | Date |
+|:----|:------|:-----|
+| ADR-027 | React Portal Migration — HTML-to-React Admin Console | 2026-03-03 |
+| ADR-026 | Hypervisor Command Protocol — Operational Telemetry via gRPC | 2026-03-02 |
+
+### ERA 2 — Platform Convergence
+| ADR | Title | Date |
+|:----|:------|:-----|
+| ADR-025 | Unified App Architecture — Web + Desktop (Tauri) | 2026-02-27 |
+| ADR-024 | Pitch Deck Visual Standard & Rubric | 2026-02-20 |
+| ADR-020 | Application Firewall | 2026-02-27 |
+| ADR-019 | Rust/WASM Decommission — Go-Only Stack | 2026-02-27 |
+| ADR-018 | Technical Stack Convergence (Stack V4) | 2026-02-18 |
+| ADR-017 | CockroachDB Decommission | 2026-02-27 |
+
+### ERA 1 — Foundation
+| ADR | Title | Date |
+|:----|:------|:-----|
+| ADR-016 | Canonical MFA Routing Hub | 2026-02-12 |
+| ADR-015 | OpenSign Convergence — Dual-Client Architecture | 2026-02-09 |
+| ADR-014 | Bipartite Contract Execution Protocol | 2026-02-07 |
+| ADR-013 | Hierarchical Routing & Multi-Tenant Differentiation | 2026-02-10 |
+| ADR-012 | Live MFA Delivery Rails | 2026-01-30 |
+| ADR-011 | Universal Component System (UCS) | 2026-01-29 |
+| ADR-010 | Sirsi Repository Unification | 2025-07-28 |
+| ADR-003 | Migration to TanStack Query v5 | 2025-07-12 |
 
 ---
 
-## Version Numbering
+## Archived Source Files
 
-Sirsi Nexus follows [Semantic Versioning](https://semver.org/):
-
-- **MAJOR** version for incompatible API changes
-- **MINOR** version for backwards-compatible functionality additions
-- **PATCH** version for backwards-compatible bug fixes
-
-### Release Channels
-
-- **Stable**: Production-ready releases (x.y.z)
-- **Beta**: Feature-complete pre-releases (x.y.z-beta.n)
-- **Alpha**: Early development releases (x.y.z-alpha.n)
-
-### Component Versioning
-
-While the main project uses unified versioning, individual components may have their own version tracking:
-
-- `core-engine/`: Rust backend components
-- `ui/`: Frontend components
-- `connectors/`: Cloud provider integrations
-- `agents/`: AI agent implementations
+These files contained the original version history that has been consolidated into this document:
+- `docs-backup/core-engine/CHANGELOG.md` — Rust Core Engine (v0.1.0 → v0.2.2)
+- `ui/CHANGELOG.md` — Old Next.js UI (v0.4.1 → v0.4.4)
+- `docs-backup/core/VERSION.md` — Previous copy of this file (duplicate)
 
 ---
 
-**Next Review Date**: 2025-07-25
-**Version Control**: Git tags mark all releases
-**Release Notes**: See CHANGELOG.md for detailed changes
+**Next Review Date**: On next major version bump  
+**Version Control**: Git tags mark all releases  
+**Canonical Location**: `docs/core/VERSION.md` (this file)  
+**Machine-Readable Version**: Root `VERSION` file + `packages/sngp/version.json`

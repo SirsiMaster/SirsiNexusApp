@@ -30,6 +30,7 @@ class AdminHeader extends HTMLElement {
                             <span class="admin-header-dot"></span>
                             <span>Live</span>
                         </div>
+                        <span style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase;margin-left:8px;">v0.8.0-α</span>
                     </div>
 
                     <!-- CENTER: Sitewide Search -->
