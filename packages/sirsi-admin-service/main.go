@@ -205,7 +205,7 @@ func (s *AdminServer) ListUsers(
 		{
 			Id:       "ADMIN",
 			Email:    "cylton@sirsi.ai",
-			Name:     "Cylton Collymore",
+			Name:     "Administrator",
 			Role:     "Admin",
 			TenantId: "sirsi-core",
 		},
