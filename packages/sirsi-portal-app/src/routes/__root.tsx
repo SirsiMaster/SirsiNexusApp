@@ -149,9 +149,13 @@ function RootLayout() {
         localStorage.getItem('sirsi_sidebar_collapsed') === 'true'
     )
     const [clock, setClock] = useState('--:--')
-    const [isDark, setIsDark] = useState(() =>
-        document.documentElement.classList.contains('dark')
-    )
+    const [isDark, setIsDark] = useState(() => {
+        const saved = localStorage.getItem('theme')
+        const prefersDark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        // Apply immediately to avoid flash
+        document.documentElement.classList.toggle('dark', prefersDark)
+        return prefersDark
+    })
 
     useKeyboardShortcuts([
         { key: 'k', metaKey: true, action: () => setCommandPaletteOpen(true), description: 'Open Command Palette' },
