@@ -75,15 +75,23 @@ Full conversion of the HTML Admin Console into a React 19 SPA with TanStack Rout
 - `ad77595` — Typography standardization: bold purge + header canonization
 - `4d576d5` — Dependency updates, shared components, ADR-026 compliance
 - `1905dfd` — React dedupe fix in monorepo workspaces
-- `d2bd4f3` — ADR-027, VERSION bump, Dev Intelligence dashboard rewrite
-- `3bd5d06` — Synoptic VERSION.md unification + version badges in both headers
-- `e3ad48f` — Purge all stale version references (11 files: v0.5.0, v0.7.9, v1.0.0 → v0.8.0)
+- `d2bd4f3` (2026-03-03) — ADR-027, VERSION bump, Dev Intelligence dashboard rewrite
+- `3bd5d06` (2026-03-03) — Synoptic VERSION.md unification + version badges in both headers
+- `e3ad48f` (2026-03-03) — Purge all stale version references (11 files: v0.5.0, v0.7.9, v1.0.0 → v0.8.0)
 
-#### Proto/gRPC Alignment (ADR-028)
-- Deleted legacy v1 proto and generated output from `packages/sirsi-admin-service/`
+#### Proto/gRPC Alignment — ADR-028 (2026-03-03)
+- `8e590b6` (2026-03-03) — Deleted legacy v1 proto and generated output from `packages/sirsi-admin-service/`
 - Confirmed all consumers (Go backend, React app) already use v2 from root `/proto/`
 - Synced React `src/gen/` with canonical `proto/gen/ts/` (SystemOverview types were missing)
 - Annotated Sirsi Sign v1 contracts proto as separate service boundary
+
+#### ADR Registry Unification (2026-03-03)
+- `78f06a8` (2026-03-03) — Initial ADR audit: discovered 3 unindexed ADRs in `docs/sirsi-platform/`
+- `df4524d` (2026-03-03) — Unified ADR registry: renumbered sirsi-platform ADRs to root
+  - `sirsi-platform/ADR-003` → `ADR-006-HMAC-SECURITY-LAYER.md` (created 2025-12-31)
+  - `sirsi-platform/ADR-004` → `ADR-007-CONTRACTS-GRPC-SERVICE.md` (created 2025-12-31) 
+  - `sirsi-platform/ADR-005` → `ADR-008-PRINTABLE-MSA-VIEWER.md` (created 2026-01-21, updated 2026-01-22)
+- Total ADRs: 23 (unified flat numbering, no sub-namespaces)
 
 #### Stack Comparison
 
