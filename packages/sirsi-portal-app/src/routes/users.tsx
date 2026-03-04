@@ -31,9 +31,8 @@ interface User {
 
 const fallbackUsers: User[] = [
     { id: 101, name: 'Administrator', email: 'cylton@sirsi.ai', status: 'active', role: 'admin' },
-    { id: 102, name: 'Demo Investor', email: 'sirsimaster@gmail.com', status: 'active', role: 'investor' },
-    { id: 103, name: 'Beta Investor', email: 'sirsimaster@gmail.com', status: 'active', role: 'investor' },
-    { id: 104, name: 'Guest Access', email: 'sirsimaster@gmail.com', status: 'active', role: 'guest' },
+    { id: 102, name: 'Investor', email: 'sirsimaster@gmail.com', status: 'active', role: 'investor' },
+    { id: 103, name: 'Client', email: 'sirsimaster@gmail.com', status: 'active', role: 'client' },
 ]
 
 // ── Component ─────────────────────────────────────────────────────

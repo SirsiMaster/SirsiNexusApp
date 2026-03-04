@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Portal — SirsiNexus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        emerald: {
+                            600: '#059669',
+                            700: '#047857',
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <script>
+            (function () {
+                const theme = localStorage.getItem('theme') || 'light';
+                if (theme === 'dark') document.documentElement.classList.add('dark');
+            })();
+    </script>
+</head>
+
+<body class="font-inter bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex flex-col">
+    <!-- Header -->
+    <header
+        class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-8 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <img src="assets/images/Sirsi_Logo_300ppi_cguiyg.png" alt="Sirsi Logo"
+                class="w-8 h-8 object-contain dark:hidden">
+            <img src="assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo"
+                class="w-8 h-8 object-contain hidden dark:block">
+            <div>
+                <h1 class="text-lg font-semibold">Client Portal</h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400">SirsiNexus</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <span id="user-name" class="text-sm text-gray-600 dark:text-gray-300"></span>
+            <button onclick="signOut()" class="text-sm text-red-500 hover:text-red-700 transition-colors">Sign
+                Out</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex items-center justify-center p-8">
+        <div class="text-center max-w-lg">
+            <div
+                class="w-20 h-20 rounded-2xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center mx-auto mb-6 border border-emerald-100 dark:border-emerald-800">
+                <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+            </div>
+            <h2 class="text-2xl font-semibold mb-2">Client Portal</h2>
+            <p class="text-gray-500 dark:text-gray-400 mb-8">
+                Your client portal is being provisioned. This space will provide access to your contracts, documents,
+                and communications with Sirsi Technologies.
+            </p>
+            <div
+                class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 text-left space-y-4">
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-widest">Coming Soon
+                </h3>
+                <ul class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                    <li class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Contract review and e-signature
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Document vault access
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Secure messaging with your advisor
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Payment and billing history
+                    </li>
+                </ul>
+            </div>
+            <a href="login.html"
+                class="inline-block mt-6 text-emerald-600 hover:text-emerald-800 transition-colors text-sm font-medium">←
+                Back to Login</a>
+        </div>
+    </main>
+
+    <script>
+        // Load session
+        const session = JSON.parse(sessionStorage.getItem('investorAuth') || '{}');
+        if (session.name) {
+            document.getElementById('user-name').textContent = session.name;
+        }
+        function signOut() {
+            sessionStorage.removeItem('investorAuth');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+
+</html>

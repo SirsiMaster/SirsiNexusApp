@@ -199,8 +199,8 @@ func (s *AdminServer) ListUsers(
 	ctx context.Context,
 	req *connect.Request[adminv2.ListUsersRequest],
 ) (*connect.Response[adminv2.ListUsersResponse], error) {
-	// Canonical user registry — sourced from login.html VALID_CREDENTIALS
-	// These are the ONLY real accounts in the system
+	// Canonical accounts — matches login.html VALID_CREDENTIALS
+	// 3 accounts: Admin, Investor, Client
 	users := []*adminv2.User{
 		{
 			Id:       "ADMIN",
@@ -212,22 +212,15 @@ func (s *AdminServer) ListUsers(
 		{
 			Id:       "INV001",
 			Email:    "sirsimaster@gmail.com",
-			Name:     "Demo Investor",
+			Name:     "Investor",
 			Role:     "Investor",
 			TenantId: "finalwishes",
 		},
 		{
-			Id:       "INV002",
+			Id:       "CLIENT",
 			Email:    "sirsimaster@gmail.com",
-			Name:     "Beta Investor",
-			Role:     "Investor",
-			TenantId: "finalwishes",
-		},
-		{
-			Id:       "GUEST",
-			Email:    "sirsimaster@gmail.com",
-			Name:     "Guest Access",
-			Role:     "Guest",
+			Name:     "Client",
+			Role:     "Client",
 			TenantId: "",
 		},
 	}

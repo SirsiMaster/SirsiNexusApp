@@ -186,12 +186,11 @@
             return applications.filter(app => app.status === 'approved');
         }
 
-        // Demo credentials (in production, this would be handled server-side)
+        // Canonical accounts (in production, this would be handled server-side)
         const VALID_CREDENTIALS = [
-            { id: 'INV001', code: 'DEMO2025', name: 'Demo Investor', role: 'investor' },
-            { id: 'INV002', code: 'BETA2025', name: 'Beta Investor', role: 'investor' },
             { id: 'ADMIN', code: 'ADMIN2025', name: 'Administrator', role: 'admin' },
-            { id: 'GUEST', code: 'GUEST2025', name: 'Guest Access', role: 'guest' }
+            { id: 'INV001', code: 'DEMO2025', name: 'Investor', role: 'investor' },
+            { id: 'CLIENT', code: 'CLIENT2025', name: 'Client', role: 'client' }
         ];
 
         document.getElementById('loginForm').addEventListener('submit', function (e) {
@@ -252,33 +251,33 @@
                     expires.setTime(expires.getTime() + (24 * 60 * 60 * 1000)); // 24 hours
                     document.cookie = "sirsi_auth=" + btoa(JSON.stringify(sessionData)) + "; expires=" + expires.toUTCString() + "; path=/" + domain + "; SameSite=Lax; Secure";
 
-                    // Success - redirect appropriately based on role
+                    // Success - redirect based on role
                     buttonText.textContent = 'Access Granted!';
+
+                    // Determine portal destination
+                    let portalUrl = 'portal.html';
+                    let portalLabel = 'Portal';
+                    if (validCredential.role === 'investor') {
+                        portalUrl = 'admin/investor/portal.html';
+                        portalLabel = 'Investor Portal';
+                    } else if (validCredential.role === 'client') {
+                        portalUrl = 'client-portal.html';
+                        portalLabel = 'Client Portal';
+                    }
 
                     // Add success message with link
                     const successDiv = document.createElement('div');
                     successDiv.className = 'mt-4 p-3 bg-green-50 dark:bg-green-900 rounded-md text-xs text-green-700 dark:text-green-300';
 
-                    if (validCredential.role === 'admin') {
-                        successDiv.innerHTML = `
-                            <strong>✅ Admin Login Successful!</strong><br>
-                            Redirecting to <a href="admin/dashboard/analytics.html" class="underline">Admin Dashboard</a>
-                        `;
-                    } else {
-                        successDiv.innerHTML = `
-                            <strong>✅ Login Successful!</strong><br>
-                            Redirecting to <a href="portal.html" class="underline">Portal</a>
-                        `;
-                    }
+                    successDiv.innerHTML = `
+                        <strong>✅ Login Successful!</strong><br>
+                        Redirecting to <a href="${portalUrl}" class="underline">${portalLabel}</a>
+                    `;
 
                     document.querySelector('.bg-white.dark\\:bg-gray-800').appendChild(successDiv);
 
                     setTimeout(() => {
-                        if (validCredential.role === 'admin') {
-                            window.location.href = 'admin/dashboard/analytics.html';
-                        } else {
-                            window.location.href = 'portal.html';
-                        }
+                        window.location.href = portalUrl;
                     }, 2000);
                 } else {
                     // Show error
@@ -308,9 +307,9 @@
 
             demoInfo.innerHTML = `
                 <strong>Demo Credentials:</strong><br>
-                • ID: <code>INV001</code> Code: <code>DEMO2025</code><br>
-                • ID: <code>GUEST</code> Code: <code>GUEST2025</code><br>
-                • ID: <code>ADMIN</code> Code: <code>ADMIN2025</code> (Admin Dashboard)<br>
+                • ID: <code>ADMIN</code> Code: <code>ADMIN2025</code> (Admin Portal)<br>
+                • ID: <code>INV001</code> Code: <code>DEMO2025</code> (Investor Portal)<br>
+                • ID: <code>CLIENT</code> Code: <code>CLIENT2025</code> (Client Portal)<br>
                 ${approvedInvestors.length > 0 ? `<br><strong>Approved Investors:</strong><br>• Use your email and code: <code>investor2025</code>` : ''}
             `;
             document.querySelector('.bg-white.dark\\:bg-gray-800').appendChild(demoInfo);
