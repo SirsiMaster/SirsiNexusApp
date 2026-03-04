@@ -56,7 +56,8 @@
                         </div>
                         <div>
                             <h3 class="text-2xl font-semibold text-gray-900" id="total-users">0</h3>
-                            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Total Registry</p>
+                            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Total Registry
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -68,7 +69,8 @@
                         </div>
                         <div>
                             <h3 class="text-2xl font-semibold text-gray-900" id="active-users">0</h3>
-                            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Synchronized</p>
+                            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Synchronized
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -155,7 +157,8 @@
         class="hidden fixed inset-0 z-50 overflow-y-auto bg-gray-900/40 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden border border-gray-100">
             <div class="px-8 py-6 border-b border-gray-50 flex items-center justify-between">
-                <h2 class="text-sm font-semibold text-gray-900 uppercase tracking-widest italic" id="modalTitle">Identity
+                <h2 class="text-sm font-semibold text-gray-900 uppercase tracking-widest italic" id="modalTitle">
+                    Identity
                     Provisioning</h2>
                 <button onclick="hideModal('userModal')" class="text-gray-400 hover:text-gray-900"><i
                         class="fas fa-times"></i></button>
@@ -216,11 +219,10 @@
     <script>
         // Sample Engine Metadata
         let users = [
-            { id: 101, name: 'Cylton Collymore', email: 'cylton@sirsi.ai', status: 'active', role: 'super-admin' },
-            { id: 102, name: 'John Doe', email: 'j.doe@example.com', status: 'active', role: 'investor' },
-            { id: 103, name: 'Jane Smith', email: 'j.smith@nexus.co', status: 'pending', role: 'partner' },
-            { id: 104, name: 'Robert Vance', email: 'rvance@sirsi.ai', status: 'active', role: 'admin' },
-            { id: 105, name: 'Alice Cooper', email: 'a.cooper@rock.com', status: 'inactive', role: 'investor' }
+            { id: 101, name: 'Cylton Collymore', email: 'cylton@sirsi.ai', status: 'active', role: 'admin' },
+            { id: 102, name: 'Demo Investor', email: 'investor@sirsi.ai', status: 'active', role: 'investor' },
+            { id: 103, name: 'Beta Investor', email: 'beta@sirsi.ai', status: 'active', role: 'investor' },
+            { id: 104, name: 'Guest Access', email: 'guest@sirsi.ai', status: 'active', role: 'guest' }
         ];
 
         let filteredUsers = [...users];

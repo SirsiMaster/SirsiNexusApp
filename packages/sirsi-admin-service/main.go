@@ -199,43 +199,36 @@ func (s *AdminServer) ListUsers(
 	ctx context.Context,
 	req *connect.Request[adminv2.ListUsersRequest],
 ) (*connect.Response[adminv2.ListUsersResponse], error) {
-	// Canonical user registry — matches HTML admin portal users/index.html
-	// All accounts are ACTIVE per operational directive
+	// Canonical user registry — sourced from login.html VALID_CREDENTIALS
+	// These are the ONLY real accounts in the system
 	users := []*adminv2.User{
 		{
-			Id:       "user_1",
+			Id:       "ADMIN",
 			Email:    "cylton@sirsi.ai",
 			Name:     "Cylton Collymore",
-			Role:     "Super Admin",
-			TenantId: "sirsi-core",
-		},
-		{
-			Id:       "user_2",
-			Email:    "j.doe@example.com",
-			Name:     "John Doe",
-			Role:     "Investor",
-			TenantId: "finalwishes",
-		},
-		{
-			Id:       "user_3",
-			Email:    "j.smith@nexus.co",
-			Name:     "Jane Smith",
-			Role:     "Partner",
-			TenantId: "assiduous",
-		},
-		{
-			Id:       "user_4",
-			Email:    "rvance@sirsi.ai",
-			Name:     "Robert Vance",
 			Role:     "Admin",
 			TenantId: "sirsi-core",
 		},
 		{
-			Id:       "user_5",
-			Email:    "a.cooper@rock.com",
-			Name:     "Alice Cooper",
+			Id:       "INV001",
+			Email:    "investor@sirsi.ai",
+			Name:     "Demo Investor",
 			Role:     "Investor",
 			TenantId: "finalwishes",
+		},
+		{
+			Id:       "INV002",
+			Email:    "beta@sirsi.ai",
+			Name:     "Beta Investor",
+			Role:     "Investor",
+			TenantId: "finalwishes",
+		},
+		{
+			Id:       "GUEST",
+			Email:    "guest@sirsi.ai",
+			Name:     "Guest Access",
+			Role:     "Guest",
+			TenantId: "",
 		},
 	}
 
