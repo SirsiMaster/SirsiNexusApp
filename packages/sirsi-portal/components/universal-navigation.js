@@ -24,29 +24,29 @@ class UniversalNavigation {
     getBackUrl() {
         const path = this.currentPath;
         const pathSegments = path.split('/').filter(segment => segment && segment !== 'index.html');
-        
+
         // Root level - no back button needed
         if (pathSegments.length === 0 || path === '/index.html') {
             return null;
         }
-        
+
         // First level (e.g., /investor-portal/index.html)
-        if (pathSegments.length === 1 || 
+        if (pathSegments.length === 1 ||
             (pathSegments.length === 2 && pathSegments[1] === 'index.html')) {
             return '/index.html';
         }
-        
+
         // Second level (e.g., /investor-portal/committee/index.html)
-        if (pathSegments.length === 2 || 
+        if (pathSegments.length === 2 ||
             (pathSegments.length === 3 && pathSegments[2] === 'index.html')) {
             return `/${pathSegments[0]}/index.html`;
         }
-        
+
         // Third level and beyond (e.g., /investor-portal/committee/kpi-metrics.html)
         if (pathSegments.length >= 3) {
             return `/${pathSegments[0]}/${pathSegments[1]}/index.html`;
         }
-        
+
         return '/index.html';
     }
 
@@ -56,32 +56,32 @@ class UniversalNavigation {
     getBreadcrumb() {
         const path = this.currentPath;
         const pathSegments = path.split('/').filter(segment => segment && segment !== 'index.html');
-        
+
         const breadcrumb = [];
-        
+
         // Always include home
         breadcrumb.push({ name: 'Home', url: '/index.html' });
-        
+
         // Add intermediate segments
         if (pathSegments.length >= 1) {
             if (pathSegments[0] === 'investor-portal') {
                 breadcrumb.push({ name: 'Investor Portal', url: '/investor-portal/index.html' });
             }
-            
+
             if (pathSegments.length >= 2) {
                 if (pathSegments[1] === 'committee') {
                     breadcrumb.push({ name: 'Committee', url: '/investor-portal/committee/index.html' });
                 }
             }
         }
-        
+
         return breadcrumb;
     }
 
     /**
      * Render navigation HTML
      */
-renderNavigation() {
+    renderNavigation() {
         const header = document.getElementById('unified-header');
         if (header) {
             header.innerHTML = this.generateNavigationHTML();
@@ -94,7 +94,7 @@ renderNavigation() {
     generateNavigationHTML() {
         const backUrl = this.getBackUrl();
         const breadcrumb = this.getBreadcrumb();
-        
+
         return `
             <div class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 backdrop-blur-sm">
                 <div class="max-w-7xl mx-auto px-6">
@@ -108,7 +108,7 @@ renderNavigation() {
                           <div>
                             <h1 class="text-base font-semibold text-slate-900 dark:text-slate-100">SirsiNexus</h1>
                             <div class="flex items-center gap-2">
-                              <span class="version-badge text-xs text-secondary-500 dark:text-secondary-400 bg-secondary-100 dark:bg-secondary-800 px-1.5 py-0.5 rounded">v0.7.9</span>
+                              <span class="version-badge text-xs text-secondary-500 dark:text-secondary-400 bg-secondary-100 dark:bg-secondary-800 px-1.5 py-0.5 rounded">v0.8.0</span>
                               <div class="flex items-center gap-1">
                                 <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
                                 <span class="status-indicator text-xs text-slate-600 dark:text-slate-300">Live</span>
@@ -189,8 +189,8 @@ renderNavigation() {
      * Setup theme functionality
      */
     setupTheme() {
-        const theme = localStorage.getItem('theme') || 
-                     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        const theme = localStorage.getItem('theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.classList.toggle('dark', theme === 'dark');
     }
 
@@ -226,7 +226,7 @@ renderNavigation() {
     toggleTheme() {
         const html = document.documentElement;
         const wasDark = html.classList.contains('dark');
-        
+
         if (wasDark) {
             html.classList.remove('dark');
             localStorage.setItem('theme', 'light');
@@ -234,7 +234,7 @@ renderNavigation() {
             html.classList.add('dark');
             localStorage.setItem('theme', 'dark');
         }
-        
+
         // Re-render navigation to update theme toggle icon
         this.renderNavigation();
         this.setupSearch();
@@ -267,7 +267,7 @@ renderNavigation() {
     performSearch(query) {
         const searchResults = document.getElementById('searchResults');
         if (!searchResults) return;
-        
+
         // Sample data for search (in production, this would come from an API)
         const searchData = [
             // Documents
@@ -275,31 +275,31 @@ renderNavigation() {
             { type: 'document', title: 'Investment Prospectus', path: '/documents/investment-prospectus.pdf', icon: '📄' },
             { type: 'document', title: 'Portfolio Performance Q4', path: '/documents/portfolio-q4.pdf', icon: '📄' },
             { type: 'document', title: 'Risk Assessment Report', path: '/documents/risk-assessment.pdf', icon: '📄' },
-            
+
             // Metrics & Analytics
             { type: 'metric', title: 'Portfolio Performance', path: '/investor-portal/portfolio-overview.html', icon: '📊' },
             { type: 'metric', title: 'KPI Metrics', path: '/investor-portal/committee/kpi-metrics.html', icon: '📈' },
             { type: 'metric', title: 'Market Analysis', path: '/investor-portal/market-analysis.html', icon: '📉' },
             { type: 'metric', title: 'ROI Dashboard', path: '/investor-portal/roi-dashboard.html', icon: '💹' },
-            
+
             // Users & Committee
             { type: 'user', title: 'John Smith - Committee Chair', path: '/investor-portal/committee/members.html', icon: '👤' },
             { type: 'user', title: 'Sarah Johnson - Investment Director', path: '/investor-portal/committee/members.html', icon: '👤' },
             { type: 'user', title: 'Michael Brown - Risk Manager', path: '/investor-portal/committee/members.html', icon: '👤' },
-            
+
             // Pages
             { type: 'page', title: 'Committee Dashboard', path: '/investor-portal/committee/index.html', icon: '🏢' },
             { type: 'page', title: 'Data Room', path: '/investor-portal/data-room.html', icon: '🗄️' },
             { type: 'page', title: 'Company Updates', path: '/investor-portal/company-updates.html', icon: '📰' },
             { type: 'page', title: 'Investor Relations', path: '/investor-portal/investor-relations.html', icon: '🤝' }
         ];
-        
+
         if (!query.trim()) {
             searchResults.classList.add('hidden');
             return;
         }
 
-        const results = searchData.filter(item => 
+        const results = searchData.filter(item =>
             item.title.toLowerCase().includes(query.toLowerCase())
         );
 
@@ -336,7 +336,7 @@ renderNavigation() {
         setTimeout(() => {
             const searchInput = document.getElementById('documentSearch');
             const searchResults = document.getElementById('searchResults');
-            
+
             if (!searchInput || !searchResults) return;
 
             // Sample data for search (in production, this would come from an API)
@@ -346,18 +346,18 @@ renderNavigation() {
                 { type: 'document', title: 'Investment Prospectus', path: '/documents/investment-prospectus.pdf', icon: '📄' },
                 { type: 'document', title: 'Portfolio Performance Q4', path: '/documents/portfolio-q4.pdf', icon: '📄' },
                 { type: 'document', title: 'Risk Assessment Report', path: '/documents/risk-assessment.pdf', icon: '📄' },
-                
+
                 // Metrics & Analytics
                 { type: 'metric', title: 'Portfolio Performance', path: '/investor-portal/portfolio-overview.html', icon: '📊' },
                 { type: 'metric', title: 'KPI Metrics', path: '/investor-portal/committee/kpi-metrics.html', icon: '📈' },
                 { type: 'metric', title: 'Market Analysis', path: '/investor-portal/market-analysis.html', icon: '📉' },
                 { type: 'metric', title: 'ROI Dashboard', path: '/investor-portal/roi-dashboard.html', icon: '💹' },
-                
+
                 // Users & Committee
                 { type: 'user', title: 'John Smith - Committee Chair', path: '/investor-portal/committee/members.html', icon: '👤' },
                 { type: 'user', title: 'Sarah Johnson - Investment Director', path: '/investor-portal/committee/members.html', icon: '👤' },
                 { type: 'user', title: 'Michael Brown - Risk Manager', path: '/investor-portal/committee/members.html', icon: '👤' },
-                
+
                 // Pages
                 { type: 'page', title: 'Committee Dashboard', path: '/investor-portal/committee/index.html', icon: '🏢' },
                 { type: 'page', title: 'Data Room', path: '/investor-portal/data-room.html', icon: '🗄️' },
@@ -375,7 +375,7 @@ renderNavigation() {
                     return;
                 }
 
-                const results = searchData.filter(item => 
+                const results = searchData.filter(item =>
                     item.title.toLowerCase().includes(query.toLowerCase())
                 );
 
@@ -414,7 +414,7 @@ renderNavigation() {
             // Keyboard navigation
             searchInput.addEventListener('keydown', (e) => {
                 const items = searchResults.querySelectorAll('.search-result-item');
-                
+
                 if (e.key === 'ArrowDown') {
                     e.preventDefault();
                     selectedIndex = Math.min(selectedIndex + 1, items.length - 1);

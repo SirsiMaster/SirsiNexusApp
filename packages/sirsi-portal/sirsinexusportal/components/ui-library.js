@@ -366,14 +366,14 @@ class SirsiToastNotification {
     render() {
         // Show only the most recent toasts up to maxVisible
         const visibleToasts = this.queue.slice(-this.maxVisible);
-        
+
         // Clear container
         this.container.innerHTML = '';
 
         // Add visible toasts
         visibleToasts.forEach((toastData, index) => {
             this.container.appendChild(toastData.element);
-            
+
             // Trigger show animation
             setTimeout(() => {
                 toastData.element.classList.add('sirsi-toast-show');
@@ -561,7 +561,7 @@ class SirsiHeader extends HTMLElement {
                             <img src="/assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png" alt="Sirsi Logo" class="logo dark-logo" style="display: none;">
                             <div>
                                 <h1 class="title">SirsiNexus</h1>
-                                <span class="version-badge">v0.5.0-alpha</span>
+                                <span class="version-badge">v0.8.0-alpha</span>
                             </div>
                         </div>
                         <div class="nav-items">
@@ -582,7 +582,7 @@ class SirsiHeader extends HTMLElement {
         // Handle theme
         const darkLogo = this.shadowRoot.querySelector('.dark-logo');
         const lightLogo = this.shadowRoot.querySelector('.light-logo');
-        
+
         const updateLogos = () => {
             const isDark = document.documentElement.classList.contains('dark');
             darkLogo.style.display = isDark ? 'block' : 'none';
@@ -914,7 +914,7 @@ class SirsiFeature extends HTMLElement {
 
 class UILibrary {
     constructor() {
-        this.version = 'v0.5.0-alpha';
+        this.version = 'v0.8.0-alpha';
         this.init();
     }
 
@@ -1075,7 +1075,7 @@ class UILibrary {
 
     setupComponents() {
         // Register custom elements
-if (!customElements.get('sirsi-header')) customElements.define('sirsi-header', SirsiHeader);
+        if (!customElements.get('sirsi-header')) customElements.define('sirsi-header', SirsiHeader);
         if (!customElements.get('sirsi-footer')) customElements.define('sirsi-footer', SirsiFooter);
         if (!customElements.get('sirsi-metric')) customElements.define('sirsi-metric', SirsiMetric);
         if (!customElements.get('sirsi-feature')) customElements.define('sirsi-feature', SirsiFeature);
@@ -1139,7 +1139,7 @@ if (!customElements.get('sirsi-header')) customElements.define('sirsi-header', S
             connectedCallback() {
                 const value = this.getAttribute('value');
                 const label = this.getAttribute('label');
-                
+
                 this.innerHTML = `
                     <div class="sirsi-metric-card">
                         <div class="sirsi-metric-value">${value}</div>
@@ -1174,7 +1174,7 @@ if (!customElements.get('sirsi-header')) customElements.define('sirsi-header', S
         return class extends HTMLElement {
             connectedCallback() {
                 const title = this.getAttribute('title');
-                
+
                 this.innerHTML = `
                     <div class="sirsi-chart-container">
                         <h3 class="font-semibold mb-4">${title}</h3>

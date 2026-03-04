@@ -1,4 +1,13 @@
-# Sirsi Nexus Version History
+# ⚠️ THIS FILE IS ARCHIVED — DO NOT EDIT
+
+> **Canonical location**: [`docs/core/VERSION.md`](../docs/core/VERSION.md)  
+> This backup copy was consolidated into the synoptic ledger on March 3, 2026.  
+> All version history is now maintained in the canonical file above.
+
+---
+
+# Sirsi Nexus Version History (ARCHIVED)
+
 
 ## Version 0.7.5-alpha (2025-07-11)
 

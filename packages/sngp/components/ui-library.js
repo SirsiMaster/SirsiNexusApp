@@ -5,7 +5,7 @@
 
 class UILibrary {
     constructor() {
-        this.version = 'v0.5.0-alpha';
+        this.version = 'v0.8.0-alpha';
         this.init();
     }
 
@@ -194,7 +194,7 @@ class UILibrary {
 
             constructor() {
                 super();
-                this.version = window.SirsiUI?.version || 'v0.5.0-alpha';
+                this.version = window.SirsiUI?.version || 'v0.8.0-alpha';
             }
 
             attributeChangedCallback(name, oldValue, newValue) {
@@ -212,7 +212,7 @@ class UILibrary {
                 // Get logo path from attribute or use relative path as fallback
                 const logoPath = this.getAttribute('logo-path') || '../assets/images/Sirsi_Logo_300ppi_cguiyg.png';
                 const darkLogoPath = this.getAttribute('dark-logo-path') || '../assets/images/Sirsi_Logo_300ppi_Inverted_lt7asx.png';
-                
+
                 this.innerHTML = `
                     <header class="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700">
                         <div class="sirsi-container">
@@ -270,7 +270,7 @@ class UILibrary {
             connectedCallback() {
                 const value = this.getAttribute('value');
                 const label = this.getAttribute('label');
-                
+
                 this.innerHTML = `
                     <div class="sirsi-metric-card">
                         <div class="sirsi-metric-value">${value}</div>
@@ -315,7 +315,7 @@ class UILibrary {
 
             connectedCallback() {
                 this.render();
-                
+
                 // Observe theme changes
                 this.observer.observe(document.documentElement, {
                     attributes: true,
@@ -352,7 +352,7 @@ class UILibrary {
 
             render() {
                 const title = this.getAttribute('title');
-                
+
                 this.innerHTML = `
                     <div class="sirsi-chart-container dark:bg-slate-800">
                         <h3 class="font-semibold mb-4 text-slate-900 dark:text-slate-100">${title}</h3>

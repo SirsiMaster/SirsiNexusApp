@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Default values
-const DEFAULT_VERSION = "0.7.9-alpha";
+const DEFAULT_VERSION = "0.8.0-alpha";
 const DEFAULT_ENVIRONMENT = "production";
 
 // Get command line arguments
@@ -74,17 +74,17 @@ function updateVersion() {
   try {
     // Write updated version data
     fs.writeFileSync(versionFilePath, JSON.stringify(versionData, null, 2));
-    
+
     console.log('✅ Version updated successfully!');
     console.log(`📦 Version: ${newVersion}`);
     console.log(`🏗️  Build: ${buildNumber}`);
     console.log(`🌍 Environment: ${environment}`);
     console.log(`📅 Release Date: ${versionData.release_date}`);
     console.log(`🔄 Last Updated: ${versionData.metadata.last_updated}`);
-    
+
     // Show file location
     console.log(`📄 Updated: ${versionFilePath}`);
-    
+
   } catch (error) {
     console.error('❌ Error updating version:', error.message);
     process.exit(1);

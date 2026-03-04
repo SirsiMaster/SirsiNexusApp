@@ -48,17 +48,17 @@ class VersionLoader {
             }
 
             const data = await response.json();
-            
+
             // Cache the result
             this.cache = data;
             this.cacheExpiry = Date.now() + (data.metadata?.cache_duration || 300) * 1000;
-            
+
             return data;
         } catch (error) {
             console.warn('Failed to load version data:', error);
             // Fallback to default version
             return {
-                version: '0.7.9-alpha',
+                version: '0.8.0-alpha',
                 status: 'Live',
                 build: 'unknown',
                 environment: 'production'
@@ -72,7 +72,7 @@ class VersionLoader {
     async updateVersionDisplay() {
         try {
             const versionData = await this.loadVersion();
-            
+
             // Update all version badges
             const versionElements = document.querySelectorAll('.version-badge');
             versionElements.forEach(element => {
@@ -85,7 +85,7 @@ class VersionLoader {
             statusElements.forEach(element => {
                 element.textContent = versionData.status;
                 element.classList.remove('loading');
-                
+
                 // Update status color based on environment
                 const statusDot = element.previousElementSibling;
                 if (statusDot && statusDot.classList.contains('status-dot')) {
@@ -99,60 +99,60 @@ class VersionLoader {
                 element.classList.remove('version-loading');
             });
 
-        // Update any other version displays
-        const allVersionElements = document.querySelectorAll('[data-version]');
-        allVersionElements.forEach(element => {
-            const dataType = element.getAttribute('data-version');
-            if (dataType && versionData[dataType]) {
-                element.textContent = versionData[dataType];
-            }
-        });
+            // Update any other version displays
+            const allVersionElements = document.querySelectorAll('[data-version]');
+            allVersionElements.forEach(element => {
+                const dataType = element.getAttribute('data-version');
+                if (dataType && versionData[dataType]) {
+                    element.textContent = versionData[dataType];
+                }
+            });
 
-        // Store version data globally for other scripts
-        window.SirsiNexusVersion = versionData;
-        
-        // Dispatch custom event for version loaded
-        window.dispatchEvent(new CustomEvent('versionLoaded', {
-            detail: versionData
-        }));
-    }
+            // Store version data globally for other scripts
+            window.SirsiNexusVersion = versionData;
+
+            // Dispatch custom event for version loaded
+            window.dispatchEvent(new CustomEvent('versionLoaded', {
+                detail: versionData
+            }));
+        }
 
     /**
      * Get status color based on environment
      */
     getStatusColor(environment) {
-        switch (environment) {
-            case 'production':
-                return 'bg-emerald-500';
-            case 'staging':
-                return 'bg-amber-500';
-            case 'development':
-                return 'bg-blue-500';
-            default:
-                return 'bg-gray-500';
+            switch (environment) {
+                case 'production':
+                    return 'bg-emerald-500';
+                case 'staging':
+                    return 'bg-amber-500';
+                case 'development':
+                    return 'bg-blue-500';
+                default:
+                    return 'bg-gray-500';
+            }
         }
-    }
 
     /**
      * Initialize version loader
      */
     async init() {
-        // Wait for DOM to be ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.updateVersionDisplay());
-        } else {
-            await this.updateVersionDisplay();
+            // Wait for DOM to be ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => this.updateVersionDisplay());
+            } else {
+                await this.updateVersionDisplay();
+            }
         }
     }
-}
 
-// Global instance
-const versionLoader = new VersionLoader();
+    // Global instance
+    const versionLoader = new VersionLoader();
 
 // Auto-initialize when script loads
 versionLoader.init();
 
-// Export for module usage
-if (typeof module !== 'undefined' && module.exports) {
+    // Export for module usage
+    if(typeof module !== 'undefined' && module.exports) {
     module.exports = VersionLoader;
 }
