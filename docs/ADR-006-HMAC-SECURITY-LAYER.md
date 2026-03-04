@@ -1,4 +1,4 @@
-# ADR-003: HMAC-Based Security Layer for Multi-Tenant Vault
+# ADR-006: HMAC-Based Security Layer for Multi-Tenant Vault
 
 **Date:** December 31, 2025
 **Status:** Accepted

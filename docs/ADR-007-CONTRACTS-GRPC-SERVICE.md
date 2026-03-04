@@ -1,9 +1,9 @@
-# ADR-004: Contracts gRPC Service
+# ADR-007: Contracts gRPC Service
 
 **Status:** Accepted  
 **Date:** 2025-12-31  
 **Decision Makers:** Architecture Team  
-**Related:** ADR-003-HMAC-SECURITY-LAYER
+**Related:** ADR-006-HMAC-SECURITY-LAYER
 
 ---
 
@@ -89,7 +89,7 @@ Contracts support customizable themes via CSS variables:
 1. **TLS 1.3** - Automatic via Cloud Run
 2. **CORS** - Configured for Sirsi domains
 3. **Authentication** - Service-level (to be added)
-4. **HMAC Signing** - Available via ADR-003 integration
+4. **HMAC Signing** - Available via ADR-006 integration
 
 ---
 

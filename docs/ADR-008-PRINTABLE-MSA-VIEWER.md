@@ -1,4 +1,4 @@
-# ADR-005: Printable MSA Viewer Component
+# ADR-008: Printable MSA Viewer Component
 
 **Status:** Accepted  
 **Date:** 2026-01-21  
@@ -157,8 +157,8 @@ const openPrintableMSA = () => {
 
 - `proposals/CONTRACT.md` - Canonical contract language source
 - `proposals/SOW.md` - Canonical SOW source
-- `ADR-004-CONTRACTS-GRPC-SERVICE.md` - Backend contract storage
-- `ADR-003-HMAC-SECURITY-LAYER.md` - Document security
+- `ADR-007-CONTRACTS-GRPC-SERVICE.md` - Backend contract storage
+- `ADR-006-HMAC-SECURITY-LAYER.md` - Document security
 
 ---
 
