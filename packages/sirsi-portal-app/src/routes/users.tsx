@@ -6,12 +6,13 @@
  */
 
 import { createRoute } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Route as rootRoute } from './__root'
 import {
     Users, UserCheck, Clock, ShieldCheck,
     Search, Plus, Download, Fingerprint, Trash2
 } from 'lucide-react'
+import { useUsers } from '../hooks/useAdminService'
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
@@ -19,7 +20,7 @@ export const Route = createRoute({
     component: UsersPage,
 })
 
-// ── Sample data (matches HTML exactly) ────────────────────────────
+// ── Fallback sample data ──────────────────────────────────────────
 interface User {
     id: number
     name: string
@@ -28,7 +29,7 @@ interface User {
     role: string
 }
 
-const initialUsers: User[] = [
+const fallbackUsers: User[] = [
     { id: 101, name: 'Cylton Collymore', email: 'cylton@sirsi.ai', status: 'active', role: 'super-admin' },
     { id: 102, name: 'John Doe', email: 'j.doe@example.com', status: 'active', role: 'investor' },
     { id: 103, name: 'Jane Smith', email: 'j.smith@nexus.co', status: 'pending', role: 'partner' },
@@ -38,7 +39,10 @@ const initialUsers: User[] = [
 
 // ── Component ─────────────────────────────────────────────────────
 function UsersPage() {
-    const [users, setUsers] = useState<User[]>(initialUsers)
+    // Live data from Go backend (ConnectRPC)
+    const { data: backendUsers, isLoading } = useUsers()
+
+    const [users, setUsers] = useState<User[]>(fallbackUsers)
     const [searchQuery, setSearchQuery] = useState('')
     const [showModal, setShowModal] = useState(false)
     const [editingUser, setEditingUser] = useState<User | null>(null)
@@ -48,6 +52,25 @@ function UsersPage() {
     const [formEmail, setFormEmail] = useState('')
     const [formRole, setFormRole] = useState('investor')
     const [formStatus, setFormStatus] = useState('active')
+
+    // Sync backend users into local state on load
+    useEffect(() => {
+        if (backendUsers && backendUsers.length > 0) {
+            const mapped: User[] = backendUsers.map((u: any, i: number) => ({
+                id: i + 101,
+                name: u.name || 'Unknown',
+                email: u.email || '',
+                status: (u.role === 'Admin' ? 'active' : 'pending') as User['status'],
+                role: u.role?.toLowerCase() || 'investor',
+            }))
+            // Merge: backend users first, then append any local-only additions
+            setUsers(prev => {
+                const backendEmails = new Set(mapped.map(u => u.email))
+                const localOnly = prev.filter(u => !backendEmails.has(u.email) && !fallbackUsers.some(f => f.email === u.email))
+                return [...mapped, ...localOnly]
+            })
+        }
+    }, [backendUsers])
 
     const filteredUsers = users.filter(u =>
         u.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -101,11 +124,16 @@ function UsersPage() {
     return (
         <div>
             {/* ── Page Header ──────────────────────────────────── */}
-            <div className="page-header">
-                <h1>User Management</h1>
-                <p className="page-subtitle">
-                    Unified registry for platform identities, role synchronization, and security assertions
-                </p>
+            <div className="page-header flex justify-between items-end">
+                <div>
+                    <h1>User Management</h1>
+                    <p className="page-subtitle">
+                        Unified registry for platform identities, role synchronization, and security assertions
+                    </p>
+                </div>
+                {isLoading && (
+                    <span className="text-[10px] text-gray-400 uppercase tracking-wider animate-pulse">Syncing registry...</span>
+                )}
             </div>
 
             {/* ── User Statistics (4 cards) ────────────────────── */}
@@ -161,8 +189,8 @@ function UsersPage() {
                                 <td className="text-gray-500 font-medium">{user.email}</td>
                                 <td>
                                     <span className={`sirsi-badge ${user.status === 'active' ? 'sirsi-badge-success' :
-                                            user.status === 'pending' ? 'sirsi-badge-warning' :
-                                                'sirsi-badge-error'
+                                        user.status === 'pending' ? 'sirsi-badge-warning' :
+                                            'sirsi-badge-error'
                                         }`}>
                                         {user.status.toUpperCase()}
                                     </span>

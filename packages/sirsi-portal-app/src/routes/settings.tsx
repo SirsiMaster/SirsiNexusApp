@@ -77,7 +77,7 @@ function Settings() {
                         <div className="space-y-4">
                             <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg border border-white/10">
                                 <span className="text-sm">Active Gateway Region</span>
-                                <span className="text-xs font-mono text-sirsi-gold">us-east4 (N. Virginia)</span>
+                                <span className="text-xs font-mono text-sirsi-gold">{settings?.activeRegion || 'us-central1'}</span>
                             </div>
                             <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg border border-white/10 opacity-50">
                                 <span className="text-sm">Audit Persistence</span>
