@@ -143,14 +143,14 @@ function Console() {
                 <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2">
                         <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                        <span style={{ fontSize: 9, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Write Access Enabled</span>
+                        <span className="text-slate-400 dark:text-slate-500" style={{ fontSize: 9, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Write Access Enabled</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
-                        <span style={{ fontSize: 9, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Log level: Debug</span>
+                        <span className="text-slate-400 dark:text-slate-500" style={{ fontSize: 9, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Log level: Debug</span>
                     </div>
                 </div>
-                <div style={{ fontSize: 9, fontWeight: 500, color: '#d1d5db', textTransform: 'uppercase', fontStyle: 'italic' }}>Type 'help' to review authorized protocols</div>
+                <div className="text-slate-300 dark:text-slate-500" style={{ fontSize: 9, fontWeight: 500, textTransform: 'uppercase', fontStyle: 'italic' }}>Type 'help' to review authorized protocols</div>
             </div>
         </div>
     )

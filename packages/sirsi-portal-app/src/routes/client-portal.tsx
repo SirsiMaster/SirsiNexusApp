@@ -70,7 +70,7 @@ function ClientPortalPage() {
                     </p>
 
                     <div className="sirsi-card p-6 text-left space-y-4">
-                        <h3 style={{ fontSize: 12, fontWeight: 600, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+                        <h3 className="text-slate-900 dark:text-slate-100" style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
                             Coming Soon
                         </h3>
                         <ul className="space-y-3">

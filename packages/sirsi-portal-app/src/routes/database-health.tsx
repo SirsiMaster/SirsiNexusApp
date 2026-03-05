@@ -55,10 +55,10 @@ function DatabaseHealth() {
                     {connections.map(c => (
                         <div key={c.label} className={`${c.bg} p-4 rounded-lg`}>
                             <div className="flex items-center justify-between">
-                                <span style={{ fontSize: 14, color: '#6b7280' }}>{c.label}</span>
+                                <span className="text-slate-500 dark:text-slate-400" style={{ fontSize: 14 }}>{c.label}</span>
                                 {c.status.includes('Connected') || c.status.includes('Active')
-                                    ? <span style={{ fontSize: 12, padding: '2px 8px', background: '#d1fae5', color: '#047857', borderRadius: 12 }}>{c.status}</span>
-                                    : <span style={{ fontSize: 12, color: '#6b7280' }}>{c.status}</span>
+                                    ? <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" style={{ fontSize: 12, padding: '2px 8px', borderRadius: 12 }}>{c.status}</span>
+                                    : <span className="text-slate-500 dark:text-slate-400" style={{ fontSize: 12 }}>{c.status}</span>
                                 }
                             </div>
                             <p className={`text-2xl font-medium ${c.valueColor} mt-2`}>{c.value}</p>
@@ -75,10 +75,10 @@ function DatabaseHealth() {
                         {queryPerf.map(q => (
                             <div key={q.label}>
                                 <div className="flex justify-between text-sm mb-1">
-                                    <span style={{ color: '#6b7280' }}>{q.label}</span>
+                                    <span className="text-slate-500 dark:text-slate-400">{q.label}</span>
                                     <span style={{ fontWeight: 500 }}>{q.value}</span>
                                 </div>
-                                <div className="w-full bg-gray-200 rounded-full" style={{ height: 8 }}>
+                                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full" style={{ height: 8 }}>
                                     <div className={`${q.color} rounded-full`} style={{ height: '100%', width: `${q.pct}%` }} />
                                 </div>
                             </div>
@@ -94,7 +94,7 @@ function DatabaseHealth() {
                                     <span style={{ color: '#6b7280' }}>{s.label}</span>
                                     <span style={{ fontWeight: 500 }}>{s.value}</span>
                                 </div>
-                                <div className="w-full bg-gray-200 rounded-full" style={{ height: 8 }}>
+                                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full" style={{ height: 8 }}>
                                     <div className={`${s.color} rounded-full`} style={{ height: '100%', width: `${s.pct}%` }} />
                                 </div>
                             </div>
@@ -109,18 +109,18 @@ function DatabaseHealth() {
                 <div className="overflow-x-auto">
                     <table className="w-full">
                         <thead>
-                            <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+                            <tr className="border-b border-slate-200 dark:border-slate-700">
                                 {['Operation', 'Table', 'Duration', 'Status', 'Time'].map(h => (
-                                    <th key={h} style={{ textAlign: 'left', padding: '12px 16px', fontSize: 14, fontWeight: 500, color: '#374151' }}>{h}</th>
+                                    <th key={h} className="text-slate-700 dark:text-slate-300" style={{ textAlign: 'left', padding: '12px 16px', fontSize: 14, fontWeight: 500 }}>{h}</th>
                                 ))}
                             </tr>
                         </thead>
                         <tbody>
                             {operations.map((op, i) => (
-                                <tr key={i} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                                    <td style={{ padding: '12px 16px', fontSize: 14 }}>{op.op}</td>
-                                    <td style={{ padding: '12px 16px', fontSize: 14, color: '#6b7280' }}>{op.table}</td>
-                                    <td style={{ padding: '12px 16px', fontSize: 14 }}>{op.duration}</td>
+                                <tr key={i} className="border-b border-slate-100 dark:border-slate-700">
+                                    <td className="text-slate-900 dark:text-slate-100" style={{ padding: '12px 16px', fontSize: 14 }}>{op.op}</td>
+                                    <td className="text-slate-500 dark:text-slate-400" style={{ padding: '12px 16px', fontSize: 14 }}>{op.table}</td>
+                                    <td className="text-slate-700 dark:text-slate-300" style={{ padding: '12px 16px', fontSize: 14 }}>{op.duration}</td>
                                     <td style={{ padding: '12px 16px' }}>
                                         <span style={{
                                             fontSize: 12, padding: '2px 8px', borderRadius: 12,
@@ -128,7 +128,7 @@ function DatabaseHealth() {
                                             color: op.status === 'success' ? '#047857' : '#b45309',
                                         }}>{op.status}</span>
                                     </td>
-                                    <td style={{ padding: '12px 16px', fontSize: 14, color: '#6b7280' }}>{op.time}</td>
+                                    <td className="text-slate-500 dark:text-slate-400" style={{ padding: '12px 16px', fontSize: 14 }}>{op.time}</td>
                                 </tr>
                             ))}
                         </tbody>
