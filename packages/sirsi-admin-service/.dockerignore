@@ -1,0 +1,10 @@
+.DS_Store
+sirsi-admin
+*.test
+node_modules/
+.git/
+.gitignore
+README.md
+package.json
+buf.yaml
+buf.gen.yaml
