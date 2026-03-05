@@ -58,36 +58,43 @@ Migrate the HTML admin portal to a React 19 SPA (`packages/sirsi-portal-app/`) u
 - Cache Status, API Server, Database Health, Backup Status
 - Contracts, Data Room, AI Agents, Hypervisor, Users, Settings
 
-### Phase 4 — QA, Polish & Performance
-- **4.1 Visual QA**: 11-page audit, 1 bug found (Portal card backgrounds — CSS specificity)
-- **4.2 Type Safety**: Recharts/React 19 type conflict verified resolved
-- **4.3 Dark Mode**: Toggle + localStorage persistence + system preference detection
-- **4.4 Responsive**: Sidebar collapse/expand with localStorage persistence
-- **4.5 Code Splitting**: 24 routes lazy-loaded, main bundle reduced to ~390 KB
+### Phase 5 — React as Primary Platform (v0.8.0-alpha+)
+- React app (`sirsi-portal-app`) becomes the **sole delivery platform**
+- HTML admin portal (`sirsi-portal/admin/`) archived as historical reference only
+- **Rule 22 superseded**: React no longer mirrors HTML — React IS the source of truth
+- Universal theme toggle (single `<html class="dark">` — no per-page toggles)
+- All text globally justified (`text-align: justify` on body)
+- Centralized version badge in both public + admin headers (from `package.json`)
+- Changelog page (`/changelog`) with full release timeline
+
+#### Phase 5 Migration Scope
+- All 37 routes confirmed as React-only
+- No remaining HTML pages in production delivery
+- Public pages (landing, about, blog, pricing, privacy, terms, changelog, login, signup, documentation) use PublicLayout (no sidebar)
+- Portal pages use AdminLayout (sidebar + header + content-wrapper)
 
 ## Consequences
 
 ### Positive
-- **25 routes** fully ported with pixel-perfect parity
-- **64 TypeScript/CSS files** in the React app
-- **~6,100 lines** of application code
-- **Code splitting** reduces initial load from ~1.3 MB to ~390 KB core
+- **37 routes** fully ported with functional parity
+- **Single codebase** — no dual maintenance between HTML and React
 - **Dark mode** with system preference detection and persistence
 - **Type safety** across all components (zero `tsc` errors)
 - **Component reuse** — `KpiCard`, `TenantCluster`, `StatCard` shared across pages
+- **Centralized version** — `lib/version.ts` reads from `package.json`
 
 ### Negative
-- **Dual maintenance** — HTML and React versions coexist until React is promoted to primary
-- **Mock data** — all pages use hardcoded data until ConnectRPC integration (Phase 5)
+- **Mock data** — most pages use hardcoded data until ConnectRPC integration (Phase 6)
 
 ### Neutral
-- HTML portal remains the source of truth per Rule 22 until React achieves functional parity (auth, live data)
+- HTML portal remains in repo as historical reference and design documentation
 
 ## Key Lessons
 
 1. **CSS Specificity with shadcn/ui**: The `sirsi-card` class (from `index.css`) has `background: white` which overrides Tailwind `bg-*` classes. Fix: use inline `style.background` for cards requiring custom backgrounds.
 2. **Recharts + React 19 Types**: Type conflicts resolved by dependency updates; no manual `@ts-ignore` needed.
 3. **Dark Mode FOUC**: Initialize theme from `localStorage` in the state initializer, not in a `useEffect`, to avoid flash of unstyled content.
+4. **Theme Toggle Must Be Universal**: A single `document.documentElement.classList.toggle('dark')` controls all pages. No per-page, per-component, or per-section theme toggles.
 
 ## Commit History
 
@@ -106,12 +113,13 @@ Migrate the HTML admin portal to a React 19 SPA (`packages/sirsi-portal-app/`) u
 | `2bb42e9` | fix | Fix blank strategic module cards on Portal |
 | `48cd5dc` | perf | Code splitting — lazy-load 24 routes |
 | `be3afe5` | fix | Dark mode persistence across reloads |
+| `c3f995d` | feat | Phase 5.0: Version badge, public pages, changelog, justify |
 
 ## References
 
 - ADR-025: Unified App Architecture
 - ADR-018: Technical Stack Convergence
 - ADR-026: Hypervisor Command Protocol
-- `packages/sirsi-portal/admin/` — HTML source of truth
-- `packages/sirsi-portal-app/` — React migration target
+- `packages/sirsi-portal/admin/` — HTML historical reference (archived)
+- `packages/sirsi-portal-app/` — React primary platform
 - `docs/SWISS_NEO_DECO_STYLE_GUIDE.md` — Design language specification

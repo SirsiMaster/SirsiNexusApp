@@ -4,6 +4,40 @@ All notable changes to the Sirsi Nexus project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.8.0-alpha] - 2026-03-05
+
+### 🚀 PHASE 5: REACT AS PRIMARY PLATFORM
+
+#### Unified Version Badge System
+- Centralized version module (`lib/version.ts`) — reads from `package.json` at build time via Vite `define`
+- Public header: Clickable `v0.8.0-alpha` badge → `/changelog`
+- Admin header: Matching layout — brand name on line 1, version + Live on line 2
+- Both headers read from same `APP_VERSION_DISPLAY` constant
+
+#### New Public Pages (7)
+- `/about` — Company info, team, mission, HQ address
+- `/blog` — TEDCO investment, DCA Live award, whitepaper previews
+- `/pricing` — 3 tiers ($49, $499, $4,999)
+- `/privacy` — Full privacy policy
+- `/terms` — Terms of service
+- `/changelog` — Release timeline with 18 versions (v0.1.0 → v0.8.0-alpha)
+- `/documentation` — Platform documentation (existing)
+
+#### Global Text Justification
+- `text-align: justify` on `body` — all pages (public + portal) now have clean text blocks
+- Headings and centered content override justify via their own text-align rules
+
+#### Architecture Decision
+- **ADR-027 Phase 5**: React app becomes sole delivery platform
+- HTML admin portal archived as historical reference
+- Rule 22 superseded — React IS the source of truth
+
+#### Commits
+| Hash | Message |
+|:-----|:--------|
+| `c3f995d` | Phase 5.0: Version badge, public pages, changelog, justify |
+
+---
 
 ## [0.7.10-alpha] - 2025-07-14
 

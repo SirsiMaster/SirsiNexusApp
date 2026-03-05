@@ -181,7 +181,7 @@ SirsiNexusApp uses the **Swiss Neo-Deco** design language across ALL packages �
     > ❌ **BANNED**: `admin-layout`, `admin-main`, `page-wrapper`, `main-content`, or any other invented layout class.
     > ✅ **REQUIRED**: Copy from `packages/sirsi-portal/admin/_template.html` when creating new pages.
 
-*   **React Migration Contract (Rule 22)**: The React app (`packages/sirsi-portal-app/`) must achieve **pixel-perfect parity** with the HTML admin portal before extending functionality. The HTML is the source of truth. shadcn/ui + Tailwind CSS replaces inline HTML styles. ConnectRPC replaces mock data.
+*   **React Migration Contract (Rule 22)**: As of v0.8.0-alpha (ADR-027 Phase 5), the React app (`packages/sirsi-portal-app/`) is the **sole delivery platform**. The HTML admin portal (`packages/sirsi-portal/admin/`) is archived as historical reference. All new pages, features, and fixes target React only. No HTML pages in production.
 
 ## 6. Interaction Protocol
 *   **User**: "I want X."
