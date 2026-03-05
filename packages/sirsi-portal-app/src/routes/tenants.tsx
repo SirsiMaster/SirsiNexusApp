@@ -153,7 +153,7 @@ function OverviewTab({ filters }: TabProps) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {overview.tenants.map((t) => (
+                                {overview.tenants.map((t: any) => (
                                     <tr key={t.id}>
                                         <td className="ps-4 font-medium text-gray-900">{t.name}</td>
                                         <td><StatusLED status={t.status as LEDStatus} label={t.status} /></td>
@@ -172,7 +172,7 @@ function OverviewTab({ filters }: TabProps) {
                 <div className="sirsi-card p-5">
                     <SectionHeader title="Activity Feed" />
                     <div className="space-y-3 max-h-80 overflow-y-auto">
-                        {overview.recentActivity.map(e => (
+                        {overview.recentActivity.map((e: any) => (
                             <div key={e.id} className="flex gap-3 py-2 border-b border-gray-50 last:border-0">
                                 <ActivityIcon type={e.type} severity={e.severity} />
                                 <div className="flex-1 min-w-0">
@@ -206,10 +206,10 @@ function DevOpsTab({ filters }: TabProps) {
     return (
         <div className="space-y-6 pt-5">
             <div className="grid grid-cols-4 gap-4">
-                {data.changeFailureRate.map(m => (
+                {data.changeFailureRate.map((m: any) => (
                     <MetricCard key={m.tenant} label={`CFR — ${m.tenant}`} value={m.value} unit={m.unit} sparkData={m.trend} trend={{ direction: m.value < 5 ? 'down' : 'up', percent: m.value, label: m.doraLevel }} accentColor={m.doraLevel === 'elite' ? '#059669' : '#f59e0b'} />
                 ))}
-                {data.mttr.map(m => (
+                {data.mttr.map((m: any) => (
                     <MetricCard key={m.tenant} label={`MTTR — ${m.tenant}`} value={m.value} unit={m.unit} sparkData={m.trend} trend={{ direction: 'down', percent: 8, label: m.doraLevel }} accentColor={m.doraLevel === 'elite' ? '#059669' : '#f59e0b'} />
                 ))}
             </div>
@@ -219,7 +219,7 @@ function DevOpsTab({ filters }: TabProps) {
                 <div className="sirsi-card p-5">
                     <SectionHeader title="Deployment Frequency (7d)" />
                     <ResponsiveContainer width="100%" height={200}>
-                        <BarChart data={data.deploymentFrequency[0].dailyCounts.map((v, i) => ({ day: `D-${7 - i}`, fw: v, as: data.deploymentFrequency[1]?.dailyCounts[i] || 0 }))}>
+                        <BarChart data={data.deploymentFrequency[0].dailyCounts.map((v: any, i: any) => ({ day: `D-${7 - i}`, fw: v, as: data.deploymentFrequency[1]?.dailyCounts[i] || 0 }))}>
                             <XAxis dataKey="day" tick={{ fontSize: 11, fill: '#94a3b8' }} />
                             <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} />
                             <Tooltip />
@@ -244,7 +244,7 @@ function DevOpsTab({ filters }: TabProps) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.pipelineMatrix.map((p, i) => (
+                                {data.pipelineMatrix.map((p: any, i: any) => (
                                     <tr key={i}>
                                         <td className="ps-4">{p.tenant}</td>
                                         <td>{p.environment}</td>
@@ -277,7 +277,7 @@ function DevOpsTab({ filters }: TabProps) {
                             </tr>
                         </thead>
                         <tbody>
-                            {data.recentDeployments.map(d => (
+                            {data.recentDeployments.map((d: any) => (
                                 <tr key={d.id}>
                                     <td className="ps-4"><code className="text-xs">{d.sha}</code></td>
                                     <td>{d.tenant}</td>
@@ -389,7 +389,7 @@ function SecurityTab({ filters }: TabProps) {
             <div className="grid grid-cols-2 gap-4">
                 <div className="sirsi-card p-5">
                     <SectionHeader title="MFA Compliance" />
-                    {data.mfaCompliance.map((m, i) => (
+                    {data.mfaCompliance.map((m: any, i: any) => (
                         <div key={i} className="mb-3">
                             <ProgressGauge value={m.enrolled} max={m.total} label={`${m.tenant} (${m.enrolled}/${m.total})`} thresholds={{ warning: 80, critical: 50 }} />
                         </div>
@@ -398,7 +398,7 @@ function SecurityTab({ filters }: TabProps) {
 
                 <div className="sirsi-card p-5">
                     <SectionHeader title="SSL Certificates" />
-                    {data.certificates.map((c, i) => (
+                    {data.certificates.map((c: any, i: any) => (
                         <div key={i} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                             <div className="flex items-center gap-3">
                                 <StatusLED status={c.status as LEDStatus} />
