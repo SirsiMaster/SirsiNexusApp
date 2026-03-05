@@ -29,6 +29,8 @@ import { CommandPalette } from '../components/command-palette/CommandPalette'
 import { NotificationCenter } from '../components/notifications/NotificationCenter'
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts'
 import { ErrorBoundary } from '../components/ErrorBoundary'
+import { AuthProvider, useAuth } from '../hooks/useAuth'
+import { ProtectedRoute } from '../components/ProtectedRoute'
 
 // Wrapped components to avoid TS generics issues
 const LinkComp = Link as any
@@ -302,19 +304,26 @@ function RootLayout() {
 
     if (isPublicPage) {
         return (
-            <>
+            <AuthProvider>
                 <PublicLayout />
                 <DevtoolsComp />
-            </>
+            </AuthProvider>
         )
     }
 
-    // Otherwise render admin layout
-    return <AdminLayout />
+    // Otherwise render admin layout with auth guard
+    return (
+        <AuthProvider>
+            <ProtectedRoute>
+                <AdminLayout />
+            </ProtectedRoute>
+        </AuthProvider>
+    )
 }
 
 // ── Admin Layout (sidebar + header — portal pages only) ──
 function AdminLayout() {
+    const { user, signOut } = useAuth()
     const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
     const [sidebarMini, setSidebarMini] = useState(() =>
         localStorage.getItem('sirsi_sidebar_collapsed') === 'true'
@@ -409,9 +418,10 @@ function AdminLayout() {
                         </button>
 
                         {/* Logout */}
-                        <button className="admin-header-btn" aria-label="Logout" onClick={() => {
+                        <button className="admin-header-btn" aria-label="Logout" onClick={async () => {
                             if (confirm('Are you sure you want to logout?')) {
-                                window.location.href = '/'
+                                await signOut()
+                                window.location.href = '/login'
                             }
                         }}>
                             <LogOut size={18} className="admin-header-icon" />
@@ -419,7 +429,7 @@ function AdminLayout() {
 
                         {/* User */}
                         <div className="admin-header-user">
-                            <span className="admin-header-user-label">Administrator</span>
+                            <span className="admin-header-user-label">{user?.displayName || user?.email?.split('@')[0] || 'Administrator'}</span>
                             <div className="admin-header-avatar">
                                 <User size={18} className="admin-header-icon" />
                             </div>
@@ -449,9 +459,10 @@ function AdminLayout() {
                         <span className="admin-sidebar-icon"><Settings2 size={16} /></span>
                         <span className="admin-sidebar-link-label">Settings</span>
                     </LinkComp>
-                    <button className="admin-sidebar-link sidebar-signout" onClick={() => {
+                    <button className="admin-sidebar-link sidebar-signout" onClick={async () => {
                         if (confirm('Are you sure you want to sign out?')) {
-                            window.location.href = '/'
+                            await signOut()
+                            window.location.href = '/login'
                         }
                     }}>
                         <span className="admin-sidebar-icon"><LogOut size={16} /></span>
