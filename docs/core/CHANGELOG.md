@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.8.1-alpha] - 2026-03-05
 
-### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY (Tasks 1-6/40)
+### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY (Tasks 1-10/40)
 
 #### Portal Pages — Complete Text Color Purge (19 pages, Tasks 1-5)
 - **settings.tsx**: Removed phantom classes (`glass-panel`, `gold-border`, `action-btn`) → canonical `sirsi-card`, `btn-primary`, `sirsi-badge`
@@ -30,16 +30,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **telemetry.tsx**: Heatmap, funnel, timeline
 
 #### Task 6: Complete Dark Mode Parity — Backgrounds, Borders, Inputs, Buttons (10 files, `6e05b73`)
-- **analytics.tsx**: Tab bar bg (`bg-black/[0.04] dark:bg-white/[0.06]`), active tab uses `var(--color-background)`, metric card icon container (`bg-slate-100 dark:bg-slate-700`), all heading colors → `text-foreground`, metric values/labels/subs → `text-foreground`/`text-muted-foreground`
-- **messaging.tsx**: Full chat UI theme parity — thread sidebar bg/borders, search input, active thread indicator, chat pane bg, session header avatar, received message bubbles, compose bar
-- **monitoring.tsx**: Inactive tab bg removed, log header bg/border, search input, export button, error bar inactive color
-- **system-logs.tsx**: Stat cards, filter panel, ALL form inputs (selects, date pickers, search), action buttons (pause/clear/refresh), log container bg, log entry borders, export footer border, 3 export buttons
-- **telemetry.tsx**: Heatmap placeholder bg, user journey step pills, timeline connector line, drop-off path pills
-- **security.tsx**: Firewall rule names/descriptions, audit ledger heading, IP input border override fix
+- **analytics.tsx**: Tab bar bg, active tab, metric card icon container, heading colors, metric values/labels/subs
+- **messaging.tsx**: Full chat UI theme parity — thread sidebar, search, active thread, chat pane, avatar, bubbles, compose bar
+- **monitoring.tsx**: Inactive tab bg, log header, search input, export button, error bar inactive color
+- **system-logs.tsx**: Stat cards, filter panel, ALL form inputs, action buttons, log container, export buttons
+- **telemetry.tsx**: Heatmap placeholder bg, user journey step pills, timeline connector, drop-off pills
+- **security.tsx**: Firewall rule names/descriptions, audit ledger heading, IP input border override
 - **site-admin.tsx**: Service icon containers → `bg-emerald-50 dark:bg-emerald-900/30`
-- **kpi-metrics.tsx**: KPI code badge icon container theme-aware
+- **kpi-metrics.tsx**: KPI code badge icon container
 - **backup-status.tsx**: Table header border → className
 - **console.tsx**: Header title + purge button → `text-muted-foreground`
+
+#### Task 7: Landing Page Link Audit (`f1f2806`)
+- All 12 internal link targets verified as registered routes (zero broken links)
+- External GitHub link verified
+- Header + footer links verified
+
+#### Task 8: Text Justification (`f1f2806`)
+- Global `text-align: justify` refined from `body` to targeted selectors: `p, li, td, dd, blockquote`
+- `text-justify: inter-word` for clean word spacing
+- Override: `.text-center` containers and `.page-subtitle` keep centered alignment
+
+#### Task 9: Final Theme Stragglers (`9ccce48`)
+- **security.tsx**: Firewall rule cards bg/border → emerald-50/30 + dark:emerald-900/10; threat button hover dark variant
+- **site-admin.tsx**: 2 service card rgba backgrounds + hover:bg-white → Tailwind dark variants
+- **monitoring.tsx**: Live telemetry badge border → theme-aware
+
+#### Task 10: Landing Page Dark Mode (`f4dfe58`)
+- Section 3 (AI Differentiators) feature cards: bg data includes `dark:` variants
+- Row 1 (3 cards) + Row 2 (2 cards): all backgrounds, borders, headings, body text theme-aware
 
 #### Admin Header Dark Mode
 - Version badge: `isDark`-conditional colors (light: `#64748b`/`#f1f5f9`, dark: `#94a3b8`/`#1e293b`)
@@ -52,7 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `.dark .btn-secondary` — dark border/text/hover states
 
 #### Result
-**Zero non-brand hardcoded patterns remain** across all portal pages.
+**Zero non-brand hardcoded patterns remain** across all portal AND public pages.
 All inline `background`, `border`, `color` patterns replaced with `className` using `dark:` variants
 or CSS variables (`var(--color-background)`, `var(--color-border)`, `text-foreground`).
 
