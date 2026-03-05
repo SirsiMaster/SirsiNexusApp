@@ -136,7 +136,7 @@ function SystemStatus() {
                         {coreServices.map(svc => {
                             const Icon = svc.icon as any
                             return (
-                                <div key={svc.name} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-emerald-200 hover:bg-white transition-all group cursor-pointer" style={{ background: 'rgba(249,250,251,0.5)' }}>
+                                <div key={svc.name} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-emerald-200 hover:bg-white dark:hover:bg-slate-700 bg-slate-50/50 dark:bg-slate-800/50 transition-all group cursor-pointer">
                                     <div className="flex items-center">
                                         <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 border border-emerald-100 dark:border-emerald-800" style={{ width: 40, height: 40, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 16 }}>
                                             <Icon size={18} />
@@ -162,7 +162,7 @@ function SystemStatus() {
                         {externalServices.map(svc => {
                             const Icon = svc.icon as any
                             return (
-                                <div key={svc.name} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-emerald-200 hover:bg-white transition-all group cursor-pointer" style={{ background: 'rgba(249,250,251,0.5)' }}>
+                                <div key={svc.name} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-emerald-200 hover:bg-white dark:hover:bg-slate-700 bg-slate-50/50 dark:bg-slate-800/50 transition-all group cursor-pointer">
                                     <div className="flex items-center">
                                         <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 border border-emerald-100 dark:border-emerald-800" style={{ width: 40, height: 40, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 16 }}>
                                             <Icon size={18} />

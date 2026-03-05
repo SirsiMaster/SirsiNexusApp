@@ -37,7 +37,7 @@ function Monitoring() {
                     <h1>System Monitoring</h1>
                     <p className="page-subtitle">Real-time telemetry, synchronized logs, and performance audit trails.</p>
                 </div>
-                <span className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 rounded-full" style={{ border: '1px solid #d1fae5' }}>
+                <span className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-full">
                     <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
                     <span style={{ fontSize: 10, fontWeight: 600, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Live Telemetry</span>
                 </span>

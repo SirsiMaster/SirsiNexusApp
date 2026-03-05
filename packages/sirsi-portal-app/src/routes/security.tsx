@@ -193,7 +193,7 @@ function Security() {
                 <h3 className="text-slate-900 dark:text-slate-100" style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 16 }}>Active Firewall Protocols</h3>
                 <div className="space-y-4">
                     {firewallRules.map(rule => (
-                        <div key={rule.name} className="flex items-center justify-between p-5 rounded-xl" style={{ background: 'rgba(236, 253, 245, 0.3)', border: '1px solid #d1fae5' }}>
+                        <div key={rule.name} className="flex items-center justify-between p-5 rounded-xl bg-emerald-50/30 dark:bg-emerald-900/10 border border-emerald-200 dark:border-emerald-800">
                             <div>
                                 <p className="text-slate-900 dark:text-slate-100" style={{ fontWeight: 500 }}>{rule.name}</p>
                                 <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: 12, marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{rule.desc}</p>
@@ -258,7 +258,7 @@ function Security() {
                                 justifyContent: 'center', gap: 12, boxShadow: '0 10px 25px -5px rgba(0,0,0,0.25)',
                                 transition: 'all 0.2s',
                             }}
-                            className="hover:bg-white hover:text-red-700"
+                            className="hover:bg-white dark:hover:bg-slate-100 hover:text-red-700"
                         >
                             {btn.icon} {btn.label}
                         </button>
