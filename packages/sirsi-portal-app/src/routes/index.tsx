@@ -22,7 +22,7 @@ import { useSystemOverview } from '@/hooks/useAdminService'
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
-    path: '/',
+    path: '/dashboard',
     component: Dashboard,
 })
 

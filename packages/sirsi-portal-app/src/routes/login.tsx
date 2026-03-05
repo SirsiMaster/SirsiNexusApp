@@ -32,7 +32,7 @@ const DEMO_CREDENTIALS = [
 ]
 
 const ROLE_ROUTES: Record<string, { path: string; label: string }> = {
-    admin: { path: '/', label: 'Admin Portal' },
+    admin: { path: '/dashboard', label: 'Admin Portal' },
     investor: { path: '/investor-portal', label: 'Investor Portal' },
     client: { path: '/client-portal', label: 'Client Portal' },
 }
@@ -53,7 +53,7 @@ function LoginPage() {
     // If already authenticated, redirect to dashboard
     useEffect(() => {
         if (isAuthenticated) {
-            navigate({ to: '/' } as any)
+            navigate({ to: '/dashboard' } as any)
         }
     }, [isAuthenticated, navigate])
 
@@ -66,7 +66,7 @@ function LoginPage() {
         try {
             await signIn(email, password)
             setSuccess('Admin Portal')
-            setTimeout(() => navigate({ to: '/' } as any), 1200)
+            setTimeout(() => navigate({ to: '/dashboard' } as any), 1200)
         } catch (err: any) {
             setError(err.message || 'Authentication failed')
             setLoading(false)

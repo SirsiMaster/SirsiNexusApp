@@ -15,6 +15,13 @@ const LinkComp = Link as any
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
+    path: '/',
+    component: LandingPage,
+})
+
+// Keep /home as an alias for backward compatibility
+export const HomeRoute = createRoute({
+    getParentRoute: () => rootRoute as any,
     path: '/home',
     component: LandingPage,
 })

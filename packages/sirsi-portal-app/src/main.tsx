@@ -8,8 +8,8 @@ import './index.css'
 // ── Root layout (always loaded) ──
 import { Route as rootRoute } from './routes/__root'
 
-// ── Eagerly loaded: Dashboard (landing page — must be instant) ──
-import { Route as indexRoute } from './routes/index'
+// ── Eagerly loaded: Landing page (root — must be instant) ──
+import { Route as landingIndexRoute } from './routes/landing'
 
 import { PageSkeleton } from './components/LoadingSkeleton'
 
@@ -72,13 +72,17 @@ const investorPortalRoute = lazyRoute('/investor-portal', () => import('./routes
 const clientPortalRoute = lazyRoute('/client-portal', () => import('./routes/client-portal'))
 
 // Public Pages (sirsi.ai)
-const landingRoute = lazyRoute('/home', () => import('./routes/landing'))
+const homeRoute = lazyRoute('/home', () => import('./routes/landing'))
 const signupRoute = lazyRoute('/signup', () => import('./routes/signup'))
 const documentationRoute = lazyRoute('/documentation', () => import('./routes/documentation'))
 
+// Admin Dashboard (was '/', now '/dashboard')
+const dashboardRoute = lazyRoute('/dashboard', () => import('./routes/index'))
+
 // ── Route tree ──
 const routeTree = (rootRoute as any).addChildren([
-  indexRoute as any,
+  landingIndexRoute as any,
+  dashboardRoute as any,
   tenantsRoute as any,
   usersRoute as any,
   contractsRoute as any,
@@ -112,7 +116,7 @@ const routeTree = (rootRoute as any).addChildren([
   investorPortalRoute as any,
   clientPortalRoute as any,
   // Public Pages
-  landingRoute as any,
+  homeRoute as any,
   signupRoute as any,
   documentationRoute as any,
 ])

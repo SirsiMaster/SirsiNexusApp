@@ -46,7 +46,7 @@ const sidebarGroups: NavGroup[] = [
         title: 'MAIN',
         defaultOpen: true,
         items: [
-            { to: '/', label: 'Dashboard', icon: LayoutDashboard },
+            { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
             { to: '/users', label: 'User Management', icon: Users },
             { to: '/data-room', label: 'Data Room', icon: FolderOpen },
             { to: '/tenants', label: 'Operations', icon: Building2 },
@@ -148,7 +148,7 @@ function SidebarGroup({ group }: { group: NavGroup }) {
 }
 
 // ── Public page paths (no sidebar, standalone site header + footer) ──
-const PUBLIC_PATHS = ['/home', '/login', '/signup', '/documentation']
+const PUBLIC_PATHS = ['/', '/home', '/login', '/signup', '/documentation']
 
 // ── Public Site Header (pixel-perfect match to sirsi.ai index.html header) ──
 function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: () => void }) {
