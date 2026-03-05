@@ -208,59 +208,57 @@ function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: (
     )
 }
 
-// ── Public Site Footer (pixel-perfect match to sirsi.ai footer) ──
+// ── Public Site Footer (compact, single-row) ──
 function PublicFooter({ isDark }: { isDark: boolean }) {
-    const linkStyle = { fontSize: 14, color: isDark ? '#94a3b8' : '#475569', textDecoration: 'none' as const, fontWeight: 400 as const }
+    const textMuted = isDark ? '#94a3b8' : '#64748b'
+    const textBase = isDark ? '#cbd5e1' : '#475569'
+    const headColor = isDark ? '#f1f5f9' : '#0f172a'
+    const borderColor = isDark ? '#1e293b' : '#e2e8f0'
+
     return (
-        <footer style={{ background: isDark ? '#0f172a' : '#ffffff', color: isDark ? '#ffffff' : '#475569', padding: '48px 0' }}>
-            <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 32 }}>
+        <footer style={{ background: isDark ? '#0f172a' : '#ffffff', borderTop: `1px solid ${borderColor}` }}>
+            <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 24px' }}>
+                {/* Main row: brand + link groups + copyright */}
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' as const }}>
                     {/* Brand */}
-                    <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-                            <img src="/sirsi-icon.png" alt="Sirsi" style={{ width: 32, height: 32, objectFit: 'contain' }} />
-                            <span style={{ fontSize: 20, fontWeight: 600, color: isDark ? '#f1f5f9' : '#0f172a' }}>SirsiNexus</span>
-                        </div>
-                        <p style={{ ...linkStyle, lineHeight: 1.6 }}>Agent-embedded infrastructure platform for enterprise cloud operations.</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 200 }}>
+                        <img src="/sirsi-icon.png" alt="Sirsi" style={{ width: 24, height: 24, objectFit: 'contain' as const }} />
+                        <span style={{ fontSize: 15, fontWeight: 600, color: headColor }}>SirsiNexus</span>
+                        <span style={{ fontSize: 12, color: textMuted, marginLeft: 4 }}>Agent-embedded infrastructure platform</span>
                     </div>
-                    {/* Platform */}
-                    <div>
-                        <h4 style={{ fontWeight: 600, marginBottom: 16, color: isDark ? '#f1f5f9' : '#0f172a', fontSize: 14 }}>Platform</h4>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                            <li style={{ marginBottom: 8 }}><a href="#features" style={linkStyle}>Features</a></li>
-                            <li style={{ marginBottom: 8 }}><a href="#platform" style={linkStyle}>Architecture</a></li>
-                            <li style={{ marginBottom: 8 }}><LinkComp to="/documentation" style={{ ...linkStyle, fontWeight: 600 }}>Documentation</LinkComp></li>
-                            <li style={{ marginBottom: 8 }}><a href="#pricing" style={linkStyle}>Pricing</a></li>
-                        </ul>
+
+                    {/* Platform links */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: headColor, textTransform: 'uppercase' as const, letterSpacing: '0.05em' }}>Platform</span>
+                        <a href="#features" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Features</a>
+                        <a href="#platform" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Architecture</a>
+                        <LinkComp to="/documentation" style={{ fontSize: 13, color: textBase, textDecoration: 'none', fontWeight: 500 }}>Documentation</LinkComp>
+                        <a href="#pricing" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Pricing</a>
                     </div>
-                    {/* Company */}
-                    <div>
-                        <h4 style={{ fontWeight: 600, marginBottom: 16, color: isDark ? '#f1f5f9' : '#0f172a', fontSize: 14 }}>Company</h4>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                            <li style={{ marginBottom: 8 }}><a href="#about" style={linkStyle}>About</a></li>
-                            <li style={{ marginBottom: 8 }}><a href="#careers" style={linkStyle}>Careers</a></li>
-                            <li style={{ marginBottom: 8 }}><a href="#blog" style={linkStyle}>Blog</a></li>
-                            <li style={{ marginBottom: 8 }}><a href="#contact" style={linkStyle}>Contact</a></li>
-                        </ul>
+
+                    {/* Company links */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: headColor, textTransform: 'uppercase' as const, letterSpacing: '0.05em' }}>Company</span>
+                        <a href="#about" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>About</a>
+                        <a href="#careers" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Careers</a>
+                        <a href="#blog" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Blog</a>
+                        <a href="#contact" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Contact</a>
                     </div>
-                    {/* Legal */}
-                    <div>
-                        <h4 style={{ fontWeight: 600, marginBottom: 16, color: '#059669', fontSize: 14 }}>Compliance &amp; Legal</h4>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                            <li style={{ marginBottom: 8 }}><a href="/privacy" style={{ ...linkStyle, fontWeight: 600 }}>Privacy Policy</a></li>
-                            <li style={{ marginBottom: 8 }}><a href="/terms" style={{ ...linkStyle, fontWeight: 600 }}>Terms of Service</a></li>
-                            <li style={{ marginBottom: 8 }}><a href="/security" style={{ ...linkStyle, fontWeight: 600 }}>Security Portal</a></li>
-                            <li style={{ marginBottom: 8 }}><LinkComp to="/login" style={linkStyle}>Portal Login</LinkComp></li>
-                        </ul>
+
+                    {/* Legal links */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: '#059669', textTransform: 'uppercase' as const, letterSpacing: '0.05em' }}>Legal</span>
+                        <a href="/privacy" style={{ fontSize: 13, color: textBase, textDecoration: 'none', fontWeight: 500 }}>Privacy</a>
+                        <a href="/terms" style={{ fontSize: 13, color: textBase, textDecoration: 'none', fontWeight: 500 }}>Terms</a>
+                        <a href="/security" style={{ fontSize: 13, color: textBase, textDecoration: 'none', fontWeight: 500 }}>Security</a>
+                        <LinkComp to="/login" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Portal</LinkComp>
                     </div>
                 </div>
-                <div style={{ borderTop: `1px solid ${isDark ? '#1e293b' : '#e2e8f0'}`, marginTop: 32, paddingTop: 32, textAlign: 'center' as const }}>
-                    <p style={{ color: isDark ? '#94a3b8' : '#475569', fontSize: 14, margin: 0 }}>
-                        © 2026 Sirsi Technologies Inc. All rights reserved.
-                    </p>
-                    <p style={{ color: isDark ? '#64748b' : '#94a3b8', fontSize: 12, marginTop: 8 }}>
-                        SirsiNexus is a product of Sirsi Technologies Inc.
-                    </p>
+
+                {/* Copyright row */}
+                <div style={{ borderTop: `1px solid ${borderColor}`, marginTop: 16, paddingTop: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ color: textMuted, fontSize: 12 }}>© 2026 Sirsi Technologies Inc. All rights reserved.</span>
+                    <span style={{ color: isDark ? '#475569' : '#94a3b8', fontSize: 11 }}>SirsiNexus is a product of Sirsi Technologies Inc.</span>
                 </div>
             </div>
         </footer>
