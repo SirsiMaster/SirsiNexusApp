@@ -220,7 +220,7 @@ function PublicFooter({ isDark }: { isDark: boolean }) {
         <footer className={`${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'} border-t py-4`}>
             <div className="max-w-7xl mx-auto px-6">
                 {/* Row 1: Brand + all links inline */}
-                <div className="flex items-center flex-wrap gap-y-2">
+                <div className="flex items-center justify-center flex-wrap gap-y-2">
                     <div className="flex items-center gap-2 mr-6">
                         <img src="/sirsi-icon.png" alt="Sirsi" className="w-5 h-5 object-contain" />
                         <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>SirsiNexus</span>
@@ -250,9 +250,10 @@ function PublicFooter({ isDark }: { isDark: boolean }) {
                 </div>
 
                 {/* Row 2: Copyright */}
-                <div className={`mt-3 pt-3 border-t ${isDark ? 'border-slate-800' : 'border-slate-200'} flex justify-between items-center`}>
+                <div className={`mt-3 pt-3 border-t ${isDark ? 'border-slate-800' : 'border-slate-200'} flex justify-center items-center gap-3`}>
                     <span className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>© 2026 Sirsi Technologies Inc. All rights reserved.</span>
-                    <span className={`text-xs ${isDark ? 'text-slate-600' : 'text-slate-300'}`}>Agent-embedded infrastructure platform</span>
+                    <span className={`${isDark ? 'text-slate-700' : 'text-slate-300'}`}>|</span>
+                    <span className={`text-xs ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>Agent-embedded infrastructure platform</span>
                 </div>
             </div>
         </footer>
