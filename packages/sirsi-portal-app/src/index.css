@@ -118,6 +118,7 @@
     font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-align: justify;
     @apply bg-background text-foreground transition-colors duration-300;
   }
 

@@ -31,6 +31,7 @@ import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts'
 import { ErrorBoundary } from '../components/ErrorBoundary'
 import { AuthProvider, useAuth } from '../hooks/useAuth'
 import { ProtectedRoute } from '../components/ProtectedRoute'
+import { APP_VERSION_DISPLAY } from '../lib/version'
 
 // Wrapped components to avoid TS generics issues
 const LinkComp = Link as any
@@ -148,7 +149,7 @@ function SidebarGroup({ group }: { group: NavGroup }) {
 }
 
 // ── Public page paths (no sidebar, standalone site header + footer) ──
-const PUBLIC_PATHS = ['/', '/home', '/login', '/signup', '/documentation']
+const PUBLIC_PATHS = ['/', '/home', '/login', '/signup', '/documentation', '/privacy', '/terms', '/about', '/pricing', '/blog', '/changelog']
 
 // ── Public Site Header (pixel-perfect match to sirsi.ai index.html header) ──
 function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: () => void }) {
@@ -166,7 +167,7 @@ function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: (
                                 SirsiNexus
                             </h1>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <span style={{ fontSize: 11, color: isDark ? '#94a3b8' : '#64748b', background: isDark ? '#1e293b' : '#f1f5f9', padding: '1px 8px', borderRadius: 4 }}>v0.7.10-alpha</span>
+                                <LinkComp to="/changelog" style={{ fontSize: 11, color: isDark ? '#94a3b8' : '#64748b', background: isDark ? '#1e293b' : '#f1f5f9', padding: '1px 8px', borderRadius: 4, textDecoration: 'none', cursor: 'pointer' }}>{APP_VERSION_DISPLAY}</LinkComp>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                                     <div style={{ width: 6, height: 6, background: '#10b981', borderRadius: '50%' }} />
                                     <span style={{ fontSize: 11, color: isDark ? '#cbd5e1' : '#475569' }}>Live</span>
@@ -231,21 +232,21 @@ function PublicFooter({ isDark }: { isDark: boolean }) {
                     <a href="#features" className={lk}>Features</a>{dot}
                     <a href="#platform" className={lk}>Architecture</a>{dot}
                     <LinkComp to="/documentation" className={lk}>Docs</LinkComp>{dot}
-                    <LinkComp to="/signup" className={lk}>Get Started</LinkComp>
+                    <LinkComp to="/pricing" className={lk}>Get Started</LinkComp>
 
                     <span className="mx-3" />
 
                     {label('Company')}
-                    <a href="#signup" className={lk}>About</a>{dot}
+                    <LinkComp to="/about" className={lk}>About</LinkComp>{dot}
                     <a href="https://github.com/SirsiMaster/SirsiNexusApp" target="_blank" rel="noopener" className={lk}>GitHub</a>{dot}
-                    <LinkComp to="/documentation" className={lk}>Blog</LinkComp>{dot}
+                    <LinkComp to="/blog" className={lk}>Blog</LinkComp>{dot}
                     <a href="mailto:cylton@sirsi.ai" className={lk}>Contact</a>
 
                     <span className="mx-3" />
 
                     {label('Legal', true)}
-                    <LinkComp to="/documentation" className={lk}>Privacy</LinkComp>{dot}
-                    <LinkComp to="/documentation" className={lk}>Terms</LinkComp>{dot}
+                    <LinkComp to="/privacy" className={lk}>Privacy</LinkComp>{dot}
+                    <LinkComp to="/terms" className={lk}>Terms</LinkComp>{dot}
                     <LinkComp to="/security" className={lk}>Security</LinkComp>{dot}
                     <LinkComp to="/login" className={lk}>Portal</LinkComp>
                 </div>
@@ -254,7 +255,7 @@ function PublicFooter({ isDark }: { isDark: boolean }) {
                 <div className={`mt-3 pt-3 border-t ${isDark ? 'border-slate-800' : 'border-slate-200'} flex justify-center items-center gap-3`}>
                     <span className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>© 2026 Sirsi Technologies Inc. All rights reserved.</span>
                     <span className={`${isDark ? 'text-slate-700' : 'text-slate-300'}`}>|</span>
-                    <span className={`text-xs ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>Agent-embedded infrastructure platform</span>
+                    <span className={`text-xs ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>909 Rose Avenue, Suite 400, North Bethesda, MD 20852</span>
                 </div>
             </div>
         </footer>
@@ -372,7 +373,7 @@ function AdminLayout() {
             {/* ── HEADER (canonical: admin-header from common-styles.css) ── */}
             <header className="admin-header">
                 <div className="admin-header-inner">
-                    {/* LEFT: Brand + Live */}
+                    {/* LEFT: Brand + Version + Live (matches public header layout) */}
                     <div className="admin-header-left">
                         <div className="admin-header-brand">
                             <div className="admin-header-logo">
@@ -380,14 +381,15 @@ function AdminLayout() {
                             </div>
                             <div className="admin-header-brand-text">
                                 <span className="admin-header-brand-name">SirsiNexus</span>
-                                <span className="admin-header-brand-role">ADMIN CONSOLE</span>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <LinkComp to="/changelog" style={{ fontSize: 11, color: '#64748b', background: '#f1f5f9', padding: '1px 8px', borderRadius: 4, textDecoration: 'none', cursor: 'pointer' }}>{APP_VERSION_DISPLAY}</LinkComp>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                                        <span className="admin-header-dot" />
+                                        <span style={{ fontSize: 11, color: '#475569', fontWeight: 500 }}>Live</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className="admin-header-status">
-                            <span className="admin-header-dot" />
-                            <span>Live</span>
-                        </div>
-                        <span style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.08em', textTransform: 'uppercase' as const, marginLeft: 8 }}>v0.8.0-α</span>
                     </div>
 
                     {/* CENTER: Sitewide Search */}

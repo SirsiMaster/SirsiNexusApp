@@ -75,6 +75,12 @@ const clientPortalRoute = lazyRoute('/client-portal', () => import('./routes/cli
 const homeRoute = lazyRoute('/home', () => import('./routes/landing'))
 const signupRoute = lazyRoute('/signup', () => import('./routes/signup'))
 const documentationRoute = lazyRoute('/documentation', () => import('./routes/documentation'))
+const privacyRoute = lazyRoute('/privacy', () => import('./routes/privacy'))
+const termsRoute = lazyRoute('/terms', () => import('./routes/terms'))
+const aboutRoute = lazyRoute('/about', () => import('./routes/about'))
+const pricingRoute = lazyRoute('/pricing', () => import('./routes/pricing'))
+const blogRoute = lazyRoute('/blog', () => import('./routes/blog'))
+const changelogRoute = lazyRoute('/changelog', () => import('./routes/changelog'))
 
 // Admin Dashboard (was '/', now '/dashboard')
 const dashboardRoute = lazyRoute('/dashboard', () => import('./routes/index'))
@@ -119,6 +125,12 @@ const routeTree = (rootRoute as any).addChildren([
   homeRoute as any,
   signupRoute as any,
   documentationRoute as any,
+  privacyRoute as any,
+  termsRoute as any,
+  aboutRoute as any,
+  pricingRoute as any,
+  blogRoute as any,
+  changelogRoute as any,
 ])
 
 // Create the router

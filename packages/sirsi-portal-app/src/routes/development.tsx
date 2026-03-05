@@ -16,6 +16,7 @@ import {
     FileText, BookOpen, Shield, Scale, Gauge, Bug, Zap, Wrench,
     ExternalLink, TrendingUp
 } from 'lucide-react'
+import { APP_VERSION_DISPLAY } from '@/lib/version'
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
@@ -57,7 +58,7 @@ const GOVERNANCE_DOCS = [
     { name: 'ADR-018: Technical Stack Convergence', path: '/docs/ADR-018-TECHNICAL-STACK-CONVERGENCE.md', type: 'ADR' },
     { name: 'GEMINI.md v6.1.0', path: '/GEMINI.md', type: 'Canon' },
     { name: 'Swiss Neo-Deco Style Guide', path: '/docs/SWISS_NEO_DECO_STYLE_GUIDE.md', type: 'Design' },
-    { name: 'Version History (v0.8.0-alpha)', path: '/docs/core/VERSION.md', type: 'Version' },
+    { name: `Version History (${APP_VERSION_DISPLAY})`, path: '/docs/core/VERSION.md', type: 'Version' },
     { name: 'ADR Index (23 ADRs)', path: '/docs/ADR-INDEX.md', type: 'Index' },
 ]
 
@@ -93,7 +94,7 @@ function DevelopmentIntelligence() {
                 <div className="flex items-center gap-3">
                     <span className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-[10px] font-medium uppercase tracking-widest border border-emerald-100">
                         <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                        v0.8.0-alpha
+                        {APP_VERSION_DISPLAY}
                     </span>
                 </div>
             </div>

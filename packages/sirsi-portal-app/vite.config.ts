@@ -1,10 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import pkg from './package.json'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  define: {
+    // Inject version from package.json — single source of truth
+    '__APP_VERSION__': JSON.stringify(pkg.version),
+  },
   resolve: {
     dedupe: ['react', 'react-dom'],
     alias: {
