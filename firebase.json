@@ -97,6 +97,34 @@
                     "destination": "/index.html"
                 }
             ]
+        },
+        {
+            "site": "sirsi-nexus-live",
+            "public": "packages/sirsi-portal-app/dist",
+            "cleanUrls": true,
+            "trailingSlash": false,
+            "ignore": [
+                "firebase.json",
+                "**/.git/**",
+                "**/node_modules/**"
+            ],
+            "headers": [
+                {
+                    "source": "**/*.@(js|css)",
+                    "headers": [
+                        {
+                            "key": "Cache-Control",
+                            "value": "public, max-age=31536000, immutable"
+                        }
+                    ]
+                }
+            ],
+            "rewrites": [
+                {
+                    "source": "**",
+                    "destination": "/index.html"
+                }
+            ]
         }
     ],
     "firestore": {

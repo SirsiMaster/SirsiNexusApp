@@ -1,12 +1,22 @@
 # API Specification — SirsiNexusApp
 
-**Version:** 1.0.0  
-**Date:** February 27, 2026
+**Version:** 2.0.0  
+**Date:** March 4, 2026
 
 ---
 
 ## Overview
-SirsiNexusApp exposes shared services via **gRPC + Protobuf** for backend-to-backend communication and **gRPC-Web** for browser clients.
+SirsiNexusApp exposes shared services via **gRPC + Protobuf** for backend-to-backend communication and **ConnectRPC (gRPC-Web)** for browser clients.
+
+### Service Endpoints
+| Service | URL | Transport |
+|:--------|:----|:----------|
+| **Sirsi Admin** (Hypervisor, Admin, Tenant) | `https://sirsi-admin-210890802638.us-central1.run.app` | ConnectRPC over HTTP |
+| **Sirsi Sign** (Contracts, Envelopes, Payments) | Cloud Run (internal) | gRPC |
+| **Auth** | Firebase Cloud Functions | REST |
+
+### Proto Package
+All admin service definitions live in `proto/sirsi/admin/v2/` and are compiled with `buf generate`.
 
 ## Sirsi Sign API (gRPC)
 
