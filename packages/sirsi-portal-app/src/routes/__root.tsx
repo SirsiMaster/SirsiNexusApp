@@ -208,63 +208,51 @@ function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: (
     )
 }
 
-// ── Public Site Footer (matches HTML grid, compact) ──
+// ── Public Site Footer (2-row compact) ──
 function PublicFooter({ isDark }: { isDark: boolean }) {
-    const linkCls = `text-sm ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'} transition-colors no-underline`
-    const headCls = `text-sm font-semibold ${isDark ? 'text-slate-200' : 'text-slate-800'} mb-3`
+    const lk = `text-xs ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'} transition-colors no-underline`
+    const dot = <span className={`mx-1.5 ${isDark ? 'text-slate-600' : 'text-slate-300'}`}>·</span>
+    const label = (t: string, emerald?: boolean) => (
+        <span className={`text-xs font-semibold uppercase tracking-wider ${emerald ? 'text-emerald-600' : isDark ? 'text-slate-300' : 'text-slate-700'} mr-2`}>{t}</span>
+    )
 
     return (
-        <footer className={`${isDark ? 'bg-slate-900 text-white' : 'bg-white text-slate-600'} py-8`}>
+        <footer className={`${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'} border-t py-4`}>
             <div className="max-w-7xl mx-auto px-6">
-                <div className="grid md:grid-cols-4 gap-6">
-                    {/* Brand */}
-                    <div>
-                        <div className="flex items-center gap-2 mb-3">
-                            <img src="/sirsi-icon.png" alt="Sirsi" className="w-7 h-7 object-contain" />
-                            <span className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>SirsiNexus</span>
-                        </div>
-                        <p className={`text-sm leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                            Agent-embedded infrastructure platform for enterprise cloud operations.
-                        </p>
+                {/* Row 1: Brand + all links inline */}
+                <div className="flex items-center flex-wrap gap-y-2">
+                    <div className="flex items-center gap-2 mr-6">
+                        <img src="/sirsi-icon.png" alt="Sirsi" className="w-5 h-5 object-contain" />
+                        <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>SirsiNexus</span>
                     </div>
-                    {/* Platform */}
-                    <div>
-                        <h4 className={headCls}>Platform</h4>
-                        <ul className="space-y-1.5 list-none p-0 m-0">
-                            <li><a href="#features" className={linkCls}>Features</a></li>
-                            <li><a href="#platform" className={linkCls}>Architecture</a></li>
-                            <li><LinkComp to="/documentation" className={linkCls}>Documentation</LinkComp></li>
-                            <li><a href="#pricing" className={linkCls}>Pricing</a></li>
-                        </ul>
-                    </div>
-                    {/* Company */}
-                    <div>
-                        <h4 className={headCls}>Company</h4>
-                        <ul className="space-y-1.5 list-none p-0 m-0">
-                            <li><a href="#about" className={linkCls}>About</a></li>
-                            <li><a href="#careers" className={linkCls}>Careers</a></li>
-                            <li><a href="#blog" className={linkCls}>Blog</a></li>
-                            <li><a href="#contact" className={linkCls}>Contact</a></li>
-                        </ul>
-                    </div>
-                    {/* Legal */}
-                    <div>
-                        <h4 className={`text-sm font-semibold text-emerald-600 mb-3`}>Legal</h4>
-                        <ul className="space-y-1.5 list-none p-0 m-0">
-                            <li><a href="/privacy" className={linkCls}>Privacy Policy</a></li>
-                            <li><a href="/terms" className={linkCls}>Terms of Service</a></li>
-                            <li><a href="/security" className={linkCls}>Security</a></li>
-                            <li><LinkComp to="/login" className={linkCls}>Portal Login</LinkComp></li>
-                        </ul>
-                    </div>
+
+                    {label('Platform')}
+                    <a href="#features" className={lk}>Features</a>{dot}
+                    <a href="#platform" className={lk}>Architecture</a>{dot}
+                    <LinkComp to="/documentation" className={lk}>Docs</LinkComp>{dot}
+                    <a href="#pricing" className={lk}>Pricing</a>
+
+                    <span className="mx-3" />
+
+                    {label('Company')}
+                    <a href="#about" className={lk}>About</a>{dot}
+                    <a href="#careers" className={lk}>Careers</a>{dot}
+                    <a href="#blog" className={lk}>Blog</a>{dot}
+                    <a href="#contact" className={lk}>Contact</a>
+
+                    <span className="mx-3" />
+
+                    {label('Legal', true)}
+                    <a href="/privacy" className={lk}>Privacy</a>{dot}
+                    <a href="/terms" className={lk}>Terms</a>{dot}
+                    <a href="/security" className={lk}>Security</a>{dot}
+                    <LinkComp to="/login" className={lk}>Portal</LinkComp>
                 </div>
-                <div className={`border-t ${isDark ? 'border-slate-800' : 'border-slate-200'} mt-6 pt-4 text-center`}>
-                    <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'} m-0`}>
-                        © 2026 Sirsi Technologies Inc. All rights reserved.
-                    </p>
-                    <p className={`text-xs mt-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
-                        SirsiNexus is a product of Sirsi Technologies Inc.
-                    </p>
+
+                {/* Row 2: Copyright */}
+                <div className={`mt-3 pt-3 border-t ${isDark ? 'border-slate-800' : 'border-slate-200'} flex justify-between items-center`}>
+                    <span className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>© 2026 Sirsi Technologies Inc. All rights reserved.</span>
+                    <span className={`text-xs ${isDark ? 'text-slate-600' : 'text-slate-300'}`}>Agent-embedded infrastructure platform</span>
                 </div>
             </div>
         </footer>
@@ -288,11 +276,13 @@ function PublicLayout() {
     }
 
     return (
-        <div className="font-inter" style={{ background: isDark ? '#0f172a' : '#f8fafc', minHeight: '100vh' }}>
+        <div className="font-inter flex flex-col min-h-screen" style={{ background: isDark ? '#0f172a' : '#f8fafc' }}>
             <PublicHeader isDark={isDark} toggleTheme={toggleTheme} />
-            <ErrorBoundary section="Public Page">
-                <OutletComp />
-            </ErrorBoundary>
+            <div className="flex flex-col flex-1">
+                <ErrorBoundary section="Public Page">
+                    <OutletComp />
+                </ErrorBoundary>
+            </div>
             <PublicFooter isDark={isDark} />
         </div>
     )

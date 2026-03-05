@@ -107,11 +107,11 @@ function LoginPage() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center px-4 py-16"
-            style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%)', minHeight: 'calc(100vh - 200px)' }}>
+        <div className="flex flex-col items-center justify-center px-4 py-6 flex-1"
+            style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%)' }}>
 
             {/* Logo */}
-            <div className="mb-6 flex flex-col items-center">
+            <div className="mb-4 flex flex-col items-center">
                 <img
                     src="/sirsi-logo.png"
                     alt="Sirsi Logo"
@@ -127,7 +127,7 @@ function LoginPage() {
             </div>
 
             {/* Login Card */}
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+            <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
 
                 {/* Mode Toggle */}
                 <div className="flex mb-6 bg-gray-100 rounded-lg p-1">
@@ -300,7 +300,7 @@ function LoginPage() {
             </div>
 
             {/* Back link */}
-            <a href="/home" className="mt-6 text-emerald-600 hover:text-emerald-800 text-sm font-medium transition-colors">
+            <a href="/home" className="mt-4 text-emerald-600 hover:text-emerald-800 text-sm font-medium transition-colors">
                 ← Back to Home
             </a>
         </div>
