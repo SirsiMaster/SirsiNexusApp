@@ -11,6 +11,8 @@ import { Route as rootRoute } from './routes/__root'
 // ── Eagerly loaded: Dashboard (landing page — must be instant) ──
 import { Route as indexRoute } from './routes/index'
 
+import { PageSkeleton } from './components/LoadingSkeleton'
+
 // ── Lazy-loaded route factory ──
 function lazyRoute(path: string, importFn: () => Promise<{ Route: any }>) {
   const LazyComponent = lazy(() =>
@@ -22,28 +24,11 @@ function lazyRoute(path: string, importFn: () => Promise<{ Route: any }>) {
     getParentRoute: () => rootRoute as any,
     path,
     component: () => (
-      <Suspense fallback={<LazyLoadFallback />}>
+      <Suspense fallback={<PageSkeleton />}>
         <LazyComponent />
       </Suspense>
     ),
   })
-}
-
-function LazyLoadFallback() {
-  return (
-    <div style={{
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      minHeight: 400, color: '#9ca3af', fontSize: 13, letterSpacing: '0.05em',
-      fontWeight: 500, textTransform: 'uppercase' as const,
-    }}>
-      <div style={{
-        width: 20, height: 20, border: '2px solid #d1d5db',
-        borderTopColor: '#059669', borderRadius: '50%',
-        animation: 'spin 0.8s linear infinite', marginRight: 12,
-      }} />
-      Loading Module...
-    </div>
-  )
 }
 
 // ── Route definitions (code-split per route) ──
@@ -74,6 +59,7 @@ const consoleRoute = lazyRoute('/console', () => import('./routes/console'))
 
 // Dashboard
 const analyticsRoute = lazyRoute('/analytics', () => import('./routes/analytics'))
+const analyticsAdvancedRoute = lazyRoute('/analytics-advanced', () => import('./routes/analytics-advanced'))
 
 // System Status
 const cacheStatusRoute = lazyRoute('/cache-status', () => import('./routes/cache-status'))
@@ -117,6 +103,7 @@ const routeTree = (rootRoute as any).addChildren([
   consoleRoute as any,
   // Dashboard
   analyticsRoute as any,
+  analyticsAdvancedRoute as any,
   // System Status
   cacheStatusRoute as any,
   apiServerRoute as any,

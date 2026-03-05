@@ -27,6 +27,7 @@ import {
 import { CommandPalette } from '../components/command-palette/CommandPalette'
 import { NotificationCenter } from '../components/notifications/NotificationCenter'
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts'
+import { ErrorBoundary } from '../components/ErrorBoundary'
 
 // Wrapped components to avoid TS generics issues
 const LinkComp = Link as any
@@ -281,7 +282,9 @@ function PublicLayout() {
     return (
         <div className="font-inter" style={{ background: isDark ? '#0f172a' : '#f8fafc', minHeight: '100vh' }}>
             <PublicHeader isDark={isDark} toggleTheme={toggleTheme} />
-            <OutletComp />
+            <ErrorBoundary section="Public Page">
+                <OutletComp />
+            </ErrorBoundary>
             <PublicFooter isDark={isDark} />
         </div>
     )
@@ -458,7 +461,9 @@ function AdminLayout() {
             {/* ── MAIN CONTENT (canonical: sidebar-content + content-wrapper) ── */}
             <main className={`sidebar-content ${sidebarMini ? 'sidebar-collapsed' : ''}`}>
                 <div className="content-wrapper">
-                    <OutletComp />
+                    <ErrorBoundary section="Admin Module">
+                        <OutletComp />
+                    </ErrorBoundary>
                 </div>
             </main>
 
