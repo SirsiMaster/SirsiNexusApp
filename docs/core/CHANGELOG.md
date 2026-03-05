@@ -6,9 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.8.1-alpha] - 2026-03-05
 
-### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY (Tasks 1-5/40)
+### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY (Tasks 1-6/40)
 
-#### Portal Pages — Complete Text Color Purge (19 pages)
+#### Portal Pages — Complete Text Color Purge (19 pages, Tasks 1-5)
 - **settings.tsx**: Removed phantom classes (`glass-panel`, `gold-border`, `action-btn`) → canonical `sirsi-card`, `btn-primary`, `sirsi-badge`
 - **ai-agents.tsx**: 15 hardcoded colors → Tailwind `dark:` variants
 - **committee.tsx**: 8 hardcoded colors → theme-aware (date badges, titles, chevron)
@@ -29,6 +29,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **system-logs.tsx**: Filter labels, log entries, pagination
 - **telemetry.tsx**: Heatmap, funnel, timeline
 
+#### Task 6: Complete Dark Mode Parity — Backgrounds, Borders, Inputs, Buttons (10 files, `6e05b73`)
+- **analytics.tsx**: Tab bar bg (`bg-black/[0.04] dark:bg-white/[0.06]`), active tab uses `var(--color-background)`, metric card icon container (`bg-slate-100 dark:bg-slate-700`), all heading colors → `text-foreground`, metric values/labels/subs → `text-foreground`/`text-muted-foreground`
+- **messaging.tsx**: Full chat UI theme parity — thread sidebar bg/borders, search input, active thread indicator, chat pane bg, session header avatar, received message bubbles, compose bar
+- **monitoring.tsx**: Inactive tab bg removed, log header bg/border, search input, export button, error bar inactive color
+- **system-logs.tsx**: Stat cards, filter panel, ALL form inputs (selects, date pickers, search), action buttons (pause/clear/refresh), log container bg, log entry borders, export footer border, 3 export buttons
+- **telemetry.tsx**: Heatmap placeholder bg, user journey step pills, timeline connector line, drop-off path pills
+- **security.tsx**: Firewall rule names/descriptions, audit ledger heading, IP input border override fix
+- **site-admin.tsx**: Service icon containers → `bg-emerald-50 dark:bg-emerald-900/30`
+- **kpi-metrics.tsx**: KPI code badge icon container theme-aware
+- **backup-status.tsx**: Table header border → className
+- **console.tsx**: Header title + purge button → `text-muted-foreground`
+
 #### Admin Header Dark Mode
 - Version badge: `isDark`-conditional colors (light: `#64748b`/`#f1f5f9`, dark: `#94a3b8`/`#1e293b`)
 - "Live" text: `isDark`-conditional color
@@ -39,9 +51,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `.dark .admin-header-search-kbd` — dark background for keyboard shortcut
 - `.dark .btn-secondary` — dark border/text/hover states
 
-#### Pattern
-All inline `color: '#hex'` replaced with `className="text-X dark:text-Y"` or removed
-(body inherits `text-foreground` CSS variable which auto-switches with theme).
+#### Result
+**Zero non-brand hardcoded patterns remain** across all portal pages.
+All inline `background`, `border`, `color` patterns replaced with `className` using `dark:` variants
+or CSS variables (`var(--color-background)`, `var(--color-border)`, `text-foreground`).
 
 ## [0.8.0-alpha] - 2026-03-05
 
