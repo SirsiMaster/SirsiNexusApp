@@ -177,9 +177,10 @@ function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: (
 
                     {/* RIGHT: Nav Links */}
                     <nav style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-                        <LinkComp to="/home" style={{ fontSize: 14, color: isDark ? '#94a3b8' : '#475569', textDecoration: 'none', fontWeight: 400 }}>
+                        <a href="https://github.com/SirsiMaster/SirsiNexusApp/discussions" target="_blank" rel="noopener"
+                            style={{ fontSize: 14, color: isDark ? '#94a3b8' : '#475569', textDecoration: 'none', fontWeight: 400 }}>
                             Forum
-                        </LinkComp>
+                        </a>
                         <a href="https://github.com/SirsiMaster/SirsiNexusApp" target="_blank" rel="noopener"
                             style={{ fontSize: 14, color: isDark ? '#94a3b8' : '#475569', textDecoration: 'none', fontWeight: 400 }}>
                             App Repository
@@ -230,22 +231,22 @@ function PublicFooter({ isDark }: { isDark: boolean }) {
                     <a href="#features" className={lk}>Features</a>{dot}
                     <a href="#platform" className={lk}>Architecture</a>{dot}
                     <LinkComp to="/documentation" className={lk}>Docs</LinkComp>{dot}
-                    <a href="#pricing" className={lk}>Pricing</a>
+                    <LinkComp to="/signup" className={lk}>Get Started</LinkComp>
 
                     <span className="mx-3" />
 
                     {label('Company')}
-                    <a href="#about" className={lk}>About</a>{dot}
-                    <a href="#careers" className={lk}>Careers</a>{dot}
-                    <a href="#blog" className={lk}>Blog</a>{dot}
-                    <a href="#contact" className={lk}>Contact</a>
+                    <a href="#signup" className={lk}>About</a>{dot}
+                    <a href="https://github.com/SirsiMaster/SirsiNexusApp" target="_blank" rel="noopener" className={lk}>GitHub</a>{dot}
+                    <LinkComp to="/documentation" className={lk}>Blog</LinkComp>{dot}
+                    <a href="mailto:cylton@sirsi.ai" className={lk}>Contact</a>
 
                     <span className="mx-3" />
 
                     {label('Legal', true)}
-                    <a href="/privacy" className={lk}>Privacy</a>{dot}
-                    <a href="/terms" className={lk}>Terms</a>{dot}
-                    <a href="/security" className={lk}>Security</a>{dot}
+                    <LinkComp to="/documentation" className={lk}>Privacy</LinkComp>{dot}
+                    <LinkComp to="/documentation" className={lk}>Terms</LinkComp>{dot}
+                    <LinkComp to="/security" className={lk}>Security</LinkComp>{dot}
                     <LinkComp to="/login" className={lk}>Portal</LinkComp>
                 </div>
 
