@@ -419,11 +419,10 @@ function AdminLayout() {
                         </button>
 
                         {/* Logout */}
-                        <button className="admin-header-btn" aria-label="Logout" onClick={async () => {
-                            if (confirm('Are you sure you want to logout?')) {
-                                await signOut()
+                        <button className="admin-header-btn" aria-label="Logout" onClick={() => {
+                            signOut().finally(() => {
                                 window.location.href = '/login'
-                            }
+                            })
                         }}>
                             <LogOut size={18} className="admin-header-icon" />
                         </button>
@@ -460,11 +459,10 @@ function AdminLayout() {
                         <span className="admin-sidebar-icon"><Settings2 size={16} /></span>
                         <span className="admin-sidebar-link-label">Settings</span>
                     </LinkComp>
-                    <button className="admin-sidebar-link sidebar-signout" onClick={async () => {
-                        if (confirm('Are you sure you want to sign out?')) {
-                            await signOut()
+                    <button className="admin-sidebar-link sidebar-signout" onClick={() => {
+                        signOut().finally(() => {
                             window.location.href = '/login'
-                        }
+                        })
                     }}>
                         <span className="admin-sidebar-icon"><LogOut size={16} /></span>
                         <span className="admin-sidebar-link-label">Sign Out</span>
