@@ -316,41 +316,41 @@ function LandingPage() {
                     {/* Feature Cards Row 1 — 3 cards */}
                     <div className="grid md:grid-cols-3 gap-8 mb-12">
                         {[
-                            { title: 'Zero-Touch Operations', desc: 'From deployment to optimization, SirsiNexus handles the complexity so your team can focus on innovation instead of infrastructure maintenance.', gradient: 'from-emerald-500 to-emerald-600', icon: 'M13 10V3L4 14h7v7l9-11h-7z', bg: 'bg-white' },
-                            { title: 'Adaptive Intelligence', desc: "Our AI doesn't just follow rules—it learns your business patterns, adapts to your growth, and evolves its decision-making over time.", gradient: 'from-blue-500 to-blue-600', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', bg: 'bg-gradient-to-br from-slate-50 to-slate-100' },
-                            { title: 'Enterprise Security', desc: 'Built-in security intelligence that continuously monitors, detects threats, and adapts security policies across your entire infrastructure ecosystem.', gradient: 'from-purple-500 to-purple-600', icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z', bg: 'bg-gradient-to-br from-gray-50 to-white' },
+                            { title: 'Zero-Touch Operations', desc: 'From deployment to optimization, SirsiNexus handles the complexity so your team can focus on innovation instead of infrastructure maintenance.', gradient: 'from-emerald-500 to-emerald-600', icon: 'M13 10V3L4 14h7v7l9-11h-7z', bg: 'bg-white dark:bg-slate-800' },
+                            { title: 'Adaptive Intelligence', desc: "Our AI doesn't just follow rules—it learns your business patterns, adapts to your growth, and evolves its decision-making over time.", gradient: 'from-blue-500 to-blue-600', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', bg: 'bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700' },
+                            { title: 'Enterprise Security', desc: 'Built-in security intelligence that continuously monitors, detects threats, and adapts security policies across your entire infrastructure ecosystem.', gradient: 'from-purple-500 to-purple-600', icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z', bg: 'bg-gradient-to-br from-gray-50 to-white dark:from-slate-800 dark:to-slate-700' },
                         ].map(card => (
-                            <div key={card.title} className={`${card.bg} p-8 rounded-xl border border-slate-200 hover:border-emerald-300 transition-colors shadow-sm hover:shadow-md`}>
+                            <div key={card.title} className={`${card.bg} p-8 rounded-xl border border-slate-200 dark:border-slate-600 hover:border-emerald-300 transition-colors shadow-sm hover:shadow-md`}>
                                 <div className={`w-16 h-16 bg-gradient-to-br ${card.gradient} rounded-xl flex items-center justify-center mb-6`}>
                                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={card.icon} />
                                     </svg>
                                 </div>
-                                <h3 className="text-xl font-bold mb-4 text-slate-800">{card.title}</h3>
-                                <p className="text-slate-600 leading-relaxed">{card.desc}</p>
+                                <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">{card.title}</h3>
+                                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{card.desc}</p>
                             </div>
                         ))}
                     </div>
 
                     {/* Feature Cards Row 2 — 2 cards */}
                     <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                        <div className="bg-gradient-to-br from-emerald-50 to-white p-8 rounded-xl border border-slate-200 hover:border-emerald-300 transition-colors shadow-sm hover:shadow-md">
+                        <div className="bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-900/20 dark:to-slate-800 p-8 rounded-xl border border-slate-200 dark:border-slate-600 hover:border-emerald-300 transition-colors shadow-sm hover:shadow-md">
                             <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-6">
                                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-4l-4 4z" />
                                 </svg>
                             </div>
-                            <h3 className="text-xl font-bold mb-4 text-slate-800">Natural Language Interfaces</h3>
-                            <p className="text-slate-600 leading-relaxed">Transform app building, migration, and optimization with conversational AI. Simply describe your infrastructure needs in plain English—"Scale my web app for Black Friday traffic" or "Migrate my database to AWS with zero downtime"—and watch SirsiNexus execute complex operations seamlessly.</p>
+                            <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">Natural Language Interfaces</h3>
+                            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">Transform app building, migration, and optimization with conversational AI. Simply describe your infrastructure needs in plain English—"Scale my web app for Black Friday traffic" or "Migrate my database to AWS with zero downtime"—and watch SirsiNexus execute complex operations seamlessly.</p>
                         </div>
-                        <div className="bg-gradient-to-br from-slate-50 to-emerald-50 p-8 rounded-xl border border-slate-200 hover:border-emerald-300 transition-colors shadow-sm hover:shadow-md">
+                        <div className="bg-gradient-to-br from-slate-50 to-emerald-50 dark:from-slate-800 dark:to-emerald-900/20 p-8 rounded-xl border border-slate-200 dark:border-slate-600 hover:border-emerald-300 transition-colors shadow-sm hover:shadow-md">
                             <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-emerald-600 rounded-xl flex items-center justify-center mb-6">
                                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                                 </svg>
                             </div>
-                            <h3 className="text-xl font-bold mb-4 text-slate-800">LLM & Knowledge Graphs</h3>
-                            <p className="text-slate-600 leading-relaxed">Turbocharge your AI integration with state-of-the-art Large Language Models and dynamic knowledge graphs. Our system understands your infrastructure context, relationships, and dependencies to make intelligent scaling decisions and optimize performance automatically.</p>
+                            <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">LLM & Knowledge Graphs</h3>
+                            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">Turbocharge your AI integration with state-of-the-art Large Language Models and dynamic knowledge graphs. Our system understands your infrastructure context, relationships, and dependencies to make intelligent scaling decisions and optimize performance automatically.</p>
                         </div>
                     </div>
                 </div>
