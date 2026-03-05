@@ -118,8 +118,27 @@
     font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'ss01' 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: justify;
     @apply bg-background text-foreground transition-colors duration-300;
+  }
+
+  /* Block text justification — paragraphs, list items, and table cells.
+     Excludes headings, buttons, nav, badges, etc. per user request. */
+  p,
+  li,
+  td,
+  dd,
+  blockquote {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  /* Override: keep centered text centered even on p/li within .text-center containers */
+  .text-center p,
+  .text-center li,
+  p.text-center,
+  li.text-center,
+  .page-subtitle {
+    text-align: center;
   }
 
   /* Admin headings: Inter (NOT Cinzel) — per shared.css */
