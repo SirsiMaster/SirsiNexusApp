@@ -208,57 +208,63 @@ function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: (
     )
 }
 
-// ── Public Site Footer (compact, single-row) ──
+// ── Public Site Footer (matches HTML grid, compact) ──
 function PublicFooter({ isDark }: { isDark: boolean }) {
-    const textMuted = isDark ? '#94a3b8' : '#64748b'
-    const textBase = isDark ? '#cbd5e1' : '#475569'
-    const headColor = isDark ? '#f1f5f9' : '#0f172a'
-    const borderColor = isDark ? '#1e293b' : '#e2e8f0'
+    const linkCls = `text-sm ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'} transition-colors no-underline`
+    const headCls = `text-sm font-semibold ${isDark ? 'text-slate-200' : 'text-slate-800'} mb-3`
 
     return (
-        <footer style={{ background: isDark ? '#0f172a' : '#ffffff', borderTop: `1px solid ${borderColor}` }}>
-            <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 24px' }}>
-                {/* Main row: brand + link groups + copyright */}
-                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' as const }}>
+        <footer className={`${isDark ? 'bg-slate-900 text-white' : 'bg-white text-slate-600'} py-8`}>
+            <div className="max-w-7xl mx-auto px-6">
+                <div className="grid md:grid-cols-4 gap-6">
                     {/* Brand */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 200 }}>
-                        <img src="/sirsi-icon.png" alt="Sirsi" style={{ width: 24, height: 24, objectFit: 'contain' as const }} />
-                        <span style={{ fontSize: 15, fontWeight: 600, color: headColor }}>SirsiNexus</span>
-                        <span style={{ fontSize: 12, color: textMuted, marginLeft: 4 }}>Agent-embedded infrastructure platform</span>
+                    <div>
+                        <div className="flex items-center gap-2 mb-3">
+                            <img src="/sirsi-icon.png" alt="Sirsi" className="w-7 h-7 object-contain" />
+                            <span className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>SirsiNexus</span>
+                        </div>
+                        <p className={`text-sm leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                            Agent-embedded infrastructure platform for enterprise cloud operations.
+                        </p>
                     </div>
-
-                    {/* Platform links */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: headColor, textTransform: 'uppercase' as const, letterSpacing: '0.05em' }}>Platform</span>
-                        <a href="#features" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Features</a>
-                        <a href="#platform" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Architecture</a>
-                        <LinkComp to="/documentation" style={{ fontSize: 13, color: textBase, textDecoration: 'none', fontWeight: 500 }}>Documentation</LinkComp>
-                        <a href="#pricing" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Pricing</a>
+                    {/* Platform */}
+                    <div>
+                        <h4 className={headCls}>Platform</h4>
+                        <ul className="space-y-1.5 list-none p-0 m-0">
+                            <li><a href="#features" className={linkCls}>Features</a></li>
+                            <li><a href="#platform" className={linkCls}>Architecture</a></li>
+                            <li><LinkComp to="/documentation" className={linkCls}>Documentation</LinkComp></li>
+                            <li><a href="#pricing" className={linkCls}>Pricing</a></li>
+                        </ul>
                     </div>
-
-                    {/* Company links */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: headColor, textTransform: 'uppercase' as const, letterSpacing: '0.05em' }}>Company</span>
-                        <a href="#about" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>About</a>
-                        <a href="#careers" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Careers</a>
-                        <a href="#blog" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Blog</a>
-                        <a href="#contact" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Contact</a>
+                    {/* Company */}
+                    <div>
+                        <h4 className={headCls}>Company</h4>
+                        <ul className="space-y-1.5 list-none p-0 m-0">
+                            <li><a href="#about" className={linkCls}>About</a></li>
+                            <li><a href="#careers" className={linkCls}>Careers</a></li>
+                            <li><a href="#blog" className={linkCls}>Blog</a></li>
+                            <li><a href="#contact" className={linkCls}>Contact</a></li>
+                        </ul>
                     </div>
-
-                    {/* Legal links */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: '#059669', textTransform: 'uppercase' as const, letterSpacing: '0.05em' }}>Legal</span>
-                        <a href="/privacy" style={{ fontSize: 13, color: textBase, textDecoration: 'none', fontWeight: 500 }}>Privacy</a>
-                        <a href="/terms" style={{ fontSize: 13, color: textBase, textDecoration: 'none', fontWeight: 500 }}>Terms</a>
-                        <a href="/security" style={{ fontSize: 13, color: textBase, textDecoration: 'none', fontWeight: 500 }}>Security</a>
-                        <LinkComp to="/login" style={{ fontSize: 13, color: textBase, textDecoration: 'none' }}>Portal</LinkComp>
+                    {/* Legal */}
+                    <div>
+                        <h4 className={`text-sm font-semibold text-emerald-600 mb-3`}>Legal</h4>
+                        <ul className="space-y-1.5 list-none p-0 m-0">
+                            <li><a href="/privacy" className={linkCls}>Privacy Policy</a></li>
+                            <li><a href="/terms" className={linkCls}>Terms of Service</a></li>
+                            <li><a href="/security" className={linkCls}>Security</a></li>
+                            <li><LinkComp to="/login" className={linkCls}>Portal Login</LinkComp></li>
+                        </ul>
                     </div>
                 </div>
-
-                {/* Copyright row */}
-                <div style={{ borderTop: `1px solid ${borderColor}`, marginTop: 16, paddingTop: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ color: textMuted, fontSize: 12 }}>© 2026 Sirsi Technologies Inc. All rights reserved.</span>
-                    <span style={{ color: isDark ? '#475569' : '#94a3b8', fontSize: 11 }}>SirsiNexus is a product of Sirsi Technologies Inc.</span>
+                <div className={`border-t ${isDark ? 'border-slate-800' : 'border-slate-200'} mt-6 pt-4 text-center`}>
+                    <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'} m-0`}>
+                        © 2026 Sirsi Technologies Inc. All rights reserved.
+                    </p>
+                    <p className={`text-xs mt-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+                        SirsiNexus is a product of Sirsi Technologies Inc.
+                    </p>
                 </div>
             </div>
         </footer>
