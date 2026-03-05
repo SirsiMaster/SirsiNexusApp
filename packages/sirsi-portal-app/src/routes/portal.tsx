@@ -61,7 +61,7 @@ function InvestorPortal() {
                         <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse" />
                         <span style={{ fontSize: 10, fontWeight: 600, color: '#065f46', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Live Platform KPIs</span>
                     </div>
-                    <span style={{ fontSize: 10, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Synchronized 2m Ago</span>
+                    <span style={{ fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Synchronized 2m Ago</span>
                 </div>
 
                 <div className="grid grid-cols-2 lg:grid-cols-6 gap-8">
@@ -77,7 +77,7 @@ function InvestorPortal() {
             {/* ── Executive Summary ── */}
             <div className="bg-white border-l-4 border-emerald-600 rounded-r-xl p-8 shadow-sm mb-10">
                 <h3 style={{ fontSize: 12, fontWeight: 600, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>Executive Summary</h3>
-                <p style={{ fontSize: 14, color: '#374151', lineHeight: 1.7, fontWeight: 500 }}>
+                <p style={{ fontSize: 14, lineHeight: 1.7, fontWeight: 500 }}>
                     SirsiNexus represents a unique convergence of technological innovation and strategic market positioning.
                     With a proven AI-powered cloud optimization platform and exceptional network access through Techstars Universe,
                     academic partnerships, and VC connections, we are positioned to capture significant market share in the
@@ -111,7 +111,7 @@ function InvestorPortal() {
 
             {/* ── Virtual Data Room Taxonomy ── */}
             <h3 className="border-l-4 border-emerald-600 pl-4 mb-8" style={{
-                fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em',
+                fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em',
             }}>Virtual Data Room Taxonomy</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
@@ -123,11 +123,11 @@ function InvestorPortal() {
                                 {cat.letter}
                             </div>
                             <div>
-                                <h4 style={{ fontWeight: 500, color: '#111827' }} className="group-hover:text-emerald-600 transition-colors">{cat.name}</h4>
-                                <p style={{ fontSize: 10, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{cat.sub}</p>
+                                <h4 className="text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 transition-colors" style={{ fontWeight: 500 }}>{cat.name}</h4>
+                                <p style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{cat.sub}</p>
                             </div>
                         </div>
-                        <div className="flex justify-between items-center" style={{ fontSize: 10, fontWeight: 500, color: '#9ca3af' }}>
+                        <div className="flex justify-between items-center" style={{ fontSize: 10, fontWeight: 500 }}>
                             <span>LATEST AUDIT: {cat.audit}</span>
                             <span style={{ color: '#059669' }}>{cat.docs} DOCUMENTS</span>
                         </div>
@@ -136,13 +136,13 @@ function InvestorPortal() {
             </div>
 
             {/* ── Compliance Footer ── */}
-            <div className="sirsi-card bg-gray-50 border-gray-100 text-center" style={{ paddingTop: 24, paddingBottom: 24 }}>
-                <p style={{ fontSize: 11, fontWeight: 600, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>Institutional Compliance Disclaimer</p>
-                <p style={{ fontSize: 12, color: '#6b7280', fontStyle: 'italic', maxWidth: 672, margin: '0 auto' }}>
+            <div className="sirsi-card bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-center" style={{ paddingTop: 24, paddingBottom: 24 }}>
+                <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>Institutional Compliance Disclaimer</p>
+                <p style={{ fontSize: 12, fontStyle: 'italic', maxWidth: 672, margin: '0 auto' }}>
                     This portal contains highly confidential strategic data. Unauthorized access or reproduction is strictly
                     prohibited and subject to legal enforcement under the Sirsi Nexus Non-Disclosure Agreement.
                 </p>
-                <div className="mt-4 flex justify-center gap-8" style={{ fontSize: 9, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase' }}>
+                <div className="mt-4 flex justify-center gap-8" style={{ fontSize: 9, fontWeight: 500, textTransform: 'uppercase' }}>
                     <span>PREPARED BY: STRATEGY TEAM</span>
                     <span>REVIEW: QUARTERLY</span>
                     <span>DISTRIBUTION: COMMITTEE ONLY</span>

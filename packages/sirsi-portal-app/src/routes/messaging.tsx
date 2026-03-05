@@ -56,12 +56,12 @@ function Messaging() {
                 {/* Left: Thread Registry */}
                 <div style={{ width: 320, borderRight: '1px solid #f3f4f6', background: 'rgba(249,250,251,0.3)', display: 'flex', flexDirection: 'column' }}>
                     <div style={{ padding: 24, borderBottom: '1px solid #f9fafb', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <h3 style={{ fontSize: 10, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Registry</h3>
+                        <h3 style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Registry</h3>
                         <Edit size={14} style={{ color: '#059669', cursor: 'pointer' }} />
                     </div>
                     <div style={{ padding: 16, borderBottom: '1px solid #f9fafb' }}>
                         <div style={{ position: 'relative' }}>
-                            <Search size={12} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+                            <Search size={12} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }} />
                             <input type="text" placeholder="Filter threads..." style={{ width: '100%', paddingLeft: 36, paddingRight: 12, padding: '8px 12px 8px 36px', background: 'white', border: '1px solid #f3f4f6', borderRadius: 8, fontSize: 12, fontWeight: 500, outline: 'none' }} />
                         </div>
                     </div>
@@ -73,7 +73,7 @@ function Messaging() {
                             }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
                                     <span style={{ fontSize: 11, fontWeight: 600, color: t.faded ? '#9ca3af' : '#111827', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{t.name}</span>
-                                    <span style={{ fontSize: 9, fontWeight: 500, color: '#9ca3af' }}>{t.time}</span>
+                                    <span style={{ fontSize: 9, fontWeight: 500 }}>{t.time}</span>
                                 </div>
                                 <p style={{ fontSize: 10, color: t.faded ? '#9ca3af' : '#6b7280', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.preview}</p>
                             </div>
@@ -90,7 +90,7 @@ function Messaging() {
                                 <Shield size={14} style={{ color: '#059669' }} />
                             </div>
                             <div>
-                                <h4 style={{ fontSize: 12, fontWeight: 600, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Encrypted Session: Committee</h4>
+                                <h4 style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Encrypted Session: Committee</h4>
                                 <div className="flex items-center gap-2">
                                     <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
                                     <span style={{ fontSize: 9, fontWeight: 600, color: '#059669', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Verified Protocol Level 4</span>
@@ -99,7 +99,7 @@ function Messaging() {
                         </div>
                         <div className="flex gap-4">
                             {[Phone, Video, Info].map((Icon, i) => (
-                                <Icon key={i} size={16} style={{ color: '#d1d5db', cursor: 'pointer' }} className="hover:text-emerald-600 transition-colors" />
+                                <Icon key={i} size={16} style={{ cursor: 'pointer' }} className="hover:text-emerald-600 transition-colors" />
                             ))}
                         </div>
                     </div>
@@ -112,7 +112,7 @@ function Messaging() {
                                     padding: '16px 20px', fontSize: 14, lineHeight: 1.7, fontWeight: 500,
                                     ...(msg.sender === 'admin'
                                         ? { background: '#059669', color: 'white', borderRadius: '16px 16px 0 16px', border: '1px solid #059669', boxShadow: '0 4px 6px rgba(5,150,105,0.1)' }
-                                        : { background: '#f9fafb', color: '#374151', borderRadius: '16px 16px 16px 0', border: '1px solid #f3f4f6' }),
+                                        : { background: '#f9fafb', borderRadius: '16px 16px 16px 0', border: '1px solid #f3f4f6' }),
                                 }}>{msg.text}</div>
                                 <span style={{
                                     fontSize: 9, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 8,
@@ -126,11 +126,11 @@ function Messaging() {
                     {/* Compose */}
                     <div style={{ padding: 32, borderTop: '1px solid #f9fafb' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 16, background: '#f9fafb', border: '1px solid #f3f4f6', borderRadius: 16, padding: '8px 16px 8px 8px' }}>
-                            <button style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af', background: 'none', border: 'none', cursor: 'pointer' }}>
+                            <button style={{ width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>
                                 <Paperclip size={16} />
                             </button>
                             <input value={draft} onChange={e => setDraft(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()}
-                                placeholder="Draft encrypted message..." style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 14, fontWeight: 500, color: '#111827' }} />
+                                placeholder="Draft encrypted message..." style={{ flex: 1, background: 'transparent', border: 'none', outline: 'none', fontSize: 14, fontWeight: 500 }} />
                             <button onClick={send} style={{ width: 40, height: 40, background: '#059669', color: 'white', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', cursor: 'pointer', boxShadow: '0 4px 6px rgba(5,150,105,0.2)' }}>
                                 <Send size={14} />
                             </button>

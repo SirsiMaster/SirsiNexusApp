@@ -160,7 +160,7 @@ function SystemLogs() {
                     }}>
                         <div style={{ marginBottom: 8, display: 'flex', justifyContent: 'center' }}>{card.icon}</div>
                         <h3 className="text-2xl font-medium">{card.count}</h3>
-                        <p style={{ fontSize: 14, color: '#4b5563' }}>{card.label}</p>
+                        <p style={{ fontSize: 14 }}>{card.label}</p>
                     </div>
                 ))}
             </div>
@@ -172,7 +172,7 @@ function SystemLogs() {
             }}>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                     <div>
-                        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>Log Level</label>
+                        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, marginBottom: 8 }}>Log Level</label>
                         <select value={levelFilter} onChange={e => setLevelFilter(e.target.value)}
                             style={{
                                 width: '100%', padding: '8px 12px', border: '1px solid #d1d5db',
@@ -187,7 +187,7 @@ function SystemLogs() {
                         </select>
                     </div>
                     <div>
-                        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>Source</label>
+                        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, marginBottom: 8 }}>Source</label>
                         <select value={sourceFilter} onChange={e => setSourceFilter(e.target.value)}
                             style={{
                                 width: '100%', padding: '8px 12px', border: '1px solid #d1d5db',
@@ -201,14 +201,14 @@ function SystemLogs() {
                         </select>
                     </div>
                     <div>
-                        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>From Date</label>
+                        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, marginBottom: 8 }}>From Date</label>
                         <input type="datetime-local" style={{
                             width: '100%', padding: '8px 12px', border: '1px solid #d1d5db',
                             borderRadius: 6, fontSize: 14, outline: 'none',
                         }} />
                     </div>
                     <div>
-                        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>To Date</label>
+                        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, marginBottom: 8 }}>To Date</label>
                         <input type="datetime-local" style={{
                             width: '100%', padding: '8px 12px', border: '1px solid #d1d5db',
                             borderRadius: 6, fontSize: 14, outline: 'none',
@@ -219,7 +219,7 @@ function SystemLogs() {
                 {/* Search + Actions */}
                 <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                     <div style={{ position: 'relative', flex: 1, maxWidth: 448 }}>
-                        <Search size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+                        <Search size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }} />
                         <input
                             type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
                             placeholder="Search logs..."
@@ -241,14 +241,14 @@ function SystemLogs() {
                             </span>
                         </label>
                         <button onClick={() => setIsPaused(!isPaused)} style={{
-                            padding: '8px 16px', background: '#e5e7eb', color: '#374151',
+                            padding: '8px 16px', background: '#e5e7eb',
                             borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', gap: 8,
                         }}>
                             {isPaused ? <Play size={14} /> : <Pause size={14} />}
                             {isPaused ? 'Resume' : 'Pause'}
                         </button>
                         <button onClick={clearLogs} style={{
-                            padding: '8px 16px', background: '#e5e7eb', color: '#374151',
+                            padding: '8px 16px', background: '#e5e7eb',
                             borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', gap: 8,
                         }}>
                             <Trash2 size={14} />Clear
@@ -279,13 +279,13 @@ function SystemLogs() {
                             padding: '8px 0',
                             borderBottom: i < filteredLogs.length - 1 ? '1px solid #e5e7eb' : 'none',
                         }}>
-                            <span style={{ color: '#6b7280', minWidth: 180 }}>{log.timestamp}</span>
+                            <span style={{ minWidth: 180 }}>{log.timestamp}</span>
                             <span style={{ color: levelColors[log.level], fontWeight: 500, minWidth: 80 }}>{log.level}</span>
-                            <span style={{ flex: 1, color: '#374151' }}>{log.message}</span>
+                            <span style={{ flex: 1 }}>{log.message}</span>
                         </div>
                     ))}
                     {filteredLogs.length === 0 && (
-                        <p style={{ textAlign: 'center', color: '#9ca3af', padding: 24, fontSize: 14 }}>No log entries match your filters</p>
+                        <p style={{ textAlign: 'center', padding: 24, fontSize: 14 }}>No log entries match your filters</p>
                     )}
                 </div>
 
@@ -295,24 +295,24 @@ function SystemLogs() {
                     borderTop: '1px solid #e5e7eb',
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 }}>
-                    <span style={{ fontSize: 14, color: '#4b5563' }}>
+                    <span style={{ fontSize: 14 }}>
                         Showing {filteredLogs.length} entries
                     </span>
                     <div className="flex gap-2">
                         <button onClick={() => exportLogs('csv')} style={{
-                            padding: '8px 16px', fontSize: 14, background: '#e5e7eb', color: '#374151',
+                            padding: '8px 16px', fontSize: 14, background: '#e5e7eb',
                             borderRadius: 6, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
                         }}>
                             <FileText size={14} />Export CSV
                         </button>
                         <button onClick={() => exportLogs('json')} style={{
-                            padding: '8px 16px', fontSize: 14, background: '#e5e7eb', color: '#374151',
+                            padding: '8px 16px', fontSize: 14, background: '#e5e7eb',
                             borderRadius: 6, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
                         }}>
                             <FileCode size={14} />Export JSON
                         </button>
                         <button onClick={() => exportLogs('txt')} style={{
-                            padding: '8px 16px', fontSize: 14, background: '#e5e7eb', color: '#374151',
+                            padding: '8px 16px', fontSize: 14, background: '#e5e7eb',
                             borderRadius: 6, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
                         }}>
                             <FileDown size={14} />Export TXT

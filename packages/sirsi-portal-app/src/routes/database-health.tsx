@@ -91,7 +91,7 @@ function DatabaseHealth() {
                         {storageUsage.map(s => (
                             <div key={s.label}>
                                 <div className="flex justify-between text-sm mb-1">
-                                    <span style={{ color: '#6b7280' }}>{s.label}</span>
+                                    <span className="text-slate-500 dark:text-slate-400">{s.label}</span>
                                     <span style={{ fontWeight: 500 }}>{s.value}</span>
                                 </div>
                                 <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full" style={{ height: 8 }}>

@@ -34,7 +34,7 @@ function KpiMetrics() {
                 <p className="page-subtitle">Strategic performance indicators and unit economics oversight</p>
             </div>
 
-            <h3 className="border-l-4 border-emerald-600 pl-4 mb-6" style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Institutional KPIs</h3>
+            <h3 className="border-l-4 border-emerald-600 pl-4 mb-6" style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Institutional KPIs</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 {kpiCards.map(kpi => (
@@ -43,10 +43,10 @@ function KpiMetrics() {
                             <div style={{ width: 40, height: 40, background: '#ecfdf5', color: '#059669', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #d1fae5', fontStyle: 'italic', fontWeight: 600, fontSize: 12 }}>{kpi.code}</div>
                             <span className="sirsi-badge sirsi-badge-success" style={{ fontWeight: 600 }}>{kpi.badge}</span>
                         </div>
-                        <div style={{ fontSize: 30, fontWeight: 600, color: '#111827', marginBottom: 4 }}>{kpi.value}</div>
-                        <div style={{ fontSize: 10, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 500, marginBottom: 16 }}>{kpi.label}</div>
+                        <div style={{ fontSize: 30, fontWeight: 600, marginBottom: 4 }}>{kpi.value}</div>
+                        <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 500, marginBottom: 16 }}>{kpi.label}</div>
                         <div className="space-y-2">
-                            <div className="flex justify-between items-center" style={{ fontSize: 10, fontWeight: 500, color: '#6b7280', textTransform: 'uppercase' }}>
+                            <div className="flex justify-between items-center" style={{ fontSize: 10, fontWeight: 500, textTransform: 'uppercase' }}>
                                 <span>{kpi.target}</span>
                                 <span style={{ color: '#059669' }}>{kpi.pct}%</span>
                             </div>
@@ -58,7 +58,7 @@ function KpiMetrics() {
                 ))}
             </div>
 
-            <h3 className="border-l-4 border-emerald-600 pl-4 mb-6" style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Unit Economics Ledger</h3>
+            <h3 className="border-l-4 border-emerald-600 pl-4 mb-6" style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Unit Economics Ledger</h3>
 
             <div className="sirsi-table-wrap">
                 <table className="sirsi-table">
@@ -72,7 +72,7 @@ function KpiMetrics() {
                     <tbody>
                         {unitEconomics.map(row => (
                             <tr key={row.metric}>
-                                <td style={{ paddingLeft: 24 }}><span style={{ fontWeight: 500, color: '#111827' }}>{row.metric}</span></td>
+                                <td style={{ paddingLeft: 24 }}><span className="text-slate-900 dark:text-slate-100" style={{ fontWeight: 500 }}>{row.metric}</span></td>
                                 <td style={{ fontFamily: 'monospace' }}>{row.value}</td>
                                 <td style={{ textAlign: 'right', paddingRight: 24 }}><span style={{ color: '#059669', fontWeight: 600, fontStyle: 'italic' }}>{row.trend}</span></td>
                             </tr>

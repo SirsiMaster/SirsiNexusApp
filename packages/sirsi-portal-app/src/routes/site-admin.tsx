@@ -97,9 +97,9 @@ function SystemStatus() {
             {/* ── Overall Health — SVG Ring Gauges ── */}
             <div className="sirsi-card mb-8">
                 <div className="flex items-center justify-between mb-8">
-                    <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Perimeter & Core Infrastructure Health</h3>
+                    <h3 style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Perimeter & Core Infrastructure Health</h3>
                     <div className="flex items-center space-x-2">
-                        <span style={{ fontSize: 10, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase' }}>Synchronized:</span>
+                        <span style={{ fontSize: 10, fontWeight: 500, textTransform: 'uppercase' }}>Synchronized:</span>
                         <span style={{ fontSize: 12, fontFamily: 'monospace', fontWeight: 500, color: '#059669' }}>{clockTime}</span>
                     </div>
                 </div>
@@ -117,11 +117,11 @@ function SystemStatus() {
                                             strokeDasharray={circumference} strokeDashoffset={offset} />
                                     </svg>
                                     <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                        <span style={{ fontSize: 18, fontWeight: 600, color: '#111827' }}>{g.value}%</span>
+                                        <span style={{ fontSize: 18, fontWeight: 600 }}>{g.value}%</span>
                                     </div>
                                 </div>
-                                <h4 style={{ fontSize: 12, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{g.label}</h4>
-                                <p style={{ fontSize: 10, color: '#9ca3af', marginTop: 4, fontStyle: 'italic' }}>{g.sub}</p>
+                                <h4 style={{ fontSize: 12, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{g.label}</h4>
+                                <p style={{ fontSize: 10, marginTop: 4, fontStyle: 'italic' }}>{g.sub}</p>
                             </div>
                         )
                     })}
@@ -131,24 +131,24 @@ function SystemStatus() {
             {/* ── Service Status Grid ── */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <div className="sirsi-card">
-                    <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24 }}>Internal Core Clusters</h3>
+                    <h3 style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24 }}>Internal Core Clusters</h3>
                     <div className="space-y-4">
                         {coreServices.map(svc => {
                             const Icon = svc.icon as any
                             return (
-                                <div key={svc.name} className="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-white transition-all group cursor-pointer" style={{ background: 'rgba(249,250,251,0.5)' }}>
+                                <div key={svc.name} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-emerald-200 hover:bg-white transition-all group cursor-pointer" style={{ background: 'rgba(249,250,251,0.5)' }}>
                                     <div className="flex items-center">
                                         <div style={{ width: 40, height: 40, background: '#ecfdf5', color: '#059669', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 16, border: '1px solid #d1fae5' }}>
                                             <Icon size={18} />
                                         </div>
                                         <div>
-                                            <h4 style={{ fontWeight: 500, color: '#111827', fontStyle: 'italic' }} className="group-hover:text-emerald-600 transition-colors">{svc.name}</h4>
-                                            <p style={{ fontSize: 10, color: '#6b7280', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '-0.02em' }}>{svc.detail}</p>
+                                            <h4 style={{ fontWeight: 500, fontStyle: 'italic' }} className="group-hover:text-emerald-600 transition-colors">{svc.name}</h4>
+                                            <p style={{ fontSize: 10, textTransform: 'uppercase', fontWeight: 600, letterSpacing: '-0.02em' }}>{svc.detail}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <span className="sirsi-badge sirsi-badge-success">{svc.status}</span>
-                                        <ChevronRight size={10} style={{ color: '#d1d5db' }} className="group-hover:text-emerald-600 transition-colors" />
+                                        <ChevronRight size={10} className="text-slate-300 dark:text-slate-600 group-hover:text-emerald-600 transition-colors" />
                                     </div>
                                 </div>
                             )
@@ -157,24 +157,24 @@ function SystemStatus() {
                 </div>
 
                 <div className="sirsi-card">
-                    <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24 }}>External Service Integrity</h3>
+                    <h3 style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24 }}>External Service Integrity</h3>
                     <div className="space-y-4">
                         {externalServices.map(svc => {
                             const Icon = svc.icon as any
                             return (
-                                <div key={svc.name} className="flex items-center justify-between p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-white transition-all group cursor-pointer" style={{ background: 'rgba(249,250,251,0.5)' }}>
+                                <div key={svc.name} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-emerald-200 hover:bg-white transition-all group cursor-pointer" style={{ background: 'rgba(249,250,251,0.5)' }}>
                                     <div className="flex items-center">
                                         <div style={{ width: 40, height: 40, background: '#ecfdf5', color: '#059669', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 16, border: '1px solid #d1fae5' }}>
                                             <Icon size={18} />
                                         </div>
                                         <div>
-                                            <h4 style={{ fontWeight: 500, color: '#111827', fontStyle: 'italic' }} className="group-hover:text-emerald-600 transition-colors">{svc.name}</h4>
-                                            <p style={{ fontSize: 10, color: '#6b7280', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '-0.02em' }}>{svc.detail}</p>
+                                            <h4 style={{ fontWeight: 500, fontStyle: 'italic' }} className="group-hover:text-emerald-600 transition-colors">{svc.name}</h4>
+                                            <p style={{ fontSize: 10, textTransform: 'uppercase', fontWeight: 600, letterSpacing: '-0.02em' }}>{svc.detail}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <span className="sirsi-badge sirsi-badge-success">{svc.status}</span>
-                                        <ChevronRight size={10} style={{ color: '#d1d5db' }} className="group-hover:text-emerald-600 transition-colors" />
+                                        <ChevronRight size={10} className="text-slate-300 dark:text-slate-600 group-hover:text-emerald-600 transition-colors" />
                                     </div>
                                 </div>
                             )
@@ -186,7 +186,7 @@ function SystemStatus() {
             {/* ── Performance Charts ── */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <div className="sirsi-card">
-                    <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24, fontStyle: 'italic' }}>Internal Response Latency (24h)</h3>
+                    <h3 style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24, fontStyle: 'italic' }}>Internal Response Latency (24h)</h3>
                     <div style={{ height: 256 }}>
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={chartData}>
@@ -201,7 +201,7 @@ function SystemStatus() {
                 </div>
 
                 <div className="sirsi-card">
-                    <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24, fontStyle: 'italic' }}>Infrastructure Error Density (24h)</h3>
+                    <h3 style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24, fontStyle: 'italic' }}>Infrastructure Error Density (24h)</h3>
                     <div style={{ height: 256 }}>
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={chartData}>
@@ -218,16 +218,16 @@ function SystemStatus() {
 
             {/* ── Audit Trail ── */}
             <div className="sirsi-card">
-                <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 32 }}>System Audit Trail & Service Logs</h3>
+                <h3 style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 32 }}>System Audit Trail & Service Logs</h3>
                 <div className="space-y-6">
                     {incidents.map(inc => (
                         <div key={inc.title} className={`p-6 ${inc.bgColor} border-l-4 ${inc.borderColor} rounded-r-xl`}>
                             <div className="flex items-start justify-between">
                                 <div>
-                                    <h4 style={{ fontWeight: 500, color: '#111827', fontStyle: inc.titleItalic ? 'italic' : 'normal' }}>{inc.title}</h4>
-                                    <p style={{ fontSize: 10, color: '#6b7280', textTransform: 'uppercase', fontWeight: 500, letterSpacing: '-0.02em', marginTop: 4, fontStyle: 'italic' }}>{inc.subtitle}</p>
-                                    <p style={{ fontSize: 12, color: '#4b5563', marginTop: 8, fontWeight: 500 }}>{inc.desc}</p>
-                                    <p style={{ fontSize: 9, color: '#9ca3af', marginTop: 12, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 500 }}>{inc.time}</p>
+                                    <h4 style={{ fontWeight: 500, fontStyle: inc.titleItalic ? 'italic' : 'normal' }}>{inc.title}</h4>
+                                    <p style={{ fontSize: 10, textTransform: 'uppercase', fontWeight: 500, letterSpacing: '-0.02em', marginTop: 4, fontStyle: 'italic' }}>{inc.subtitle}</p>
+                                    <p style={{ fontSize: 12, marginTop: 8, fontWeight: 500 }}>{inc.desc}</p>
+                                    <p style={{ fontSize: 9, marginTop: 12, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 500 }}>{inc.time}</p>
                                 </div>
                                 <span className={`sirsi-badge ${inc.badgeClass}`}>{inc.badge}</span>
                             </div>

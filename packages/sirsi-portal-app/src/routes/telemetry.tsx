@@ -121,7 +121,7 @@ function Telemetry() {
                         </div>
                     </div>
                     <div className="mt-4 flex items-center justify-between text-sm">
-                        <span style={{ color: '#6b7280', fontSize: 13 }}>Hot zones indicate high interaction areas</span>
+                        <span style={{ fontSize: 13 }}>Hot zones indicate high interaction areas</span>
                         <button style={{ color: '#059669', fontSize: 13, background: 'none', border: 'none', cursor: 'pointer', fontWeight: 500 }}>View Full Report</button>
                     </div>
                 </div>
@@ -131,15 +131,15 @@ function Telemetry() {
                     <h2 className="text-lg font-medium mb-4" style={{ fontWeight: 500 }}>Scroll Depth Analysis</h2>
                     <div className="space-y-3">
                         {scrollDepthData.map((item) => (
-                            <div key={item.range} className="cursor-pointer hover:bg-gray-50 p-3 rounded-lg transition-colors">
+                            <div key={item.range} className="cursor-pointer hover:bg-slate-50 dark:bg-slate-800 p-3 rounded-lg transition-colors">
                                 <div className="flex items-center justify-between">
                                     <span style={{ fontSize: 14, fontWeight: 500 }}>{item.range}</span>
                                     <span className={`text-2xl font-medium ${item.textColor}`}>{item.percent}%</span>
                                 </div>
-                                <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                                <div className="mt-2 w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
                                     <div className={`${item.color} h-2 rounded-full`} style={{ width: `${item.percent}%` }} />
                                 </div>
-                                <p style={{ fontSize: 12, color: '#6b7280', marginTop: 4 }}>Users reached this depth</p>
+                                <p style={{ fontSize: 12, marginTop: 4 }}>Users reached this depth</p>
                             </div>
                         ))}
                     </div>
@@ -159,7 +159,7 @@ function Telemetry() {
                                         padding: '8px 16px', background: '#e5e7eb',
                                         borderRadius: 20, fontSize: 14, display: 'inline-block', margin: 4,
                                     }}>{step}</span>
-                                    <ArrowRight size={16} style={{ color: '#9ca3af', margin: '0 8px' }} />
+                                    <ArrowRight size={16} style={{ margin: '0 8px' }} />
                                 </span>
                             ))}
                             <span style={{
@@ -179,7 +179,7 @@ function Telemetry() {
                                         padding: '8px 16px', background: '#e5e7eb',
                                         borderRadius: 20, fontSize: 14, display: 'inline-block', margin: 4,
                                     }}>{step}</span>
-                                    <ArrowRight size={16} style={{ color: '#9ca3af', margin: '0 8px' }} />
+                                    <ArrowRight size={16} style={{ margin: '0 8px' }} />
                                 </span>
                             ))}
                             <span style={{
@@ -187,7 +187,7 @@ function Telemetry() {
                                 borderRadius: 20, fontSize: 14, display: 'inline-block', margin: 4,
                                 color: '#991b1b',
                             }}>Exit</span>
-                            <span style={{ marginLeft: 16, fontSize: 14, color: '#6b7280' }}>Avg. time: 45s</span>
+                            <span style={{ marginLeft: 16, fontSize: 14 }}>Avg. time: 45s</span>
                         </div>
                     </div>
                 </div>
@@ -212,11 +212,11 @@ function Telemetry() {
                                     <div className="flex items-center justify-between">
                                         <div>
                                             <p style={{ fontWeight: 500 }}>User {session.id} - {session.email}</p>
-                                            <p style={{ fontSize: 14, color: '#6b7280' }}>{session.status} • {session.location}</p>
+                                            <p style={{ fontSize: 14 }}>{session.status} • {session.location}</p>
                                         </div>
-                                        <span style={{ fontSize: 12, color: '#9ca3af' }}>{session.time}</span>
+                                        <span style={{ fontSize: 12 }}>{session.time}</span>
                                     </div>
-                                    <div style={{ marginTop: 8, fontSize: 14, color: '#4b5563' }}>
+                                    <div style={{ marginTop: 8, fontSize: 14 }}>
                                         {session.actions.map((a, i) => <p key={i}>{a}</p>)}
                                         {session.activeAction && (
                                             <p style={{ color: '#059669' }}>{session.activeAction}</p>
@@ -234,10 +234,10 @@ function Telemetry() {
                         {engagementData.map((item) => (
                             <div key={item.label}>
                                 <div className="flex items-center justify-between mb-1">
-                                    <span style={{ fontSize: 14, color: '#4b5563' }}>{item.label}</span>
+                                    <span style={{ fontSize: 14 }}>{item.label}</span>
                                     <span style={{ fontSize: 14, fontWeight: 500 }}>{item.value}</span>
                                 </div>
-                                <div className="w-full bg-gray-200 rounded-full h-2">
+                                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
                                     <div className={`${item.color} h-2 rounded-full`} style={{ width: `${item.percent}%` }} />
                                 </div>
                             </div>
@@ -297,8 +297,8 @@ function MetricCard({ icon, iconBg, trend, trendColor, value, label, subtext }: 
                 <span className={`text-xs ${trendColor}`}>{trend}</span>
             </div>
             <h3 className="text-2xl font-medium">{value}</h3>
-            <p style={{ fontSize: 14, color: '#4b5563', marginTop: 4 }}>{label}</p>
-            <div style={{ marginTop: 12, fontSize: 12, color: '#6b7280' }}>{subtext}</div>
+            <p style={{ fontSize: 14, marginTop: 4 }}>{label}</p>
+            <div style={{ marginTop: 12, fontSize: 12 }}>{subtext}</div>
         </div>
     )
 }

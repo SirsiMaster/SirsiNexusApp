@@ -51,7 +51,7 @@ function Monitoring() {
                         textTransform: 'uppercase', letterSpacing: '0.1em', border: 'none', cursor: 'pointer',
                         ...(activeTab === i
                             ? { background: '#059669', color: 'white', boxShadow: '0 4px 6px rgba(5,150,105,0.1)' }
-                            : { background: '#f9fafb', color: '#9ca3af' }),
+                            : { background: '#f9fafb' }),
                     }}>{tab}</button>
                 ))}
             </div>
@@ -59,14 +59,14 @@ function Monitoring() {
             {/* Log Stream */}
             <div className="sirsi-card overflow-hidden" style={{ padding: 0 }}>
                 <div className="flex items-center justify-between" style={{ padding: 24, borderBottom: '1px solid #f9fafb', background: 'rgba(249,250,251,0.3)' }}>
-                    <h3 style={{ fontSize: 10, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Encrypted Log Stream</h3>
+                    <h3 style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Encrypted Log Stream</h3>
                     <div className="flex items-center gap-4">
                         <div style={{ position: 'relative' }}>
-                            <Search size={10} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+                            <Search size={10} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }} />
                             <input placeholder="Filter identifiers..."
                                 style={{ paddingLeft: 36, paddingRight: 12, padding: '6px 12px 6px 36px', background: 'white', border: '1px solid #f3f4f6', borderRadius: 8, fontSize: 12, fontWeight: 500, outline: 'none', minWidth: 200 }} />
                         </div>
-                        <button style={{ padding: '6px 16px', background: 'white', border: '1px solid #f3f4f6', borderRadius: 8, fontSize: 10, fontWeight: 500, color: '#111827', cursor: 'pointer' }}>
+                        <button style={{ padding: '6px 16px', background: 'white', border: '1px solid #f3f4f6', borderRadius: 8, fontSize: 10, fontWeight: 500, cursor: 'pointer' }}>
                             Export .LOG
                         </button>
                     </div>
@@ -80,7 +80,7 @@ function Monitoring() {
                             <span style={{ flex: 1 }}>{log.msg}</span>
                         </div>
                     ))}
-                    <div className="flex gap-4 p-1 rounded" style={{ color: '#6b7280', fontStyle: 'italic' }}>
+                    <div className="flex gap-4 p-1 rounded" style={{ fontStyle: 'italic' }}>
                         <span style={{ flexShrink: 0 }}>[--:--:--]</span>
                         <span style={{ flex: 1 }}>Stream synchronized... awaiting next protocol cycle.</span>
                     </div>
@@ -90,25 +90,25 @@ function Monitoring() {
             {/* Performance Charts */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
                 <div className="sirsi-card">
-                    <h3 className="border-l-4 border-emerald-600 pl-4 mb-6" style={{ fontSize: 12, fontWeight: 600, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Response Latency</h3>
+                    <h3 className="border-l-4 border-emerald-600 pl-4 mb-6" style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Response Latency</h3>
                     <div style={{ height: 192, display: 'flex', alignItems: 'flex-end', gap: 8, paddingBottom: 8 }}>
                         {latencyBars.map((h, i) => (
                             <div key={i} style={{ flex: 1, background: latencyColors[i], borderRadius: '4px 4px 0 0', height: `${h}%` }} />
                         ))}
                     </div>
-                    <div className="flex justify-between mt-4" style={{ fontSize: 9, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase' }}>
+                    <div className="flex justify-between mt-4" style={{ fontSize: 9, fontWeight: 500, textTransform: 'uppercase' }}>
                         <span>T-minus 8H</span>
                         <span>Now (Synced)</span>
                     </div>
                 </div>
                 <div className="sirsi-card">
-                    <h3 className="border-l-4 border-amber-600 pl-4 mb-6" style={{ fontSize: 12, fontWeight: 600, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Error Density</h3>
+                    <h3 className="border-l-4 border-amber-600 pl-4 mb-6" style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Error Density</h3>
                     <div style={{ height: 192, display: 'flex', alignItems: 'flex-end', gap: 8, paddingBottom: 8 }}>
                         {errorBars.map((h, i) => (
                             <div key={i} style={{ flex: 1, background: h > 20 ? '#fde68a' : '#f9fafb', borderRadius: '4px 4px 0 0', height: `${h}%` }} />
                         ))}
                     </div>
-                    <div className="flex justify-between mt-4" style={{ fontSize: 9, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase' }}>
+                    <div className="flex justify-between mt-4" style={{ fontSize: 9, fontWeight: 500, textTransform: 'uppercase' }}>
                         <span>T-minus 8H</span>
                         <span>Now (Healthy)</span>
                     </div>

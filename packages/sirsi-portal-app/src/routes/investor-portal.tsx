@@ -74,7 +74,7 @@ function InvestorPortalPage() {
                             Live Platform KPIs
                         </span>
                     </div>
-                    <span style={{ fontSize: 10, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <span style={{ fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                         Synchronized 2m Ago
                     </span>
                 </div>
@@ -141,12 +141,12 @@ function InvestorPortalPage() {
                                 <h4 className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 transition-colors">
                                     {section.title}
                                 </h4>
-                                <p style={{ fontSize: 10, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.02em' }}>
+                                <p style={{ fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.02em' }}>
                                     {section.sub}
                                 </p>
                             </div>
                         </div>
-                        <div className="flex justify-between items-center" style={{ fontSize: 10, fontWeight: 500, color: '#9ca3af' }}>
+                        <div className="flex justify-between items-center" style={{ fontSize: 10, fontWeight: 500 }}>
                             <span>{section.docs} DOCUMENTS</span>
                             <span className="text-emerald-600">VIEW →</span>
                         </div>
@@ -155,15 +155,15 @@ function InvestorPortalPage() {
             </div>
 
             {/* ── Compliance Footer ── */}
-            <div className="sirsi-card bg-gray-50 dark:bg-gray-800 border-gray-100 dark:border-gray-700 text-center py-6">
-                <p style={{ fontSize: 11, fontWeight: 600, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 4 }}>
+            <div className="sirsi-card bg-slate-50 dark:bg-slate-800 dark:bg-gray-800 border-slate-100 dark:border-slate-700 dark:border-gray-700 text-center py-6">
+                <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 4 }}>
                     Institutional Compliance Disclaimer
                 </p>
                 <p className="text-xs text-gray-500 italic max-w-2xl mx-auto">
                     This portal contains highly confidential strategic data. Unauthorized access or reproduction
                     is strictly prohibited and subject to legal enforcement under the Sirsi Nexus Non-Disclosure Agreement.
                 </p>
-                <div className="mt-4 flex justify-center gap-8" style={{ fontSize: 9, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase' }}>
+                <div className="mt-4 flex justify-center gap-8" style={{ fontSize: 9, fontWeight: 500, textTransform: 'uppercase' }}>
                     <span>PREPARED BY: STRATEGY TEAM</span>
                     <span>REVIEW: QUARTERLY</span>
                     <span>DISTRIBUTION: COMMITTEE ONLY</span>
