@@ -12,7 +12,7 @@
  *   client   → /client-portal
  */
 
-import { createRoute, useNavigate } from '@tanstack/react-router'
+import { createRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './__root'
 import { useState, useEffect } from 'react'
 import { Eye, EyeOff, Loader2 } from 'lucide-react'
@@ -24,11 +24,13 @@ export const Route = createRoute({
     component: LoginPage,
 })
 
-// ── Demo credentials (dev fallback, matches login.html) ──
-const DEMO_CREDENTIALS = [
+// ── Canonical Portal Credentials (maps to real Firebase Auth accounts) ──
+// Source of truth: governance/user_registry_canon.md
+// Portal IDs + Access Codes → Firebase email + password
+const PORTAL_CREDENTIALS = [
     { id: 'ADMIN', code: 'ADMIN2025', name: 'Administrator', role: 'admin', email: 'cylton@sirsi.ai' },
-    { id: 'INV001', code: 'DEMO2025', name: 'Investor', role: 'investor', email: 'investor@sirsi.ai' },
-    { id: 'CLIENT', code: 'CLIENT2025', name: 'Client', role: 'client', email: 'client@sirsi.ai' },
+    { id: 'INV001', code: 'DEMO2025', name: 'Investor', role: 'investor', email: 'sirsimaster@gmail.com' },
+    { id: 'CLIENT', code: 'CLIENT2025', name: 'Client', role: 'client', email: 'sirsimaster@gmail.com' },
 ]
 
 const ROLE_ROUTES: Record<string, { path: string; label: string }> = {
@@ -38,7 +40,6 @@ const ROLE_ROUTES: Record<string, { path: string; label: string }> = {
 }
 
 function LoginPage() {
-    const navigate = useNavigate()
     const { isAuthenticated, signIn } = useAuth()
     const [mode, setMode] = useState<'email' | 'demo'>('email')
     const [email, setEmail] = useState('')
@@ -53,9 +54,9 @@ function LoginPage() {
     // If already authenticated, redirect to dashboard
     useEffect(() => {
         if (isAuthenticated) {
-            navigate({ to: '/dashboard' } as any)
+            window.location.href = '/dashboard'
         }
-    }, [isAuthenticated, navigate])
+    }, [isAuthenticated])
 
     // ── Firebase Email Login ──
     const handleEmailLogin = async (e: React.FormEvent) => {
@@ -66,7 +67,6 @@ function LoginPage() {
         try {
             await signIn(email, password)
             setSuccess('Admin Portal')
-            // Use full page navigation to force clean auth state
             setTimeout(() => {
                 window.location.href = '/dashboard'
             }, 1200)
@@ -76,34 +76,34 @@ function LoginPage() {
         }
     }
 
-    // ── Demo Credentials Login (dev fallback) ──
+    // ── Portal Credentials Login (Firebase Auth — NOT sessionStorage) ──
     const handleDemoLogin = async (e: React.FormEvent) => {
         e.preventDefault()
         setError('')
         setLoading(true)
 
-        setTimeout(() => {
-            const cred = DEMO_CREDENTIALS.find(
-                c => c.id === portalId.trim() && c.code === accessCode.trim()
-            )
+        const cred = PORTAL_CREDENTIALS.find(
+            c => c.id === portalId.trim().toUpperCase() && c.code === accessCode.trim()
+        )
 
-            if (cred) {
-                sessionStorage.setItem('investorAuth', JSON.stringify({
-                    id: cred.id, name: cred.name, role: cred.role,
-                    loginTime: new Date().toISOString(),
-                }))
-                setSuccess(ROLE_ROUTES[cred.role]?.label ?? 'Portal')
-                // Use full page navigation to force AuthProvider re-init
-                // (client-side navigate won't re-read sessionStorage)
-                const targetPath = ROLE_ROUTES[cred.role]?.path ?? '/dashboard'
-                setTimeout(() => {
-                    window.location.href = targetPath
-                }, 1200)
-            } else {
-                setError('Invalid Portal ID or Access Code.')
-                setLoading(false)
-            }
-        }, 800)
+        if (!cred) {
+            setError('Invalid Portal ID or Access Code.')
+            setLoading(false)
+            return
+        }
+
+        try {
+            // Use the access code as the Firebase password
+            await signIn(cred.email, cred.code)
+            setSuccess(ROLE_ROUTES[cred.role]?.label ?? 'Portal')
+            const targetPath = ROLE_ROUTES[cred.role]?.path ?? '/dashboard'
+            setTimeout(() => {
+                window.location.href = targetPath
+            }, 1200)
+        } catch (err: any) {
+            setError(err.message || 'Authentication failed')
+            setLoading(false)
+        }
     }
 
     return (
