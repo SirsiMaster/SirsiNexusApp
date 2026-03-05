@@ -382,10 +382,10 @@ function AdminLayout() {
                             <div className="admin-header-brand-text">
                                 <span className="admin-header-brand-name">SirsiNexus</span>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                    <LinkComp to="/changelog" style={{ fontSize: 11, color: '#64748b', background: '#f1f5f9', padding: '1px 8px', borderRadius: 4, textDecoration: 'none', cursor: 'pointer' }}>{APP_VERSION_DISPLAY}</LinkComp>
+                                    <LinkComp to="/changelog" style={{ fontSize: 11, color: isDark ? '#94a3b8' : '#64748b', background: isDark ? '#1e293b' : '#f1f5f9', padding: '1px 8px', borderRadius: 4, textDecoration: 'none', cursor: 'pointer' }}>{APP_VERSION_DISPLAY}</LinkComp>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                                         <span className="admin-header-dot" />
-                                        <span style={{ fontSize: 11, color: '#475569', fontWeight: 500 }}>Live</span>
+                                        <span style={{ fontSize: 11, color: isDark ? '#cbd5e1' : '#475569', fontWeight: 500 }}>Live</span>
                                     </div>
                                 </div>
                             </div>

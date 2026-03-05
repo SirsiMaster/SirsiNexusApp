@@ -59,32 +59,34 @@ function DataRoom() {
                     return (
                         <div key={card.label} className="sirsi-card">
                             <div className="flex items-center justify-between mb-4">
-                                <span style={{ fontSize: 10, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{card.label}</span>
-                                <Icon size={16} style={{ color: '#059669' }} />
+                                <span className="text-slate-400 dark:text-slate-500" style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{card.label}</span>
+                                <Icon size={16} className="text-emerald-600" />
                             </div>
-                            <div style={{ fontSize: 30, fontWeight: 600, color: '#111827' }}>{card.value}</div>
-                            <div style={{ fontSize: 9, color: '#059669', fontWeight: 500, marginTop: 8, fontStyle: 'italic' }}>{card.note}</div>
+                            <div className="text-slate-900 dark:text-slate-100" style={{ fontSize: 30, fontWeight: 600 }}>{card.value}</div>
+                            <div className="text-emerald-600" style={{ fontSize: 9, fontWeight: 500, marginTop: 8, fontStyle: 'italic' }}>{card.note}</div>
                         </div>
                     )
                 })}
             </div>
 
             {/* Filter Bar */}
-            <div className="flex flex-col md:flex-row gap-4 mb-8 items-center justify-between" style={{ background: 'white', padding: 16, borderRadius: 12, border: '1px solid #f3f4f6', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
+            <div className="flex flex-col md:flex-row gap-4 mb-8 items-center justify-between sirsi-card">
                 <div style={{ position: 'relative', flex: 1, maxWidth: 448, width: '100%' }}>
-                    <Search size={16} style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: '#9ca3af' }} />
+                    <Search size={16} className="text-slate-400 dark:text-slate-500" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }} />
                     <input type="text" value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
                         placeholder="Search identities, tags, or CID hashes..."
-                        style={{ width: '100%', paddingLeft: 48, paddingRight: 16, padding: '10px 16px 10px 48px', background: '#f9fafb', border: '1px solid transparent', borderRadius: 8, fontSize: 14, outline: 'none' }} />
+                        className="bg-slate-50 dark:bg-slate-700 border border-transparent dark:border-slate-600 text-slate-900 dark:text-slate-100"
+                        style={{ width: '100%', paddingLeft: 48, paddingRight: 16, padding: '10px 16px 10px 48px', borderRadius: 8, fontSize: 14, outline: 'none' }} />
                 </div>
                 <div className="flex gap-2 overflow-x-auto w-full md:w-auto">
                     {filters.map(f => (
-                        <button key={f} onClick={() => setActiveFilter(f)} style={{
+                        <button key={f} onClick={() => setActiveFilter(f)} className={
+                            activeFilter === f
+                                ? 'bg-emerald-600 text-white shadow-sm'
+                                : 'bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-500'
+                        } style={{
                             padding: '8px 16px', fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em',
                             borderRadius: 8, border: 'none', cursor: 'pointer',
-                            ...(activeFilter === f
-                                ? { background: '#059669', color: 'white', boxShadow: '0 4px 6px rgba(5,150,105,0.1)' }
-                                : { background: '#f9fafb', color: '#9ca3af' }),
                         }}>{f}</button>
                     ))}
                 </div>
@@ -106,26 +108,26 @@ function DataRoom() {
                         {documents.map(doc => {
                             const Icon = doc.icon as any
                             return (
-                                <tr key={doc.id} className="hover:bg-gray-50/50 transition-colors">
+                                <tr key={doc.id} className="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
                                     <td style={{ paddingLeft: 24, paddingTop: 20, paddingBottom: 20 }}>
                                         <div className="flex items-center gap-4">
-                                            <div style={{ width: 40, height: 40, background: '#ecfdf5', color: '#059669', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #d1fae5' }}>
+                                            <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 border border-emerald-200 dark:border-emerald-800" style={{ width: 40, height: 40, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 <Icon size={16} />
                                             </div>
                                             <div>
-                                                <div style={{ fontWeight: 500, color: '#111827' }}>{doc.name}</div>
-                                                <div style={{ fontSize: 9, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>ID: {doc.id}</div>
+                                                <div className="text-slate-900 dark:text-slate-100" style={{ fontWeight: 500 }}>{doc.name}</div>
+                                                <div className="text-slate-400 dark:text-slate-500" style={{ fontSize: 9, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>ID: {doc.id}</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td><span style={{ fontSize: 10, fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{doc.category}</span></td>
+                                    <td><span className="text-slate-500 dark:text-slate-400" style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{doc.category}</span></td>
                                     <td><span className={`sirsi-badge ${doc.accessClass}`}>{doc.access}</span></td>
-                                    <td><span style={{ fontSize: 12, fontWeight: 500, color: '#9ca3af' }}>{doc.date}</span></td>
+                                    <td><span className="text-slate-400 dark:text-slate-500" style={{ fontSize: 12, fontWeight: 500 }}>{doc.date}</span></td>
                                     <td style={{ textAlign: 'right', paddingRight: 24 }}>
                                         <div className="flex gap-2 justify-end">
-                                            <button style={{ color: '#d1d5db', background: 'none', border: 'none', cursor: 'pointer' }} className="hover:text-emerald-600 transition-colors"><Eye size={16} /></button>
-                                            <button style={{ color: '#d1d5db', background: 'none', border: 'none', cursor: 'pointer' }} className="hover:text-blue-600 transition-colors"><Download size={16} /></button>
-                                            <button style={{ color: '#d1d5db', background: 'none', border: 'none', cursor: 'pointer' }} className="hover:text-red-600 transition-colors"><Trash2 size={16} /></button>
+                                            <button className="text-slate-300 dark:text-slate-600 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Eye size={16} /></button>
+                                            <button className="text-slate-300 dark:text-slate-600 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Download size={16} /></button>
+                                            <button className="text-slate-300 dark:text-slate-600 hover:text-red-600 dark:hover:text-red-400 transition-colors" style={{ background: 'none', border: 'none', cursor: 'pointer' }}><Trash2 size={16} /></button>
                                         </div>
                                     </td>
                                 </tr>

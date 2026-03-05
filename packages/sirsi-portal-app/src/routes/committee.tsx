@@ -41,7 +41,7 @@ function Committee() {
                                 <Icon size={20} />
                             </div>
                             <div>
-                                <div style={{ fontSize: 24, fontWeight: 600, color: '#111827' }}>{s.value}</div>
+                                <div className="text-slate-900 dark:text-slate-100" style={{ fontSize: 24, fontWeight: 600 }}>{s.value}</div>
                                 <div className={`${s.labelColor}`} style={{ fontSize: 9, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{s.label}</div>
                             </div>
                         </div>
@@ -49,29 +49,29 @@ function Committee() {
                 })}
             </div>
 
-            <h3 className="border-l-4 border-emerald-600 pl-4 mb-6" style={{ fontSize: 12, fontWeight: 600, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Meeting Archive Protocol</h3>
+            <h3 className="border-l-4 border-emerald-600 pl-4 mb-6 text-slate-400 dark:text-slate-500" style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Meeting Archive Protocol</h3>
 
             <div className="space-y-4">
                 {meetings.map(m => (
                     <div key={m.ref} className="sirsi-card group cursor-pointer hover:border-emerald-200 transition-all overflow-hidden" style={{ padding: 0 }}>
                         <div className="flex items-center justify-between" style={{ padding: 24 }}>
                             <div className="flex items-center gap-6">
-                                <div style={{ width: 56, height: 56, background: '#f9fafb', border: '1px solid #f3f4f6', borderRadius: 12, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                                <div className="bg-slate-50 dark:bg-slate-700 border border-slate-100 dark:border-slate-600" style={{ width: 56, height: 56, borderRadius: 12, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                                     <span className={m.monthColor} style={{ fontSize: 9, fontWeight: 600, textTransform: 'uppercase', lineHeight: 1, marginBottom: 4 }}>{m.month}</span>
-                                    <span style={{ fontSize: 20, fontWeight: 600, color: '#111827', lineHeight: 1 }}>{m.day}</span>
+                                    <span className="text-slate-900 dark:text-slate-100" style={{ fontSize: 20, fontWeight: 600, lineHeight: 1 }}>{m.day}</span>
                                 </div>
                                 <div>
-                                    <h4 style={{ fontWeight: 500, color: '#111827' }} className="group-hover:text-emerald-600 transition-colors">{m.title}</h4>
-                                    <p style={{ fontSize: 10, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '-0.02em', marginTop: 4 }}>Ref CID: {m.ref}</p>
+                                    <h4 className="text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 transition-colors" style={{ fontWeight: 500 }}>{m.title}</h4>
+                                    <p className="text-slate-400 dark:text-slate-500" style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '-0.02em', marginTop: 4 }}>Ref CID: {m.ref}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-8">
                                 <div className="text-right hidden md:block">
-                                    <div style={{ fontSize: 12, fontWeight: 500, color: '#111827' }}>{m.docTitle}</div>
-                                    <div style={{ fontSize: 10, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{m.docSub}</div>
+                                    <div className="text-slate-900 dark:text-slate-100" style={{ fontSize: 12, fontWeight: 500 }}>{m.docTitle}</div>
+                                    <div className="text-slate-400 dark:text-slate-500" style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{m.docSub}</div>
                                 </div>
                                 <span className="sirsi-badge sirsi-badge-success" style={{ fontWeight: 600 }}>LOCKED</span>
-                                <ChevronRight size={16} style={{ color: '#d1d5db' }} className="group-hover:text-emerald-600 transition-all" />
+                                <ChevronRight size={16} className="text-slate-300 dark:text-slate-600 group-hover:text-emerald-600 transition-all" />
                             </div>
                         </div>
                     </div>

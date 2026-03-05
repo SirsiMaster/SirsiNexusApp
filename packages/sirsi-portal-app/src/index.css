@@ -315,6 +315,17 @@
   color: #0f172a;
 }
 
+.dark .btn-secondary {
+  color: #cbd5e1;
+  border-color: #334155;
+}
+
+.dark .btn-secondary:hover {
+  background: #1e293b;
+  border-color: #475569;
+  color: #f1f5f9;
+}
+
 /* Pulse dot */
 .pulse-dot {
   @apply w-2 h-2 rounded-full bg-emerald-500;
@@ -483,6 +494,27 @@
   border-radius: 3px;
   font-family: 'Monaco', 'Menlo', monospace;
   line-height: 1.3;
+}
+
+/* Dark mode for search elements */
+.dark .admin-header-search input {
+  background: #1e293b;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+.dark .admin-header-search input:focus {
+  background: #1e293b;
+  border-color: var(--snd-border-focus, #059669);
+}
+
+.dark .admin-header-search-icon {
+  color: #64748b;
+}
+
+.dark .admin-header-search-kbd {
+  background: #334155;
+  color: #64748b;
 }
 
 .admin-header-right {
