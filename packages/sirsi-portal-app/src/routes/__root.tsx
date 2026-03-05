@@ -302,21 +302,22 @@ function RootLayout() {
     // Check if this is a public page (NOT inside admin/portal directory)
     const isPublicPage = PUBLIC_PATHS.some(p => currentPath === p || currentPath.startsWith(p + '/'))
 
-    if (isPublicPage) {
-        return (
-            <AuthProvider>
-                <PublicLayout />
-                <DevtoolsComp />
-            </AuthProvider>
-        )
-    }
-
-    // Otherwise render admin layout with auth guard
+    // AuthProvider MUST wrap both branches so auth state persists
+    // across public→admin navigation (e.g., /login → /dashboard).
+    // Previously each branch had its own AuthProvider which caused
+    // remounting and auth state loss on route transitions.
     return (
         <AuthProvider>
-            <ProtectedRoute>
-                <AdminLayout />
-            </ProtectedRoute>
+            {isPublicPage ? (
+                <>
+                    <PublicLayout />
+                    <DevtoolsComp />
+                </>
+            ) : (
+                <ProtectedRoute>
+                    <AdminLayout />
+                </ProtectedRoute>
+            )}
         </AuthProvider>
     )
 }
