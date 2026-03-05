@@ -88,29 +88,29 @@ function Security() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
                 <div className="sirsi-card text-center" style={{ paddingTop: 32, paddingBottom: 32 }}>
                     <div className="text-red-500 mb-3"><Ban size={28} /></div>
-                    <div style={{ fontSize: 36, fontWeight: 800, color: '#111827', marginBottom: 4 }}>23</div>
-                    <div style={{ fontSize: 11, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Blocked Attempts</div>
+                    <div style={{ fontSize: 36, fontWeight: 800, marginBottom: 4 }} className="text-slate-900 dark:text-slate-100">23</div>
+                    <div className="text-slate-400 dark:text-slate-500" style={{ fontSize: 11, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Blocked Attempts</div>
                 </div>
                 <div className="sirsi-card text-center border-emerald-100 bg-emerald-50/20" style={{ paddingTop: 32, paddingBottom: 32 }}>
                     <div className="text-emerald-600 mb-3"><UserCheck size={28} /></div>
-                    <div style={{ fontSize: 36, fontWeight: 800, color: '#111827', marginBottom: 4 }}>100%</div>
-                    <div style={{ fontSize: 11, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Users with MFA</div>
+                    <div style={{ fontSize: 36, fontWeight: 800, marginBottom: 4 }} className="text-slate-900 dark:text-slate-100">100%</div>
+                    <div className="text-slate-400 dark:text-slate-500" style={{ fontSize: 11, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Users with MFA</div>
                 </div>
                 <div className="sirsi-card text-center" style={{ paddingTop: 32, paddingBottom: 32 }}>
                     <div className="text-emerald-500 mb-3"><Lock size={28} /></div>
-                    <div style={{ fontSize: 36, fontWeight: 800, color: '#111827', marginBottom: 4 }}>SSL A+</div>
-                    <div style={{ fontSize: 11, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Encryption Rating</div>
+                    <div style={{ fontSize: 36, fontWeight: 800, marginBottom: 4 }} className="text-slate-900 dark:text-slate-100">SSL A+</div>
+                    <div className="text-slate-400 dark:text-slate-500" style={{ fontSize: 11, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Encryption Rating</div>
                 </div>
                 <div className="sirsi-card text-center" style={{ paddingTop: 32, paddingBottom: 32 }}>
                     <div className="text-amber-500 mb-3"><Clock size={28} /></div>
-                    <div style={{ fontSize: 36, fontWeight: 800, color: '#111827', marginBottom: 4 }}>2d</div>
-                    <div style={{ fontSize: 11, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Since Last Audit</div>
+                    <div style={{ fontSize: 36, fontWeight: 800, marginBottom: 4 }} className="text-slate-900 dark:text-slate-100">2d</div>
+                    <div className="text-slate-400 dark:text-slate-500" style={{ fontSize: 11, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Since Last Audit</div>
                 </div>
             </div>
 
             {/* ── Access Control ── */}
             <div className="sirsi-card mb-8">
-                <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24 }}>Active Administrative Sessions</h3>
+                <h3 className="text-slate-900 dark:text-slate-100" style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24 }}>Active Administrative Sessions</h3>
                 <div className="sirsi-table-wrap mb-8">
                     <table className="sirsi-table">
                         <thead>
@@ -125,10 +125,10 @@ function Security() {
                         <tbody>
                             {sessions.map((s) => (
                                 <tr key={s.ip}>
-                                    <td style={{ fontWeight: 500, color: '#111827', fontStyle: 'italic' }}>{s.email}</td>
+                                    <td className="text-slate-900 dark:text-slate-100" style={{ fontWeight: 500, fontStyle: 'italic' }}>{s.email}</td>
                                     <td><code style={{ fontSize: 12, fontFamily: 'monospace' }}>{s.ip}</code></td>
                                     <td>{s.location}</td>
-                                    <td style={{ color: '#6b7280' }}>{s.time}</td>
+                                    <td className="text-slate-500 dark:text-slate-400">{s.time}</td>
                                     <td style={{ textAlign: 'right' }}>
                                         <button className="btn-secondary group hover:border-red-500 hover:text-red-500"
                                             onClick={() => window.confirm('Terminate this session?') && alert('Session terminated')}>
@@ -141,13 +141,13 @@ function Security() {
                     </table>
                 </div>
 
-                <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 16 }}>Governance & Access Rules</h3>
+                <h3 className="text-slate-900 dark:text-slate-100" style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 16 }}>Governance & Access Rules</h3>
                 <div className="space-y-4">
                     {governanceRules.map(rule => (
-                        <div key={rule.name} className="flex items-center justify-between p-5 bg-gray-50 rounded-xl border border-gray-100 hover:border-emerald-200 transition-all">
+                        <div key={rule.name} className="flex items-center justify-between p-5 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-emerald-200 dark:hover:border-emerald-700 transition-all">
                             <div>
-                                <p style={{ fontWeight: 500, color: '#111827' }}>{rule.name}</p>
-                                <p style={{ fontSize: 12, color: '#6b7280', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{rule.desc}</p>
+                                <p className="text-slate-900 dark:text-slate-100" style={{ fontWeight: 500 }}>{rule.name}</p>
+                                <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: 12, marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{rule.desc}</p>
                             </div>
                             <ToggleSwitch checked={toggles[rule.name]} onChange={() => toggleRule(rule.name)} />
                         </div>
@@ -157,18 +157,18 @@ function Security() {
 
             {/* ── Firewall & IP Management ── */}
             <div className="sirsi-card mb-8">
-                <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24 }}>Firewall & Perimeter Defense</h3>
+                <h3 className="text-slate-900 dark:text-slate-100" style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 24 }}>Firewall & Perimeter Defense</h3>
 
                 <div className="mb-8">
-                    <h4 style={{ fontSize: 11, fontWeight: 500, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 16 }}>IP Whitelist Context</h4>
+                    <h4 className="text-slate-400 dark:text-slate-500" style={{ fontSize: 11, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 16 }}>IP Whitelist Context</h4>
                     <div className="space-y-3 mb-6">
                         {whitelist.map(w => (
-                            <div key={w.ip} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
-                                <span style={{ fontSize: 14, fontWeight: 500, color: '#374151', fontFamily: 'monospace', letterSpacing: '-0.02em' }}>
+                            <div key={w.ip} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700">
+                                <span className="text-slate-700 dark:text-slate-300" style={{ fontSize: 14, fontWeight: 500, fontFamily: 'monospace', letterSpacing: '-0.02em' }}>
                                     {w.ip}
-                                    {w.label && <span style={{ color: '#9ca3af', fontWeight: 400, marginLeft: 8, fontStyle: 'italic', fontFamily: 'Inter, sans-serif' }}>— {w.label}</span>}
+                                    {w.label && <span className="text-slate-400 dark:text-slate-500" style={{ fontWeight: 400, marginLeft: 8, fontStyle: 'italic', fontFamily: 'Inter, sans-serif' }}>— {w.label}</span>}
                                 </span>
-                                <button onClick={() => removeIP(w.ip)} style={{ color: '#9ca3af', background: 'none', border: 'none', cursor: 'pointer' }} className="hover:text-red-500 transition-colors">
+                                <button onClick={() => removeIP(w.ip)} className="text-slate-400 dark:text-slate-500 hover:text-red-500 transition-colors" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
                                     <Trash2 size={14} />
                                 </button>
                             </div>
@@ -182,6 +182,7 @@ function Security() {
                                 flex: 1, padding: '8px 16px', border: '1px solid #e5e7eb',
                                 borderRadius: 8, fontSize: 14, outline: 'none',
                             }}
+                            className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-600"
                         />
                         <button className="btn-primary flex items-center gap-2" onClick={addIP}>
                             <Plus size={14} /> Authorize IP
@@ -189,7 +190,7 @@ function Security() {
                     </div>
                 </div>
 
-                <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 16 }}>Active Firewall Protocols</h3>
+                <h3 className="text-slate-900 dark:text-slate-100" style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 16 }}>Active Firewall Protocols</h3>
                 <div className="space-y-4">
                     {firewallRules.map(rule => (
                         <div key={rule.name} className="flex items-center justify-between p-5 rounded-xl" style={{ background: 'rgba(236, 253, 245, 0.3)', border: '1px solid #d1fae5' }}>
@@ -209,11 +210,11 @@ function Security() {
                     <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Historical Audit Ledger</h3>
                 </div>
                 <div className="space-y-3">
-                    <div className="p-4 bg-gray-50 border border-gray-100 rounded-xl flex justify-between items-start">
+                    <div className="p-4 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl flex justify-between items-start">
                         <div>
-                            <h6 style={{ fontWeight: 500, color: '#111827', marginBottom: 4 }}>Failed Login Attempt</h6>
-                            <p style={{ fontSize: 12, color: '#6b7280', fontStyle: 'italic' }}>Multiple invalid handshakes detected from IP 45.142.182.112</p>
-                            <p style={{ fontSize: 10, color: '#9ca3af', marginTop: 8, textTransform: 'uppercase', fontWeight: 500, letterSpacing: '-0.02em' }}>10 mins ago • Vector: Brute Force</p>
+                            <h6 className="text-slate-900 dark:text-slate-100" style={{ fontWeight: 500, marginBottom: 4 }}>Failed Login Attempt</h6>
+                            <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: 12, fontStyle: 'italic' }}>Multiple invalid handshakes detected from IP 45.142.182.112</p>
+                            <p className="text-slate-400 dark:text-slate-500" style={{ fontSize: 10, marginTop: 8, textTransform: 'uppercase', fontWeight: 500, letterSpacing: '-0.02em' }}>10 mins ago • Vector: Brute Force</p>
                         </div>
                         <span className="sirsi-badge sirsi-badge-error">Critical</span>
                     </div>
