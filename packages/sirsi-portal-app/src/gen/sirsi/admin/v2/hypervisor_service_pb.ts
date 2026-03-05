@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file sirsi/admin/v2/hypervisor_service.proto.
  */
 export const file_sirsi_admin_v2_hypervisor_service: GenFile = /*@__PURE__*/
-  fileDesc("CidzaXJzaS9hZG1pbi92Mi9oeXBlcnZpc29yX3NlcnZpY2UucHJvdG8SDnNpcnNpLmFkbWluLnYyIjoKEEh5cGVydmlzb3JGaWx0ZXISEQoJdGVuYW50X2lkGAEgASgJEhMKC2Vudmlyb25tZW50GAIgASgJIlAKHEdldEh5cGVydmlzb3JPdmVydmlld1JlcXVlc3QSMAoGZmlsdGVyGAEgASgLMiAuc2lyc2kuYWRtaW4udjIuSHlwZXJ2aXNvckZpbHRlciJOChpHZXRIeXBlcnZpc29yRGV2T3BzUmVxdWVzdBIwCgZmaWx0ZXIYASABKAsyIC5zaXJzaS5hZG1pbi52Mi5IeXBlcnZpc29yRmlsdGVyIlAKHEdldEh5cGVydmlzb3JTZWN1cml0eVJlcXVlc3QSMAoGZmlsdGVyGAEgASgLMiAuc2lyc2kuYWRtaW4udjIuSHlwZXJ2aXNvckZpbHRlciI9CgtVcHRpbWVHYXVnZRIPCgdjdXJyZW50GAEgASgBEg4KBnRhcmdldBgCIAEoARINCgV0cmVuZBgDIAMoASIqCgpDb3VudEdhdWdlEg0KBWNvdW50GAEgASgFEg0KBXRyZW5kGAIgAygBIjwKClNwZW5kR2F1Z2USDwoHY3VycmVudBgBIAEoARIOCgZidWRnZXQYAiABKAESDQoFdHJlbmQYAyADKAEitwEKDVRlbmFudFN1bW1hcnkSCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRIMCgRzbHVnGAMgASgJEg4KBnN0YXR1cxgEIAEoCRITCgtlbnZpcm9ubWVudBgFIAEoCRISCgp1cHRpbWVfMzBkGAYgASgBEhcKD2RlcGxveW1lbnRzXzI0aBgHIAEoBRIWCg5vcGVuX2luY2lkZW50cxgIIAEoBRIUCgx1cHRpbWVfdHJlbmQYCSADKAEibwoNQWN0aXZpdHlFdmVudBIKCgJpZBgBIAEoCRIRCgl0aW1lc3RhbXAYAiABKAkSDAoEdHlwZRgDIAEoCRIOCgZ0ZW5hbnQYBCABKAkSDwoHbWVzc2FnZRgFIAEoCRIQCghzZXZlcml0eRgGIAEoCSKDAQoPSW5jaWRlbnRTdW1tYXJ5EgoKAmlkGAEgASgJEg0KBXRpdGxlGAIgASgJEhAKCHNldmVyaXR5GAMgASgJEg4KBnN0YXR1cxgEIAEoCRIRCglvcGVuZWRfYXQYBSABKAkSDgoGdGVuYW50GAYgASgJEhAKCGFzc2lnbmVlGAcgASgJItcCCh1HZXRIeXBlcnZpc29yT3ZlcnZpZXdSZXNwb25zZRIrCgZ1cHRpbWUYASABKAsyGy5zaXJzaS5hZG1pbi52Mi5VcHRpbWVHYXVnZRIzCg9kZXBsb3ltZW50c18yNGgYAiABKAsyGi5zaXJzaS5hZG1pbi52Mi5Db3VudEdhdWdlEjMKD2Nsb3VkX3NwZW5kX210ZBgDIAEoCzIaLnNpcnNpLmFkbWluLnYyLlNwZW5kR2F1Z2USLgoHdGVuYW50cxgEIAMoCzIdLnNpcnNpLmFkbWluLnYyLlRlbmFudFN1bW1hcnkSNgoPcmVjZW50X2FjdGl2aXR5GAUgAygLMh0uc2lyc2kuYWRtaW4udjIuQWN0aXZpdHlFdmVudBI3Cg5vcGVuX2luY2lkZW50cxgGIAMoCzIfLnNpcnNpLmFkbWluLnYyLkluY2lkZW50U3VtbWFyeSJcCgpET1JBTWV0cmljEg4KBnRlbmFudBgBIAEoCRINCgV2YWx1ZRgCIAEoARIMCgR1bml0GAMgASgJEhIKCmRvcmFfbGV2ZWwYBCABKAkSDQoFdHJlbmQYBSADKAEiOwoTRGVwbG95bWVudEZyZXF1ZW5jeRIOCgZ0ZW5hbnQYASABKAkSFAoMZGFpbHlfY291bnRzGAIgAygFIqIBCgpEZXBsb3ltZW50EgoKAmlkGAEgASgJEgsKA3NoYRgCIAEoCRIOCgZ0ZW5hbnQYAyABKAkSEwoLZW52aXJvbm1lbnQYBCABKAkSDwoHdmVyc2lvbhgFIAEoCRIOCgZzdGF0dXMYBiABKAkSEAoIZGVwbG95ZXIYByABKAkSEAoIZHVyYXRpb24YCCABKAkSEQoJdGltZXN0YW1wGAkgASgJImcKDlBpcGVsaW5lU3RhdHVzEg4KBnRlbmFudBgBIAEoCRITCgtlbnZpcm9ubWVudBgCIAEoCRIOCgZzdGF0dXMYAyABKAkSEAoIbGFzdF9ydW4YBCABKAkSDgoGYnJhbmNoGAUgASgJIkIKC0J1aWxkSGVhbHRoEg4KBnRlbmFudBgBIAEoCRIUCgxzdWNjZXNzX3JhdGUYAiABKAESDQoFdHJlbmQYAyADKAEilgMKG0dldEh5cGVydmlzb3JEZXZPcHNSZXNwb25zZRJBChRkZXBsb3ltZW50X2ZyZXF1ZW5jeRgBIAMoCzIjLnNpcnNpLmFkbWluLnYyLkRlcGxveW1lbnRGcmVxdWVuY3kSNwoTY2hhbmdlX2ZhaWx1cmVfcmF0ZRgCIAMoCzIaLnNpcnNpLmFkbWluLnYyLkRPUkFNZXRyaWMSKAoEbXR0chgDIAMoCzIaLnNpcnNpLmFkbWluLnYyLkRPUkFNZXRyaWMSLQoJbGVhZF90aW1lGAQgAygLMhouc2lyc2kuYWRtaW4udjIuRE9SQU1ldHJpYxI3Cg9waXBlbGluZV9tYXRyaXgYBSADKAsyHi5zaXJzaS5hZG1pbi52Mi5QaXBlbGluZVN0YXR1cxI2ChJyZWNlbnRfZGVwbG95bWVudHMYBiADKAsyGi5zaXJzaS5hZG1pbi52Mi5EZXBsb3ltZW50EjEKDGJ1aWxkX2hlYWx0aBgHIAMoCzIbLnNpcnNpLmFkbWluLnYyLkJ1aWxkSGVhbHRoIkUKEk1GQUNvbXBsaWFuY2VFbnRyeRIOCgZ0ZW5hbnQYASABKAkSEAoIZW5yb2xsZWQYAiABKAUSDQoFdG90YWwYAyABKAUiRAoQQXV0aEFjdGl2aXR5SG91chIMCgRob3VyGAEgASgFEhIKCnN1Y2Nlc3NmdWwYAiABKAUSDgoGZmFpbGVkGAMgASgFImAKElZ1bG5lcmFiaWxpdHlTY29yZRINCgVzY29yZRgBIAEoBRIQCghjcml0aWNhbBgCIAEoBRIMCgRoaWdoGAMgASgFEg4KBm1lZGl1bRgEIAEoBRILCgNsb3cYBSABKAUibwoRQ2VydGlmaWNhdGVTdGF0dXMSDgoGZG9tYWluGAEgASgJEg4KBmlzc3VlchgCIAEoCRISCgpleHBpcmVzX2F0GAMgASgJEhYKDmRheXNfcmVtYWluaW5nGAQgASgFEg4KBnN0YXR1cxgFIAEoCSLKAgodR2V0SHlwZXJ2aXNvclNlY3VyaXR5UmVzcG9uc2USOgoObWZhX2NvbXBsaWFuY2UYASADKAsyIi5zaXJzaS5hZG1pbi52Mi5NRkFDb21wbGlhbmNlRW50cnkSOwoRYXV0aF9hY3Rpdml0eV8yNGgYAiADKAsyIC5zaXJzaS5hZG1pbi52Mi5BdXRoQWN0aXZpdHlIb3VyEj8KE3Z1bG5lcmFiaWxpdHlfc2NvcmUYAyABKAsyIi5zaXJzaS5hZG1pbi52Mi5WdWxuZXJhYmlsaXR5U2NvcmUSNwoMY2VydGlmaWNhdGVzGAQgAygLMiEuc2lyc2kuYWRtaW4udjIuQ2VydGlmaWNhdGVTdGF0dXMSIgoac2VjcmV0X3JvdGF0aW9uX2NvbXBsaWFuY2UYBSABKAESEgoKc29jMl9zY29yZRgGIAEoATLvAgoRSHlwZXJ2aXNvclNlcnZpY2USdAoVR2V0SHlwZXJ2aXNvck92ZXJ2aWV3Eiwuc2lyc2kuYWRtaW4udjIuR2V0SHlwZXJ2aXNvck92ZXJ2aWV3UmVxdWVzdBotLnNpcnNpLmFkbWluLnYyLkdldEh5cGVydmlzb3JPdmVydmlld1Jlc3BvbnNlEm4KE0dldEh5cGVydmlzb3JEZXZPcHMSKi5zaXJzaS5hZG1pbi52Mi5HZXRIeXBlcnZpc29yRGV2T3BzUmVxdWVzdBorLnNpcnNpLmFkbWluLnYyLkdldEh5cGVydmlzb3JEZXZPcHNSZXNwb25zZRJ0ChVHZXRIeXBlcnZpc29yU2VjdXJpdHkSLC5zaXJzaS5hZG1pbi52Mi5HZXRIeXBlcnZpc29yU2VjdXJpdHlSZXF1ZXN0Gi0uc2lyc2kuYWRtaW4udjIuR2V0SHlwZXJ2aXNvclNlY3VyaXR5UmVzcG9uc2VCwAEKEmNvbS5zaXJzaS5hZG1pbi52MkIWSHlwZXJ2aXNvclNlcnZpY2VQcm90b1ABWjhnaXRodWIuY29tL3NpcnNpbWFzdGVyL3NpcnNpLW5leHVzL2dlbi9nby9zaXJzaS9hZG1pbi92MqICA1NBWKoCDlNpcnNpLkFkbWluLlYyygIOU2lyc2lcQWRtaW5cVjLiAhpTaXJzaVxBZG1pblxWMlxHUEJNZXRhZGF0YeoCEFNpcnNpOjpBZG1pbjo6VjJiBnByb3RvMw");
+  fileDesc("CidzaXJzaS9hZG1pbi92Mi9oeXBlcnZpc29yX3NlcnZpY2UucHJvdG8SDnNpcnNpLmFkbWluLnYyIjoKEEh5cGVydmlzb3JGaWx0ZXISEQoJdGVuYW50X2lkGAEgASgJEhMKC2Vudmlyb25tZW50GAIgASgJIlAKHEdldEh5cGVydmlzb3JPdmVydmlld1JlcXVlc3QSMAoGZmlsdGVyGAEgASgLMiAuc2lyc2kuYWRtaW4udjIuSHlwZXJ2aXNvckZpbHRlciJOChpHZXRIeXBlcnZpc29yRGV2T3BzUmVxdWVzdBIwCgZmaWx0ZXIYASABKAsyIC5zaXJzaS5hZG1pbi52Mi5IeXBlcnZpc29yRmlsdGVyIlAKHEdldEh5cGVydmlzb3JTZWN1cml0eVJlcXVlc3QSMAoGZmlsdGVyGAEgASgLMiAuc2lyc2kuYWRtaW4udjIuSHlwZXJ2aXNvckZpbHRlciI9CgtVcHRpbWVHYXVnZRIPCgdjdXJyZW50GAEgASgBEg4KBnRhcmdldBgCIAEoARINCgV0cmVuZBgDIAMoASIqCgpDb3VudEdhdWdlEg0KBWNvdW50GAEgASgFEg0KBXRyZW5kGAIgAygBIjwKClNwZW5kR2F1Z2USDwoHY3VycmVudBgBIAEoARIOCgZidWRnZXQYAiABKAESDQoFdHJlbmQYAyADKAEitwEKDVRlbmFudFN1bW1hcnkSCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRIMCgRzbHVnGAMgASgJEg4KBnN0YXR1cxgEIAEoCRITCgtlbnZpcm9ubWVudBgFIAEoCRISCgp1cHRpbWVfMzBkGAYgASgBEhcKD2RlcGxveW1lbnRzXzI0aBgHIAEoBRIWCg5vcGVuX2luY2lkZW50cxgIIAEoBRIUCgx1cHRpbWVfdHJlbmQYCSADKAEibwoNQWN0aXZpdHlFdmVudBIKCgJpZBgBIAEoCRIRCgl0aW1lc3RhbXAYAiABKAkSDAoEdHlwZRgDIAEoCRIOCgZ0ZW5hbnQYBCABKAkSDwoHbWVzc2FnZRgFIAEoCRIQCghzZXZlcml0eRgGIAEoCSKDAQoPSW5jaWRlbnRTdW1tYXJ5EgoKAmlkGAEgASgJEg0KBXRpdGxlGAIgASgJEhAKCHNldmVyaXR5GAMgASgJEg4KBnN0YXR1cxgEIAEoCRIRCglvcGVuZWRfYXQYBSABKAkSDgoGdGVuYW50GAYgASgJEhAKCGFzc2lnbmVlGAcgASgJItcCCh1HZXRIeXBlcnZpc29yT3ZlcnZpZXdSZXNwb25zZRIrCgZ1cHRpbWUYASABKAsyGy5zaXJzaS5hZG1pbi52Mi5VcHRpbWVHYXVnZRIzCg9kZXBsb3ltZW50c18yNGgYAiABKAsyGi5zaXJzaS5hZG1pbi52Mi5Db3VudEdhdWdlEjMKD2Nsb3VkX3NwZW5kX210ZBgDIAEoCzIaLnNpcnNpLmFkbWluLnYyLlNwZW5kR2F1Z2USLgoHdGVuYW50cxgEIAMoCzIdLnNpcnNpLmFkbWluLnYyLlRlbmFudFN1bW1hcnkSNgoPcmVjZW50X2FjdGl2aXR5GAUgAygLMh0uc2lyc2kuYWRtaW4udjIuQWN0aXZpdHlFdmVudBI3Cg5vcGVuX2luY2lkZW50cxgGIAMoCzIfLnNpcnNpLmFkbWluLnYyLkluY2lkZW50U3VtbWFyeSJcCgpET1JBTWV0cmljEg4KBnRlbmFudBgBIAEoCRINCgV2YWx1ZRgCIAEoARIMCgR1bml0GAMgASgJEhIKCmRvcmFfbGV2ZWwYBCABKAkSDQoFdHJlbmQYBSADKAEiOwoTRGVwbG95bWVudEZyZXF1ZW5jeRIOCgZ0ZW5hbnQYASABKAkSFAoMZGFpbHlfY291bnRzGAIgAygFIqIBCgpEZXBsb3ltZW50EgoKAmlkGAEgASgJEgsKA3NoYRgCIAEoCRIOCgZ0ZW5hbnQYAyABKAkSEwoLZW52aXJvbm1lbnQYBCABKAkSDwoHdmVyc2lvbhgFIAEoCRIOCgZzdGF0dXMYBiABKAkSEAoIZGVwbG95ZXIYByABKAkSEAoIZHVyYXRpb24YCCABKAkSEQoJdGltZXN0YW1wGAkgASgJImcKDlBpcGVsaW5lU3RhdHVzEg4KBnRlbmFudBgBIAEoCRITCgtlbnZpcm9ubWVudBgCIAEoCRIOCgZzdGF0dXMYAyABKAkSEAoIbGFzdF9ydW4YBCABKAkSDgoGYnJhbmNoGAUgASgJIkIKC0J1aWxkSGVhbHRoEg4KBnRlbmFudBgBIAEoCRIUCgxzdWNjZXNzX3JhdGUYAiABKAESDQoFdHJlbmQYAyADKAEilgMKG0dldEh5cGVydmlzb3JEZXZPcHNSZXNwb25zZRJBChRkZXBsb3ltZW50X2ZyZXF1ZW5jeRgBIAMoCzIjLnNpcnNpLmFkbWluLnYyLkRlcGxveW1lbnRGcmVxdWVuY3kSNwoTY2hhbmdlX2ZhaWx1cmVfcmF0ZRgCIAMoCzIaLnNpcnNpLmFkbWluLnYyLkRPUkFNZXRyaWMSKAoEbXR0chgDIAMoCzIaLnNpcnNpLmFkbWluLnYyLkRPUkFNZXRyaWMSLQoJbGVhZF90aW1lGAQgAygLMhouc2lyc2kuYWRtaW4udjIuRE9SQU1ldHJpYxI3Cg9waXBlbGluZV9tYXRyaXgYBSADKAsyHi5zaXJzaS5hZG1pbi52Mi5QaXBlbGluZVN0YXR1cxI2ChJyZWNlbnRfZGVwbG95bWVudHMYBiADKAsyGi5zaXJzaS5hZG1pbi52Mi5EZXBsb3ltZW50EjEKDGJ1aWxkX2hlYWx0aBgHIAMoCzIbLnNpcnNpLmFkbWluLnYyLkJ1aWxkSGVhbHRoIkUKEk1GQUNvbXBsaWFuY2VFbnRyeRIOCgZ0ZW5hbnQYASABKAkSEAoIZW5yb2xsZWQYAiABKAUSDQoFdG90YWwYAyABKAUiRAoQQXV0aEFjdGl2aXR5SG91chIMCgRob3VyGAEgASgFEhIKCnN1Y2Nlc3NmdWwYAiABKAUSDgoGZmFpbGVkGAMgASgFImAKElZ1bG5lcmFiaWxpdHlTY29yZRINCgVzY29yZRgBIAEoBRIQCghjcml0aWNhbBgCIAEoBRIMCgRoaWdoGAMgASgFEg4KBm1lZGl1bRgEIAEoBRILCgNsb3cYBSABKAUibwoRQ2VydGlmaWNhdGVTdGF0dXMSDgoGZG9tYWluGAEgASgJEg4KBmlzc3VlchgCIAEoCRISCgpleHBpcmVzX2F0GAMgASgJEhYKDmRheXNfcmVtYWluaW5nGAQgASgFEg4KBnN0YXR1cxgFIAEoCSLKAgodR2V0SHlwZXJ2aXNvclNlY3VyaXR5UmVzcG9uc2USOgoObWZhX2NvbXBsaWFuY2UYASADKAsyIi5zaXJzaS5hZG1pbi52Mi5NRkFDb21wbGlhbmNlRW50cnkSOwoRYXV0aF9hY3Rpdml0eV8yNGgYAiADKAsyIC5zaXJzaS5hZG1pbi52Mi5BdXRoQWN0aXZpdHlIb3VyEj8KE3Z1bG5lcmFiaWxpdHlfc2NvcmUYAyABKAsyIi5zaXJzaS5hZG1pbi52Mi5WdWxuZXJhYmlsaXR5U2NvcmUSNwoMY2VydGlmaWNhdGVzGAQgAygLMiEuc2lyc2kuYWRtaW4udjIuQ2VydGlmaWNhdGVTdGF0dXMSIgoac2VjcmV0X3JvdGF0aW9uX2NvbXBsaWFuY2UYBSABKAESEgoKc29jMl9zY29yZRgGIAEoASJWCiJHZXRIeXBlcnZpc29ySW5mcmFzdHJ1Y3R1cmVSZXF1ZXN0EjAKBmZpbHRlchgBIAEoCzIgLnNpcnNpLmFkbWluLnYyLkh5cGVydmlzb3JGaWx0ZXIiUAocR2V0SHlwZXJ2aXNvckRhdGFiYXNlUmVxdWVzdBIwCgZmaWx0ZXIYASABKAsyIC5zaXJzaS5hZG1pbi52Mi5IeXBlcnZpc29yRmlsdGVyIlAKHEdldEh5cGVydmlzb3JGcm9udGVuZFJlcXVlc3QSMAoGZmlsdGVyGAEgASgLMiAuc2lyc2kuYWRtaW4udjIuSHlwZXJ2aXNvckZpbHRlciJPChtHZXRIeXBlcnZpc29yQmFja2VuZFJlcXVlc3QSMAoGZmlsdGVyGAEgASgLMiAuc2lyc2kuYWRtaW4udjIuSHlwZXJ2aXNvckZpbHRlciJUCiBHZXRIeXBlcnZpc29ySW50ZWdyYXRpb25zUmVxdWVzdBIwCgZmaWx0ZXIYASABKAsyIC5zaXJzaS5hZG1pbi52Mi5IeXBlcnZpc29yRmlsdGVyIkwKGEdldEh5cGVydmlzb3JDb3N0UmVxdWVzdBIwCgZmaWx0ZXIYASABKAsyIC5zaXJzaS5hZG1pbi52Mi5IeXBlcnZpc29yRmlsdGVyIlEKHUdldEh5cGVydmlzb3JJbmNpZGVudHNSZXF1ZXN0EjAKBmZpbHRlchgBIAEoCzIgLnNpcnNpLmFkbWluLnYyLkh5cGVydmlzb3JGaWx0ZXIiQgoNUmVzb3VyY2VTdGF0ZRIPCgdpbl9zeW5jGAEgASgFEg8KB2RyaWZ0ZWQYAiABKAUSDwoHcGVuZGluZxgDIAEoBSJfCglEcmlmdEl0ZW0SEAoIcmVzb3VyY2UYASABKAkSDAoEdHlwZRgCIAEoCRIOCgZ0ZW5hbnQYAyABKAkSEAoIZGV0ZWN0ZWQYBCABKAkSEAoIc2V2ZXJpdHkYBSABKAkibQoQRW52aXJvbm1lbnRFbnRyeRIOCgZ0ZW5hbnQYASABKAkSEwoLZW52aXJvbm1lbnQYAiABKAkSDwoHdmVyc2lvbhgDIAEoCRIOCgZzdGF0dXMYBCABKAkSEwoLbGFzdF9kZXBsb3kYBSABKAkidgoPQ2xvdWRSdW5TZXJ2aWNlEgwKBG5hbWUYASABKAkSDgoGdGVuYW50GAIgASgJEhEKCWluc3RhbmNlcxgDIAEoBRIVCg1tYXhfaW5zdGFuY2VzGAQgASgFEgsKA2NwdRgFIAEoARIOCgZtZW1vcnkYBiABKAEiLAoOQ29zdEJ5UmVzb3VyY2USDAoEbmFtZRgBIAEoCRIMCgRjb3N0GAIgASgBIrwCCiNHZXRIeXBlcnZpc29ySW5mcmFzdHJ1Y3R1cmVSZXNwb25zZRIwCglyZXNvdXJjZXMYASABKAsyHS5zaXJzaS5hZG1pbi52Mi5SZXNvdXJjZVN0YXRlEi4KC2RyaWZ0X2l0ZW1zGAIgAygLMhkuc2lyc2kuYWRtaW4udjIuRHJpZnRJdGVtEjwKEmVudmlyb25tZW50X21hdHJpeBgDIAMoCzIgLnNpcnNpLmFkbWluLnYyLkVudmlyb25tZW50RW50cnkSOwoSY2xvdWRfcnVuX3NlcnZpY2VzGAQgAygLMh8uc2lyc2kuYWRtaW4udjIuQ2xvdWRSdW5TZXJ2aWNlEjgKEGNvc3RfYnlfcmVzb3VyY2UYBSADKAsyHi5zaXJzaS5hZG1pbi52Mi5Db3N0QnlSZXNvdXJjZSJNCg5Db25uZWN0aW9uUG9vbBIQCghkYXRhYmFzZRgBIAEoCRIOCgZhY3RpdmUYAiABKAUSDAoEaWRsZRgDIAEoBRILCgNtYXgYBCABKAUiUgoJU2xvd1F1ZXJ5Eg0KBXF1ZXJ5GAEgASgJEhAKCGF2Z190aW1lGAIgASgBEhEKCWZyZXF1ZW5jeRgDIAEoBRIRCglsYXN0X3NlZW4YBCABKAkiMwoQUmVwbGljYXRpb25FbnRyeRIPCgdyZXBsaWNhGAEgASgJEg4KBmxhZ19tcxgCIAEoASJlCgpUYWJsZVN0YXRzEgwKBG5hbWUYASABKAkSEQoJcm93X2NvdW50GAIgASgFEg8KB2Rpc2tfbWIYAyABKAESEAoIaW5kZXhfbWIYBCABKAESEwoLbGFzdF92YWN1dW0YBSABKAkiZgoTRmlyZXN0b3JlQ29sbGVjdGlvbhIMCgRuYW1lGAEgASgJEhYKDmRvY3VtZW50X2NvdW50GAIgASgFEhMKC3JlYWRzX3RyZW5kGAMgAygBEhQKDHdyaXRlc190cmVuZBgEIAMoASJgCgxCYWNrdXBTdGF0dXMSEAoIZGF0YWJhc2UYASABKAkSEwoLbGFzdF9iYWNrdXAYAiABKAkSDgoGc3RhdHVzGAMgASgJEhkKEWxhc3RfcmVzdG9yZV90ZXN0GAQgASgJIu8CCh1HZXRIeXBlcnZpc29yRGF0YWJhc2VSZXNwb25zZRI4ChBjb25uZWN0aW9uX3Bvb2xzGAEgAygLMh4uc2lyc2kuYWRtaW4udjIuQ29ubmVjdGlvblBvb2wSLwoMc2xvd19xdWVyaWVzGAIgAygLMhkuc2lyc2kuYWRtaW4udjIuU2xvd1F1ZXJ5EjkKD3JlcGxpY2F0aW9uX2xhZxgDIAMoCzIgLnNpcnNpLmFkbWluLnYyLlJlcGxpY2F0aW9uRW50cnkSLwoLdGFibGVfc3RhdHMYBCADKAsyGi5zaXJzaS5hZG1pbi52Mi5UYWJsZVN0YXRzEkIKFWZpcmVzdG9yZV9jb2xsZWN0aW9ucxgFIAMoCzIjLnNpcnNpLmFkbWluLnYyLkZpcmVzdG9yZUNvbGxlY3Rpb24SMwoNYmFja3VwX3N0YXR1cxgGIAMoCzIcLnNpcnNpLmFkbWluLnYyLkJhY2t1cFN0YXR1cyJ1CghXZWJWaXRhbBIMCgRuYW1lGAEgASgJEg0KBXZhbHVlGAIgASgBEgwKBHVuaXQYAyABKAkSDgoGcmF0aW5nGAQgASgJEhYKDnRocmVzaG9sZF9nb29kGAUgASgBEhYKDnRocmVzaG9sZF9wb29yGAYgASgBIioKDEJ1bmRsZU1vZHVsZRIMCgRuYW1lGAEgASgJEgwKBHNpemUYAiABKAEiXgoKQnVuZGxlU2l6ZRIPCgdjdXJyZW50GAEgASgBEg4KBmJ1ZGdldBgCIAEoARIvCglieV9tb2R1bGUYAyADKAsyHC5zaXJzaS5hZG1pbi52Mi5CdW5kbGVNb2R1bGUibgoJUGFnZUVudHJ5Eg0KBXJvdXRlGAEgASgJEhcKD2NvbXBvbmVudF9jb3VudBgCIAEoBRIUCgxsb2FkX3RpbWVfbXMYAyABKAESEgoKZXJyb3JfcmF0ZRgEIAEoARIPCgd0cmFmZmljGAUgASgFIlwKCkVycm9yRW50cnkSEQoJY29tcG9uZW50GAEgASgJEhEKCWZyZXF1ZW5jeRgCIAEoBRIWCg5hZmZlY3RlZF91c2VycxgDIAEoBRIQCghzZXZlcml0eRgEIAEoCSLlAQodR2V0SHlwZXJ2aXNvckZyb250ZW5kUmVzcG9uc2USLAoKd2ViX3ZpdGFscxgBIAMoCzIYLnNpcnNpLmFkbWluLnYyLldlYlZpdGFsEi8KC2J1bmRsZV9zaXplGAIgASgLMhouc2lyc2kuYWRtaW4udjIuQnVuZGxlU2l6ZRIxCg5wYWdlX2ludmVudG9yeRgDIAMoCzIZLnNpcnNpLmFkbWluLnYyLlBhZ2VFbnRyeRIyCg5lcnJvcl90cmFja2luZxgEIAMoCzIaLnNpcnNpLmFkbWluLnYyLkVycm9yRW50cnkigQEKC0FQSUVuZHBvaW50Eg4KBm1ldGhvZBgBIAEoCRIMCgRwYXRoGAIgASgJEhUKDXJlcXVlc3RfY291bnQYAyABKAUSFgoOYXZnX2xhdGVuY3lfbXMYBCABKAESEgoKZXJyb3JfcmF0ZRgFIAEoARIRCglwOTVfdHJlbmQYBiADKAEiQAoNU2VydmljZUhlYWx0aBIPCgdzZXJ2aWNlGAEgASgJEg4KBnN0YXR1cxgCIAEoCRIOCgZ1cHRpbWUYAyABKAEiPQoOR3JwY1Rocm91Z2hwdXQSDwoHc2VydmljZRgBIAEoCRILCgNycHMYAiABKAESDQoFdHJlbmQYAyADKAEiRQoJR29SdW50aW1lEhIKCmdvcm91dGluZXMYASABKAUSDwoHaGVhcF9tYhgCIAEoARITCgtnY19wYXVzZV9tcxgDIAEoASI5CglSYXRlTGltaXQSDwoHc2VydmljZRgBIAEoCRIMCgR1c2VkGAIgASgFEg0KBWxpbWl0GAMgASgFIqECChxHZXRIeXBlcnZpc29yQmFja2VuZFJlc3BvbnNlEjIKDWFwaV9lbmRwb2ludHMYASADKAsyGy5zaXJzaS5hZG1pbi52Mi5BUElFbmRwb2ludBI1Cg5zZXJ2aWNlX2hlYWx0aBgCIAMoCzIdLnNpcnNpLmFkbWluLnYyLlNlcnZpY2VIZWFsdGgSNwoPZ3JwY190aHJvdWdocHV0GAMgAygLMh4uc2lyc2kuYWRtaW4udjIuR3JwY1Rocm91Z2hwdXQSLQoKZ29fcnVudGltZRgEIAEoCzIZLnNpcnNpLmFkbWluLnYyLkdvUnVudGltZRIuCgtyYXRlX2xpbWl0cxgFIAMoCzIZLnNpcnNpLmFkbWluLnYyLlJhdGVMaW1pdCJmChhJbnRlZ3JhdGlvblNlcnZpY2VIZWFsdGgSDAoEbmFtZRgBIAEoCRIOCgZzdGF0dXMYAiABKAkSEgoKbGFzdF9jaGVjaxgDIAEoCRIYChByZXNwb25zZV90aW1lX21zGAQgASgBInQKDFdlYmhvb2tFbnRyeRILCgN1cmwYASABKAkSEwoLZXZlbnRfdHlwZXMYAiADKAkSFAoMc3VjY2Vzc19yYXRlGAMgASgBEhcKD2F2Z19yZXNwb25zZV9tcxgEIAEoARITCgtyZXRyeV9jb3VudBgFIAEoBSJjCgtBUElLZXlFbnRyeRIPCgdzZXJ2aWNlGAEgASgJEhIKCmV4cGlyZXNfYXQYAiABKAkSFgoOZGF5c19yZW1haW5pbmcYAyABKAUSFwoPcm90YXRpb25fc3RhdHVzGAQgASgJImIKDFNjaGVkdWxlZEpvYhIMCgRuYW1lGAEgASgJEhAKCHNjaGVkdWxlGAIgASgJEhAKCGxhc3RfcnVuGAMgASgJEhAKCG5leHRfcnVuGAQgASgJEg4KBnN0YXR1cxgFIAEoCSL6AQohR2V0SHlwZXJ2aXNvckludGVncmF0aW9uc1Jlc3BvbnNlEkAKDnNlcnZpY2VfaGVhbHRoGAEgAygLMiguc2lyc2kuYWRtaW4udjIuSW50ZWdyYXRpb25TZXJ2aWNlSGVhbHRoEi4KCHdlYmhvb2tzGAIgAygLMhwuc2lyc2kuYWRtaW4udjIuV2ViaG9va0VudHJ5Ei0KCGFwaV9rZXlzGAMgAygLMhsuc2lyc2kuYWRtaW4udjIuQVBJS2V5RW50cnkSNAoOc2NoZWR1bGVkX2pvYnMYBCADKAsyHC5zaXJzaS5hZG1pbi52Mi5TY2hlZHVsZWRKb2IiPgoNQ29zdEJ5U2VydmljZRIPCgdzZXJ2aWNlGAEgASgJEg4KBnRlbmFudBgCIAEoCRIMCgRjb3N0GAMgASgBIkIKDkJ1ZGdldFZzQWN0dWFsEg4KBmJ1ZGdldBgBIAEoARIOCgZhY3R1YWwYAiABKAESEAoIZm9yZWNhc3QYAyABKAEiWwoOQ29zdFRyZW5kTW9udGgSDQoFbW9udGgYASABKAkSEwoLZmluYWx3aXNoZXMYAiABKAESEQoJYXNzaWR1b3VzGAMgASgBEhIKCnNpcnNpX2NvcmUYBCABKAEiWAoMSWRsZVJlc291cmNlEgwKBG5hbWUYASABKAkSDAoEdHlwZRgCIAEoCRIUCgxtb250aGx5X2Nvc3QYAyABKAESFgoOcmVjb21tZW5kYXRpb24YBCABKAkilAIKGUdldEh5cGVydmlzb3JDb3N0UmVzcG9uc2USOQoSbW9udGhseV9ieV9zZXJ2aWNlGAEgAygLMh0uc2lyc2kuYWRtaW4udjIuQ29zdEJ5U2VydmljZRI4ChBidWRnZXRfdnNfYWN0dWFsGAIgASgLMh4uc2lyc2kuYWRtaW4udjIuQnVkZ2V0VnNBY3R1YWwSNQoNY29zdF90cmVuZF82bRgDIAMoCzIeLnNpcnNpLmFkbWluLnYyLkNvc3RUcmVuZE1vbnRoEhUKDWNvc3RfcGVyX3VzZXIYBCABKAESNAoOaWRsZV9yZXNvdXJjZXMYBSADKAsyHC5zaXJzaS5hZG1pbi52Mi5JZGxlUmVzb3VyY2UirAEKDkluY2lkZW50RGV0YWlsEgoKAmlkGAEgASgJEg0KBXRpdGxlGAIgASgJEhAKCHNldmVyaXR5GAMgASgJEg4KBnN0YXR1cxgEIAEoCRIRCglvcGVuZWRfYXQYBSABKAkSEwoLcmVzb2x2ZWRfYXQYBiABKAkSDgoGdGVuYW50GAcgASgJEhAKCGFzc2lnbmVlGAggASgJEhMKC2Rlc2NyaXB0aW9uGAkgASgJIj8KDVNMQUNvbXBsaWFuY2USDwoHY3VycmVudBgBIAEoARIOCgZ0YXJnZXQYAiABKAESDQoFdHJlbmQYAyADKAEiYAoKUnVuYm9va0xvZxIMCgRuYW1lGAEgASgJEg8KB3RyaWdnZXIYAiABKAkSDgoGcmVzdWx0GAMgASgJEhAKCGR1cmF0aW9uGAQgASgJEhEKCXRpbWVzdGFtcBgFIAEoCSL6AQoeR2V0SHlwZXJ2aXNvckluY2lkZW50c1Jlc3BvbnNlEjYKDm9wZW5faW5jaWRlbnRzGAEgAygLMh4uc2lyc2kuYWRtaW4udjIuSW5jaWRlbnREZXRhaWwSNQoOc2xhX2NvbXBsaWFuY2UYAiABKAsyHS5zaXJzaS5hZG1pbi52Mi5TTEFDb21wbGlhbmNlEjgKEGluY2lkZW50X2hpc3RvcnkYAyADKAsyHi5zaXJzaS5hZG1pbi52Mi5JbmNpZGVudERldGFpbBIvCgtydW5ib29rX2xvZxgEIAMoCzIaLnNpcnNpLmFkbWluLnYyLlJ1bmJvb2tMb2cyvQkKEUh5cGVydmlzb3JTZXJ2aWNlEnQKFUdldEh5cGVydmlzb3JPdmVydmlldxIsLnNpcnNpLmFkbWluLnYyLkdldEh5cGVydmlzb3JPdmVydmlld1JlcXVlc3QaLS5zaXJzaS5hZG1pbi52Mi5HZXRIeXBlcnZpc29yT3ZlcnZpZXdSZXNwb25zZRJuChNHZXRIeXBlcnZpc29yRGV2T3BzEiouc2lyc2kuYWRtaW4udjIuR2V0SHlwZXJ2aXNvckRldk9wc1JlcXVlc3QaKy5zaXJzaS5hZG1pbi52Mi5HZXRIeXBlcnZpc29yRGV2T3BzUmVzcG9uc2UShgEKG0dldEh5cGVydmlzb3JJbmZyYXN0cnVjdHVyZRIyLnNpcnNpLmFkbWluLnYyLkdldEh5cGVydmlzb3JJbmZyYXN0cnVjdHVyZVJlcXVlc3QaMy5zaXJzaS5hZG1pbi52Mi5HZXRIeXBlcnZpc29ySW5mcmFzdHJ1Y3R1cmVSZXNwb25zZRJ0ChVHZXRIeXBlcnZpc29yU2VjdXJpdHkSLC5zaXJzaS5hZG1pbi52Mi5HZXRIeXBlcnZpc29yU2VjdXJpdHlSZXF1ZXN0Gi0uc2lyc2kuYWRtaW4udjIuR2V0SHlwZXJ2aXNvclNlY3VyaXR5UmVzcG9uc2USdAoVR2V0SHlwZXJ2aXNvckRhdGFiYXNlEiwuc2lyc2kuYWRtaW4udjIuR2V0SHlwZXJ2aXNvckRhdGFiYXNlUmVxdWVzdBotLnNpcnNpLmFkbWluLnYyLkdldEh5cGVydmlzb3JEYXRhYmFzZVJlc3BvbnNlEnQKFUdldEh5cGVydmlzb3JGcm9udGVuZBIsLnNpcnNpLmFkbWluLnYyLkdldEh5cGVydmlzb3JGcm9udGVuZFJlcXVlc3QaLS5zaXJzaS5hZG1pbi52Mi5HZXRIeXBlcnZpc29yRnJvbnRlbmRSZXNwb25zZRJxChRHZXRIeXBlcnZpc29yQmFja2VuZBIrLnNpcnNpLmFkbWluLnYyLkdldEh5cGVydmlzb3JCYWNrZW5kUmVxdWVzdBosLnNpcnNpLmFkbWluLnYyLkdldEh5cGVydmlzb3JCYWNrZW5kUmVzcG9uc2USgAEKGUdldEh5cGVydmlzb3JJbnRlZ3JhdGlvbnMSMC5zaXJzaS5hZG1pbi52Mi5HZXRIeXBlcnZpc29ySW50ZWdyYXRpb25zUmVxdWVzdBoxLnNpcnNpLmFkbWluLnYyLkdldEh5cGVydmlzb3JJbnRlZ3JhdGlvbnNSZXNwb25zZRJoChFHZXRIeXBlcnZpc29yQ29zdBIoLnNpcnNpLmFkbWluLnYyLkdldEh5cGVydmlzb3JDb3N0UmVxdWVzdBopLnNpcnNpLmFkbWluLnYyLkdldEh5cGVydmlzb3JDb3N0UmVzcG9uc2USdwoWR2V0SHlwZXJ2aXNvckluY2lkZW50cxItLnNpcnNpLmFkbWluLnYyLkdldEh5cGVydmlzb3JJbmNpZGVudHNSZXF1ZXN0Gi4uc2lyc2kuYWRtaW4udjIuR2V0SHlwZXJ2aXNvckluY2lkZW50c1Jlc3BvbnNlQsABChJjb20uc2lyc2kuYWRtaW4udjJCFkh5cGVydmlzb3JTZXJ2aWNlUHJvdG9QAVo4Z2l0aHViLmNvbS9zaXJzaW1hc3Rlci9zaXJzaS1uZXh1cy9nZW4vZ28vc2lyc2kvYWRtaW4vdjKiAgNTQViqAg5TaXJzaS5BZG1pbi5WMsoCDlNpcnNpXEFkbWluXFYy4gIaU2lyc2lcQWRtaW5cVjJcR1BCTWV0YWRhdGHqAhBTaXJzaTo6QWRtaW46OlYyYgZwcm90bzM");
 
 /**
  * @generated from message sirsi.admin.v2.HypervisorFilter
@@ -801,6 +801,1413 @@ export const GetHypervisorSecurityResponseSchema: GenMessage<GetHypervisorSecuri
   messageDesc(file_sirsi_admin_v2_hypervisor_service, 21);
 
 /**
+ * @generated from message sirsi.admin.v2.GetHypervisorInfrastructureRequest
+ */
+export type GetHypervisorInfrastructureRequest = Message<"sirsi.admin.v2.GetHypervisorInfrastructureRequest"> & {
+  /**
+   * @generated from field: sirsi.admin.v2.HypervisorFilter filter = 1;
+   */
+  filter?: HypervisorFilter;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorInfrastructureRequest.
+ * Use `create(GetHypervisorInfrastructureRequestSchema)` to create a new message.
+ */
+export const GetHypervisorInfrastructureRequestSchema: GenMessage<GetHypervisorInfrastructureRequest> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 22);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorDatabaseRequest
+ */
+export type GetHypervisorDatabaseRequest = Message<"sirsi.admin.v2.GetHypervisorDatabaseRequest"> & {
+  /**
+   * @generated from field: sirsi.admin.v2.HypervisorFilter filter = 1;
+   */
+  filter?: HypervisorFilter;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorDatabaseRequest.
+ * Use `create(GetHypervisorDatabaseRequestSchema)` to create a new message.
+ */
+export const GetHypervisorDatabaseRequestSchema: GenMessage<GetHypervisorDatabaseRequest> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 23);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorFrontendRequest
+ */
+export type GetHypervisorFrontendRequest = Message<"sirsi.admin.v2.GetHypervisorFrontendRequest"> & {
+  /**
+   * @generated from field: sirsi.admin.v2.HypervisorFilter filter = 1;
+   */
+  filter?: HypervisorFilter;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorFrontendRequest.
+ * Use `create(GetHypervisorFrontendRequestSchema)` to create a new message.
+ */
+export const GetHypervisorFrontendRequestSchema: GenMessage<GetHypervisorFrontendRequest> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 24);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorBackendRequest
+ */
+export type GetHypervisorBackendRequest = Message<"sirsi.admin.v2.GetHypervisorBackendRequest"> & {
+  /**
+   * @generated from field: sirsi.admin.v2.HypervisorFilter filter = 1;
+   */
+  filter?: HypervisorFilter;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorBackendRequest.
+ * Use `create(GetHypervisorBackendRequestSchema)` to create a new message.
+ */
+export const GetHypervisorBackendRequestSchema: GenMessage<GetHypervisorBackendRequest> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 25);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorIntegrationsRequest
+ */
+export type GetHypervisorIntegrationsRequest = Message<"sirsi.admin.v2.GetHypervisorIntegrationsRequest"> & {
+  /**
+   * @generated from field: sirsi.admin.v2.HypervisorFilter filter = 1;
+   */
+  filter?: HypervisorFilter;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorIntegrationsRequest.
+ * Use `create(GetHypervisorIntegrationsRequestSchema)` to create a new message.
+ */
+export const GetHypervisorIntegrationsRequestSchema: GenMessage<GetHypervisorIntegrationsRequest> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 26);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorCostRequest
+ */
+export type GetHypervisorCostRequest = Message<"sirsi.admin.v2.GetHypervisorCostRequest"> & {
+  /**
+   * @generated from field: sirsi.admin.v2.HypervisorFilter filter = 1;
+   */
+  filter?: HypervisorFilter;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorCostRequest.
+ * Use `create(GetHypervisorCostRequestSchema)` to create a new message.
+ */
+export const GetHypervisorCostRequestSchema: GenMessage<GetHypervisorCostRequest> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 27);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorIncidentsRequest
+ */
+export type GetHypervisorIncidentsRequest = Message<"sirsi.admin.v2.GetHypervisorIncidentsRequest"> & {
+  /**
+   * @generated from field: sirsi.admin.v2.HypervisorFilter filter = 1;
+   */
+  filter?: HypervisorFilter;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorIncidentsRequest.
+ * Use `create(GetHypervisorIncidentsRequestSchema)` to create a new message.
+ */
+export const GetHypervisorIncidentsRequestSchema: GenMessage<GetHypervisorIncidentsRequest> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 28);
+
+/**
+ * @generated from message sirsi.admin.v2.ResourceState
+ */
+export type ResourceState = Message<"sirsi.admin.v2.ResourceState"> & {
+  /**
+   * @generated from field: int32 in_sync = 1;
+   */
+  inSync: number;
+
+  /**
+   * @generated from field: int32 drifted = 2;
+   */
+  drifted: number;
+
+  /**
+   * @generated from field: int32 pending = 3;
+   */
+  pending: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.ResourceState.
+ * Use `create(ResourceStateSchema)` to create a new message.
+ */
+export const ResourceStateSchema: GenMessage<ResourceState> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 29);
+
+/**
+ * @generated from message sirsi.admin.v2.DriftItem
+ */
+export type DriftItem = Message<"sirsi.admin.v2.DriftItem"> & {
+  /**
+   * @generated from field: string resource = 1;
+   */
+  resource: string;
+
+  /**
+   * @generated from field: string type = 2;
+   */
+  type: string;
+
+  /**
+   * @generated from field: string tenant = 3;
+   */
+  tenant: string;
+
+  /**
+   * @generated from field: string detected = 4;
+   */
+  detected: string;
+
+  /**
+   * @generated from field: string severity = 5;
+   */
+  severity: string;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.DriftItem.
+ * Use `create(DriftItemSchema)` to create a new message.
+ */
+export const DriftItemSchema: GenMessage<DriftItem> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 30);
+
+/**
+ * @generated from message sirsi.admin.v2.EnvironmentEntry
+ */
+export type EnvironmentEntry = Message<"sirsi.admin.v2.EnvironmentEntry"> & {
+  /**
+   * @generated from field: string tenant = 1;
+   */
+  tenant: string;
+
+  /**
+   * @generated from field: string environment = 2;
+   */
+  environment: string;
+
+  /**
+   * @generated from field: string version = 3;
+   */
+  version: string;
+
+  /**
+   * @generated from field: string status = 4;
+   */
+  status: string;
+
+  /**
+   * @generated from field: string last_deploy = 5;
+   */
+  lastDeploy: string;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.EnvironmentEntry.
+ * Use `create(EnvironmentEntrySchema)` to create a new message.
+ */
+export const EnvironmentEntrySchema: GenMessage<EnvironmentEntry> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 31);
+
+/**
+ * @generated from message sirsi.admin.v2.CloudRunService
+ */
+export type CloudRunService = Message<"sirsi.admin.v2.CloudRunService"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string tenant = 2;
+   */
+  tenant: string;
+
+  /**
+   * @generated from field: int32 instances = 3;
+   */
+  instances: number;
+
+  /**
+   * @generated from field: int32 max_instances = 4;
+   */
+  maxInstances: number;
+
+  /**
+   * @generated from field: double cpu = 5;
+   */
+  cpu: number;
+
+  /**
+   * @generated from field: double memory = 6;
+   */
+  memory: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.CloudRunService.
+ * Use `create(CloudRunServiceSchema)` to create a new message.
+ */
+export const CloudRunServiceSchema: GenMessage<CloudRunService> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 32);
+
+/**
+ * @generated from message sirsi.admin.v2.CostByResource
+ */
+export type CostByResource = Message<"sirsi.admin.v2.CostByResource"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: double cost = 2;
+   */
+  cost: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.CostByResource.
+ * Use `create(CostByResourceSchema)` to create a new message.
+ */
+export const CostByResourceSchema: GenMessage<CostByResource> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 33);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorInfrastructureResponse
+ */
+export type GetHypervisorInfrastructureResponse = Message<"sirsi.admin.v2.GetHypervisorInfrastructureResponse"> & {
+  /**
+   * @generated from field: sirsi.admin.v2.ResourceState resources = 1;
+   */
+  resources?: ResourceState;
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.DriftItem drift_items = 2;
+   */
+  driftItems: DriftItem[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.EnvironmentEntry environment_matrix = 3;
+   */
+  environmentMatrix: EnvironmentEntry[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.CloudRunService cloud_run_services = 4;
+   */
+  cloudRunServices: CloudRunService[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.CostByResource cost_by_resource = 5;
+   */
+  costByResource: CostByResource[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorInfrastructureResponse.
+ * Use `create(GetHypervisorInfrastructureResponseSchema)` to create a new message.
+ */
+export const GetHypervisorInfrastructureResponseSchema: GenMessage<GetHypervisorInfrastructureResponse> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 34);
+
+/**
+ * @generated from message sirsi.admin.v2.ConnectionPool
+ */
+export type ConnectionPool = Message<"sirsi.admin.v2.ConnectionPool"> & {
+  /**
+   * @generated from field: string database = 1;
+   */
+  database: string;
+
+  /**
+   * @generated from field: int32 active = 2;
+   */
+  active: number;
+
+  /**
+   * @generated from field: int32 idle = 3;
+   */
+  idle: number;
+
+  /**
+   * @generated from field: int32 max = 4;
+   */
+  max: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.ConnectionPool.
+ * Use `create(ConnectionPoolSchema)` to create a new message.
+ */
+export const ConnectionPoolSchema: GenMessage<ConnectionPool> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 35);
+
+/**
+ * @generated from message sirsi.admin.v2.SlowQuery
+ */
+export type SlowQuery = Message<"sirsi.admin.v2.SlowQuery"> & {
+  /**
+   * @generated from field: string query = 1;
+   */
+  query: string;
+
+  /**
+   * @generated from field: double avg_time = 2;
+   */
+  avgTime: number;
+
+  /**
+   * @generated from field: int32 frequency = 3;
+   */
+  frequency: number;
+
+  /**
+   * @generated from field: string last_seen = 4;
+   */
+  lastSeen: string;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.SlowQuery.
+ * Use `create(SlowQuerySchema)` to create a new message.
+ */
+export const SlowQuerySchema: GenMessage<SlowQuery> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 36);
+
+/**
+ * @generated from message sirsi.admin.v2.ReplicationEntry
+ */
+export type ReplicationEntry = Message<"sirsi.admin.v2.ReplicationEntry"> & {
+  /**
+   * @generated from field: string replica = 1;
+   */
+  replica: string;
+
+  /**
+   * @generated from field: double lag_ms = 2;
+   */
+  lagMs: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.ReplicationEntry.
+ * Use `create(ReplicationEntrySchema)` to create a new message.
+ */
+export const ReplicationEntrySchema: GenMessage<ReplicationEntry> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 37);
+
+/**
+ * @generated from message sirsi.admin.v2.TableStats
+ */
+export type TableStats = Message<"sirsi.admin.v2.TableStats"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: int32 row_count = 2;
+   */
+  rowCount: number;
+
+  /**
+   * @generated from field: double disk_mb = 3;
+   */
+  diskMb: number;
+
+  /**
+   * @generated from field: double index_mb = 4;
+   */
+  indexMb: number;
+
+  /**
+   * @generated from field: string last_vacuum = 5;
+   */
+  lastVacuum: string;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.TableStats.
+ * Use `create(TableStatsSchema)` to create a new message.
+ */
+export const TableStatsSchema: GenMessage<TableStats> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 38);
+
+/**
+ * @generated from message sirsi.admin.v2.FirestoreCollection
+ */
+export type FirestoreCollection = Message<"sirsi.admin.v2.FirestoreCollection"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: int32 document_count = 2;
+   */
+  documentCount: number;
+
+  /**
+   * @generated from field: repeated double reads_trend = 3;
+   */
+  readsTrend: number[];
+
+  /**
+   * @generated from field: repeated double writes_trend = 4;
+   */
+  writesTrend: number[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.FirestoreCollection.
+ * Use `create(FirestoreCollectionSchema)` to create a new message.
+ */
+export const FirestoreCollectionSchema: GenMessage<FirestoreCollection> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 39);
+
+/**
+ * @generated from message sirsi.admin.v2.BackupStatus
+ */
+export type BackupStatus = Message<"sirsi.admin.v2.BackupStatus"> & {
+  /**
+   * @generated from field: string database = 1;
+   */
+  database: string;
+
+  /**
+   * @generated from field: string last_backup = 2;
+   */
+  lastBackup: string;
+
+  /**
+   * @generated from field: string status = 3;
+   */
+  status: string;
+
+  /**
+   * @generated from field: string last_restore_test = 4;
+   */
+  lastRestoreTest: string;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.BackupStatus.
+ * Use `create(BackupStatusSchema)` to create a new message.
+ */
+export const BackupStatusSchema: GenMessage<BackupStatus> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 40);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorDatabaseResponse
+ */
+export type GetHypervisorDatabaseResponse = Message<"sirsi.admin.v2.GetHypervisorDatabaseResponse"> & {
+  /**
+   * @generated from field: repeated sirsi.admin.v2.ConnectionPool connection_pools = 1;
+   */
+  connectionPools: ConnectionPool[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.SlowQuery slow_queries = 2;
+   */
+  slowQueries: SlowQuery[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.ReplicationEntry replication_lag = 3;
+   */
+  replicationLag: ReplicationEntry[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.TableStats table_stats = 4;
+   */
+  tableStats: TableStats[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.FirestoreCollection firestore_collections = 5;
+   */
+  firestoreCollections: FirestoreCollection[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.BackupStatus backup_status = 6;
+   */
+  backupStatus: BackupStatus[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorDatabaseResponse.
+ * Use `create(GetHypervisorDatabaseResponseSchema)` to create a new message.
+ */
+export const GetHypervisorDatabaseResponseSchema: GenMessage<GetHypervisorDatabaseResponse> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 41);
+
+/**
+ * @generated from message sirsi.admin.v2.WebVital
+ */
+export type WebVital = Message<"sirsi.admin.v2.WebVital"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: double value = 2;
+   */
+  value: number;
+
+  /**
+   * @generated from field: string unit = 3;
+   */
+  unit: string;
+
+  /**
+   * @generated from field: string rating = 4;
+   */
+  rating: string;
+
+  /**
+   * @generated from field: double threshold_good = 5;
+   */
+  thresholdGood: number;
+
+  /**
+   * @generated from field: double threshold_poor = 6;
+   */
+  thresholdPoor: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.WebVital.
+ * Use `create(WebVitalSchema)` to create a new message.
+ */
+export const WebVitalSchema: GenMessage<WebVital> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 42);
+
+/**
+ * @generated from message sirsi.admin.v2.BundleModule
+ */
+export type BundleModule = Message<"sirsi.admin.v2.BundleModule"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: double size = 2;
+   */
+  size: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.BundleModule.
+ * Use `create(BundleModuleSchema)` to create a new message.
+ */
+export const BundleModuleSchema: GenMessage<BundleModule> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 43);
+
+/**
+ * @generated from message sirsi.admin.v2.BundleSize
+ */
+export type BundleSize = Message<"sirsi.admin.v2.BundleSize"> & {
+  /**
+   * @generated from field: double current = 1;
+   */
+  current: number;
+
+  /**
+   * @generated from field: double budget = 2;
+   */
+  budget: number;
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.BundleModule by_module = 3;
+   */
+  byModule: BundleModule[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.BundleSize.
+ * Use `create(BundleSizeSchema)` to create a new message.
+ */
+export const BundleSizeSchema: GenMessage<BundleSize> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 44);
+
+/**
+ * @generated from message sirsi.admin.v2.PageEntry
+ */
+export type PageEntry = Message<"sirsi.admin.v2.PageEntry"> & {
+  /**
+   * @generated from field: string route = 1;
+   */
+  route: string;
+
+  /**
+   * @generated from field: int32 component_count = 2;
+   */
+  componentCount: number;
+
+  /**
+   * @generated from field: double load_time_ms = 3;
+   */
+  loadTimeMs: number;
+
+  /**
+   * @generated from field: double error_rate = 4;
+   */
+  errorRate: number;
+
+  /**
+   * @generated from field: int32 traffic = 5;
+   */
+  traffic: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.PageEntry.
+ * Use `create(PageEntrySchema)` to create a new message.
+ */
+export const PageEntrySchema: GenMessage<PageEntry> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 45);
+
+/**
+ * @generated from message sirsi.admin.v2.ErrorEntry
+ */
+export type ErrorEntry = Message<"sirsi.admin.v2.ErrorEntry"> & {
+  /**
+   * @generated from field: string component = 1;
+   */
+  component: string;
+
+  /**
+   * @generated from field: int32 frequency = 2;
+   */
+  frequency: number;
+
+  /**
+   * @generated from field: int32 affected_users = 3;
+   */
+  affectedUsers: number;
+
+  /**
+   * @generated from field: string severity = 4;
+   */
+  severity: string;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.ErrorEntry.
+ * Use `create(ErrorEntrySchema)` to create a new message.
+ */
+export const ErrorEntrySchema: GenMessage<ErrorEntry> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 46);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorFrontendResponse
+ */
+export type GetHypervisorFrontendResponse = Message<"sirsi.admin.v2.GetHypervisorFrontendResponse"> & {
+  /**
+   * @generated from field: repeated sirsi.admin.v2.WebVital web_vitals = 1;
+   */
+  webVitals: WebVital[];
+
+  /**
+   * @generated from field: sirsi.admin.v2.BundleSize bundle_size = 2;
+   */
+  bundleSize?: BundleSize;
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.PageEntry page_inventory = 3;
+   */
+  pageInventory: PageEntry[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.ErrorEntry error_tracking = 4;
+   */
+  errorTracking: ErrorEntry[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorFrontendResponse.
+ * Use `create(GetHypervisorFrontendResponseSchema)` to create a new message.
+ */
+export const GetHypervisorFrontendResponseSchema: GenMessage<GetHypervisorFrontendResponse> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 47);
+
+/**
+ * @generated from message sirsi.admin.v2.APIEndpoint
+ */
+export type APIEndpoint = Message<"sirsi.admin.v2.APIEndpoint"> & {
+  /**
+   * @generated from field: string method = 1;
+   */
+  method: string;
+
+  /**
+   * @generated from field: string path = 2;
+   */
+  path: string;
+
+  /**
+   * @generated from field: int32 request_count = 3;
+   */
+  requestCount: number;
+
+  /**
+   * @generated from field: double avg_latency_ms = 4;
+   */
+  avgLatencyMs: number;
+
+  /**
+   * @generated from field: double error_rate = 5;
+   */
+  errorRate: number;
+
+  /**
+   * @generated from field: repeated double p95_trend = 6;
+   */
+  p95Trend: number[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.APIEndpoint.
+ * Use `create(APIEndpointSchema)` to create a new message.
+ */
+export const APIEndpointSchema: GenMessage<APIEndpoint> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 48);
+
+/**
+ * @generated from message sirsi.admin.v2.ServiceHealth
+ */
+export type ServiceHealth = Message<"sirsi.admin.v2.ServiceHealth"> & {
+  /**
+   * @generated from field: string service = 1;
+   */
+  service: string;
+
+  /**
+   * @generated from field: string status = 2;
+   */
+  status: string;
+
+  /**
+   * @generated from field: double uptime = 3;
+   */
+  uptime: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.ServiceHealth.
+ * Use `create(ServiceHealthSchema)` to create a new message.
+ */
+export const ServiceHealthSchema: GenMessage<ServiceHealth> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 49);
+
+/**
+ * @generated from message sirsi.admin.v2.GrpcThroughput
+ */
+export type GrpcThroughput = Message<"sirsi.admin.v2.GrpcThroughput"> & {
+  /**
+   * @generated from field: string service = 1;
+   */
+  service: string;
+
+  /**
+   * @generated from field: double rps = 2;
+   */
+  rps: number;
+
+  /**
+   * @generated from field: repeated double trend = 3;
+   */
+  trend: number[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GrpcThroughput.
+ * Use `create(GrpcThroughputSchema)` to create a new message.
+ */
+export const GrpcThroughputSchema: GenMessage<GrpcThroughput> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 50);
+
+/**
+ * @generated from message sirsi.admin.v2.GoRuntime
+ */
+export type GoRuntime = Message<"sirsi.admin.v2.GoRuntime"> & {
+  /**
+   * @generated from field: int32 goroutines = 1;
+   */
+  goroutines: number;
+
+  /**
+   * @generated from field: double heap_mb = 2;
+   */
+  heapMb: number;
+
+  /**
+   * @generated from field: double gc_pause_ms = 3;
+   */
+  gcPauseMs: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GoRuntime.
+ * Use `create(GoRuntimeSchema)` to create a new message.
+ */
+export const GoRuntimeSchema: GenMessage<GoRuntime> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 51);
+
+/**
+ * @generated from message sirsi.admin.v2.RateLimit
+ */
+export type RateLimit = Message<"sirsi.admin.v2.RateLimit"> & {
+  /**
+   * @generated from field: string service = 1;
+   */
+  service: string;
+
+  /**
+   * @generated from field: int32 used = 2;
+   */
+  used: number;
+
+  /**
+   * @generated from field: int32 limit = 3;
+   */
+  limit: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.RateLimit.
+ * Use `create(RateLimitSchema)` to create a new message.
+ */
+export const RateLimitSchema: GenMessage<RateLimit> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 52);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorBackendResponse
+ */
+export type GetHypervisorBackendResponse = Message<"sirsi.admin.v2.GetHypervisorBackendResponse"> & {
+  /**
+   * @generated from field: repeated sirsi.admin.v2.APIEndpoint api_endpoints = 1;
+   */
+  apiEndpoints: APIEndpoint[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.ServiceHealth service_health = 2;
+   */
+  serviceHealth: ServiceHealth[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.GrpcThroughput grpc_throughput = 3;
+   */
+  grpcThroughput: GrpcThroughput[];
+
+  /**
+   * @generated from field: sirsi.admin.v2.GoRuntime go_runtime = 4;
+   */
+  goRuntime?: GoRuntime;
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.RateLimit rate_limits = 5;
+   */
+  rateLimits: RateLimit[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorBackendResponse.
+ * Use `create(GetHypervisorBackendResponseSchema)` to create a new message.
+ */
+export const GetHypervisorBackendResponseSchema: GenMessage<GetHypervisorBackendResponse> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 53);
+
+/**
+ * @generated from message sirsi.admin.v2.IntegrationServiceHealth
+ */
+export type IntegrationServiceHealth = Message<"sirsi.admin.v2.IntegrationServiceHealth"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string status = 2;
+   */
+  status: string;
+
+  /**
+   * @generated from field: string last_check = 3;
+   */
+  lastCheck: string;
+
+  /**
+   * @generated from field: double response_time_ms = 4;
+   */
+  responseTimeMs: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.IntegrationServiceHealth.
+ * Use `create(IntegrationServiceHealthSchema)` to create a new message.
+ */
+export const IntegrationServiceHealthSchema: GenMessage<IntegrationServiceHealth> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 54);
+
+/**
+ * @generated from message sirsi.admin.v2.WebhookEntry
+ */
+export type WebhookEntry = Message<"sirsi.admin.v2.WebhookEntry"> & {
+  /**
+   * @generated from field: string url = 1;
+   */
+  url: string;
+
+  /**
+   * @generated from field: repeated string event_types = 2;
+   */
+  eventTypes: string[];
+
+  /**
+   * @generated from field: double success_rate = 3;
+   */
+  successRate: number;
+
+  /**
+   * @generated from field: double avg_response_ms = 4;
+   */
+  avgResponseMs: number;
+
+  /**
+   * @generated from field: int32 retry_count = 5;
+   */
+  retryCount: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.WebhookEntry.
+ * Use `create(WebhookEntrySchema)` to create a new message.
+ */
+export const WebhookEntrySchema: GenMessage<WebhookEntry> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 55);
+
+/**
+ * @generated from message sirsi.admin.v2.APIKeyEntry
+ */
+export type APIKeyEntry = Message<"sirsi.admin.v2.APIKeyEntry"> & {
+  /**
+   * @generated from field: string service = 1;
+   */
+  service: string;
+
+  /**
+   * @generated from field: string expires_at = 2;
+   */
+  expiresAt: string;
+
+  /**
+   * @generated from field: int32 days_remaining = 3;
+   */
+  daysRemaining: number;
+
+  /**
+   * @generated from field: string rotation_status = 4;
+   */
+  rotationStatus: string;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.APIKeyEntry.
+ * Use `create(APIKeyEntrySchema)` to create a new message.
+ */
+export const APIKeyEntrySchema: GenMessage<APIKeyEntry> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 56);
+
+/**
+ * @generated from message sirsi.admin.v2.ScheduledJob
+ */
+export type ScheduledJob = Message<"sirsi.admin.v2.ScheduledJob"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string schedule = 2;
+   */
+  schedule: string;
+
+  /**
+   * @generated from field: string last_run = 3;
+   */
+  lastRun: string;
+
+  /**
+   * @generated from field: string next_run = 4;
+   */
+  nextRun: string;
+
+  /**
+   * @generated from field: string status = 5;
+   */
+  status: string;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.ScheduledJob.
+ * Use `create(ScheduledJobSchema)` to create a new message.
+ */
+export const ScheduledJobSchema: GenMessage<ScheduledJob> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 57);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorIntegrationsResponse
+ */
+export type GetHypervisorIntegrationsResponse = Message<"sirsi.admin.v2.GetHypervisorIntegrationsResponse"> & {
+  /**
+   * @generated from field: repeated sirsi.admin.v2.IntegrationServiceHealth service_health = 1;
+   */
+  serviceHealth: IntegrationServiceHealth[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.WebhookEntry webhooks = 2;
+   */
+  webhooks: WebhookEntry[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.APIKeyEntry api_keys = 3;
+   */
+  apiKeys: APIKeyEntry[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.ScheduledJob scheduled_jobs = 4;
+   */
+  scheduledJobs: ScheduledJob[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorIntegrationsResponse.
+ * Use `create(GetHypervisorIntegrationsResponseSchema)` to create a new message.
+ */
+export const GetHypervisorIntegrationsResponseSchema: GenMessage<GetHypervisorIntegrationsResponse> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 58);
+
+/**
+ * @generated from message sirsi.admin.v2.CostByService
+ */
+export type CostByService = Message<"sirsi.admin.v2.CostByService"> & {
+  /**
+   * @generated from field: string service = 1;
+   */
+  service: string;
+
+  /**
+   * @generated from field: string tenant = 2;
+   */
+  tenant: string;
+
+  /**
+   * @generated from field: double cost = 3;
+   */
+  cost: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.CostByService.
+ * Use `create(CostByServiceSchema)` to create a new message.
+ */
+export const CostByServiceSchema: GenMessage<CostByService> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 59);
+
+/**
+ * @generated from message sirsi.admin.v2.BudgetVsActual
+ */
+export type BudgetVsActual = Message<"sirsi.admin.v2.BudgetVsActual"> & {
+  /**
+   * @generated from field: double budget = 1;
+   */
+  budget: number;
+
+  /**
+   * @generated from field: double actual = 2;
+   */
+  actual: number;
+
+  /**
+   * @generated from field: double forecast = 3;
+   */
+  forecast: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.BudgetVsActual.
+ * Use `create(BudgetVsActualSchema)` to create a new message.
+ */
+export const BudgetVsActualSchema: GenMessage<BudgetVsActual> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 60);
+
+/**
+ * @generated from message sirsi.admin.v2.CostTrendMonth
+ */
+export type CostTrendMonth = Message<"sirsi.admin.v2.CostTrendMonth"> & {
+  /**
+   * @generated from field: string month = 1;
+   */
+  month: string;
+
+  /**
+   * @generated from field: double finalwishes = 2;
+   */
+  finalwishes: number;
+
+  /**
+   * @generated from field: double assiduous = 3;
+   */
+  assiduous: number;
+
+  /**
+   * @generated from field: double sirsi_core = 4;
+   */
+  sirsiCore: number;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.CostTrendMonth.
+ * Use `create(CostTrendMonthSchema)` to create a new message.
+ */
+export const CostTrendMonthSchema: GenMessage<CostTrendMonth> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 61);
+
+/**
+ * @generated from message sirsi.admin.v2.IdleResource
+ */
+export type IdleResource = Message<"sirsi.admin.v2.IdleResource"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string type = 2;
+   */
+  type: string;
+
+  /**
+   * @generated from field: double monthly_cost = 3;
+   */
+  monthlyCost: number;
+
+  /**
+   * @generated from field: string recommendation = 4;
+   */
+  recommendation: string;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.IdleResource.
+ * Use `create(IdleResourceSchema)` to create a new message.
+ */
+export const IdleResourceSchema: GenMessage<IdleResource> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 62);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorCostResponse
+ */
+export type GetHypervisorCostResponse = Message<"sirsi.admin.v2.GetHypervisorCostResponse"> & {
+  /**
+   * @generated from field: repeated sirsi.admin.v2.CostByService monthly_by_service = 1;
+   */
+  monthlyByService: CostByService[];
+
+  /**
+   * @generated from field: sirsi.admin.v2.BudgetVsActual budget_vs_actual = 2;
+   */
+  budgetVsActual?: BudgetVsActual;
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.CostTrendMonth cost_trend_6m = 3;
+   */
+  costTrend6m: CostTrendMonth[];
+
+  /**
+   * @generated from field: double cost_per_user = 4;
+   */
+  costPerUser: number;
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.IdleResource idle_resources = 5;
+   */
+  idleResources: IdleResource[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorCostResponse.
+ * Use `create(GetHypervisorCostResponseSchema)` to create a new message.
+ */
+export const GetHypervisorCostResponseSchema: GenMessage<GetHypervisorCostResponse> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 63);
+
+/**
+ * @generated from message sirsi.admin.v2.IncidentDetail
+ */
+export type IncidentDetail = Message<"sirsi.admin.v2.IncidentDetail"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string title = 2;
+   */
+  title: string;
+
+  /**
+   * @generated from field: string severity = 3;
+   */
+  severity: string;
+
+  /**
+   * @generated from field: string status = 4;
+   */
+  status: string;
+
+  /**
+   * @generated from field: string opened_at = 5;
+   */
+  openedAt: string;
+
+  /**
+   * @generated from field: string resolved_at = 6;
+   */
+  resolvedAt: string;
+
+  /**
+   * @generated from field: string tenant = 7;
+   */
+  tenant: string;
+
+  /**
+   * @generated from field: string assignee = 8;
+   */
+  assignee: string;
+
+  /**
+   * @generated from field: string description = 9;
+   */
+  description: string;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.IncidentDetail.
+ * Use `create(IncidentDetailSchema)` to create a new message.
+ */
+export const IncidentDetailSchema: GenMessage<IncidentDetail> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 64);
+
+/**
+ * @generated from message sirsi.admin.v2.SLACompliance
+ */
+export type SLACompliance = Message<"sirsi.admin.v2.SLACompliance"> & {
+  /**
+   * @generated from field: double current = 1;
+   */
+  current: number;
+
+  /**
+   * @generated from field: double target = 2;
+   */
+  target: number;
+
+  /**
+   * @generated from field: repeated double trend = 3;
+   */
+  trend: number[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.SLACompliance.
+ * Use `create(SLAComplianceSchema)` to create a new message.
+ */
+export const SLAComplianceSchema: GenMessage<SLACompliance> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 65);
+
+/**
+ * @generated from message sirsi.admin.v2.RunbookLog
+ */
+export type RunbookLog = Message<"sirsi.admin.v2.RunbookLog"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string trigger = 2;
+   */
+  trigger: string;
+
+  /**
+   * @generated from field: string result = 3;
+   */
+  result: string;
+
+  /**
+   * @generated from field: string duration = 4;
+   */
+  duration: string;
+
+  /**
+   * @generated from field: string timestamp = 5;
+   */
+  timestamp: string;
+};
+
+/**
+ * Describes the message sirsi.admin.v2.RunbookLog.
+ * Use `create(RunbookLogSchema)` to create a new message.
+ */
+export const RunbookLogSchema: GenMessage<RunbookLog> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 66);
+
+/**
+ * @generated from message sirsi.admin.v2.GetHypervisorIncidentsResponse
+ */
+export type GetHypervisorIncidentsResponse = Message<"sirsi.admin.v2.GetHypervisorIncidentsResponse"> & {
+  /**
+   * @generated from field: repeated sirsi.admin.v2.IncidentDetail open_incidents = 1;
+   */
+  openIncidents: IncidentDetail[];
+
+  /**
+   * @generated from field: sirsi.admin.v2.SLACompliance sla_compliance = 2;
+   */
+  slaCompliance?: SLACompliance;
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.IncidentDetail incident_history = 3;
+   */
+  incidentHistory: IncidentDetail[];
+
+  /**
+   * @generated from field: repeated sirsi.admin.v2.RunbookLog runbook_log = 4;
+   */
+  runbookLog: RunbookLog[];
+};
+
+/**
+ * Describes the message sirsi.admin.v2.GetHypervisorIncidentsResponse.
+ * Use `create(GetHypervisorIncidentsResponseSchema)` to create a new message.
+ */
+export const GetHypervisorIncidentsResponseSchema: GenMessage<GetHypervisorIncidentsResponse> = /*@__PURE__*/
+  messageDesc(file_sirsi_admin_v2_hypervisor_service, 67);
+
+/**
  * @generated from service sirsi.admin.v2.HypervisorService
  */
 export const HypervisorService: GenService<{
@@ -825,6 +2232,16 @@ export const HypervisorService: GenService<{
     output: typeof GetHypervisorDevOpsResponseSchema;
   },
   /**
+   * Tab 3: Infrastructure — IaC state, drift, Cloud Run, environments
+   *
+   * @generated from rpc sirsi.admin.v2.HypervisorService.GetHypervisorInfrastructure
+   */
+  getHypervisorInfrastructure: {
+    methodKind: "unary";
+    input: typeof GetHypervisorInfrastructureRequestSchema;
+    output: typeof GetHypervisorInfrastructureResponseSchema;
+  },
+  /**
    * Tab 4: Security — MFA compliance, auth activity, certs, vuln score
    *
    * @generated from rpc sirsi.admin.v2.HypervisorService.GetHypervisorSecurity
@@ -833,6 +2250,66 @@ export const HypervisorService: GenService<{
     methodKind: "unary";
     input: typeof GetHypervisorSecurityRequestSchema;
     output: typeof GetHypervisorSecurityResponseSchema;
+  },
+  /**
+   * Tab 5: Database — connection pools, slow queries, replication, Firestore
+   *
+   * @generated from rpc sirsi.admin.v2.HypervisorService.GetHypervisorDatabase
+   */
+  getHypervisorDatabase: {
+    methodKind: "unary";
+    input: typeof GetHypervisorDatabaseRequestSchema;
+    output: typeof GetHypervisorDatabaseResponseSchema;
+  },
+  /**
+   * Tab 6: Frontend — Web Vitals, bundle size, page inventory, errors
+   *
+   * @generated from rpc sirsi.admin.v2.HypervisorService.GetHypervisorFrontend
+   */
+  getHypervisorFrontend: {
+    methodKind: "unary";
+    input: typeof GetHypervisorFrontendRequestSchema;
+    output: typeof GetHypervisorFrontendResponseSchema;
+  },
+  /**
+   * Tab 7: Backend — API endpoints, gRPC throughput, Go runtime, rate limits
+   *
+   * @generated from rpc sirsi.admin.v2.HypervisorService.GetHypervisorBackend
+   */
+  getHypervisorBackend: {
+    methodKind: "unary";
+    input: typeof GetHypervisorBackendRequestSchema;
+    output: typeof GetHypervisorBackendResponseSchema;
+  },
+  /**
+   * Tab 8: Integrations — service health, webhooks, API keys, scheduled jobs
+   *
+   * @generated from rpc sirsi.admin.v2.HypervisorService.GetHypervisorIntegrations
+   */
+  getHypervisorIntegrations: {
+    methodKind: "unary";
+    input: typeof GetHypervisorIntegrationsRequestSchema;
+    output: typeof GetHypervisorIntegrationsResponseSchema;
+  },
+  /**
+   * Tab 9: Cost — monthly spend, budget vs actual, per-user cost, idle resources
+   *
+   * @generated from rpc sirsi.admin.v2.HypervisorService.GetHypervisorCost
+   */
+  getHypervisorCost: {
+    methodKind: "unary";
+    input: typeof GetHypervisorCostRequestSchema;
+    output: typeof GetHypervisorCostResponseSchema;
+  },
+  /**
+   * Tab 10: Incidents — open incidents, SLA compliance, history, runbooks
+   *
+   * @generated from rpc sirsi.admin.v2.HypervisorService.GetHypervisorIncidents
+   */
+  getHypervisorIncidents: {
+    methodKind: "unary";
+    input: typeof GetHypervisorIncidentsRequestSchema;
+    output: typeof GetHypervisorIncidentsResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_sirsi_admin_v2_hypervisor_service, 0);

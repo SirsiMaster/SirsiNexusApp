@@ -312,7 +312,7 @@ function InfrastructureTab({ filters }: TabProps) {
             <div className="grid grid-cols-2 gap-4">
                 <div className="sirsi-card p-5">
                     <SectionHeader title="Drift Detection" />
-                    {data.driftItems.map((d, i) => (
+                    {data.driftItems.map((d: any, i: any) => (
                         <div key={i} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                             <div className="flex items-center gap-3">
                                 <StatusLED status={d.severity === 'critical' ? 'critical' : d.severity === 'warning' ? 'degraded' : 'operational'} />
@@ -340,7 +340,7 @@ function InfrastructureTab({ filters }: TabProps) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.environmentMatrix.map((e, i) => (
+                                {data.environmentMatrix.map((e: any, i: any) => (
                                     <tr key={i}>
                                         <td className="ps-4">{e.tenant}</td>
                                         <td>{e.environment}</td>
@@ -359,7 +359,7 @@ function InfrastructureTab({ filters }: TabProps) {
             <div>
                 <SectionHeader title="Cloud Run Services" />
                 <div className="grid grid-cols-3 gap-4">
-                    {data.cloudRunServices.map((s, i) => (
+                    {data.cloudRunServices.map((s: any, i: any) => (
                         <div key={i} className="sirsi-card p-4">
                             <p className="text-sm font-medium text-gray-900 m-0 mb-1">{s.name}</p>
                             <p className="text-[11px] text-gray-400 m-0 mb-3">{s.tenant}</p>
@@ -437,7 +437,7 @@ function DatabaseTab({ filters }: TabProps) {
     return (
         <div className="space-y-6 pt-5">
             <div className="grid grid-cols-2 gap-4">
-                {data.connectionPools.map((p, i) => (
+                {data.connectionPools.map((p: any, i: any) => (
                     <div key={i} className="sirsi-card p-4">
                         <p className="text-[13px] font-medium text-gray-900 m-0 mb-2">{p.database}</p>
                         <ProgressGauge value={p.active} max={p.max} label={`Active: ${p.active} / ${p.max}`} />
@@ -449,7 +449,7 @@ function DatabaseTab({ filters }: TabProps) {
             <div className="grid grid-cols-2 gap-4">
                 <div className="sirsi-card p-5">
                     <SectionHeader title="Slow Queries" />
-                    {data.slowQueries.map((q, i) => (
+                    {data.slowQueries.map((q: any, i: any) => (
                         <div key={i} className="py-3 border-b border-gray-100 last:border-0">
                             <code className="text-xs text-gray-600 block mb-1">{q.query}</code>
                             <div className="flex gap-4">
@@ -474,7 +474,7 @@ function DatabaseTab({ filters }: TabProps) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.firestoreCollections.map((c, i) => (
+                                {data.firestoreCollections.map((c: any, i: any) => (
                                     <tr key={i}>
                                         <td className="ps-4"><code className="text-xs">{c.name}</code></td>
                                         <td className="font-medium">{c.documentCount.toLocaleString()}</td>
@@ -491,7 +491,7 @@ function DatabaseTab({ filters }: TabProps) {
             <div className="sirsi-card p-5">
                 <SectionHeader title="Backup Status" />
                 <div className="grid grid-cols-2 gap-4">
-                    {data.backupStatus.map((b, i) => (
+                    {data.backupStatus.map((b: any, i: any) => (
                         <div key={i} className="flex items-center justify-between py-2">
                             <div className="flex items-center gap-3">
                                 <StatusLED status={b.status} />
@@ -513,7 +513,7 @@ function FrontendTab({ filters }: TabProps) {
     return (
         <div className="space-y-6 pt-5">
             <div className="grid grid-cols-3 gap-4">
-                {data.webVitals.map(v => (
+                {data.webVitals.map((v: any) => (
                     <MetricCard key={v.name} label={v.name} value={v.value} unit={v.unit} accentColor={v.rating === 'good' ? '#059669' : v.rating === 'needs-improvement' ? '#f59e0b' : '#ef4444'} />
                 ))}
             </div>
@@ -524,7 +524,7 @@ function FrontendTab({ filters }: TabProps) {
                     <ResponsiveContainer width="100%" height={200}>
                         <PieChart>
                             <Pie data={data.bundleSize.byModule} dataKey="size" nameKey="name" cx="50%" cy="50%" outerRadius={80} label={(props: { name?: string; payload?: { size?: number } }) => `${props.name ?? ''}: ${props.payload?.size ?? 0}KB`} labelLine={false}>
-                                {data.bundleSize.byModule.map((_, i) => <Cell key={i} fill={EMERALD_PALETTE[i % EMERALD_PALETTE.length]} />)}
+                                {data.bundleSize.byModule.map((_: any, i: any) => <Cell key={i} fill={EMERALD_PALETTE[i % EMERALD_PALETTE.length]} />)}
                             </Pie>
                             <Tooltip />
                         </PieChart>
@@ -544,7 +544,7 @@ function FrontendTab({ filters }: TabProps) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.pageInventory.map((p, i) => (
+                                {data.pageInventory.map((p: any, i: any) => (
                                     <tr key={i}>
                                         <td className="ps-4"><code className="text-xs">{p.route}</code></td>
                                         <td className="text-center">{p.componentCount}</td>
@@ -589,7 +589,7 @@ function BackendTab({ filters }: TabProps) {
                             </tr>
                         </thead>
                         <tbody>
-                            {data.apiEndpoints.map((e, i) => (
+                            {data.apiEndpoints.map((e: any, i: any) => (
                                 <tr key={i}>
                                     <td className="ps-4"><span className="sirsi-badge sirsi-badge-success">{e.method}</span></td>
                                     <td><code className="text-xs">{e.path}</code></td>
@@ -607,7 +607,7 @@ function BackendTab({ filters }: TabProps) {
             <div className="grid grid-cols-2 gap-4">
                 <div className="sirsi-card p-5">
                     <SectionHeader title="Service Health" />
-                    {data.serviceHealth.map((s, i) => (
+                    {data.serviceHealth.map((s: any, i: any) => (
                         <div key={i} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                             <div className="flex items-center gap-3"><StatusLED status={s.status} /><span className="text-[13px] font-medium">{s.service}</span></div>
                             <span className="text-xs font-medium text-emerald-600">{s.uptime}%</span>
@@ -616,7 +616,7 @@ function BackendTab({ filters }: TabProps) {
                 </div>
                 <div className="sirsi-card p-5">
                     <SectionHeader title="gRPC Throughput" />
-                    {data.grpcThroughput.map((g, i) => (
+                    {data.grpcThroughput.map((g: any, i: any) => (
                         <div key={i} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                             <span className="text-[13px] font-medium">{g.service}</span>
                             <div className="flex items-center gap-3">
@@ -638,7 +638,7 @@ function IntegrationsTab({ filters }: TabProps) {
     return (
         <div className="space-y-6 pt-5">
             <div className="grid grid-cols-3 gap-4">
-                {data.serviceHealth.map((s, i) => (
+                {data.serviceHealth.map((s: any, i: any) => (
                     <div key={i} className="sirsi-card p-4">
                         <div className="flex items-center justify-between mb-2">
                             <span className="text-sm font-medium text-gray-900">{s.name}</span>
@@ -652,7 +652,7 @@ function IntegrationsTab({ filters }: TabProps) {
             <div className="grid grid-cols-2 gap-4">
                 <div className="sirsi-card p-5">
                     <SectionHeader title="Webhooks" />
-                    {data.webhooks.map((w, i) => (
+                    {data.webhooks.map((w: any, i: any) => (
                         <div key={i} className="py-3 border-b border-gray-100 last:border-0">
                             <p className="text-[13px] font-medium text-gray-900 m-0 mb-1">{w.url}</p>
                             <div className="flex gap-4">
@@ -665,7 +665,7 @@ function IntegrationsTab({ filters }: TabProps) {
                 </div>
                 <div className="sirsi-card p-5">
                     <SectionHeader title="API Keys" />
-                    {data.apiKeys.map((k, i) => (
+                    {data.apiKeys.map((k: any, i: any) => (
                         <div key={i} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                             <div>
                                 <p className="text-[13px] font-medium m-0">{k.service}</p>
@@ -719,7 +719,7 @@ function CostTab({ filters }: TabProps) {
             {data.idleResources.length > 0 && (
                 <div className="sirsi-card p-5 border-l-4 border-amber-400">
                     <SectionHeader title="Idle Resources" />
-                    {data.idleResources.map((r, i) => (
+                    {data.idleResources.map((r: any, i: any) => (
                         <div key={i} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                             <div>
                                 <p className="text-[13px] font-medium text-gray-900 m-0">{r.name}</p>
@@ -748,7 +748,7 @@ function IncidentsTab({ filters }: TabProps) {
             {data.openIncidents.length > 0 && (
                 <div className="sirsi-card p-5 border-l-4 border-red-500">
                     <SectionHeader title="Open Incidents" />
-                    {data.openIncidents.map(inc => (
+                    {data.openIncidents.map((inc: any) => (
                         <div key={inc.id} className="py-3">
                             <div className="flex items-center gap-3 mb-2">
                                 <SeverityBadge severity={inc.severity} />
@@ -768,7 +768,7 @@ function IncidentsTab({ filters }: TabProps) {
 
             <div className="sirsi-card p-5">
                 <SectionHeader title="Incident History" />
-                {data.incidentHistory.map(inc => (
+                {data.incidentHistory.map((inc: any) => (
                     <div key={inc.id} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                         <div className="flex items-center gap-3">
                             <SeverityBadge severity={inc.severity} />

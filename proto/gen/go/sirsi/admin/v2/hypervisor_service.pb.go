@@ -1571,6 +1571,3030 @@ func (x *GetHypervisorSecurityResponse) GetSoc2Score() float64 {
 	return 0
 }
 
+type GetHypervisorInfrastructureRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        *HypervisorFilter      `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHypervisorInfrastructureRequest) Reset() {
+	*x = GetHypervisorInfrastructureRequest{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorInfrastructureRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorInfrastructureRequest) ProtoMessage() {}
+
+func (x *GetHypervisorInfrastructureRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorInfrastructureRequest.ProtoReflect.Descriptor instead.
+func (*GetHypervisorInfrastructureRequest) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *GetHypervisorInfrastructureRequest) GetFilter() *HypervisorFilter {
+	if x != nil {
+		return x.Filter
+	}
+	return nil
+}
+
+type GetHypervisorDatabaseRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        *HypervisorFilter      `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHypervisorDatabaseRequest) Reset() {
+	*x = GetHypervisorDatabaseRequest{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorDatabaseRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorDatabaseRequest) ProtoMessage() {}
+
+func (x *GetHypervisorDatabaseRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorDatabaseRequest.ProtoReflect.Descriptor instead.
+func (*GetHypervisorDatabaseRequest) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *GetHypervisorDatabaseRequest) GetFilter() *HypervisorFilter {
+	if x != nil {
+		return x.Filter
+	}
+	return nil
+}
+
+type GetHypervisorFrontendRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        *HypervisorFilter      `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHypervisorFrontendRequest) Reset() {
+	*x = GetHypervisorFrontendRequest{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorFrontendRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorFrontendRequest) ProtoMessage() {}
+
+func (x *GetHypervisorFrontendRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorFrontendRequest.ProtoReflect.Descriptor instead.
+func (*GetHypervisorFrontendRequest) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *GetHypervisorFrontendRequest) GetFilter() *HypervisorFilter {
+	if x != nil {
+		return x.Filter
+	}
+	return nil
+}
+
+type GetHypervisorBackendRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        *HypervisorFilter      `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHypervisorBackendRequest) Reset() {
+	*x = GetHypervisorBackendRequest{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorBackendRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorBackendRequest) ProtoMessage() {}
+
+func (x *GetHypervisorBackendRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorBackendRequest.ProtoReflect.Descriptor instead.
+func (*GetHypervisorBackendRequest) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *GetHypervisorBackendRequest) GetFilter() *HypervisorFilter {
+	if x != nil {
+		return x.Filter
+	}
+	return nil
+}
+
+type GetHypervisorIntegrationsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        *HypervisorFilter      `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHypervisorIntegrationsRequest) Reset() {
+	*x = GetHypervisorIntegrationsRequest{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorIntegrationsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorIntegrationsRequest) ProtoMessage() {}
+
+func (x *GetHypervisorIntegrationsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorIntegrationsRequest.ProtoReflect.Descriptor instead.
+func (*GetHypervisorIntegrationsRequest) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *GetHypervisorIntegrationsRequest) GetFilter() *HypervisorFilter {
+	if x != nil {
+		return x.Filter
+	}
+	return nil
+}
+
+type GetHypervisorCostRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        *HypervisorFilter      `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHypervisorCostRequest) Reset() {
+	*x = GetHypervisorCostRequest{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorCostRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorCostRequest) ProtoMessage() {}
+
+func (x *GetHypervisorCostRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorCostRequest.ProtoReflect.Descriptor instead.
+func (*GetHypervisorCostRequest) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *GetHypervisorCostRequest) GetFilter() *HypervisorFilter {
+	if x != nil {
+		return x.Filter
+	}
+	return nil
+}
+
+type GetHypervisorIncidentsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        *HypervisorFilter      `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHypervisorIncidentsRequest) Reset() {
+	*x = GetHypervisorIncidentsRequest{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorIncidentsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorIncidentsRequest) ProtoMessage() {}
+
+func (x *GetHypervisorIncidentsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorIncidentsRequest.ProtoReflect.Descriptor instead.
+func (*GetHypervisorIncidentsRequest) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *GetHypervisorIncidentsRequest) GetFilter() *HypervisorFilter {
+	if x != nil {
+		return x.Filter
+	}
+	return nil
+}
+
+type ResourceState struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	InSync        int32                  `protobuf:"varint,1,opt,name=in_sync,json=inSync,proto3" json:"in_sync,omitempty"`
+	Drifted       int32                  `protobuf:"varint,2,opt,name=drifted,proto3" json:"drifted,omitempty"`
+	Pending       int32                  `protobuf:"varint,3,opt,name=pending,proto3" json:"pending,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResourceState) Reset() {
+	*x = ResourceState{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResourceState) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResourceState) ProtoMessage() {}
+
+func (x *ResourceState) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResourceState.ProtoReflect.Descriptor instead.
+func (*ResourceState) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *ResourceState) GetInSync() int32 {
+	if x != nil {
+		return x.InSync
+	}
+	return 0
+}
+
+func (x *ResourceState) GetDrifted() int32 {
+	if x != nil {
+		return x.Drifted
+	}
+	return 0
+}
+
+func (x *ResourceState) GetPending() int32 {
+	if x != nil {
+		return x.Pending
+	}
+	return 0
+}
+
+type DriftItem struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Resource      string                 `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
+	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	Tenant        string                 `protobuf:"bytes,3,opt,name=tenant,proto3" json:"tenant,omitempty"`
+	Detected      string                 `protobuf:"bytes,4,opt,name=detected,proto3" json:"detected,omitempty"`
+	Severity      string                 `protobuf:"bytes,5,opt,name=severity,proto3" json:"severity,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DriftItem) Reset() {
+	*x = DriftItem{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DriftItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DriftItem) ProtoMessage() {}
+
+func (x *DriftItem) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DriftItem.ProtoReflect.Descriptor instead.
+func (*DriftItem) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *DriftItem) GetResource() string {
+	if x != nil {
+		return x.Resource
+	}
+	return ""
+}
+
+func (x *DriftItem) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *DriftItem) GetTenant() string {
+	if x != nil {
+		return x.Tenant
+	}
+	return ""
+}
+
+func (x *DriftItem) GetDetected() string {
+	if x != nil {
+		return x.Detected
+	}
+	return ""
+}
+
+func (x *DriftItem) GetSeverity() string {
+	if x != nil {
+		return x.Severity
+	}
+	return ""
+}
+
+type EnvironmentEntry struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Tenant        string                 `protobuf:"bytes,1,opt,name=tenant,proto3" json:"tenant,omitempty"`
+	Environment   string                 `protobuf:"bytes,2,opt,name=environment,proto3" json:"environment,omitempty"`
+	Version       string                 `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
+	Status        string                 `protobuf:"bytes,4,opt,name=status,proto3" json:"status,omitempty"`
+	LastDeploy    string                 `protobuf:"bytes,5,opt,name=last_deploy,json=lastDeploy,proto3" json:"last_deploy,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EnvironmentEntry) Reset() {
+	*x = EnvironmentEntry{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EnvironmentEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EnvironmentEntry) ProtoMessage() {}
+
+func (x *EnvironmentEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EnvironmentEntry.ProtoReflect.Descriptor instead.
+func (*EnvironmentEntry) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *EnvironmentEntry) GetTenant() string {
+	if x != nil {
+		return x.Tenant
+	}
+	return ""
+}
+
+func (x *EnvironmentEntry) GetEnvironment() string {
+	if x != nil {
+		return x.Environment
+	}
+	return ""
+}
+
+func (x *EnvironmentEntry) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
+func (x *EnvironmentEntry) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *EnvironmentEntry) GetLastDeploy() string {
+	if x != nil {
+		return x.LastDeploy
+	}
+	return ""
+}
+
+type CloudRunService struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Tenant        string                 `protobuf:"bytes,2,opt,name=tenant,proto3" json:"tenant,omitempty"`
+	Instances     int32                  `protobuf:"varint,3,opt,name=instances,proto3" json:"instances,omitempty"`
+	MaxInstances  int32                  `protobuf:"varint,4,opt,name=max_instances,json=maxInstances,proto3" json:"max_instances,omitempty"`
+	Cpu           float64                `protobuf:"fixed64,5,opt,name=cpu,proto3" json:"cpu,omitempty"`
+	Memory        float64                `protobuf:"fixed64,6,opt,name=memory,proto3" json:"memory,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CloudRunService) Reset() {
+	*x = CloudRunService{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CloudRunService) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CloudRunService) ProtoMessage() {}
+
+func (x *CloudRunService) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CloudRunService.ProtoReflect.Descriptor instead.
+func (*CloudRunService) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *CloudRunService) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CloudRunService) GetTenant() string {
+	if x != nil {
+		return x.Tenant
+	}
+	return ""
+}
+
+func (x *CloudRunService) GetInstances() int32 {
+	if x != nil {
+		return x.Instances
+	}
+	return 0
+}
+
+func (x *CloudRunService) GetMaxInstances() int32 {
+	if x != nil {
+		return x.MaxInstances
+	}
+	return 0
+}
+
+func (x *CloudRunService) GetCpu() float64 {
+	if x != nil {
+		return x.Cpu
+	}
+	return 0
+}
+
+func (x *CloudRunService) GetMemory() float64 {
+	if x != nil {
+		return x.Memory
+	}
+	return 0
+}
+
+type CostByResource struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Cost          float64                `protobuf:"fixed64,2,opt,name=cost,proto3" json:"cost,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CostByResource) Reset() {
+	*x = CostByResource{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CostByResource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CostByResource) ProtoMessage() {}
+
+func (x *CostByResource) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CostByResource.ProtoReflect.Descriptor instead.
+func (*CostByResource) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *CostByResource) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CostByResource) GetCost() float64 {
+	if x != nil {
+		return x.Cost
+	}
+	return 0
+}
+
+type GetHypervisorInfrastructureResponse struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Resources         *ResourceState         `protobuf:"bytes,1,opt,name=resources,proto3" json:"resources,omitempty"`
+	DriftItems        []*DriftItem           `protobuf:"bytes,2,rep,name=drift_items,json=driftItems,proto3" json:"drift_items,omitempty"`
+	EnvironmentMatrix []*EnvironmentEntry    `protobuf:"bytes,3,rep,name=environment_matrix,json=environmentMatrix,proto3" json:"environment_matrix,omitempty"`
+	CloudRunServices  []*CloudRunService     `protobuf:"bytes,4,rep,name=cloud_run_services,json=cloudRunServices,proto3" json:"cloud_run_services,omitempty"`
+	CostByResource    []*CostByResource      `protobuf:"bytes,5,rep,name=cost_by_resource,json=costByResource,proto3" json:"cost_by_resource,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *GetHypervisorInfrastructureResponse) Reset() {
+	*x = GetHypervisorInfrastructureResponse{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorInfrastructureResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorInfrastructureResponse) ProtoMessage() {}
+
+func (x *GetHypervisorInfrastructureResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorInfrastructureResponse.ProtoReflect.Descriptor instead.
+func (*GetHypervisorInfrastructureResponse) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *GetHypervisorInfrastructureResponse) GetResources() *ResourceState {
+	if x != nil {
+		return x.Resources
+	}
+	return nil
+}
+
+func (x *GetHypervisorInfrastructureResponse) GetDriftItems() []*DriftItem {
+	if x != nil {
+		return x.DriftItems
+	}
+	return nil
+}
+
+func (x *GetHypervisorInfrastructureResponse) GetEnvironmentMatrix() []*EnvironmentEntry {
+	if x != nil {
+		return x.EnvironmentMatrix
+	}
+	return nil
+}
+
+func (x *GetHypervisorInfrastructureResponse) GetCloudRunServices() []*CloudRunService {
+	if x != nil {
+		return x.CloudRunServices
+	}
+	return nil
+}
+
+func (x *GetHypervisorInfrastructureResponse) GetCostByResource() []*CostByResource {
+	if x != nil {
+		return x.CostByResource
+	}
+	return nil
+}
+
+type ConnectionPool struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Database      string                 `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
+	Active        int32                  `protobuf:"varint,2,opt,name=active,proto3" json:"active,omitempty"`
+	Idle          int32                  `protobuf:"varint,3,opt,name=idle,proto3" json:"idle,omitempty"`
+	Max           int32                  `protobuf:"varint,4,opt,name=max,proto3" json:"max,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ConnectionPool) Reset() {
+	*x = ConnectionPool{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConnectionPool) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConnectionPool) ProtoMessage() {}
+
+func (x *ConnectionPool) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConnectionPool.ProtoReflect.Descriptor instead.
+func (*ConnectionPool) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *ConnectionPool) GetDatabase() string {
+	if x != nil {
+		return x.Database
+	}
+	return ""
+}
+
+func (x *ConnectionPool) GetActive() int32 {
+	if x != nil {
+		return x.Active
+	}
+	return 0
+}
+
+func (x *ConnectionPool) GetIdle() int32 {
+	if x != nil {
+		return x.Idle
+	}
+	return 0
+}
+
+func (x *ConnectionPool) GetMax() int32 {
+	if x != nil {
+		return x.Max
+	}
+	return 0
+}
+
+type SlowQuery struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
+	AvgTime       float64                `protobuf:"fixed64,2,opt,name=avg_time,json=avgTime,proto3" json:"avg_time,omitempty"`
+	Frequency     int32                  `protobuf:"varint,3,opt,name=frequency,proto3" json:"frequency,omitempty"`
+	LastSeen      string                 `protobuf:"bytes,4,opt,name=last_seen,json=lastSeen,proto3" json:"last_seen,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SlowQuery) Reset() {
+	*x = SlowQuery{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SlowQuery) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SlowQuery) ProtoMessage() {}
+
+func (x *SlowQuery) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SlowQuery.ProtoReflect.Descriptor instead.
+func (*SlowQuery) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *SlowQuery) GetQuery() string {
+	if x != nil {
+		return x.Query
+	}
+	return ""
+}
+
+func (x *SlowQuery) GetAvgTime() float64 {
+	if x != nil {
+		return x.AvgTime
+	}
+	return 0
+}
+
+func (x *SlowQuery) GetFrequency() int32 {
+	if x != nil {
+		return x.Frequency
+	}
+	return 0
+}
+
+func (x *SlowQuery) GetLastSeen() string {
+	if x != nil {
+		return x.LastSeen
+	}
+	return ""
+}
+
+type ReplicationEntry struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Replica       string                 `protobuf:"bytes,1,opt,name=replica,proto3" json:"replica,omitempty"`
+	LagMs         float64                `protobuf:"fixed64,2,opt,name=lag_ms,json=lagMs,proto3" json:"lag_ms,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReplicationEntry) Reset() {
+	*x = ReplicationEntry{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReplicationEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReplicationEntry) ProtoMessage() {}
+
+func (x *ReplicationEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReplicationEntry.ProtoReflect.Descriptor instead.
+func (*ReplicationEntry) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *ReplicationEntry) GetReplica() string {
+	if x != nil {
+		return x.Replica
+	}
+	return ""
+}
+
+func (x *ReplicationEntry) GetLagMs() float64 {
+	if x != nil {
+		return x.LagMs
+	}
+	return 0
+}
+
+type TableStats struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	RowCount      int32                  `protobuf:"varint,2,opt,name=row_count,json=rowCount,proto3" json:"row_count,omitempty"`
+	DiskMb        float64                `protobuf:"fixed64,3,opt,name=disk_mb,json=diskMb,proto3" json:"disk_mb,omitempty"`
+	IndexMb       float64                `protobuf:"fixed64,4,opt,name=index_mb,json=indexMb,proto3" json:"index_mb,omitempty"`
+	LastVacuum    string                 `protobuf:"bytes,5,opt,name=last_vacuum,json=lastVacuum,proto3" json:"last_vacuum,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TableStats) Reset() {
+	*x = TableStats{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TableStats) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TableStats) ProtoMessage() {}
+
+func (x *TableStats) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TableStats.ProtoReflect.Descriptor instead.
+func (*TableStats) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *TableStats) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *TableStats) GetRowCount() int32 {
+	if x != nil {
+		return x.RowCount
+	}
+	return 0
+}
+
+func (x *TableStats) GetDiskMb() float64 {
+	if x != nil {
+		return x.DiskMb
+	}
+	return 0
+}
+
+func (x *TableStats) GetIndexMb() float64 {
+	if x != nil {
+		return x.IndexMb
+	}
+	return 0
+}
+
+func (x *TableStats) GetLastVacuum() string {
+	if x != nil {
+		return x.LastVacuum
+	}
+	return ""
+}
+
+type FirestoreCollection struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	DocumentCount int32                  `protobuf:"varint,2,opt,name=document_count,json=documentCount,proto3" json:"document_count,omitempty"`
+	ReadsTrend    []float64              `protobuf:"fixed64,3,rep,packed,name=reads_trend,json=readsTrend,proto3" json:"reads_trend,omitempty"`
+	WritesTrend   []float64              `protobuf:"fixed64,4,rep,packed,name=writes_trend,json=writesTrend,proto3" json:"writes_trend,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FirestoreCollection) Reset() {
+	*x = FirestoreCollection{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FirestoreCollection) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FirestoreCollection) ProtoMessage() {}
+
+func (x *FirestoreCollection) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FirestoreCollection.ProtoReflect.Descriptor instead.
+func (*FirestoreCollection) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{39}
+}
+
+func (x *FirestoreCollection) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *FirestoreCollection) GetDocumentCount() int32 {
+	if x != nil {
+		return x.DocumentCount
+	}
+	return 0
+}
+
+func (x *FirestoreCollection) GetReadsTrend() []float64 {
+	if x != nil {
+		return x.ReadsTrend
+	}
+	return nil
+}
+
+func (x *FirestoreCollection) GetWritesTrend() []float64 {
+	if x != nil {
+		return x.WritesTrend
+	}
+	return nil
+}
+
+type BackupStatus struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Database        string                 `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
+	LastBackup      string                 `protobuf:"bytes,2,opt,name=last_backup,json=lastBackup,proto3" json:"last_backup,omitempty"`
+	Status          string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+	LastRestoreTest string                 `protobuf:"bytes,4,opt,name=last_restore_test,json=lastRestoreTest,proto3" json:"last_restore_test,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *BackupStatus) Reset() {
+	*x = BackupStatus{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BackupStatus) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BackupStatus) ProtoMessage() {}
+
+func (x *BackupStatus) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BackupStatus.ProtoReflect.Descriptor instead.
+func (*BackupStatus) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *BackupStatus) GetDatabase() string {
+	if x != nil {
+		return x.Database
+	}
+	return ""
+}
+
+func (x *BackupStatus) GetLastBackup() string {
+	if x != nil {
+		return x.LastBackup
+	}
+	return ""
+}
+
+func (x *BackupStatus) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *BackupStatus) GetLastRestoreTest() string {
+	if x != nil {
+		return x.LastRestoreTest
+	}
+	return ""
+}
+
+type GetHypervisorDatabaseResponse struct {
+	state                protoimpl.MessageState `protogen:"open.v1"`
+	ConnectionPools      []*ConnectionPool      `protobuf:"bytes,1,rep,name=connection_pools,json=connectionPools,proto3" json:"connection_pools,omitempty"`
+	SlowQueries          []*SlowQuery           `protobuf:"bytes,2,rep,name=slow_queries,json=slowQueries,proto3" json:"slow_queries,omitempty"`
+	ReplicationLag       []*ReplicationEntry    `protobuf:"bytes,3,rep,name=replication_lag,json=replicationLag,proto3" json:"replication_lag,omitempty"`
+	TableStats           []*TableStats          `protobuf:"bytes,4,rep,name=table_stats,json=tableStats,proto3" json:"table_stats,omitempty"`
+	FirestoreCollections []*FirestoreCollection `protobuf:"bytes,5,rep,name=firestore_collections,json=firestoreCollections,proto3" json:"firestore_collections,omitempty"`
+	BackupStatus         []*BackupStatus        `protobuf:"bytes,6,rep,name=backup_status,json=backupStatus,proto3" json:"backup_status,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
+}
+
+func (x *GetHypervisorDatabaseResponse) Reset() {
+	*x = GetHypervisorDatabaseResponse{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorDatabaseResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorDatabaseResponse) ProtoMessage() {}
+
+func (x *GetHypervisorDatabaseResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorDatabaseResponse.ProtoReflect.Descriptor instead.
+func (*GetHypervisorDatabaseResponse) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *GetHypervisorDatabaseResponse) GetConnectionPools() []*ConnectionPool {
+	if x != nil {
+		return x.ConnectionPools
+	}
+	return nil
+}
+
+func (x *GetHypervisorDatabaseResponse) GetSlowQueries() []*SlowQuery {
+	if x != nil {
+		return x.SlowQueries
+	}
+	return nil
+}
+
+func (x *GetHypervisorDatabaseResponse) GetReplicationLag() []*ReplicationEntry {
+	if x != nil {
+		return x.ReplicationLag
+	}
+	return nil
+}
+
+func (x *GetHypervisorDatabaseResponse) GetTableStats() []*TableStats {
+	if x != nil {
+		return x.TableStats
+	}
+	return nil
+}
+
+func (x *GetHypervisorDatabaseResponse) GetFirestoreCollections() []*FirestoreCollection {
+	if x != nil {
+		return x.FirestoreCollections
+	}
+	return nil
+}
+
+func (x *GetHypervisorDatabaseResponse) GetBackupStatus() []*BackupStatus {
+	if x != nil {
+		return x.BackupStatus
+	}
+	return nil
+}
+
+type WebVital struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Value         float64                `protobuf:"fixed64,2,opt,name=value,proto3" json:"value,omitempty"`
+	Unit          string                 `protobuf:"bytes,3,opt,name=unit,proto3" json:"unit,omitempty"`
+	Rating        string                 `protobuf:"bytes,4,opt,name=rating,proto3" json:"rating,omitempty"`
+	ThresholdGood float64                `protobuf:"fixed64,5,opt,name=threshold_good,json=thresholdGood,proto3" json:"threshold_good,omitempty"`
+	ThresholdPoor float64                `protobuf:"fixed64,6,opt,name=threshold_poor,json=thresholdPoor,proto3" json:"threshold_poor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WebVital) Reset() {
+	*x = WebVital{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WebVital) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WebVital) ProtoMessage() {}
+
+func (x *WebVital) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WebVital.ProtoReflect.Descriptor instead.
+func (*WebVital) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *WebVital) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *WebVital) GetValue() float64 {
+	if x != nil {
+		return x.Value
+	}
+	return 0
+}
+
+func (x *WebVital) GetUnit() string {
+	if x != nil {
+		return x.Unit
+	}
+	return ""
+}
+
+func (x *WebVital) GetRating() string {
+	if x != nil {
+		return x.Rating
+	}
+	return ""
+}
+
+func (x *WebVital) GetThresholdGood() float64 {
+	if x != nil {
+		return x.ThresholdGood
+	}
+	return 0
+}
+
+func (x *WebVital) GetThresholdPoor() float64 {
+	if x != nil {
+		return x.ThresholdPoor
+	}
+	return 0
+}
+
+type BundleModule struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Size          float64                `protobuf:"fixed64,2,opt,name=size,proto3" json:"size,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BundleModule) Reset() {
+	*x = BundleModule{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BundleModule) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BundleModule) ProtoMessage() {}
+
+func (x *BundleModule) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BundleModule.ProtoReflect.Descriptor instead.
+func (*BundleModule) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *BundleModule) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *BundleModule) GetSize() float64 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
+type BundleSize struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Current       float64                `protobuf:"fixed64,1,opt,name=current,proto3" json:"current,omitempty"`
+	Budget        float64                `protobuf:"fixed64,2,opt,name=budget,proto3" json:"budget,omitempty"`
+	ByModule      []*BundleModule        `protobuf:"bytes,3,rep,name=by_module,json=byModule,proto3" json:"by_module,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BundleSize) Reset() {
+	*x = BundleSize{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BundleSize) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BundleSize) ProtoMessage() {}
+
+func (x *BundleSize) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BundleSize.ProtoReflect.Descriptor instead.
+func (*BundleSize) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *BundleSize) GetCurrent() float64 {
+	if x != nil {
+		return x.Current
+	}
+	return 0
+}
+
+func (x *BundleSize) GetBudget() float64 {
+	if x != nil {
+		return x.Budget
+	}
+	return 0
+}
+
+func (x *BundleSize) GetByModule() []*BundleModule {
+	if x != nil {
+		return x.ByModule
+	}
+	return nil
+}
+
+type PageEntry struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Route          string                 `protobuf:"bytes,1,opt,name=route,proto3" json:"route,omitempty"`
+	ComponentCount int32                  `protobuf:"varint,2,opt,name=component_count,json=componentCount,proto3" json:"component_count,omitempty"`
+	LoadTimeMs     float64                `protobuf:"fixed64,3,opt,name=load_time_ms,json=loadTimeMs,proto3" json:"load_time_ms,omitempty"`
+	ErrorRate      float64                `protobuf:"fixed64,4,opt,name=error_rate,json=errorRate,proto3" json:"error_rate,omitempty"`
+	Traffic        int32                  `protobuf:"varint,5,opt,name=traffic,proto3" json:"traffic,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *PageEntry) Reset() {
+	*x = PageEntry{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[45]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PageEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PageEntry) ProtoMessage() {}
+
+func (x *PageEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[45]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PageEntry.ProtoReflect.Descriptor instead.
+func (*PageEntry) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *PageEntry) GetRoute() string {
+	if x != nil {
+		return x.Route
+	}
+	return ""
+}
+
+func (x *PageEntry) GetComponentCount() int32 {
+	if x != nil {
+		return x.ComponentCount
+	}
+	return 0
+}
+
+func (x *PageEntry) GetLoadTimeMs() float64 {
+	if x != nil {
+		return x.LoadTimeMs
+	}
+	return 0
+}
+
+func (x *PageEntry) GetErrorRate() float64 {
+	if x != nil {
+		return x.ErrorRate
+	}
+	return 0
+}
+
+func (x *PageEntry) GetTraffic() int32 {
+	if x != nil {
+		return x.Traffic
+	}
+	return 0
+}
+
+type ErrorEntry struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Component     string                 `protobuf:"bytes,1,opt,name=component,proto3" json:"component,omitempty"`
+	Frequency     int32                  `protobuf:"varint,2,opt,name=frequency,proto3" json:"frequency,omitempty"`
+	AffectedUsers int32                  `protobuf:"varint,3,opt,name=affected_users,json=affectedUsers,proto3" json:"affected_users,omitempty"`
+	Severity      string                 `protobuf:"bytes,4,opt,name=severity,proto3" json:"severity,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ErrorEntry) Reset() {
+	*x = ErrorEntry{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[46]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ErrorEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ErrorEntry) ProtoMessage() {}
+
+func (x *ErrorEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[46]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ErrorEntry.ProtoReflect.Descriptor instead.
+func (*ErrorEntry) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{46}
+}
+
+func (x *ErrorEntry) GetComponent() string {
+	if x != nil {
+		return x.Component
+	}
+	return ""
+}
+
+func (x *ErrorEntry) GetFrequency() int32 {
+	if x != nil {
+		return x.Frequency
+	}
+	return 0
+}
+
+func (x *ErrorEntry) GetAffectedUsers() int32 {
+	if x != nil {
+		return x.AffectedUsers
+	}
+	return 0
+}
+
+func (x *ErrorEntry) GetSeverity() string {
+	if x != nil {
+		return x.Severity
+	}
+	return ""
+}
+
+type GetHypervisorFrontendResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	WebVitals     []*WebVital            `protobuf:"bytes,1,rep,name=web_vitals,json=webVitals,proto3" json:"web_vitals,omitempty"`
+	BundleSize    *BundleSize            `protobuf:"bytes,2,opt,name=bundle_size,json=bundleSize,proto3" json:"bundle_size,omitempty"`
+	PageInventory []*PageEntry           `protobuf:"bytes,3,rep,name=page_inventory,json=pageInventory,proto3" json:"page_inventory,omitempty"`
+	ErrorTracking []*ErrorEntry          `protobuf:"bytes,4,rep,name=error_tracking,json=errorTracking,proto3" json:"error_tracking,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHypervisorFrontendResponse) Reset() {
+	*x = GetHypervisorFrontendResponse{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorFrontendResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorFrontendResponse) ProtoMessage() {}
+
+func (x *GetHypervisorFrontendResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorFrontendResponse.ProtoReflect.Descriptor instead.
+func (*GetHypervisorFrontendResponse) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *GetHypervisorFrontendResponse) GetWebVitals() []*WebVital {
+	if x != nil {
+		return x.WebVitals
+	}
+	return nil
+}
+
+func (x *GetHypervisorFrontendResponse) GetBundleSize() *BundleSize {
+	if x != nil {
+		return x.BundleSize
+	}
+	return nil
+}
+
+func (x *GetHypervisorFrontendResponse) GetPageInventory() []*PageEntry {
+	if x != nil {
+		return x.PageInventory
+	}
+	return nil
+}
+
+func (x *GetHypervisorFrontendResponse) GetErrorTracking() []*ErrorEntry {
+	if x != nil {
+		return x.ErrorTracking
+	}
+	return nil
+}
+
+type APIEndpoint struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Method        string                 `protobuf:"bytes,1,opt,name=method,proto3" json:"method,omitempty"`
+	Path          string                 `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	RequestCount  int32                  `protobuf:"varint,3,opt,name=request_count,json=requestCount,proto3" json:"request_count,omitempty"`
+	AvgLatencyMs  float64                `protobuf:"fixed64,4,opt,name=avg_latency_ms,json=avgLatencyMs,proto3" json:"avg_latency_ms,omitempty"`
+	ErrorRate     float64                `protobuf:"fixed64,5,opt,name=error_rate,json=errorRate,proto3" json:"error_rate,omitempty"`
+	P95Trend      []float64              `protobuf:"fixed64,6,rep,packed,name=p95_trend,json=p95Trend,proto3" json:"p95_trend,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *APIEndpoint) Reset() {
+	*x = APIEndpoint{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[48]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *APIEndpoint) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*APIEndpoint) ProtoMessage() {}
+
+func (x *APIEndpoint) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[48]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use APIEndpoint.ProtoReflect.Descriptor instead.
+func (*APIEndpoint) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{48}
+}
+
+func (x *APIEndpoint) GetMethod() string {
+	if x != nil {
+		return x.Method
+	}
+	return ""
+}
+
+func (x *APIEndpoint) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *APIEndpoint) GetRequestCount() int32 {
+	if x != nil {
+		return x.RequestCount
+	}
+	return 0
+}
+
+func (x *APIEndpoint) GetAvgLatencyMs() float64 {
+	if x != nil {
+		return x.AvgLatencyMs
+	}
+	return 0
+}
+
+func (x *APIEndpoint) GetErrorRate() float64 {
+	if x != nil {
+		return x.ErrorRate
+	}
+	return 0
+}
+
+func (x *APIEndpoint) GetP95Trend() []float64 {
+	if x != nil {
+		return x.P95Trend
+	}
+	return nil
+}
+
+type ServiceHealth struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Service       string                 `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	Uptime        float64                `protobuf:"fixed64,3,opt,name=uptime,proto3" json:"uptime,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ServiceHealth) Reset() {
+	*x = ServiceHealth{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ServiceHealth) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ServiceHealth) ProtoMessage() {}
+
+func (x *ServiceHealth) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ServiceHealth.ProtoReflect.Descriptor instead.
+func (*ServiceHealth) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *ServiceHealth) GetService() string {
+	if x != nil {
+		return x.Service
+	}
+	return ""
+}
+
+func (x *ServiceHealth) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *ServiceHealth) GetUptime() float64 {
+	if x != nil {
+		return x.Uptime
+	}
+	return 0
+}
+
+type GrpcThroughput struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Service       string                 `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+	Rps           float64                `protobuf:"fixed64,2,opt,name=rps,proto3" json:"rps,omitempty"`
+	Trend         []float64              `protobuf:"fixed64,3,rep,packed,name=trend,proto3" json:"trend,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GrpcThroughput) Reset() {
+	*x = GrpcThroughput{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[50]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GrpcThroughput) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GrpcThroughput) ProtoMessage() {}
+
+func (x *GrpcThroughput) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[50]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GrpcThroughput.ProtoReflect.Descriptor instead.
+func (*GrpcThroughput) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{50}
+}
+
+func (x *GrpcThroughput) GetService() string {
+	if x != nil {
+		return x.Service
+	}
+	return ""
+}
+
+func (x *GrpcThroughput) GetRps() float64 {
+	if x != nil {
+		return x.Rps
+	}
+	return 0
+}
+
+func (x *GrpcThroughput) GetTrend() []float64 {
+	if x != nil {
+		return x.Trend
+	}
+	return nil
+}
+
+type GoRuntime struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Goroutines    int32                  `protobuf:"varint,1,opt,name=goroutines,proto3" json:"goroutines,omitempty"`
+	HeapMb        float64                `protobuf:"fixed64,2,opt,name=heap_mb,json=heapMb,proto3" json:"heap_mb,omitempty"`
+	GcPauseMs     float64                `protobuf:"fixed64,3,opt,name=gc_pause_ms,json=gcPauseMs,proto3" json:"gc_pause_ms,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GoRuntime) Reset() {
+	*x = GoRuntime{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GoRuntime) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GoRuntime) ProtoMessage() {}
+
+func (x *GoRuntime) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GoRuntime.ProtoReflect.Descriptor instead.
+func (*GoRuntime) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *GoRuntime) GetGoroutines() int32 {
+	if x != nil {
+		return x.Goroutines
+	}
+	return 0
+}
+
+func (x *GoRuntime) GetHeapMb() float64 {
+	if x != nil {
+		return x.HeapMb
+	}
+	return 0
+}
+
+func (x *GoRuntime) GetGcPauseMs() float64 {
+	if x != nil {
+		return x.GcPauseMs
+	}
+	return 0
+}
+
+type RateLimit struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Service       string                 `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+	Used          int32                  `protobuf:"varint,2,opt,name=used,proto3" json:"used,omitempty"`
+	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RateLimit) Reset() {
+	*x = RateLimit{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RateLimit) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RateLimit) ProtoMessage() {}
+
+func (x *RateLimit) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RateLimit.ProtoReflect.Descriptor instead.
+func (*RateLimit) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{52}
+}
+
+func (x *RateLimit) GetService() string {
+	if x != nil {
+		return x.Service
+	}
+	return ""
+}
+
+func (x *RateLimit) GetUsed() int32 {
+	if x != nil {
+		return x.Used
+	}
+	return 0
+}
+
+func (x *RateLimit) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+type GetHypervisorBackendResponse struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	ApiEndpoints   []*APIEndpoint         `protobuf:"bytes,1,rep,name=api_endpoints,json=apiEndpoints,proto3" json:"api_endpoints,omitempty"`
+	ServiceHealth  []*ServiceHealth       `protobuf:"bytes,2,rep,name=service_health,json=serviceHealth,proto3" json:"service_health,omitempty"`
+	GrpcThroughput []*GrpcThroughput      `protobuf:"bytes,3,rep,name=grpc_throughput,json=grpcThroughput,proto3" json:"grpc_throughput,omitempty"`
+	GoRuntime      *GoRuntime             `protobuf:"bytes,4,opt,name=go_runtime,json=goRuntime,proto3" json:"go_runtime,omitempty"`
+	RateLimits     []*RateLimit           `protobuf:"bytes,5,rep,name=rate_limits,json=rateLimits,proto3" json:"rate_limits,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *GetHypervisorBackendResponse) Reset() {
+	*x = GetHypervisorBackendResponse{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorBackendResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorBackendResponse) ProtoMessage() {}
+
+func (x *GetHypervisorBackendResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorBackendResponse.ProtoReflect.Descriptor instead.
+func (*GetHypervisorBackendResponse) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{53}
+}
+
+func (x *GetHypervisorBackendResponse) GetApiEndpoints() []*APIEndpoint {
+	if x != nil {
+		return x.ApiEndpoints
+	}
+	return nil
+}
+
+func (x *GetHypervisorBackendResponse) GetServiceHealth() []*ServiceHealth {
+	if x != nil {
+		return x.ServiceHealth
+	}
+	return nil
+}
+
+func (x *GetHypervisorBackendResponse) GetGrpcThroughput() []*GrpcThroughput {
+	if x != nil {
+		return x.GrpcThroughput
+	}
+	return nil
+}
+
+func (x *GetHypervisorBackendResponse) GetGoRuntime() *GoRuntime {
+	if x != nil {
+		return x.GoRuntime
+	}
+	return nil
+}
+
+func (x *GetHypervisorBackendResponse) GetRateLimits() []*RateLimit {
+	if x != nil {
+		return x.RateLimits
+	}
+	return nil
+}
+
+type IntegrationServiceHealth struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Name           string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Status         string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	LastCheck      string                 `protobuf:"bytes,3,opt,name=last_check,json=lastCheck,proto3" json:"last_check,omitempty"`
+	ResponseTimeMs float64                `protobuf:"fixed64,4,opt,name=response_time_ms,json=responseTimeMs,proto3" json:"response_time_ms,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *IntegrationServiceHealth) Reset() {
+	*x = IntegrationServiceHealth{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[54]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IntegrationServiceHealth) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IntegrationServiceHealth) ProtoMessage() {}
+
+func (x *IntegrationServiceHealth) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[54]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IntegrationServiceHealth.ProtoReflect.Descriptor instead.
+func (*IntegrationServiceHealth) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{54}
+}
+
+func (x *IntegrationServiceHealth) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *IntegrationServiceHealth) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *IntegrationServiceHealth) GetLastCheck() string {
+	if x != nil {
+		return x.LastCheck
+	}
+	return ""
+}
+
+func (x *IntegrationServiceHealth) GetResponseTimeMs() float64 {
+	if x != nil {
+		return x.ResponseTimeMs
+	}
+	return 0
+}
+
+type WebhookEntry struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Url           string                 `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	EventTypes    []string               `protobuf:"bytes,2,rep,name=event_types,json=eventTypes,proto3" json:"event_types,omitempty"`
+	SuccessRate   float64                `protobuf:"fixed64,3,opt,name=success_rate,json=successRate,proto3" json:"success_rate,omitempty"`
+	AvgResponseMs float64                `protobuf:"fixed64,4,opt,name=avg_response_ms,json=avgResponseMs,proto3" json:"avg_response_ms,omitempty"`
+	RetryCount    int32                  `protobuf:"varint,5,opt,name=retry_count,json=retryCount,proto3" json:"retry_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WebhookEntry) Reset() {
+	*x = WebhookEntry{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[55]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WebhookEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WebhookEntry) ProtoMessage() {}
+
+func (x *WebhookEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[55]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WebhookEntry.ProtoReflect.Descriptor instead.
+func (*WebhookEntry) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{55}
+}
+
+func (x *WebhookEntry) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+func (x *WebhookEntry) GetEventTypes() []string {
+	if x != nil {
+		return x.EventTypes
+	}
+	return nil
+}
+
+func (x *WebhookEntry) GetSuccessRate() float64 {
+	if x != nil {
+		return x.SuccessRate
+	}
+	return 0
+}
+
+func (x *WebhookEntry) GetAvgResponseMs() float64 {
+	if x != nil {
+		return x.AvgResponseMs
+	}
+	return 0
+}
+
+func (x *WebhookEntry) GetRetryCount() int32 {
+	if x != nil {
+		return x.RetryCount
+	}
+	return 0
+}
+
+type APIKeyEntry struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Service        string                 `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+	ExpiresAt      string                 `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	DaysRemaining  int32                  `protobuf:"varint,3,opt,name=days_remaining,json=daysRemaining,proto3" json:"days_remaining,omitempty"`
+	RotationStatus string                 `protobuf:"bytes,4,opt,name=rotation_status,json=rotationStatus,proto3" json:"rotation_status,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *APIKeyEntry) Reset() {
+	*x = APIKeyEntry{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[56]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *APIKeyEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*APIKeyEntry) ProtoMessage() {}
+
+func (x *APIKeyEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[56]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use APIKeyEntry.ProtoReflect.Descriptor instead.
+func (*APIKeyEntry) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{56}
+}
+
+func (x *APIKeyEntry) GetService() string {
+	if x != nil {
+		return x.Service
+	}
+	return ""
+}
+
+func (x *APIKeyEntry) GetExpiresAt() string {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return ""
+}
+
+func (x *APIKeyEntry) GetDaysRemaining() int32 {
+	if x != nil {
+		return x.DaysRemaining
+	}
+	return 0
+}
+
+func (x *APIKeyEntry) GetRotationStatus() string {
+	if x != nil {
+		return x.RotationStatus
+	}
+	return ""
+}
+
+type ScheduledJob struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Schedule      string                 `protobuf:"bytes,2,opt,name=schedule,proto3" json:"schedule,omitempty"`
+	LastRun       string                 `protobuf:"bytes,3,opt,name=last_run,json=lastRun,proto3" json:"last_run,omitempty"`
+	NextRun       string                 `protobuf:"bytes,4,opt,name=next_run,json=nextRun,proto3" json:"next_run,omitempty"`
+	Status        string                 `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ScheduledJob) Reset() {
+	*x = ScheduledJob{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[57]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ScheduledJob) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ScheduledJob) ProtoMessage() {}
+
+func (x *ScheduledJob) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[57]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ScheduledJob.ProtoReflect.Descriptor instead.
+func (*ScheduledJob) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{57}
+}
+
+func (x *ScheduledJob) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ScheduledJob) GetSchedule() string {
+	if x != nil {
+		return x.Schedule
+	}
+	return ""
+}
+
+func (x *ScheduledJob) GetLastRun() string {
+	if x != nil {
+		return x.LastRun
+	}
+	return ""
+}
+
+func (x *ScheduledJob) GetNextRun() string {
+	if x != nil {
+		return x.NextRun
+	}
+	return ""
+}
+
+func (x *ScheduledJob) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+type GetHypervisorIntegrationsResponse struct {
+	state         protoimpl.MessageState      `protogen:"open.v1"`
+	ServiceHealth []*IntegrationServiceHealth `protobuf:"bytes,1,rep,name=service_health,json=serviceHealth,proto3" json:"service_health,omitempty"`
+	Webhooks      []*WebhookEntry             `protobuf:"bytes,2,rep,name=webhooks,proto3" json:"webhooks,omitempty"`
+	ApiKeys       []*APIKeyEntry              `protobuf:"bytes,3,rep,name=api_keys,json=apiKeys,proto3" json:"api_keys,omitempty"`
+	ScheduledJobs []*ScheduledJob             `protobuf:"bytes,4,rep,name=scheduled_jobs,json=scheduledJobs,proto3" json:"scheduled_jobs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetHypervisorIntegrationsResponse) Reset() {
+	*x = GetHypervisorIntegrationsResponse{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[58]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorIntegrationsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorIntegrationsResponse) ProtoMessage() {}
+
+func (x *GetHypervisorIntegrationsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[58]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorIntegrationsResponse.ProtoReflect.Descriptor instead.
+func (*GetHypervisorIntegrationsResponse) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{58}
+}
+
+func (x *GetHypervisorIntegrationsResponse) GetServiceHealth() []*IntegrationServiceHealth {
+	if x != nil {
+		return x.ServiceHealth
+	}
+	return nil
+}
+
+func (x *GetHypervisorIntegrationsResponse) GetWebhooks() []*WebhookEntry {
+	if x != nil {
+		return x.Webhooks
+	}
+	return nil
+}
+
+func (x *GetHypervisorIntegrationsResponse) GetApiKeys() []*APIKeyEntry {
+	if x != nil {
+		return x.ApiKeys
+	}
+	return nil
+}
+
+func (x *GetHypervisorIntegrationsResponse) GetScheduledJobs() []*ScheduledJob {
+	if x != nil {
+		return x.ScheduledJobs
+	}
+	return nil
+}
+
+type CostByService struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Service       string                 `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
+	Tenant        string                 `protobuf:"bytes,2,opt,name=tenant,proto3" json:"tenant,omitempty"`
+	Cost          float64                `protobuf:"fixed64,3,opt,name=cost,proto3" json:"cost,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CostByService) Reset() {
+	*x = CostByService{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[59]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CostByService) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CostByService) ProtoMessage() {}
+
+func (x *CostByService) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[59]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CostByService.ProtoReflect.Descriptor instead.
+func (*CostByService) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{59}
+}
+
+func (x *CostByService) GetService() string {
+	if x != nil {
+		return x.Service
+	}
+	return ""
+}
+
+func (x *CostByService) GetTenant() string {
+	if x != nil {
+		return x.Tenant
+	}
+	return ""
+}
+
+func (x *CostByService) GetCost() float64 {
+	if x != nil {
+		return x.Cost
+	}
+	return 0
+}
+
+type BudgetVsActual struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Budget        float64                `protobuf:"fixed64,1,opt,name=budget,proto3" json:"budget,omitempty"`
+	Actual        float64                `protobuf:"fixed64,2,opt,name=actual,proto3" json:"actual,omitempty"`
+	Forecast      float64                `protobuf:"fixed64,3,opt,name=forecast,proto3" json:"forecast,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BudgetVsActual) Reset() {
+	*x = BudgetVsActual{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[60]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BudgetVsActual) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BudgetVsActual) ProtoMessage() {}
+
+func (x *BudgetVsActual) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[60]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BudgetVsActual.ProtoReflect.Descriptor instead.
+func (*BudgetVsActual) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{60}
+}
+
+func (x *BudgetVsActual) GetBudget() float64 {
+	if x != nil {
+		return x.Budget
+	}
+	return 0
+}
+
+func (x *BudgetVsActual) GetActual() float64 {
+	if x != nil {
+		return x.Actual
+	}
+	return 0
+}
+
+func (x *BudgetVsActual) GetForecast() float64 {
+	if x != nil {
+		return x.Forecast
+	}
+	return 0
+}
+
+type CostTrendMonth struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Month         string                 `protobuf:"bytes,1,opt,name=month,proto3" json:"month,omitempty"`
+	Finalwishes   float64                `protobuf:"fixed64,2,opt,name=finalwishes,proto3" json:"finalwishes,omitempty"`
+	Assiduous     float64                `protobuf:"fixed64,3,opt,name=assiduous,proto3" json:"assiduous,omitempty"`
+	SirsiCore     float64                `protobuf:"fixed64,4,opt,name=sirsi_core,json=sirsiCore,proto3" json:"sirsi_core,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CostTrendMonth) Reset() {
+	*x = CostTrendMonth{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[61]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CostTrendMonth) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CostTrendMonth) ProtoMessage() {}
+
+func (x *CostTrendMonth) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[61]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CostTrendMonth.ProtoReflect.Descriptor instead.
+func (*CostTrendMonth) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{61}
+}
+
+func (x *CostTrendMonth) GetMonth() string {
+	if x != nil {
+		return x.Month
+	}
+	return ""
+}
+
+func (x *CostTrendMonth) GetFinalwishes() float64 {
+	if x != nil {
+		return x.Finalwishes
+	}
+	return 0
+}
+
+func (x *CostTrendMonth) GetAssiduous() float64 {
+	if x != nil {
+		return x.Assiduous
+	}
+	return 0
+}
+
+func (x *CostTrendMonth) GetSirsiCore() float64 {
+	if x != nil {
+		return x.SirsiCore
+	}
+	return 0
+}
+
+type IdleResource struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Name           string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Type           string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	MonthlyCost    float64                `protobuf:"fixed64,3,opt,name=monthly_cost,json=monthlyCost,proto3" json:"monthly_cost,omitempty"`
+	Recommendation string                 `protobuf:"bytes,4,opt,name=recommendation,proto3" json:"recommendation,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *IdleResource) Reset() {
+	*x = IdleResource{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[62]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IdleResource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IdleResource) ProtoMessage() {}
+
+func (x *IdleResource) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[62]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IdleResource.ProtoReflect.Descriptor instead.
+func (*IdleResource) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{62}
+}
+
+func (x *IdleResource) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *IdleResource) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *IdleResource) GetMonthlyCost() float64 {
+	if x != nil {
+		return x.MonthlyCost
+	}
+	return 0
+}
+
+func (x *IdleResource) GetRecommendation() string {
+	if x != nil {
+		return x.Recommendation
+	}
+	return ""
+}
+
+type GetHypervisorCostResponse struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	MonthlyByService []*CostByService       `protobuf:"bytes,1,rep,name=monthly_by_service,json=monthlyByService,proto3" json:"monthly_by_service,omitempty"`
+	BudgetVsActual   *BudgetVsActual        `protobuf:"bytes,2,opt,name=budget_vs_actual,json=budgetVsActual,proto3" json:"budget_vs_actual,omitempty"`
+	CostTrend_6M     []*CostTrendMonth      `protobuf:"bytes,3,rep,name=cost_trend_6m,json=costTrend6m,proto3" json:"cost_trend_6m,omitempty"`
+	CostPerUser      float64                `protobuf:"fixed64,4,opt,name=cost_per_user,json=costPerUser,proto3" json:"cost_per_user,omitempty"`
+	IdleResources    []*IdleResource        `protobuf:"bytes,5,rep,name=idle_resources,json=idleResources,proto3" json:"idle_resources,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *GetHypervisorCostResponse) Reset() {
+	*x = GetHypervisorCostResponse{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[63]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorCostResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorCostResponse) ProtoMessage() {}
+
+func (x *GetHypervisorCostResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[63]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorCostResponse.ProtoReflect.Descriptor instead.
+func (*GetHypervisorCostResponse) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{63}
+}
+
+func (x *GetHypervisorCostResponse) GetMonthlyByService() []*CostByService {
+	if x != nil {
+		return x.MonthlyByService
+	}
+	return nil
+}
+
+func (x *GetHypervisorCostResponse) GetBudgetVsActual() *BudgetVsActual {
+	if x != nil {
+		return x.BudgetVsActual
+	}
+	return nil
+}
+
+func (x *GetHypervisorCostResponse) GetCostTrend_6M() []*CostTrendMonth {
+	if x != nil {
+		return x.CostTrend_6M
+	}
+	return nil
+}
+
+func (x *GetHypervisorCostResponse) GetCostPerUser() float64 {
+	if x != nil {
+		return x.CostPerUser
+	}
+	return 0
+}
+
+func (x *GetHypervisorCostResponse) GetIdleResources() []*IdleResource {
+	if x != nil {
+		return x.IdleResources
+	}
+	return nil
+}
+
+type IncidentDetail struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Severity      string                 `protobuf:"bytes,3,opt,name=severity,proto3" json:"severity,omitempty"`
+	Status        string                 `protobuf:"bytes,4,opt,name=status,proto3" json:"status,omitempty"`
+	OpenedAt      string                 `protobuf:"bytes,5,opt,name=opened_at,json=openedAt,proto3" json:"opened_at,omitempty"`
+	ResolvedAt    string                 `protobuf:"bytes,6,opt,name=resolved_at,json=resolvedAt,proto3" json:"resolved_at,omitempty"`
+	Tenant        string                 `protobuf:"bytes,7,opt,name=tenant,proto3" json:"tenant,omitempty"`
+	Assignee      string                 `protobuf:"bytes,8,opt,name=assignee,proto3" json:"assignee,omitempty"`
+	Description   string                 `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IncidentDetail) Reset() {
+	*x = IncidentDetail{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[64]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IncidentDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IncidentDetail) ProtoMessage() {}
+
+func (x *IncidentDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[64]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IncidentDetail.ProtoReflect.Descriptor instead.
+func (*IncidentDetail) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{64}
+}
+
+func (x *IncidentDetail) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *IncidentDetail) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *IncidentDetail) GetSeverity() string {
+	if x != nil {
+		return x.Severity
+	}
+	return ""
+}
+
+func (x *IncidentDetail) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *IncidentDetail) GetOpenedAt() string {
+	if x != nil {
+		return x.OpenedAt
+	}
+	return ""
+}
+
+func (x *IncidentDetail) GetResolvedAt() string {
+	if x != nil {
+		return x.ResolvedAt
+	}
+	return ""
+}
+
+func (x *IncidentDetail) GetTenant() string {
+	if x != nil {
+		return x.Tenant
+	}
+	return ""
+}
+
+func (x *IncidentDetail) GetAssignee() string {
+	if x != nil {
+		return x.Assignee
+	}
+	return ""
+}
+
+func (x *IncidentDetail) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+type SLACompliance struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Current       float64                `protobuf:"fixed64,1,opt,name=current,proto3" json:"current,omitempty"`
+	Target        float64                `protobuf:"fixed64,2,opt,name=target,proto3" json:"target,omitempty"`
+	Trend         []float64              `protobuf:"fixed64,3,rep,packed,name=trend,proto3" json:"trend,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SLACompliance) Reset() {
+	*x = SLACompliance{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[65]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SLACompliance) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SLACompliance) ProtoMessage() {}
+
+func (x *SLACompliance) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[65]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SLACompliance.ProtoReflect.Descriptor instead.
+func (*SLACompliance) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{65}
+}
+
+func (x *SLACompliance) GetCurrent() float64 {
+	if x != nil {
+		return x.Current
+	}
+	return 0
+}
+
+func (x *SLACompliance) GetTarget() float64 {
+	if x != nil {
+		return x.Target
+	}
+	return 0
+}
+
+func (x *SLACompliance) GetTrend() []float64 {
+	if x != nil {
+		return x.Trend
+	}
+	return nil
+}
+
+type RunbookLog struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Trigger       string                 `protobuf:"bytes,2,opt,name=trigger,proto3" json:"trigger,omitempty"`
+	Result        string                 `protobuf:"bytes,3,opt,name=result,proto3" json:"result,omitempty"`
+	Duration      string                 `protobuf:"bytes,4,opt,name=duration,proto3" json:"duration,omitempty"`
+	Timestamp     string                 `protobuf:"bytes,5,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RunbookLog) Reset() {
+	*x = RunbookLog{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[66]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RunbookLog) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RunbookLog) ProtoMessage() {}
+
+func (x *RunbookLog) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[66]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RunbookLog.ProtoReflect.Descriptor instead.
+func (*RunbookLog) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{66}
+}
+
+func (x *RunbookLog) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *RunbookLog) GetTrigger() string {
+	if x != nil {
+		return x.Trigger
+	}
+	return ""
+}
+
+func (x *RunbookLog) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+func (x *RunbookLog) GetDuration() string {
+	if x != nil {
+		return x.Duration
+	}
+	return ""
+}
+
+func (x *RunbookLog) GetTimestamp() string {
+	if x != nil {
+		return x.Timestamp
+	}
+	return ""
+}
+
+type GetHypervisorIncidentsResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	OpenIncidents   []*IncidentDetail      `protobuf:"bytes,1,rep,name=open_incidents,json=openIncidents,proto3" json:"open_incidents,omitempty"`
+	SlaCompliance   *SLACompliance         `protobuf:"bytes,2,opt,name=sla_compliance,json=slaCompliance,proto3" json:"sla_compliance,omitempty"`
+	IncidentHistory []*IncidentDetail      `protobuf:"bytes,3,rep,name=incident_history,json=incidentHistory,proto3" json:"incident_history,omitempty"`
+	RunbookLog      []*RunbookLog          `protobuf:"bytes,4,rep,name=runbook_log,json=runbookLog,proto3" json:"runbook_log,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *GetHypervisorIncidentsResponse) Reset() {
+	*x = GetHypervisorIncidentsResponse{}
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[67]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetHypervisorIncidentsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetHypervisorIncidentsResponse) ProtoMessage() {}
+
+func (x *GetHypervisorIncidentsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_hypervisor_service_proto_msgTypes[67]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetHypervisorIncidentsResponse.ProtoReflect.Descriptor instead.
+func (*GetHypervisorIncidentsResponse) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP(), []int{67}
+}
+
+func (x *GetHypervisorIncidentsResponse) GetOpenIncidents() []*IncidentDetail {
+	if x != nil {
+		return x.OpenIncidents
+	}
+	return nil
+}
+
+func (x *GetHypervisorIncidentsResponse) GetSlaCompliance() *SLACompliance {
+	if x != nil {
+		return x.SlaCompliance
+	}
+	return nil
+}
+
+func (x *GetHypervisorIncidentsResponse) GetIncidentHistory() []*IncidentDetail {
+	if x != nil {
+		return x.IncidentHistory
+	}
+	return nil
+}
+
+func (x *GetHypervisorIncidentsResponse) GetRunbookLog() []*RunbookLog {
+	if x != nil {
+		return x.RunbookLog
+	}
+	return nil
+}
+
 var File_sirsi_admin_v2_hypervisor_service_proto protoreflect.FileDescriptor
 
 const file_sirsi_admin_v2_hypervisor_service_proto_rawDesc = "" +
@@ -1701,11 +4725,261 @@ const file_sirsi_admin_v2_hypervisor_service_proto_rawDesc = "" +
 	"\fcertificates\x18\x04 \x03(\v2!.sirsi.admin.v2.CertificateStatusR\fcertificates\x12<\n" +
 	"\x1asecret_rotation_compliance\x18\x05 \x01(\x01R\x18secretRotationCompliance\x12\x1d\n" +
 	"\n" +
-	"soc2_score\x18\x06 \x01(\x01R\tsoc2Score2\xef\x02\n" +
+	"soc2_score\x18\x06 \x01(\x01R\tsoc2Score\"^\n" +
+	"\"GetHypervisorInfrastructureRequest\x128\n" +
+	"\x06filter\x18\x01 \x01(\v2 .sirsi.admin.v2.HypervisorFilterR\x06filter\"X\n" +
+	"\x1cGetHypervisorDatabaseRequest\x128\n" +
+	"\x06filter\x18\x01 \x01(\v2 .sirsi.admin.v2.HypervisorFilterR\x06filter\"X\n" +
+	"\x1cGetHypervisorFrontendRequest\x128\n" +
+	"\x06filter\x18\x01 \x01(\v2 .sirsi.admin.v2.HypervisorFilterR\x06filter\"W\n" +
+	"\x1bGetHypervisorBackendRequest\x128\n" +
+	"\x06filter\x18\x01 \x01(\v2 .sirsi.admin.v2.HypervisorFilterR\x06filter\"\\\n" +
+	" GetHypervisorIntegrationsRequest\x128\n" +
+	"\x06filter\x18\x01 \x01(\v2 .sirsi.admin.v2.HypervisorFilterR\x06filter\"T\n" +
+	"\x18GetHypervisorCostRequest\x128\n" +
+	"\x06filter\x18\x01 \x01(\v2 .sirsi.admin.v2.HypervisorFilterR\x06filter\"Y\n" +
+	"\x1dGetHypervisorIncidentsRequest\x128\n" +
+	"\x06filter\x18\x01 \x01(\v2 .sirsi.admin.v2.HypervisorFilterR\x06filter\"\\\n" +
+	"\rResourceState\x12\x17\n" +
+	"\ain_sync\x18\x01 \x01(\x05R\x06inSync\x12\x18\n" +
+	"\adrifted\x18\x02 \x01(\x05R\adrifted\x12\x18\n" +
+	"\apending\x18\x03 \x01(\x05R\apending\"\x8b\x01\n" +
+	"\tDriftItem\x12\x1a\n" +
+	"\bresource\x18\x01 \x01(\tR\bresource\x12\x12\n" +
+	"\x04type\x18\x02 \x01(\tR\x04type\x12\x16\n" +
+	"\x06tenant\x18\x03 \x01(\tR\x06tenant\x12\x1a\n" +
+	"\bdetected\x18\x04 \x01(\tR\bdetected\x12\x1a\n" +
+	"\bseverity\x18\x05 \x01(\tR\bseverity\"\x9f\x01\n" +
+	"\x10EnvironmentEntry\x12\x16\n" +
+	"\x06tenant\x18\x01 \x01(\tR\x06tenant\x12 \n" +
+	"\venvironment\x18\x02 \x01(\tR\venvironment\x12\x18\n" +
+	"\aversion\x18\x03 \x01(\tR\aversion\x12\x16\n" +
+	"\x06status\x18\x04 \x01(\tR\x06status\x12\x1f\n" +
+	"\vlast_deploy\x18\x05 \x01(\tR\n" +
+	"lastDeploy\"\xaa\x01\n" +
+	"\x0fCloudRunService\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
+	"\x06tenant\x18\x02 \x01(\tR\x06tenant\x12\x1c\n" +
+	"\tinstances\x18\x03 \x01(\x05R\tinstances\x12#\n" +
+	"\rmax_instances\x18\x04 \x01(\x05R\fmaxInstances\x12\x10\n" +
+	"\x03cpu\x18\x05 \x01(\x01R\x03cpu\x12\x16\n" +
+	"\x06memory\x18\x06 \x01(\x01R\x06memory\"8\n" +
+	"\x0eCostByResource\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
+	"\x04cost\x18\x02 \x01(\x01R\x04cost\"\x88\x03\n" +
+	"#GetHypervisorInfrastructureResponse\x12;\n" +
+	"\tresources\x18\x01 \x01(\v2\x1d.sirsi.admin.v2.ResourceStateR\tresources\x12:\n" +
+	"\vdrift_items\x18\x02 \x03(\v2\x19.sirsi.admin.v2.DriftItemR\n" +
+	"driftItems\x12O\n" +
+	"\x12environment_matrix\x18\x03 \x03(\v2 .sirsi.admin.v2.EnvironmentEntryR\x11environmentMatrix\x12M\n" +
+	"\x12cloud_run_services\x18\x04 \x03(\v2\x1f.sirsi.admin.v2.CloudRunServiceR\x10cloudRunServices\x12H\n" +
+	"\x10cost_by_resource\x18\x05 \x03(\v2\x1e.sirsi.admin.v2.CostByResourceR\x0ecostByResource\"j\n" +
+	"\x0eConnectionPool\x12\x1a\n" +
+	"\bdatabase\x18\x01 \x01(\tR\bdatabase\x12\x16\n" +
+	"\x06active\x18\x02 \x01(\x05R\x06active\x12\x12\n" +
+	"\x04idle\x18\x03 \x01(\x05R\x04idle\x12\x10\n" +
+	"\x03max\x18\x04 \x01(\x05R\x03max\"w\n" +
+	"\tSlowQuery\x12\x14\n" +
+	"\x05query\x18\x01 \x01(\tR\x05query\x12\x19\n" +
+	"\bavg_time\x18\x02 \x01(\x01R\aavgTime\x12\x1c\n" +
+	"\tfrequency\x18\x03 \x01(\x05R\tfrequency\x12\x1b\n" +
+	"\tlast_seen\x18\x04 \x01(\tR\blastSeen\"C\n" +
+	"\x10ReplicationEntry\x12\x18\n" +
+	"\areplica\x18\x01 \x01(\tR\areplica\x12\x15\n" +
+	"\x06lag_ms\x18\x02 \x01(\x01R\x05lagMs\"\x92\x01\n" +
+	"\n" +
+	"TableStats\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1b\n" +
+	"\trow_count\x18\x02 \x01(\x05R\browCount\x12\x17\n" +
+	"\adisk_mb\x18\x03 \x01(\x01R\x06diskMb\x12\x19\n" +
+	"\bindex_mb\x18\x04 \x01(\x01R\aindexMb\x12\x1f\n" +
+	"\vlast_vacuum\x18\x05 \x01(\tR\n" +
+	"lastVacuum\"\x94\x01\n" +
+	"\x13FirestoreCollection\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12%\n" +
+	"\x0edocument_count\x18\x02 \x01(\x05R\rdocumentCount\x12\x1f\n" +
+	"\vreads_trend\x18\x03 \x03(\x01R\n" +
+	"readsTrend\x12!\n" +
+	"\fwrites_trend\x18\x04 \x03(\x01R\vwritesTrend\"\x8f\x01\n" +
+	"\fBackupStatus\x12\x1a\n" +
+	"\bdatabase\x18\x01 \x01(\tR\bdatabase\x12\x1f\n" +
+	"\vlast_backup\x18\x02 \x01(\tR\n" +
+	"lastBackup\x12\x16\n" +
+	"\x06status\x18\x03 \x01(\tR\x06status\x12*\n" +
+	"\x11last_restore_test\x18\x04 \x01(\tR\x0flastRestoreTest\"\xcd\x03\n" +
+	"\x1dGetHypervisorDatabaseResponse\x12I\n" +
+	"\x10connection_pools\x18\x01 \x03(\v2\x1e.sirsi.admin.v2.ConnectionPoolR\x0fconnectionPools\x12<\n" +
+	"\fslow_queries\x18\x02 \x03(\v2\x19.sirsi.admin.v2.SlowQueryR\vslowQueries\x12I\n" +
+	"\x0freplication_lag\x18\x03 \x03(\v2 .sirsi.admin.v2.ReplicationEntryR\x0ereplicationLag\x12;\n" +
+	"\vtable_stats\x18\x04 \x03(\v2\x1a.sirsi.admin.v2.TableStatsR\n" +
+	"tableStats\x12X\n" +
+	"\x15firestore_collections\x18\x05 \x03(\v2#.sirsi.admin.v2.FirestoreCollectionR\x14firestoreCollections\x12A\n" +
+	"\rbackup_status\x18\x06 \x03(\v2\x1c.sirsi.admin.v2.BackupStatusR\fbackupStatus\"\xae\x01\n" +
+	"\bWebVital\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\x01R\x05value\x12\x12\n" +
+	"\x04unit\x18\x03 \x01(\tR\x04unit\x12\x16\n" +
+	"\x06rating\x18\x04 \x01(\tR\x06rating\x12%\n" +
+	"\x0ethreshold_good\x18\x05 \x01(\x01R\rthresholdGood\x12%\n" +
+	"\x0ethreshold_poor\x18\x06 \x01(\x01R\rthresholdPoor\"6\n" +
+	"\fBundleModule\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
+	"\x04size\x18\x02 \x01(\x01R\x04size\"y\n" +
+	"\n" +
+	"BundleSize\x12\x18\n" +
+	"\acurrent\x18\x01 \x01(\x01R\acurrent\x12\x16\n" +
+	"\x06budget\x18\x02 \x01(\x01R\x06budget\x129\n" +
+	"\tby_module\x18\x03 \x03(\v2\x1c.sirsi.admin.v2.BundleModuleR\bbyModule\"\xa5\x01\n" +
+	"\tPageEntry\x12\x14\n" +
+	"\x05route\x18\x01 \x01(\tR\x05route\x12'\n" +
+	"\x0fcomponent_count\x18\x02 \x01(\x05R\x0ecomponentCount\x12 \n" +
+	"\fload_time_ms\x18\x03 \x01(\x01R\n" +
+	"loadTimeMs\x12\x1d\n" +
+	"\n" +
+	"error_rate\x18\x04 \x01(\x01R\terrorRate\x12\x18\n" +
+	"\atraffic\x18\x05 \x01(\x05R\atraffic\"\x8b\x01\n" +
+	"\n" +
+	"ErrorEntry\x12\x1c\n" +
+	"\tcomponent\x18\x01 \x01(\tR\tcomponent\x12\x1c\n" +
+	"\tfrequency\x18\x02 \x01(\x05R\tfrequency\x12%\n" +
+	"\x0eaffected_users\x18\x03 \x01(\x05R\raffectedUsers\x12\x1a\n" +
+	"\bseverity\x18\x04 \x01(\tR\bseverity\"\x9a\x02\n" +
+	"\x1dGetHypervisorFrontendResponse\x127\n" +
+	"\n" +
+	"web_vitals\x18\x01 \x03(\v2\x18.sirsi.admin.v2.WebVitalR\twebVitals\x12;\n" +
+	"\vbundle_size\x18\x02 \x01(\v2\x1a.sirsi.admin.v2.BundleSizeR\n" +
+	"bundleSize\x12@\n" +
+	"\x0epage_inventory\x18\x03 \x03(\v2\x19.sirsi.admin.v2.PageEntryR\rpageInventory\x12A\n" +
+	"\x0eerror_tracking\x18\x04 \x03(\v2\x1a.sirsi.admin.v2.ErrorEntryR\rerrorTracking\"\xc0\x01\n" +
+	"\vAPIEndpoint\x12\x16\n" +
+	"\x06method\x18\x01 \x01(\tR\x06method\x12\x12\n" +
+	"\x04path\x18\x02 \x01(\tR\x04path\x12#\n" +
+	"\rrequest_count\x18\x03 \x01(\x05R\frequestCount\x12$\n" +
+	"\x0eavg_latency_ms\x18\x04 \x01(\x01R\favgLatencyMs\x12\x1d\n" +
+	"\n" +
+	"error_rate\x18\x05 \x01(\x01R\terrorRate\x12\x1b\n" +
+	"\tp95_trend\x18\x06 \x03(\x01R\bp95Trend\"Y\n" +
+	"\rServiceHealth\x12\x18\n" +
+	"\aservice\x18\x01 \x01(\tR\aservice\x12\x16\n" +
+	"\x06status\x18\x02 \x01(\tR\x06status\x12\x16\n" +
+	"\x06uptime\x18\x03 \x01(\x01R\x06uptime\"R\n" +
+	"\x0eGrpcThroughput\x12\x18\n" +
+	"\aservice\x18\x01 \x01(\tR\aservice\x12\x10\n" +
+	"\x03rps\x18\x02 \x01(\x01R\x03rps\x12\x14\n" +
+	"\x05trend\x18\x03 \x03(\x01R\x05trend\"d\n" +
+	"\tGoRuntime\x12\x1e\n" +
+	"\n" +
+	"goroutines\x18\x01 \x01(\x05R\n" +
+	"goroutines\x12\x17\n" +
+	"\aheap_mb\x18\x02 \x01(\x01R\x06heapMb\x12\x1e\n" +
+	"\vgc_pause_ms\x18\x03 \x01(\x01R\tgcPauseMs\"O\n" +
+	"\tRateLimit\x12\x18\n" +
+	"\aservice\x18\x01 \x01(\tR\aservice\x12\x12\n" +
+	"\x04used\x18\x02 \x01(\x05R\x04used\x12\x14\n" +
+	"\x05limit\x18\x03 \x01(\x05R\x05limit\"\xe5\x02\n" +
+	"\x1cGetHypervisorBackendResponse\x12@\n" +
+	"\rapi_endpoints\x18\x01 \x03(\v2\x1b.sirsi.admin.v2.APIEndpointR\fapiEndpoints\x12D\n" +
+	"\x0eservice_health\x18\x02 \x03(\v2\x1d.sirsi.admin.v2.ServiceHealthR\rserviceHealth\x12G\n" +
+	"\x0fgrpc_throughput\x18\x03 \x03(\v2\x1e.sirsi.admin.v2.GrpcThroughputR\x0egrpcThroughput\x128\n" +
+	"\n" +
+	"go_runtime\x18\x04 \x01(\v2\x19.sirsi.admin.v2.GoRuntimeR\tgoRuntime\x12:\n" +
+	"\vrate_limits\x18\x05 \x03(\v2\x19.sirsi.admin.v2.RateLimitR\n" +
+	"rateLimits\"\x8f\x01\n" +
+	"\x18IntegrationServiceHealth\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
+	"\x06status\x18\x02 \x01(\tR\x06status\x12\x1d\n" +
+	"\n" +
+	"last_check\x18\x03 \x01(\tR\tlastCheck\x12(\n" +
+	"\x10response_time_ms\x18\x04 \x01(\x01R\x0eresponseTimeMs\"\xad\x01\n" +
+	"\fWebhookEntry\x12\x10\n" +
+	"\x03url\x18\x01 \x01(\tR\x03url\x12\x1f\n" +
+	"\vevent_types\x18\x02 \x03(\tR\n" +
+	"eventTypes\x12!\n" +
+	"\fsuccess_rate\x18\x03 \x01(\x01R\vsuccessRate\x12&\n" +
+	"\x0favg_response_ms\x18\x04 \x01(\x01R\ravgResponseMs\x12\x1f\n" +
+	"\vretry_count\x18\x05 \x01(\x05R\n" +
+	"retryCount\"\x96\x01\n" +
+	"\vAPIKeyEntry\x12\x18\n" +
+	"\aservice\x18\x01 \x01(\tR\aservice\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x02 \x01(\tR\texpiresAt\x12%\n" +
+	"\x0edays_remaining\x18\x03 \x01(\x05R\rdaysRemaining\x12'\n" +
+	"\x0frotation_status\x18\x04 \x01(\tR\x0erotationStatus\"\x8c\x01\n" +
+	"\fScheduledJob\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1a\n" +
+	"\bschedule\x18\x02 \x01(\tR\bschedule\x12\x19\n" +
+	"\blast_run\x18\x03 \x01(\tR\alastRun\x12\x19\n" +
+	"\bnext_run\x18\x04 \x01(\tR\anextRun\x12\x16\n" +
+	"\x06status\x18\x05 \x01(\tR\x06status\"\xab\x02\n" +
+	"!GetHypervisorIntegrationsResponse\x12O\n" +
+	"\x0eservice_health\x18\x01 \x03(\v2(.sirsi.admin.v2.IntegrationServiceHealthR\rserviceHealth\x128\n" +
+	"\bwebhooks\x18\x02 \x03(\v2\x1c.sirsi.admin.v2.WebhookEntryR\bwebhooks\x126\n" +
+	"\bapi_keys\x18\x03 \x03(\v2\x1b.sirsi.admin.v2.APIKeyEntryR\aapiKeys\x12C\n" +
+	"\x0escheduled_jobs\x18\x04 \x03(\v2\x1c.sirsi.admin.v2.ScheduledJobR\rscheduledJobs\"U\n" +
+	"\rCostByService\x12\x18\n" +
+	"\aservice\x18\x01 \x01(\tR\aservice\x12\x16\n" +
+	"\x06tenant\x18\x02 \x01(\tR\x06tenant\x12\x12\n" +
+	"\x04cost\x18\x03 \x01(\x01R\x04cost\"\\\n" +
+	"\x0eBudgetVsActual\x12\x16\n" +
+	"\x06budget\x18\x01 \x01(\x01R\x06budget\x12\x16\n" +
+	"\x06actual\x18\x02 \x01(\x01R\x06actual\x12\x1a\n" +
+	"\bforecast\x18\x03 \x01(\x01R\bforecast\"\x85\x01\n" +
+	"\x0eCostTrendMonth\x12\x14\n" +
+	"\x05month\x18\x01 \x01(\tR\x05month\x12 \n" +
+	"\vfinalwishes\x18\x02 \x01(\x01R\vfinalwishes\x12\x1c\n" +
+	"\tassiduous\x18\x03 \x01(\x01R\tassiduous\x12\x1d\n" +
+	"\n" +
+	"sirsi_core\x18\x04 \x01(\x01R\tsirsiCore\"\x81\x01\n" +
+	"\fIdleResource\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
+	"\x04type\x18\x02 \x01(\tR\x04type\x12!\n" +
+	"\fmonthly_cost\x18\x03 \x01(\x01R\vmonthlyCost\x12&\n" +
+	"\x0erecommendation\x18\x04 \x01(\tR\x0erecommendation\"\xdf\x02\n" +
+	"\x19GetHypervisorCostResponse\x12K\n" +
+	"\x12monthly_by_service\x18\x01 \x03(\v2\x1d.sirsi.admin.v2.CostByServiceR\x10monthlyByService\x12H\n" +
+	"\x10budget_vs_actual\x18\x02 \x01(\v2\x1e.sirsi.admin.v2.BudgetVsActualR\x0ebudgetVsActual\x12B\n" +
+	"\rcost_trend_6m\x18\x03 \x03(\v2\x1e.sirsi.admin.v2.CostTrendMonthR\vcostTrend6m\x12\"\n" +
+	"\rcost_per_user\x18\x04 \x01(\x01R\vcostPerUser\x12C\n" +
+	"\x0eidle_resources\x18\x05 \x03(\v2\x1c.sirsi.admin.v2.IdleResourceR\ridleResources\"\xfe\x01\n" +
+	"\x0eIncidentDetail\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x1a\n" +
+	"\bseverity\x18\x03 \x01(\tR\bseverity\x12\x16\n" +
+	"\x06status\x18\x04 \x01(\tR\x06status\x12\x1b\n" +
+	"\topened_at\x18\x05 \x01(\tR\bopenedAt\x12\x1f\n" +
+	"\vresolved_at\x18\x06 \x01(\tR\n" +
+	"resolvedAt\x12\x16\n" +
+	"\x06tenant\x18\a \x01(\tR\x06tenant\x12\x1a\n" +
+	"\bassignee\x18\b \x01(\tR\bassignee\x12 \n" +
+	"\vdescription\x18\t \x01(\tR\vdescription\"W\n" +
+	"\rSLACompliance\x12\x18\n" +
+	"\acurrent\x18\x01 \x01(\x01R\acurrent\x12\x16\n" +
+	"\x06target\x18\x02 \x01(\x01R\x06target\x12\x14\n" +
+	"\x05trend\x18\x03 \x03(\x01R\x05trend\"\x8c\x01\n" +
+	"\n" +
+	"RunbookLog\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
+	"\atrigger\x18\x02 \x01(\tR\atrigger\x12\x16\n" +
+	"\x06result\x18\x03 \x01(\tR\x06result\x12\x1a\n" +
+	"\bduration\x18\x04 \x01(\tR\bduration\x12\x1c\n" +
+	"\ttimestamp\x18\x05 \x01(\tR\ttimestamp\"\xb5\x02\n" +
+	"\x1eGetHypervisorIncidentsResponse\x12E\n" +
+	"\x0eopen_incidents\x18\x01 \x03(\v2\x1e.sirsi.admin.v2.IncidentDetailR\ropenIncidents\x12D\n" +
+	"\x0esla_compliance\x18\x02 \x01(\v2\x1d.sirsi.admin.v2.SLAComplianceR\rslaCompliance\x12I\n" +
+	"\x10incident_history\x18\x03 \x03(\v2\x1e.sirsi.admin.v2.IncidentDetailR\x0fincidentHistory\x12;\n" +
+	"\vrunbook_log\x18\x04 \x03(\v2\x1a.sirsi.admin.v2.RunbookLogR\n" +
+	"runbookLog2\xbd\t\n" +
 	"\x11HypervisorService\x12t\n" +
 	"\x15GetHypervisorOverview\x12,.sirsi.admin.v2.GetHypervisorOverviewRequest\x1a-.sirsi.admin.v2.GetHypervisorOverviewResponse\x12n\n" +
-	"\x13GetHypervisorDevOps\x12*.sirsi.admin.v2.GetHypervisorDevOpsRequest\x1a+.sirsi.admin.v2.GetHypervisorDevOpsResponse\x12t\n" +
-	"\x15GetHypervisorSecurity\x12,.sirsi.admin.v2.GetHypervisorSecurityRequest\x1a-.sirsi.admin.v2.GetHypervisorSecurityResponseB\xc0\x01\n" +
+	"\x13GetHypervisorDevOps\x12*.sirsi.admin.v2.GetHypervisorDevOpsRequest\x1a+.sirsi.admin.v2.GetHypervisorDevOpsResponse\x12\x86\x01\n" +
+	"\x1bGetHypervisorInfrastructure\x122.sirsi.admin.v2.GetHypervisorInfrastructureRequest\x1a3.sirsi.admin.v2.GetHypervisorInfrastructureResponse\x12t\n" +
+	"\x15GetHypervisorSecurity\x12,.sirsi.admin.v2.GetHypervisorSecurityRequest\x1a-.sirsi.admin.v2.GetHypervisorSecurityResponse\x12t\n" +
+	"\x15GetHypervisorDatabase\x12,.sirsi.admin.v2.GetHypervisorDatabaseRequest\x1a-.sirsi.admin.v2.GetHypervisorDatabaseResponse\x12t\n" +
+	"\x15GetHypervisorFrontend\x12,.sirsi.admin.v2.GetHypervisorFrontendRequest\x1a-.sirsi.admin.v2.GetHypervisorFrontendResponse\x12q\n" +
+	"\x14GetHypervisorBackend\x12+.sirsi.admin.v2.GetHypervisorBackendRequest\x1a,.sirsi.admin.v2.GetHypervisorBackendResponse\x12\x80\x01\n" +
+	"\x19GetHypervisorIntegrations\x120.sirsi.admin.v2.GetHypervisorIntegrationsRequest\x1a1.sirsi.admin.v2.GetHypervisorIntegrationsResponse\x12h\n" +
+	"\x11GetHypervisorCost\x12(.sirsi.admin.v2.GetHypervisorCostRequest\x1a).sirsi.admin.v2.GetHypervisorCostResponse\x12w\n" +
+	"\x16GetHypervisorIncidents\x12-.sirsi.admin.v2.GetHypervisorIncidentsRequest\x1a..sirsi.admin.v2.GetHypervisorIncidentsResponseB\xc0\x01\n" +
 	"\x12com.sirsi.admin.v2B\x16HypervisorServiceProtoP\x01Z8github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2\xa2\x02\x03SAX\xaa\x02\x0eSirsi.Admin.V2\xca\x02\x0eSirsi\\Admin\\V2\xe2\x02\x1aSirsi\\Admin\\V2\\GPBMetadata\xea\x02\x10Sirsi::Admin::V2b\x06proto3"
 
 var (
@@ -1720,30 +4994,76 @@ func file_sirsi_admin_v2_hypervisor_service_proto_rawDescGZIP() []byte {
 	return file_sirsi_admin_v2_hypervisor_service_proto_rawDescData
 }
 
-var file_sirsi_admin_v2_hypervisor_service_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_sirsi_admin_v2_hypervisor_service_proto_msgTypes = make([]protoimpl.MessageInfo, 68)
 var file_sirsi_admin_v2_hypervisor_service_proto_goTypes = []any{
-	(*HypervisorFilter)(nil),              // 0: sirsi.admin.v2.HypervisorFilter
-	(*GetHypervisorOverviewRequest)(nil),  // 1: sirsi.admin.v2.GetHypervisorOverviewRequest
-	(*GetHypervisorDevOpsRequest)(nil),    // 2: sirsi.admin.v2.GetHypervisorDevOpsRequest
-	(*GetHypervisorSecurityRequest)(nil),  // 3: sirsi.admin.v2.GetHypervisorSecurityRequest
-	(*UptimeGauge)(nil),                   // 4: sirsi.admin.v2.UptimeGauge
-	(*CountGauge)(nil),                    // 5: sirsi.admin.v2.CountGauge
-	(*SpendGauge)(nil),                    // 6: sirsi.admin.v2.SpendGauge
-	(*TenantSummary)(nil),                 // 7: sirsi.admin.v2.TenantSummary
-	(*ActivityEvent)(nil),                 // 8: sirsi.admin.v2.ActivityEvent
-	(*IncidentSummary)(nil),               // 9: sirsi.admin.v2.IncidentSummary
-	(*GetHypervisorOverviewResponse)(nil), // 10: sirsi.admin.v2.GetHypervisorOverviewResponse
-	(*DORAMetric)(nil),                    // 11: sirsi.admin.v2.DORAMetric
-	(*DeploymentFrequency)(nil),           // 12: sirsi.admin.v2.DeploymentFrequency
-	(*Deployment)(nil),                    // 13: sirsi.admin.v2.Deployment
-	(*PipelineStatus)(nil),                // 14: sirsi.admin.v2.PipelineStatus
-	(*BuildHealth)(nil),                   // 15: sirsi.admin.v2.BuildHealth
-	(*GetHypervisorDevOpsResponse)(nil),   // 16: sirsi.admin.v2.GetHypervisorDevOpsResponse
-	(*MFAComplianceEntry)(nil),            // 17: sirsi.admin.v2.MFAComplianceEntry
-	(*AuthActivityHour)(nil),              // 18: sirsi.admin.v2.AuthActivityHour
-	(*VulnerabilityScore)(nil),            // 19: sirsi.admin.v2.VulnerabilityScore
-	(*CertificateStatus)(nil),             // 20: sirsi.admin.v2.CertificateStatus
-	(*GetHypervisorSecurityResponse)(nil), // 21: sirsi.admin.v2.GetHypervisorSecurityResponse
+	(*HypervisorFilter)(nil),                    // 0: sirsi.admin.v2.HypervisorFilter
+	(*GetHypervisorOverviewRequest)(nil),        // 1: sirsi.admin.v2.GetHypervisorOverviewRequest
+	(*GetHypervisorDevOpsRequest)(nil),          // 2: sirsi.admin.v2.GetHypervisorDevOpsRequest
+	(*GetHypervisorSecurityRequest)(nil),        // 3: sirsi.admin.v2.GetHypervisorSecurityRequest
+	(*UptimeGauge)(nil),                         // 4: sirsi.admin.v2.UptimeGauge
+	(*CountGauge)(nil),                          // 5: sirsi.admin.v2.CountGauge
+	(*SpendGauge)(nil),                          // 6: sirsi.admin.v2.SpendGauge
+	(*TenantSummary)(nil),                       // 7: sirsi.admin.v2.TenantSummary
+	(*ActivityEvent)(nil),                       // 8: sirsi.admin.v2.ActivityEvent
+	(*IncidentSummary)(nil),                     // 9: sirsi.admin.v2.IncidentSummary
+	(*GetHypervisorOverviewResponse)(nil),       // 10: sirsi.admin.v2.GetHypervisorOverviewResponse
+	(*DORAMetric)(nil),                          // 11: sirsi.admin.v2.DORAMetric
+	(*DeploymentFrequency)(nil),                 // 12: sirsi.admin.v2.DeploymentFrequency
+	(*Deployment)(nil),                          // 13: sirsi.admin.v2.Deployment
+	(*PipelineStatus)(nil),                      // 14: sirsi.admin.v2.PipelineStatus
+	(*BuildHealth)(nil),                         // 15: sirsi.admin.v2.BuildHealth
+	(*GetHypervisorDevOpsResponse)(nil),         // 16: sirsi.admin.v2.GetHypervisorDevOpsResponse
+	(*MFAComplianceEntry)(nil),                  // 17: sirsi.admin.v2.MFAComplianceEntry
+	(*AuthActivityHour)(nil),                    // 18: sirsi.admin.v2.AuthActivityHour
+	(*VulnerabilityScore)(nil),                  // 19: sirsi.admin.v2.VulnerabilityScore
+	(*CertificateStatus)(nil),                   // 20: sirsi.admin.v2.CertificateStatus
+	(*GetHypervisorSecurityResponse)(nil),       // 21: sirsi.admin.v2.GetHypervisorSecurityResponse
+	(*GetHypervisorInfrastructureRequest)(nil),  // 22: sirsi.admin.v2.GetHypervisorInfrastructureRequest
+	(*GetHypervisorDatabaseRequest)(nil),        // 23: sirsi.admin.v2.GetHypervisorDatabaseRequest
+	(*GetHypervisorFrontendRequest)(nil),        // 24: sirsi.admin.v2.GetHypervisorFrontendRequest
+	(*GetHypervisorBackendRequest)(nil),         // 25: sirsi.admin.v2.GetHypervisorBackendRequest
+	(*GetHypervisorIntegrationsRequest)(nil),    // 26: sirsi.admin.v2.GetHypervisorIntegrationsRequest
+	(*GetHypervisorCostRequest)(nil),            // 27: sirsi.admin.v2.GetHypervisorCostRequest
+	(*GetHypervisorIncidentsRequest)(nil),       // 28: sirsi.admin.v2.GetHypervisorIncidentsRequest
+	(*ResourceState)(nil),                       // 29: sirsi.admin.v2.ResourceState
+	(*DriftItem)(nil),                           // 30: sirsi.admin.v2.DriftItem
+	(*EnvironmentEntry)(nil),                    // 31: sirsi.admin.v2.EnvironmentEntry
+	(*CloudRunService)(nil),                     // 32: sirsi.admin.v2.CloudRunService
+	(*CostByResource)(nil),                      // 33: sirsi.admin.v2.CostByResource
+	(*GetHypervisorInfrastructureResponse)(nil), // 34: sirsi.admin.v2.GetHypervisorInfrastructureResponse
+	(*ConnectionPool)(nil),                      // 35: sirsi.admin.v2.ConnectionPool
+	(*SlowQuery)(nil),                           // 36: sirsi.admin.v2.SlowQuery
+	(*ReplicationEntry)(nil),                    // 37: sirsi.admin.v2.ReplicationEntry
+	(*TableStats)(nil),                          // 38: sirsi.admin.v2.TableStats
+	(*FirestoreCollection)(nil),                 // 39: sirsi.admin.v2.FirestoreCollection
+	(*BackupStatus)(nil),                        // 40: sirsi.admin.v2.BackupStatus
+	(*GetHypervisorDatabaseResponse)(nil),       // 41: sirsi.admin.v2.GetHypervisorDatabaseResponse
+	(*WebVital)(nil),                            // 42: sirsi.admin.v2.WebVital
+	(*BundleModule)(nil),                        // 43: sirsi.admin.v2.BundleModule
+	(*BundleSize)(nil),                          // 44: sirsi.admin.v2.BundleSize
+	(*PageEntry)(nil),                           // 45: sirsi.admin.v2.PageEntry
+	(*ErrorEntry)(nil),                          // 46: sirsi.admin.v2.ErrorEntry
+	(*GetHypervisorFrontendResponse)(nil),       // 47: sirsi.admin.v2.GetHypervisorFrontendResponse
+	(*APIEndpoint)(nil),                         // 48: sirsi.admin.v2.APIEndpoint
+	(*ServiceHealth)(nil),                       // 49: sirsi.admin.v2.ServiceHealth
+	(*GrpcThroughput)(nil),                      // 50: sirsi.admin.v2.GrpcThroughput
+	(*GoRuntime)(nil),                           // 51: sirsi.admin.v2.GoRuntime
+	(*RateLimit)(nil),                           // 52: sirsi.admin.v2.RateLimit
+	(*GetHypervisorBackendResponse)(nil),        // 53: sirsi.admin.v2.GetHypervisorBackendResponse
+	(*IntegrationServiceHealth)(nil),            // 54: sirsi.admin.v2.IntegrationServiceHealth
+	(*WebhookEntry)(nil),                        // 55: sirsi.admin.v2.WebhookEntry
+	(*APIKeyEntry)(nil),                         // 56: sirsi.admin.v2.APIKeyEntry
+	(*ScheduledJob)(nil),                        // 57: sirsi.admin.v2.ScheduledJob
+	(*GetHypervisorIntegrationsResponse)(nil),   // 58: sirsi.admin.v2.GetHypervisorIntegrationsResponse
+	(*CostByService)(nil),                       // 59: sirsi.admin.v2.CostByService
+	(*BudgetVsActual)(nil),                      // 60: sirsi.admin.v2.BudgetVsActual
+	(*CostTrendMonth)(nil),                      // 61: sirsi.admin.v2.CostTrendMonth
+	(*IdleResource)(nil),                        // 62: sirsi.admin.v2.IdleResource
+	(*GetHypervisorCostResponse)(nil),           // 63: sirsi.admin.v2.GetHypervisorCostResponse
+	(*IncidentDetail)(nil),                      // 64: sirsi.admin.v2.IncidentDetail
+	(*SLACompliance)(nil),                       // 65: sirsi.admin.v2.SLACompliance
+	(*RunbookLog)(nil),                          // 66: sirsi.admin.v2.RunbookLog
+	(*GetHypervisorIncidentsResponse)(nil),      // 67: sirsi.admin.v2.GetHypervisorIncidentsResponse
 }
 var file_sirsi_admin_v2_hypervisor_service_proto_depIdxs = []int32{
 	0,  // 0: sirsi.admin.v2.GetHypervisorOverviewRequest.filter:type_name -> sirsi.admin.v2.HypervisorFilter
@@ -1766,17 +5086,71 @@ var file_sirsi_admin_v2_hypervisor_service_proto_depIdxs = []int32{
 	18, // 17: sirsi.admin.v2.GetHypervisorSecurityResponse.auth_activity_24h:type_name -> sirsi.admin.v2.AuthActivityHour
 	19, // 18: sirsi.admin.v2.GetHypervisorSecurityResponse.vulnerability_score:type_name -> sirsi.admin.v2.VulnerabilityScore
 	20, // 19: sirsi.admin.v2.GetHypervisorSecurityResponse.certificates:type_name -> sirsi.admin.v2.CertificateStatus
-	1,  // 20: sirsi.admin.v2.HypervisorService.GetHypervisorOverview:input_type -> sirsi.admin.v2.GetHypervisorOverviewRequest
-	2,  // 21: sirsi.admin.v2.HypervisorService.GetHypervisorDevOps:input_type -> sirsi.admin.v2.GetHypervisorDevOpsRequest
-	3,  // 22: sirsi.admin.v2.HypervisorService.GetHypervisorSecurity:input_type -> sirsi.admin.v2.GetHypervisorSecurityRequest
-	10, // 23: sirsi.admin.v2.HypervisorService.GetHypervisorOverview:output_type -> sirsi.admin.v2.GetHypervisorOverviewResponse
-	16, // 24: sirsi.admin.v2.HypervisorService.GetHypervisorDevOps:output_type -> sirsi.admin.v2.GetHypervisorDevOpsResponse
-	21, // 25: sirsi.admin.v2.HypervisorService.GetHypervisorSecurity:output_type -> sirsi.admin.v2.GetHypervisorSecurityResponse
-	23, // [23:26] is the sub-list for method output_type
-	20, // [20:23] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	0,  // 20: sirsi.admin.v2.GetHypervisorInfrastructureRequest.filter:type_name -> sirsi.admin.v2.HypervisorFilter
+	0,  // 21: sirsi.admin.v2.GetHypervisorDatabaseRequest.filter:type_name -> sirsi.admin.v2.HypervisorFilter
+	0,  // 22: sirsi.admin.v2.GetHypervisorFrontendRequest.filter:type_name -> sirsi.admin.v2.HypervisorFilter
+	0,  // 23: sirsi.admin.v2.GetHypervisorBackendRequest.filter:type_name -> sirsi.admin.v2.HypervisorFilter
+	0,  // 24: sirsi.admin.v2.GetHypervisorIntegrationsRequest.filter:type_name -> sirsi.admin.v2.HypervisorFilter
+	0,  // 25: sirsi.admin.v2.GetHypervisorCostRequest.filter:type_name -> sirsi.admin.v2.HypervisorFilter
+	0,  // 26: sirsi.admin.v2.GetHypervisorIncidentsRequest.filter:type_name -> sirsi.admin.v2.HypervisorFilter
+	29, // 27: sirsi.admin.v2.GetHypervisorInfrastructureResponse.resources:type_name -> sirsi.admin.v2.ResourceState
+	30, // 28: sirsi.admin.v2.GetHypervisorInfrastructureResponse.drift_items:type_name -> sirsi.admin.v2.DriftItem
+	31, // 29: sirsi.admin.v2.GetHypervisorInfrastructureResponse.environment_matrix:type_name -> sirsi.admin.v2.EnvironmentEntry
+	32, // 30: sirsi.admin.v2.GetHypervisorInfrastructureResponse.cloud_run_services:type_name -> sirsi.admin.v2.CloudRunService
+	33, // 31: sirsi.admin.v2.GetHypervisorInfrastructureResponse.cost_by_resource:type_name -> sirsi.admin.v2.CostByResource
+	35, // 32: sirsi.admin.v2.GetHypervisorDatabaseResponse.connection_pools:type_name -> sirsi.admin.v2.ConnectionPool
+	36, // 33: sirsi.admin.v2.GetHypervisorDatabaseResponse.slow_queries:type_name -> sirsi.admin.v2.SlowQuery
+	37, // 34: sirsi.admin.v2.GetHypervisorDatabaseResponse.replication_lag:type_name -> sirsi.admin.v2.ReplicationEntry
+	38, // 35: sirsi.admin.v2.GetHypervisorDatabaseResponse.table_stats:type_name -> sirsi.admin.v2.TableStats
+	39, // 36: sirsi.admin.v2.GetHypervisorDatabaseResponse.firestore_collections:type_name -> sirsi.admin.v2.FirestoreCollection
+	40, // 37: sirsi.admin.v2.GetHypervisorDatabaseResponse.backup_status:type_name -> sirsi.admin.v2.BackupStatus
+	43, // 38: sirsi.admin.v2.BundleSize.by_module:type_name -> sirsi.admin.v2.BundleModule
+	42, // 39: sirsi.admin.v2.GetHypervisorFrontendResponse.web_vitals:type_name -> sirsi.admin.v2.WebVital
+	44, // 40: sirsi.admin.v2.GetHypervisorFrontendResponse.bundle_size:type_name -> sirsi.admin.v2.BundleSize
+	45, // 41: sirsi.admin.v2.GetHypervisorFrontendResponse.page_inventory:type_name -> sirsi.admin.v2.PageEntry
+	46, // 42: sirsi.admin.v2.GetHypervisorFrontendResponse.error_tracking:type_name -> sirsi.admin.v2.ErrorEntry
+	48, // 43: sirsi.admin.v2.GetHypervisorBackendResponse.api_endpoints:type_name -> sirsi.admin.v2.APIEndpoint
+	49, // 44: sirsi.admin.v2.GetHypervisorBackendResponse.service_health:type_name -> sirsi.admin.v2.ServiceHealth
+	50, // 45: sirsi.admin.v2.GetHypervisorBackendResponse.grpc_throughput:type_name -> sirsi.admin.v2.GrpcThroughput
+	51, // 46: sirsi.admin.v2.GetHypervisorBackendResponse.go_runtime:type_name -> sirsi.admin.v2.GoRuntime
+	52, // 47: sirsi.admin.v2.GetHypervisorBackendResponse.rate_limits:type_name -> sirsi.admin.v2.RateLimit
+	54, // 48: sirsi.admin.v2.GetHypervisorIntegrationsResponse.service_health:type_name -> sirsi.admin.v2.IntegrationServiceHealth
+	55, // 49: sirsi.admin.v2.GetHypervisorIntegrationsResponse.webhooks:type_name -> sirsi.admin.v2.WebhookEntry
+	56, // 50: sirsi.admin.v2.GetHypervisorIntegrationsResponse.api_keys:type_name -> sirsi.admin.v2.APIKeyEntry
+	57, // 51: sirsi.admin.v2.GetHypervisorIntegrationsResponse.scheduled_jobs:type_name -> sirsi.admin.v2.ScheduledJob
+	59, // 52: sirsi.admin.v2.GetHypervisorCostResponse.monthly_by_service:type_name -> sirsi.admin.v2.CostByService
+	60, // 53: sirsi.admin.v2.GetHypervisorCostResponse.budget_vs_actual:type_name -> sirsi.admin.v2.BudgetVsActual
+	61, // 54: sirsi.admin.v2.GetHypervisorCostResponse.cost_trend_6m:type_name -> sirsi.admin.v2.CostTrendMonth
+	62, // 55: sirsi.admin.v2.GetHypervisorCostResponse.idle_resources:type_name -> sirsi.admin.v2.IdleResource
+	64, // 56: sirsi.admin.v2.GetHypervisorIncidentsResponse.open_incidents:type_name -> sirsi.admin.v2.IncidentDetail
+	65, // 57: sirsi.admin.v2.GetHypervisorIncidentsResponse.sla_compliance:type_name -> sirsi.admin.v2.SLACompliance
+	64, // 58: sirsi.admin.v2.GetHypervisorIncidentsResponse.incident_history:type_name -> sirsi.admin.v2.IncidentDetail
+	66, // 59: sirsi.admin.v2.GetHypervisorIncidentsResponse.runbook_log:type_name -> sirsi.admin.v2.RunbookLog
+	1,  // 60: sirsi.admin.v2.HypervisorService.GetHypervisorOverview:input_type -> sirsi.admin.v2.GetHypervisorOverviewRequest
+	2,  // 61: sirsi.admin.v2.HypervisorService.GetHypervisorDevOps:input_type -> sirsi.admin.v2.GetHypervisorDevOpsRequest
+	22, // 62: sirsi.admin.v2.HypervisorService.GetHypervisorInfrastructure:input_type -> sirsi.admin.v2.GetHypervisorInfrastructureRequest
+	3,  // 63: sirsi.admin.v2.HypervisorService.GetHypervisorSecurity:input_type -> sirsi.admin.v2.GetHypervisorSecurityRequest
+	23, // 64: sirsi.admin.v2.HypervisorService.GetHypervisorDatabase:input_type -> sirsi.admin.v2.GetHypervisorDatabaseRequest
+	24, // 65: sirsi.admin.v2.HypervisorService.GetHypervisorFrontend:input_type -> sirsi.admin.v2.GetHypervisorFrontendRequest
+	25, // 66: sirsi.admin.v2.HypervisorService.GetHypervisorBackend:input_type -> sirsi.admin.v2.GetHypervisorBackendRequest
+	26, // 67: sirsi.admin.v2.HypervisorService.GetHypervisorIntegrations:input_type -> sirsi.admin.v2.GetHypervisorIntegrationsRequest
+	27, // 68: sirsi.admin.v2.HypervisorService.GetHypervisorCost:input_type -> sirsi.admin.v2.GetHypervisorCostRequest
+	28, // 69: sirsi.admin.v2.HypervisorService.GetHypervisorIncidents:input_type -> sirsi.admin.v2.GetHypervisorIncidentsRequest
+	10, // 70: sirsi.admin.v2.HypervisorService.GetHypervisorOverview:output_type -> sirsi.admin.v2.GetHypervisorOverviewResponse
+	16, // 71: sirsi.admin.v2.HypervisorService.GetHypervisorDevOps:output_type -> sirsi.admin.v2.GetHypervisorDevOpsResponse
+	34, // 72: sirsi.admin.v2.HypervisorService.GetHypervisorInfrastructure:output_type -> sirsi.admin.v2.GetHypervisorInfrastructureResponse
+	21, // 73: sirsi.admin.v2.HypervisorService.GetHypervisorSecurity:output_type -> sirsi.admin.v2.GetHypervisorSecurityResponse
+	41, // 74: sirsi.admin.v2.HypervisorService.GetHypervisorDatabase:output_type -> sirsi.admin.v2.GetHypervisorDatabaseResponse
+	47, // 75: sirsi.admin.v2.HypervisorService.GetHypervisorFrontend:output_type -> sirsi.admin.v2.GetHypervisorFrontendResponse
+	53, // 76: sirsi.admin.v2.HypervisorService.GetHypervisorBackend:output_type -> sirsi.admin.v2.GetHypervisorBackendResponse
+	58, // 77: sirsi.admin.v2.HypervisorService.GetHypervisorIntegrations:output_type -> sirsi.admin.v2.GetHypervisorIntegrationsResponse
+	63, // 78: sirsi.admin.v2.HypervisorService.GetHypervisorCost:output_type -> sirsi.admin.v2.GetHypervisorCostResponse
+	67, // 79: sirsi.admin.v2.HypervisorService.GetHypervisorIncidents:output_type -> sirsi.admin.v2.GetHypervisorIncidentsResponse
+	70, // [70:80] is the sub-list for method output_type
+	60, // [60:70] is the sub-list for method input_type
+	60, // [60:60] is the sub-list for extension type_name
+	60, // [60:60] is the sub-list for extension extendee
+	0,  // [0:60] is the sub-list for field type_name
 }
 
 func init() { file_sirsi_admin_v2_hypervisor_service_proto_init() }
@@ -1790,7 +5164,7 @@ func file_sirsi_admin_v2_hypervisor_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sirsi_admin_v2_hypervisor_service_proto_rawDesc), len(file_sirsi_admin_v2_hypervisor_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   22,
+			NumMessages:   68,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

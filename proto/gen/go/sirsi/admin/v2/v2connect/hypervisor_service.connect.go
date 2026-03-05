@@ -45,9 +45,30 @@ const (
 	// HypervisorServiceGetHypervisorDevOpsProcedure is the fully-qualified name of the
 	// HypervisorService's GetHypervisorDevOps RPC.
 	HypervisorServiceGetHypervisorDevOpsProcedure = "/sirsi.admin.v2.HypervisorService/GetHypervisorDevOps"
+	// HypervisorServiceGetHypervisorInfrastructureProcedure is the fully-qualified name of the
+	// HypervisorService's GetHypervisorInfrastructure RPC.
+	HypervisorServiceGetHypervisorInfrastructureProcedure = "/sirsi.admin.v2.HypervisorService/GetHypervisorInfrastructure"
 	// HypervisorServiceGetHypervisorSecurityProcedure is the fully-qualified name of the
 	// HypervisorService's GetHypervisorSecurity RPC.
 	HypervisorServiceGetHypervisorSecurityProcedure = "/sirsi.admin.v2.HypervisorService/GetHypervisorSecurity"
+	// HypervisorServiceGetHypervisorDatabaseProcedure is the fully-qualified name of the
+	// HypervisorService's GetHypervisorDatabase RPC.
+	HypervisorServiceGetHypervisorDatabaseProcedure = "/sirsi.admin.v2.HypervisorService/GetHypervisorDatabase"
+	// HypervisorServiceGetHypervisorFrontendProcedure is the fully-qualified name of the
+	// HypervisorService's GetHypervisorFrontend RPC.
+	HypervisorServiceGetHypervisorFrontendProcedure = "/sirsi.admin.v2.HypervisorService/GetHypervisorFrontend"
+	// HypervisorServiceGetHypervisorBackendProcedure is the fully-qualified name of the
+	// HypervisorService's GetHypervisorBackend RPC.
+	HypervisorServiceGetHypervisorBackendProcedure = "/sirsi.admin.v2.HypervisorService/GetHypervisorBackend"
+	// HypervisorServiceGetHypervisorIntegrationsProcedure is the fully-qualified name of the
+	// HypervisorService's GetHypervisorIntegrations RPC.
+	HypervisorServiceGetHypervisorIntegrationsProcedure = "/sirsi.admin.v2.HypervisorService/GetHypervisorIntegrations"
+	// HypervisorServiceGetHypervisorCostProcedure is the fully-qualified name of the
+	// HypervisorService's GetHypervisorCost RPC.
+	HypervisorServiceGetHypervisorCostProcedure = "/sirsi.admin.v2.HypervisorService/GetHypervisorCost"
+	// HypervisorServiceGetHypervisorIncidentsProcedure is the fully-qualified name of the
+	// HypervisorService's GetHypervisorIncidents RPC.
+	HypervisorServiceGetHypervisorIncidentsProcedure = "/sirsi.admin.v2.HypervisorService/GetHypervisorIncidents"
 )
 
 // HypervisorServiceClient is a client for the sirsi.admin.v2.HypervisorService service.
@@ -56,8 +77,22 @@ type HypervisorServiceClient interface {
 	GetHypervisorOverview(context.Context, *connect.Request[v2.GetHypervisorOverviewRequest]) (*connect.Response[v2.GetHypervisorOverviewResponse], error)
 	// Tab 2: DevOps — DORA metrics, pipelines, deployments, build health
 	GetHypervisorDevOps(context.Context, *connect.Request[v2.GetHypervisorDevOpsRequest]) (*connect.Response[v2.GetHypervisorDevOpsResponse], error)
+	// Tab 3: Infrastructure — IaC state, drift, Cloud Run, environments
+	GetHypervisorInfrastructure(context.Context, *connect.Request[v2.GetHypervisorInfrastructureRequest]) (*connect.Response[v2.GetHypervisorInfrastructureResponse], error)
 	// Tab 4: Security — MFA compliance, auth activity, certs, vuln score
 	GetHypervisorSecurity(context.Context, *connect.Request[v2.GetHypervisorSecurityRequest]) (*connect.Response[v2.GetHypervisorSecurityResponse], error)
+	// Tab 5: Database — connection pools, slow queries, replication, Firestore
+	GetHypervisorDatabase(context.Context, *connect.Request[v2.GetHypervisorDatabaseRequest]) (*connect.Response[v2.GetHypervisorDatabaseResponse], error)
+	// Tab 6: Frontend — Web Vitals, bundle size, page inventory, errors
+	GetHypervisorFrontend(context.Context, *connect.Request[v2.GetHypervisorFrontendRequest]) (*connect.Response[v2.GetHypervisorFrontendResponse], error)
+	// Tab 7: Backend — API endpoints, gRPC throughput, Go runtime, rate limits
+	GetHypervisorBackend(context.Context, *connect.Request[v2.GetHypervisorBackendRequest]) (*connect.Response[v2.GetHypervisorBackendResponse], error)
+	// Tab 8: Integrations — service health, webhooks, API keys, scheduled jobs
+	GetHypervisorIntegrations(context.Context, *connect.Request[v2.GetHypervisorIntegrationsRequest]) (*connect.Response[v2.GetHypervisorIntegrationsResponse], error)
+	// Tab 9: Cost — monthly spend, budget vs actual, per-user cost, idle resources
+	GetHypervisorCost(context.Context, *connect.Request[v2.GetHypervisorCostRequest]) (*connect.Response[v2.GetHypervisorCostResponse], error)
+	// Tab 10: Incidents — open incidents, SLA compliance, history, runbooks
+	GetHypervisorIncidents(context.Context, *connect.Request[v2.GetHypervisorIncidentsRequest]) (*connect.Response[v2.GetHypervisorIncidentsResponse], error)
 }
 
 // NewHypervisorServiceClient constructs a client for the sirsi.admin.v2.HypervisorService service.
@@ -83,10 +118,52 @@ func NewHypervisorServiceClient(httpClient connect.HTTPClient, baseURL string, o
 			connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorDevOps")),
 			connect.WithClientOptions(opts...),
 		),
+		getHypervisorInfrastructure: connect.NewClient[v2.GetHypervisorInfrastructureRequest, v2.GetHypervisorInfrastructureResponse](
+			httpClient,
+			baseURL+HypervisorServiceGetHypervisorInfrastructureProcedure,
+			connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorInfrastructure")),
+			connect.WithClientOptions(opts...),
+		),
 		getHypervisorSecurity: connect.NewClient[v2.GetHypervisorSecurityRequest, v2.GetHypervisorSecurityResponse](
 			httpClient,
 			baseURL+HypervisorServiceGetHypervisorSecurityProcedure,
 			connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorSecurity")),
+			connect.WithClientOptions(opts...),
+		),
+		getHypervisorDatabase: connect.NewClient[v2.GetHypervisorDatabaseRequest, v2.GetHypervisorDatabaseResponse](
+			httpClient,
+			baseURL+HypervisorServiceGetHypervisorDatabaseProcedure,
+			connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorDatabase")),
+			connect.WithClientOptions(opts...),
+		),
+		getHypervisorFrontend: connect.NewClient[v2.GetHypervisorFrontendRequest, v2.GetHypervisorFrontendResponse](
+			httpClient,
+			baseURL+HypervisorServiceGetHypervisorFrontendProcedure,
+			connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorFrontend")),
+			connect.WithClientOptions(opts...),
+		),
+		getHypervisorBackend: connect.NewClient[v2.GetHypervisorBackendRequest, v2.GetHypervisorBackendResponse](
+			httpClient,
+			baseURL+HypervisorServiceGetHypervisorBackendProcedure,
+			connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorBackend")),
+			connect.WithClientOptions(opts...),
+		),
+		getHypervisorIntegrations: connect.NewClient[v2.GetHypervisorIntegrationsRequest, v2.GetHypervisorIntegrationsResponse](
+			httpClient,
+			baseURL+HypervisorServiceGetHypervisorIntegrationsProcedure,
+			connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorIntegrations")),
+			connect.WithClientOptions(opts...),
+		),
+		getHypervisorCost: connect.NewClient[v2.GetHypervisorCostRequest, v2.GetHypervisorCostResponse](
+			httpClient,
+			baseURL+HypervisorServiceGetHypervisorCostProcedure,
+			connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorCost")),
+			connect.WithClientOptions(opts...),
+		),
+		getHypervisorIncidents: connect.NewClient[v2.GetHypervisorIncidentsRequest, v2.GetHypervisorIncidentsResponse](
+			httpClient,
+			baseURL+HypervisorServiceGetHypervisorIncidentsProcedure,
+			connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorIncidents")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -94,9 +171,16 @@ func NewHypervisorServiceClient(httpClient connect.HTTPClient, baseURL string, o
 
 // hypervisorServiceClient implements HypervisorServiceClient.
 type hypervisorServiceClient struct {
-	getHypervisorOverview *connect.Client[v2.GetHypervisorOverviewRequest, v2.GetHypervisorOverviewResponse]
-	getHypervisorDevOps   *connect.Client[v2.GetHypervisorDevOpsRequest, v2.GetHypervisorDevOpsResponse]
-	getHypervisorSecurity *connect.Client[v2.GetHypervisorSecurityRequest, v2.GetHypervisorSecurityResponse]
+	getHypervisorOverview       *connect.Client[v2.GetHypervisorOverviewRequest, v2.GetHypervisorOverviewResponse]
+	getHypervisorDevOps         *connect.Client[v2.GetHypervisorDevOpsRequest, v2.GetHypervisorDevOpsResponse]
+	getHypervisorInfrastructure *connect.Client[v2.GetHypervisorInfrastructureRequest, v2.GetHypervisorInfrastructureResponse]
+	getHypervisorSecurity       *connect.Client[v2.GetHypervisorSecurityRequest, v2.GetHypervisorSecurityResponse]
+	getHypervisorDatabase       *connect.Client[v2.GetHypervisorDatabaseRequest, v2.GetHypervisorDatabaseResponse]
+	getHypervisorFrontend       *connect.Client[v2.GetHypervisorFrontendRequest, v2.GetHypervisorFrontendResponse]
+	getHypervisorBackend        *connect.Client[v2.GetHypervisorBackendRequest, v2.GetHypervisorBackendResponse]
+	getHypervisorIntegrations   *connect.Client[v2.GetHypervisorIntegrationsRequest, v2.GetHypervisorIntegrationsResponse]
+	getHypervisorCost           *connect.Client[v2.GetHypervisorCostRequest, v2.GetHypervisorCostResponse]
+	getHypervisorIncidents      *connect.Client[v2.GetHypervisorIncidentsRequest, v2.GetHypervisorIncidentsResponse]
 }
 
 // GetHypervisorOverview calls sirsi.admin.v2.HypervisorService.GetHypervisorOverview.
@@ -109,9 +193,44 @@ func (c *hypervisorServiceClient) GetHypervisorDevOps(ctx context.Context, req *
 	return c.getHypervisorDevOps.CallUnary(ctx, req)
 }
 
+// GetHypervisorInfrastructure calls sirsi.admin.v2.HypervisorService.GetHypervisorInfrastructure.
+func (c *hypervisorServiceClient) GetHypervisorInfrastructure(ctx context.Context, req *connect.Request[v2.GetHypervisorInfrastructureRequest]) (*connect.Response[v2.GetHypervisorInfrastructureResponse], error) {
+	return c.getHypervisorInfrastructure.CallUnary(ctx, req)
+}
+
 // GetHypervisorSecurity calls sirsi.admin.v2.HypervisorService.GetHypervisorSecurity.
 func (c *hypervisorServiceClient) GetHypervisorSecurity(ctx context.Context, req *connect.Request[v2.GetHypervisorSecurityRequest]) (*connect.Response[v2.GetHypervisorSecurityResponse], error) {
 	return c.getHypervisorSecurity.CallUnary(ctx, req)
+}
+
+// GetHypervisorDatabase calls sirsi.admin.v2.HypervisorService.GetHypervisorDatabase.
+func (c *hypervisorServiceClient) GetHypervisorDatabase(ctx context.Context, req *connect.Request[v2.GetHypervisorDatabaseRequest]) (*connect.Response[v2.GetHypervisorDatabaseResponse], error) {
+	return c.getHypervisorDatabase.CallUnary(ctx, req)
+}
+
+// GetHypervisorFrontend calls sirsi.admin.v2.HypervisorService.GetHypervisorFrontend.
+func (c *hypervisorServiceClient) GetHypervisorFrontend(ctx context.Context, req *connect.Request[v2.GetHypervisorFrontendRequest]) (*connect.Response[v2.GetHypervisorFrontendResponse], error) {
+	return c.getHypervisorFrontend.CallUnary(ctx, req)
+}
+
+// GetHypervisorBackend calls sirsi.admin.v2.HypervisorService.GetHypervisorBackend.
+func (c *hypervisorServiceClient) GetHypervisorBackend(ctx context.Context, req *connect.Request[v2.GetHypervisorBackendRequest]) (*connect.Response[v2.GetHypervisorBackendResponse], error) {
+	return c.getHypervisorBackend.CallUnary(ctx, req)
+}
+
+// GetHypervisorIntegrations calls sirsi.admin.v2.HypervisorService.GetHypervisorIntegrations.
+func (c *hypervisorServiceClient) GetHypervisorIntegrations(ctx context.Context, req *connect.Request[v2.GetHypervisorIntegrationsRequest]) (*connect.Response[v2.GetHypervisorIntegrationsResponse], error) {
+	return c.getHypervisorIntegrations.CallUnary(ctx, req)
+}
+
+// GetHypervisorCost calls sirsi.admin.v2.HypervisorService.GetHypervisorCost.
+func (c *hypervisorServiceClient) GetHypervisorCost(ctx context.Context, req *connect.Request[v2.GetHypervisorCostRequest]) (*connect.Response[v2.GetHypervisorCostResponse], error) {
+	return c.getHypervisorCost.CallUnary(ctx, req)
+}
+
+// GetHypervisorIncidents calls sirsi.admin.v2.HypervisorService.GetHypervisorIncidents.
+func (c *hypervisorServiceClient) GetHypervisorIncidents(ctx context.Context, req *connect.Request[v2.GetHypervisorIncidentsRequest]) (*connect.Response[v2.GetHypervisorIncidentsResponse], error) {
+	return c.getHypervisorIncidents.CallUnary(ctx, req)
 }
 
 // HypervisorServiceHandler is an implementation of the sirsi.admin.v2.HypervisorService service.
@@ -120,8 +239,22 @@ type HypervisorServiceHandler interface {
 	GetHypervisorOverview(context.Context, *connect.Request[v2.GetHypervisorOverviewRequest]) (*connect.Response[v2.GetHypervisorOverviewResponse], error)
 	// Tab 2: DevOps — DORA metrics, pipelines, deployments, build health
 	GetHypervisorDevOps(context.Context, *connect.Request[v2.GetHypervisorDevOpsRequest]) (*connect.Response[v2.GetHypervisorDevOpsResponse], error)
+	// Tab 3: Infrastructure — IaC state, drift, Cloud Run, environments
+	GetHypervisorInfrastructure(context.Context, *connect.Request[v2.GetHypervisorInfrastructureRequest]) (*connect.Response[v2.GetHypervisorInfrastructureResponse], error)
 	// Tab 4: Security — MFA compliance, auth activity, certs, vuln score
 	GetHypervisorSecurity(context.Context, *connect.Request[v2.GetHypervisorSecurityRequest]) (*connect.Response[v2.GetHypervisorSecurityResponse], error)
+	// Tab 5: Database — connection pools, slow queries, replication, Firestore
+	GetHypervisorDatabase(context.Context, *connect.Request[v2.GetHypervisorDatabaseRequest]) (*connect.Response[v2.GetHypervisorDatabaseResponse], error)
+	// Tab 6: Frontend — Web Vitals, bundle size, page inventory, errors
+	GetHypervisorFrontend(context.Context, *connect.Request[v2.GetHypervisorFrontendRequest]) (*connect.Response[v2.GetHypervisorFrontendResponse], error)
+	// Tab 7: Backend — API endpoints, gRPC throughput, Go runtime, rate limits
+	GetHypervisorBackend(context.Context, *connect.Request[v2.GetHypervisorBackendRequest]) (*connect.Response[v2.GetHypervisorBackendResponse], error)
+	// Tab 8: Integrations — service health, webhooks, API keys, scheduled jobs
+	GetHypervisorIntegrations(context.Context, *connect.Request[v2.GetHypervisorIntegrationsRequest]) (*connect.Response[v2.GetHypervisorIntegrationsResponse], error)
+	// Tab 9: Cost — monthly spend, budget vs actual, per-user cost, idle resources
+	GetHypervisorCost(context.Context, *connect.Request[v2.GetHypervisorCostRequest]) (*connect.Response[v2.GetHypervisorCostResponse], error)
+	// Tab 10: Incidents — open incidents, SLA compliance, history, runbooks
+	GetHypervisorIncidents(context.Context, *connect.Request[v2.GetHypervisorIncidentsRequest]) (*connect.Response[v2.GetHypervisorIncidentsResponse], error)
 }
 
 // NewHypervisorServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -143,10 +276,52 @@ func NewHypervisorServiceHandler(svc HypervisorServiceHandler, opts ...connect.H
 		connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorDevOps")),
 		connect.WithHandlerOptions(opts...),
 	)
+	hypervisorServiceGetHypervisorInfrastructureHandler := connect.NewUnaryHandler(
+		HypervisorServiceGetHypervisorInfrastructureProcedure,
+		svc.GetHypervisorInfrastructure,
+		connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorInfrastructure")),
+		connect.WithHandlerOptions(opts...),
+	)
 	hypervisorServiceGetHypervisorSecurityHandler := connect.NewUnaryHandler(
 		HypervisorServiceGetHypervisorSecurityProcedure,
 		svc.GetHypervisorSecurity,
 		connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorSecurity")),
+		connect.WithHandlerOptions(opts...),
+	)
+	hypervisorServiceGetHypervisorDatabaseHandler := connect.NewUnaryHandler(
+		HypervisorServiceGetHypervisorDatabaseProcedure,
+		svc.GetHypervisorDatabase,
+		connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorDatabase")),
+		connect.WithHandlerOptions(opts...),
+	)
+	hypervisorServiceGetHypervisorFrontendHandler := connect.NewUnaryHandler(
+		HypervisorServiceGetHypervisorFrontendProcedure,
+		svc.GetHypervisorFrontend,
+		connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorFrontend")),
+		connect.WithHandlerOptions(opts...),
+	)
+	hypervisorServiceGetHypervisorBackendHandler := connect.NewUnaryHandler(
+		HypervisorServiceGetHypervisorBackendProcedure,
+		svc.GetHypervisorBackend,
+		connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorBackend")),
+		connect.WithHandlerOptions(opts...),
+	)
+	hypervisorServiceGetHypervisorIntegrationsHandler := connect.NewUnaryHandler(
+		HypervisorServiceGetHypervisorIntegrationsProcedure,
+		svc.GetHypervisorIntegrations,
+		connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorIntegrations")),
+		connect.WithHandlerOptions(opts...),
+	)
+	hypervisorServiceGetHypervisorCostHandler := connect.NewUnaryHandler(
+		HypervisorServiceGetHypervisorCostProcedure,
+		svc.GetHypervisorCost,
+		connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorCost")),
+		connect.WithHandlerOptions(opts...),
+	)
+	hypervisorServiceGetHypervisorIncidentsHandler := connect.NewUnaryHandler(
+		HypervisorServiceGetHypervisorIncidentsProcedure,
+		svc.GetHypervisorIncidents,
+		connect.WithSchema(hypervisorServiceMethods.ByName("GetHypervisorIncidents")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/sirsi.admin.v2.HypervisorService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -155,8 +330,22 @@ func NewHypervisorServiceHandler(svc HypervisorServiceHandler, opts ...connect.H
 			hypervisorServiceGetHypervisorOverviewHandler.ServeHTTP(w, r)
 		case HypervisorServiceGetHypervisorDevOpsProcedure:
 			hypervisorServiceGetHypervisorDevOpsHandler.ServeHTTP(w, r)
+		case HypervisorServiceGetHypervisorInfrastructureProcedure:
+			hypervisorServiceGetHypervisorInfrastructureHandler.ServeHTTP(w, r)
 		case HypervisorServiceGetHypervisorSecurityProcedure:
 			hypervisorServiceGetHypervisorSecurityHandler.ServeHTTP(w, r)
+		case HypervisorServiceGetHypervisorDatabaseProcedure:
+			hypervisorServiceGetHypervisorDatabaseHandler.ServeHTTP(w, r)
+		case HypervisorServiceGetHypervisorFrontendProcedure:
+			hypervisorServiceGetHypervisorFrontendHandler.ServeHTTP(w, r)
+		case HypervisorServiceGetHypervisorBackendProcedure:
+			hypervisorServiceGetHypervisorBackendHandler.ServeHTTP(w, r)
+		case HypervisorServiceGetHypervisorIntegrationsProcedure:
+			hypervisorServiceGetHypervisorIntegrationsHandler.ServeHTTP(w, r)
+		case HypervisorServiceGetHypervisorCostProcedure:
+			hypervisorServiceGetHypervisorCostHandler.ServeHTTP(w, r)
+		case HypervisorServiceGetHypervisorIncidentsProcedure:
+			hypervisorServiceGetHypervisorIncidentsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -174,6 +363,34 @@ func (UnimplementedHypervisorServiceHandler) GetHypervisorDevOps(context.Context
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.HypervisorService.GetHypervisorDevOps is not implemented"))
 }
 
+func (UnimplementedHypervisorServiceHandler) GetHypervisorInfrastructure(context.Context, *connect.Request[v2.GetHypervisorInfrastructureRequest]) (*connect.Response[v2.GetHypervisorInfrastructureResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.HypervisorService.GetHypervisorInfrastructure is not implemented"))
+}
+
 func (UnimplementedHypervisorServiceHandler) GetHypervisorSecurity(context.Context, *connect.Request[v2.GetHypervisorSecurityRequest]) (*connect.Response[v2.GetHypervisorSecurityResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.HypervisorService.GetHypervisorSecurity is not implemented"))
+}
+
+func (UnimplementedHypervisorServiceHandler) GetHypervisorDatabase(context.Context, *connect.Request[v2.GetHypervisorDatabaseRequest]) (*connect.Response[v2.GetHypervisorDatabaseResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.HypervisorService.GetHypervisorDatabase is not implemented"))
+}
+
+func (UnimplementedHypervisorServiceHandler) GetHypervisorFrontend(context.Context, *connect.Request[v2.GetHypervisorFrontendRequest]) (*connect.Response[v2.GetHypervisorFrontendResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.HypervisorService.GetHypervisorFrontend is not implemented"))
+}
+
+func (UnimplementedHypervisorServiceHandler) GetHypervisorBackend(context.Context, *connect.Request[v2.GetHypervisorBackendRequest]) (*connect.Response[v2.GetHypervisorBackendResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.HypervisorService.GetHypervisorBackend is not implemented"))
+}
+
+func (UnimplementedHypervisorServiceHandler) GetHypervisorIntegrations(context.Context, *connect.Request[v2.GetHypervisorIntegrationsRequest]) (*connect.Response[v2.GetHypervisorIntegrationsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.HypervisorService.GetHypervisorIntegrations is not implemented"))
+}
+
+func (UnimplementedHypervisorServiceHandler) GetHypervisorCost(context.Context, *connect.Request[v2.GetHypervisorCostRequest]) (*connect.Response[v2.GetHypervisorCostResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.HypervisorService.GetHypervisorCost is not implemented"))
+}
+
+func (UnimplementedHypervisorServiceHandler) GetHypervisorIncidents(context.Context, *connect.Request[v2.GetHypervisorIncidentsRequest]) (*connect.Response[v2.GetHypervisorIncidentsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.HypervisorService.GetHypervisorIncidents is not implemented"))
 }

@@ -619,6 +619,248 @@ func (s *HypervisorServer) GetHypervisorSecurity(
 	return connect.NewResponse(resp), nil
 }
 
+// Tab 3: Infrastructure
+func (s *HypervisorServer) GetHypervisorInfrastructure(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetHypervisorInfrastructureRequest],
+) (*connect.Response[adminv2.GetHypervisorInfrastructureResponse], error) {
+	resp := &adminv2.GetHypervisorInfrastructureResponse{
+		Resources: &adminv2.ResourceState{InSync: 142, Drifted: 3, Pending: 7},
+		DriftItems: []*adminv2.DriftItem{
+			{Resource: "cloud_run_service/sirsi-admin", Type: "Cloud Run", Tenant: "Sirsi Core", Detected: "2 hours ago", Severity: "warning"},
+			{Resource: "firestore_rules/sirsi-nexus", Type: "Firestore", Tenant: "Sirsi Core", Detected: "5 hours ago", Severity: "info"},
+			{Resource: "cloud_sql_instance/prod-primary", Type: "Cloud SQL", Tenant: "FinalWishes", Detected: "1 day ago", Severity: "critical"},
+		},
+		EnvironmentMatrix: []*adminv2.EnvironmentEntry{
+			{Tenant: "FinalWishes", Environment: "Production", Version: "v6.0.5", Status: "operational", LastDeploy: "2 min ago"},
+			{Tenant: "FinalWishes", Environment: "Staging", Version: "v6.1.0-rc1", Status: "operational", LastDeploy: "15 min ago"},
+			{Tenant: "Assiduous", Environment: "Production", Version: "v1.1.0", Status: "operational", LastDeploy: "3 days ago"},
+			{Tenant: "Assiduous", Environment: "Staging", Version: "v1.2.0", Status: "degraded", LastDeploy: "2 hours ago"},
+		},
+		CloudRunServices: []*adminv2.CloudRunService{
+			{Name: "sirsi-admin", Tenant: "Sirsi Core", Instances: 2, MaxInstances: 10, Cpu: 35, Memory: 42},
+			{Name: "fw-api", Tenant: "FinalWishes", Instances: 3, MaxInstances: 20, Cpu: 48, Memory: 55},
+			{Name: "as-api", Tenant: "Assiduous", Instances: 1, MaxInstances: 10, Cpu: 12, Memory: 28},
+		},
+		CostByResource: []*adminv2.CostByResource{
+			{Name: "Cloud Run", Cost: 840},
+			{Name: "Cloud SQL", Cost: 650},
+			{Name: "Firestore", Cost: 320},
+			{Name: "Cloud Storage", Cost: 180},
+			{Name: "Networking", Cost: 150},
+			{Name: "Other", Cost: 200},
+		},
+	}
+	return connect.NewResponse(resp), nil
+}
+
+// Tab 5: Database
+func (s *HypervisorServer) GetHypervisorDatabase(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetHypervisorDatabaseRequest],
+) (*connect.Response[adminv2.GetHypervisorDatabaseResponse], error) {
+	resp := &adminv2.GetHypervisorDatabaseResponse{
+		ConnectionPools: []*adminv2.ConnectionPool{
+			{Database: "fw_production", Active: 12, Idle: 8, Max: 50},
+			{Database: "fw_staging", Active: 3, Idle: 7, Max: 20},
+			{Database: "as_production", Active: 5, Idle: 10, Max: 30},
+		},
+		SlowQueries: []*adminv2.SlowQuery{
+			{Query: "SELECT * FROM estates WHERE status = 'active' ORDER BY updated_at", AvgTime: 340, Frequency: 42, LastSeen: "5 min ago"},
+			{Query: "SELECT c.*, u.email FROM contracts c JOIN users u ON c.user_id = u.id", AvgTime: 220, Frequency: 18, LastSeen: "12 min ago"},
+		},
+		ReplicationLag: []*adminv2.ReplicationEntry{
+			{Replica: "fw-replica-us-east1", LagMs: 12},
+			{Replica: "fw-replica-eu-west1", LagMs: 45},
+			{Replica: "as-replica-us-central1", LagMs: 8},
+		},
+		TableStats: []*adminv2.TableStats{
+			{Name: "users", RowCount: 2847, DiskMb: 12.4, IndexMb: 3.2, LastVacuum: "2 hours ago"},
+			{Name: "estates", RowCount: 1234, DiskMb: 45.6, IndexMb: 8.1, LastVacuum: "4 hours ago"},
+			{Name: "contracts", RowCount: 892, DiskMb: 128.3, IndexMb: 15.4, LastVacuum: "1 hour ago"},
+			{Name: "audit_log", RowCount: 45678, DiskMb: 256.7, IndexMb: 32.1, LastVacuum: "30 min ago"},
+		},
+		FirestoreCollections: []*adminv2.FirestoreCollection{
+			{Name: "users", DocumentCount: 2847, ReadsTrend: []float64{1200, 1400, 1100, 1500, 1300, 1600, 1450}, WritesTrend: []float64{100, 120, 80, 150, 110, 130, 120}},
+			{Name: "notifications", DocumentCount: 15234, ReadsTrend: []float64{5000, 5200, 4800, 5500, 5100, 5300, 5400}, WritesTrend: []float64{200, 220, 180, 250, 210, 230, 240}},
+		},
+		BackupStatus: []*adminv2.BackupStatus{
+			{Database: "fw_production", LastBackup: "1 hour ago", Status: "operational", LastRestoreTest: "2 days ago"},
+			{Database: "as_production", LastBackup: "2 hours ago", Status: "operational", LastRestoreTest: "3 days ago"},
+		},
+	}
+	return connect.NewResponse(resp), nil
+}
+
+// Tab 6: Frontend
+func (s *HypervisorServer) GetHypervisorFrontend(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetHypervisorFrontendRequest],
+) (*connect.Response[adminv2.GetHypervisorFrontendResponse], error) {
+	resp := &adminv2.GetHypervisorFrontendResponse{
+		WebVitals: []*adminv2.WebVital{
+			{Name: "LCP", Value: 1.8, Unit: "s", Rating: "good", ThresholdGood: 2.5, ThresholdPoor: 4.0},
+			{Name: "FID", Value: 12, Unit: "ms", Rating: "good", ThresholdGood: 100, ThresholdPoor: 300},
+			{Name: "CLS", Value: 0.05, Unit: "", Rating: "good", ThresholdGood: 0.1, ThresholdPoor: 0.25},
+			{Name: "TTFB", Value: 320, Unit: "ms", Rating: "needs-improvement", ThresholdGood: 200, ThresholdPoor: 600},
+			{Name: "INP", Value: 85, Unit: "ms", Rating: "good", ThresholdGood: 200, ThresholdPoor: 500},
+		},
+		BundleSize: &adminv2.BundleSize{
+			Current: 342, Budget: 500,
+			ByModule: []*adminv2.BundleModule{
+				{Name: "react", Size: 45},
+				{Name: "recharts", Size: 88},
+				{Name: "tanstack-router", Size: 32},
+				{Name: "connectrpc", Size: 18},
+				{Name: "lucide-react", Size: 24},
+				{Name: "app-code", Size: 135},
+			},
+		},
+		PageInventory: []*adminv2.PageEntry{
+			{Route: "/", ComponentCount: 12, LoadTimeMs: 420, ErrorRate: 0.1, Traffic: 4500},
+			{Route: "/tenants", ComponentCount: 28, LoadTimeMs: 680, ErrorRate: 0.3, Traffic: 2800},
+			{Route: "/users", ComponentCount: 15, LoadTimeMs: 350, ErrorRate: 0.05, Traffic: 3200},
+			{Route: "/contracts", ComponentCount: 18, LoadTimeMs: 520, ErrorRate: 0.2, Traffic: 1800},
+			{Route: "/analytics", ComponentCount: 22, LoadTimeMs: 750, ErrorRate: 0.1, Traffic: 1200},
+		},
+		ErrorTracking: []*adminv2.ErrorEntry{
+			{Component: "recharts/ResponsiveContainer", Frequency: 45, AffectedUsers: 12, Severity: "warning"},
+			{Component: "CommandPalette/SearchInput", Frequency: 8, AffectedUsers: 3, Severity: "info"},
+		},
+	}
+	return connect.NewResponse(resp), nil
+}
+
+// Tab 7: Backend
+func (s *HypervisorServer) GetHypervisorBackend(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetHypervisorBackendRequest],
+) (*connect.Response[adminv2.GetHypervisorBackendResponse], error) {
+	resp := &adminv2.GetHypervisorBackendResponse{
+		ApiEndpoints: []*adminv2.APIEndpoint{
+			{Method: "POST", Path: "/sirsi.admin.v2.AdminService/GetSystemOverview", RequestCount: 24500, AvgLatencyMs: 12, ErrorRate: 0.02, P95Trend: []float64{15, 14, 12, 13, 12, 11, 12}},
+			{Method: "POST", Path: "/sirsi.admin.v2.AdminService/ListUsers", RequestCount: 18200, AvgLatencyMs: 28, ErrorRate: 0.1, P95Trend: []float64{35, 30, 28, 32, 28, 27, 28}},
+			{Method: "POST", Path: "/sirsi.admin.v2.HypervisorService/GetHypervisorOverview", RequestCount: 8400, AvgLatencyMs: 8, ErrorRate: 0, P95Trend: []float64{10, 9, 8, 9, 8, 8, 8}},
+			{Method: "POST", Path: "/sirsi.admin.v2.TenantService/ListTenants", RequestCount: 12300, AvgLatencyMs: 15, ErrorRate: 0.05, P95Trend: []float64{20, 18, 15, 16, 15, 14, 15}},
+		},
+		ServiceHealth: []*adminv2.ServiceHealth{
+			{Service: "sirsi-admin-service", Status: "operational", Uptime: 99.98},
+			{Service: "sirsi-sign-api", Status: "operational", Uptime: 99.95},
+			{Service: "firebase-auth", Status: "operational", Uptime: 100},
+			{Service: "sendgrid-relay", Status: "degraded", Uptime: 98.5},
+		},
+		GrpcThroughput: []*adminv2.GrpcThroughput{
+			{Service: "AdminService", Rps: 145, Trend: []float64{120, 130, 140, 145, 138, 142, 145}},
+			{Service: "HypervisorService", Rps: 82, Trend: []float64{60, 70, 75, 80, 78, 82, 82}},
+			{Service: "TenantService", Rps: 55, Trend: []float64{40, 45, 50, 55, 52, 54, 55}},
+		},
+		GoRuntime: &adminv2.GoRuntime{Goroutines: 142, HeapMb: 28.5, GcPauseMs: 1.2},
+		RateLimits: []*adminv2.RateLimit{
+			{Service: "Stripe API", Used: 820, Limit: 10000},
+			{Service: "SendGrid", Used: 4500, Limit: 10000},
+			{Service: "Firebase Auth", Used: 1200, Limit: 50000},
+		},
+	}
+	return connect.NewResponse(resp), nil
+}
+
+// Tab 8: Integrations
+func (s *HypervisorServer) GetHypervisorIntegrations(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetHypervisorIntegrationsRequest],
+) (*connect.Response[adminv2.GetHypervisorIntegrationsResponse], error) {
+	resp := &adminv2.GetHypervisorIntegrationsResponse{
+		ServiceHealth: []*adminv2.IntegrationServiceHealth{
+			{Name: "Stripe", Status: "operational", LastCheck: "30s ago", ResponseTimeMs: 145},
+			{Name: "SendGrid", Status: "degraded", LastCheck: "1 min ago", ResponseTimeMs: 820},
+			{Name: "Plaid", Status: "operational", LastCheck: "45s ago", ResponseTimeMs: 210},
+			{Name: "OpenSign", Status: "operational", LastCheck: "1 min ago", ResponseTimeMs: 180},
+			{Name: "Firebase", Status: "operational", LastCheck: "15s ago", ResponseTimeMs: 45},
+		},
+		Webhooks: []*adminv2.WebhookEntry{
+			{Url: "https://api.sirsi.ai/webhooks/stripe", EventTypes: []string{"payment_intent.succeeded", "checkout.session.completed"}, SuccessRate: 99.8, AvgResponseMs: 120, RetryCount: 2},
+			{Url: "https://api.sirsi.ai/webhooks/opensign", EventTypes: []string{"document.signed", "document.viewed"}, SuccessRate: 98.5, AvgResponseMs: 250, RetryCount: 5},
+		},
+		ApiKeys: []*adminv2.APIKeyEntry{
+			{Service: "Stripe", ExpiresAt: "2027-01-15", DaysRemaining: 317, RotationStatus: "current"},
+			{Service: "SendGrid", ExpiresAt: "2026-06-30", DaysRemaining: 118, RotationStatus: "current"},
+			{Service: "Plaid", ExpiresAt: "2026-04-15", DaysRemaining: 42, RotationStatus: "rotation-due"},
+			{Service: "OpenSign", ExpiresAt: "2026-12-01", DaysRemaining: 272, RotationStatus: "current"},
+		},
+		ScheduledJobs: []*adminv2.ScheduledJob{
+			{Name: "daily-backup", Schedule: "0 2 * * *", LastRun: "2:00 AM today", NextRun: "2:00 AM tomorrow", Status: "operational"},
+			{Name: "cert-renewal-check", Schedule: "0 8 * * 1", LastRun: "Monday 8:00 AM", NextRun: "Next Monday 8:00 AM", Status: "operational"},
+			{Name: "audit-log-rotation", Schedule: "0 0 1 * *", LastRun: "Mar 1 midnight", NextRun: "Apr 1 midnight", Status: "operational"},
+		},
+	}
+	return connect.NewResponse(resp), nil
+}
+
+// Tab 9: Cost
+func (s *HypervisorServer) GetHypervisorCost(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetHypervisorCostRequest],
+) (*connect.Response[adminv2.GetHypervisorCostResponse], error) {
+	resp := &adminv2.GetHypervisorCostResponse{
+		MonthlyByService: []*adminv2.CostByService{
+			{Service: "Cloud Run", Tenant: "FinalWishes", Cost: 420},
+			{Service: "Cloud Run", Tenant: "Assiduous", Cost: 280},
+			{Service: "Cloud Run", Tenant: "Sirsi Core", Cost: 140},
+			{Service: "Cloud SQL", Tenant: "FinalWishes", Cost: 380},
+			{Service: "Cloud SQL", Tenant: "Assiduous", Cost: 270},
+			{Service: "Firestore", Tenant: "Sirsi Core", Cost: 320},
+			{Service: "Cloud Storage", Tenant: "FinalWishes", Cost: 120},
+			{Service: "Cloud Storage", Tenant: "Assiduous", Cost: 60},
+		},
+		BudgetVsActual: &adminv2.BudgetVsActual{Budget: 5000, Actual: 2340, Forecast: 4200},
+		CostTrend_6M: []*adminv2.CostTrendMonth{
+			{Month: "Oct", Finalwishes: 1200, Assiduous: 400, SirsiCore: 300},
+			{Month: "Nov", Finalwishes: 1400, Assiduous: 500, SirsiCore: 350},
+			{Month: "Dec", Finalwishes: 1300, Assiduous: 480, SirsiCore: 320},
+			{Month: "Jan", Finalwishes: 1500, Assiduous: 550, SirsiCore: 380},
+			{Month: "Feb", Finalwishes: 1600, Assiduous: 580, SirsiCore: 400},
+			{Month: "Mar", Finalwishes: 1100, Assiduous: 500, SirsiCore: 340},
+		},
+		CostPerUser: 8.20,
+		IdleResources: []*adminv2.IdleResource{
+			{Name: "as-staging-worker-idle", Type: "Cloud Run", MonthlyCost: 45, Recommendation: "Scale to 0 outside business hours"},
+			{Name: "fw-dev-sql-instance", Type: "Cloud SQL", MonthlyCost: 120, Recommendation: "Consider pausing during off-hours"},
+		},
+	}
+	return connect.NewResponse(resp), nil
+}
+
+// Tab 10: Incidents
+func (s *HypervisorServer) GetHypervisorIncidents(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetHypervisorIncidentsRequest],
+) (*connect.Response[adminv2.GetHypervisorIncidentsResponse], error) {
+	resp := &adminv2.GetHypervisorIncidentsResponse{
+		OpenIncidents: []*adminv2.IncidentDetail{
+			{
+				Id: "inc_1", Title: "Elevated staging error rate — Assiduous",
+				Severity: "warning", Status: "investigating",
+				OpenedAt: "3 hours ago", Tenant: "Assiduous", Assignee: "Cylton Collymore",
+				Description: "Error rate on Assiduous staging environment spiked to 8.5%, above the 5% threshold.",
+			},
+		},
+		SlaCompliance: &adminv2.SLACompliance{
+			Current: 99.5, Target: 99.9,
+			Trend: []float64{99.8, 99.7, 99.9, 99.5, 99.6, 99.5, 99.5},
+		},
+		IncidentHistory: []*adminv2.IncidentDetail{
+			{Id: "inc_0", Title: "DNS propagation delay — sirsi.ai", Severity: "critical", Status: "resolved", OpenedAt: "2 days ago", ResolvedAt: "2 days ago", Tenant: "Sirsi Core", Assignee: "Cylton Collymore", Description: "DNS propagation took 48 minutes after domain migration."},
+			{Id: "inc_-1", Title: "Stripe webhook timeout", Severity: "warning", Status: "resolved", OpenedAt: "5 days ago", ResolvedAt: "5 days ago", Tenant: "FinalWishes", Assignee: "Cylton Collymore", Description: "Stripe webhooks failing due to timeout on payment confirmation."},
+		},
+		RunbookLog: []*adminv2.RunbookLog{
+			{Name: "auto-restart-degraded", Trigger: "error_rate > 5%", Result: "success", Duration: "45s", Timestamp: "3 hours ago"},
+			{Name: "ssl-cert-renewal", Trigger: "days_remaining < 14", Result: "success", Duration: "2m 30s", Timestamp: "1 day ago"},
+			{Name: "db-failover-test", Trigger: "scheduled", Result: "success", Duration: "1m 15s", Timestamp: "3 days ago"},
+		},
+	}
+	return connect.NewResponse(resp), nil
+}
+
 // corsMiddleware wraps a handler with permissive CORS for local development.
 // In production, Cloud Run handles CORS via IAP/Load Balancer config.
 func corsMiddleware(next http.Handler) http.Handler {

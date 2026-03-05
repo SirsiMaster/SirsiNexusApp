@@ -21,8 +21,29 @@ service HypervisorService {
   // Tab 2: DevOps — DORA metrics, pipelines, deployments, build health
   rpc GetHypervisorDevOps(GetHypervisorDevOpsRequest) returns (GetHypervisorDevOpsResponse);
 
+  // Tab 3: Infrastructure — IaC state, drift, Cloud Run, environments
+  rpc GetHypervisorInfrastructure(GetHypervisorInfrastructureRequest) returns (GetHypervisorInfrastructureResponse);
+
   // Tab 4: Security — MFA compliance, auth activity, certs, vuln score
   rpc GetHypervisorSecurity(GetHypervisorSecurityRequest) returns (GetHypervisorSecurityResponse);
+
+  // Tab 5: Database — connection pools, slow queries, replication, Firestore
+  rpc GetHypervisorDatabase(GetHypervisorDatabaseRequest) returns (GetHypervisorDatabaseResponse);
+
+  // Tab 6: Frontend — Web Vitals, bundle size, page inventory, errors
+  rpc GetHypervisorFrontend(GetHypervisorFrontendRequest) returns (GetHypervisorFrontendResponse);
+
+  // Tab 7: Backend — API endpoints, gRPC throughput, Go runtime, rate limits
+  rpc GetHypervisorBackend(GetHypervisorBackendRequest) returns (GetHypervisorBackendResponse);
+
+  // Tab 8: Integrations — service health, webhooks, API keys, scheduled jobs
+  rpc GetHypervisorIntegrations(GetHypervisorIntegrationsRequest) returns (GetHypervisorIntegrationsResponse);
+
+  // Tab 9: Cost — monthly spend, budget vs actual, per-user cost, idle resources
+  rpc GetHypervisorCost(GetHypervisorCostRequest) returns (GetHypervisorCostResponse);
+
+  // Tab 10: Incidents — open incidents, SLA compliance, history, runbooks
+  rpc GetHypervisorIncidents(GetHypervisorIncidentsRequest) returns (GetHypervisorIncidentsResponse);
 }
 
 
@@ -201,4 +222,351 @@ message GetHypervisorSecurityResponse {
   repeated CertificateStatus certificates = 4;
   double secret_rotation_compliance = 5;  // 0-100
   double soc2_score = 6;                  // 0-100
+}
+
+
+// ── Remaining Tab Requests ────────────────────────────────────────
+
+message GetHypervisorInfrastructureRequest {
+  HypervisorFilter filter = 1;
+}
+
+message GetHypervisorDatabaseRequest {
+  HypervisorFilter filter = 1;
+}
+
+message GetHypervisorFrontendRequest {
+  HypervisorFilter filter = 1;
+}
+
+message GetHypervisorBackendRequest {
+  HypervisorFilter filter = 1;
+}
+
+message GetHypervisorIntegrationsRequest {
+  HypervisorFilter filter = 1;
+}
+
+message GetHypervisorCostRequest {
+  HypervisorFilter filter = 1;
+}
+
+message GetHypervisorIncidentsRequest {
+  HypervisorFilter filter = 1;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Tab 3: INFRASTRUCTURE
+// ═══════════════════════════════════════════════════════════════════
+
+message ResourceState {
+  int32 in_sync = 1;
+  int32 drifted = 2;
+  int32 pending = 3;
+}
+
+message DriftItem {
+  string resource = 1;
+  string type = 2;
+  string tenant = 3;
+  string detected = 4;
+  string severity = 5;
+}
+
+message EnvironmentEntry {
+  string tenant = 1;
+  string environment = 2;
+  string version = 3;
+  string status = 4;
+  string last_deploy = 5;
+}
+
+message CloudRunService {
+  string name = 1;
+  string tenant = 2;
+  int32 instances = 3;
+  int32 max_instances = 4;
+  double cpu = 5;
+  double memory = 6;
+}
+
+message CostByResource {
+  string name = 1;
+  double cost = 2;
+}
+
+message GetHypervisorInfrastructureResponse {
+  ResourceState resources = 1;
+  repeated DriftItem drift_items = 2;
+  repeated EnvironmentEntry environment_matrix = 3;
+  repeated CloudRunService cloud_run_services = 4;
+  repeated CostByResource cost_by_resource = 5;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Tab 5: DATABASE
+// ═══════════════════════════════════════════════════════════════════
+
+message ConnectionPool {
+  string database = 1;
+  int32 active = 2;
+  int32 idle = 3;
+  int32 max = 4;
+}
+
+message SlowQuery {
+  string query = 1;
+  double avg_time = 2;
+  int32 frequency = 3;
+  string last_seen = 4;
+}
+
+message ReplicationEntry {
+  string replica = 1;
+  double lag_ms = 2;
+}
+
+message TableStats {
+  string name = 1;
+  int32 row_count = 2;
+  double disk_mb = 3;
+  double index_mb = 4;
+  string last_vacuum = 5;
+}
+
+message FirestoreCollection {
+  string name = 1;
+  int32 document_count = 2;
+  repeated double reads_trend = 3;
+  repeated double writes_trend = 4;
+}
+
+message BackupStatus {
+  string database = 1;
+  string last_backup = 2;
+  string status = 3;
+  string last_restore_test = 4;
+}
+
+message GetHypervisorDatabaseResponse {
+  repeated ConnectionPool connection_pools = 1;
+  repeated SlowQuery slow_queries = 2;
+  repeated ReplicationEntry replication_lag = 3;
+  repeated TableStats table_stats = 4;
+  repeated FirestoreCollection firestore_collections = 5;
+  repeated BackupStatus backup_status = 6;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Tab 6: FRONTEND
+// ═══════════════════════════════════════════════════════════════════
+
+message WebVital {
+  string name = 1;
+  double value = 2;
+  string unit = 3;
+  string rating = 4;
+  double threshold_good = 5;
+  double threshold_poor = 6;
+}
+
+message BundleModule {
+  string name = 1;
+  double size = 2;
+}
+
+message BundleSize {
+  double current = 1;
+  double budget = 2;
+  repeated BundleModule by_module = 3;
+}
+
+message PageEntry {
+  string route = 1;
+  int32 component_count = 2;
+  double load_time_ms = 3;
+  double error_rate = 4;
+  int32 traffic = 5;
+}
+
+message ErrorEntry {
+  string component = 1;
+  int32 frequency = 2;
+  int32 affected_users = 3;
+  string severity = 4;
+}
+
+message GetHypervisorFrontendResponse {
+  repeated WebVital web_vitals = 1;
+  BundleSize bundle_size = 2;
+  repeated PageEntry page_inventory = 3;
+  repeated ErrorEntry error_tracking = 4;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Tab 7: BACKEND
+// ═══════════════════════════════════════════════════════════════════
+
+message APIEndpoint {
+  string method = 1;
+  string path = 2;
+  int32 request_count = 3;
+  double avg_latency_ms = 4;
+  double error_rate = 5;
+  repeated double p95_trend = 6;
+}
+
+message ServiceHealth {
+  string service = 1;
+  string status = 2;
+  double uptime = 3;
+}
+
+message GrpcThroughput {
+  string service = 1;
+  double rps = 2;
+  repeated double trend = 3;
+}
+
+message GoRuntime {
+  int32 goroutines = 1;
+  double heap_mb = 2;
+  double gc_pause_ms = 3;
+}
+
+message RateLimit {
+  string service = 1;
+  int32 used = 2;
+  int32 limit = 3;
+}
+
+message GetHypervisorBackendResponse {
+  repeated APIEndpoint api_endpoints = 1;
+  repeated ServiceHealth service_health = 2;
+  repeated GrpcThroughput grpc_throughput = 3;
+  GoRuntime go_runtime = 4;
+  repeated RateLimit rate_limits = 5;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Tab 8: INTEGRATIONS
+// ═══════════════════════════════════════════════════════════════════
+
+message IntegrationServiceHealth {
+  string name = 1;
+  string status = 2;
+  string last_check = 3;
+  double response_time_ms = 4;
+}
+
+message WebhookEntry {
+  string url = 1;
+  repeated string event_types = 2;
+  double success_rate = 3;
+  double avg_response_ms = 4;
+  int32 retry_count = 5;
+}
+
+message APIKeyEntry {
+  string service = 1;
+  string expires_at = 2;
+  int32 days_remaining = 3;
+  string rotation_status = 4;
+}
+
+message ScheduledJob {
+  string name = 1;
+  string schedule = 2;
+  string last_run = 3;
+  string next_run = 4;
+  string status = 5;
+}
+
+message GetHypervisorIntegrationsResponse {
+  repeated IntegrationServiceHealth service_health = 1;
+  repeated WebhookEntry webhooks = 2;
+  repeated APIKeyEntry api_keys = 3;
+  repeated ScheduledJob scheduled_jobs = 4;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Tab 9: COST
+// ═══════════════════════════════════════════════════════════════════
+
+message CostByService {
+  string service = 1;
+  string tenant = 2;
+  double cost = 3;
+}
+
+message BudgetVsActual {
+  double budget = 1;
+  double actual = 2;
+  double forecast = 3;
+}
+
+message CostTrendMonth {
+  string month = 1;
+  double finalwishes = 2;
+  double assiduous = 3;
+  double sirsi_core = 4;
+}
+
+message IdleResource {
+  string name = 1;
+  string type = 2;
+  double monthly_cost = 3;
+  string recommendation = 4;
+}
+
+message GetHypervisorCostResponse {
+  repeated CostByService monthly_by_service = 1;
+  BudgetVsActual budget_vs_actual = 2;
+  repeated CostTrendMonth cost_trend_6m = 3;
+  double cost_per_user = 4;
+  repeated IdleResource idle_resources = 5;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Tab 10: INCIDENTS
+// ═══════════════════════════════════════════════════════════════════
+
+message IncidentDetail {
+  string id = 1;
+  string title = 2;
+  string severity = 3;
+  string status = 4;
+  string opened_at = 5;
+  string resolved_at = 6;
+  string tenant = 7;
+  string assignee = 8;
+  string description = 9;
+}
+
+message SLACompliance {
+  double current = 1;
+  double target = 2;
+  repeated double trend = 3;
+}
+
+message RunbookLog {
+  string name = 1;
+  string trigger = 2;
+  string result = 3;
+  string duration = 4;
+  string timestamp = 5;
+}
+
+message GetHypervisorIncidentsResponse {
+  repeated IncidentDetail open_incidents = 1;
+  SLACompliance sla_compliance = 2;
+  repeated IncidentDetail incident_history = 3;
+  repeated RunbookLog runbook_log = 4;
 }
