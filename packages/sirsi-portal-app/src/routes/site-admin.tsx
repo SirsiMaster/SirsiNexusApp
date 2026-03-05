@@ -138,7 +138,7 @@ function SystemStatus() {
                             return (
                                 <div key={svc.name} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-emerald-200 hover:bg-white transition-all group cursor-pointer" style={{ background: 'rgba(249,250,251,0.5)' }}>
                                     <div className="flex items-center">
-                                        <div style={{ width: 40, height: 40, background: '#ecfdf5', color: '#059669', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 16, border: '1px solid #d1fae5' }}>
+                                        <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 border border-emerald-100 dark:border-emerald-800" style={{ width: 40, height: 40, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 16 }}>
                                             <Icon size={18} />
                                         </div>
                                         <div>
@@ -164,7 +164,7 @@ function SystemStatus() {
                             return (
                                 <div key={svc.name} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-slate-700 hover:border-emerald-200 hover:bg-white transition-all group cursor-pointer" style={{ background: 'rgba(249,250,251,0.5)' }}>
                                     <div className="flex items-center">
-                                        <div style={{ width: 40, height: 40, background: '#ecfdf5', color: '#059669', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 16, border: '1px solid #d1fae5' }}>
+                                        <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 border border-emerald-100 dark:border-emerald-800" style={{ width: 40, height: 40, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 16 }}>
                                             <Icon size={18} />
                                         </div>
                                         <div>

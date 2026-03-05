@@ -109,12 +109,12 @@ function Telemetry() {
                 {/* Click Heatmap */}
                 <div className="metric-card">
                     <h2 className="text-lg font-medium mb-4" style={{ fontWeight: 500 }}>Click Heatmap</h2>
-                    <div className="heatmap-container" style={{
+                    <div className="heatmap-container bg-slate-50 dark:bg-slate-800" style={{
                         position: 'relative', width: '100%', height: 400,
-                        background: '#f9fafb', borderRadius: 8, overflow: 'hidden',
+                        borderRadius: 8, overflow: 'hidden',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
-                        <div style={{ textAlign: 'center', color: '#94a3b8' }}>
+                        <div className="text-muted-foreground" style={{ textAlign: 'center' }}>
                             <MousePointer2 size={48} style={{ margin: '0 auto 12px', opacity: 0.3 }} />
                             <p style={{ fontSize: 13, fontWeight: 500 }}>Click heatmap visualization</p>
                             <p style={{ fontSize: 12, marginTop: 4 }}>Requires heatmap.js integration</p>
@@ -155,8 +155,8 @@ function Telemetry() {
                         <div className="mt-2 flex flex-wrap items-center">
                             {['Landing Page', 'Data Room', 'Download File'].map((step, i) => (
                                 <span key={i} className="flex items-center">
-                                    <span className="user-journey-node" style={{
-                                        padding: '8px 16px', background: '#e5e7eb',
+                                    <span className="user-journey-node bg-slate-200 dark:bg-slate-600" style={{
+                                        padding: '8px 16px',
                                         borderRadius: 20, fontSize: 14, display: 'inline-block', margin: 4,
                                     }}>{step}</span>
                                     <ArrowRight size={16} style={{ margin: '0 8px' }} />
@@ -175,8 +175,8 @@ function Telemetry() {
                         <div className="mt-2 flex flex-wrap items-center">
                             {['Landing Page', 'Login'].map((step, i) => (
                                 <span key={i} className="flex items-center">
-                                    <span style={{
-                                        padding: '8px 16px', background: '#e5e7eb',
+                                    <span className="bg-slate-200 dark:bg-slate-600" style={{
+                                        padding: '8px 16px',
                                         borderRadius: 20, fontSize: 14, display: 'inline-block', margin: 4,
                                     }}>{step}</span>
                                     <ArrowRight size={16} style={{ margin: '0 8px' }} />
@@ -206,8 +206,8 @@ function Telemetry() {
                                 }} />
                                 <div style={{
                                     position: 'absolute', left: 5, top: 18, bottom: 0,
-                                    width: 2, background: '#e5e7eb',
-                                }} />
+                                    width: 2,
+                                }} className="bg-slate-200 dark:bg-slate-600" />
                                 <div style={{ paddingLeft: 8 }}>
                                     <div className="flex items-center justify-between">
                                         <div>
@@ -282,7 +282,7 @@ function Telemetry() {
                     </table>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

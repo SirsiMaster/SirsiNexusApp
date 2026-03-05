@@ -154,8 +154,8 @@ function SystemLogs() {
             {/* ── Log Statistics ── */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
                 {statCards.map(card => (
-                    <div key={card.label} className="stat-card" style={{
-                        background: 'white', borderRadius: 12, padding: 20,
+                    <div key={card.label} className="stat-card bg-white dark:bg-slate-800" style={{
+                        borderRadius: 12, padding: 20,
                         boxShadow: '0 1px 3px rgba(0,0,0,0.1)', textAlign: 'center',
                     }}>
                         <div style={{ marginBottom: 8, display: 'flex', justifyContent: 'center' }}>{card.icon}</div>
@@ -166,8 +166,8 @@ function SystemLogs() {
             </div>
 
             {/* ── Filters and Controls ── */}
-            <div style={{
-                background: 'white', borderRadius: 12, padding: 24,
+            <div className="bg-white dark:bg-slate-800" style={{
+                borderRadius: 12, padding: 24,
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)', marginBottom: 24,
             }}>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
@@ -175,9 +175,10 @@ function SystemLogs() {
                         <label style={{ display: 'block', fontSize: 14, fontWeight: 500, marginBottom: 8 }}>Log Level</label>
                         <select value={levelFilter} onChange={e => setLevelFilter(e.target.value)}
                             style={{
-                                width: '100%', padding: '8px 12px', border: '1px solid #d1d5db',
+                                width: '100%', padding: '8px 12px',
                                 borderRadius: 6, fontSize: 14, outline: 'none',
-                            }}>
+                            }}
+                            className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-foreground">
                             <option value="all">All Levels</option>
                             <option value="info">Info</option>
                             <option value="warning">Warning</option>
@@ -190,9 +191,10 @@ function SystemLogs() {
                         <label style={{ display: 'block', fontSize: 14, fontWeight: 500, marginBottom: 8 }}>Source</label>
                         <select value={sourceFilter} onChange={e => setSourceFilter(e.target.value)}
                             style={{
-                                width: '100%', padding: '8px 12px', border: '1px solid #d1d5db',
+                                width: '100%', padding: '8px 12px',
                                 borderRadius: 6, fontSize: 14, outline: 'none',
-                            }}>
+                            }}
+                            className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-foreground">
                             <option value="all">All Sources</option>
                             <option value="system">System</option>
                             <option value="application">Application</option>
@@ -203,16 +205,18 @@ function SystemLogs() {
                     <div>
                         <label style={{ display: 'block', fontSize: 14, fontWeight: 500, marginBottom: 8 }}>From Date</label>
                         <input type="datetime-local" style={{
-                            width: '100%', padding: '8px 12px', border: '1px solid #d1d5db',
+                            width: '100%', padding: '8px 12px',
                             borderRadius: 6, fontSize: 14, outline: 'none',
-                        }} />
+                        }}
+                            className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-foreground" />
                     </div>
                     <div>
                         <label style={{ display: 'block', fontSize: 14, fontWeight: 500, marginBottom: 8 }}>To Date</label>
                         <input type="datetime-local" style={{
-                            width: '100%', padding: '8px 12px', border: '1px solid #d1d5db',
+                            width: '100%', padding: '8px 12px',
                             borderRadius: 6, fontSize: 14, outline: 'none',
-                        }} />
+                        }}
+                            className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-foreground" />
                     </div>
                 </div>
 
@@ -225,8 +229,9 @@ function SystemLogs() {
                             placeholder="Search logs..."
                             style={{
                                 width: '100%', paddingLeft: 40, paddingRight: 16, padding: '8px 16px 8px 40px',
-                                border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14, outline: 'none',
+                                borderRadius: 6, fontSize: 14, outline: 'none',
                             }}
+                            className="bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-foreground"
                         />
                     </div>
                     <div className="flex items-center gap-2">
@@ -241,16 +246,16 @@ function SystemLogs() {
                             </span>
                         </label>
                         <button onClick={() => setIsPaused(!isPaused)} style={{
-                            padding: '8px 16px', background: '#e5e7eb',
+                            padding: '8px 16px',
                             borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', gap: 8,
-                        }}>
+                        }} className="bg-slate-200 dark:bg-slate-700 text-foreground">
                             {isPaused ? <Play size={14} /> : <Pause size={14} />}
                             {isPaused ? 'Resume' : 'Pause'}
                         </button>
                         <button onClick={clearLogs} style={{
-                            padding: '8px 16px', background: '#e5e7eb',
+                            padding: '8px 16px',
                             borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 14, display: 'flex', alignItems: 'center', gap: 8,
-                        }}>
+                        }} className="bg-slate-200 dark:bg-slate-700 text-foreground">
                             <Trash2 size={14} />Clear
                         </button>
                         <button onClick={refreshLogs} style={{
@@ -264,12 +269,12 @@ function SystemLogs() {
             </div>
 
             {/* ── Log Entries ── */}
-            <div style={{
-                background: 'white', borderRadius: 12, padding: 24,
+            <div className="bg-white dark:bg-slate-800" style={{
+                borderRadius: 12, padding: 24,
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
             }}>
-                <div ref={logContainerRef} className="log-container" style={{
-                    background: '#f9fafb', borderRadius: 8, padding: 16,
+                <div ref={logContainerRef} className="log-container bg-slate-50 dark:bg-slate-900" style={{
+                    borderRadius: 8, padding: 16,
                     maxHeight: 384, overflowY: 'auto',
                 }}>
                     {filteredLogs.map((log, i) => (
@@ -277,7 +282,7 @@ function SystemLogs() {
                             fontFamily: "'Monaco', 'Menlo', 'Consolas', monospace",
                             fontSize: 13, display: 'flex', alignItems: 'flex-start', gap: 12,
                             padding: '8px 0',
-                            borderBottom: i < filteredLogs.length - 1 ? '1px solid #e5e7eb' : 'none',
+                            borderBottom: i < filteredLogs.length - 1 ? '1px solid var(--color-border)' : 'none',
                         }}>
                             <span style={{ minWidth: 180 }}>{log.timestamp}</span>
                             <span style={{ color: levelColors[log.level], fontWeight: 500, minWidth: 80 }}>{log.level}</span>
@@ -292,7 +297,7 @@ function SystemLogs() {
                 {/* Export Footer */}
                 <div style={{
                     marginTop: 16, paddingTop: 16,
-                    borderTop: '1px solid #e5e7eb',
+                    borderTop: '1px solid var(--color-border)',
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 }}>
                     <span style={{ fontSize: 14 }}>
@@ -300,21 +305,21 @@ function SystemLogs() {
                     </span>
                     <div className="flex gap-2">
                         <button onClick={() => exportLogs('csv')} style={{
-                            padding: '8px 16px', fontSize: 14, background: '#e5e7eb',
+                            padding: '8px 16px', fontSize: 14,
                             borderRadius: 6, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
-                        }}>
+                        }} className="bg-slate-200 dark:bg-slate-700 text-foreground">
                             <FileText size={14} />Export CSV
                         </button>
                         <button onClick={() => exportLogs('json')} style={{
-                            padding: '8px 16px', fontSize: 14, background: '#e5e7eb',
+                            padding: '8px 16px', fontSize: 14,
                             borderRadius: 6, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
-                        }}>
+                        }} className="bg-slate-200 dark:bg-slate-700 text-foreground">
                             <FileCode size={14} />Export JSON
                         </button>
                         <button onClick={() => exportLogs('txt')} style={{
-                            padding: '8px 16px', fontSize: 14, background: '#e5e7eb',
+                            padding: '8px 16px', fontSize: 14,
                             borderRadius: 6, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
-                        }}>
+                        }} className="bg-slate-200 dark:bg-slate-700 text-foreground">
                             <FileDown size={14} />Export TXT
                         </button>
                     </div>

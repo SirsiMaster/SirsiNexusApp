@@ -51,22 +51,23 @@ function Monitoring() {
                         textTransform: 'uppercase', letterSpacing: '0.1em', border: 'none', cursor: 'pointer',
                         ...(activeTab === i
                             ? { background: '#059669', color: 'white', boxShadow: '0 4px 6px rgba(5,150,105,0.1)' }
-                            : { background: '#f9fafb' }),
+                            : {}),
                     }}>{tab}</button>
                 ))}
             </div>
 
             {/* Log Stream */}
             <div className="sirsi-card overflow-hidden" style={{ padding: 0 }}>
-                <div className="flex items-center justify-between" style={{ padding: 24, borderBottom: '1px solid #f9fafb', background: 'rgba(249,250,251,0.3)' }}>
+                <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 bg-slate-50/30 dark:bg-slate-800/30" style={{ padding: 24 }}>
                     <h3 style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Encrypted Log Stream</h3>
                     <div className="flex items-center gap-4">
                         <div style={{ position: 'relative' }}>
                             <Search size={10} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }} />
                             <input placeholder="Filter identifiers..."
-                                style={{ paddingLeft: 36, paddingRight: 12, padding: '6px 12px 6px 36px', background: 'white', border: '1px solid #f3f4f6', borderRadius: 8, fontSize: 12, fontWeight: 500, outline: 'none', minWidth: 200 }} />
+                                className="bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600 text-foreground"
+                                style={{ paddingLeft: 36, paddingRight: 12, padding: '6px 12px 6px 36px', borderWidth: 1, borderStyle: 'solid', borderRadius: 8, fontSize: 12, fontWeight: 500, outline: 'none', minWidth: 200 }} />
                         </div>
-                        <button style={{ padding: '6px 16px', background: 'white', border: '1px solid #f3f4f6', borderRadius: 8, fontSize: 10, fontWeight: 500, cursor: 'pointer' }}>
+                        <button className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600" style={{ padding: '6px 16px', borderRadius: 8, fontSize: 10, fontWeight: 500, cursor: 'pointer' }}>
                             Export .LOG
                         </button>
                     </div>
@@ -105,7 +106,7 @@ function Monitoring() {
                     <h3 className="border-l-4 border-amber-600 pl-4 mb-6" style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>Error Density</h3>
                     <div style={{ height: 192, display: 'flex', alignItems: 'flex-end', gap: 8, paddingBottom: 8 }}>
                         {errorBars.map((h, i) => (
-                            <div key={i} style={{ flex: 1, background: h > 20 ? '#fde68a' : '#f9fafb', borderRadius: '4px 4px 0 0', height: `${h}%` }} />
+                            <div key={i} className={h > 20 ? '' : 'bg-slate-100 dark:bg-slate-700'} style={{ flex: 1, ...(h > 20 ? { background: '#fde68a' } : {}), borderRadius: '4px 4px 0 0', height: `${h}%` }} />
                         ))}
                     </div>
                     <div className="flex justify-between mt-4" style={{ fontSize: 9, fontWeight: 500, textTransform: 'uppercase' }}>

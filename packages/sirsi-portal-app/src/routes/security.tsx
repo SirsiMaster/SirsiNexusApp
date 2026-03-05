@@ -179,10 +179,10 @@ function Security() {
                             type="text" value={newIP} onChange={e => setNewIP(e.target.value)}
                             placeholder="Enter CIDR range or specific IP"
                             style={{
-                                flex: 1, padding: '8px 16px', border: '1px solid #e5e7eb',
+                                flex: 1, padding: '8px 16px',
                                 borderRadius: 8, fontSize: 14, outline: 'none',
                             }}
-                            className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 border-slate-200 dark:border-slate-600"
+                            className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-600"
                         />
                         <button className="btn-primary flex items-center gap-2" onClick={addIP}>
                             <Plus size={14} /> Authorize IP
@@ -195,8 +195,8 @@ function Security() {
                     {firewallRules.map(rule => (
                         <div key={rule.name} className="flex items-center justify-between p-5 rounded-xl" style={{ background: 'rgba(236, 253, 245, 0.3)', border: '1px solid #d1fae5' }}>
                             <div>
-                                <p style={{ fontWeight: 500, color: '#111827' }}>{rule.name}</p>
-                                <p style={{ fontSize: 12, color: '#6b7280', marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{rule.desc}</p>
+                                <p className="text-slate-900 dark:text-slate-100" style={{ fontWeight: 500 }}>{rule.name}</p>
+                                <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: 12, marginTop: 4, textTransform: 'uppercase', letterSpacing: '0.02em' }}>{rule.desc}</p>
                             </div>
                             <ToggleSwitch checked={toggles[rule.name]} onChange={() => toggleRule(rule.name)} />
                         </div>
@@ -207,7 +207,7 @@ function Security() {
             {/* ── Security Audit Log ── */}
             <div className="sirsi-card mb-8">
                 <div className="flex justify-between items-center mb-6">
-                    <h3 style={{ fontSize: 14, fontWeight: 500, color: '#111827', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Historical Audit Ledger</h3>
+                    <h3 className="text-slate-900 dark:text-slate-100" style={{ fontSize: 14, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Historical Audit Ledger</h3>
                 </div>
                 <div className="space-y-3">
                     <div className="p-4 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl flex justify-between items-start">

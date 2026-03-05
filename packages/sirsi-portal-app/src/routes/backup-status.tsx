@@ -118,7 +118,7 @@ function BackupStatus() {
                 <div className="overflow-x-auto">
                     <table className="w-full">
                         <thead>
-                            <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+                            <tr className="border-b border-slate-200 dark:border-slate-700">
                                 {['Type', 'Started', 'Duration', 'Size', 'Status', 'Actions'].map(h => (
                                     <th key={h} className="text-slate-700 dark:text-slate-300" style={{ textAlign: 'left', padding: '12px 16px', fontSize: 14, fontWeight: 500 }}>{h}</th>
                                 ))}

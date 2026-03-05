@@ -40,7 +40,7 @@ function KpiMetrics() {
                 {kpiCards.map(kpi => (
                     <div key={kpi.code} className="sirsi-card group">
                         <div className="flex items-center justify-between mb-4">
-                            <div style={{ width: 40, height: 40, background: '#ecfdf5', color: '#059669', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #d1fae5', fontStyle: 'italic', fontWeight: 600, fontSize: 12 }}>{kpi.code}</div>
+                            <div className="bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 border border-emerald-100 dark:border-emerald-800" style={{ width: 40, height: 40, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontStyle: 'italic', fontWeight: 600, fontSize: 12 }}>{kpi.code}</div>
                             <span className="sirsi-badge sirsi-badge-success" style={{ fontWeight: 600 }}>{kpi.badge}</span>
                         </div>
                         <div style={{ fontSize: 30, fontWeight: 600, marginBottom: 4 }}>{kpi.value}</div>

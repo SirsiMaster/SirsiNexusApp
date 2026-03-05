@@ -93,10 +93,10 @@ function Console() {
                 }}>
                     <div className="flex items-center gap-3">
                         <Terminal size={12} style={{ color: '#10b981' }} />
-                        <span style={{ fontSize: 10, fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Sirsi Console — Nexus Node 1</span>
+                        <span className="text-muted-foreground" style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Sirsi Console — Nexus Node 1</span>
                     </div>
                     <button onClick={() => setLogs([{ type: 'system', text: 'Buffer purged.' }])}
-                        style={{ color: '#64748b', background: 'none', border: 'none', cursor: 'pointer' }} title="Purge Buffer">
+                        className="text-muted-foreground hover:text-red-500 transition-colors" style={{ background: 'none', border: 'none', cursor: 'pointer' }} title="Purge Buffer">
                         <Trash2 size={12} />
                     </button>
                 </div>

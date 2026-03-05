@@ -175,7 +175,7 @@ function Analytics() {
             </div>
 
             {/* Tab Bar */}
-            <div className="flex gap-1 mb-8 p-1 rounded-lg" style={{ background: 'rgba(0,0,0,0.04)', width: 'fit-content' }}>
+            <div className="flex gap-1 mb-8 p-1 rounded-lg bg-black/[0.04] dark:bg-white/[0.06]" style={{ width: 'fit-content' }}>
                 {TABS.map(tab => (
                     <button
                         key={tab.id}
@@ -186,8 +186,8 @@ function Analytics() {
                             borderRadius: 6,
                             fontSize: 14,
                             fontWeight: activeTab === tab.id ? 500 : 400,
-                            background: activeTab === tab.id ? 'white' : 'transparent',
-                            color: activeTab === tab.id ? '#059669' : '#64748b',
+                            background: activeTab === tab.id ? 'var(--color-background)' : 'transparent',
+                            color: activeTab === tab.id ? '#059669' : undefined,
                             boxShadow: activeTab === tab.id ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
                             border: 'none',
                             cursor: 'pointer',
@@ -220,14 +220,14 @@ function OverviewTab() {
                         <div key={m.label} className="sirsi-card" style={{ position: 'relative', overflow: 'hidden' }}>
                             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #059669, #10b981)' }} />
                             <div className="flex items-center justify-between mb-4">
-                                <div style={{ width: 48, height: 48, borderRadius: 12, background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569' }}>
+                                <div className="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300" style={{ width: 48, height: 48, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     <Icon size={24} />
                                 </div>
                                 <span style={{ fontSize: 14, fontWeight: 500, color: '#10b981' }}>↗ {m.trend}</span>
                             </div>
-                            <div style={{ fontSize: 48, fontWeight: 500, color: '#1e293b', margin: '8px 0', lineHeight: 1 }}>{m.value}</div>
-                            <div style={{ fontSize: 16, fontWeight: 600, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{m.label}</div>
-                            <div style={{ fontSize: 14, color: '#64748b', marginTop: 8 }}>{m.sub}</div>
+                            <div className="text-foreground" style={{ fontSize: 48, fontWeight: 500, margin: '8px 0', lineHeight: 1 }}>{m.value}</div>
+                            <div className="text-muted-foreground" style={{ fontSize: 16, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{m.label}</div>
+                            <div className="text-muted-foreground" style={{ fontSize: 14, marginTop: 8 }}>{m.sub}</div>
                         </div>
                     )
                 })}
@@ -238,7 +238,7 @@ function OverviewTab() {
                 <div className="sirsi-card" style={{ position: 'relative', overflow: 'hidden' }}>
                     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #059669, #10b981)' }} />
                     <div className="flex justify-between items-center mb-6">
-                        <h3 style={{ fontSize: 20, fontWeight: 600, color: '#1e293b' }}>User Growth Trends</h3>
+                        <h3 className="text-foreground" style={{ fontSize: 20, fontWeight: 600 }}>User Growth Trends</h3>
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
                             <span style={{ fontSize: 14, color: '#10b981' }}>Live</span>
@@ -260,7 +260,7 @@ function OverviewTab() {
                 <div className="sirsi-card" style={{ position: 'relative', overflow: 'hidden' }}>
                     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #059669, #10b981)' }} />
                     <div className="flex justify-between items-center mb-6">
-                        <h3 style={{ fontSize: 20, fontWeight: 600, color: '#1e293b' }}>Activity Distribution</h3>
+                        <h3 className="text-foreground" style={{ fontSize: 20, fontWeight: 600 }}>Activity Distribution</h3>
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
                             <span style={{ fontSize: 14, color: '#10b981' }}>Live</span>
@@ -282,7 +282,7 @@ function OverviewTab() {
             <div className="sirsi-card mb-8" style={{ position: 'relative', overflow: 'hidden' }}>
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, #059669, #10b981)' }} />
                 <div className="flex justify-between items-center mb-6">
-                    <h3 style={{ fontSize: 20, fontWeight: 600, color: '#1e293b' }}>Monthly Engagement Metrics</h3>
+                    <h3 className="text-foreground" style={{ fontSize: 20, fontWeight: 600 }}>Monthly Engagement Metrics</h3>
                     <div className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
                         <span style={{ fontSize: 14, color: '#10b981' }}>Live</span>
