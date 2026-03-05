@@ -4,6 +4,45 @@ All notable changes to the Sirsi Nexus project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.8.1-alpha] - 2026-03-05
+
+### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY (Tasks 1-5/40)
+
+#### Portal Pages — Complete Text Color Purge (19 pages)
+- **settings.tsx**: Removed phantom classes (`glass-panel`, `gold-border`, `action-btn`) → canonical `sirsi-card`, `btn-primary`, `sirsi-badge`
+- **ai-agents.tsx**: 15 hardcoded colors → Tailwind `dark:` variants
+- **committee.tsx**: 8 hardcoded colors → theme-aware (date badges, titles, chevron)
+- **data-room.tsx**: 12 hardcoded colors → theme-aware (filter bar, search, table)
+- **api-server.tsx**: Migrated to `sirsi-table-wrap`/`sirsi-table` canonical classes
+- **backup-status.tsx**: Stat labels, progress bars, select, table, action buttons
+- **cache-status.tsx**: Distribution bars, perf metrics grid, select, table
+- **client-portal.tsx**: 1 heading color
+- **console.tsx**: Context hints only (terminal interior intentionally dark)
+- **database-health.tsx**: Connection labels, status badges, progress bars, table
+- **security.tsx**: 29 hardcoded instances — metrics, sessions, rules, whitelist, audit
+- **investor-portal.tsx**: KPI banner, data room taxonomy, compliance footer
+- **kpi-metrics.tsx**: Stat labels, chart descriptions
+- **messaging.tsx**: Chat UI, message bubbles, sender names
+- **monitoring.tsx**: Uptime bars, alert cards, metric labels
+- **portal.tsx**: Data room taxonomy heading
+- **site-admin.tsx**: SVG gauge labels, service grid, audit trail
+- **system-logs.tsx**: Filter labels, log entries, pagination
+- **telemetry.tsx**: Heatmap, funnel, timeline
+
+#### Admin Header Dark Mode
+- Version badge: `isDark`-conditional colors (light: `#64748b`/`#f1f5f9`, dark: `#94a3b8`/`#1e293b`)
+- "Live" text: `isDark`-conditional color
+
+#### CSS Framework Additions (`index.css`)
+- `.dark .admin-header-search input` — dark background/border/text
+- `.dark .admin-header-search-icon` — muted color in dark mode
+- `.dark .admin-header-search-kbd` — dark background for keyboard shortcut
+- `.dark .btn-secondary` — dark border/text/hover states
+
+#### Pattern
+All inline `color: '#hex'` replaced with `className="text-X dark:text-Y"` or removed
+(body inherits `text-foreground` CSS variable which auto-switches with theme).
+
 ## [0.8.0-alpha] - 2026-03-05
 
 ### 🚀 PHASE 5: REACT AS PRIMARY PLATFORM
