@@ -19,6 +19,7 @@ import (
 )
 
 type AdminServer struct{}
+type HypervisorServer struct{}
 
 const settingsFile = "settings.json"
 
@@ -487,6 +488,137 @@ func (s *TenantServer) DeactivateTenant(
 	return nil, connect.NewError(connect.CodeUnimplemented, fmt.Errorf("unimplemented"))
 }
 
+// ═══════════════════════════════════════════════════════════════════
+// HypervisorServer — ADR-026 Operational Telemetry
+// ═══════════════════════════════════════════════════════════════════
+
+func (s *HypervisorServer) GetHypervisorOverview(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetHypervisorOverviewRequest],
+) (*connect.Response[adminv2.GetHypervisorOverviewResponse], error) {
+	resp := &adminv2.GetHypervisorOverviewResponse{
+		Uptime: &adminv2.UptimeGauge{
+			Current: 99.98,
+			Target:  99.9,
+			Trend:   []float64{99.95, 99.97, 99.96, 99.99, 99.98, 99.97, 99.98},
+		},
+		Deployments_24H: &adminv2.CountGauge{
+			Count: 8,
+			Trend: []float64{3, 5, 4, 8, 6, 7, 8},
+		},
+		CloudSpendMtd: &adminv2.SpendGauge{
+			Current: 2340,
+			Budget:  5000,
+			Trend:   []float64{1200, 1500, 1800, 2000, 2100, 2200, 2340},
+		},
+		Tenants: []*adminv2.TenantSummary{
+			{
+				Id: "tenant_fw", Name: "FinalWishes", Slug: "finalwishes",
+				Status: "operational", Environment: "Production",
+				Uptime_30D: 99.9, Deployments_24H: 5, OpenIncidents: 0,
+				UptimeTrend: []float64{99.8, 99.9, 99.95, 99.9, 99.85, 99.9, 99.9},
+			},
+			{
+				Id: "tenant_as", Name: "Assiduous", Slug: "assiduous",
+				Status: "degraded", Environment: "Staging",
+				Uptime_30D: 98.2, Deployments_24H: 3, OpenIncidents: 1,
+				UptimeTrend: []float64{99.0, 98.5, 98.0, 97.5, 98.0, 98.2, 98.2},
+			},
+		},
+		RecentActivity: []*adminv2.ActivityEvent{
+			{Id: "1", Timestamp: "2 min ago", Type: "deploy", Tenant: "FinalWishes", Message: "Deployed v6.0.5 to production", Severity: "info"},
+			{Id: "2", Timestamp: "15 min ago", Type: "security", Tenant: "Sirsi Core", Message: "MFA enrollment completed for new admin", Severity: "info"},
+			{Id: "3", Timestamp: "1 hour ago", Type: "config", Tenant: "FinalWishes", Message: "Updated Stripe webhook endpoint", Severity: "info"},
+			{Id: "4", Timestamp: "2 hours ago", Type: "deploy", Tenant: "Assiduous", Message: "Deployed v1.2.0 to staging", Severity: "info"},
+			{Id: "5", Timestamp: "3 hours ago", Type: "incident", Tenant: "Assiduous", Message: "Elevated error rate detected in staging", Severity: "warning"},
+			{Id: "6", Timestamp: "4 hours ago", Type: "user", Tenant: "Sirsi Core", Message: "New user provisioned: analyst@sirsi.ai", Severity: "info"},
+		},
+		OpenIncidents: []*adminv2.IncidentSummary{
+			{
+				Id: "inc_1", Title: "Elevated staging error rate — Assiduous",
+				Severity: "warning", Status: "investigating",
+				OpenedAt: "3 hours ago", Tenant: "Assiduous", Assignee: "Cylton Collymore",
+			},
+		},
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (s *HypervisorServer) GetHypervisorDevOps(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetHypervisorDevOpsRequest],
+) (*connect.Response[adminv2.GetHypervisorDevOpsResponse], error) {
+	resp := &adminv2.GetHypervisorDevOpsResponse{
+		DeploymentFrequency: []*adminv2.DeploymentFrequency{
+			{Tenant: "FinalWishes", DailyCounts: []int32{4, 6, 3, 5, 7, 2, 5}},
+			{Tenant: "Assiduous", DailyCounts: []int32{1, 2, 0, 3, 1, 2, 3}},
+		},
+		ChangeFailureRate: []*adminv2.DORAMetric{
+			{Tenant: "FinalWishes", Value: 3.2, Unit: "%", DoraLevel: "elite", Trend: []float64{4, 3.5, 3, 3.2, 3.1, 3.2, 3.2}},
+			{Tenant: "Assiduous", Value: 8.5, Unit: "%", DoraLevel: "high", Trend: []float64{10, 9, 8, 9, 8.5, 8.5, 8.5}},
+		},
+		Mttr: []*adminv2.DORAMetric{
+			{Tenant: "FinalWishes", Value: 22, Unit: "min", DoraLevel: "elite", Trend: []float64{30, 25, 22, 28, 24, 22, 22}},
+			{Tenant: "Assiduous", Value: 48, Unit: "min", DoraLevel: "high", Trend: []float64{60, 55, 50, 48, 52, 48, 48}},
+		},
+		LeadTime: []*adminv2.DORAMetric{
+			{Tenant: "FinalWishes", Value: 4.2, Unit: "hours", DoraLevel: "elite", Trend: []float64{6, 5, 4.5, 4, 4.2, 4.2, 4.2}},
+			{Tenant: "Assiduous", Value: 18, Unit: "hours", DoraLevel: "medium", Trend: []float64{24, 20, 18, 22, 18, 18, 18}},
+		},
+		PipelineMatrix: []*adminv2.PipelineStatus{
+			{Tenant: "FinalWishes", Environment: "production", Status: "operational", LastRun: "2 min ago", Branch: "main"},
+			{Tenant: "FinalWishes", Environment: "staging", Status: "operational", LastRun: "15 min ago", Branch: "develop"},
+			{Tenant: "Assiduous", Environment: "production", Status: "unknown", LastRun: "N/A", Branch: "main"},
+			{Tenant: "Assiduous", Environment: "staging", Status: "degraded", LastRun: "1 hour ago", Branch: "develop"},
+		},
+		RecentDeployments: []*adminv2.Deployment{
+			{Id: "d1", Sha: "f8d2c1a", Tenant: "FinalWishes", Environment: "Production", Version: "v6.0.5", Status: "success", Deployer: "Cylton Collymore", Duration: "3m 42s", Timestamp: "2 min ago"},
+			{Id: "d2", Sha: "a3b7e2f", Tenant: "Assiduous", Environment: "Staging", Version: "v1.2.0", Status: "success", Deployer: "Cylton Collymore", Duration: "2m 18s", Timestamp: "2 hours ago"},
+			{Id: "d3", Sha: "c1d9f3e", Tenant: "FinalWishes", Environment: "Production", Version: "v6.0.4", Status: "success", Deployer: "Cylton Collymore", Duration: "4m 11s", Timestamp: "6 hours ago"},
+		},
+		BuildHealth: []*adminv2.BuildHealth{
+			{Tenant: "FinalWishes", SuccessRate: 97.5, Trend: []float64{95, 96, 97, 97.5, 97, 97.5, 97.5}},
+			{Tenant: "Assiduous", SuccessRate: 89.2, Trend: []float64{85, 87, 88, 90, 89, 89.2, 89.2}},
+		},
+	}
+	return connect.NewResponse(resp), nil
+}
+
+func (s *HypervisorServer) GetHypervisorSecurity(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetHypervisorSecurityRequest],
+) (*connect.Response[adminv2.GetHypervisorSecurityResponse], error) {
+	resp := &adminv2.GetHypervisorSecurityResponse{
+		MfaCompliance: []*adminv2.MFAComplianceEntry{
+			{Tenant: "FinalWishes", Enrolled: 12, Total: 14},
+			{Tenant: "Assiduous", Enrolled: 3, Total: 5},
+			{Tenant: "Sirsi Core", Enrolled: 4, Total: 4},
+		},
+		AuthActivity_24H: make([]*adminv2.AuthActivityHour, 24),
+		VulnerabilityScore: &adminv2.VulnerabilityScore{
+			Score: 82, Critical: 0, High: 1, Medium: 4, Low: 12,
+		},
+		Certificates: []*adminv2.CertificateStatus{
+			{Domain: "sign.sirsi.ai", Issuer: "Let's Encrypt", ExpiresAt: "2026-03-24", DaysRemaining: 22, Status: "operational"},
+			{Domain: "sirsi-sign.web.app", Issuer: "Google Trust", ExpiresAt: "2026-06-15", DaysRemaining: 105, Status: "operational"},
+			{Domain: "api.sirsi.ai", Issuer: "Let's Encrypt", ExpiresAt: "2026-03-10", DaysRemaining: 8, Status: "degraded"},
+		},
+		SecretRotationCompliance: 87,
+		Soc2Score:                91,
+	}
+
+	// Populate 24 hours of auth activity
+	for i := int32(0); i < 24; i++ {
+		resp.AuthActivity_24H[i] = &adminv2.AuthActivityHour{
+			Hour:       i,
+			Successful: 10 + i%5*3,
+			Failed:     i % 3,
+		}
+	}
+
+	return connect.NewResponse(resp), nil
+}
+
 // corsMiddleware wraps a handler with permissive CORS for local development.
 // In production, Cloud Run handles CORS via IAP/Load Balancer config.
 func corsMiddleware(next http.Handler) http.Handler {
@@ -515,13 +647,14 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle(v2connect.NewAdminServiceHandler(&AdminServer{}))
 	mux.Handle(v2connect.NewTenantServiceHandler(&TenantServer{}))
+	mux.Handle(v2connect.NewHypervisorServiceHandler(&HypervisorServer{}))
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
-	fmt.Printf("Sirsi Admin Service v0.8.0-alpha listening on :%s\n", port)
+	fmt.Printf("Sirsi Admin Service v0.9.0-alpha listening on :%s\n", port)
 	err := http.ListenAndServe(
 		":"+port,
 		h2c.NewHandler(corsMiddleware(mux), &http2.Server{}),

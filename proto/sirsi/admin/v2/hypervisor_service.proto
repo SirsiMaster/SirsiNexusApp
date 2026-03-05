@@ -1,0 +1,204 @@
+// proto/sirsi/admin/v2/hypervisor_service.proto
+// Hypervisor Operations Command Center — ADR-026
+//
+// Phase 7A: Overview, DevOps, Security
+// Phase 7B-D: Infrastructure, Database, Backend, Frontend, Integrations, Cost, Incidents
+syntax = "proto3";
+
+package sirsi.admin.v2;
+
+option go_package = "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2";
+
+// ═══════════════════════════════════════════════════════════════════
+// HypervisorService — Operational telemetry for the Sirsi portfolio
+// All operational data flows through this service (ADR-026).
+// ═══════════════════════════════════════════════════════════════════
+
+service HypervisorService {
+  // Tab 1: Portfolio overview — uptime, deployments, tenants, incidents
+  rpc GetHypervisorOverview(GetHypervisorOverviewRequest) returns (GetHypervisorOverviewResponse);
+
+  // Tab 2: DevOps — DORA metrics, pipelines, deployments, build health
+  rpc GetHypervisorDevOps(GetHypervisorDevOpsRequest) returns (GetHypervisorDevOpsResponse);
+
+  // Tab 4: Security — MFA compliance, auth activity, certs, vuln score
+  rpc GetHypervisorSecurity(GetHypervisorSecurityRequest) returns (GetHypervisorSecurityResponse);
+}
+
+
+// ── Request Messages ──────────────────────────────────────────────
+
+message HypervisorFilter {
+  string tenant_id = 1;     // "" = all tenants
+  string environment = 2;   // "" = all environments
+}
+
+message GetHypervisorOverviewRequest {
+  HypervisorFilter filter = 1;
+}
+
+message GetHypervisorDevOpsRequest {
+  HypervisorFilter filter = 1;
+}
+
+message GetHypervisorSecurityRequest {
+  HypervisorFilter filter = 1;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Tab 1: OVERVIEW
+// ═══════════════════════════════════════════════════════════════════
+
+message UptimeGauge {
+  double current = 1;    // e.g. 99.98
+  double target = 2;     // e.g. 99.9
+  repeated double trend = 3;  // 7-day trend
+}
+
+message CountGauge {
+  int32 count = 1;
+  repeated double trend = 2;
+}
+
+message SpendGauge {
+  double current = 1;    // dollars
+  double budget = 2;     // dollars
+  repeated double trend = 3;
+}
+
+message TenantSummary {
+  string id = 1;
+  string name = 2;
+  string slug = 3;
+  string status = 4;          // operational, degraded, down, unknown
+  string environment = 5;
+  double uptime_30d = 6;
+  int32 deployments_24h = 7;
+  int32 open_incidents = 8;
+  repeated double uptime_trend = 9;
+}
+
+message ActivityEvent {
+  string id = 1;
+  string timestamp = 2;       // relative, e.g. "2 min ago"
+  string type = 3;            // deploy, security, incident, config, user
+  string tenant = 4;
+  string message = 5;
+  string severity = 6;        // info, warning, critical
+}
+
+message IncidentSummary {
+  string id = 1;
+  string title = 2;
+  string severity = 3;        // critical, warning, info
+  string status = 4;          // open, investigating, resolved
+  string opened_at = 5;
+  string tenant = 6;
+  string assignee = 7;
+}
+
+message GetHypervisorOverviewResponse {
+  UptimeGauge uptime = 1;
+  CountGauge deployments_24h = 2;
+  SpendGauge cloud_spend_mtd = 3;
+  repeated TenantSummary tenants = 4;
+  repeated ActivityEvent recent_activity = 5;
+  repeated IncidentSummary open_incidents = 6;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Tab 2: DEVOPS
+// ═══════════════════════════════════════════════════════════════════
+
+message DORAMetric {
+  string tenant = 1;
+  double value = 2;
+  string unit = 3;             // "%", "min", "hours"
+  string dora_level = 4;       // elite, high, medium, low
+  repeated double trend = 5;
+}
+
+message DeploymentFrequency {
+  string tenant = 1;
+  repeated int32 daily_counts = 2;  // 7-day daily counts
+}
+
+message Deployment {
+  string id = 1;
+  string sha = 2;
+  string tenant = 3;
+  string environment = 4;
+  string version = 5;
+  string status = 6;           // success, failed, rolling
+  string deployer = 7;
+  string duration = 8;
+  string timestamp = 9;
+}
+
+message PipelineStatus {
+  string tenant = 1;
+  string environment = 2;
+  string status = 3;           // operational, degraded, down, unknown
+  string last_run = 4;
+  string branch = 5;
+}
+
+message BuildHealth {
+  string tenant = 1;
+  double success_rate = 2;
+  repeated double trend = 3;
+}
+
+message GetHypervisorDevOpsResponse {
+  repeated DeploymentFrequency deployment_frequency = 1;
+  repeated DORAMetric change_failure_rate = 2;
+  repeated DORAMetric mttr = 3;
+  repeated DORAMetric lead_time = 4;
+  repeated PipelineStatus pipeline_matrix = 5;
+  repeated Deployment recent_deployments = 6;
+  repeated BuildHealth build_health = 7;
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Tab 4: SECURITY
+// ═══════════════════════════════════════════════════════════════════
+
+message MFAComplianceEntry {
+  string tenant = 1;
+  int32 enrolled = 2;
+  int32 total = 3;
+}
+
+message AuthActivityHour {
+  int32 hour = 1;              // 0-23
+  int32 successful = 2;
+  int32 failed = 3;
+}
+
+message VulnerabilityScore {
+  int32 score = 1;             // 0-100
+  int32 critical = 2;
+  int32 high = 3;
+  int32 medium = 4;
+  int32 low = 5;
+}
+
+message CertificateStatus {
+  string domain = 1;
+  string issuer = 2;
+  string expires_at = 3;       // ISO date
+  int32 days_remaining = 4;
+  string status = 5;           // operational, degraded, down
+}
+
+message GetHypervisorSecurityResponse {
+  repeated MFAComplianceEntry mfa_compliance = 1;
+  repeated AuthActivityHour auth_activity_24h = 2;
+  VulnerabilityScore vulnerability_score = 3;
+  repeated CertificateStatus certificates = 4;
+  double secret_rotation_compliance = 5;  // 0-100
+  double soc2_score = 6;                  // 0-100
+}
