@@ -43,12 +43,16 @@ export const HomeRoute = createRoute({
 const patternStyles = `
 .hex-pattern {
   position: absolute; width: 100%; height: 100%; pointer-events: none;
-  background-image: url('data:image/svg+xml,<svg width="100" height="86.6" xmlns="http://www.w3.org/2000/svg"><polygon points="50,0 100,25 100,61.6 50,86.6 0,61.6 0,25" fill="none" stroke="rgba(16,185,129,0.3)" stroke-width="1"/></svg>');
-  background-size: 100px 86.6px; opacity: 0.6;
+  background-image:
+    url('data:image/svg+xml,<svg width="100" height="86.6" xmlns="http://www.w3.org/2000/svg"><polygon points="50,0 100,25 100,61.6 50,86.6 0,61.6 0,25" fill="none" stroke="rgba(16,185,129,0.3)" stroke-width="1"/></svg>'),
+    url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><polygon points="30,5 55,30 30,55 5,30" fill="none" stroke="rgba(200,169,81,0.12)" stroke-width="1"/></svg>');
+  background-size: 100px 86.6px, 60px 60px;
+  opacity: 0.6;
 }
 .triangle-pattern {
   position: absolute; width: 100%; height: 100%; pointer-events: none;
-  background-image: url('data:image/svg+xml,<svg width="60" height="52" xmlns="http://www.w3.org/2000/svg"><polygon points="30,0 60,52 0,52" fill="none" stroke="rgba(59,130,246,0.25)" stroke-width="1"/><polygon points="0,0 30,52 -30,52" fill="none" stroke="rgba(16,185,129,0.2)" stroke-width="1"/><polygon points="60,0 90,52 30,52" fill="none" stroke="rgba(168,85,247,0.15)" stroke-width="1"/></svg>');
+  background-image:
+    url('data:image/svg+xml,<svg width="60" height="52" xmlns="http://www.w3.org/2000/svg"><polygon points="30,0 60,52 0,52" fill="none" stroke="rgba(59,130,246,0.25)" stroke-width="1"/><polygon points="0,0 30,52 -30,52" fill="none" stroke="rgba(16,185,129,0.2)" stroke-width="1"/><polygon points="60,0 90,52 30,52" fill="none" stroke="rgba(168,85,247,0.15)" stroke-width="1"/></svg>');
   background-size: 60px 52px; opacity: 0.7;
 }
 .cross-pattern {
@@ -56,16 +60,24 @@ const patternStyles = `
   background-image: url('data:image/svg+xml,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M20,5 L20,35 M5,20 L35,20" stroke="rgba(16,185,129,0.3)" stroke-width="2" stroke-linecap="round"/></svg>');
   background-size: 40px 40px; opacity: 0.5;
 }
+.diamond-gold-pattern {
+  position: absolute; width: 100%; height: 100%; pointer-events: none;
+  background-image:
+    url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><polygon points="30,5 55,30 30,55 5,30" fill="none" stroke="rgba(200,169,81,0.35)" stroke-width="1.5"/></svg>'),
+    url('data:image/svg+xml,<svg width="100" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M0,20 L25,5 L50,20 L75,5 L100,20" fill="none" stroke="rgba(200,169,81,0.2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M0,35 L25,20 L50,35 L75,20 L100,35" fill="none" stroke="rgba(16,185,129,0.15)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  background-size: 60px 60px, 100px 40px;
+  opacity: 0.7;
+}
 .grid-dots-pattern {
   position: absolute; width: 100%; height: 100%; pointer-events: none;
-  background-image: url('data:image/svg+xml,<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="50" height="50" fill="none" stroke="rgba(16,185,129,0.2)" stroke-width="1"/><circle cx="0" cy="0" r="3" fill="rgba(59,130,246,0.6)"/><circle cx="50" cy="0" r="3" fill="rgba(59,130,246,0.6)"/><circle cx="0" cy="50" r="3" fill="rgba(59,130,246,0.6)"/><circle cx="50" cy="50" r="3" fill="rgba(59,130,246,0.6)"/><circle cx="25" cy="25" r="2" fill="rgba(168,85,247,0.4)"/></svg>');
+  background-image: url('data:image/svg+xml,<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="50" height="50" fill="none" stroke="rgba(16,185,129,0.2)" stroke-width="1"/><circle cx="0" cy="0" r="3" fill="rgba(59,130,246,0.6)"/><circle cx="50" cy="0" r="3" fill="rgba(59,130,246,0.6)"/><circle cx="0" cy="50" r="3" fill="rgba(59,130,246,0.6)"/><circle cx="50" cy="50" r="3" fill="rgba(59,130,246,0.6)"/><circle cx="25" cy="25" r="2" fill="rgba(200,169,81,0.4)"/></svg>');
   background-size: 50px 50px; opacity: 0.7;
 }
 .organic-pattern {
   position: absolute; width: 100%; height: 100%; pointer-events: none;
   background-image:
     radial-gradient(ellipse at 20% 30%, rgba(16,185,129,0.15) 0%, transparent 35%),
-    radial-gradient(ellipse at 60% 70%, rgba(59,130,246,0.1) 0%, transparent 40%),
+    radial-gradient(ellipse at 60% 70%, rgba(200,169,81,0.1) 0%, transparent 40%),
     radial-gradient(ellipse at 80% 10%, rgba(168,85,247,0.08) 0%, transparent 30%),
     radial-gradient(ellipse at 10% 90%, rgba(16,185,129,0.1) 0%, transparent 35%),
     radial-gradient(ellipse at 90% 50%, rgba(59,130,246,0.12) 0%, transparent 40%);
@@ -249,8 +261,8 @@ function LandingPage() {
 
             {/* ═══════════════ 3. AI DIFFERENTIATORS (dark section) ═══════════════ */}
             <section className="py-24 bg-gradient-to-br from-slate-900 via-emerald-900 to-slate-800 text-white relative overflow-hidden">
-                {/* Cross Pattern Background */}
-                <div className="cross-pattern opacity-10" />
+                {/* Gold Diamond Pattern Overlay — diagonal + gold per brand spec */}
+                <div className="diamond-gold-pattern" />
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
                     <div className="text-center mb-12">
                         <p className="text-emerald-400 font-medium mb-4 text-sm uppercase tracking-widest">
@@ -343,8 +355,8 @@ function LandingPage() {
                     </div>
                 </div>
                 {/* Background Effects */}
-                <div className="absolute top-0 left-0 w-full h-full">
-                    <div className="cross-pattern" />
+                <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+                    <div className="diamond-gold-pattern" />
                     <div className="absolute top-20 left-20 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
                     <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
                 </div>
