@@ -104,7 +104,6 @@ class AdminSidebar extends HTMLElement {
                     { href: `${base}system-status/cache-status.html`, label: 'CDN Status', icon: 'monitoring', match: '/cache-status.html' },
                     { href: `${base}system-status/backup-status.html`, label: 'Email Service', icon: 'email', match: '/backup-status.html' },
                     { href: `${base}dashboard/analytics.html`, label: 'Analytics', icon: 'analytics', match: '/analytics.html' },
-                    { href: `${base}dashboard/analytics-advanced.html`, label: 'Advanced Analytics', icon: 'advancedAnalytics', match: '/analytics-advanced.html' },
                     { href: `${base}dashboard/development.html`, label: 'Development', icon: 'development', match: '/development.html' },
                 ],
             },

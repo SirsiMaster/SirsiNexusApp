@@ -59,7 +59,6 @@ const consoleRoute = lazyRoute('/console', () => import('./routes/console'))
 
 // Dashboard
 const analyticsRoute = lazyRoute('/analytics', () => import('./routes/analytics'))
-const analyticsAdvancedRoute = lazyRoute('/analytics-advanced', () => import('./routes/analytics-advanced'))
 
 // System Status
 const cacheStatusRoute = lazyRoute('/cache-status', () => import('./routes/cache-status'))
@@ -103,7 +102,6 @@ const routeTree = (rootRoute as any).addChildren([
   consoleRoute as any,
   // Dashboard
   analyticsRoute as any,
-  analyticsAdvancedRoute as any,
   // System Status
   cacheStatusRoute as any,
   apiServerRoute as any,

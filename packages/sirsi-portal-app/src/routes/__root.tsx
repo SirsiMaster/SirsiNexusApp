@@ -23,7 +23,7 @@ import {
     Bot, Sparkles, Monitor, Settings2, LogOut, Search, ChevronDown,
     Sun, Moon, PanelLeftClose, UserPlus, Upload, Sliders, HelpCircle,
     MessageCircle, User, TrendingUp, Radio, Server, Database, HardDrive, Archive,
-    BarChart2, GitBranch
+    GitBranch
 } from 'lucide-react'
 import { CommandPalette } from '../components/command-palette/CommandPalette'
 import { NotificationCenter } from '../components/notifications/NotificationCenter'
@@ -60,7 +60,6 @@ const sidebarGroups: NavGroup[] = [
         items: [
             { to: '/telemetry', label: 'Telemetry', icon: Activity },
             { to: '/analytics', label: 'Analytics', icon: TrendingUp },
-            { to: '/analytics-advanced', label: 'Advanced Analytics', icon: BarChart2 },
             { to: '/system-logs', label: 'System Logs', icon: ScrollText },
             { to: '/monitoring', label: 'Monitoring', icon: Radio },
             { to: '/site-admin', label: 'System Status', icon: Server },
