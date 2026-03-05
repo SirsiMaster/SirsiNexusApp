@@ -35,37 +35,39 @@ function ApiServer() {
             {/* current status */}
             <div className="sirsi-card mb-8">
                 <p className="mb-2">Current Status: <span className="text-green-600 font-medium">Operational</span></p>
-                <p style={{ color: '#6b7280' }}>The API server is functioning optimally with no reported issues. See detailed statistics below.</p>
+                <p className="text-slate-500 dark:text-slate-400">The API server is functioning optimally with no reported issues. See detailed statistics below.</p>
             </div>
 
             {/* historical */}
             <div className="sirsi-card mb-8">
                 <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Historical Data</h3>
-                <table className="w-full">
-                    <thead>
-                        <tr style={{ background: '#f9fafb' }}>
-                            {['Date', 'Status', 'Response Time', 'Details'].map(h => (
-                                <th key={h} style={{ textAlign: 'left', padding: '12px 16px', fontWeight: 500, color: '#374151' }}>{h}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {historicalData.map(row => (
-                            <tr key={row.date}>
-                                <td style={{ padding: '12px 16px', fontSize: 14, color: '#6b7280' }}>{row.date}</td>
-                                <td style={{ padding: '12px 16px' }}><span className={`px-2 py-1 text-xs rounded-full ${row.statusBg}`}>{row.status}</span></td>
-                                <td style={{ padding: '12px 16px', fontSize: 14, color: '#6b7280' }}>{row.time}</td>
-                                <td style={{ padding: '12px 16px', fontSize: 14, color: '#6b7280' }}>{row.detail}</td>
+                <div className="sirsi-table-wrap">
+                    <table className="sirsi-table">
+                        <thead>
+                            <tr>
+                                {['Date', 'Status', 'Response Time', 'Details'].map(h => (
+                                    <th key={h}>{h}</th>
+                                ))}
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {historicalData.map(row => (
+                                <tr key={row.date}>
+                                    <td>{row.date}</td>
+                                    <td><span className={`px-2 py-1 text-xs rounded-full ${row.statusBg}`}>{row.status}</span></td>
+                                    <td>{row.time}</td>
+                                    <td>{row.detail}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {/* logs */}
             <div className="sirsi-card">
                 <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>API Server Logs</h3>
-                <ul className="list-disc list-inside space-y-2" style={{ color: '#374151' }}>
+                <ul className="list-disc list-inside space-y-2 text-slate-700 dark:text-slate-300">
                     {logs.map(l => <li key={l}>{l}</li>)}
                 </ul>
             </div>

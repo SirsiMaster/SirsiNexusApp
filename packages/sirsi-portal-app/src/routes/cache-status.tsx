@@ -58,11 +58,11 @@ function CacheStatus() {
                     return (
                         <div key={s.label} className="sirsi-card">
                             <div className="flex items-center justify-between mb-2">
-                                <span style={{ fontSize: 14, fontWeight: 500, color: '#6b7280' }}>{s.label}</span>
+                                <span className="text-slate-500 dark:text-slate-400" style={{ fontSize: 14, fontWeight: 500 }}>{s.label}</span>
                                 <Icon size={20} className={s.color} />
                             </div>
                             <p className={`text-3xl font-medium ${s.color}`}>{s.value}</p>
-                            <p style={{ fontSize: 12, color: '#6b7280', marginTop: 4 }}>{s.sub}</p>
+                            <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: 12, marginTop: 4 }}>{s.sub}</p>
                         </div>
                     )
                 })}
@@ -76,10 +76,10 @@ function CacheStatus() {
                         {distribution.map(d => (
                             <div key={d.name}>
                                 <div className="flex justify-between mb-1" style={{ fontSize: 14 }}>
-                                    <span style={{ color: '#6b7280' }}>{d.name}</span>
+                                    <span className="text-slate-500 dark:text-slate-400">{d.name}</span>
                                     <span style={{ fontWeight: 500 }}>{d.size}</span>
                                 </div>
-                                <div className="w-full bg-gray-200 rounded-full" style={{ height: 8 }}>
+                                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full" style={{ height: 8 }}>
                                     <div className={`${d.amber ? 'bg-amber-600' : 'bg-emerald-600'} rounded-full`} style={{ height: '100%', width: `${d.pct}%` }} />
                                 </div>
                             </div>
@@ -91,9 +91,9 @@ function CacheStatus() {
                     <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Performance Metrics</h3>
                     <div className="grid grid-cols-2 gap-4">
                         {perfMetrics.map(m => (
-                            <div key={m.label} style={{ padding: 16, background: '#f9fafb', borderRadius: 8 }}>
-                                <p style={{ fontSize: 14, color: '#6b7280', marginBottom: 4 }}>{m.label}</p>
-                                <p style={{ fontSize: 24, fontWeight: 500 }}>{m.value}</p>
+                            <div key={m.label} className="bg-slate-50 dark:bg-slate-700" style={{ padding: 16, borderRadius: 8 }}>
+                                <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: 14, marginBottom: 4 }}>{m.label}</p>
+                                <p className="text-slate-900 dark:text-slate-100" style={{ fontSize: 24, fontWeight: 500 }}>{m.value}</p>
                             </div>
                         ))}
                     </div>
@@ -104,7 +104,7 @@ function CacheStatus() {
             <div className="sirsi-card">
                 <div className="flex justify-between items-center mb-4">
                     <h3 style={{ fontSize: 18, fontWeight: 600 }}>Top Cache Entries</h3>
-                    <select style={{ padding: '4px 12px', border: '1px solid #d1d5db', borderRadius: 8, background: 'white', fontSize: 14 }}>
+                    <select className="bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600" style={{ padding: '4px 12px', borderWidth: 1, borderStyle: 'solid', borderRadius: 8, fontSize: 14 }}>
                         <option>By Size</option>
                         <option>By Hits</option>
                         <option>By Age</option>
@@ -113,16 +113,16 @@ function CacheStatus() {
                 <div className="overflow-x-auto">
                     <table className="w-full">
                         <thead>
-                            <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
+                            <tr className="border-b border-slate-200 dark:border-slate-700">
                                 {['Key', 'Type', 'Size', 'Hits', 'TTL', 'Actions'].map(h => (
-                                    <th key={h} style={{ textAlign: 'left', padding: '12px 16px', fontSize: 14, fontWeight: 500, color: '#374151' }}>{h}</th>
+                                    <th key={h} className="text-slate-700 dark:text-slate-300" style={{ textAlign: 'left', padding: '12px 16px', fontSize: 14, fontWeight: 500 }}>{h}</th>
                                 ))}
                             </tr>
                         </thead>
                         <tbody>
                             {cacheEntries.map(e => (
-                                <tr key={e.key} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                                    <td style={{ padding: '12px 16px', fontSize: 14, fontFamily: 'monospace' }}>{e.key}</td>
+                                <tr key={e.key} className="border-b border-slate-100 dark:border-slate-700">
+                                    <td className="text-slate-700 dark:text-slate-300" style={{ padding: '12px 16px', fontSize: 14, fontFamily: 'monospace' }}>{e.key}</td>
                                     <td style={{ padding: '12px 16px' }}>
                                         <span style={{
                                             fontSize: 12, padding: '2px 8px', borderRadius: 12,
@@ -130,11 +130,11 @@ function CacheStatus() {
                                             color: (e.type === 'Session' || e.type === 'API') ? '#047857' : '#b45309',
                                         }}>{e.type}</span>
                                     </td>
-                                    <td style={{ padding: '12px 16px', fontSize: 14 }}>{e.size}</td>
-                                    <td style={{ padding: '12px 16px', fontSize: 14 }}>{e.hits}</td>
-                                    <td style={{ padding: '12px 16px', fontSize: 14, color: '#6b7280' }}>{e.ttl}</td>
+                                    <td className="text-slate-700 dark:text-slate-300" style={{ padding: '12px 16px', fontSize: 14 }}>{e.size}</td>
+                                    <td className="text-slate-700 dark:text-slate-300" style={{ padding: '12px 16px', fontSize: 14 }}>{e.hits}</td>
+                                    <td className="text-slate-500 dark:text-slate-400" style={{ padding: '12px 16px', fontSize: 14 }}>{e.ttl}</td>
                                     <td style={{ padding: '12px 16px' }}>
-                                        <button style={{ fontSize: 14, color: '#dc2626', background: 'none', border: 'none', cursor: 'pointer' }}>Invalidate</button>
+                                        <button className="text-red-600 hover:text-red-700" style={{ fontSize: 14, background: 'none', border: 'none', cursor: 'pointer' }}>Invalidate</button>
                                     </td>
                                 </tr>
                             ))}

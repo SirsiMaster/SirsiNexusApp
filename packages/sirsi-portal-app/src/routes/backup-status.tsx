@@ -57,11 +57,11 @@ function BackupStatus() {
                     return (
                         <div key={s.label} className="sirsi-card">
                             <div className="flex items-center justify-between mb-2">
-                                <span style={{ fontSize: 14, fontWeight: 500, color: '#6b7280' }}>{s.label}</span>
+                                <span className="text-slate-500 dark:text-slate-400" style={{ fontSize: 14, fontWeight: 500 }}>{s.label}</span>
                                 <Icon size={20} className={s.color} />
                             </div>
                             <p className={`text-2xl font-medium ${s.color}`}>{s.value}</p>
-                            <p style={{ fontSize: 12, color: '#6b7280', marginTop: 4 }}>{s.sub}</p>
+                            <p className="text-slate-500 dark:text-slate-400" style={{ fontSize: 12, marginTop: 4 }}>{s.sub}</p>
                         </div>
                     )
                 })}
@@ -79,7 +79,7 @@ function BackupStatus() {
                                         <h4 className={`font-medium ${s.textColor}`}>{s.name}</h4>
                                         <p style={{ fontSize: 14, marginTop: 4 }} className={s.textColor.replace('900', '700')}>{s.freq}</p>
                                     </div>
-                                    <span style={{ fontSize: 12, padding: '2px 8px', borderRadius: 12, background: '#d1fae5', color: '#047857' }}>Active</span>
+                                    <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" style={{ fontSize: 12, padding: '2px 8px', borderRadius: 12 }}>Active</span>
                                 </div>
                             </div>
                         ))}
@@ -92,10 +92,10 @@ function BackupStatus() {
                         {healthMetrics.map(m => (
                             <div key={m.label}>
                                 <div className="flex justify-between text-sm mb-1">
-                                    <span style={{ color: '#6b7280' }}>{m.label}</span>
+                                    <span className="text-slate-500 dark:text-slate-400">{m.label}</span>
                                     <span style={{ fontWeight: 500 }}>{m.value}</span>
                                 </div>
-                                <div className="w-full bg-gray-200 rounded-full" style={{ height: 8 }}>
+                                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full" style={{ height: 8 }}>
                                     <div className={`${m.color} rounded-full`} style={{ height: '100%', width: `${m.pct}%` }} />
                                 </div>
                             </div>
@@ -108,7 +108,7 @@ function BackupStatus() {
             <div className="sirsi-card">
                 <div className="flex justify-between items-center mb-4">
                     <h3 style={{ fontSize: 18, fontWeight: 600 }}>Recent Backup History</h3>
-                    <select style={{ padding: '4px 12px', border: '1px solid #d1d5db', borderRadius: 8, background: 'white', fontSize: 14 }}>
+                    <select className="bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600" style={{ padding: '4px 12px', borderWidth: 1, borderStyle: 'solid', borderRadius: 8, fontSize: 14 }}>
                         <option>All Types</option>
                         <option>Full Backup</option>
                         <option>Incremental</option>
@@ -120,17 +120,17 @@ function BackupStatus() {
                         <thead>
                             <tr style={{ borderBottom: '1px solid #e5e7eb' }}>
                                 {['Type', 'Started', 'Duration', 'Size', 'Status', 'Actions'].map(h => (
-                                    <th key={h} style={{ textAlign: 'left', padding: '12px 16px', fontSize: 14, fontWeight: 500, color: '#374151' }}>{h}</th>
+                                    <th key={h} className="text-slate-700 dark:text-slate-300" style={{ textAlign: 'left', padding: '12px 16px', fontSize: 14, fontWeight: 500 }}>{h}</th>
                                 ))}
                             </tr>
                         </thead>
                         <tbody>
                             {backupHistory.map((b, i) => (
-                                <tr key={i} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                                    <td style={{ padding: '12px 16px', fontWeight: 500 }}>{b.type}</td>
-                                    <td style={{ padding: '12px 16px', fontSize: 14, color: '#6b7280' }}>{b.started}</td>
-                                    <td style={{ padding: '12px 16px', fontSize: 14 }}>{b.duration}</td>
-                                    <td style={{ padding: '12px 16px', fontSize: 14 }}>{b.size}</td>
+                                <tr key={i} className="border-b border-slate-100 dark:border-slate-700">
+                                    <td className="text-slate-900 dark:text-slate-100" style={{ padding: '12px 16px', fontWeight: 500 }}>{b.type}</td>
+                                    <td className="text-slate-500 dark:text-slate-400" style={{ padding: '12px 16px', fontSize: 14 }}>{b.started}</td>
+                                    <td className="text-slate-700 dark:text-slate-300" style={{ padding: '12px 16px', fontSize: 14 }}>{b.duration}</td>
+                                    <td className="text-slate-700 dark:text-slate-300" style={{ padding: '12px 16px', fontSize: 14 }}>{b.size}</td>
                                     <td style={{ padding: '12px 16px' }}>
                                         <span style={{
                                             fontSize: 12, padding: '2px 8px', borderRadius: 12,
@@ -140,8 +140,8 @@ function BackupStatus() {
                                     </td>
                                     <td style={{ padding: '12px 16px' }}>
                                         <div className="flex gap-2">
-                                            <button style={{ fontSize: 14, color: '#059669', background: 'none', border: 'none', cursor: 'pointer' }}>Restore</button>
-                                            <button style={{ fontSize: 14, color: '#6b7280', background: 'none', border: 'none', cursor: 'pointer' }}>Download</button>
+                                            <button className="text-emerald-600 hover:text-emerald-700" style={{ fontSize: 14, background: 'none', border: 'none', cursor: 'pointer' }}>Restore</button>
+                                            <button className="text-slate-500 dark:text-slate-400 hover:text-slate-700" style={{ fontSize: 14, background: 'none', border: 'none', cursor: 'pointer' }}>Download</button>
                                         </div>
                                     </td>
                                 </tr>
