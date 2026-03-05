@@ -66,7 +66,10 @@ function LoginPage() {
         try {
             await signIn(email, password)
             setSuccess('Admin Portal')
-            setTimeout(() => navigate({ to: '/dashboard' } as any), 1200)
+            // Use full page navigation to force clean auth state
+            setTimeout(() => {
+                window.location.href = '/dashboard'
+            }, 1200)
         } catch (err: any) {
             setError(err.message || 'Authentication failed')
             setLoading(false)
@@ -90,8 +93,11 @@ function LoginPage() {
                     loginTime: new Date().toISOString(),
                 }))
                 setSuccess(ROLE_ROUTES[cred.role]?.label ?? 'Portal')
+                // Use full page navigation to force AuthProvider re-init
+                // (client-side navigate won't re-read sessionStorage)
+                const targetPath = ROLE_ROUTES[cred.role]?.path ?? '/dashboard'
                 setTimeout(() => {
-                    navigate({ to: ROLE_ROUTES[cred.role]?.path ?? '/' } as any)
+                    window.location.href = targetPath
                 }, 1200)
             } else {
                 setError('Invalid Portal ID or Access Code.')
