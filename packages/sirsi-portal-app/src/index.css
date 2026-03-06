@@ -267,7 +267,29 @@
   @apply bg-slate-800;
 }
 
-/* Sirsi badges — canonical from shared.css */
+/* Table variant: striped rows */
+.sirsi-table-striped tbody tr:nth-child(even) {
+  @apply bg-slate-50;
+}
+
+.dark .sirsi-table-striped tbody tr:nth-child(even) {
+  @apply bg-slate-800/50;
+}
+
+/* Table variant: clickable rows */
+.sirsi-table-clickable tbody tr {
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.sirsi-table-clickable tbody tr:hover {
+  @apply bg-emerald-50;
+}
+
+.dark .sirsi-table-clickable tbody tr:hover {
+  @apply bg-emerald-900/20;
+}
+
 .sirsi-badge {
   @apply inline-flex items-center rounded-full;
   padding: 2px 10px;
