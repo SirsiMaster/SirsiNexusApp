@@ -112,7 +112,7 @@ const MATRIX = [
             { feature: 'Contract viewing', free: '3 max', solo: '25/mo', business: 'Unlimited' },
             { feature: 'E-signature (Sirsi Sign)', free: false, solo: true, business: true },
             { feature: 'Document vault', free: '100MB', solo: '5GB', business: '50GB' },
-            { feature: 'Versioned documents', free: false, solo: false, business: true },
+            { feature: 'Versioned documents', free: false, solo: true, business: true },
         ]
     },
     {
@@ -205,8 +205,8 @@ function PricingPage() {
                             <div
                                 key={tier.id}
                                 className={`rounded-2xl p-8 flex flex-col relative transition-all duration-300 hover:-translate-y-1 ${tier.popular
-                                        ? 'bg-emerald-600 border-2 border-emerald-400 shadow-xl shadow-emerald-600/20'
-                                        : 'bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700'
+                                    ? 'bg-emerald-600 border-2 border-emerald-400 shadow-xl shadow-emerald-600/20'
+                                    : 'bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700'
                                     }`}
                             >
                                 {tier.popular && (
@@ -218,8 +218,8 @@ function PricingPage() {
                                 {/* Tier header */}
                                 <div className="flex items-center gap-3 mb-4">
                                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${tier.popular
-                                            ? 'bg-white/10 text-white border border-white/20'
-                                            : 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 border border-emerald-100 dark:border-emerald-800'
+                                        ? 'bg-white/10 text-white border border-white/20'
+                                        : 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 border border-emerald-100 dark:border-emerald-800'
                                         }`}>
                                         <tier.icon size={20} />
                                     </div>
@@ -271,8 +271,8 @@ function PricingPage() {
                                 <LinkComp
                                     to={tier.href}
                                     className={`w-full block text-center px-6 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 ${tier.popular
-                                            ? 'bg-white text-emerald-700 hover:bg-emerald-50 hover:shadow-lg'
-                                            : 'border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white'
+                                        ? 'bg-white text-emerald-700 hover:bg-emerald-50 hover:shadow-lg'
+                                        : 'border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white'
                                         }`}
                                 >
                                     {tier.cta}

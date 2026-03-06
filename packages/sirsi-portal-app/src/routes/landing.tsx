@@ -582,7 +582,49 @@ function LandingPage() {
                 </div>
             </section>
 
-            {/* ═══════════════ 6. CTA SECTION ═══════════════ */}
+            {/* ═══════════════ 6. ROI SECTION ═══════════════ */}
+            <section className="py-20 bg-white dark:bg-slate-900">
+                <div className="max-w-5xl mx-auto px-6">
+                    <div className="text-center mb-14">
+                        <p className="text-emerald-600 text-sm font-semibold uppercase tracking-widest mb-3">
+                            Measurable Impact
+                        </p>
+                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
+                            ROI-Positive from Day One
+                        </h2>
+                        <p className="text-lg text-slate-500 dark:text-slate-400 max-w-3xl mx-auto">
+                            The Sirsi Hypervisor pays for itself. Our AI optimization engine typically delivers
+                            20–30% infrastructure cost savings within the first 90 days.
+                        </p>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        {[
+                            { value: '20–30%', label: 'Cost Reduction', desc: 'Average infrastructure savings through AI-driven optimization' },
+                            { value: '3–6 mo', label: 'ROI Payback', desc: 'Time to achieve positive return on platform investment' },
+                            { value: '60%', label: 'Ops Reduction', desc: 'Decrease in manual infrastructure management effort' },
+                            { value: '85%', label: 'Incident Reduction', desc: 'Fewer configuration-related incidents through automation' },
+                        ].map(item => (
+                            <div key={item.label} className="text-center group">
+                                <div className="text-3xl md:text-4xl font-bold text-emerald-600 mb-2 group-hover:scale-105 transition-transform">
+                                    {item.value}
+                                </div>
+                                <div className="font-semibold text-slate-900 dark:text-slate-100 mb-1 text-sm">{item.label}</div>
+                                <div className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{item.desc}</div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="mt-12 text-center">
+                        <LinkComp
+                            to="/pricing"
+                            className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-semibold text-sm transition-colors"
+                        >
+                            See pricing plans →
+                        </LinkComp>
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════ 7. CTA SECTION ═══════════════ */}
             <section id="signup" className="py-20 bg-gradient-to-r from-emerald-600 to-blue-600">
                 <div className="max-w-4xl mx-auto px-6 text-center">
                     <h2 className="text-3xl font-bold text-white mb-4">Ready to Transform Your Infrastructure?</h2>

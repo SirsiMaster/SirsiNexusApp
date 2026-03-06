@@ -87,6 +87,48 @@ This is enforced at the data layer — `superadmin_uids` is immutable by the cli
 - **Transferable**: If client churns, repo ownership transfers to their account
 - IP split: Client owns their code; Sirsi retains scaffold template + UCS IP
 
+#### Scaffold Contents (Every Tenant Repo Gets)
+
+```
+github.com/SirsiMaster/{tenant-slug}/
+├── .github/
+│   └── workflows/
+│       ├── ci-validate.yml          # Same QA gate as all Sirsi portfolio repos (Rule 24)
+│       └── deploy.yml               # Firebase/Cloud Run deploy, parameterized per tenant
+├── packages/
+│   ├── {tenant-app}/                # React app (scaffolded from UCS)
+│   └── sirsi-ui/                    # UCS component library (symlinked/subtree)
+├── docs/
+│   ├── PROJECT_SCOPE.md             # Auto-generated, customized to tenant
+│   ├── ARCHITECTURE_DESIGN.md       # Canonical structure, tenant-specific content
+│   ├── TECHNICAL_DESIGN.md          # Stack decisions, tenant-scoped
+│   ├── DATA_MODEL.md                # Tenant data schema
+│   ├── API_SPECIFICATION.md         # Tenant API surface
+│   ├── SECURITY_COMPLIANCE.md       # Security requirements (SOC 2 baseline)
+│   ├── DEPLOYMENT_GUIDE.md          # Deployment instructions for tenant infra
+│   ├── QA_PLAN.md                   # Testing strategy
+│   ├── ADR-INDEX.md                 # Tenant-specific ADR registry
+│   ├── ADR-001-TENANT-INITIALIZATION.md  # Auto-generated: records provisioning decisions
+│   └── ADR-TEMPLATE.md             # Standard template for future decisions
+├── GEMINI.md                        # Auto-generated, tenant-scoped canon
+│                                    #   - Tenant identity, slug, plan tier
+│                                    #   - Sirsi UCS rules inherited
+│                                    #   - Portfolio architecture reference
+│                                    #   - CI/CD QA gate protocol
+│                                    #   - Design language assignment
+│                                    #   - Superadmin attachment declaration
+├── firebase.json                    # Firebase Hosting config (tenant-scoped)
+├── package.json                     # Workspace root
+└── README.md                        # Auto-generated getting started guide
+```
+
+Every repo inherits:
+- **UCS infrastructure**: Sirsi UI component library, design tokens, shared utilities
+- **Canonical documentation**: Full doc suite customized to the tenant's profile
+- **ADR-001**: Auto-generated ADR recording the tenant's provisioning decisions (cloud provider, plan, region, timestamp)
+- **GEMINI.md**: Tenant-scoped operational directive inheriting Sirsi portfolio rules
+- **CI/CD pipelines**: Identical to FinalWishes/Assiduous workflow patterns
+
 ## Consequences
 
 - The public pricing page becomes a real commerce surface with working Stripe integration
