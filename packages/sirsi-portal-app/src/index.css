@@ -1402,3 +1402,108 @@
     background-position: -200% 0;
   }
 }
+
+
+/* ══════════════════════════════════════════════════════════════════
+   PRINT STYLES — Force light mode, hide chrome, maximize content
+   ══════════════════════════════════════════════════════════════════ */
+@media print {
+
+  /* Force light background + dark text */
+  html,
+  body,
+  .sidebar-content,
+  .content-wrapper,
+  .sirsi-card,
+  .sirsi-table-wrap {
+    background: white !important;
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide non-essential UI */
+  .admin-header,
+  .admin-sidebar,
+  .admin-header-center,
+  .admin-header-right,
+  .sidebar-top-toggle,
+  .admin-sidebar-footer,
+  button,
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger,
+  .btn-ghost {
+    display: none !important;
+  }
+
+  /* Full width content */
+  .sidebar-content {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+
+  .content-wrapper {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  /* Remove shadows and borders */
+  .sirsi-card,
+  .sirsi-table-wrap {
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
+  }
+
+  /* Table readability */
+  .sirsi-table thead th {
+    background: #f1f5f9 !important;
+    color: #334155 !important;
+  }
+
+  .sirsi-table tbody td {
+    color: #1e293b !important;
+    border-color: #e2e8f0 !important;
+  }
+
+  /* Badges — print-safe colors */
+  .sirsi-badge-success {
+    background: #ecfdf5 !important;
+    color: #065f46 !important;
+  }
+
+  .sirsi-badge-warning {
+    background: #fffbeb !important;
+    color: #92400e !important;
+  }
+
+  .sirsi-badge-error {
+    background: #fef2f2 !important;
+    color: #991b1b !important;
+  }
+
+  /* Remove animations */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Remove backdrop filters */
+  .backdrop-blur-sm,
+  .backdrop-blur {
+    backdrop-filter: none !important;
+  }
+
+  /* Page breaks */
+  .sirsi-card {
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+}
