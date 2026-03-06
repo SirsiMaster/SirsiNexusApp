@@ -331,16 +331,16 @@ function RootLayout() {
     // remounting and auth state loss on route transitions.
     return (
         <AuthProvider>
-            {/* Sonner toast provider — type cast needed for React 19 compat */}
-            {(Toaster as any)({
-                position: 'top-right',
-                toastOptions: {
+            {/* Sonner toast provider */}
+            <Toaster
+                position="top-right"
+                toastOptions={{
                     className: 'font-inter',
                     style: { fontFamily: 'Inter, sans-serif' },
-                },
-                richColors: true,
-                closeButton: true,
-            })}
+                }}
+                richColors
+                closeButton
+            />
             {isPublicPage ? (
                 <>
                     <PublicLayout />
