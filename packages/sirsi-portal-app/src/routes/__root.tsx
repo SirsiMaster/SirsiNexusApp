@@ -292,9 +292,10 @@ function PublicFooter() {
 function PublicLayout() {
     const [isDark, setIsDark] = useState(() => {
         const saved = localStorage.getItem('theme')
-        const prefersDark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        document.documentElement.classList.toggle('dark', prefersDark)
-        return prefersDark
+        // Force light mode on first visit (saved will be null)
+        const isDarkInitial = saved === 'dark'
+        document.documentElement.classList.toggle('dark', isDarkInitial)
+        return isDarkInitial
     })
 
     const toggleTheme = () => {
@@ -365,10 +366,10 @@ function AdminLayout() {
     const [clock, setClock] = useState('--:--')
     const [isDark, setIsDark] = useState(() => {
         const saved = localStorage.getItem('theme')
-        const prefersDark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        const isDarkInitial = saved === 'dark'
         // Apply immediately to avoid flash
-        document.documentElement.classList.toggle('dark', prefersDark)
-        return prefersDark
+        document.documentElement.classList.toggle('dark', isDarkInitial)
+        return isDarkInitial
     })
 
     useKeyboardShortcuts([

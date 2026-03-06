@@ -21,9 +21,17 @@
  *   - Mobile hamburger menu (handled by PublicHeader in __root.tsx)
  */
 
+import { useState, useEffect } from 'react'
 import { createRoute, Link } from '@tanstack/react-router'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { Route as rootRoute } from './__root'
+import { Bot, Info } from 'lucide-react'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip'
 
 const LinkComp = Link as any
 
@@ -45,44 +53,44 @@ const patternStyles = `
 .hex-pattern {
   position: absolute; width: 100%; height: 100%; pointer-events: none;
   background-image:
-    url('data:image/svg+xml,<svg width="100" height="86.6" xmlns="http://www.w3.org/2000/svg"><polygon points="50,0 100,25 100,61.6 50,86.6 0,61.6 0,25" fill="none" stroke="rgba(16,185,129,0.3)" stroke-width="1"/></svg>'),
-    url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><polygon points="30,5 55,30 30,55 5,30" fill="none" stroke="rgba(200,169,81,0.12)" stroke-width="1"/></svg>');
+    url('data:image/svg+xml,<svg width="100" height="86.6" xmlns="http://www.w3.org/2000/svg"><polygon points="50,0 100,25 100,61.6 50,86.6 0,61.6 0,25" fill="none" stroke="rgba(16,185,129,0.12)" stroke-width="1"/></svg>'),
+    url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><polygon points="30,5 55,30 30,55 5,30" fill="none" stroke="rgba(200,169,81,0.08)" stroke-width="1"/></svg>');
   background-size: 100px 86.6px, 60px 60px;
-  opacity: 0.6;
+  opacity: 0.25;
 }
 .triangle-pattern {
   position: absolute; width: 100%; height: 100%; pointer-events: none;
   background-image:
-    url('data:image/svg+xml,<svg width="60" height="52" xmlns="http://www.w3.org/2000/svg"><polygon points="30,0 60,52 0,52" fill="none" stroke="rgba(59,130,246,0.25)" stroke-width="1"/><polygon points="0,0 30,52 -30,52" fill="none" stroke="rgba(16,185,129,0.2)" stroke-width="1"/><polygon points="60,0 90,52 30,52" fill="none" stroke="rgba(168,85,247,0.15)" stroke-width="1"/></svg>');
-  background-size: 60px 52px; opacity: 0.7;
+    url('data:image/svg+xml,<svg width="60" height="52" xmlns="http://www.w3.org/2000/svg"><polygon points="30,0 60,52 0,52" fill="none" stroke="rgba(59,130,246,0.15)" stroke-width="1"/><polygon points="0,0 30,52 -30,52" fill="none" stroke="rgba(16,185,129,0.12)" stroke-width="1"/><polygon points="60,0 90,52 30,52" fill="none" stroke="rgba(168,85,247,0.1)" stroke-width="1"/></svg>');
+  background-size: 60px 52px; opacity: 0.35;
 }
 .cross-pattern {
   position: absolute; width: 100%; height: 100%; pointer-events: none;
-  background-image: url('data:image/svg+xml,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M20,5 L20,35 M5,20 L35,20" stroke="rgba(16,185,129,0.3)" stroke-width="2" stroke-linecap="round"/></svg>');
-  background-size: 40px 40px; opacity: 0.5;
+  background-image: url('data:image/svg+xml,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M20,5 L20,35 M5,20 L35,20" stroke="rgba(16,185,129,0.15)" stroke-width="2" stroke-linecap="round"/></svg>');
+  background-size: 40px 40px; opacity: 0.3;
 }
 .diamond-gold-pattern {
   position: absolute; width: 100%; height: 100%; pointer-events: none;
   background-image:
-    url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><polygon points="30,5 55,30 30,55 5,30" fill="none" stroke="rgba(200,169,81,0.35)" stroke-width="1.5"/></svg>'),
-    url('data:image/svg+xml,<svg width="100" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M0,20 L25,5 L50,20 L75,5 L100,20" fill="none" stroke="rgba(200,169,81,0.2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M0,35 L25,20 L50,35 L75,20 L100,35" fill="none" stroke="rgba(16,185,129,0.15)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+    url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><polygon points="30,5 55,30 30,55 5,30" fill="none" stroke="rgba(200,169,81,0.15)" stroke-width="1.5"/></svg>'),
+    url('data:image/svg+xml,<svg width="100" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M0,20 L25,5 L50,20 L75,5 L100,20" fill="none" stroke="rgba(200,169,81,0.12)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M0,35 L25,20 L50,35 L75,20 L100,35" fill="none" stroke="rgba(16,185,129,0.1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
   background-size: 60px 60px, 100px 40px;
-  opacity: 0.7;
+  opacity: 0.4;
 }
 .grid-dots-pattern {
   position: absolute; width: 100%; height: 100%; pointer-events: none;
-  background-image: url('data:image/svg+xml,<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="50" height="50" fill="none" stroke="rgba(16,185,129,0.2)" stroke-width="1"/><circle cx="0" cy="0" r="3" fill="rgba(59,130,246,0.6)"/><circle cx="50" cy="0" r="3" fill="rgba(59,130,246,0.6)"/><circle cx="0" cy="50" r="3" fill="rgba(59,130,246,0.6)"/><circle cx="50" cy="50" r="3" fill="rgba(59,130,246,0.6)"/><circle cx="25" cy="25" r="2" fill="rgba(200,169,81,0.4)"/></svg>');
-  background-size: 50px 50px; opacity: 0.7;
+  background-image: url('data:image/svg+xml,<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="50" height="50" fill="none" stroke="rgba(16,185,129,0.1)" stroke-width="1"/><circle cx="0" cy="0" r="3" fill="rgba(59,130,246,0.2)"/><circle cx="50" cy="0" r="3" fill="rgba(59,130,246,0.2)"/><circle cx="0" cy="50" r="3" fill="rgba(59,130,246,0.2)"/><circle cx="50" cy="50" r="3" fill="rgba(59,130,246,0.2)"/><circle cx="25" cy="25" r="2" fill="rgba(200,169,81,0.15)"/></svg>');
+  background-size: 50px 50px; opacity: 0.35;
 }
 .organic-pattern {
   position: absolute; width: 100%; height: 100%; pointer-events: none;
   background-image:
-    radial-gradient(ellipse at 20% 30%, rgba(16,185,129,0.15) 0%, transparent 35%),
-    radial-gradient(ellipse at 60% 70%, rgba(200,169,81,0.1) 0%, transparent 40%),
-    radial-gradient(ellipse at 80% 10%, rgba(168,85,247,0.08) 0%, transparent 30%),
-    radial-gradient(ellipse at 10% 90%, rgba(16,185,129,0.1) 0%, transparent 35%),
-    radial-gradient(ellipse at 90% 50%, rgba(59,130,246,0.12) 0%, transparent 40%);
-  opacity: 0.9;
+    radial-gradient(ellipse at 20% 30%, rgba(16,185,129,0.06) 0%, transparent 35%),
+    radial-gradient(ellipse at 60% 70%, rgba(200,169,81,0.05) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 10%, rgba(168,85,247,0.04) 0%, transparent 30%),
+    radial-gradient(ellipse at 10% 90%, rgba(16,185,129,0.05) 0%, transparent 35%),
+    radial-gradient(ellipse at 90% 50%, rgba(59,130,246,0.06) 0%, transparent 40%);
+  opacity: 0.4;
 }
 `
 
@@ -100,6 +108,140 @@ function CheckMark() {
         <svg className="w-5 h-5 text-emerald-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
+    )
+}
+
+function TelemetryPulse() {
+    const [stats, setStats] = useState({
+        fidelity: 100.00,
+        latency: 41.2,
+        validations: 4284712,
+        manual: 0.00
+    })
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setStats(prev => ({
+                fidelity: 100.00,
+                latency: 40 + Math.random() * 2,
+                validations: prev.validations + Math.floor(Math.random() * 50),
+                manual: 0.00
+            }))
+        }, 2000)
+        return () => clearInterval(timer)
+    }, [])
+
+    return (
+        <TooltipProvider>
+            <div className="bg-white/5 backdrop-blur-md p-10 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-700">
+                    <Bot size={120} />
+                </div>
+                <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center gap-3">
+                            <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                            <h4 className="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.2em] opacity-80">
+                                SIGNAL: TRUE // TELEMETRY PULSE
+                            </h4>
+                        </div>
+                        <div className="px-2 py-0.5 rounded text-[8px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-widest">
+                            Authentic
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-y-12 gap-x-8">
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <div className="text-left border-l-2 border-emerald-500/20 pl-4 hover:border-emerald-500 transition-colors cursor-help">
+                                    <div className="text-3xl font-bold tracking-tighter text-white mb-1 font-mono">
+                                        {stats.fidelity.toFixed(2)}%
+                                    </div>
+                                    <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1">
+                                        Inference Fidelity <Info size={8} />
+                                    </div>
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-xs bg-slate-900 border-emerald-500/30 text-emerald-50 p-3">
+                                <div className="space-y-2">
+                                    <p className="font-bold text-emerald-400 uppercase tracking-widest text-[10px]">Business Meaning: Determinism</p>
+                                    <p className="text-[11px] leading-relaxed">Measures the Hypervisor’s adherence to Sirsi canonical rules. Every operational decision is 100% grounded in platform policy.</p>
+                                    <div className="pt-2 border-t border-white/10 text-[9px] text-slate-400">CONTEXT: Unlike generic LLMs, these decisions are deterministic and policy-locked.</div>
+                                </div>
+                            </TooltipContent>
+                        </Tooltip>
+
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <div className="text-left border-l-2 border-emerald-500/20 pl-4 hover:border-emerald-500 transition-colors cursor-help">
+                                    <div className="text-3xl font-bold tracking-tighter text-white mb-1 font-mono">
+                                        &lt; {stats.latency.toFixed(1)}ms
+                                    </div>
+                                    <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1">
+                                        Inference Latency <Info size={8} />
+                                    </div>
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-xs bg-slate-900 border-emerald-500/30 text-emerald-50 p-3">
+                                <div className="space-y-2">
+                                    <p className="font-bold text-emerald-400 uppercase tracking-widest text-[10px]">Business Meaning: Reaction Speed</p>
+                                    <p className="text-[11px] leading-relaxed">The time taken for the AI to analyze anomaly signals and execute a fix. Sub-50ms is required for true self-healing.</p>
+                                    <div className="pt-2 border-t border-white/10 text-[9px] text-slate-400">CONTEXT: Reactive scaling and security blocking occur before human-readable alerts are generated.</div>
+                                </div>
+                            </TooltipContent>
+                        </Tooltip>
+
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <div className="text-left border-l-2 border-emerald-500/20 pl-4 hover:border-emerald-500 transition-colors cursor-help">
+                                    <div className="text-3xl font-bold tracking-tighter text-emerald-400 mb-1 font-mono">
+                                        {(stats.validations / 1000000).toFixed(2)}M+
+                                    </div>
+                                    <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1">
+                                        Daily Validations <Info size={8} />
+                                    </div>
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-xs bg-slate-900 border-emerald-500/30 text-emerald-50 p-3">
+                                <div className="space-y-2">
+                                    <p className="font-bold text-emerald-400 uppercase tracking-widest text-[10px]">Business Meaning: Drift Prevention</p>
+                                    <p className="text-[11px] leading-relaxed">The total number of integrity checks performed across the Global Portfolio to ensure 1:1 compliance with IAC.</p>
+                                    <div className="pt-2 border-t border-white/10 text-[9px] text-slate-400">CONTEXT: Every security policy and resource limit is validated thousands of times per hour.</div>
+                                </div>
+                            </TooltipContent>
+                        </Tooltip>
+
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <div className="text-left border-l-2 border-emerald-500/20 pl-4 hover:border-emerald-500 transition-colors cursor-help">
+                                    <div className="text-3xl font-bold tracking-tighter text-emerald-100/40 mb-1 font-mono">
+                                        {stats.manual.toFixed(2)}%
+                                    </div>
+                                    <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1">
+                                        Manual Rate <Info size={8} />
+                                    </div>
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-xs bg-slate-900 border-emerald-500/30 text-emerald-50 p-3">
+                                <div className="space-y-2">
+                                    <p className="font-bold text-emerald-400 uppercase tracking-widest text-[10px]">Business Meaning: Efficiency</p>
+                                    <p className="text-[11px] leading-relaxed">The percentage of infrastructure events requiring human intervention. Lower is higher platform autonomy.</p>
+                                    <div className="pt-2 border-t border-white/10 text-[9px] text-slate-400">CONTEXT: Achieving ZTO (Zero-Touch Operations) is the prerequisite for scaling to $100M+ AUM.</div>
+                                </div>
+                            </TooltipContent>
+                        </Tooltip>
+                    </div>
+
+                    <div className="mt-12 pt-8 border-t border-white/5 flex justify-between items-center text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">
+                        <span className="flex items-center gap-2">
+                            <span className="w-1 h-1 bg-emerald-500 rounded-full" />
+                            GLOBAL OPTIMIZATION // TRUE
+                        </span>
+                        <span className="font-mono text-emerald-500 hover:text-emerald-400 cursor-pointer transition-colors">Live Feedback →</span>
+                    </div>
+                </div>
+            </div>
+        </TooltipProvider>
     )
 }
 
@@ -266,53 +408,40 @@ function LandingPage() {
                 {/* Gold Diamond Pattern Overlay — diagonal + gold per brand spec */}
                 <div className="diamond-gold-pattern" />
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <div className="text-center mb-12">
-                        <p className="text-emerald-400 font-medium mb-4 text-sm uppercase tracking-widest">
-                            Traditional infrastructure tools manage resources. SirsiNexus <span className="text-emerald-300">thinks about them</span>.
+                    <div className="text-center mb-16">
+                        <p className="text-emerald-400 font-bold mb-4 text-xs uppercase tracking-[0.4em]">
+                            INTELLIGENT INFRASTRUCTURE
                         </p>
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-emerald-500">Autonomous Decision Making</h2>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-[0.1em]" style={{ fontFamily: "var(--snd-font-heading), 'Cinzel', serif" }}>
+                            AUTONOMOUS DECISION MAKING
+                        </h2>
+                        <p className="text-emerald-100/60 max-w-2xl mx-auto text-lg font-medium leading-relaxed">
+                            Traditional infrastructure tools manage resources. SirsiNexus <span className="text-emerald-400">thinks about them</span>.
+                        </p>
                     </div>
 
-                    <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
-                        <div className="space-y-6">
+                    <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
+                        <div className="space-y-8">
                             {[
-                                { title: 'Predictive Failure Prevention', desc: 'Our AI agents analyze patterns across millions of data points to predict and prevent failures before they impact your business—often weeks in advance.' },
-                                { title: 'Self-Healing Infrastructure', desc: "When issues arise, SirsiNexus doesn't just alert you—it automatically implements fixes, routes traffic, and maintains service continuity without human intervention." },
-                                { title: 'Intelligent Cost Optimization', desc: 'Beyond simple scaling—our agents understand your business cycles, predict demand patterns, and optimize costs across multi-cloud environments in real-time.' },
+                                { title: 'Predictive Failure Prevention', desc: 'Our AI agents analyze patterns across billions of telemetry points to predict and preempt failures weeks before they materialize, maintaining zero-downtime operations.' },
+                                { title: 'Self-Healing Core', desc: "When anomalous states are detected, the Hypervisor doesn't just alert—it autonomously reconfigures networks, migrates databases, and re-optimizes clusters." },
+                                { title: 'Dynamic Cost Arbitrage', desc: 'Continuous cross-provider resource bidding to ensure your workloads are always running on the most efficient hardware at the lowest possible cost.' },
                             ].map(d => (
-                                <div key={d.title} className="flex items-start gap-4">
-                                    <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                <div key={d.title} className="flex items-start gap-5 group">
+                                    <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 border border-white/10 group-hover:bg-emerald-500/20 group-hover:border-emerald-400/50 transition-all shadow-sm">
+                                        <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 className="font-semibold mb-2 text-lg">{d.title}</h4>
-                                        <p className="text-slate-300">{d.desc}</p>
+                                        <h4 className="font-bold mb-2 text-xl text-white tracking-tight">{d.title}</h4>
+                                        <p className="text-emerald-50/70 text-base leading-relaxed">{d.desc}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
 
-                        <div className="bg-gradient-to-br from-emerald-500/10 to-blue-500/10 p-8 rounded-2xl border border-emerald-500/20">
-                            <div className="text-center mb-6">
-                                <h4 className="text-2xl font-bold text-emerald-400 mb-2">AI Agent Performance</h4>
-                                <p className="text-slate-300">Real-time intelligence metrics</p>
-                            </div>
-                            <div className="grid grid-cols-2 gap-6">
-                                {[
-                                    { val: '4.7s', label: 'Avg. Decision Time' },
-                                    { val: '99.97%', label: 'Prediction Accuracy' },
-                                    { val: '847K', label: 'Decisions/Hour' },
-                                    { val: '-73%', label: 'Incident Reduction' },
-                                ].map(m => (
-                                    <div key={m.label} className="text-center">
-                                        <div className="text-3xl font-bold text-emerald-400 mb-1">{m.val}</div>
-                                        <div className="text-sm text-slate-400">{m.label}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        <TelemetryPulse />
                     </div>
 
                     {/* Feature Cards Row 1 — 3 cards */}

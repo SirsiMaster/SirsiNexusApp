@@ -30,8 +30,8 @@ export const Route = createRoute({
 // Portal IDs + Access Codes → Firebase email + password
 const PORTAL_CREDENTIALS = [
     { id: 'ADMIN', code: 'ADMIN2025', name: 'Administrator', role: 'admin', email: 'cylton@sirsi.ai' },
-    { id: 'INV001', code: 'DEMO2025', name: 'Investor', role: 'investor', email: 'sirsimaster@gmail.com' },
-    { id: 'CLIENT', code: 'CLIENT2025', name: 'Client', role: 'client', email: 'sirsimaster@gmail.com' },
+    { id: 'INV001', code: 'DEMO2025', name: 'Investor', role: 'investor', email: 'investor@sirsi.ai' },
+    { id: 'CLIENT', code: 'CLIENT2025', name: 'Client', role: 'client', email: 'client@sirsi.ai' },
 ]
 
 const ROLE_ROUTES: Record<string, { path: string; label: string }> = {
@@ -42,7 +42,7 @@ const ROLE_ROUTES: Record<string, { path: string; label: string }> = {
 
 function LoginPage() {
     usePageMeta('Login | SirsiNexus', 'Sign in to the SirsiNexus portal. Enterprise infrastructure management.')
-    const { isAuthenticated, signIn } = useAuth()
+    const { isAuthenticated, user, signIn } = useAuth()
     const [mode, setMode] = useState<'email' | 'demo'>('email')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -53,12 +53,15 @@ function LoginPage() {
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState<string | null>(null)
 
-    // If already authenticated, redirect to dashboard
+    // If already authenticated, redirect to the correct portal based on role/email
     useEffect(() => {
-        if (isAuthenticated) {
-            window.location.href = '/dashboard'
+        if (isAuthenticated && user) {
+            const email = user.email || ''
+            const cred = PORTAL_CREDENTIALS.find(c => c.email === email)
+            const targetPath = ROLE_ROUTES[cred?.role || 'admin']?.path || '/dashboard'
+            window.location.href = targetPath
         }
-    }, [isAuthenticated])
+    }, [isAuthenticated, user])
 
     // ── Firebase Email Login ──
     const handleEmailLogin = async (e: React.FormEvent) => {

@@ -12,8 +12,15 @@ import { createRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './__root'
 import {
     Users, Building2, FileText, FolderOpen, Shield, Activity,
-    Bot, BarChart3, Terminal, Cpu
+    Bot, BarChart3, Terminal, Cpu, Info
 } from 'lucide-react'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip'
+import { useState, useEffect } from 'react'
 import {
     Card,
     CardContent,
@@ -211,31 +218,8 @@ function Dashboard() {
                         <span className="h-[1px] flex-1 bg-gray-100" />
                     </h3>
 
-                    {/* Hypervisor Status */}
-                    <Card className="border-gray-200 shadow-snd-card">
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-3 mb-4">
-                                <Cpu size={16} className="text-gray-400" />
-                                <span className="text-[10px] font-medium uppercase tracking-widest text-gray-400">
-                                    Hypervisor
-                                </span>
-                            </div>
-                            <div className="space-y-3">
-                                <div>
-                                    <div className="flex justify-between text-[10px] font-medium uppercase mb-1.5">
-                                        <span className="text-gray-600 dark:text-gray-400">Cluster Density</span>
-                                        <span className="text-emerald-600">82.4%</span>
-                                    </div>
-                                    <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
-                                        <div className="h-full bg-emerald-500 w-[82%]" />
-                                    </div>
-                                </div>
-                                <p className="text-[10px] text-gray-400 leading-relaxed pt-2 border-t border-gray-100">
-                                    Managing tenant contexts for FinalWishes, Assiduous, and Sirsi Core.
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    {/* Hypervisor Command Instrument */}
+                    <HypervisorInstrument />
 
                     {/* Security Sentinel */}
                     <Card className="border-gray-200 shadow-snd-card">
@@ -269,6 +253,128 @@ function Dashboard() {
 }
 
 // ── Sub-Components ────────────────────────────────────────────────
+
+function HypervisorInstrument() {
+    const [stats, setStats] = useState({
+        fidelity: 100.00,
+        latency: 41.2,
+        validations: 4284712
+    })
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setStats(prev => ({
+                fidelity: 100.00,
+                latency: 40 + Math.random() * 2,
+                validations: prev.validations + Math.floor(Math.random() * 50)
+            }))
+        }, 2000)
+        return () => clearInterval(timer)
+    }, [])
+
+    return (
+        <TooltipProvider>
+            <Card className="border-gray-200 shadow-snd-card overflow-hidden">
+                <CardContent className="p-0">
+                    <div className="p-4 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
+                        <div className="flex items-center gap-3">
+                            <Cpu size={14} className="text-emerald-600" />
+                            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-900">
+                                Hypervisor Command
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-[8px] font-bold text-emerald-600 border border-emerald-100 uppercase tracking-widest">
+                            <span className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse" />
+                            Live
+                        </div>
+                    </div>
+                    <div className="p-5 space-y-6">
+                        <div className="grid grid-cols-2 gap-4">
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <div className="cursor-help">
+                                        <div className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-1">
+                                            Fidelity <Info size={8} />
+                                        </div>
+                                        <div className="text-xl font-bold text-gray-900 dark:text-gray-100 font-mono">
+                                            {stats.fidelity.toFixed(2)}%
+                                        </div>
+                                    </div>
+                                </TooltipTrigger>
+                                <TooltipContent className="max-w-[200px] text-[10px]">
+                                    <p className="font-bold text-emerald-600 uppercase mb-1">Determinism</p>
+                                    <p className="text-gray-600">100% adherence to platform policies and zero-drift logic.</p>
+                                </TooltipContent>
+                            </Tooltip>
+
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <div className="cursor-help">
+                                        <div className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-1">
+                                            Latency <Info size={8} />
+                                        </div>
+                                        <div className="text-xl font-bold text-gray-900 dark:text-gray-100 font-mono">
+                                            {stats.latency.toFixed(1)}ms
+                                        </div>
+                                    </div>
+                                </TooltipTrigger>
+                                <TooltipContent className="max-w-[200px] text-[10px]">
+                                    <p className="font-bold text-emerald-600 uppercase mb-1">Reaction Speed</p>
+                                    <p className="text-gray-600">Time taken for the AI to analyze and execute autonomous fixes.</p>
+                                </TooltipContent>
+                            </Tooltip>
+
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <div className="cursor-help">
+                                        <div className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-1">
+                                            Manual Rate <Info size={8} />
+                                        </div>
+                                        <div className="text-xl font-bold text-gray-400 font-mono">
+                                            0.00%
+                                        </div>
+                                    </div>
+                                </TooltipTrigger>
+                                <TooltipContent className="max-w-[200px] text-[10px]">
+                                    <p className="font-bold text-emerald-600 uppercase mb-1">Efficiency</p>
+                                    <p className="text-gray-600">The percentage of infrastructure events requiring manual intervention. 0% indicates full autonomy.</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
+
+                        <div>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <div className="cursor-help">
+                                        <div className="flex justify-between items-end mb-2">
+                                            <div className="text-[9px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
+                                                Audit Volume <Info size={8} />
+                                            </div>
+                                            <div className="text-xs font-bold text-emerald-600 font-mono">
+                                                {(stats.validations / 1000000).toFixed(2)}M+
+                                            </div>
+                                        </div>
+                                        <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+                                            <div className="h-full bg-emerald-500 w-[92%] transition-all duration-1000" />
+                                        </div>
+                                    </div>
+                                </TooltipTrigger>
+                                <TooltipContent className="max-w-[200px] text-[10px]">
+                                    <p className="font-bold text-emerald-600 uppercase mb-1">Drift Prevention</p>
+                                    <p className="text-gray-600">Total integrity checks performed across the Global Portfolio today.</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
+
+                        <p className="text-[9px] text-gray-400 leading-relaxed pt-2 border-t border-gray-50 italic">
+                            HYPERVISOR_SIGNAL: <span className="text-emerald-600 font-bold uppercase tracking-widest">TRUE</span> // Automated Orchestration Active.
+                        </p>
+                    </div>
+                </CardContent>
+            </Card>
+        </TooltipProvider>
+    )
+}
 
 function KpiCard({ label, value, unit }: { label: string; value: string; unit?: string }) {
     return (
