@@ -2,7 +2,7 @@
 
 This index tracks **all** architectural decisions for the Sirsi platform — the unified product that spans web application, desktop application (Tauri), mobile application (React Native), Cloud Hypervisor, website, and pitch deck. All distributions share one codebase, one set of rules, one ADR registry.
 
-**Total ADRs: 24** | **Next available: ADR-030**
+**Total ADRs: 25** | **Next available: ADR-031**
 
 ---
 
@@ -34,6 +34,7 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 | [ADR-027](ADR-027-REACT-PORTAL-MIGRATION.md) | React Portal Migration — HTML-to-React Admin Console | Accepted | 2026-03-03 |
 | [ADR-028](ADR-028-PROTO-VERSIONING-ALIGNMENT.md) | Proto/gRPC Versioning Alignment — v2 Canonical | Accepted | 2026-03-03 |
 | [ADR-029](ADR-029-CLOUD-RUN-DEPLOYMENT.md) | Cloud Run Deployment Architecture — sirsi-admin Service | Accepted | 2026-03-04 |
+| [ADR-030](ADR-030-SELF-SERVICE-TENANT-PROVISIONING.md) | Self-Service Tenant Provisioning & Client Onboarding Engine | Accepted | 2026-03-06 |
 
 ---
 
@@ -56,6 +57,7 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 - ADR-010: Repository Unification (Monorepo Strategy)
 - ADR-018: Technical Stack Convergence (Stack V4 — Go, React, Firebase, Cloud SQL)
 - ADR-029: Cloud Run Deployment — sirsi-admin ConnectRPC service, scale-to-zero, vendored Go builds
+- ADR-030: Self-Service Tenant Provisioning — SaaS tiers (Free/Solo/Business), onboarding wizard, Stripe subscriptions
 
 ### Portfolio & Governance
 - ADR-017: CockroachDB Decommission — removed from all runtime, k8s, health checks
@@ -90,6 +92,7 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 | ADR-006 — ADR-008 | Active — Vault security, gRPC contracts, MSA viewer (renumbered from former sirsi-platform/ subdirectory, Mar 2026) |
 | ADR-010 — ADR-028 | Active — Platform decisions |
 | ADR-029 | Active — Cloud Run Deployment Architecture |
-| ADR-030+ | Next available |
+| ADR-030 | Active — Self-Service Tenant Provisioning |
+| ADR-031+ | Next available |
 
-> **Last updated:** March 4, 2026 — Added ADR-029 (Cloud Run Deployment for sirsi-admin)
+> **Last updated:** March 6, 2026 — Added ADR-030 (Self-Service Tenant Provisioning & Client Onboarding Engine)
