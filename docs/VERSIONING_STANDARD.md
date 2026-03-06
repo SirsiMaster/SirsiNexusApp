@@ -7,17 +7,20 @@
 
 ---
 
-## 1. Three Versioning Scopes
+## 1. Versioning Scopes
 
-The Sirsi ecosystem maintains **three independent versioning scopes**, each following Semantic Versioning ([semver.org](https://semver.org)):
+The Sirsi ecosystem maintains **four independent versioning scopes**, each following Semantic Versioning ([semver.org](https://semver.org)):
 
-| Scope | Format | Source of Truth | What Triggers a Bump |
-|:---|:---|:---|:---|
-| **Application** | `MAJOR.MINOR.PATCH-channel` | `packages/sirsi-portal-app/package.json` `"version"` | Code changes to the React app, Go backend, or infra |
-| **Website** | Same version as Application | Deployed via CI/CD from the app build | Follows app — no independent version |
-| **Documents** | `vX.Y.Z` in front matter | Each doc's own header/front matter | Content changes to canonical docs |
+| Scope | Format | Source of Truth | Current | What It Tracks |
+|:---|:---|:---|:---|:---|
+| **Portal / Web** | `MAJOR.MINOR.PATCH-channel` | `packages/sirsi-portal-app/package.json` | `0.8.3-alpha` | React admin portal, public website (sirsi.ai), all UI routes |
+| **Platform Backend** | `MAJOR.MINOR.PATCH-channel` | `packages/sirsi-admin-service/version.go` | TBD (not yet provisioned) | Go ConnectRPC services, Cloud Run, provisioning engine, tenant API |
+| **Documents** | `vX.Y` in front matter | Each document's own header | Per-document | ADRs, GEMINI.md, style guides, policies |
+| **Pitch Deck** | `vX.Y` | `docs/pitch-deck/CHANGELOG.md` | Independent | Slide content, investor materials |
 
-### 1.1 Application Versioning
+> **Key distinction**: The Portal/Web version tracks the **React application** deployed to `sirsi.ai`. The Platform Backend version tracks the **Go services** deployed to Cloud Run. They are **independent** — a pricing page rewrite bumps Portal, not Platform.
+
+### 1.1 Portal / Web Versioning
 
 ```
 MAJOR.MINOR.PATCH-channel
@@ -31,31 +34,48 @@ MAJOR.MINOR.PATCH-channel
 
 **Single source of truth**: `packages/sirsi-portal-app/package.json` → `"version"` field
 
-**Propagation on every release**:
-1. `package.json` → bump version
-2. `VERSION` (root) → update to match
-3. `docs/core/VERSION.md` → new entry at top
-4. `docs/core/CHANGELOG.md` → new entry at top
-5. `src/routes/changelog.tsx` → new release entry at top of array
-6. Git tag: `git tag -a v0.8.3-alpha -m "description"`
+This version is what the version badge in the header displays. It covers:
+- All React routes (admin dashboard, public pages, portals)
+- CSS/design system changes
+- Client-facing UI behavior
 
-### 1.2 Website Versioning
+### 1.2 Platform Backend Versioning
 
-The website (`sirsi.ai`) is the React app. Its version **is** the app version. There is no separate website version. The version badge in the public header reads from `package.json` via `lib/version.ts`.
+```
+MAJOR.MINOR.PATCH-channel
+
+(Not yet versioned — to be established when TenantService ships)
+```
+
+**Source of truth**: `packages/sirsi-admin-service/version.go` (to be created)
+
+This version tracks:
+- Go ConnectRPC services (HypervisorService, TenantService, etc.)
+- Cloud Run deployments
+- Proto/gRPC schema changes
+- Backend API surface
+
+The Platform Backend version is bumped independently of the Portal. A new gRPC endpoint doesn't necessarily bump the Portal version, and a new UI page doesn't bump the Backend.
 
 ### 1.3 Document Versioning
 
-Canonical documents (GEMINI.md, ADRs, style guides, policies) maintain their own version in their header/front matter:
+Each canonical document maintains its own version in its header/front matter:
 
 ```markdown
-**Version:** 6.2.0 (CI/CD QA Gate Canon)
-**Date:** March 5, 2026
+**Version:** 6.3.0 (Commerce & Versioning Canon)
+**Date:** March 6, 2026
 ```
 
-Document versions are **independent** of the app version. A document is bumped when its content changes substantively:
-- **PATCH** (6.2.0 → 6.2.1): Typo fixes, clarifications
-- **MINOR** (6.2.0 → 6.3.0): New rules, sections, or policies added
-- **MAJOR** (6.2.0 → 7.0.0): Structural reorganization or breaking rule changes
+Document versions are **completely independent** of app versions:
+- **PATCH** (6.3.0 → 6.3.1): Typo fixes, clarifications, minor updates
+- **MINOR** (6.3.0 → 6.4.0): New sections, rules, or policies added
+- **MAJOR** (6.3.0 → 7.0.0): Structural reorganization or breaking rule changes
+
+**ADR versioning**: ADRs are identified by their number (ADR-030) and status (Draft → Proposed → Accepted → Deprecated). They don't use semver — instead, material revisions are tracked in the ADR body with a revision history section. Example: ADR-030 may be created in one session and refined across 3 subsequent sessions, each adding a dated revision note.
+
+### 1.4 Pitch Deck Versioning
+
+Tracked in `docs/pitch-deck/CHANGELOG.md`. Independent of all other scopes.
 
 ---
 
@@ -88,7 +108,9 @@ The project is currently in `alpha` channel. Transition to `beta` requires:
 
 ---
 
-## 4. Files Updated on Every Release
+## 4. Portal/Web Release Protocol
+
+On every Portal/Web version bump, update these files:
 
 | File | Update |
 |:---|:---|
