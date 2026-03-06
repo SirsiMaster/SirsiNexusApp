@@ -39,4 +39,3 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SIRSI_NEXUS_LIVE }}"
           channelId: live
           projectId: sirsi-nexus-live
-          entryPoint: packages/sirsi-portal-app
