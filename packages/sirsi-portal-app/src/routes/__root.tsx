@@ -163,14 +163,14 @@ function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: (
                             <img src="/sirsi-icon.png" alt="Sirsi Logo" style={{ width: 48, height: 48, objectFit: 'contain' }} />
                         </div>
                         <div>
-                            <h1 style={{ fontSize: 18, fontWeight: 600, color: isDark ? '#f1f5f9' : '#0f172a', margin: 0, lineHeight: 1.2 }}>
+                            <h1 className="text-slate-900 dark:text-slate-100" style={{ fontSize: 18, fontWeight: 600, margin: 0, lineHeight: 1.2 }}>
                                 SirsiNexus
                             </h1>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <LinkComp to="/changelog" style={{ fontSize: 11, color: isDark ? '#94a3b8' : '#64748b', background: isDark ? '#1e293b' : '#f1f5f9', padding: '1px 8px', borderRadius: 4, textDecoration: 'none', cursor: 'pointer' }}>{APP_VERSION_DISPLAY}</LinkComp>
+                                <LinkComp to="/changelog" className="text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" style={{ fontSize: 11, padding: '1px 8px', borderRadius: 4, textDecoration: 'none', cursor: 'pointer' }}>{APP_VERSION_DISPLAY}</LinkComp>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                                     <div style={{ width: 6, height: 6, background: '#10b981', borderRadius: '50%' }} />
-                                    <span style={{ fontSize: 11, color: isDark ? '#cbd5e1' : '#475569' }}>Live</span>
+                                    <span className="text-slate-600 dark:text-slate-300" style={{ fontSize: 11 }}>Live</span>
                                 </div>
                             </div>
                         </div>
@@ -179,14 +179,14 @@ function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: (
                     {/* RIGHT: Nav Links */}
                     <nav style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
                         <a href="https://github.com/SirsiMaster/SirsiNexusApp/discussions" target="_blank" rel="noopener"
-                            style={{ fontSize: 14, color: isDark ? '#94a3b8' : '#475569', textDecoration: 'none', fontWeight: 400 }}>
+                            className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" style={{ fontSize: 14, textDecoration: 'none', fontWeight: 400 }}>
                             Forum
                         </a>
                         <a href="https://github.com/SirsiMaster/SirsiNexusApp" target="_blank" rel="noopener"
-                            style={{ fontSize: 14, color: isDark ? '#94a3b8' : '#475569', textDecoration: 'none', fontWeight: 400 }}>
+                            className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" style={{ fontSize: 14, textDecoration: 'none', fontWeight: 400 }}>
                             App Repository
                         </a>
-                        <LinkComp to="/documentation" style={{ fontSize: 14, color: isDark ? '#94a3b8' : '#475569', textDecoration: 'none', fontWeight: 400 }}>
+                        <LinkComp to="/documentation" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" style={{ fontSize: 14, textDecoration: 'none', fontWeight: 400 }}>
                             Documentation
                         </LinkComp>
                         <LinkComp to="/login" style={{ fontSize: 14, color: '#059669', textDecoration: 'none', fontWeight: 500 }}>
@@ -194,10 +194,11 @@ function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: (
                         </LinkComp>
                         <button
                             onClick={toggleTheme}
+                            className="border border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                             style={{
-                                padding: 8, border: `1px solid ${isDark ? '#475569' : '#cbd5e1'}`,
+                                padding: 8,
                                 borderRadius: 8, background: 'transparent', cursor: 'pointer',
-                                color: isDark ? '#94a3b8' : '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
                             }}
                             title="Toggle theme"
                         >
@@ -211,21 +212,21 @@ function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: (
 }
 
 // ── Public Site Footer (2-row compact) ──
-function PublicFooter({ isDark }: { isDark: boolean }) {
-    const lk = `text-xs ${isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-900'} transition-colors no-underline`
-    const dot = <span className={`mx-1.5 ${isDark ? 'text-slate-600' : 'text-slate-300'}`}>·</span>
+function PublicFooter() {
+    const lk = 'text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors no-underline'
+    const dot = <span className="mx-1.5 text-slate-300 dark:text-slate-600">·</span>
     const label = (t: string, emerald?: boolean) => (
-        <span className={`text-xs font-semibold uppercase tracking-wider ${emerald ? 'text-emerald-600' : isDark ? 'text-slate-300' : 'text-slate-700'} mr-2`}>{t}</span>
+        <span className={`text-xs font-semibold uppercase tracking-wider ${emerald ? 'text-emerald-600' : 'text-slate-700 dark:text-slate-300'} mr-2`}>{t}</span>
     )
 
     return (
-        <footer className={`${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'} border-t py-4`}>
+        <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-4">
             <div className="max-w-7xl mx-auto px-6">
                 {/* Row 1: Brand + all links inline */}
                 <div className="flex items-center justify-center flex-wrap gap-y-2">
                     <div className="flex items-center gap-2 mr-6">
                         <img src="/sirsi-icon.png" alt="Sirsi" className="w-5 h-5 object-contain" />
-                        <span className={`text-sm font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>SirsiNexus</span>
+                        <span className="text-sm font-semibold text-slate-900 dark:text-white">SirsiNexus</span>
                     </div>
 
                     {label('Platform')}
@@ -252,10 +253,10 @@ function PublicFooter({ isDark }: { isDark: boolean }) {
                 </div>
 
                 {/* Row 2: Copyright */}
-                <div className={`mt-3 pt-3 border-t ${isDark ? 'border-slate-800' : 'border-slate-200'} flex justify-center items-center gap-3`}>
-                    <span className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>© 2026 Sirsi Technologies Inc. All rights reserved.</span>
-                    <span className={`${isDark ? 'text-slate-700' : 'text-slate-300'}`}>|</span>
-                    <span className={`text-xs ${isDark ? 'text-slate-600' : 'text-slate-400'}`}>909 Rose Avenue, Suite 400, North Bethesda, MD 20852</span>
+                <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-center items-center gap-3">
+                    <span className="text-xs text-slate-400 dark:text-slate-500">© 2026 Sirsi Technologies Inc. All rights reserved.</span>
+                    <span className="text-slate-300 dark:text-slate-700">|</span>
+                    <span className="text-xs text-slate-400 dark:text-slate-600">909 Rose Avenue, Suite 400, North Bethesda, MD 20852</span>
                 </div>
             </div>
         </footer>
@@ -279,14 +280,14 @@ function PublicLayout() {
     }
 
     return (
-        <div className="font-inter flex flex-col min-h-screen" style={{ background: isDark ? '#0f172a' : '#f8fafc' }}>
+        <div className="font-inter flex flex-col min-h-screen bg-background">
             <PublicHeader isDark={isDark} toggleTheme={toggleTheme} />
             <div className="flex flex-col flex-1">
                 <ErrorBoundary section="Public Page">
                     <OutletComp />
                 </ErrorBoundary>
             </div>
-            <PublicFooter isDark={isDark} />
+            <PublicFooter />
         </div>
     )
 }
@@ -382,10 +383,10 @@ function AdminLayout() {
                             <div className="admin-header-brand-text">
                                 <span className="admin-header-brand-name">SirsiNexus</span>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                    <LinkComp to="/changelog" style={{ fontSize: 11, color: isDark ? '#94a3b8' : '#64748b', background: isDark ? '#1e293b' : '#f1f5f9', padding: '1px 8px', borderRadius: 4, textDecoration: 'none', cursor: 'pointer' }}>{APP_VERSION_DISPLAY}</LinkComp>
+                                    <LinkComp to="/changelog" className="text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" style={{ fontSize: 11, padding: '1px 8px', borderRadius: 4, textDecoration: 'none', cursor: 'pointer' }}>{APP_VERSION_DISPLAY}</LinkComp>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                                         <span className="admin-header-dot" />
-                                        <span style={{ fontSize: 11, color: isDark ? '#cbd5e1' : '#475569', fontWeight: 500 }}>Live</span>
+                                        <span className="text-slate-600 dark:text-slate-300" style={{ fontSize: 11, fontWeight: 500 }}>Live</span>
                                     </div>
                                 </div>
                             </div>
