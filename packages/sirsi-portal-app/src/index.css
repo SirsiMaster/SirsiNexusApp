@@ -689,6 +689,11 @@
   box-shadow: none;
 }
 
+.dark .sidebar-top-toggle .sidebar-toggle-btn:hover {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
 /* Group Structure */
 .sidebar-group {
   margin-bottom: 0.25rem;
@@ -719,6 +724,14 @@
   background: none;
   transform: none;
   box-shadow: none;
+}
+
+.dark .sidebar-group-header {
+  color: #94a3b8;
+}
+
+.dark .sidebar-group-header:hover {
+  color: #e2e8f0;
 }
 
 .sidebar-group-chevron {
@@ -789,6 +802,14 @@
   color: #059669;
 }
 
+.dark .admin-sidebar-link {
+  color: #cbd5e1;
+}
+
+.dark .admin-sidebar-link.active {
+  background: rgba(5, 150, 105, 0.15);
+}
+
 .admin-sidebar-icon {
   display: flex;
   align-items: center;
@@ -811,6 +832,10 @@
 .sidebar-signout:hover {
   color: #dc2626 !important;
   background: #fef2f2 !important;
+}
+
+.dark .sidebar-signout:hover {
+  background: rgba(220, 38, 38, 0.1) !important;
 }
 
 
