@@ -204,6 +204,63 @@
   color: #94a3b8;
 }
 
+/* ── Global Form Inputs ────────────────────────────────────────── */
+.sirsi-input,
+.sirsi-select,
+.sirsi-textarea {
+  @apply w-full rounded-lg border border-gray-200 bg-white px-3 py-2;
+  font-family: var(--snd-font-body, 'Inter', sans-serif);
+  font-size: var(--snd-text-sm, 0.8125rem);
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sirsi-input:focus,
+.sirsi-select:focus,
+.sirsi-textarea:focus {
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
+}
+
+.sirsi-input::placeholder,
+.sirsi-textarea::placeholder {
+  color: #94a3b8;
+}
+
+.dark .sirsi-input,
+.dark .sirsi-select,
+.dark .sirsi-textarea {
+  @apply bg-slate-800 border-slate-700;
+  color: #e2e8f0;
+}
+
+.dark .sirsi-input:focus,
+.dark .sirsi-select:focus,
+.dark .sirsi-textarea:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+.dark .sirsi-input::placeholder,
+.dark .sirsi-textarea::placeholder {
+  color: #64748b;
+}
+
+.sirsi-input:disabled,
+.sirsi-select:disabled,
+.sirsi-textarea:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.sirsi-label {
+  @apply block text-sm font-medium text-slate-700 mb-1;
+}
+
+.dark .sirsi-label {
+  @apply text-slate-300;
+}
+
 /* Sirsi card — canonical from shared.css */
 .sirsi-card {
   @apply bg-white border border-gray-200 rounded-lg p-4;
