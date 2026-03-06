@@ -1,37 +1,39 @@
 name: Build & Deploy React Portal
 
 on:
-    push:
-        branches:
-            - main
-        paths:
-            - "packages/sirsi-portal-app/**"
-    workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/sirsi-portal-app/**"
+      - "package-lock.json"
+      - "package.json"
+  workflow_dispatch:
 
 jobs:
-    build-and-deploy:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "20"
-                  cache: "npm"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
 
-            - name: Install root dependencies
-              run: npm ci
+      - name: Install root dependencies
+        run: npm ci
 
-            - name: Build React Portal
-              working-directory: packages/sirsi-portal-app
-              run: npm run build
+      - name: Build React Portal
+        working-directory: packages/sirsi-portal-app
+        run: npm run build
 
-            - name: Deploy to Firebase Hosting
-              uses: FirebaseExtended/action-hosting-deploy@v0
-              with:
-                  repoToken: "${{ secrets.GITHUB_TOKEN }}"
-                  firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SIRSI_NEXUS_LIVE }}"
-                  channelId: live
-                  projectId: sirsi-nexus-live
-                  entryPoint: packages/sirsi-portal-app
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_SIRSI_NEXUS_LIVE }}"
+          channelId: live
+          projectId: sirsi-nexus-live
+          entryPoint: packages/sirsi-portal-app
