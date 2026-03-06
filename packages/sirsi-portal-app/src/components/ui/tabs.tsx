@@ -1,11 +1,9 @@
 /**
  * Tabs — shadcn/ui wrapper for @radix-ui/react-tabs
  *
- * NOTE: @ts-expect-error directives below are required because the monorepo
  * has @types/react@18 hoisted to the root (consumed by other workspace packages)
  * while this package uses @types/react@19. Radix UI's ForwardRefExoticComponent
  * types reference the root @types/react@18, creating a type mismatch at JSX
- * usage sites. These @ts-expect-error directives are self-documenting and will
  * surface as errors when the root @types/react is upgraded to v19, prompting
  * their removal. See: https://github.com/radix-ui/primitives/issues/2900
  */
@@ -14,7 +12,7 @@ import * as TabsPrimitive from "@radix-ui/react-tabs"
 import { cn } from "@/lib/utils"
 
 function Tabs({ ...props }: React.ComponentProps<"div"> & { value?: string; defaultValue?: string; onValueChange?: (value: string) => void; orientation?: "horizontal" | "vertical"; dir?: "ltr" | "rtl"; activationMode?: "automatic" | "manual" }) {
-  // @ts-expect-error — Radix types resolve @types/react@18 from monorepo root; see file header
+  // @ts-expect-error - Radix ref type incompatibility with React 19
   return <TabsPrimitive.Root {...props} />
 }
 Tabs.displayName = "Tabs"
@@ -24,7 +22,7 @@ function TabsList({
   ...props
 }: React.ComponentProps<"div">) {
   return (
-    // @ts-expect-error — Radix types resolve @types/react@18 from monorepo root; see file header
+    // @ts-expect-error - Radix ref type incompatibility with React 19
     <TabsPrimitive.List
       className={cn(
         "inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
@@ -41,7 +39,7 @@ function TabsTrigger({
   ...props
 }: React.ComponentProps<"button"> & { value: string }) {
   return (
-    // @ts-expect-error — Radix types resolve @types/react@18 from monorepo root; see file header
+    // @ts-expect-error - Radix ref type incompatibility with React 19
     <TabsPrimitive.Trigger
       className={cn(
         "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow",
@@ -58,7 +56,7 @@ function TabsContent({
   ...props
 }: React.ComponentProps<"div"> & { value: string; forceMount?: true }) {
   return (
-    // @ts-expect-error — Radix types resolve @types/react@18 from monorepo root; see file header
+    // @ts-expect-error - Radix ref type incompatibility with React 19
     <TabsPrimitive.Content
       className={cn(
         "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",

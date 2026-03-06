@@ -14,7 +14,7 @@ function Separator({
   decorative?: boolean
 }) {
   return (
-    // @ts-expect-error — Radix types resolve @types/react@18 from monorepo root
+    // @ts-expect-error - Radix ref type incompatibility with React 19
     <SeparatorPrimitive.Root
       decorative={decorative}
       orientation={orientation}

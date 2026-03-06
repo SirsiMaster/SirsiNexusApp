@@ -1,7 +1,7 @@
 # GEMINI.md
 **Operational Directive for Gemini Agent (SirsiNexusApp)**
-**Version:** 6.1.0 (Typography Canon + React Migration)
-**Date:** March 1, 2026
+**Version:** 6.2.0 (CI/CD QA Gate Canon)
+**Date:** March 5, 2026
 
 ---
 
@@ -76,6 +76,23 @@ Rules, design tokens, and business logic from tenant applications do NOT apply h
 *   **Living Canon (Rule 18)**: Codify new rules immediately — never defer.
 *   **Identity Integrity (Rule 19)**: `SirsiMaster` account exclusively.
 
+## 2.3 CI/CD QA Gate Protocol (Rule 24)
+> **Every push and PR MUST pass the CI validation gate before deploy.**
+
+*   **Workflow**: `.github/workflows/ci-validate.yml`
+*   **Pre-Checks** (automated on every push/PR):
+    1. **Lock File Sync** — `npm ci` must succeed. If it fails, the lock file is out of sync.
+    2. **Production Build** — `npm run build` must produce valid artifacts.
+    3. **Artifact Verification** — `dist/index.html`, JS bundles, and CSS bundles must exist.
+    4. **Bundle Size Guard** — Warning if main JS > 500KB.
+*   **Post-Checks** (manual trigger via `workflow_dispatch`):
+    5. **Live HTTP 200** — Homepage must return 200.
+    6. **React Mount** — `<div id="root">` must be present.
+    7. **JS Bundle Reference** — HTML must reference `.js` bundles.
+    8. **Branding Verification** — "Sirsi" must appear on the page.
+*   **Root lock file** (`package-lock.json`, `package.json`) MUST be included in workflow `paths` triggers for every deploy workflow. Missing this caused the v0.8.1 CI failure.
+*   **Agent Responsibility**: After ANY `npm install` that modifies `package-lock.json`, the agent MUST commit and push the updated lock file immediately.
+
 ## 2.1 Canonical Sources of Truth
 The following files serve as the immutable benchmark for this repo:
 
@@ -114,6 +131,12 @@ The following files serve as the immutable benchmark for this repo:
 22. `docs/ADR-016-CANONICAL-MFA-ROUTING-HUB.md`
 23. `docs/ADR-017-COCKROACHDB-DECOMMISSION.md`
 24. `docs/ADR-026-HYPERVISOR-COMMAND-PROTOCOL.md`
+
+### 🔧 CI/CD Workflows (4)
+25. `.github/workflows/ci-validate.yml` — **Canonical QA gate (Rule 24)**
+26. `.github/workflows/deploy-react-portal.yml`
+27. `.github/workflows/deploy-portal.yml`
+28. `.github/workflows/deploy-contracts.yml`
 
 ## 3. Technology Stack (SirsiNexusApp — Platform Layer)
 

@@ -1,0 +1,274 @@
+# ══════════════════════════════════════════════════════════════════════
+# CI VALIDATION GATE — Canonical Pre-Flight & Post-Deploy QA
+# ══════════════════════════════════════════════════════════════════════
+#
+# This workflow is the MANDATORY quality gate for all code entering
+# the SirsiNexusApp repository. It enforces:
+#
+#   PRE-CHECK (before deploy):
+#     1. Lock file integrity (npm ci sync)
+#     2. TypeScript compilation (tsc --noEmit)
+#     3. Vite production build
+#     4. Build artifact verification
+#     5. Bundle size guard (no silent bloat)
+#
+#   POST-CHECK (after deploy, on workflow_dispatch):
+#     6. Live URL smoke test (HTTP 200)
+#     7. Critical asset verification (index.html, JS bundles)
+#
+# Canonical Reference: GEMINI.md Rule 24 (CI/CD QA Gate)
+# ADR: docs/ADR-028-CI-QA-GATE.md
+# ══════════════════════════════════════════════════════════════════════
+
+name: "CI: Validate & Build"
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
+        inputs:
+            run_post_deploy:
+                description: "Run post-deploy smoke tests"
+                type: boolean
+                default: false
+
+concurrency:
+    group: ci-validate-${{ github.ref }}
+    cancel-in-progress: true
+
+env:
+    NODE_VERSION: "20"
+    PORTAL_DIR: packages/sirsi-portal-app
+    CONTRACTS_DIR: packages/finalwishes-contracts
+    LIVE_URL: https://sirsi.ai
+
+jobs:
+    # ════════════════════════════════════════════════════════════════
+    # PRE-CHECK: Lock File Integrity
+    # ════════════════════════════════════════════════════════════════
+    pre-lockfile:
+        name: "🔒 Pre: Lock File Sync"
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+
+            - name: Verify package-lock.json is in sync
+              run: |
+                  npm ci --legacy-peer-deps --ignore-scripts 2>&1 || {
+                      echo ""
+                      echo "══════════════════════════════════════════════════════════"
+                      echo "  ❌ LOCK FILE DESYNC DETECTED"
+                      echo "══════════════════════════════════════════════════════════"
+                      echo "  package-lock.json is out of sync with package.json."
+                      echo ""
+                      echo "  FIX: Run these commands locally:"
+                      echo "    npm install"
+                      echo "    git add package-lock.json"
+                      echo "    git commit -m 'fix(ci): sync package-lock.json'"
+                      echo "    git push"
+                      echo "══════════════════════════════════════════════════════════"
+                      exit 1
+                  }
+                  echo "✅ Lock file is in sync"
+
+    # ════════════════════════════════════════════════════════════════
+    # PRE-CHECK: React Portal Build
+    # ════════════════════════════════════════════════════════════════
+    pre-build-portal:
+        name: "🏗 Pre: Build React Portal"
+        runs-on: ubuntu-latest
+        needs: pre-lockfile
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci --legacy-peer-deps
+
+            - name: Build React Portal (Vite + TypeScript)
+              working-directory: ${{ env.PORTAL_DIR }}
+              run: npm run build
+
+            - name: Verify build artifacts
+              working-directory: ${{ env.PORTAL_DIR }}
+              run: |
+                  echo "── Artifact Check ──────────────────────────"
+
+                  # Check index.html exists
+                  if [ ! -f dist/index.html ]; then
+                      echo "::error::❌ dist/index.html missing — build failed silently"
+                      exit 1
+                  fi
+                  echo "✅ dist/index.html exists"
+
+                  # Check JS bundles exist
+                  JS_COUNT=$(find dist/assets -name "*.js" | wc -l)
+                  if [ "$JS_COUNT" -eq 0 ]; then
+                      echo "::error::❌ No JavaScript bundles found in dist/assets/"
+                      exit 1
+                  fi
+                  echo "✅ $JS_COUNT JavaScript bundles found"
+
+                  # Check CSS exists
+                  CSS_COUNT=$(find dist/assets -name "*.css" | wc -l)
+                  if [ "$CSS_COUNT" -eq 0 ]; then
+                      echo "::error::❌ No CSS bundles found in dist/assets/"
+                      exit 1
+                  fi
+                  echo "✅ $CSS_COUNT CSS bundles found"
+
+                  echo ""
+                  echo "── Bundle Sizes ────────────────────────────"
+                  du -sh dist/assets/*.js | sort -rh
+                  echo ""
+                  du -sh dist/assets/*.css | sort -rh
+
+                  # Bundle size guard: warn if main JS > 500KB
+                  MAIN_SIZE=$(du -b dist/assets/index-*.js 2>/dev/null | cut -f1 | head -1)
+                  if [ -n "$MAIN_SIZE" ] && [ "$MAIN_SIZE" -gt 512000 ]; then
+                      echo ""
+                      echo "::warning::⚠️ Main bundle exceeds 500KB ($MAIN_SIZE bytes). Consider code splitting."
+                  fi
+
+                  echo ""
+                  echo "✅ All artifact checks passed"
+
+    # ════════════════════════════════════════════════════════════════
+    # PRE-CHECK: Contracts Build (conditional)
+    # ════════════════════════════════════════════════════════════════
+    pre-build-contracts:
+        name: "📄 Pre: Build Contracts"
+        runs-on: ubuntu-latest
+        needs: pre-lockfile
+        if: |
+            github.event_name == 'workflow_dispatch' ||
+            contains(github.event.head_commit.message, 'contracts') ||
+            contains(github.event.head_commit.message, 'opensign')
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: "npm"
+                  cache-dependency-path: ${{ env.CONTRACTS_DIR }}/package-lock.json
+
+            - name: Install & Build Contracts
+              working-directory: ${{ env.CONTRACTS_DIR }}
+              run: |
+                  npm ci
+                  npm run build
+
+            - name: Verify contracts build
+              working-directory: ${{ env.CONTRACTS_DIR }}
+              run: |
+                  if [ ! -d dist ]; then
+                      echo "::error::❌ Contracts dist/ directory missing"
+                      exit 1
+                  fi
+                  echo "✅ Contracts build verified"
+
+    # ════════════════════════════════════════════════════════════════
+    # POST-CHECK: Live Smoke Test (manual trigger only)
+    # ════════════════════════════════════════════════════════════════
+    post-smoke-test:
+        name: "🧪 Post: Live Smoke Test"
+        runs-on: ubuntu-latest
+        if: github.event.inputs.run_post_deploy == 'true'
+        steps:
+            - name: Smoke test — homepage
+              run: |
+                  echo "── Post-Deploy Smoke Test ──────────────────"
+                  echo "Target: ${{ env.LIVE_URL }}"
+                  echo ""
+
+                  HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "${{ env.LIVE_URL }}" --max-time 15)
+                  if [ "$HTTP_CODE" -ne 200 ]; then
+                      echo "::error::❌ Homepage returned HTTP $HTTP_CODE (expected 200)"
+                      exit 1
+                  fi
+                  echo "✅ Homepage: HTTP $HTTP_CODE"
+
+            - name: Smoke test — critical assets
+              run: |
+                  # Fetch page and verify it contains expected markers
+                  BODY=$(curl -s "${{ env.LIVE_URL }}" --max-time 15)
+
+                  # Check for root div (React mount point)
+                  if ! echo "$BODY" | grep -q 'id="root"'; then
+                      echo "::error::❌ Missing <div id='root'> — React not mounted"
+                      exit 1
+                  fi
+                  echo "✅ React root mount point found"
+
+                  # Check for JS bundle reference
+                  if ! echo "$BODY" | grep -q '\.js'; then
+                      echo "::error::❌ No JavaScript bundle referenced in HTML"
+                      exit 1
+                  fi
+                  echo "✅ JavaScript bundles referenced"
+
+                  # Check for Sirsi branding
+                  if ! echo "$BODY" | grep -qi 'sirsi'; then
+                      echo "::error::❌ No Sirsi branding found on homepage"
+                      exit 1
+                  fi
+                  echo "✅ Sirsi branding present"
+
+                  echo ""
+                  echo "══════════════════════════════════════════════"
+                  echo "  ✅ POST-DEPLOY SMOKE TEST PASSED"
+                  echo "══════════════════════════════════════════════"
+
+    # ════════════════════════════════════════════════════════════════
+    # GATE: Final CI Status
+    # ════════════════════════════════════════════════════════════════
+    ci-gate:
+        name: "✅ CI Gate"
+        runs-on: ubuntu-latest
+        needs: [pre-lockfile, pre-build-portal]
+        if: always()
+        steps:
+            - name: Evaluate CI results
+              run: |
+                  echo "── CI Gate Results ─────────────────────────"
+                  echo "Lock file:     ${{ needs.pre-lockfile.result }}"
+                  echo "Portal build:  ${{ needs.pre-build-portal.result }}"
+                  echo ""
+
+                  FAILED=false
+
+                  if [ "${{ needs.pre-lockfile.result }}" != "success" ]; then
+                      echo "::error::❌ Lock file check FAILED"
+                      FAILED=true
+                  fi
+
+                  if [ "${{ needs.pre-build-portal.result }}" != "success" ]; then
+                      echo "::error::❌ Portal build FAILED"
+                      FAILED=true
+                  fi
+
+                  if [ "$FAILED" = "true" ]; then
+                      echo ""
+                      echo "══════════════════════════════════════════════"
+                      echo "  ❌ CI GATE FAILED — Deploy blocked"
+                      echo "══════════════════════════════════════════════"
+                      exit 1
+                  fi
+
+                  echo "══════════════════════════════════════════════"
+                  echo "  ✅ ALL PRE-CHECKS PASSED — Safe to deploy"
+                  echo "══════════════════════════════════════════════"
