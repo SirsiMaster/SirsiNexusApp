@@ -6,6 +6,7 @@
  */
 
 import { createRoute } from '@tanstack/react-router'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { Route as rootRoute } from './__root'
 
 export const Route = createRoute({
@@ -20,6 +21,7 @@ function SH({ n, title }: { n: string; title: string }) {
 }
 
 function PrivacyPage() {
+    usePageMeta('Privacy Policy | SirsiNexus', 'SIRSI-PP-001 — Privacy policy for Sirsi Technologies platform services. GDPR and CCPA compliant.')
     return (
         <>
             {/* ═══════════════ HERO ═══════════════ */}

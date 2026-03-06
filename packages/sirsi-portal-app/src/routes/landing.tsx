@@ -22,6 +22,7 @@
  */
 
 import { createRoute, Link } from '@tanstack/react-router'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { Route as rootRoute } from './__root'
 
 const LinkComp = Link as any
@@ -103,6 +104,7 @@ function CheckMark() {
 }
 
 function LandingPage() {
+    usePageMeta('SirsiNexus — Autonomous Infrastructure OS', 'Sirsi Nexus is the autonomous infrastructure operating system. Build, host, optimize, and scale cloud infrastructure through natural conversation.')
     return (
         <>
             {/* Inject pattern CSS */}

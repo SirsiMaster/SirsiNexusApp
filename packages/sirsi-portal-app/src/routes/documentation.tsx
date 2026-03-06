@@ -6,6 +6,7 @@
  */
 
 import { createRoute, Link } from '@tanstack/react-router'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { Route as rootRoute } from './__root'
 
 const LinkComp = Link as any
@@ -46,6 +47,7 @@ const canonicalDocs = [
 ]
 
 function DocumentationPage() {
+    usePageMeta('Documentation | SirsiNexus', 'Core technical documentation for Sirsi Nexus. 28 canonical documents governing architecture, security, and deployment.')
     return (
         <>
             {/* ═══════════════ HERO ═══════════════ */}

@@ -8,6 +8,7 @@
  */
 
 import { createRoute } from '@tanstack/react-router'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { Route as rootRoute } from './__root'
 
 export const Route = createRoute({
@@ -44,6 +45,7 @@ function Stat({ value, label }: { value: string; label: string }) {
 }
 
 function AboutPage() {
+    usePageMeta('About | SirsiNexus', 'Sirsi Technologies — AI-powered infrastructure management platform. $100K TEDCO investment, $147K contracted revenue, DCA Live AI Leadership Award.')
     return (
         <>
             {/* ═══════════════ HERO ═══════════════ */}

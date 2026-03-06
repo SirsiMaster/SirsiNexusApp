@@ -7,6 +7,7 @@
  */
 
 import { createRoute } from '@tanstack/react-router'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { Route as rootRoute } from './__root'
 import { APP_VERSION_DISPLAY } from '@/lib/version'
 
@@ -265,6 +266,7 @@ const releases: Release[] = [
 
 // ── Component ─────────────────────────────────────────────────────
 function ChangelogPage() {
+    usePageMeta('Changelog | SirsiNexus', 'Release history and version updates for the Sirsi Nexus platform.')
     return (
         <div className="min-h-screen bg-white dark:bg-slate-900">
             {/* Hero */}

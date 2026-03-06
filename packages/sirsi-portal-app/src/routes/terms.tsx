@@ -7,6 +7,7 @@
  */
 
 import { createRoute, Link } from '@tanstack/react-router'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { Route as rootRoute } from './__root'
 
 const LinkComp = Link as any
@@ -22,6 +23,7 @@ function SH({ n, title }: { n: string; title: string }) {
 }
 
 function TermsPage() {
+    usePageMeta('Terms of Service | SirsiNexus', 'SIRSI-TOS-001 — Terms of service for Sirsi Technologies platform. Enterprise-grade legal framework.')
     return (
         <>
             {/* ═══════════════ HERO ═══════════════ */}

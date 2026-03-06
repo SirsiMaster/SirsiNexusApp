@@ -13,6 +13,7 @@
  */
 
 import { createRoute } from '@tanstack/react-router'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { Route as rootRoute } from './__root'
 import { useState, useEffect } from 'react'
 import { Eye, EyeOff, Loader2 } from 'lucide-react'
@@ -40,6 +41,7 @@ const ROLE_ROUTES: Record<string, { path: string; label: string }> = {
 }
 
 function LoginPage() {
+    usePageMeta('Login | SirsiNexus', 'Sign in to the SirsiNexus portal. Enterprise infrastructure management.')
     const { isAuthenticated, signIn } = useAuth()
     const [mode, setMode] = useState<'email' | 'demo'>('email')
     const [email, setEmail] = useState('')

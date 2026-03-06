@@ -6,6 +6,7 @@
  */
 
 import { createRoute, Link } from '@tanstack/react-router'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { Route as rootRoute } from './__root'
 
 const LinkComp = Link as any
@@ -27,6 +28,7 @@ function F({ children }: { children: React.ReactNode }) {
 }
 
 function PricingPage() {
+    usePageMeta('Pricing | SirsiNexus', 'Consumption-based pricing for Sirsi Nexus. Start free, scale to enterprise. No hidden fees.')
     return (
         <>
             {/* ═══════════════ HERO ═══════════════ */}

@@ -7,6 +7,7 @@
  */
 
 import { createRoute, Link } from '@tanstack/react-router'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { Route as rootRoute } from './__root'
 
 const LinkComp = Link as any
@@ -114,6 +115,7 @@ const posts = [
 ]
 
 function BlogPage() {
+    usePageMeta('Engineering Blog | SirsiNexus', 'Platform updates, research publications, and milestones from the Sirsi Technologies engineering team.')
     return (
         <>
             {/* ═══════════════ HERO ═══════════════ */}

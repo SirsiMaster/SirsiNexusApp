@@ -6,6 +6,7 @@
  */
 
 import { createRoute } from '@tanstack/react-router'
+import { usePageMeta } from '../hooks/usePageMeta'
 import { Route as rootRoute } from './__root'
 import { useState } from 'react'
 
@@ -26,6 +27,7 @@ const ROLES = [
 ]
 
 function SignupPage() {
+    usePageMeta('Sign Up | SirsiNexus', 'Create your SirsiNexus account. Start managing infrastructure with AI.')
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [company, setCompany] = useState('')
