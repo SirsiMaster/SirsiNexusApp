@@ -72,7 +72,7 @@ function Messaging() {
                                 ...(t.active ? { borderLeft: '4px solid #059669' } : {}),
                             }} className={`border-b border-slate-100 dark:border-slate-700 ${t.active ? 'bg-white dark:bg-slate-700' : ''}`}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 4 }}>
-                                    <span style={{ fontSize: 11, fontWeight: 600, color: t.faded ? '#9ca3af' : '#111827', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{t.name}</span>
+                                    <span style={{ fontSize: 11, fontWeight: 600, color: t.faded ? '#9ca3af' : 'var(--foreground, #111827)', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{t.name}</span>
                                     <span style={{ fontSize: 9, fontWeight: 500 }}>{t.time}</span>
                                 </div>
                                 <p style={{ fontSize: 10, color: t.faded ? '#9ca3af' : '#6b7280', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.preview}</p>

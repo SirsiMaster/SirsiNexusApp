@@ -63,14 +63,11 @@ function InvestorPortalPage() {
             </div>
 
             {/* ── KPI Ticker Banner ── */}
-            <div className="sirsi-card mb-8" style={{
-                background: 'linear-gradient(135deg, #ecfdf5, #eff6ff)',
-                borderColor: '#d1fae5', padding: '24px 32px',
-            }}>
+            <div className="sirsi-card mb-8 bg-gradient-to-br from-emerald-50 via-blue-50 to-emerald-50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 border-emerald-200 dark:border-slate-700" style={{ padding: '24px 32px' }}>
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
                         <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
-                        <span style={{ fontSize: 10, fontWeight: 600, color: '#065f46', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+                        <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 uppercase" style={{ letterSpacing: '0.15em' }}>
                             Live Platform KPIs
                         </span>
                     </div>
@@ -81,7 +78,7 @@ function InvestorPortalPage() {
                 <div className="grid grid-cols-3 lg:grid-cols-6 gap-6">
                     {kpiTicker.map(kpi => (
                         <div key={kpi.label} className="text-center">
-                            <div style={{ fontSize: 24, fontWeight: 600, color: '#064e3b' }}>{kpi.value}</div>
+                            <div className="text-2xl font-semibold text-emerald-800 dark:text-emerald-300">{kpi.value}</div>
                             <div style={{ fontSize: 9, fontWeight: 500, color: 'rgba(5,150,105,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 4 }}>
                                 {kpi.label}
                             </div>
@@ -155,7 +152,7 @@ function InvestorPortalPage() {
             </div>
 
             {/* ── Compliance Footer ── */}
-            <div className="sirsi-card bg-slate-50 dark:bg-slate-800 dark:bg-gray-800 border-slate-100 dark:border-slate-700 dark:border-gray-700 text-center py-6">
+            <div className="sirsi-card bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-center py-6">
                 <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 4 }}>
                     Institutional Compliance Disclaimer
                 </p>

@@ -52,14 +52,11 @@ function InvestorPortal() {
             </div>
 
             {/* ── KPI Banner ── */}
-            <div className="sirsi-card mb-8" style={{
-                background: 'linear-gradient(135deg, #ecfdf5, #eff6ff)',
-                borderColor: '#d1fae5', padding: 40,
-            }}>
+            <div className="sirsi-card mb-8 bg-gradient-to-br from-emerald-50 via-blue-50 to-emerald-50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 border-emerald-200 dark:border-slate-700" style={{ padding: 40 }}>
                 <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-3">
                         <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse" />
-                        <span style={{ fontSize: 10, fontWeight: 600, color: '#065f46', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Live Platform KPIs</span>
+                        <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 uppercase" style={{ letterSpacing: '0.1em' }}>Live Platform KPIs</span>
                     </div>
                     <span style={{ fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>Synchronized 2m Ago</span>
                 </div>
@@ -67,7 +64,7 @@ function InvestorPortal() {
                 <div className="grid grid-cols-2 lg:grid-cols-6 gap-8">
                     {kpis.map(kpi => (
                         <div key={kpi.label} className="text-center">
-                            <div style={{ fontSize: 24, fontWeight: 600, color: '#064e3b' }}>{kpi.value}</div>
+                            <div className="text-2xl font-semibold text-emerald-800 dark:text-emerald-300">{kpi.value}</div>
                             <div style={{ fontSize: 9, fontWeight: 500, color: 'rgba(5,150,105,0.6)', textTransform: 'uppercase', letterSpacing: '-0.02em', marginTop: 4 }}>{kpi.label}</div>
                         </div>
                     ))}
@@ -75,7 +72,7 @@ function InvestorPortal() {
             </div>
 
             {/* ── Executive Summary ── */}
-            <div className="bg-white border-l-4 border-emerald-600 rounded-r-xl p-8 shadow-sm mb-10">
+            <div className="bg-white dark:bg-slate-800 border-l-4 border-emerald-600 rounded-r-xl p-8 shadow-sm mb-10">
                 <h3 style={{ fontSize: 12, fontWeight: 600, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 12 }}>Executive Summary</h3>
                 <p style={{ fontSize: 14, lineHeight: 1.7, fontWeight: 500 }}>
                     SirsiNexus represents a unique convergence of technological innovation and strategic market positioning.
