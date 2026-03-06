@@ -986,6 +986,24 @@
   padding: 0.25rem 0;
 }
 
+/* Mini mode dark variants */
+.dark .admin-sidebar.sidebar-mini .sidebar-group-header {
+  background: #334155;
+}
+
+.dark .admin-sidebar.sidebar-mini .sidebar-top-toggle .sidebar-toggle-btn {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+.dark .admin-sidebar.sidebar-mini .sidebar-top-toggle .sidebar-toggle-btn:hover {
+  background: #334155;
+}
+
+.dark .admin-sidebar.sidebar-mini .admin-sidebar-link.active {
+  background: rgba(5, 150, 105, 0.2);
+}
+
 
 /* ── Main Content Offset ───────────────────────────────────────── */
 .sidebar-content {
