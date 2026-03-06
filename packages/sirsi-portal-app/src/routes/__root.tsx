@@ -32,6 +32,7 @@ import { ErrorBoundary } from '../components/ErrorBoundary'
 import { AuthProvider, useAuth } from '../hooks/useAuth'
 import { ProtectedRoute } from '../components/ProtectedRoute'
 import { APP_VERSION_DISPLAY } from '../lib/version'
+import NotFoundPage from './not-found'
 
 // Wrapped components to avoid TS generics issues
 const LinkComp = Link as any
@@ -517,4 +518,5 @@ function AdminLayout() {
 
 export const Route = createRootRoute({
     component: RootLayout,
+    notFoundComponent: NotFoundPage,
 })
