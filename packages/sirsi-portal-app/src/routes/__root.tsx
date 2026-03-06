@@ -153,6 +153,9 @@ const PUBLIC_PATHS = ['/', '/home', '/login', '/signup', '/documentation', '/pri
 
 // ── Public Site Header (pixel-perfect match to sirsi.ai index.html header) ──
 function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: () => void }) {
+    const [menuOpen, setMenuOpen] = useState(false)
+    const navLinkClass = 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors'
+
     return (
         <header className="bg-white dark:bg-gray-800/95 sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700" style={{ backdropFilter: 'blur(8px)' }}>
             <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
@@ -176,37 +179,57 @@ function PublicHeader({ isDark, toggleTheme }: { isDark: boolean; toggleTheme: (
                         </div>
                     </div>
 
-                    {/* RIGHT: Nav Links */}
-                    <nav style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+                    {/* RIGHT: Desktop Nav (hidden on mobile) */}
+                    <nav className="hidden md:flex items-center gap-6">
                         <a href="https://github.com/SirsiMaster/SirsiNexusApp/discussions" target="_blank" rel="noopener"
-                            className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" style={{ fontSize: 14, textDecoration: 'none', fontWeight: 400 }}>
-                            Forum
-                        </a>
+                            className={navLinkClass} style={{ fontSize: 14, textDecoration: 'none', fontWeight: 400 }}>Forum</a>
                         <a href="https://github.com/SirsiMaster/SirsiNexusApp" target="_blank" rel="noopener"
-                            className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" style={{ fontSize: 14, textDecoration: 'none', fontWeight: 400 }}>
-                            App Repository
-                        </a>
-                        <LinkComp to="/documentation" className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" style={{ fontSize: 14, textDecoration: 'none', fontWeight: 400 }}>
-                            Documentation
-                        </LinkComp>
-                        <LinkComp to="/login" style={{ fontSize: 14, color: '#059669', textDecoration: 'none', fontWeight: 500 }}>
-                            Login
-                        </LinkComp>
-                        <button
-                            onClick={toggleTheme}
+                            className={navLinkClass} style={{ fontSize: 14, textDecoration: 'none', fontWeight: 400 }}>App Repository</a>
+                        <LinkComp to="/documentation" className={navLinkClass} style={{ fontSize: 14, textDecoration: 'none', fontWeight: 400 }}>Documentation</LinkComp>
+                        <LinkComp to="/login" style={{ fontSize: 14, color: '#059669', textDecoration: 'none', fontWeight: 500 }}>Login</LinkComp>
+                        <button onClick={toggleTheme}
                             className="border border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
-                            style={{
-                                padding: 8,
-                                borderRadius: 8, background: 'transparent', cursor: 'pointer',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            }}
-                            title="Toggle theme"
-                        >
+                            style={{ padding: 8, borderRadius: 8, background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            title="Toggle theme">
                             {isDark ? <Moon size={16} /> : <Sun size={16} />}
                         </button>
                     </nav>
+
+                    {/* Mobile: Theme toggle + Hamburger */}
+                    <div className="flex md:hidden items-center gap-2">
+                        <button onClick={toggleTheme}
+                            className="border border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                            style={{ padding: 8, borderRadius: 8, background: 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            title="Toggle theme">
+                            {isDark ? <Moon size={16} /> : <Sun size={16} />}
+                        </button>
+                        <button onClick={() => setMenuOpen(!menuOpen)}
+                            className="text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                            style={{ padding: 8, borderRadius: 8, background: 'transparent', cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            aria-label="Toggle menu">
+                            {menuOpen ? (
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                            ) : (
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+                            )}
+                        </button>
+                    </div>
                 </div>
             </div>
+
+            {/* Mobile Menu Dropdown */}
+            {menuOpen && (
+                <div className="md:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-gray-800/95 px-6 py-4 space-y-1" style={{ backdropFilter: 'blur(8px)' }}>
+                    <a href="https://github.com/SirsiMaster/SirsiNexusApp/discussions" target="_blank" rel="noopener"
+                        className={`block py-2 ${navLinkClass}`} style={{ fontSize: 14, textDecoration: 'none' }}>Forum</a>
+                    <a href="https://github.com/SirsiMaster/SirsiNexusApp" target="_blank" rel="noopener"
+                        className={`block py-2 ${navLinkClass}`} style={{ fontSize: 14, textDecoration: 'none' }}>App Repository</a>
+                    <LinkComp to="/documentation" onClick={() => setMenuOpen(false)}
+                        className={`block py-2 ${navLinkClass}`} style={{ fontSize: 14, textDecoration: 'none' }}>Documentation</LinkComp>
+                    <LinkComp to="/login" onClick={() => setMenuOpen(false)}
+                        className="block py-2" style={{ fontSize: 14, color: '#059669', textDecoration: 'none', fontWeight: 500 }}>Login</LinkComp>
+                </div>
+            )}
         </header>
     )
 }
