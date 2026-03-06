@@ -504,6 +504,36 @@
   }
 }
 
+/* ── Custom Tooltip (for non-radix tooltips e.g. sidebar mini hover) ── */
+.sirsi-tooltip {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #1e293b;
+  color: #f1f5f9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 100;
+}
+
+.dark .sirsi-tooltip {
+  background: #f1f5f9;
+  color: #1e293b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+*:hover>.sirsi-tooltip {
+  opacity: 1;
+}
+
 /* ══════════════════════════════════════════════════════════════════
    ADMIN LAYOUT — Ported from common-styles.css (pixel-perfect)
    ══════════════════════════════════════════════════════════════════ */
