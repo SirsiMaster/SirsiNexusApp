@@ -4,9 +4,9 @@ All notable changes to the Sirsi Nexus project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [0.8.1-alpha] - 2026-03-05
+## [0.8.2-alpha] - 2026-03-05
 
-### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY + PLATFORM INFRA (Tasks 1-30/40)
+### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY — COMPLETE (Tasks 1-40/40)
 
 #### Portal Pages — Complete Text Color Purge (19 pages, Tasks 1-5)
 - **settings.tsx**: Removed phantom classes (`glass-panel`, `gold-border`, `action-btn`) → canonical `sirsi-card`, `btn-primary`, `sirsi-badge`
@@ -169,9 +169,50 @@ or CSS variables (`var(--color-background)`, `var(--color-border)`, `text-foregr
 #### Task 29: Hero Section Dark Mode (`4f91113`)
 - docs, privacy, terms: inline gradient → Tailwind dark: classes
 
-#### Task 30: Changelog + Version Bump (`this commit`)
+#### Task 30: Changelog Batch 21-30 (`a842adf`)
 - Comprehensive changelog for Tasks 21-30
-- Updated scope header to Tasks 1-30/40
+
+### 🛠 CSS COMPONENT SYSTEM + PRINT (Tasks 31-40/40)
+
+#### Task 31: Badge Dark Mode Variants (`9ab8bb1`)
+- sirsi-badge-success/warning/error: dark bg + text + border
+
+#### Task 32: Table Striped + Clickable Variants (`9dcc69e`)
+- .sirsi-table-striped: alternating rows (light/dark)
+- .sirsi-table-clickable: emerald hover + cursor-pointer
+
+#### Task 33: Global Form Input Dark Mode (`d0f951f`)
+- .sirsi-input, .sirsi-select, .sirsi-textarea: full dark mode
+- Focus: emerald ring, disabled state, .sirsi-label dark variant
+
+#### Task 34: Button Variants — Danger + Ghost (`4d68625`)
+- .btn-danger: red destructive action button
+- .btn-ghost: minimal hover-only for icons/inline
+
+#### Task 35: Modal Dark Mode (`409a651`)
+- users.tsx Identity Provisioning modal: bg, borders, inputs, selects, footer
+- Search input + table row hover dark mode
+
+#### Task 36: Custom Tooltip Utility (`599ed6e`)
+- .sirsi-tooltip: dark/light inverted for contrast
+- Fade-in on parent hover, positioned for sidebar mini labels
+
+#### Task 37: Inline Styles → Tailwind (`46dce8a`)
+- investor-portal.tsx + portal.tsx: KPI banner gradients, values, labels
+- Executive summary bg, compliance footer dedup
+
+#### Task 38: Selection + Scrollbar (`c2c27e3`)
+- ::selection: emerald highlight (light + dark)
+- Global scrollbar: thin 6px, themed track/thumb
+
+#### Task 39: Print Styles (`10c358b`)
+- @media print: white bg, hide chrome, full width
+- Print-safe badges, no animations, page break control
+
+#### Task 40: Final Changelog + v0.8.2-alpha (`this commit`)
+- Comprehensive changelog for Tasks 31-40
+- Version bump: 0.8.1-alpha → 0.8.2-alpha
+- **40/40 TASKS COMPLETE** — Sprint closed
 
 ## [0.8.0-alpha] - 2026-03-05
 
