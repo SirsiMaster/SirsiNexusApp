@@ -164,6 +164,53 @@
   .dark h6 {
     color: #f8fafc;
   }
+
+  /* ── Text Selection ── */
+  ::selection {
+    background: rgba(5, 150, 105, 0.25);
+    color: inherit;
+  }
+
+  .dark ::selection {
+    background: rgba(16, 185, 129, 0.3);
+    color: inherit;
+  }
+
+  /* ── Global Scrollbar (thin, themed) ── */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 transparent;
+  }
+
+  .dark * {
+    scrollbar-color: #334155 transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: #334155;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+  }
 }
 
 /* ── Swiss Neo-Deco Component Classes ────────────────────────────── */
