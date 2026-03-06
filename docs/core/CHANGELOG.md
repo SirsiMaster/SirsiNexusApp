@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.8.1-alpha] - 2026-03-05
 
-### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY (Tasks 1-15/40)
+### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY + PLATFORM INFRA (Tasks 1-20/40)
 
 #### Portal Pages — Complete Text Color Purge (19 pages, Tasks 1-5)
 - **settings.tsx**: Removed phantom classes (`glass-panel`, `gold-border`, `action-btn`) → canonical `sirsi-card`, `btn-primary`, `sirsi-badge`
@@ -104,6 +104,35 @@ or CSS variables (`var(--color-background)`, `var(--color-border)`, `text-foregr
 - Large 404 background text with emerald icon overlay
 - CTA buttons: Back to Home + Documentation
 - Registered as `notFoundComponent` on root route
+
+### 🏗 PLATFORM INFRASTRUCTURE (Tasks 16-20/40)
+
+#### Task 16: Loading Skeleton Components (`4554a64`)
+- `PageSkeleton`: admin/portal routes (sidebar offset, stats grid, table)
+- `PublicPageSkeleton`: public routes (centered hero, content blocks)
+- Both: dark/light mode, pulse animation, slate color scheme
+
+#### Task 17: Toast Notification System (`22d45d5`)
+- Installed `sonner` toast library
+- `Toaster` provider in RootLayout (top-right, richColors, closeButton)
+- Usage: `import { toast } from 'sonner'` → `toast.success('Done')`
+- Fixed React 19/@types/react type compat: `@ts-nocheck` on shadcn Portal components
+
+#### Task 18: React Portal CI/CD Pipeline (`47e1970`)
+- Created `.github/workflows/deploy-react-portal.yml`
+- Triggers: push to main (`packages/sirsi-portal-app/**`) + manual dispatch
+- Node 20 → npm ci → npm run build → Firebase Hosting deploy
+
+#### Task 19: Bundle Optimization (`f1612b4`)
+- Added `rollupOptions.output.manualChunks` to `vite.config.ts`
+- Chunks: vendor-react (180kB), vendor-recharts (431kB), vendor-icons (24kB), vendor-radix (11kB), vendor-router (95kB)
+- Main index chunk: **608kB → 321kB (-47%)**
+- No more '500 kB warning' in build output
+
+#### Task 20: Dependency Security Triage (`9f062c8`)
+- `npm audit fix`: 24 → 9 vulnerabilities
+- Fixed: serialize-javascript RCE, minimatch ReDoS
+- Remaining 9: storybook/nextjs transitive deps (requires breaking upgrade)
 
 ## [0.8.0-alpha] - 2026-03-05
 
