@@ -406,8 +406,13 @@ function AdminLayout() {
 
     return (
         <>
+            {/* Skip to main content — accessibility */}
+            <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[999] focus:px-4 focus:py-2 focus:bg-emerald-600 focus:text-white focus:rounded-lg focus:text-sm focus:font-medium">
+                Skip to main content
+            </a>
+
             {/* ── HEADER (canonical: admin-header from common-styles.css) ── */}
-            <header className="admin-header">
+            <header className="admin-header" role="banner">
                 <div className="admin-header-inner">
                     {/* LEFT: Brand + Version + Live (matches public header layout) */}
                     <div className="admin-header-left">
@@ -430,14 +435,15 @@ function AdminLayout() {
 
                     {/* CENTER: Sitewide Search */}
                     <div className="admin-header-center">
-                        <div className="admin-header-search">
-                            <Search size={16} className="admin-header-search-icon" />
+                        <div className="admin-header-search" role="search">
+                            <Search size={16} className="admin-header-search-icon" aria-hidden="true" />
                             <input
                                 type="text"
                                 placeholder="Search users, documents, settings..."
                                 autoComplete="off"
                                 onFocus={() => setCommandPaletteOpen(true)}
                                 readOnly
+                                aria-label="Search — press ⌘K to open command palette"
                             />
                             <span className="admin-header-search-kbd">⌘K</span>
                         </div>
@@ -445,7 +451,7 @@ function AdminLayout() {
 
                     {/* RIGHT: Clock + Controls */}
                     <div className="admin-header-right">
-                        <span className="admin-header-clock">{clock}</span>
+                        <span className="admin-header-clock" role="timer" aria-label="Current time">{clock}</span>
 
                         {/* Theme Toggle */}
                         <button className="admin-header-btn" onClick={toggleTheme} aria-label="Toggle theme">
@@ -473,7 +479,7 @@ function AdminLayout() {
             </header>
 
             {/* ── SIDEBAR (canonical: admin-sidebar from common-styles.css) ── */}
-            <nav className={`admin-sidebar ${sidebarMini ? 'sidebar-mini' : ''}`}>
+            <nav className={`admin-sidebar ${sidebarMini ? 'sidebar-mini' : ''}`} aria-label="Admin sidebar navigation">
                 <div className="sidebar-top-toggle">
                     <button className="sidebar-toggle-btn" onClick={toggleSidebar}
                         title={sidebarMini ? 'Expand sidebar' : 'Collapse sidebar'}>
@@ -505,7 +511,7 @@ function AdminLayout() {
             </nav>
 
             {/* ── MAIN CONTENT (canonical: sidebar-content + content-wrapper) ── */}
-            <main className={`sidebar-content ${sidebarMini ? 'sidebar-collapsed' : ''}`}>
+            <main id="main-content" className={`sidebar-content ${sidebarMini ? 'sidebar-collapsed' : ''}`}>
                 <div className="content-wrapper">
                     <ErrorBoundary section="Admin Module">
                         <OutletComp />
