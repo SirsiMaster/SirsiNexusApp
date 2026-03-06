@@ -19,7 +19,7 @@
 
 ---
 
-## 2. Technology Stack (Per GEMINI.md)
+## 2. Technology Stack (Per SIRSI_RULES.md)
 
 | Layer | Technology |
 |-------|------------|
@@ -225,7 +225,7 @@ interface ConfigState {
 |----------|--------|-----------|
 | **Routing** | Hash routing (`/#/tab`) | Works with static hosting on OpenSign |
 | **State persistence** | localStorage via Zustand persist | Cart survives refresh |
-| **Styling** | Tailwind + custom CSS | Per GEMINI.md, Royal Neo-Deco system |
+| **Styling** | Tailwind + custom CSS | Per SIRSI_RULES.md, Royal Neo-Deco system |
 | **Build output** | Static files to `/dist` | Deploy alongside OpenSign |
 | **Tab component size** | ~200-400 lines max | Maintainable, testable |
 

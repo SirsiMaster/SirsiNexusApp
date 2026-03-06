@@ -22,7 +22,7 @@ We will unify ALL `sirsi-XXX` repositories into the **SirsiNexusApp** repository
     - `sirsi-opensign` moves to `packages/sirsi-opensign`.
 3.  **Documentation Consolidation**:
     - `sirsi-pitch-deck` moves to `docs/pitch-deck`.
-4.  **Policy Update**: `GEMINI.md` will be updated to mandate a Single Repo policy.
+4.  **Policy Update**: `SIRSI_RULES.md` will be updated to mandate a Single Repo policy.
 
 ## Consequences
 - **Positive**: Simplified dependency management, atomic commits across services, unified documentation, and consistent CI/CD.

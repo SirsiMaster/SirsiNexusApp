@@ -3,7 +3,7 @@
 **Status:** Active  
 **Date:** March 6, 2026  
 **Author:** Antigravity (The Agent)  
-**Compliance:** GEMINI.md Rule 18 (Living Canon)
+**Compliance:** SIRSI_RULES.md Rule 18 (Living Canon)
 
 ---
 
@@ -15,7 +15,7 @@ The Sirsi ecosystem maintains **four independent versioning scopes**, each follo
 |:---|:---|:---|:---|:---|
 | **Portal / Web** | `MAJOR.MINOR.PATCH-channel` | `packages/sirsi-portal-app/package.json` | `0.8.3-alpha` | React admin portal, public website (sirsi.ai), all UI routes |
 | **Platform Backend** | `MAJOR.MINOR.PATCH-channel` | `packages/sirsi-admin-service/version.go` | TBD (not yet provisioned) | Go ConnectRPC services, Cloud Run, provisioning engine, tenant API |
-| **Documents** | `vX.Y` in front matter | Each document's own header | Per-document | ADRs, GEMINI.md, style guides, policies |
+| **Documents** | `vX.Y` in front matter | Each document's own header | Per-document | ADRs, SIRSI_RULES.md, style guides, policies |
 | **Pitch Deck** | `vX.Y` | `docs/pitch-deck/CHANGELOG.md` | Independent | Slide content, investor materials |
 
 > **Key distinction**: The Portal/Web version tracks the **React application** deployed to `sirsi.ai`. The Platform Backend version tracks the **Go services** deployed to Cloud Run. They are **independent** — a pricing page rewrite bumps Portal, not Platform.
@@ -59,7 +59,7 @@ The Platform Backend version is bumped independently of the Portal. A new gRPC e
 
 ### 1.3 Document Versioning (Universal — All Portfolio Repos)
 
-Every canonical document (GEMINI.md, style guides, policies, design guides) across **every Sirsi portfolio repo** uses the same versioning semantics:
+Every canonical document (SIRSI_RULES.md, style guides, policies, design guides) across **every Sirsi portfolio repo** uses the same versioning semantics:
 
 ```markdown
 **Version:** 6.3.0 (Commerce & Versioning Canon)
@@ -72,7 +72,7 @@ Every canonical document (GEMINI.md, style guides, policies, design guides) acro
 | **MINOR** | New content has been added that expands the document's coverage — new rules, new sections, new policies, new registered items. The existing structure is preserved. | Every time you add a rule, register a new ADR, or add a new section. |
 | **PATCH** | Corrections, clarifications, or rewording of existing content with **no policy change**. The document says the same thing, just more clearly. | Typo fixes, grammar, rewording for clarity. |
 
-**Example — GEMINI.md history:**
+**Example — SIRSI_RULES.md history:**
 | Version | Change | Why This Segment |
 |:---|:---|:---|
 | 6.0.0 → 6.1.0 | Added Rules 20, 21, 22 | MINOR — new rules added |
@@ -80,7 +80,7 @@ Every canonical document (GEMINI.md, style guides, policies, design guides) acro
 | 6.2.0 → 6.3.0 | Added Rule 25, registered ADR-030 + VERSIONING_STANDARD | MINOR — new rule + new items |
 | 6.3.0 → 7.0.0 | Would require: full document restructure | MAJOR — only on rewrite |
 
-> **This definition applies identically to**: `GEMINI.md` (every repo), `SWISS_NEO_DECO_STYLE_GUIDE.md`, `SECURITY_COMPLIANCE.md`, all policy documents, and any other versioned canonical document across SirsiNexusApp, FinalWishes, Assiduous, and all future tenant repos.
+> **This definition applies identically to**: `SIRSI_RULES.md` (every repo), `SWISS_NEO_DECO_STYLE_GUIDE.md`, `SECURITY_COMPLIANCE.md`, all policy documents, and any other versioned canonical document across SirsiNexusApp, FinalWishes, Assiduous, and all future tenant repos.
 
 **ADR versioning**: ADRs use their **number** (ADR-030) and **status** (Draft → Proposed → Accepted → Deprecated) as their identity — not semver. Material revisions to an accepted ADR are tracked with a dated revision note in the ADR body.
 

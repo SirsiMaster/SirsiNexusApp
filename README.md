@@ -46,7 +46,7 @@ Sirsi is the world's first **Generative AI Infrastructure Assistant**. Simply de
 3.  `proposals/COST_PROPOSAL.md`
 
 ### 📋 Project Governance
-4.  **[GEMINI.md](./GEMINI.md)** (Rules of Engagement)
+4.  **[SIRSI_RULES.md](./SIRSI_RULES.md)** (Rules of Engagement)
 5.  **[Project Scope](./docs/PROJECT_SCOPE.md)**
 6.  **[Project Management](./docs/PROJECT_MANAGEMENT.md)**
 

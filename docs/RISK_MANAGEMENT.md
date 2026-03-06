@@ -15,7 +15,7 @@
 | R4 | Cross-tenant data leak | Critical | Low | Tenant isolation via custom claims, row-level security |
 | R5 | Payment processing failure | High | Low | Stripe webhooks with retry, idempotent operations |
 | R6 | Key compromise | Critical | Very Low | Cloud KMS managed keys, rotation policy |
-| R7 | Design system cross-pollination | Medium | Low | Application Firewall (ADR-020), scoped GEMINI.md |
+| R7 | Design system cross-pollination | Medium | Low | Application Firewall (ADR-020), scoped SIRSI_RULES.md |
 
 ## Risk Assessment Matrix
 | | Low Impact | Medium Impact | High Impact | Critical Impact |

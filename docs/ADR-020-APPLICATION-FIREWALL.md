@@ -4,7 +4,7 @@
 **Accepted** — February 27, 2026
 
 ## Context
-During a portfolio cleanup audit, we discovered a **cross-pollination problem**: the `GEMINI.md` in SirsiNexusApp contained directives that only belonged to specific tenant applications. AI agents (Antigravity/Gemini, Claude, Warp) were treating all portfolio directives as universal truth, causing:
+During a portfolio cleanup audit, we discovered a **cross-pollination problem**: the `SIRSI_RULES.md` in SirsiNexusApp contained directives that only belonged to specific tenant applications. AI agents (Antigravity/Gemini, Claude, Warp) were treating all portfolio directives as universal truth, causing:
 
 1. **Design bleed**: Royal Neo-Deco styles (FinalWishes) appearing in SirsiNexusApp work (should be Swiss Financial)
 2. **Stack confusion**: Dead technologies (Rust, Hedera, CockroachDB) listed as canonical
@@ -16,7 +16,7 @@ Additionally, the `111-Venture-Projects` governance repo was a vestige of the or
 Implement a strict **Application Firewall** architecture:
 
 ### 1. Repository Independence
-Each repo has its own `GEMINI.md` (and equivalent AI config files) containing ONLY:
+Each repo has its own `SIRSI_RULES.md` (and equivalent AI config files) containing ONLY:
 - **Universal rules** (§1): Identical across all repos — coding standards, pipeline protocol, sprint governance
 - **Repo-specific rules** (§2+): Design language, tech stack details, business logic, canonical documents
 
@@ -25,7 +25,7 @@ Each repo has its own `GEMINI.md` (and equivalent AI config files) containing ON
 | :--- | :--- |
 | `111-Venture-Projects` (GitHub repo) | **Renamed to `FinalWishes`** |
 | FinalWishes code in `SirsiNexusApp/packages/sirsi-sign/` | Sirsi Sign is a **shared service**; FinalWishes is a **separate repo** |
-| Single GEMINI.md for all portfolio context | Each repo has its own scoped GEMINI.md |
+| Single SIRSI_RULES.md for all portfolio context | Each repo has its own scoped SIRSI_RULES.md |
 
 ### 3. Design Language Firewall
 | Application | Design Language | Accent Colors | Boundary |
@@ -49,11 +49,11 @@ Sirsi Sign, UCS, and auth modules remain in SirsiNexusApp as shared infrastructu
 - **Positive**: AI agents receive only relevant context per repo
 - **Positive**: No more design bleed across applications
 - **Positive**: Each repo is independently deployable and auditable
-- **Positive**: Universal rules are synchronized (§1 in each GEMINI.md)
+- **Positive**: Universal rules are synchronized (§1 in each SIRSI_RULES.md)
 - **Negative**: Universal rule changes must be updated in multiple repos
 - **Mitigation**: The universal rules section is small (~16 rules) and changes rarely
 
 ## References
 - ADR-017: CockroachDB Decommission
 - ADR-019: Rust/WASM Decommission
-- GEMINI.md §0: Identity (updated to include portfolio architecture map)
+- SIRSI_RULES.md §0: Identity (updated to include portfolio architecture map)

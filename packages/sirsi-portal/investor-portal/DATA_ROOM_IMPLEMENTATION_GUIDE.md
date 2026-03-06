@@ -267,7 +267,7 @@ interface VersionEntry {
 
 4. **The investor portal is public-facing.** It must be beautiful, polished, and institutional. Use card grids, not admin tables. Add a proper hero section, smooth animations, and a professional confidentiality footer.
 
-5. **Swiss Neo-Deco design language.** Emerald + Gold. Cinzel headings. Inter body. Glass panels. This is the Sirsi brand — see `GEMINI.md` Section 4.
+5. **Swiss Neo-Deco design language.** Emerald + Gold. Cinzel headings. Inter body. Glass panels. This is the Sirsi brand — see `SIRSI_RULES.md` Section 4.
 
 6. **LocalStorage key: `sirsi_admin_data_room`** — This is the shared data channel during the HTML phase. Both admin and investor pages read/write from this key. In React/Go, this becomes Firestore.
 
@@ -282,7 +282,7 @@ interface VersionEntry {
 | `admin/components/admin-sidebar.js` | **MODIFIED** — Data Room link → `data-room/index.html` |
 | `admin/components/admin-header.js` | **MODIFIED** — Search index → `data-room/index.html` |
 | `admin/index.html` | **MODIFIED** — Dashboard quick action → `data-room/index.html` |
-| `GEMINI.md` | **MODIFIED** — Added Rule 20 (Admin Page Layout Contract) |
+| `SIRSI_RULES.md` | **MODIFIED** — Added Rule 20 (Admin Page Layout Contract) |
 
 ---
 

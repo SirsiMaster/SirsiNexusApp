@@ -43,4 +43,4 @@ Updated the Global Security Initializer (`security-init.js`) to include `https:/
 
 ---
 **Approved by:** Antigravity (Agent) & CISO  
-**Reference:** ADR-013 Hierarchical Routing | GEMINI.md Rule 3 (Test in Browser)
+**Reference:** ADR-013 Hierarchical Routing | SIRSI_RULES.md Rule 3 (Test in Browser)

@@ -33,7 +33,7 @@ The Rust build artifacts (`target/`) consumed **11GB** of disk space. The core-e
 - `target/` — Build artifacts (11GB)
 
 ### Stack Update
-The technology stack table in GEMINI.md §3 has been updated to remove the "Rust (WASM)" and "Hedera (HCS)" rows, with a note referencing this ADR.
+The technology stack table in SIRSI_RULES.md §3 has been updated to remove the "Rust (WASM)" and "Hedera (HCS)" rows, with a note referencing this ADR.
 
 ## Alternatives Considered
 1. **Keep Rust for desktop apps (Tauri)**: Rejected — Electron uses the same JS/TS stack as web, avoiding a second language. If desktop is needed, Go CLI + web UI is preferred.
@@ -50,4 +50,4 @@ The technology stack table in GEMINI.md §3 has been updated to remove the "Rust
 
 ## References
 - ADR-017: CockroachDB Decommission
-- GEMINI.md §3: Technology Stack
+- SIRSI_RULES.md §3: Technology Stack

@@ -39,7 +39,7 @@ const releases: Release[] = [
             'Pricing page rewrite: Free / Solo ($49) / Business ($499) with feature comparison matrix',
             'ROI-Positive from Day One section on landing page',
             '8 architectural decisions locked for onboarding engine',
-            'Tenant repo scaffold spec: full canonical docs, UCS, CI/CD, GEMINI.md',
+            'Tenant repo scaffold spec: full canonical docs, UCS, CI/CD, SIRSI_RULES.md',
             'Versioning Standard codified (app, website, document scopes)',
             'Role-based routing fixes for Investor/Client portal independence',
         ],

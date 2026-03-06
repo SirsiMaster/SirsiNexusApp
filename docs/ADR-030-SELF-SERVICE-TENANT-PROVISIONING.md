@@ -110,7 +110,7 @@ github.com/SirsiMaster/{tenant-slug}/
 │   ├── ADR-INDEX.md                 # Tenant-specific ADR registry
 │   ├── ADR-001-TENANT-INITIALIZATION.md  # Auto-generated: records provisioning decisions
 │   └── ADR-TEMPLATE.md             # Standard template for future decisions
-├── GEMINI.md                        # Auto-generated, tenant-scoped canon
+├── SIRSI_RULES.md                        # Auto-generated, tenant-scoped canon
 │                                    #   - Tenant identity, slug, plan tier
 │                                    #   - Sirsi UCS rules inherited
 │                                    #   - Portfolio architecture reference
@@ -126,7 +126,7 @@ Every repo inherits:
 - **UCS infrastructure**: Sirsi UI component library, design tokens, shared utilities
 - **Canonical documentation**: Full doc suite customized to the tenant's profile
 - **ADR-001**: Auto-generated ADR recording the tenant's provisioning decisions (cloud provider, plan, region, timestamp)
-- **GEMINI.md**: Tenant-scoped operational directive inheriting Sirsi portfolio rules
+- **SIRSI_RULES.md**: Tenant-scoped operational directive inheriting Sirsi portfolio rules
 - **CI/CD pipelines**: Identical to FinalWishes/Assiduous workflow patterns
 
 ## Consequences

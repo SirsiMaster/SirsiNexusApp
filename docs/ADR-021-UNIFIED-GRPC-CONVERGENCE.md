@@ -817,7 +817,7 @@ ADR-015 enables:
 - [Buf Build](https://buf.build/docs/)
 - [Firebase Admin Go SDK](https://firebase.google.com/docs/admin/setup)
 - [Cloud Run gRPC Support](https://cloud.google.com/run/docs/triggering/grpc)
-- `GEMINI.md` §3 — Stack V4 (Go + gRPC + Protobuf)
+- `SIRSI_RULES.md` §3 — Stack V4 (Go + gRPC + Protobuf)
 - `ARCHITECTURE_DESIGN.md` §1.6 — UCS Integration
 - `ADR-014` — Bipartite Contract Execution Protocol
 

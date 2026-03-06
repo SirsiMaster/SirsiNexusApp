@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `docs/ADR-030-SELF-SERVICE-TENANT-PROVISIONING.md` — Full architecture decision record
 - `docs/ADR-INDEX.md` — Updated (25 total ADRs)
 - 8 pre-implementation decisions locked (wizard depth, infra model, GitHub strategy, pricing format, etc.)
-- Tenant repo scaffold: full `docs/` suite, GEMINI.md, ADR-001, UCS, CI/CD pipelines
+- Tenant repo scaffold: full `docs/` suite, SIRSI_RULES.md, ADR-001, UCS, CI/CD pipelines
 - GitHub template repo strategy with transferability on client departure
 
 #### Versioning Standard (NEW)

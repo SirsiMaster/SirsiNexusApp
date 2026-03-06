@@ -92,7 +92,7 @@ Start by reading the docs, then give me a status report on what's working vs bro
 2. **No Next.js** - Use TanStack Start + Vite, not Next.js
 3. **No REST APIs** - Use gRPC-Web + Protobuf
 4. **sign.sirsi.ai** is the target domain, not sirsi.ai or sirsi-nexus-live.web.app
-5. **Read GEMINI.md** - Always follow the operational directives
+5. **Read SIRSI_RULES.md** - Always follow the operational directives
 
 ---
 

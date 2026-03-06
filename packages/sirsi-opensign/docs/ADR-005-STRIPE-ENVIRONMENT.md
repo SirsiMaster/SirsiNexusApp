@@ -191,5 +191,5 @@ firebase deploy --only functions --project sirsi-nexus-live
 
 - [ADR-011: Universal Component System](../../../docs/ADR-011-UNIVERSAL-COMPONENT-SYSTEM.md)
 - [ADR-003: HMAC Security Layer](./ADR-003-HMAC-SECURITY-LAYER.md)
-- [GEMINI.md](../../../GEMINI.md) - Rule 10: Infrastructure Ownership
+- [SIRSI_RULES.md](../../../SIRSI_RULES.md) - Rule 10: Infrastructure Ownership
 

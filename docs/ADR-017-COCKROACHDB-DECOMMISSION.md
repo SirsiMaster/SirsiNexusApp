@@ -4,7 +4,7 @@
 **Accepted** — Executed February 27, 2026
 
 ## Context
-CockroachDB was originally adopted during early development as a distributed SQL database for the Sirsi Nexus platform. As the architecture evolved (documented in GEMINI.md §3), the stack was standardized to:
+CockroachDB was originally adopted during early development as a distributed SQL database for the Sirsi Nexus platform. As the architecture evolved (documented in SIRSI_RULES.md §3), the stack was standardized to:
 
 - **Cloud SQL (PostgreSQL)** for PII and Vault data
 - **Firestore** for real-time NoSQL operations

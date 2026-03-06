@@ -36,7 +36,7 @@ Establish a centralized, modular engine for contract lifecycle management (CLM),
 ### Task 1: Governance & Documentation Updates
 1. Update `docs/ADR-001-ARCHITECTURE-DECISIONS.md` to formalize the "Sirsi Infrastructure Layer".
 2. Update `docs/TECHNICAL_DESIGN.md` to describe the multi-tenant/multi-project handoff.
-3. Update `GEMINI.md` to acknowledge the "Infrastructure First" directive.
+3. Update `SIRSI_RULES.md` to acknowledge the "Infrastructure First" directive.
 
 ### Task 2: Refactor Contract Template for Portability
 1. Identify all project-specific strings in `public/finalwishes/contracts/index.html`.

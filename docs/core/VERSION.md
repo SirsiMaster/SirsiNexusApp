@@ -66,7 +66,7 @@ Architecture and initial implementation for the Client Onboarding Engine — the
 8. Pricing Page Format: Cards + Matrix
 
 #### Tenant Repo Scaffold Specification
-- Every Solo/Business repo gets: Full canonical doc suite, GEMINI.md, ADR-001, UCS component library, CI/CD pipelines
+- Every Solo/Business repo gets: Full canonical doc suite, SIRSI_RULES.md, ADR-001, UCS component library, CI/CD pipelines
 - Repos are transferable on client departure
 - GitHub Free plan sufficient for Phase 1
 
@@ -126,7 +126,7 @@ Full conversion of the HTML Admin Console into a React 19 SPA with TanStack Rout
 - `be3afe5` — **Dark Mode**: Persistent toggle, system preference detection, no FOUC
 
 #### Infrastructure & Canon Updates
-- `bb2f112` — GEMINI.md v6.1.0: Typography Canon (Rule 21) + React Migration (Rule 22)
+- `bb2f112` — SIRSI_RULES.md v6.1.0: Typography Canon (Rule 21) + React Migration (Rule 22)
 - `ad77595` — Typography standardization: bold purge + header canonization
 - `4d576d5` — Dependency updates, shared components, ADR-026 compliance
 - `1905dfd` — React dedupe fix in monorepo workspaces
@@ -195,7 +195,7 @@ This era delivered the massive architectural convergence that retired legacy tec
 - 25+ HTML pages with shared `common-styles.css`
 
 #### Governance
-- GEMINI.md v6.0.0 → v6.1.0 with Rule 20 (Admin Page Layout Contract), Rule 21 (Typography Weight Canon), Rule 22 (React Migration Contract)
+- SIRSI_RULES.md v6.0.0 → v6.1.0 with Rule 20 (Admin Page Layout Contract), Rule 21 (Typography Weight Canon), Rule 22 (React Migration Contract)
 - 8 new ADRs issued (ADR-017 through ADR-025)
 - `packages/sirsi-admin-service/` — Go backend with ConnectRPC
 - `packages/sirsi-portal-app/` — React app scaffolded (Vite + TanStack Router)
