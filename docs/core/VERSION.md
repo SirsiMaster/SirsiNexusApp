@@ -18,7 +18,7 @@ Sirsi Nexus follows [Semantic Versioning](https://semver.org/):
 ## Current Version
 
 ```
-v0.8.0-alpha — March 3, 2026
+v0.8.3-alpha — March 6, 2026
 Stack: Go + ConnectRPC | React 19 + Vite 7 | Cloud SQL + Firestore | Firebase Auth
 ```
 
@@ -30,13 +30,68 @@ Stack: Go + ConnectRPC | React 19 + Vite 7 | Cloud SQL + Firestore | Firebase Au
 > **Stack**: Go (Golang) + ConnectRPC ⟶ React 19 + Vite 7 + TanStack Router  
 > **Database**: Cloud SQL (PostgreSQL) + Firestore  
 > **Design**: Swiss Neo-Deco (Emerald + Gold, Cinzel + Inter)  
-> **Key ADRs**: ADR-027 (React Migration), ADR-026 (Hypervisor Protocol), ADR-028 (Proto Versioning)
+> **Key ADRs**: ADR-027 (React Migration), ADR-026 (Hypervisor Protocol), ADR-028 (Proto Versioning), ADR-030 (Tenant Provisioning)
 
 ---
 
-## Version 0.8.0-alpha (2026-03-03)
+## Version 0.8.3-alpha (2026-03-06)
 
-### 🚀 MAJOR MILESTONE: React Admin Portal Migration Complete
+### 🏗 ADR-030: Self-Service Tenant Provisioning & Commerce Architecture
+
+Architecture and initial implementation for the Client Onboarding Engine — the system that enables new public clients to sign up, provision infrastructure, and begin using the platform without manual administrator intervention.
+
+#### Commerce Architecture (Two Paths)
+- **Path A — SaaS Self-Service (Priority)**: Free ($0) / Solo ($49/mo) / Business ($499/mo) via Stripe Checkout → Onboarding Wizard → Provisioned Tenant
+- **Path B — Enterprise Bespoke**: Custom engagements via Sirsi Sign MSA/SOW → Product Catalog → e-Sign + Payment → Provisioned Tenant
+- FinalWishes validated as vendor #1 on Path B — its catalog structure is the generalized blueprint
+
+#### Pricing Page Rewrite
+- Complete rewrite of `/pricing` with canonical tiers: Free, Solo ($49/mo), Business ($499/mo)
+- Feature comparison matrix (7 categories, 25+ feature rows)
+- ROI section, FAQ aligned to new tiers, enterprise callout to Sirsi Sign
+- All CTAs linked to `/signup` with plan query params
+
+#### Landing Page Enhancement
+- Added "ROI-Positive from Day One" section with 4 key metrics
+- "See pricing plans →" cross-link to `/pricing`
+
+#### Pre-Implementation Decisions (8/8 LOCKED)
+1. Free Tier Wizard: Lite (3-step)
+2. Managed vs. Self-Managed: Hybrid (Free/Solo=Managed, Business=Choice)
+3. On-Premise: Deferred to Phase 5
+4. Investor Portal: Keep existing layout
+5. GitHub Strategy: Template repo (`SirsiMaster/tenant-scaffold`), automated, transferable
+6. GitHub Tier Gating: Free=none, Solo=repo, Business=repo+CI/CD
+7. Stripe Products: Create immediately
+8. Pricing Page Format: Cards + Matrix
+
+#### Tenant Repo Scaffold Specification
+- Every Solo/Business repo gets: Full canonical doc suite, GEMINI.md, ADR-001, UCS component library, CI/CD pipelines
+- Repos are transferable on client departure
+- GitHub Free plan sufficient for Phase 1
+
+#### Canon Updates
+- `docs/ADR-030-SELF-SERVICE-TENANT-PROVISIONING.md` — Formal ADR
+- `docs/ADR-INDEX.md` — Updated (25 ADRs)
+- `docs/VERSIONING_STANDARD.md` — NEW: Codified versioning standard (app, website, document)
+- Versioned documents enabled for Solo tier
+
+#### Role-Based Routing Fixes
+- Fixed routing collision: unique mock emails for Investor/Client demo credentials
+- Client/Investor portal independent layout enforcement
+
+#### Commits
+| Hash | Message |
+|:-----|:--------|
+| `3dfbdaa` | feat: landing page redesign, role-based routing fixes, client portal independence |
+| `b99abb5` | feat(ADR-030): Self-Service Tenant Provisioning — canonical ADR + pricing page rewrite |
+| `6d99e19` | feat: ROI section on landing page, versioned docs for Solo, full scaffold spec |
+
+---
+
+## Version 0.8.2-alpha (2026-03-05)
+
+### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY — COMPLETE (Tasks 1-40/40)
 
 Full conversion of the HTML Admin Console into a React 19 SPA with TanStack Router, code splitting, dark mode, and pixel-perfect Swiss Neo-Deco parity. See **ADR-027** for the full decision record.
 

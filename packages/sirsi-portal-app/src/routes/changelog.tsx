@@ -29,11 +29,41 @@ interface Release {
 
 const releases: Release[] = [
     {
+        version: 'v0.8.3-alpha',
+        date: '2026-03-06',
+        title: 'Self-Service Tenant Provisioning & Commerce Architecture',
+        channel: 'alpha',
+        tag: 'current',
+        highlights: [
+            'ADR-030: Two-path commerce architecture (SaaS Self-Service + Enterprise Bespoke)',
+            'Pricing page rewrite: Free / Solo ($49) / Business ($499) with feature comparison matrix',
+            'ROI-Positive from Day One section on landing page',
+            '8 architectural decisions locked for onboarding engine',
+            'Tenant repo scaffold spec: full canonical docs, UCS, CI/CD, GEMINI.md',
+            'Versioning Standard codified (app, website, document scopes)',
+            'Role-based routing fixes for Investor/Client portal independence',
+        ],
+    },
+    {
+        version: 'v0.8.2-alpha',
+        date: '2026-03-05',
+        title: 'Universal Dark/Light Theme Parity (40/40 Tasks)',
+        channel: 'alpha',
+        highlights: [
+            'Complete dark/light theme parity across all 19 portal pages and 10 public pages',
+            'CSS component system: badges, tables, inputs, buttons, tooltips, modals',
+            'Mobile responsive header with hamburger menu',
+            '404 Not Found page with Swiss Neo-Deco branding',
+            'Toast notification system (sonner)',
+            'React Portal CI/CD pipeline, bundle optimization (-47% main chunk)',
+            'Print styles, scrollbar theming, accessibility audit',
+        ],
+    },
+    {
         version: 'v0.8.0-alpha',
         date: '2026-03-05',
         title: 'React Migration & Public Pages',
         channel: 'alpha',
-        tag: 'current',
         highlights: [
             'Complete React 19 + Vite 7 migration of admin portal',
             'Pixel-perfect port of all HTML admin pages to React components',

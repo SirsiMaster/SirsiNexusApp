@@ -4,6 +4,48 @@ All notable changes to the Sirsi Nexus project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.8.3-alpha] - 2026-03-06
+
+### 🏗 ADR-030: SELF-SERVICE TENANT PROVISIONING & COMMERCE ARCHITECTURE
+
+#### Commerce Architecture
+- **Path A — SaaS Self-Service**: Free ($0) / Solo ($49/mo) / Business ($499/mo) → Stripe Checkout → Onboarding Wizard → Tenant
+- **Path B — Enterprise Bespoke**: Sirsi Sign catalog → MSA/SOW → e-Sign + Payment → Tenant
+- FinalWishes validated as vendor #1 on Path B — catalog structure is the generalized blueprint
+- Both paths converge at TenantService (ConnectRPC)
+
+#### Pricing Page (`/pricing`) — Complete Rewrite
+- Three canonical tier cards: Free / Solo ($49/mo, Most Popular) / Business ($499/mo)
+- Feature comparison matrix: 7 categories, 25+ feature rows, check/x/text indicators
+- ROI metrics section: 20-30% cost reduction, 3-6mo payback, 60% ops reduction, 85% incident reduction
+- FAQ section aligned with new tiers (6 questions)
+- Enterprise callout → sign.sirsi.ai for bespoke engagements
+- All CTAs linked to `/signup` with `?plan=` query param
+
+#### Landing Page Enhancement
+- Added "ROI-Positive from Day One" section (4 key metrics with hover animations)
+- Cross-link "See pricing plans →" to `/pricing`
+- Positioned between Multi-Cloud section and final CTA for maximum impact
+
+#### ADR-030 (Canonical Document)
+- `docs/ADR-030-SELF-SERVICE-TENANT-PROVISIONING.md` — Full architecture decision record
+- `docs/ADR-INDEX.md` — Updated (25 total ADRs)
+- 8 pre-implementation decisions locked (wizard depth, infra model, GitHub strategy, pricing format, etc.)
+- Tenant repo scaffold: full `docs/` suite, GEMINI.md, ADR-001, UCS, CI/CD pipelines
+- GitHub template repo strategy with transferability on client departure
+
+#### Versioning Standard (NEW)
+- `docs/VERSIONING_STANDARD.md` — Codified three-scope versioning (App, Website, Document)
+- Semver with channels (alpha → beta → rc → stable)
+- 6 files updated on every release (package.json, VERSION, VERSION.md, CHANGELOG.md, changelog.tsx, git tag)
+
+#### Role-Based Routing Fixes
+- Unique mock emails for Investor/Client demo credentials (routing collision fix)
+- Client/Investor portal independent layout enforcement
+
+#### Feature Updates
+- Versioned documents enabled for Solo tier (previously Business-only)
+
 ## [0.8.2-alpha] - 2026-03-05
 
 ### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY — COMPLETE (Tasks 1-40/40)

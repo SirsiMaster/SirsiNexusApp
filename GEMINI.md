@@ -1,7 +1,7 @@
 # GEMINI.md
 **Operational Directive for Gemini Agent (SirsiNexusApp)**
-**Version:** 6.2.0 (CI/CD QA Gate Canon)
-**Date:** March 5, 2026
+**Version:** 6.3.0 (Commerce & Versioning Canon)
+**Date:** March 6, 2026
 
 ---
 
@@ -125,18 +125,20 @@ The following files serve as the immutable benchmark for this repo:
 18. `docs/CHANGE_MANAGEMENT.md`
 19. `docs/TEST_PLAN.md`
 
-### 🧠 Knowledge & Decisions (5)
+### 🧠 Knowledge & Decisions (7)
 20. `docs/ADR-INDEX.md`
 21. `docs/ADR-TEMPLATE.md`
 22. `docs/ADR-016-CANONICAL-MFA-ROUTING-HUB.md`
 23. `docs/ADR-017-COCKROACHDB-DECOMMISSION.md`
 24. `docs/ADR-026-HYPERVISOR-COMMAND-PROTOCOL.md`
+25. `docs/ADR-030-SELF-SERVICE-TENANT-PROVISIONING.md`
+26. `docs/VERSIONING_STANDARD.md`
 
 ### 🔧 CI/CD Workflows (4)
-25. `.github/workflows/ci-validate.yml` — **Canonical QA gate (Rule 24)**
-26. `.github/workflows/deploy-react-portal.yml`
-27. `.github/workflows/deploy-portal.yml`
-28. `.github/workflows/deploy-contracts.yml`
+27. `.github/workflows/ci-validate.yml` — **Canonical QA gate (Rule 24)**
+28. `.github/workflows/deploy-react-portal.yml`
+29. `.github/workflows/deploy-portal.yml`
+30. `.github/workflows/deploy-contracts.yml`
 
 ## 3. Technology Stack (SirsiNexusApp — Platform Layer)
 
@@ -205,6 +207,14 @@ SirsiNexusApp uses the **Swiss Neo-Deco** design language across ALL packages �
     > ✅ **REQUIRED**: Copy from `packages/sirsi-portal/admin/_template.html` when creating new pages.
 
 *   **React Migration Contract (Rule 22)**: As of v0.8.0-alpha (ADR-027 Phase 5), the React app (`packages/sirsi-portal-app/`) is the **sole delivery platform**. The HTML admin portal (`packages/sirsi-portal/admin/`) is archived as historical reference. All new pages, features, and fixes target React only. No HTML pages in production.
+
+## 5.1 Release Versioning Protocol (Rule 25)
+> **Canonical Reference**: `docs/VERSIONING_STANDARD.md`
+
+*   **Semver**: `MAJOR.MINOR.PATCH-channel` (channels: `alpha` → `beta` → `rc` → `stable`)
+*   **Source of Truth**: `packages/sirsi-portal-app/package.json` `"version"` field
+*   **On Every Release**, update ALL of: `package.json`, root `VERSION`, `docs/core/VERSION.md`, `docs/core/CHANGELOG.md`, `src/routes/changelog.tsx`, git tag
+*   **Document versions** are independent of app versions (see `VERSIONING_STANDARD.md` §1.3)
 
 ## 6. Interaction Protocol
 *   **User**: "I want X."
