@@ -282,14 +282,29 @@
   border: 1px solid rgba(5, 150, 105, 0.2);
 }
 
+.dark .sirsi-badge-success {
+  @apply bg-emerald-900/30 text-emerald-400;
+  border-color: rgba(5, 150, 105, 0.3);
+}
+
 .sirsi-badge-warning {
   @apply bg-amber-50 text-amber-700;
   border: 1px solid rgba(180, 83, 9, 0.2);
 }
 
+.dark .sirsi-badge-warning {
+  @apply bg-amber-900/30 text-amber-400;
+  border-color: rgba(180, 83, 9, 0.3);
+}
+
 .sirsi-badge-error {
   @apply bg-red-50 text-red-600;
   border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.dark .sirsi-badge-error {
+  @apply bg-red-900/30 text-red-400;
+  border-color: rgba(220, 38, 38, 0.3);
 }
 
 /* Button — primary emerald */
