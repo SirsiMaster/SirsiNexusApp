@@ -91,7 +91,7 @@ function ContractsPage() {
                         </span>
                         <PenLine size={16} className="text-emerald-600" />
                     </div>
-                    <div className="text-3xl font-semibold text-gray-900">2</div>
+                    <div className="text-3xl font-semibold text-gray-900 dark:text-gray-100">2</div>
                     <div className="text-[9px] text-emerald-600 font-medium mt-2 italic">✓ Enforceable State</div>
                 </div>
 
@@ -103,7 +103,7 @@ function ContractsPage() {
                         </span>
                         <Clock size={16} className="text-amber-500" />
                     </div>
-                    <div className="text-3xl font-semibold text-gray-900">1</div>
+                    <div className="text-3xl font-semibold text-gray-900 dark:text-gray-100">1</div>
                     <div className="text-[9px] text-amber-500 font-medium mt-2 italic">Awaiting hash confirmation</div>
                 </div>
 
@@ -115,7 +115,7 @@ function ContractsPage() {
                         </span>
                         <TrendingUp size={16} className="text-emerald-600" />
                     </div>
-                    <div className="text-3xl font-semibold text-gray-900">$17.5K</div>
+                    <div className="text-3xl font-semibold text-gray-900 dark:text-gray-100">$17.5K</div>
                     <div className="text-[9px] text-emerald-600 font-medium mt-2 italic">✓ Total Commitment</div>
                 </div>
             </div>
@@ -136,7 +136,7 @@ function ContractsPage() {
                         {contracts.map((c) => (
                             <tr key={c.refId} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
                                 <td className="ps-6">
-                                    <div className="font-medium text-gray-900">{c.name}</div>
+                                    <div className="font-medium text-gray-900 dark:text-gray-100">{c.name}</div>
                                     <div className="text-[9px] font-semibold text-gray-400 uppercase tracking-widest mt-1">
                                         Ref CID: {c.refId}
                                     </div>
@@ -154,7 +154,7 @@ function ContractsPage() {
                                 <td className="hidden md:table-cell font-mono text-[9px] text-gray-400">
                                     {c.hash}
                                 </td>
-                                <td className="text-right pe-6 font-semibold text-gray-900">
+                                <td className="text-right pe-6 font-semibold text-gray-900 dark:text-gray-100">
                                     {c.value}
                                 </td>
                             </tr>

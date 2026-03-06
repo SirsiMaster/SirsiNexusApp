@@ -155,7 +155,7 @@ function OverviewTab({ filters }: TabProps) {
                             <tbody>
                                 {overview.tenants.map((t: any) => (
                                     <tr key={t.id}>
-                                        <td className="ps-4 font-medium text-gray-900">{t.name}</td>
+                                        <td className="ps-4 font-medium text-gray-900 dark:text-gray-100">{t.name}</td>
                                         <td><StatusLED status={t.status as LEDStatus} label={t.status} /></td>
                                         <td className={t.uptime30d >= 99.5 ? 'text-emerald-600 font-medium' : 'text-amber-500 font-medium'}>{t.uptime30d}%</td>
                                         <td>{t.deployments24h}</td>
@@ -620,7 +620,7 @@ function BackendTab({ filters }: TabProps) {
                         <div key={i} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
                             <span className="text-[13px] font-medium">{g.service}</span>
                             <div className="flex items-center gap-3">
-                                <span className="text-sm font-semibold text-gray-900">{g.rps} rps</span>
+                                <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{g.rps} rps</span>
                                 <Sparkline data={g.trend} width={60} height={16} />
                             </div>
                         </div>
@@ -641,7 +641,7 @@ function IntegrationsTab({ filters }: TabProps) {
                 {data.serviceHealth.map((s: any, i: any) => (
                     <div key={i} className="sirsi-card p-4">
                         <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-medium text-gray-900">{s.name}</span>
+                            <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{s.name}</span>
                             <StatusLED status={s.status} />
                         </div>
                         <p className="text-[11px] text-gray-400 m-0">{s.lastCheck} · {s.responseTimeMs > 0 ? `${s.responseTimeMs}ms` : '—'}</p>
@@ -752,7 +752,7 @@ function IncidentsTab({ filters }: TabProps) {
                         <div key={inc.id} className="py-3">
                             <div className="flex items-center gap-3 mb-2">
                                 <SeverityBadge severity={inc.severity} />
-                                <span className="text-sm font-medium text-gray-900">{inc.title}</span>
+                                <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{inc.title}</span>
                             </div>
                             <p className="text-[13px] text-gray-600 m-0 mb-2 leading-relaxed">{inc.description}</p>
                             <div className="flex gap-4">
@@ -804,7 +804,7 @@ function TabSkeleton() {
     return (
         <div className="space-y-4 pt-5">
             {[1, 2, 3].map(i => (
-                <div key={i} className="sirsi-card animate-pulse h-28 bg-gray-50" />
+                <div key={i} className="sirsi-card animate-pulse h-28 bg-gray-50 dark:bg-slate-800" />
             ))}
         </div>
     )

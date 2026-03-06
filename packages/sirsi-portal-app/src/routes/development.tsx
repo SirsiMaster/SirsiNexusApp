@@ -297,7 +297,7 @@ function KpiCard({ icon: Icon, label, value, unit }: {
                     {label}
                 </span>
             </div>
-            <div className="text-2xl font-medium text-gray-900">
+            <div className="text-2xl font-medium text-gray-900 dark:text-gray-100">
                 {value}
                 <span className="text-xs font-normal text-gray-400 ml-1.5">{unit}</span>
             </div>

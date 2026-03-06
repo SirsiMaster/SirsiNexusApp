@@ -179,7 +179,7 @@ function UsersPage() {
                         {filteredUsers.map(user => (
                             <tr key={user.id} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
                                 <td className="ps-6 font-mono text-[11px] text-gray-400">#{user.id}</td>
-                                <td className="font-medium text-gray-900">{user.name}</td>
+                                <td className="font-medium text-gray-900 dark:text-gray-100">{user.name}</td>
                                 <td className="text-gray-500 font-medium">{user.email}</td>
                                 <td>
                                     <span className={`sirsi-badge ${user.status === 'active' ? 'sirsi-badge-success' :
@@ -304,7 +304,7 @@ function StatCard({ icon: Icon, value, label, color }: {
                     <Icon size={20} />
                 </div>
                 <div>
-                    <h3 className="text-2xl font-semibold text-gray-900">{value}</h3>
+                    <h3 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">{value}</h3>
                     <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">{label}</p>
                 </div>
             </div>

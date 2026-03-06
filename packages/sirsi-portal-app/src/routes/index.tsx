@@ -165,7 +165,7 @@ function Dashboard() {
                                     <td className="ps-6">
                                         <div className="flex items-center gap-3">
                                             <Shield size={12} className="text-emerald-600" />
-                                            <span className="font-medium text-gray-900">Sirsi Master</span>
+                                            <span className="font-medium text-gray-900 dark:text-gray-100">Sirsi Master</span>
                                         </div>
                                     </td>
                                     <td>
@@ -184,7 +184,7 @@ function Dashboard() {
                                     <td className="ps-6">
                                         <div className="flex items-center gap-3">
                                             <FileText size={12} className="text-amber-500" />
-                                            <span className="font-medium text-gray-900">FinalWishes Operative</span>
+                                            <span className="font-medium text-gray-900 dark:text-gray-100">FinalWishes Operative</span>
                                         </div>
                                     </td>
                                     <td>
@@ -246,11 +246,11 @@ function Dashboard() {
                             <div className="space-y-4">
                                 <div className="flex items-center gap-3">
                                     <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                                    <span className="text-[11px] font-medium text-gray-900">MFA Handshake: Success</span>
+                                    <span className="text-[11px] font-medium text-gray-900 dark:text-gray-100">MFA Handshake: Success</span>
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
-                                    <span className="text-[11px] font-medium text-gray-900">Vault Access: Verified</span>
+                                    <span className="text-[11px] font-medium text-gray-900 dark:text-gray-100">Vault Access: Verified</span>
                                 </div>
                                 <div className="flex items-center gap-3 opacity-40">
                                     <div className="w-1.5 h-1.5 bg-gray-300 rounded-full" />
@@ -276,7 +276,7 @@ function KpiCard({ label, value, unit }: { label: string; value: string; unit?: 
             <span className="text-[10px] font-medium text-gray-400 uppercase tracking-wider block mb-2">
                 {label}
             </span>
-            <div className="text-2xl font-medium text-gray-900">
+            <div className="text-2xl font-medium text-gray-900 dark:text-gray-100">
                 {value}
                 {unit && <span className="text-xs font-normal text-gray-400 ml-1">{unit}</span>}
             </div>
