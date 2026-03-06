@@ -91,7 +91,7 @@ function Dashboard() {
                         className="sirsi-card flex items-center gap-3 hover:border-emerald-300 transition-all no-underline"
                     >
                         <link.icon size={14} className="text-gray-400" />
-                        <span className="text-xs font-semibold text-gray-700">{link.label}</span>
+                        <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">{link.label}</span>
                     </a>
                 ))}
             </div>
@@ -173,7 +173,7 @@ function Dashboard() {
                                             Global Infrastructure
                                         </span>
                                     </td>
-                                    <td className="text-xs font-medium text-gray-600">
+                                    <td className="text-xs font-medium text-gray-600 dark:text-gray-400">
                                         Vertex AI Pipeline Sanitization
                                     </td>
                                     <td className="text-right pe-6 text-[10px] font-medium text-gray-400">
@@ -192,7 +192,7 @@ function Dashboard() {
                                             finalwishes
                                         </span>
                                     </td>
-                                    <td className="text-xs font-medium text-gray-600">
+                                    <td className="text-xs font-medium text-gray-600 dark:text-gray-400">
                                         Legal Will Synthesis #FW-2026
                                     </td>
                                     <td className="text-right pe-6 text-[10px] font-medium text-gray-400">
@@ -223,7 +223,7 @@ function Dashboard() {
                             <div className="space-y-3">
                                 <div>
                                     <div className="flex justify-between text-[10px] font-medium uppercase mb-1.5">
-                                        <span className="text-gray-600">Cluster Density</span>
+                                        <span className="text-gray-600 dark:text-gray-400">Cluster Density</span>
                                         <span className="text-emerald-600">82.4%</span>
                                     </div>
                                     <div className="h-1 bg-gray-100 rounded-full overflow-hidden">

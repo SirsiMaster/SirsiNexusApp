@@ -261,7 +261,7 @@ function DevelopmentIntelligence() {
                                             {config.label}
                                         </span>
                                     </td>
-                                    <td className="text-xs font-medium text-gray-700">
+                                    <td className="text-xs font-medium text-gray-700 dark:text-gray-300">
                                         {commit.message}
                                     </td>
                                     <td>
@@ -323,7 +323,7 @@ function BreakdownBar({ label, count, total, color }: {
     return (
         <div>
             <div className="flex justify-between items-center mb-1">
-                <span className="text-[11px] font-medium text-gray-600">{label}</span>
+                <span className="text-[11px] font-medium text-gray-600 dark:text-gray-400">{label}</span>
                 <span className="text-[10px] font-medium text-gray-400">
                     {count} <span className="text-gray-300">({pct}%)</span>
                 </span>
