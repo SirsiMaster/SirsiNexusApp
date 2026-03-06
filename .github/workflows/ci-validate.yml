@@ -61,7 +61,7 @@ jobs:
 
             - name: Verify package-lock.json is in sync
               run: |
-                  npm ci --legacy-peer-deps --ignore-scripts 2>&1 || {
+                  npm ci --ignore-scripts 2>&1 || {
                       echo ""
                       echo "══════════════════════════════════════════════════════════"
                       echo "  ❌ LOCK FILE DESYNC DETECTED"
@@ -95,7 +95,7 @@ jobs:
                   cache: "npm"
 
             - name: Install dependencies
-              run: npm ci --legacy-peer-deps
+              run: npm ci
 
             - name: Build React Portal (Vite + TypeScript)
               working-directory: ${{ env.PORTAL_DIR }}

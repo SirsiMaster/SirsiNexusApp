@@ -14,7 +14,6 @@ function Separator({
   decorative?: boolean
 }) {
   return (
-    // @ts-expect-error - Radix ref type incompatibility with React 19
     <SeparatorPrimitive.Root
       decorative={decorative}
       orientation={orientation}
