@@ -439,6 +439,53 @@
   color: #f1f5f9;
 }
 
+/* Button — danger (destructive actions) */
+.btn-danger {
+  background: #dc2626;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid #dc2626;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+
+/* Button — ghost (minimal, icon-only or inline) */
+.btn-ghost {
+  background: transparent;
+  color: #64748b;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-ghost:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.dark .btn-ghost {
+  color: #94a3b8;
+}
+
+.dark .btn-ghost:hover {
+  background: #1e293b;
+  color: #f1f5f9;
+}
+
 /* Pulse dot */
 .pulse-dot {
   @apply w-2 h-2 rounded-full bg-emerald-500;
