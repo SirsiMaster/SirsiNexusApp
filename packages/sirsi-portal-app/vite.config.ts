@@ -20,4 +20,23 @@ export default defineConfig({
       'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Split large vendor libraries into separate cached chunks
+          'vendor-react': ['react', 'react-dom', 'react-dom/client'],
+          'vendor-recharts': ['recharts'],
+          'vendor-icons': ['lucide-react'],
+          'vendor-radix': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-slot',
+            '@radix-ui/react-tooltip',
+          ],
+          'vendor-router': ['@tanstack/react-router'],
+        },
+      },
+    },
+  },
 })
