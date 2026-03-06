@@ -37,7 +37,7 @@ const TIERS = [
         description: 'Get a read-only window into the Sirsi platform. Perfect for evaluation and exploration.',
         cta: 'Get Started',
         ctaVariant: 'outline' as const,
-        href: '/signup',
+        href: '/signup/onboarding',
         icon: Zap,
         features: [
             '1 user',
@@ -57,7 +57,7 @@ const TIERS = [
         description: 'Everything you need to launch and scale. Dedicated infrastructure with full platform access.',
         cta: 'Start Solo',
         ctaVariant: 'primary' as const,
-        href: '/signup?plan=solo',
+        href: '/signup/onboarding?plan=solo',
         icon: Rocket,
         popular: true,
         features: [
@@ -80,7 +80,7 @@ const TIERS = [
         description: 'Full autonomous optimization for companies with existing infrastructure — both on-prem and cloud.',
         cta: 'Go Business',
         ctaVariant: 'outline' as const,
-        href: '/signup?plan=business',
+        href: '/signup/onboarding?plan=business',
         icon: Building2,
         features: [
             'Unlimited users',
@@ -428,7 +428,7 @@ function PricingPage() {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <LinkComp
-                            to="/signup"
+                            to="/signup/onboarding"
                             className="px-8 py-4 bg-white text-emerald-700 hover:bg-emerald-50 rounded-xl font-semibold transition-all hover:shadow-lg flex items-center justify-center gap-2"
                         >
                             Get Started Free <ArrowRight size={16} />
