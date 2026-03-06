@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.8.1-alpha] - 2026-03-05
 
-### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY + PLATFORM INFRA (Tasks 1-20/40)
+### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY + PLATFORM INFRA (Tasks 1-30/40)
 
 #### Portal Pages — Complete Text Color Purge (19 pages, Tasks 1-5)
 - **settings.tsx**: Removed phantom classes (`glass-panel`, `gold-border`, `action-btn`) → canonical `sirsi-card`, `btn-primary`, `sirsi-badge`
@@ -133,6 +133,45 @@ or CSS variables (`var(--color-background)`, `var(--color-border)`, `text-foregr
 - `npm audit fix`: 24 → 9 vulnerabilities
 - Fixed: serialize-javascript RCE, minimatch ReDoS
 - Remaining 9: storybook/nextjs transitive deps (requires breaking upgrade)
+
+### 🛡 POLISH & HARDENING (Tasks 21-30/40)
+
+#### Task 21: Admin Header + Sidebar Mobile Responsiveness (`23c2e3e`)
+- @media (max-width: 768px): hide search, clock, user label; sidebar auto-collapse to 60px
+- @media (max-width: 480px): hide brand text, show logo only
+
+#### Task 22: Error Boundary Enhancement (`da438af`)
+- Theme-aware bg/border/text (no more glass-panel)
+- Error timestamp, ‘Back to Dashboard’ button, improved contrast
+
+#### Task 23: Accessibility Audit (`835b002`)
+- Skip-to-content link, role=banner, role=search, aria-labels
+- id=main-content, aria-label on sidebar + clock
+
+#### Task 24: SEO Meta Tags (`c4c070d`)
+- `usePageMeta` hook: document.title + meta description
+- Applied to all 10 public pages with unique titles/descriptions
+
+#### Task 25: Sidebar Mini-Mode Dark Polish (`e18c34e`)
+- Dark variants for group divider, toggle button, hover, active link
+
+#### Task 26: Deep Dark Mode Sweep (`ef71e4d`)
+- text-gray-900 → dark:text-gray-100 on 5 portal pages (21 instances)
+
+#### Task 27: Favicon & Open Graph Meta (`15db5be`)
+- Sirsi favicon, apple-touch-icon, theme-color
+- OG + Twitter meta tags (title, description, image, url)
+
+#### Task 28: Final Text Color Sweep (`53b4ed3`)
+- text-gray-700/600 → dark: variants on dashboard + development
+- **ZERO** text-gray-{600,700,900} without dark: across all 35 routes
+
+#### Task 29: Hero Section Dark Mode (`4f91113`)
+- docs, privacy, terms: inline gradient → Tailwind dark: classes
+
+#### Task 30: Changelog + Version Bump (`this commit`)
+- Comprehensive changelog for Tasks 21-30
+- Updated scope header to Tasks 1-30/40
 
 ## [0.8.0-alpha] - 2026-03-05
 
