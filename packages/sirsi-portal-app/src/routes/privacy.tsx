@@ -25,7 +25,7 @@ function PrivacyPage() {
     return (
         <>
             {/* ═══════════════ HERO ═══════════════ */}
-            <section className="relative py-12" style={{ background: 'linear-gradient(135deg, #f8fafc, #ecfdf5, #d1fae5)' }}>
+            <section className="relative py-12 bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900/30 dark:to-slate-800">
                 <div className="max-w-4xl mx-auto px-6 text-center">
                     <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">
                         Privacy <span className="text-emerald-600">Policy</span>
