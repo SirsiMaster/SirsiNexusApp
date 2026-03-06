@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.8.1-alpha] - 2026-03-05
 
-### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY (Tasks 1-10/40)
+### 🎨 UNIVERSAL DARK/LIGHT THEME PARITY (Tasks 1-15/40)
 
 #### Portal Pages — Complete Text Color Purge (19 pages, Tasks 1-5)
 - **settings.tsx**: Removed phantom classes (`glass-panel`, `gold-border`, `action-btn`) → canonical `sirsi-card`, `btn-primary`, `sirsi-badge`
@@ -74,6 +74,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 **Zero non-brand hardcoded patterns remain** across all portal AND public pages.
 All inline `background`, `border`, `color` patterns replaced with `className` using `dark:` variants
 or CSS variables (`var(--color-background)`, `var(--color-border)`, `text-foreground`).
+
+#### Task 11: Universal Theme Toggle — CSS-Driven (`5a4824c`)
+- PublicHeader: 9 `isDark` ternaries → Tailwind `dark:` classes
+- PublicFooter: 11 `isDark` ternaries → Tailwind `dark:` classes, `isDark` prop removed
+- AdminHeader: version badge + Live text → Tailwind `dark:` classes
+- PublicLayout wrapper: `isDark` bg ternary → `bg-background` CSS variable
+- Result: `isDark` state only used for Moon/Sun icon swap
+
+#### Task 12: Public Pages Dark Mode (`c1a1430`)
+- **login.tsx**: Full dark mode — gradient bg, card, toggle bar, labels, 4 inputs, alerts, demo box
+- **blog.tsx**: Hero gradient + title/subtitle dark variants
+- **documentation.tsx**, **privacy.tsx**, **terms.tsx**: Hero title + subtitle dark variants
+
+#### Task 13: Admin Sidebar Dark Mode Polish (`585f1eb`)
+- `.sidebar-top-toggle .sidebar-toggle-btn:hover` dark bg/text
+- `.sidebar-group-header` dark color + hover
+- `.admin-sidebar-link` dark text + active bg opacity
+- `.sidebar-signout:hover` dark red bg
+
+#### Task 14: Mobile Responsive Header (`790b4fd`)
+- Desktop nav hidden below `md` breakpoint (`hidden md:flex`)
+- Hamburger button with menu/X icon toggle
+- Mobile dropdown panel with all nav links
+- Close-on-navigate behavior
+
+#### Task 15: 404 Not Found Page (`2e49daa`)
+- Created `not-found.tsx` with Swiss Neo-Deco branding
+- Large 404 background text with emerald icon overlay
+- CTA buttons: Back to Home + Documentation
+- Registered as `notFoundComponent` on root route
 
 ## [0.8.0-alpha] - 2026-03-05
 
