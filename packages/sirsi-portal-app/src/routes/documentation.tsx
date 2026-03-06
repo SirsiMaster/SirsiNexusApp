@@ -51,10 +51,10 @@ function DocumentationPage() {
             {/* ═══════════════ HERO ═══════════════ */}
             <section className="relative py-12" style={{ background: 'linear-gradient(135deg, #f8fafc, #ecfdf5, #d1fae5)' }}>
                 <div className="max-w-7xl mx-auto px-6 text-center">
-                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">
                         Core Technical <span className="text-emerald-600">Documentation</span>
                     </h1>
-                    <p className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto">
+                    <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
                         Development is governed by the 28 Canonical Documents defined in the GEMINI governance protocol.
                         All architectural and engineering decisions align with these benchmarks.
                     </p>

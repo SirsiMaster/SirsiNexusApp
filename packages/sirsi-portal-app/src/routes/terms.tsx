@@ -27,10 +27,10 @@ function TermsPage() {
             {/* ═══════════════ HERO ═══════════════ */}
             <section className="relative py-12" style={{ background: 'linear-gradient(135deg, #f8fafc, #ecfdf5, #d1fae5)' }}>
                 <div className="max-w-4xl mx-auto px-6 text-center">
-                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100 mb-4">
                         Terms of <span className="text-emerald-600">Service</span>
                     </h1>
-                    <p className="text-lg text-slate-600">
+                    <p className="text-lg text-slate-600 dark:text-slate-400">
                         <strong>Document ID:</strong> SIRSI-TOS-001 &nbsp;·&nbsp;
                         <strong>Version:</strong> 1.0.0 &nbsp;·&nbsp;
                         <strong>Effective:</strong> January 28, 2026

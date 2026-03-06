@@ -107,8 +107,7 @@ function LoginPage() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center px-4 py-6 flex-1"
-            style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%)' }}>
+        <div className="flex flex-col items-center justify-center px-4 py-6 flex-1 bg-gradient-to-br from-blue-50 via-sky-50 to-emerald-50 dark:from-slate-900 dark:via-slate-800 dark:to-emerald-950">
 
             {/* Logo */}
             <div className="mb-4 flex flex-col items-center">
@@ -120,21 +119,21 @@ function LoginPage() {
                         (e.target as HTMLImageElement).style.display = 'none'
                     }}
                 />
-                <h1 className="text-2xl font-bold text-gray-900">SirsiNexus Portal</h1>
-                <p className="text-sm text-gray-500 mt-1">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">SirsiNexus Portal</h1>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                     Secure access to financial data, documents, and communications
                 </p>
             </div>
 
             {/* Login Card */}
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
+            <div className="w-full max-w-md bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 p-6">
 
                 {/* Mode Toggle */}
-                <div className="flex mb-6 bg-gray-100 rounded-lg p-1">
+                <div className="flex mb-6 bg-gray-100 dark:bg-slate-700 rounded-lg p-1">
                     <button
                         type="button"
                         onClick={() => { setMode('email'); setError('') }}
-                        className={`flex-1 py-2 text-sm rounded-md transition-all ${mode === 'email' ? 'bg-white shadow-sm font-medium text-gray-900' : 'text-gray-500'}`}
+                        className={`flex-1 py-2 text-sm rounded-md transition-all ${mode === 'email' ? 'bg-white dark:bg-slate-600 shadow-sm font-medium text-gray-900 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400'}`}
                     >
                         Email Login
                     </button>
@@ -151,7 +150,7 @@ function LoginPage() {
                 {mode === 'email' && (
                     <form onSubmit={handleEmailLogin} className="space-y-5">
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Email Address
                             </label>
                             <input
@@ -161,13 +160,14 @@ function LoginPage() {
                                 onChange={e => setEmail(e.target.value)}
                                 placeholder="you@sirsi.ai"
                                 disabled={loading || !!success}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm
+                                    bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100
                                     focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500
-                                    disabled:bg-gray-50 disabled:text-gray-400"
+                                    disabled:bg-gray-50 dark:disabled:bg-slate-800 disabled:text-gray-400"
                             />
                         </div>
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Password
                             </label>
                             <div className="relative">
@@ -178,9 +178,10 @@ function LoginPage() {
                                     onChange={e => setPassword(e.target.value)}
                                     placeholder="Enter your password"
                                     disabled={loading || !!success}
-                                    className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg text-sm
+                                    className="w-full px-3 py-2 pr-10 border border-gray-300 dark:border-slate-600 rounded-lg text-sm
+                                        bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100
                                         focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500
-                                        disabled:bg-gray-50 disabled:text-gray-400"
+                                        disabled:bg-gray-50 dark:disabled:bg-slate-800 disabled:text-gray-400"
                                 />
                                 <button type="button" onClick={() => setShowPassword(!showPassword)}
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-emerald-600">
@@ -212,7 +213,7 @@ function LoginPage() {
                 {mode === 'demo' && (
                     <form onSubmit={handleDemoLogin} className="space-y-5">
                         <div>
-                            <label htmlFor="portal-id" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="portal-id" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Portal ID
                             </label>
                             <input
@@ -222,13 +223,14 @@ function LoginPage() {
                                 onChange={e => setPortalId(e.target.value)}
                                 placeholder="Enter your Portal ID"
                                 disabled={loading || !!success}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg text-sm
+                                    bg-white dark:bg-slate-700 text-gray-900 dark:text-gray-100
                                     focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500
-                                    disabled:bg-gray-50 disabled:text-gray-400"
+                                    disabled:bg-gray-50 dark:disabled:bg-slate-800 disabled:text-gray-400"
                             />
                         </div>
                         <div>
-                            <label htmlFor="access-code" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="access-code" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Access Code
                             </label>
                             <div className="relative">
@@ -268,12 +270,12 @@ function LoginPage() {
                         </button>
 
                         {/* Demo Credentials */}
-                        <div className="p-3 bg-blue-50 border border-blue-100 rounded-lg text-xs text-blue-700">
+                        <div className="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 rounded-lg text-xs text-blue-700 dark:text-blue-300">
                             <strong>Demo Credentials:</strong>
                             <div className="mt-2 space-y-1">
-                                <div>• ID: <code className="bg-blue-100 px-1 rounded">ADMIN</code> Code: <code className="bg-blue-100 px-1 rounded">ADMIN2025</code></div>
-                                <div>• ID: <code className="bg-blue-100 px-1 rounded">INV001</code> Code: <code className="bg-blue-100 px-1 rounded">DEMO2025</code></div>
-                                <div>• ID: <code className="bg-blue-100 px-1 rounded">CLIENT</code> Code: <code className="bg-blue-100 px-1 rounded">CLIENT2025</code></div>
+                                <div>• ID: <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">ADMIN</code> Code: <code className="bg-blue-100 px-1 rounded">ADMIN2025</code></div>
+                                <div>• ID: <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">INV001</code> Code: <code className="bg-blue-100 px-1 rounded">DEMO2025</code></div>
+                                <div>• ID: <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">CLIENT</code> Code: <code className="bg-blue-100 px-1 rounded">CLIENT2025</code></div>
                             </div>
                         </div>
                     </form>
@@ -288,13 +290,13 @@ function LoginPage() {
                 )}
 
                 {/* Contact */}
-                <p className="text-center text-sm text-gray-500 mt-5">
+                <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-5">
                     Need access? Contact us at{' '}
                     <a href="mailto:cylton@sirsi.ai" className="text-emerald-600 hover:text-emerald-800 transition-colors">
                         cylton@sirsi.ai
                     </a>
                 </p>
-                <p className="text-center text-xs text-gray-400 mt-1">
+                <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-1">
                     Access requires approval from the administrator.
                 </p>
             </div>
