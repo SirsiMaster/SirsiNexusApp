@@ -33,6 +33,7 @@ import { AuthProvider, useAuth } from '../hooks/useAuth'
 import { ProtectedRoute } from '../components/ProtectedRoute'
 import { APP_VERSION_DISPLAY } from '../lib/version'
 import NotFoundPage from './not-found'
+import { Toaster } from 'sonner'
 
 // Wrapped components to avoid TS generics issues
 const LinkComp = Link as any
@@ -330,6 +331,16 @@ function RootLayout() {
     // remounting and auth state loss on route transitions.
     return (
         <AuthProvider>
+            {/* Sonner toast provider — type cast needed for React 19 compat */}
+            {(Toaster as any)({
+                position: 'top-right',
+                toastOptions: {
+                    className: 'font-inter',
+                    style: { fontFamily: 'Inter, sans-serif' },
+                },
+                richColors: true,
+                closeButton: true,
+            })}
             {isPublicPage ? (
                 <>
                     <PublicLayout />
