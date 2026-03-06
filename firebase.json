@@ -18,7 +18,10 @@
     "hosting": [
         {
             "site": "sirsi-ai",
-            "public": "packages/sirsi-portal",
+            "public": "packages/sirsi-portal-app/dist",
+            "predeploy": [
+                "npm --prefix packages/sirsi-portal-app run build"
+            ],
             "cleanUrls": true,
             "trailingSlash": false,
             "ignore": [
@@ -56,6 +59,17 @@
                     "source": "/pitch-deck-2.html",
                     "destination": "/pitchdeck.html",
                     "type": 301
+                }
+            ],
+            "headers": [
+                {
+                    "source": "**/*.@(js|css)",
+                    "headers": [
+                        {
+                            "key": "Cache-Control",
+                            "value": "public, max-age=31536000, immutable"
+                        }
+                    ]
                 }
             ],
             "rewrites": [

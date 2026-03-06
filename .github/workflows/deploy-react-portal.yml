@@ -1,4 +1,4 @@
-name: Build & Deploy React Portal
+name: Build & Deploy Sirsi React Portal (Production)
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
       - "packages/sirsi-portal-app/**"
       - "package-lock.json"
       - "package.json"
+      - "firebase.json"
   workflow_dispatch:
 
 jobs:
