@@ -49,53 +49,56 @@ function DatabaseHealth() {
             </div>
 
             {/* Connection Status */}
-            <div className="sirsi-card mb-6">
-                <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Connection Status</h2>
+            <div className="sirsi-card p-5 mb-8">
+                <h2 className="text-sm font-semibold uppercase tracking-widest italic border-l-4 border-emerald-600 ps-4 mb-6">Connection Status</h2>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     {connections.map(c => (
-                        <div key={c.label} className={`${c.bg} p-4 rounded-lg`}>
-                            <div className="flex items-center justify-between">
-                                <span className="text-slate-500 dark:text-slate-400" style={{ fontSize: 14 }}>{c.label}</span>
+                        <div key={c.label} className={`${c.bg} dark:bg-slate-800/50 p-4 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all group`}>
+                            <div className="flex items-center justify-between mb-4">
+                                <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{c.label}</span>
                                 {c.status.includes('Connected') || c.status.includes('Active')
-                                    ? <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400" style={{ fontSize: 12, padding: '2px 8px', borderRadius: 12 }}>{c.status}</span>
-                                    : <span className="text-slate-500 dark:text-slate-400" style={{ fontSize: 12 }}>{c.status}</span>
+                                    ? <span className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full italic">{c.status}</span>
+                                    : <span className="text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase">{c.status}</span>
                                 }
                             </div>
-                            <p className={`text-2xl font-medium ${c.valueColor} mt-2`}>{c.value}</p>
+                            <p className={`text-2xl font-semibold tracking-tighter ${c.valueColor} group-hover:scale-105 transition-transform origin-left`}>{c.value}</p>
+                            <div className="mt-4 flex gap-1">
+                                {[1, 2, 3, 4].map(i => <div key={i} className={`h-1 flex-1 rounded-full ${c.valueColor.replace('text', 'bg')} opacity-20`} />)}
+                            </div>
                         </div>
                     ))}
                 </div>
             </div>
 
-            {/* Performance */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                <div className="sirsi-card">
-                    <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Query Performance</h3>
-                    <div className="space-y-4">
+            {/* Performance + Storage */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div className="sirsi-card p-5">
+                    <h3 className="text-sm font-semibold uppercase tracking-widest italic border-l-4 border-emerald-600 ps-4 mb-6">Query Performance</h3>
+                    <div className="space-y-5">
                         {queryPerf.map(q => (
-                            <div key={q.label}>
-                                <div className="flex justify-between text-sm mb-1">
-                                    <span className="text-slate-500 dark:text-slate-400">{q.label}</span>
-                                    <span style={{ fontWeight: 500 }}>{q.value}</span>
+                            <div key={q.label} className="p-3 bg-slate-50/50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800">
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">{q.label}</span>
+                                    <span className="text-xs font-bold text-slate-900 dark:text-slate-100 font-mono">{q.value}</span>
                                 </div>
-                                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full" style={{ height: 8 }}>
-                                    <div className={`${q.color} rounded-full`} style={{ height: '100%', width: `${q.pct}%` }} />
+                                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 overflow-hidden">
+                                    <div className={`${q.color} h-1.5 rounded-full transition-all duration-1000`} style={{ width: `${q.pct}%` }} />
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
-                <div className="sirsi-card">
-                    <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Storage Usage</h3>
-                    <div className="space-y-4">
+                <div className="sirsi-card p-5">
+                    <h3 className="text-sm font-semibold uppercase tracking-widest italic border-l-4 border-emerald-600 ps-4 mb-6">Storage Usage</h3>
+                    <div className="space-y-5">
                         {storageUsage.map(s => (
-                            <div key={s.label}>
-                                <div className="flex justify-between text-sm mb-1">
-                                    <span className="text-slate-500 dark:text-slate-400">{s.label}</span>
-                                    <span style={{ fontWeight: 500 }}>{s.value}</span>
+                            <div key={s.label} className="p-3 bg-slate-50/50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800">
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">{s.label}</span>
+                                    <span className="text-xs font-bold text-slate-900 dark:text-slate-100 font-mono">{s.value}</span>
                                 </div>
-                                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full" style={{ height: 8 }}>
-                                    <div className={`${s.color} rounded-full`} style={{ height: '100%', width: `${s.pct}%` }} />
+                                <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 overflow-hidden">
+                                    <div className={`${s.color} h-1.5 rounded-full transition-all duration-1000`} style={{ width: `${s.pct}%` }} />
                                 </div>
                             </div>
                         ))}
@@ -104,31 +107,35 @@ function DatabaseHealth() {
             </div>
 
             {/* Recent Operations */}
-            <div className="sirsi-card">
-                <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>Recent Database Operations</h3>
-                <div className="overflow-x-auto">
-                    <table className="w-full">
+            <div className="sirsi-card p-5">
+                <h3 className="text-sm font-semibold uppercase tracking-widest italic border-l-4 border-emerald-600 ps-4 mb-6">Recent Database Operations</h3>
+                <div className="sirsi-table-wrap">
+                    <table className="sirsi-table">
                         <thead>
-                            <tr className="border-b border-slate-200 dark:border-slate-700">
-                                {['Operation', 'Table', 'Duration', 'Status', 'Time'].map(h => (
-                                    <th key={h} className="text-slate-700 dark:text-slate-300" style={{ textAlign: 'left', padding: '12px 16px', fontSize: 14, fontWeight: 500 }}>{h}</th>
-                                ))}
+                            <tr>
+                                <th className="ps-6">Operation / Target</th>
+                                <th>Latency Assertion</th>
+                                <th>Status State</th>
+                                <th className="text-right pe-6">Time Horizon</th>
                             </tr>
                         </thead>
                         <tbody>
                             {operations.map((op, i) => (
-                                <tr key={i} className="border-b border-slate-100 dark:border-slate-700">
-                                    <td className="text-slate-900 dark:text-slate-100" style={{ padding: '12px 16px', fontSize: 14 }}>{op.op}</td>
-                                    <td className="text-slate-500 dark:text-slate-400" style={{ padding: '12px 16px', fontSize: 14 }}>{op.table}</td>
-                                    <td className="text-slate-700 dark:text-slate-300" style={{ padding: '12px 16px', fontSize: 14 }}>{op.duration}</td>
-                                    <td style={{ padding: '12px 16px' }}>
-                                        <span style={{
-                                            fontSize: 12, padding: '2px 8px', borderRadius: 12,
-                                            background: op.status === 'success' ? '#d1fae5' : '#fef3c7',
-                                            color: op.status === 'success' ? '#047857' : '#b45309',
-                                        }}>{op.status}</span>
+                                <tr key={i} className="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors border-b border-gray-100 dark:border-slate-800 last:border-0">
+                                    <td className="ps-6">
+                                        <div className="flex items-center gap-3">
+                                            <div className={`w-2 h-2 rounded-full ${op.status === 'success' ? 'bg-emerald-500' : 'bg-amber-500'} animate-pulse`} />
+                                            <span className="font-semibold text-slate-900 dark:text-slate-100 text-[13px]">{op.op}</span>
+                                        </div>
+                                        <div className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Table: {op.table}</div>
                                     </td>
-                                    <td className="text-slate-500 dark:text-slate-400" style={{ padding: '12px 16px', fontSize: 14 }}>{op.time}</td>
+                                    <td className="font-mono text-xs text-emerald-600 font-semibold">{op.duration}</td>
+                                    <td>
+                                        <span className={`sirsi-badge ${op.status === 'success' ? 'sirsi-badge-success' : 'sirsi-badge-warning'}`}>
+                                            {op.status}
+                                        </span>
+                                    </td>
+                                    <td className="text-right pe-6 text-[11px] font-bold text-slate-400 font-mono italic">{op.time}</td>
                                 </tr>
                             ))}
                         </tbody>

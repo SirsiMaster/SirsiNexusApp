@@ -63,23 +63,23 @@ function InvestorPortalPage() {
             </div>
 
             {/* ── KPI Ticker Banner ── */}
-            <div className="sirsi-card mb-8 bg-gradient-to-br from-emerald-50 via-blue-50 to-emerald-50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 border-emerald-200 dark:border-slate-700" style={{ padding: '24px 32px' }}>
-                <div className="flex items-center justify-between mb-4">
+            <div className="sirsi-card mb-8 bg-gradient-to-br from-emerald-50 via-blue-50 to-emerald-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 border-emerald-200 dark:border-slate-700 p-8 shadow-xl shadow-emerald-500/5">
+                <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-2">
                         <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse" />
-                        <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 uppercase" style={{ letterSpacing: '0.15em' }}>
+                        <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-[0.2em]">
                             Live Platform KPIs
                         </span>
                     </div>
-                    <span style={{ fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-mono">
                         Synchronized 2m Ago
                     </span>
                 </div>
-                <div className="grid grid-cols-3 lg:grid-cols-6 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
                     {kpiTicker.map(kpi => (
-                        <div key={kpi.label} className="text-center">
-                            <div className="text-2xl font-semibold text-emerald-800 dark:text-emerald-300">{kpi.value}</div>
-                            <div style={{ fontSize: 9, fontWeight: 500, color: 'rgba(5,150,105,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: 4 }}>
+                        <div key={kpi.label} className="text-center group">
+                            <div className="text-2xl font-bold tracking-tighter text-emerald-800 dark:text-emerald-300 group-hover:scale-110 transition-transform cursor-default">{kpi.value}</div>
+                            <div className="text-[9px] font-bold text-emerald-600/50 dark:text-emerald-400/50 uppercase tracking-widest mt-2 font-mono italic">
                                 {kpi.label}
                             </div>
                         </div>
@@ -88,11 +88,12 @@ function InvestorPortalPage() {
             </div>
 
             {/* ── Executive Summary ── */}
-            <div className="bg-white dark:bg-gray-800 border-l-4 border-emerald-600 rounded-r-xl p-8 shadow-sm mb-10">
-                <h3 style={{ fontSize: 12, fontWeight: 600, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 12 }}>
+            <div className="sirsi-card border-none bg-white dark:bg-slate-900 border-l-4 border-emerald-600 rounded-r-xl p-10 shadow-lg mb-10 group overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
+                <h3 className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-[0.2em] mb-4">
                     Executive Summary
                 </h3>
-                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed" style={{ fontWeight: 400 }}>
+                <p className="text-[13px] text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
                     SirsiNexus represents a unique convergence of technological innovation and strategic market positioning.
                     With a proven AI-powered cloud optimization platform and exceptional network access through Techstars
                     Universe, academic partnerships, and VC connections, we are positioned to capture significant market share
@@ -106,13 +107,13 @@ function InvestorPortalPage() {
                     <a
                         key={mod.label}
                         href={mod.to}
-                        className="sirsi-card p-6 flex items-center gap-4 group transition-all shadow-lg border-none"
+                        className="sirsi-card p-6 flex items-center gap-4 group transition-all shadow-lg border-none hover:-translate-y-1"
                         style={{ background: mod.bg }}
                     >
-                        <div className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center text-white border border-white/20">
-                            <mod.icon size={18} />
+                        <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white border border-white/20 group-hover:rotate-12 transition-transform">
+                            <mod.icon size={20} />
                         </div>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: 'white', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+                        <span className="text-[11px] font-bold text-white uppercase tracking-[0.2em]">
                             {mod.label}
                         </span>
                     </a>
@@ -120,50 +121,69 @@ function InvestorPortalPage() {
             </div>
 
             {/* ── Secure Data Room ── */}
-            <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-8"
-                style={{ borderLeft: '4px solid #059669', paddingLeft: 16 }}>
-                Secure Data Room
-            </h3>
+            <div className="flex items-center gap-4 mb-8">
+                <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-[0.2em] border-l-4 border-emerald-600 pl-4 py-1">
+                    Secure Data Room
+                </h3>
+                <div className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                 {dataRoomSections.map(section => (
                     <div
                         key={section.title}
-                        className={`sirsi-card group cursor-pointer hover:border-emerald-200 transition-all ${section.bg} ${section.borderColor}`}
+                        className={`sirsi-card group cursor-pointer border-transparent hover:border-emerald-200 dark:hover:border-emerald-800 transition-all ${section.bg} ${section.borderColor} p-6 relative overflow-hidden`}
                     >
-                        <div className="flex items-center gap-4 mb-4">
-                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center border ${section.bg} ${section.iconColor} ${section.borderColor}`}>
-                                <section.icon size={22} />
+                        <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 group-hover:scale-150 transition-all duration-500">
+                            <section.icon size={64} />
+                        </div>
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border ${section.bg} ${section.iconColor} ${section.borderColor} shadow-inner`}>
+                                <section.icon size={24} />
                             </div>
                             <div>
-                                <h4 className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 transition-colors">
+                                <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
                                     {section.title}
                                 </h4>
-                                <p style={{ fontSize: 10, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.02em' }}>
+                                <p className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-0.5">
                                     {section.sub}
                                 </p>
                             </div>
                         </div>
-                        <div className="flex justify-between items-center" style={{ fontSize: 10, fontWeight: 500 }}>
-                            <span>{section.docs} DOCUMENTS</span>
-                            <span className="text-emerald-600">VIEW →</span>
+                        <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+                            <span className="flex items-center gap-1.5 font-mono">
+                                <section.icon size={12} className="opacity-50" />
+                                {section.docs} DOCUMENTS
+                            </span>
+                            <span className="text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform">VIEW →</span>
                         </div>
                     </div>
                 ))}
             </div>
 
             {/* ── Compliance Footer ── */}
-            <div className="sirsi-card bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-center py-6">
-                <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 4 }}>
+            <div className="sirsi-card bg-slate-50 dark:bg-slate-900/50 border-slate-100 dark:border-slate-800 text-center p-8 rounded-2xl relative overflow-hidden">
+                <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-emerald-600 via-emerald-400 to-emerald-600" />
+                <p className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-[0.25em] mb-4">
                     Institutional Compliance Disclaimer
                 </p>
-                <p className="text-xs text-gray-500 italic max-w-2xl mx-auto">
+                <p className="text-[11px] text-slate-400 dark:text-slate-500 italic max-w-2xl mx-auto leading-relaxed">
                     This portal contains highly confidential strategic data. Unauthorized access or reproduction
                     is strictly prohibited and subject to legal enforcement under the Sirsi Nexus Non-Disclosure Agreement.
                 </p>
-                <div className="mt-4 flex justify-center gap-8" style={{ fontSize: 9, fontWeight: 500, textTransform: 'uppercase' }}>
-                    <span>PREPARED BY: STRATEGY TEAM</span>
-                    <span>REVIEW: QUARTERLY</span>
-                    <span>DISTRIBUTION: COMMITTEE ONLY</span>
+                <div className="mt-8 flex flex-wrap justify-center gap-x-12 gap-y-4 text-[9px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest font-mono">
+                    <span className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                        PREPARED BY: STRATEGY TEAM
+                    </span>
+                    <span className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+                        REVIEW: QUARTERLY
+                    </span>
+                    <span className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-red-500 rounded-full" />
+                        DISTRIBUTION: COMMITTEE ONLY
+                    </span>
                 </div>
             </div>
         </div>

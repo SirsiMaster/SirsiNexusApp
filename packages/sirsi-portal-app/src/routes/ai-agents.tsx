@@ -43,21 +43,21 @@ const tableRows = [
 function AgentCardComp({ agent }: { agent: AgentCard }) {
     const Icon = agent.icon as any
     return (
-        <div className={`sirsi-card border-l-4 ${agent.borderColor} group hover:bg-emerald-50/5 dark:hover:bg-emerald-900/10 transition-all`} style={{ padding: 20, ...(agent.opacity ? { opacity: 0.8 } : {}) }}>
+        <div className={`sirsi-card border-l-4 ${agent.borderColor} group hover:bg-emerald-50/5 dark:hover:bg-emerald-900/10 transition-all p-5 ${agent.opacity ? 'opacity-80' : ''}`}>
             <div className="flex justify-between items-start mb-4">
-                <div className={`w-10 h-10 ${agent.iconBg} text-white rounded-xl flex items-center justify-center shadow-lg`}>
+                <div className={`w-10 h-10 ${agent.iconBg} text-white rounded-xl flex items-center justify-center shadow-lg shadow-black/10`}>
                     <Icon size={18} />
                 </div>
                 <div className="flex flex-col items-end">
-                    <span className={`${agent.statusBg} ${agent.statusText}`} style={{ fontSize: 9, fontWeight: 600, padding: '2px 8px', borderRadius: 4, fontStyle: 'italic' }}>{agent.status}</span>
-                    {agent.tenant && <span className="text-slate-400 dark:text-slate-500" style={{ fontSize: 8, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 4 }}>Tenant: {agent.tenant}</span>}
+                    <span className={`${agent.statusBg} ${agent.statusText} text-[9px] font-semibold px-2 py-0.5 rounded italic tracking-tight`}>{agent.status}</span>
+                    {agent.tenant && <span className="text-slate-400 dark:text-slate-500 text-[8px] font-semibold uppercase tracking-[0.1em] mt-1">Tenant: {agent.tenant}</span>}
                 </div>
             </div>
-            <h4 className="text-slate-900 dark:text-slate-100" style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '-0.02em', margin: 0 }}>{agent.name}</h4>
-            <p className="text-slate-400 dark:text-slate-500" style={{ fontSize: 10, fontWeight: 500, marginTop: 4, lineHeight: 1.6 }}>{agent.desc}</p>
-            <div className="border-t border-slate-100 dark:border-slate-700" style={{ marginTop: 16, paddingTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 10, fontWeight: 500 }}>
-                <span className="text-slate-400 dark:text-slate-500">{agent.footer[0]}</span>
-                <span className={agent.footerColor} style={{ fontStyle: 'italic' }}>{agent.footer[1]}</span>
+            <h4 className="text-slate-900 dark:text-slate-100 text-xs font-semibold uppercase tracking-tight m-0">{agent.name}</h4>
+            <p className="text-slate-400 dark:text-slate-500 text-[10px] font-medium mt-1 leading-relaxed">{agent.desc}</p>
+            <div className="border-t border-slate-100 dark:border-slate-800 mt-4 pt-4 flex justify-between items-center text-[10px] font-medium text-slate-400 dark:text-slate-500">
+                <span>{agent.footer[0]}</span>
+                <span className={`${agent.footerColor} italic`}>{agent.footer[1]}</span>
             </div>
         </div>
     )
@@ -85,9 +85,9 @@ function AiAgents() {
                     { title: 'Assiduous Operatives', agents: assAgents },
                 ].map(col => (
                     <div key={col.title}>
-                        <h3 className="flex items-center gap-3 mb-6 text-slate-400 dark:text-slate-500" style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.2em' }}>
+                        <h3 className="flex items-center gap-3 mb-6 text-slate-400 dark:text-slate-500 text-[10px] font-semibold uppercase tracking-[0.2em]">
                             {col.title}
-                            <span className="h-px flex-1 bg-slate-200 dark:bg-slate-700" />
+                            <span className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
                         </h3>
                         <div className="space-y-4">
                             {col.agents.map(a => <AgentCardComp key={a.name} agent={a} />)}
@@ -100,27 +100,27 @@ function AiAgents() {
                 <table className="sirsi-table">
                     <thead>
                         <tr>
-                            <th style={{ paddingLeft: 24 }}>Agent Identity</th>
+                            <th className="ps-6">Agent Identity</th>
                             <th>Tenant Context</th>
                             <th>Active Task</th>
                             <th>Execution Delta</th>
-                            <th style={{ textAlign: 'right', paddingRight: 24 }}>Routing Controls</th>
+                            <th className="text-right pe-6">Routing Controls</th>
                         </tr>
                     </thead>
                     <tbody>
                         {tableRows.map(r => (
-                            <tr key={r.id}>
-                                <td style={{ paddingLeft: 24 }}>
+                            <tr key={r.id} className="hover:bg-gray-50/50 dark:hover:bg-slate-800/50 transition-colors border-b border-gray-100 dark:border-slate-800 last:border-0">
+                                <td className="ps-6">
                                     <div className="flex items-center gap-3">
-                                        <div className={`${r.idBg} border`} style={{ width: 32, height: 32, borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 600, fontStyle: 'italic' }}>{r.id}</div>
+                                        <div className={`${r.idBg} border w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-semibold italic`}>{r.id}</div>
                                         <span className="font-medium text-slate-900 dark:text-slate-100">{r.name}</span>
                                     </div>
                                 </td>
-                                <td><span className={r.tenantColor} style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', fontStyle: 'italic' }}>{r.tenant}</span></td>
-                                <td className="text-slate-600 dark:text-slate-400" style={{ fontSize: 12, fontWeight: 500 }}>{r.task}</td>
-                                <td><span className={r.deltaColor} style={{ fontSize: 9, fontWeight: 600 }}>{r.delta}</span></td>
-                                <td style={{ textAlign: 'right', paddingRight: 24 }}>
-                                    <button className="text-slate-300 dark:text-slate-600 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                                <td><span className={`${r.tenantColor} text-[10px] font-semibold uppercase tracking-widest italic`}>{r.tenant}</span></td>
+                                <td className="text-slate-600 dark:text-slate-400 text-xs font-medium">{r.task}</td>
+                                <td><span className={`${r.deltaColor} text-[9px] font-semibold`}>{r.delta}</span></td>
+                                <td className="text-right pe-6">
+                                    <button className="text-slate-300 dark:text-slate-600 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors bg-transparent border-0 cursor-pointer">
                                         <SlidersHorizontal size={16} />
                                     </button>
                                 </td>
