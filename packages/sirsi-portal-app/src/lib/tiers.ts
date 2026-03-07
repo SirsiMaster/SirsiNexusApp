@@ -45,7 +45,7 @@ export const SAAS_TIERS: Record<PlanId, SaaSTier> = {
         price: 0,
         priceDisplay: '$0',
         interval: 'month',
-        stripePriceId: null,
+        stripePriceId: 'price_1T8DLDDHFENsYYPyaZdUsTBV', // Live Stripe — Free $0/mo
         tagline: 'Explore the platform',
         features: [
             'Read-only dashboard',
@@ -65,7 +65,7 @@ export const SAAS_TIERS: Record<PlanId, SaaSTier> = {
         price: 50000,
         priceDisplay: '$500',
         interval: 'month',
-        stripePriceId: null, // Hydrated by fetchDynamicTiers()
+        stripePriceId: 'price_1T8DLEDHFENsYYPyOPUf4pMJ', // Live Stripe — Solo $500/mo
         tagline: 'For solo founders & startups',
         popular: true,
         features: [
@@ -89,7 +89,7 @@ export const SAAS_TIERS: Record<PlanId, SaaSTier> = {
         price: 250000,
         priceDisplay: '$2,500',
         interval: 'month',
-        stripePriceId: null, // Hydrated by fetchDynamicTiers()
+        stripePriceId: 'price_1T8DLEDHFENsYYPyRmUGUGIv', // Live Stripe — Business $2,500/mo
         tagline: 'For scaling businesses',
         features: [
             'Unlimited users',

@@ -108,7 +108,7 @@ CREATE INDEX IF NOT EXISTS idx_envelopes_created_by ON signing_envelopes(created
 -- PROVISIONING STATUS (replaces in-memory map)
 -- ══════════════════════════════════════════════════════════════
 CREATE TABLE IF NOT EXISTS provisioning_status (
-    tenant_id       VARCHAR(128) PRIMARY KEY REFERENCES tenants(id) ON DELETE CASCADE,
+    tenant_id       VARCHAR(128) PRIMARY KEY,
     state           VARCHAR(20) NOT NULL DEFAULT 'pending',
     overall_progress INTEGER NOT NULL DEFAULT 0,
     firebase_status  VARCHAR(20) NOT NULL DEFAULT 'pending',

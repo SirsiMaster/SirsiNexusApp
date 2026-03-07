@@ -30,6 +30,7 @@ WORKDIR /app
 
 COPY --from=builder /build/sirsi-admin .
 COPY --from=builder /build/settings.json .
+COPY --from=builder /build/schema.sql .
 
 # Cloud Run uses PORT env variable
 ENV PORT=8080
