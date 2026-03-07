@@ -38,10 +38,21 @@ function formatCents(cents: bigint | number): string {
 
 function timeAgo(ts: bigint | number | string): string {
     if (!ts) return '—'
-    // Convert bigint unix seconds to ms, or parse string
-    const msTime = typeof ts === 'bigint' ? Number(ts) * 1000 : typeof ts === 'number' ? ts * 1000 : new Date(ts).getTime()
+    // Backend sends UnixMilli (13 digits). Detect and handle both ms and seconds.
+    let msTime: number
+    if (typeof ts === 'bigint') {
+        const n = Number(ts)
+        msTime = n > 1e12 ? n : n * 1000 // 13+ digits = ms, otherwise seconds
+    } else if (typeof ts === 'number') {
+        msTime = ts > 1e12 ? ts : ts * 1000
+    } else {
+        const parsed = Number(ts)
+        msTime = parsed > 1e12 ? parsed : parsed * 1000
+    }
     const diff = Date.now() - msTime
+    if (diff < 0) return 'just now'
     const mins = Math.floor(diff / 60000)
+    if (mins < 1) return 'just now'
     if (mins < 60) return `${mins}m ago`
     const hours = Math.floor(mins / 60)
     if (hours < 24) return `${hours}h ago`
