@@ -601,6 +601,19 @@ func (s *CatalogServer) ListProducts(
 	ctx context.Context,
 	req *connect.Request[adminv2.ListProductsRequest],
 ) (*connect.Response[adminv2.ListProductsResponse], error) {
+	// Cloud SQL path
+	if useDB() {
+		products, err := sqlListProducts(req.Msg.TenantId, req.Msg.IncludeArchived, req.Msg.CategoryFilter)
+		if err != nil {
+			log.Printf("⚠️ [Catalog] SQL ListProducts failed: %v (falling back to memory)", err)
+		} else {
+			return connect.NewResponse(&adminv2.ListProductsResponse{
+				Products:   products,
+				Pagination: &commonv1.PaginationResponse{TotalCount: int32(len(products))},
+			}), nil
+		}
+	}
+	// In-memory fallback
 	tenantID := req.Msg.TenantId
 	var result []*adminv2.CatalogProduct
 	for _, p := range catalogProducts {
@@ -627,6 +640,12 @@ func (s *CatalogServer) GetProduct(
 	ctx context.Context,
 	req *connect.Request[adminv2.GetProductRequest],
 ) (*connect.Response[adminv2.CatalogProduct], error) {
+	if useDB() {
+		p, err := sqlGetProduct(req.Msg.Id)
+		if err == nil {
+			return connect.NewResponse(p), nil
+		}
+	}
 	p, ok := catalogProducts[req.Msg.Id]
 	if !ok {
 		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("product %s not found", req.Msg.Id))
@@ -672,6 +691,11 @@ func (s *CatalogServer) CreateProduct(
 
 	catalogProducts[id] = p
 	saveCatalogStore()
+	if useDB() {
+		if err := sqlUpsertProduct(p); err != nil {
+			log.Printf("⚠️ [Catalog] SQL upsert failed for %s: %v", p.Name, err)
+		}
+	}
 	log.Printf("🟢 [Catalog] Created product: %s (%s) — Stripe: %s", p.Name, p.Id, p.StripeProductId)
 	return connect.NewResponse(p), nil
 }
@@ -748,6 +772,11 @@ func (s *CatalogServer) UpdateProduct(
 
 	catalogProducts[req.Msg.Id] = existing
 	saveCatalogStore()
+	if useDB() {
+		if err := sqlUpsertProduct(existing); err != nil {
+			log.Printf("⚠️ [Catalog] SQL update failed for %s: %v", existing.Name, err)
+		}
+	}
 	log.Printf("✏️ [Catalog] Updated product: %s", existing.Name)
 	return connect.NewResponse(existing), nil
 }
@@ -774,6 +803,11 @@ func (s *CatalogServer) ArchiveProduct(
 	}
 
 	saveCatalogStore()
+	if useDB() {
+		if err := sqlArchiveProduct(req.Msg.Id); err != nil {
+			log.Printf("⚠️ [Catalog] SQL archive failed: %v", err)
+		}
+	}
 	return connect.NewResponse(&adminv2.ArchiveResponse{
 		Success: true,
 		Message: fmt.Sprintf("Product %s archived and Stripe price deactivated", p.Name),
@@ -798,6 +832,11 @@ func (s *CatalogServer) RecoverProduct(
 	}
 
 	saveCatalogStore()
+	if useDB() {
+		if err := sqlRecoverProduct(req.Msg.Id); err != nil {
+			log.Printf("⚠️ [Catalog] SQL recover failed: %v", err)
+		}
+	}
 	log.Printf("♻️ [Catalog] Recovered product: %s", p.Name)
 	return connect.NewResponse(p), nil
 }
@@ -808,6 +847,17 @@ func (s *CatalogServer) ListBundles(
 	ctx context.Context,
 	req *connect.Request[adminv2.ListBundlesRequest],
 ) (*connect.Response[adminv2.ListBundlesResponse], error) {
+	if useDB() {
+		bundles, err := sqlListBundles(req.Msg.TenantId, req.Msg.IncludeArchived)
+		if err != nil {
+			log.Printf("⚠️ [Catalog] SQL ListBundles failed: %v (falling back to memory)", err)
+		} else {
+			return connect.NewResponse(&adminv2.ListBundlesResponse{
+				Bundles:    bundles,
+				Pagination: &commonv1.PaginationResponse{TotalCount: int32(len(bundles))},
+			}), nil
+		}
+	}
 	tenantID := req.Msg.TenantId
 	var result []*adminv2.CatalogBundle
 	for _, b := range catalogBundles {
@@ -867,6 +917,11 @@ func (s *CatalogServer) CreateBundle(
 
 	catalogBundles[id] = b
 	saveCatalogStore()
+	if useDB() {
+		if err := sqlUpsertBundle(b); err != nil {
+			log.Printf("⚠️ [Catalog] SQL upsert bundle failed for %s: %v", b.Name, err)
+		}
+	}
 	log.Printf("🟢 [Catalog] Created bundle: %s (%s)", b.Name, b.Id)
 	return connect.NewResponse(b), nil
 }
@@ -916,6 +971,11 @@ func (s *CatalogServer) UpdateBundle(
 
 	catalogBundles[req.Msg.Id] = existing
 	saveCatalogStore()
+	if useDB() {
+		if err := sqlUpsertBundle(existing); err != nil {
+			log.Printf("⚠️ [Catalog] SQL update bundle failed for %s: %v", existing.Name, err)
+		}
+	}
 	log.Printf("✏️ [Catalog] Updated bundle: %s", existing.Name)
 	return connect.NewResponse(existing), nil
 }
@@ -931,6 +991,9 @@ func (s *CatalogServer) ArchiveBundle(
 	b.Archived = true
 	b.UpdatedAt = time.Now().UnixMilli()
 	saveCatalogStore()
+	if useDB() {
+		db.Exec(`UPDATE catalog_bundles SET archived = TRUE, updated_at = $1 WHERE id = $2`, time.Now().Unix(), req.Msg.Id)
+	}
 	return connect.NewResponse(&adminv2.ArchiveResponse{
 		Success: true,
 		Message: fmt.Sprintf("Bundle %s archived", b.Name),
@@ -948,6 +1011,9 @@ func (s *CatalogServer) RecoverBundle(
 	b.Archived = false
 	b.UpdatedAt = time.Now().UnixMilli()
 	saveCatalogStore()
+	if useDB() {
+		db.Exec(`UPDATE catalog_bundles SET archived = FALSE, updated_at = $1 WHERE id = $2`, time.Now().Unix(), req.Msg.Id)
+	}
 	log.Printf("♻️ [Catalog] Recovered bundle: %s", b.Name)
 	return connect.NewResponse(b), nil
 }
