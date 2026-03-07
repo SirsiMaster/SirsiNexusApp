@@ -4,6 +4,64 @@ All notable changes to the Sirsi Nexus project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.9.2-alpha] - 2026-03-06
+
+### 🏗 UNIFIED COMMERCE & SIGNING PIPELINE — 100% gRPC
+
+#### CatalogService (12 RPCs) — Phase 1-5
+- **Proto**: `proto/sirsi/admin/v2/catalog.proto` — products, bundles, Stripe auto-sync
+- **Go backend**: `CatalogServer` with full CRUD + Stripe SDK integration
+- **Operations**: CreateProduct, UpdateProduct, ArchiveProduct, RecoverProduct, ListProducts, GetProduct (×2 for bundles)
+- **Stripe auto-sync**: Every product/bundle mutation creates/archives Stripe Price objects
+- **Tenant scoping**: `tenant_id` filter on all queries; superadmin sees all
+- **Frontend**: `useCatalog.ts` hooks + `catalogClient` in `grpc.ts`
+
+#### SigningService (12 RPCs) — Phase 6-7
+- **Proto**: `proto/sirsi/sign/v1/signing.proto` — envelope lifecycle, payments, MFA, vault
+- **Go backend**: `SigningServer` absorbs all OpenSign REST endpoints into ConnectRPC
+- **RPCs**: CreateGuestEnvelope, SignEnvelope, CreatePaymentSession, RequestWireInstructions, SendMFACode, VerifyMFACode, ProvisionMFA, VerifySignedRedirect, ListVaultFiles, GetEnvelopeStatus, DownloadEnvelopePDF, VoidEnvelope
+- **Payment methods**: Card, ACH, Wire — all via `CreatePaymentSession` with `paymentMethodTypes[]`
+- **Frontend**: `signingClient` replaces all `opensign.ts` REST calls
+
+#### REST → gRPC Migration (100% Complete)
+- **opensign.ts DELETED** (406 lines of hand-written REST client → 0)
+- **4 sirsi-sign consumers migrated**: SirsiVault.tsx, MFAGate.tsx, DataRoom.tsx, InvestorDataRoom.tsx
+- **1 portal-app consumer migrated**: onboarding.ts (checkout flow)
+- **ZERO REST `fetch()` calls** remain in either frontend package
+- **3 unified gRPC clients**: `contractsClient`, `catalogClient`, `signingClient`
+
+#### Deleted Files
+- `packages/sirsi-sign/src/lib/opensign.ts` — replaced by `signingClient`
+- `packages/sirsi-sign/src/components/admin/EstatesManagement.tsx` — hardcoded catalog replaced by CatalogService
+- `packages/sirsi-sign/src/components/admin/StripeCatalogSync.tsx` — replaced by CatalogService
+
+#### Infrastructure
+- Go backend: **5 ConnectRPC services** (AdminService, TenantService, HypervisorService, CatalogService, SigningService)
+- **1 Stripe SDK** (Go only) — eliminated Node.js Stripe dependency from core pipeline
+- Hypervisor mock data updated: "OpenSign" → "SigningService" across all telemetry strings
+- `VITE_OPENSIGN_API_URL` env var no longer consumed
+
+#### Deployment
+- **Firebase Hosting**: deployed (`df7bacd`) — sirsi.ai live
+- **Cloud Run**: deployed (`sirsi-admin-00002-f54`) — 5 services serving production traffic
+
+#### Build Verification
+| Package | Status |
+|:---|:---|
+| `sirsi-admin-service` (Go) | ✅ PASS |
+| `sirsi-sign` (tsc) | ✅ PASS |
+| `sirsi-portal-app` (tsc) | ✅ PASS |
+
+#### Commits
+| Hash | Message |
+|:-----|:--------|
+| `223c249` | feat: unified CatalogService — Phases 1-5 complete (v0.9.1-alpha) |
+| `930d265` | feat: SigningService — Phases 6-7 complete (OpenSign absorption) |
+| `0bae228` | feat: delete opensign.ts — all REST calls replaced with gRPC |
+| `df7bacd` | feat: 100% gRPC — last REST path eliminated + mock cleanup |
+
+---
+
 ## [0.9.0-alpha] - 2026-03-06
 
 ### 🏗 PROTOBUF ES v2 UPGRADE & ADR-030 PHASE 3 COMPLETION

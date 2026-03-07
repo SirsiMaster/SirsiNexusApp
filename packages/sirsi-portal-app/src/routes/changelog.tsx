@@ -29,11 +29,27 @@ interface Release {
 
 const releases: Release[] = [
     {
+        version: 'v0.9.2-alpha',
+        date: '2026-03-06',
+        title: 'Unified Commerce & Signing Pipeline — 100% gRPC',
+        channel: 'alpha',
+        tag: 'current',
+        highlights: [
+            'CatalogService: 12 RPCs — products, bundles, Stripe auto-sync, tenant scoping',
+            'SigningService: 12 RPCs — envelopes, payments (card/ACH/wire), MFA, vault',
+            'opensign.ts DELETED: 406 lines of REST replaced by signingClient gRPC',
+            'All 5 consumers migrated: SirsiVault, MFAGate, DataRoom, InvestorDataRoom, onboarding.ts',
+            'Zero REST fetch() calls in either frontend — 100% ConnectRPC',
+            'Go backend: 5 ConnectRPC services on single Cloud Run instance',
+            'Single Stripe SDK (Go) — eliminated Node.js Stripe dependency',
+            'Deployed: Firebase Hosting + Cloud Run live in production',
+        ],
+    },
+    {
         version: 'v0.9.0-alpha',
         date: '2026-03-06',
         title: 'Protobuf ES v2 Upgrade & ADR-030 Phase 3 — GitHub Automation',
         channel: 'alpha',
-        tag: 'current',
         highlights: [
             'gRPC Infrastructure: Protobuf ES v2.11.0 — all schemas regenerated with buf.build/bufbuild/es',
             'Connect v2 Migration: createPromiseClient → createClient across sirsi-sign',

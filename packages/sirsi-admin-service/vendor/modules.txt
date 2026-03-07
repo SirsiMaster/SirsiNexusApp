@@ -2,11 +2,26 @@
 ## explicit; go 1.24.0
 connectrpc.com/connect
 connectrpc.com/connect/internal/gen/connectext/grpc/status/v1
+# github.com/google/go-github/v60 v60.0.0
+## explicit; go 1.21
+github.com/google/go-github/v60/github
+# github.com/google/go-querystring v1.1.0
+## explicit; go 1.10
+github.com/google/go-querystring/query
 # github.com/sirsimaster/sirsi-nexus/gen/go v0.0.0-00010101000000-000000000000 => ../../proto/gen/go
 ## explicit; go 1.24.0
 github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2
 github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2/v2connect
 github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/common/v1
+github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/sign/v1
+github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/sign/v1/v1connect
+# github.com/stripe/stripe-go/v82 v82.5.1
+## explicit; go 1.18
+github.com/stripe/stripe-go/v82
+github.com/stripe/stripe-go/v82/checkout/session
+github.com/stripe/stripe-go/v82/form
+github.com/stripe/stripe-go/v82/price
+github.com/stripe/stripe-go/v82/product
 # golang.org/x/net v0.49.0
 ## explicit; go 1.24.0
 golang.org/x/net/http/httpguts
@@ -15,6 +30,10 @@ golang.org/x/net/http2/h2c
 golang.org/x/net/http2/hpack
 golang.org/x/net/idna
 golang.org/x/net/internal/httpcommon
+# golang.org/x/oauth2 v0.35.0
+## explicit; go 1.24.0
+golang.org/x/oauth2
+golang.org/x/oauth2/internal
 # golang.org/x/text v0.33.0
 ## explicit; go 1.24.0
 golang.org/x/text/secure/bidirule
