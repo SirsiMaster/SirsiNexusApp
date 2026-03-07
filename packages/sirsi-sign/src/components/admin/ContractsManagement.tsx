@@ -9,12 +9,9 @@ import {
 import { useContracts } from '../../hooks/useAdmin';
 import { contractsClient } from '../../lib/grpc';
 import {
-    Contract,
+    type Contract,
     ContractStatus,
-    CreateContractRequest,
-    UpdateContractRequest,
-} from '../../gen/proto/contracts/v1/contracts_pb';
-import { proto3 } from '@bufbuild/protobuf';
+} from '../../gen/sirsi/contracts/v2/contract_service_pb';
 import { TEMPLATES } from '../../data/projectTemplates';
 
 // ── Shared Inline Styles (Royal Neo-Deco) ──────────────────────────
@@ -125,8 +122,16 @@ export function ContractsManagement() {
 
     // ── Helpers ────────────────────────────────────────────────────
     const getStatusLabel = useCallback((status: ContractStatus) => {
-        const enumType = proto3.getEnumType(ContractStatus);
-        return enumType.findNumber(status)?.name.replace('CONTRACT_STATUS_', '') || 'UNKNOWN';
+        // Simple mapping for now
+        const labels: Record<number, string> = {
+            [ContractStatus.DRAFT]: 'DRAFT',
+            [ContractStatus.ACTIVE]: 'ACTIVE',
+            [ContractStatus.SIGNED]: 'SIGNED',
+            [ContractStatus.PAID]: 'PAID',
+            [ContractStatus.ARCHIVED]: 'ARCHIVED',
+            [ContractStatus.WAITING_FOR_COUNTERSIGN]: 'WAITING_FOR_COUNTERSIGN',
+        };
+        return labels[status] || 'UNSPECIFIED';
     }, []);
 
     const updateField = useCallback((field: keyof ContractFormData, value: any) => {
@@ -152,14 +157,14 @@ export function ContractsManagement() {
         setSaving(true);
         setSaveError('');
         try {
-            await contractsClient.createContract(new CreateContractRequest({
+            await contractsClient.createContract({
                 projectId: form.projectId,
                 projectName: form.projectName,
                 clientName: form.clientName,
                 clientEmail: form.clientEmail,
                 countersignerName: form.countersignerName,
                 countersignerEmail: form.countersignerEmail,
-            }));
+            });
             setShowCreate(false);
             setForm({ ...EMPTY_FORM });
             refetch();
@@ -175,9 +180,9 @@ export function ContractsManagement() {
         setSaving(true);
         setSaveError('');
         try {
-            await contractsClient.updateContract(new UpdateContractRequest({
+            await contractsClient.updateContract({
                 id: editingContract.id,
-                contract: new Contract({
+                contract: {
                     ...editingContract,
                     clientName: form.clientName,
                     clientEmail: form.clientEmail,
@@ -186,12 +191,12 @@ export function ContractsManagement() {
                     countersignerName: form.countersignerName,
                     countersignerEmail: form.countersignerEmail,
                     status: form.status,
-                }),
+                },
                 updateMask: [
                     'client_name', 'client_email', 'project_name', 'project_id',
                     'countersigner_name', 'countersigner_email', 'status',
                 ],
-            }));
+            });
             setEditingContract(null);
             setForm({ ...EMPTY_FORM });
             refetch();
@@ -299,7 +304,7 @@ export function ContractsManagement() {
             header: 'Value',
             cell: info => (
                 <span style={{ color: '#C8A951', fontFamily: 'monospace', fontWeight: 600, fontSize: '13px' }}>
-                    ${(Number(info.getValue()) / 100).toLocaleString()}
+                    ${(Number(info.getValue()?.amountCents || 0) / 100).toLocaleString()}
                 </span>
             ),
         }),
@@ -350,15 +355,17 @@ export function ContractsManagement() {
 
     // ── Audit Trail (for detail drawer) ───────────────────────────
     const getAuditTrail = useCallback((contract: Contract) => {
+        const createdTime = Number(contract.created?.timestamp || 0);
+        const updatedTime = Number(contract.updated?.timestamp || 0);
         const events = [
-            { label: 'Contract Created', time: Number(contract.createdAt), icon: '📝' },
+            { label: 'Contract Created', time: createdTime, icon: '📝' },
         ];
-        if (Number(contract.updatedAt) > Number(contract.createdAt)) {
+        if (updatedTime > createdTime) {
             const label = getStatusLabel(contract.status);
             if (label !== 'DRAFT') {
-                events.push({ label: 'Identity Verified (MFA)', time: Number(contract.createdAt) + 300000, icon: '🔐' });
-                events.push({ label: 'Client Signature Captured', time: Number(contract.updatedAt) - 600000, icon: '✍️' });
-                events.push({ label: `Status → ${label}`, time: Number(contract.updatedAt), icon: '🔄' });
+                events.push({ label: 'Identity Verified (MFA)', time: createdTime + 300000, icon: '🔐' });
+                events.push({ label: 'Client Signature Captured', time: updatedTime - 600000, icon: '✍️' });
+                events.push({ label: `Status → ${label}`, time: updatedTime, icon: '🔄' });
             }
         }
         if (contract.countersignedAt && Number(contract.countersignedAt) > 0) {
@@ -675,7 +682,7 @@ export function ContractsManagement() {
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '28px' }}>
                                 <div style={{ padding: '14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px' }}>
                                     <span style={{ fontFamily: 'Inter', fontSize: '9px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', display: 'block' }}>Investment</span>
-                                    <span style={{ fontFamily: 'Inter', fontSize: '18px', color: '#C8A951', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>${(Number(detailContract.totalAmount) / 100).toLocaleString()}</span>
+                                    <span style={{ fontFamily: 'Inter', fontSize: '18px', color: '#C8A951', fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>${(Number(detailContract.totalAmount?.amountCents || 0) / 100).toLocaleString()}</span>
                                 </div>
                                 <div style={{ padding: '14px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px' }}>
                                     <span style={{ fontFamily: 'Inter', fontSize: '9px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', display: 'block' }}>Status</span>

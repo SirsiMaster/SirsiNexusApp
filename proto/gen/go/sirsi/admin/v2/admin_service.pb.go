@@ -24,6 +24,178 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type SyncCatalogRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Items         []*SyncCatalogItem     `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SyncCatalogRequest) Reset() {
+	*x = SyncCatalogRequest{}
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SyncCatalogRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SyncCatalogRequest) ProtoMessage() {}
+
+func (x *SyncCatalogRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SyncCatalogRequest.ProtoReflect.Descriptor instead.
+func (*SyncCatalogRequest) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *SyncCatalogRequest) GetItems() []*SyncCatalogItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+type SyncCatalogItem struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Amount        int64                  `protobuf:"varint,3,opt,name=amount,proto3" json:"amount,omitempty"` // in cents
+	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	Recurring     bool                   `protobuf:"varint,5,opt,name=recurring,proto3" json:"recurring,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SyncCatalogItem) Reset() {
+	*x = SyncCatalogItem{}
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SyncCatalogItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SyncCatalogItem) ProtoMessage() {}
+
+func (x *SyncCatalogItem) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SyncCatalogItem.ProtoReflect.Descriptor instead.
+func (*SyncCatalogItem) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *SyncCatalogItem) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *SyncCatalogItem) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *SyncCatalogItem) GetAmount() int64 {
+	if x != nil {
+		return x.Amount
+	}
+	return 0
+}
+
+func (x *SyncCatalogItem) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *SyncCatalogItem) GetRecurring() bool {
+	if x != nil {
+		return x.Recurring
+	}
+	return false
+}
+
+type SyncCatalogResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Logs          []string               `protobuf:"bytes,2,rep,name=logs,proto3" json:"logs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SyncCatalogResponse) Reset() {
+	*x = SyncCatalogResponse{}
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SyncCatalogResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SyncCatalogResponse) ProtoMessage() {}
+
+func (x *SyncCatalogResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SyncCatalogResponse.ProtoReflect.Descriptor instead.
+func (*SyncCatalogResponse) Descriptor() ([]byte, []int) {
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *SyncCatalogResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *SyncCatalogResponse) GetLogs() []string {
+	if x != nil {
+		return x.Logs
+	}
+	return nil
+}
+
 type LogDevSessionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	DeveloperId   string                 `protobuf:"bytes,1,opt,name=developer_id,json=developerId,proto3" json:"developer_id,omitempty"`
@@ -35,7 +207,7 @@ type LogDevSessionRequest struct {
 
 func (x *LogDevSessionRequest) Reset() {
 	*x = LogDevSessionRequest{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[0]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -47,7 +219,7 @@ func (x *LogDevSessionRequest) String() string {
 func (*LogDevSessionRequest) ProtoMessage() {}
 
 func (x *LogDevSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[0]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,7 +232,7 @@ func (x *LogDevSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogDevSessionRequest.ProtoReflect.Descriptor instead.
 func (*LogDevSessionRequest) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{0}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *LogDevSessionRequest) GetDeveloperId() string {
@@ -93,7 +265,7 @@ type LogDevSessionResponse struct {
 
 func (x *LogDevSessionResponse) Reset() {
 	*x = LogDevSessionResponse{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[1]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -105,7 +277,7 @@ func (x *LogDevSessionResponse) String() string {
 func (*LogDevSessionResponse) ProtoMessage() {}
 
 func (x *LogDevSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[1]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -118,7 +290,7 @@ func (x *LogDevSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LogDevSessionResponse.ProtoReflect.Descriptor instead.
 func (*LogDevSessionResponse) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{1}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *LogDevSessionResponse) GetSessionId() string {
@@ -141,7 +313,7 @@ type User struct {
 
 func (x *User) Reset() {
 	*x = User{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[2]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -153,7 +325,7 @@ func (x *User) String() string {
 func (*User) ProtoMessage() {}
 
 func (x *User) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[2]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -166,7 +338,7 @@ func (x *User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User.ProtoReflect.Descriptor instead.
 func (*User) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{2}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *User) GetId() string {
@@ -214,7 +386,7 @@ type ListUsersRequest struct {
 
 func (x *ListUsersRequest) Reset() {
 	*x = ListUsersRequest{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[3]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -226,7 +398,7 @@ func (x *ListUsersRequest) String() string {
 func (*ListUsersRequest) ProtoMessage() {}
 
 func (x *ListUsersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[3]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -239,7 +411,7 @@ func (x *ListUsersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListUsersRequest.ProtoReflect.Descriptor instead.
 func (*ListUsersRequest) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{3}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ListUsersRequest) GetPagination() *v1.PaginationRequest {
@@ -266,7 +438,7 @@ type ListUsersResponse struct {
 
 func (x *ListUsersResponse) Reset() {
 	*x = ListUsersResponse{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[4]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -278,7 +450,7 @@ func (x *ListUsersResponse) String() string {
 func (*ListUsersResponse) ProtoMessage() {}
 
 func (x *ListUsersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[4]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -291,7 +463,7 @@ func (x *ListUsersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListUsersResponse.ProtoReflect.Descriptor instead.
 func (*ListUsersResponse) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{4}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ListUsersResponse) GetUsers() []*User {
@@ -318,7 +490,7 @@ type ManageUserRoleRequest struct {
 
 func (x *ManageUserRoleRequest) Reset() {
 	*x = ManageUserRoleRequest{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[5]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -330,7 +502,7 @@ func (x *ManageUserRoleRequest) String() string {
 func (*ManageUserRoleRequest) ProtoMessage() {}
 
 func (x *ManageUserRoleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[5]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -343,7 +515,7 @@ func (x *ManageUserRoleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManageUserRoleRequest.ProtoReflect.Descriptor instead.
 func (*ManageUserRoleRequest) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{5}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ManageUserRoleRequest) GetUserId() string {
@@ -369,7 +541,7 @@ type ManageUserRoleResponse struct {
 
 func (x *ManageUserRoleResponse) Reset() {
 	*x = ManageUserRoleResponse{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[6]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -381,7 +553,7 @@ func (x *ManageUserRoleResponse) String() string {
 func (*ManageUserRoleResponse) ProtoMessage() {}
 
 func (x *ManageUserRoleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[6]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -394,7 +566,7 @@ func (x *ManageUserRoleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManageUserRoleResponse.ProtoReflect.Descriptor instead.
 func (*ManageUserRoleResponse) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{6}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ManageUserRoleResponse) GetSuccess() bool {
@@ -419,7 +591,7 @@ type Notification struct {
 
 func (x *Notification) Reset() {
 	*x = Notification{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[7]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -431,7 +603,7 @@ func (x *Notification) String() string {
 func (*Notification) ProtoMessage() {}
 
 func (x *Notification) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[7]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -444,7 +616,7 @@ func (x *Notification) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Notification.ProtoReflect.Descriptor instead.
 func (*Notification) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{7}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Notification) GetId() string {
@@ -506,7 +678,7 @@ type ListNotificationsRequest struct {
 
 func (x *ListNotificationsRequest) Reset() {
 	*x = ListNotificationsRequest{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[8]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -518,7 +690,7 @@ func (x *ListNotificationsRequest) String() string {
 func (*ListNotificationsRequest) ProtoMessage() {}
 
 func (x *ListNotificationsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[8]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -531,7 +703,7 @@ func (x *ListNotificationsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListNotificationsRequest.ProtoReflect.Descriptor instead.
 func (*ListNotificationsRequest) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{8}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ListNotificationsRequest) GetPagination() *v1.PaginationRequest {
@@ -558,7 +730,7 @@ type ListNotificationsResponse struct {
 
 func (x *ListNotificationsResponse) Reset() {
 	*x = ListNotificationsResponse{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[9]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -570,7 +742,7 @@ func (x *ListNotificationsResponse) String() string {
 func (*ListNotificationsResponse) ProtoMessage() {}
 
 func (x *ListNotificationsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[9]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -583,7 +755,7 @@ func (x *ListNotificationsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListNotificationsResponse.ProtoReflect.Descriptor instead.
 func (*ListNotificationsResponse) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{9}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ListNotificationsResponse) GetNotifications() []*Notification {
@@ -613,7 +785,7 @@ type SendNotificationRequest struct {
 
 func (x *SendNotificationRequest) Reset() {
 	*x = SendNotificationRequest{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[10]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -625,7 +797,7 @@ func (x *SendNotificationRequest) String() string {
 func (*SendNotificationRequest) ProtoMessage() {}
 
 func (x *SendNotificationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[10]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -638,7 +810,7 @@ func (x *SendNotificationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendNotificationRequest.ProtoReflect.Descriptor instead.
 func (*SendNotificationRequest) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{10}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *SendNotificationRequest) GetRecipientId() string {
@@ -685,7 +857,7 @@ type SendNotificationResponse struct {
 
 func (x *SendNotificationResponse) Reset() {
 	*x = SendNotificationResponse{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[11]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -697,7 +869,7 @@ func (x *SendNotificationResponse) String() string {
 func (*SendNotificationResponse) ProtoMessage() {}
 
 func (x *SendNotificationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[11]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -710,7 +882,7 @@ func (x *SendNotificationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendNotificationResponse.ProtoReflect.Descriptor instead.
 func (*SendNotificationResponse) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{11}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *SendNotificationResponse) GetNotificationId() string {
@@ -731,7 +903,7 @@ type SystemSettings struct {
 
 func (x *SystemSettings) Reset() {
 	*x = SystemSettings{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[12]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -743,7 +915,7 @@ func (x *SystemSettings) String() string {
 func (*SystemSettings) ProtoMessage() {}
 
 func (x *SystemSettings) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[12]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -756,7 +928,7 @@ func (x *SystemSettings) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SystemSettings.ProtoReflect.Descriptor instead.
 func (*SystemSettings) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{12}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *SystemSettings) GetMaintenanceMode() bool {
@@ -788,7 +960,7 @@ type GetSettingsRequest struct {
 
 func (x *GetSettingsRequest) Reset() {
 	*x = GetSettingsRequest{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[13]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -800,7 +972,7 @@ func (x *GetSettingsRequest) String() string {
 func (*GetSettingsRequest) ProtoMessage() {}
 
 func (x *GetSettingsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[13]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -813,7 +985,7 @@ func (x *GetSettingsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSettingsRequest.ProtoReflect.Descriptor instead.
 func (*GetSettingsRequest) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{13}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{16}
 }
 
 type GetSettingsResponse struct {
@@ -825,7 +997,7 @@ type GetSettingsResponse struct {
 
 func (x *GetSettingsResponse) Reset() {
 	*x = GetSettingsResponse{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[14]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -837,7 +1009,7 @@ func (x *GetSettingsResponse) String() string {
 func (*GetSettingsResponse) ProtoMessage() {}
 
 func (x *GetSettingsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[14]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -850,7 +1022,7 @@ func (x *GetSettingsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSettingsResponse.ProtoReflect.Descriptor instead.
 func (*GetSettingsResponse) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{14}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *GetSettingsResponse) GetSettings() *SystemSettings {
@@ -869,7 +1041,7 @@ type UpdateSettingsRequest struct {
 
 func (x *UpdateSettingsRequest) Reset() {
 	*x = UpdateSettingsRequest{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[15]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -881,7 +1053,7 @@ func (x *UpdateSettingsRequest) String() string {
 func (*UpdateSettingsRequest) ProtoMessage() {}
 
 func (x *UpdateSettingsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[15]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -894,7 +1066,7 @@ func (x *UpdateSettingsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSettingsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateSettingsRequest) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{15}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *UpdateSettingsRequest) GetSettings() *SystemSettings {
@@ -913,7 +1085,7 @@ type UpdateSettingsResponse struct {
 
 func (x *UpdateSettingsResponse) Reset() {
 	*x = UpdateSettingsResponse{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[16]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -925,7 +1097,7 @@ func (x *UpdateSettingsResponse) String() string {
 func (*UpdateSettingsResponse) ProtoMessage() {}
 
 func (x *UpdateSettingsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[16]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -938,7 +1110,7 @@ func (x *UpdateSettingsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateSettingsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateSettingsResponse) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{16}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *UpdateSettingsResponse) GetSuccess() bool {
@@ -958,7 +1130,7 @@ type ListAuditTrailRequest struct {
 
 func (x *ListAuditTrailRequest) Reset() {
 	*x = ListAuditTrailRequest{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[17]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -970,7 +1142,7 @@ func (x *ListAuditTrailRequest) String() string {
 func (*ListAuditTrailRequest) ProtoMessage() {}
 
 func (x *ListAuditTrailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[17]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -983,7 +1155,7 @@ func (x *ListAuditTrailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAuditTrailRequest.ProtoReflect.Descriptor instead.
 func (*ListAuditTrailRequest) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{17}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ListAuditTrailRequest) GetPagination() *v1.PaginationRequest {
@@ -1010,7 +1182,7 @@ type ListAuditTrailResponse struct {
 
 func (x *ListAuditTrailResponse) Reset() {
 	*x = ListAuditTrailResponse{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[18]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1022,7 +1194,7 @@ func (x *ListAuditTrailResponse) String() string {
 func (*ListAuditTrailResponse) ProtoMessage() {}
 
 func (x *ListAuditTrailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[18]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1035,7 +1207,7 @@ func (x *ListAuditTrailResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAuditTrailResponse.ProtoReflect.Descriptor instead.
 func (*ListAuditTrailResponse) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{18}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ListAuditTrailResponse) GetLogs() []*AuditLogEntry {
@@ -1067,7 +1239,7 @@ type AuditLogEntry struct {
 
 func (x *AuditLogEntry) Reset() {
 	*x = AuditLogEntry{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[19]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1079,7 +1251,7 @@ func (x *AuditLogEntry) String() string {
 func (*AuditLogEntry) ProtoMessage() {}
 
 func (x *AuditLogEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[19]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1092,7 +1264,7 @@ func (x *AuditLogEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuditLogEntry.ProtoReflect.Descriptor instead.
 func (*AuditLogEntry) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{19}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *AuditLogEntry) GetId() string {
@@ -1156,7 +1328,7 @@ type GetDevMetricsRequest struct {
 
 func (x *GetDevMetricsRequest) Reset() {
 	*x = GetDevMetricsRequest{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[20]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1168,7 +1340,7 @@ func (x *GetDevMetricsRequest) String() string {
 func (*GetDevMetricsRequest) ProtoMessage() {}
 
 func (x *GetDevMetricsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[20]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1181,7 +1353,7 @@ func (x *GetDevMetricsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDevMetricsRequest.ProtoReflect.Descriptor instead.
 func (*GetDevMetricsRequest) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{20}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *GetDevMetricsRequest) GetTenantId() string {
@@ -1219,7 +1391,7 @@ type DevMetrics struct {
 
 func (x *DevMetrics) Reset() {
 	*x = DevMetrics{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[21]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1231,7 +1403,7 @@ func (x *DevMetrics) String() string {
 func (*DevMetrics) ProtoMessage() {}
 
 func (x *DevMetrics) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[21]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1244,7 +1416,7 @@ func (x *DevMetrics) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DevMetrics.ProtoReflect.Descriptor instead.
 func (*DevMetrics) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{21}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *DevMetrics) GetVelocity() float64 {
@@ -1300,7 +1472,7 @@ type DailyActivity struct {
 
 func (x *DailyActivity) Reset() {
 	*x = DailyActivity{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[22]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1312,7 +1484,7 @@ func (x *DailyActivity) String() string {
 func (*DailyActivity) ProtoMessage() {}
 
 func (x *DailyActivity) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[22]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1325,7 +1497,7 @@ func (x *DailyActivity) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DailyActivity.ProtoReflect.Descriptor instead.
 func (*DailyActivity) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{22}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *DailyActivity) GetDate() string {
@@ -1358,7 +1530,7 @@ type SyncGitHubStatsRequest struct {
 
 func (x *SyncGitHubStatsRequest) Reset() {
 	*x = SyncGitHubStatsRequest{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[23]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1370,7 +1542,7 @@ func (x *SyncGitHubStatsRequest) String() string {
 func (*SyncGitHubStatsRequest) ProtoMessage() {}
 
 func (x *SyncGitHubStatsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[23]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1383,7 +1555,7 @@ func (x *SyncGitHubStatsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SyncGitHubStatsRequest.ProtoReflect.Descriptor instead.
 func (*SyncGitHubStatsRequest) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{23}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *SyncGitHubStatsRequest) GetRepoUrl() string {
@@ -1403,7 +1575,7 @@ type SyncGitHubStatsResponse struct {
 
 func (x *SyncGitHubStatsResponse) Reset() {
 	*x = SyncGitHubStatsResponse{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[24]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1415,7 +1587,7 @@ func (x *SyncGitHubStatsResponse) String() string {
 func (*SyncGitHubStatsResponse) ProtoMessage() {}
 
 func (x *SyncGitHubStatsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[24]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1428,7 +1600,7 @@ func (x *SyncGitHubStatsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SyncGitHubStatsResponse.ProtoReflect.Descriptor instead.
 func (*SyncGitHubStatsResponse) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{24}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *SyncGitHubStatsResponse) GetSuccess() bool {
@@ -1453,7 +1625,7 @@ type GetSystemOverviewRequest struct {
 
 func (x *GetSystemOverviewRequest) Reset() {
 	*x = GetSystemOverviewRequest{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[25]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1465,7 +1637,7 @@ func (x *GetSystemOverviewRequest) String() string {
 func (*GetSystemOverviewRequest) ProtoMessage() {}
 
 func (x *GetSystemOverviewRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[25]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1478,7 +1650,7 @@ func (x *GetSystemOverviewRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSystemOverviewRequest.ProtoReflect.Descriptor instead.
 func (*GetSystemOverviewRequest) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{25}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{28}
 }
 
 type SystemOverview struct {
@@ -1496,7 +1668,7 @@ type SystemOverview struct {
 
 func (x *SystemOverview) Reset() {
 	*x = SystemOverview{}
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[26]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1508,7 +1680,7 @@ func (x *SystemOverview) String() string {
 func (*SystemOverview) ProtoMessage() {}
 
 func (x *SystemOverview) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[26]
+	mi := &file_sirsi_admin_v2_admin_service_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1521,7 +1693,7 @@ func (x *SystemOverview) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SystemOverview.ProtoReflect.Descriptor instead.
 func (*SystemOverview) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{26}
+	return file_sirsi_admin_v2_admin_service_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *SystemOverview) GetTotalTenants() int32 {
@@ -1577,7 +1749,18 @@ var File_sirsi_admin_v2_admin_service_proto protoreflect.FileDescriptor
 
 const file_sirsi_admin_v2_admin_service_proto_rawDesc = "" +
 	"\n" +
-	"\"sirsi/admin/v2/admin_service.proto\x12\x0esirsi.admin.v2\x1a\x1csirsi/common/v1/common.proto\x1a\x1bsirsi/admin/v2/estate.proto\"m\n" +
+	"\"sirsi/admin/v2/admin_service.proto\x12\x0esirsi.admin.v2\x1a\x1csirsi/common/v1/common.proto\x1a\x1bsirsi/admin/v2/estate.proto\"K\n" +
+	"\x12SyncCatalogRequest\x125\n" +
+	"\x05items\x18\x01 \x03(\v2\x1f.sirsi.admin.v2.SyncCatalogItemR\x05items\"\x8d\x01\n" +
+	"\x0fSyncCatalogItem\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
+	"\x06amount\x18\x03 \x01(\x03R\x06amount\x12 \n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x1c\n" +
+	"\trecurring\x18\x05 \x01(\bR\trecurring\"C\n" +
+	"\x13SyncCatalogResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x12\n" +
+	"\x04logs\x18\x02 \x03(\tR\x04logs\"m\n" +
 	"\x14LogDevSessionRequest\x12!\n" +
 	"\fdeveloper_id\x18\x01 \x01(\tR\vdeveloperId\x12\x16\n" +
 	"\x06action\x18\x02 \x01(\tR\x06action\x12\x1a\n" +
@@ -1693,7 +1876,7 @@ const file_sirsi_admin_v2_admin_service_proto_rawDesc = "" +
 	"\x10sirsi_multiplier\x18\x04 \x01(\x01R\x0fsirsiMultiplier\x12)\n" +
 	"\x10maintenance_mode\x18\x05 \x01(\bR\x0fmaintenanceMode\x12A\n" +
 	"\rrecent_alerts\x18\x06 \x03(\v2\x1c.sirsi.admin.v2.NotificationR\frecentAlerts\x12B\n" +
-	"\ractivity_feed\x18\a \x03(\v2\x1d.sirsi.admin.v2.AuditLogEntryR\factivityFeed2\xb4\v\n" +
+	"\ractivity_feed\x18\a \x03(\v2\x1d.sirsi.admin.v2.AuditLogEntryR\factivityFeed2\x8c\f\n" +
 	"\fAdminService\x12]\n" +
 	"\x11GetSystemOverview\x12(.sirsi.admin.v2.GetSystemOverviewRequest\x1a\x1e.sirsi.admin.v2.SystemOverview\x12\\\n" +
 	"\rLogDevSession\x12$.sirsi.admin.v2.LogDevSessionRequest\x1a%.sirsi.admin.v2.LogDevSessionResponse\x12Q\n" +
@@ -1710,7 +1893,8 @@ const file_sirsi_admin_v2_admin_service_proto_rawDesc = "" +
 	"\x10SendNotification\x12'.sirsi.admin.v2.SendNotificationRequest\x1a(.sirsi.admin.v2.SendNotificationResponse\x12V\n" +
 	"\vGetSettings\x12\".sirsi.admin.v2.GetSettingsRequest\x1a#.sirsi.admin.v2.GetSettingsResponse\x12_\n" +
 	"\x0eUpdateSettings\x12%.sirsi.admin.v2.UpdateSettingsRequest\x1a&.sirsi.admin.v2.UpdateSettingsResponse\x12_\n" +
-	"\x0eListAuditTrail\x12%.sirsi.admin.v2.ListAuditTrailRequest\x1a&.sirsi.admin.v2.ListAuditTrailResponseB\xbb\x01\n" +
+	"\x0eListAuditTrail\x12%.sirsi.admin.v2.ListAuditTrailRequest\x1a&.sirsi.admin.v2.ListAuditTrailResponse\x12V\n" +
+	"\vSyncCatalog\x12\".sirsi.admin.v2.SyncCatalogRequest\x1a#.sirsi.admin.v2.SyncCatalogResponseB\xbb\x01\n" +
 	"\x12com.sirsi.admin.v2B\x11AdminServiceProtoP\x01Z8github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2\xa2\x02\x03SAX\xaa\x02\x0eSirsi.Admin.V2\xca\x02\x0eSirsi\\Admin\\V2\xe2\x02\x1aSirsi\\Admin\\V2\\GPBMetadata\xea\x02\x10Sirsi::Admin::V2b\x06proto3"
 
 var (
@@ -1725,101 +1909,107 @@ func file_sirsi_admin_v2_admin_service_proto_rawDescGZIP() []byte {
 	return file_sirsi_admin_v2_admin_service_proto_rawDescData
 }
 
-var file_sirsi_admin_v2_admin_service_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_sirsi_admin_v2_admin_service_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_sirsi_admin_v2_admin_service_proto_goTypes = []any{
-	(*LogDevSessionRequest)(nil),      // 0: sirsi.admin.v2.LogDevSessionRequest
-	(*LogDevSessionResponse)(nil),     // 1: sirsi.admin.v2.LogDevSessionResponse
-	(*User)(nil),                      // 2: sirsi.admin.v2.User
-	(*ListUsersRequest)(nil),          // 3: sirsi.admin.v2.ListUsersRequest
-	(*ListUsersResponse)(nil),         // 4: sirsi.admin.v2.ListUsersResponse
-	(*ManageUserRoleRequest)(nil),     // 5: sirsi.admin.v2.ManageUserRoleRequest
-	(*ManageUserRoleResponse)(nil),    // 6: sirsi.admin.v2.ManageUserRoleResponse
-	(*Notification)(nil),              // 7: sirsi.admin.v2.Notification
-	(*ListNotificationsRequest)(nil),  // 8: sirsi.admin.v2.ListNotificationsRequest
-	(*ListNotificationsResponse)(nil), // 9: sirsi.admin.v2.ListNotificationsResponse
-	(*SendNotificationRequest)(nil),   // 10: sirsi.admin.v2.SendNotificationRequest
-	(*SendNotificationResponse)(nil),  // 11: sirsi.admin.v2.SendNotificationResponse
-	(*SystemSettings)(nil),            // 12: sirsi.admin.v2.SystemSettings
-	(*GetSettingsRequest)(nil),        // 13: sirsi.admin.v2.GetSettingsRequest
-	(*GetSettingsResponse)(nil),       // 14: sirsi.admin.v2.GetSettingsResponse
-	(*UpdateSettingsRequest)(nil),     // 15: sirsi.admin.v2.UpdateSettingsRequest
-	(*UpdateSettingsResponse)(nil),    // 16: sirsi.admin.v2.UpdateSettingsResponse
-	(*ListAuditTrailRequest)(nil),     // 17: sirsi.admin.v2.ListAuditTrailRequest
-	(*ListAuditTrailResponse)(nil),    // 18: sirsi.admin.v2.ListAuditTrailResponse
-	(*AuditLogEntry)(nil),             // 19: sirsi.admin.v2.AuditLogEntry
-	(*GetDevMetricsRequest)(nil),      // 20: sirsi.admin.v2.GetDevMetricsRequest
-	(*DevMetrics)(nil),                // 21: sirsi.admin.v2.DevMetrics
-	(*DailyActivity)(nil),             // 22: sirsi.admin.v2.DailyActivity
-	(*SyncGitHubStatsRequest)(nil),    // 23: sirsi.admin.v2.SyncGitHubStatsRequest
-	(*SyncGitHubStatsResponse)(nil),   // 24: sirsi.admin.v2.SyncGitHubStatsResponse
-	(*GetSystemOverviewRequest)(nil),  // 25: sirsi.admin.v2.GetSystemOverviewRequest
-	(*SystemOverview)(nil),            // 26: sirsi.admin.v2.SystemOverview
-	(*v1.PaginationRequest)(nil),      // 27: sirsi.common.v1.PaginationRequest
-	(*v1.PaginationResponse)(nil),     // 28: sirsi.common.v1.PaginationResponse
-	(*v1.Money)(nil),                  // 29: sirsi.common.v1.Money
-	(*ListEstatesRequest)(nil),        // 30: sirsi.admin.v2.ListEstatesRequest
-	(*GetEstateRequest)(nil),          // 31: sirsi.admin.v2.GetEstateRequest
-	(*CreateEstateRequest)(nil),       // 32: sirsi.admin.v2.CreateEstateRequest
-	(*UpdateEstateRequest)(nil),       // 33: sirsi.admin.v2.UpdateEstateRequest
-	(*DeleteEstateRequest)(nil),       // 34: sirsi.admin.v2.DeleteEstateRequest
-	(*ListEstatesResponse)(nil),       // 35: sirsi.admin.v2.ListEstatesResponse
-	(*Estate)(nil),                    // 36: sirsi.admin.v2.Estate
-	(*DeleteEstateResponse)(nil),      // 37: sirsi.admin.v2.DeleteEstateResponse
+	(*SyncCatalogRequest)(nil),        // 0: sirsi.admin.v2.SyncCatalogRequest
+	(*SyncCatalogItem)(nil),           // 1: sirsi.admin.v2.SyncCatalogItem
+	(*SyncCatalogResponse)(nil),       // 2: sirsi.admin.v2.SyncCatalogResponse
+	(*LogDevSessionRequest)(nil),      // 3: sirsi.admin.v2.LogDevSessionRequest
+	(*LogDevSessionResponse)(nil),     // 4: sirsi.admin.v2.LogDevSessionResponse
+	(*User)(nil),                      // 5: sirsi.admin.v2.User
+	(*ListUsersRequest)(nil),          // 6: sirsi.admin.v2.ListUsersRequest
+	(*ListUsersResponse)(nil),         // 7: sirsi.admin.v2.ListUsersResponse
+	(*ManageUserRoleRequest)(nil),     // 8: sirsi.admin.v2.ManageUserRoleRequest
+	(*ManageUserRoleResponse)(nil),    // 9: sirsi.admin.v2.ManageUserRoleResponse
+	(*Notification)(nil),              // 10: sirsi.admin.v2.Notification
+	(*ListNotificationsRequest)(nil),  // 11: sirsi.admin.v2.ListNotificationsRequest
+	(*ListNotificationsResponse)(nil), // 12: sirsi.admin.v2.ListNotificationsResponse
+	(*SendNotificationRequest)(nil),   // 13: sirsi.admin.v2.SendNotificationRequest
+	(*SendNotificationResponse)(nil),  // 14: sirsi.admin.v2.SendNotificationResponse
+	(*SystemSettings)(nil),            // 15: sirsi.admin.v2.SystemSettings
+	(*GetSettingsRequest)(nil),        // 16: sirsi.admin.v2.GetSettingsRequest
+	(*GetSettingsResponse)(nil),       // 17: sirsi.admin.v2.GetSettingsResponse
+	(*UpdateSettingsRequest)(nil),     // 18: sirsi.admin.v2.UpdateSettingsRequest
+	(*UpdateSettingsResponse)(nil),    // 19: sirsi.admin.v2.UpdateSettingsResponse
+	(*ListAuditTrailRequest)(nil),     // 20: sirsi.admin.v2.ListAuditTrailRequest
+	(*ListAuditTrailResponse)(nil),    // 21: sirsi.admin.v2.ListAuditTrailResponse
+	(*AuditLogEntry)(nil),             // 22: sirsi.admin.v2.AuditLogEntry
+	(*GetDevMetricsRequest)(nil),      // 23: sirsi.admin.v2.GetDevMetricsRequest
+	(*DevMetrics)(nil),                // 24: sirsi.admin.v2.DevMetrics
+	(*DailyActivity)(nil),             // 25: sirsi.admin.v2.DailyActivity
+	(*SyncGitHubStatsRequest)(nil),    // 26: sirsi.admin.v2.SyncGitHubStatsRequest
+	(*SyncGitHubStatsResponse)(nil),   // 27: sirsi.admin.v2.SyncGitHubStatsResponse
+	(*GetSystemOverviewRequest)(nil),  // 28: sirsi.admin.v2.GetSystemOverviewRequest
+	(*SystemOverview)(nil),            // 29: sirsi.admin.v2.SystemOverview
+	(*v1.PaginationRequest)(nil),      // 30: sirsi.common.v1.PaginationRequest
+	(*v1.PaginationResponse)(nil),     // 31: sirsi.common.v1.PaginationResponse
+	(*v1.Money)(nil),                  // 32: sirsi.common.v1.Money
+	(*ListEstatesRequest)(nil),        // 33: sirsi.admin.v2.ListEstatesRequest
+	(*GetEstateRequest)(nil),          // 34: sirsi.admin.v2.GetEstateRequest
+	(*CreateEstateRequest)(nil),       // 35: sirsi.admin.v2.CreateEstateRequest
+	(*UpdateEstateRequest)(nil),       // 36: sirsi.admin.v2.UpdateEstateRequest
+	(*DeleteEstateRequest)(nil),       // 37: sirsi.admin.v2.DeleteEstateRequest
+	(*ListEstatesResponse)(nil),       // 38: sirsi.admin.v2.ListEstatesResponse
+	(*Estate)(nil),                    // 39: sirsi.admin.v2.Estate
+	(*DeleteEstateResponse)(nil),      // 40: sirsi.admin.v2.DeleteEstateResponse
 }
 var file_sirsi_admin_v2_admin_service_proto_depIdxs = []int32{
-	27, // 0: sirsi.admin.v2.ListUsersRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
-	2,  // 1: sirsi.admin.v2.ListUsersResponse.users:type_name -> sirsi.admin.v2.User
-	28, // 2: sirsi.admin.v2.ListUsersResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
-	27, // 3: sirsi.admin.v2.ListNotificationsRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
-	7,  // 4: sirsi.admin.v2.ListNotificationsResponse.notifications:type_name -> sirsi.admin.v2.Notification
-	28, // 5: sirsi.admin.v2.ListNotificationsResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
-	12, // 6: sirsi.admin.v2.GetSettingsResponse.settings:type_name -> sirsi.admin.v2.SystemSettings
-	12, // 7: sirsi.admin.v2.UpdateSettingsRequest.settings:type_name -> sirsi.admin.v2.SystemSettings
-	27, // 8: sirsi.admin.v2.ListAuditTrailRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
-	19, // 9: sirsi.admin.v2.ListAuditTrailResponse.logs:type_name -> sirsi.admin.v2.AuditLogEntry
-	28, // 10: sirsi.admin.v2.ListAuditTrailResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
-	29, // 11: sirsi.admin.v2.DevMetrics.burn_rate:type_name -> sirsi.common.v1.Money
-	22, // 12: sirsi.admin.v2.DevMetrics.activity:type_name -> sirsi.admin.v2.DailyActivity
-	29, // 13: sirsi.admin.v2.SystemOverview.revenue_mtd:type_name -> sirsi.common.v1.Money
-	7,  // 14: sirsi.admin.v2.SystemOverview.recent_alerts:type_name -> sirsi.admin.v2.Notification
-	19, // 15: sirsi.admin.v2.SystemOverview.activity_feed:type_name -> sirsi.admin.v2.AuditLogEntry
-	25, // 16: sirsi.admin.v2.AdminService.GetSystemOverview:input_type -> sirsi.admin.v2.GetSystemOverviewRequest
-	0,  // 17: sirsi.admin.v2.AdminService.LogDevSession:input_type -> sirsi.admin.v2.LogDevSessionRequest
-	20, // 18: sirsi.admin.v2.AdminService.GetDevMetrics:input_type -> sirsi.admin.v2.GetDevMetricsRequest
-	23, // 19: sirsi.admin.v2.AdminService.SyncGitHubStats:input_type -> sirsi.admin.v2.SyncGitHubStatsRequest
-	30, // 20: sirsi.admin.v2.AdminService.ListEstates:input_type -> sirsi.admin.v2.ListEstatesRequest
-	31, // 21: sirsi.admin.v2.AdminService.GetEstate:input_type -> sirsi.admin.v2.GetEstateRequest
-	32, // 22: sirsi.admin.v2.AdminService.CreateEstate:input_type -> sirsi.admin.v2.CreateEstateRequest
-	33, // 23: sirsi.admin.v2.AdminService.UpdateEstate:input_type -> sirsi.admin.v2.UpdateEstateRequest
-	34, // 24: sirsi.admin.v2.AdminService.DeleteEstate:input_type -> sirsi.admin.v2.DeleteEstateRequest
-	3,  // 25: sirsi.admin.v2.AdminService.ListUsers:input_type -> sirsi.admin.v2.ListUsersRequest
-	5,  // 26: sirsi.admin.v2.AdminService.ManageUserRole:input_type -> sirsi.admin.v2.ManageUserRoleRequest
-	8,  // 27: sirsi.admin.v2.AdminService.ListNotifications:input_type -> sirsi.admin.v2.ListNotificationsRequest
-	10, // 28: sirsi.admin.v2.AdminService.SendNotification:input_type -> sirsi.admin.v2.SendNotificationRequest
-	13, // 29: sirsi.admin.v2.AdminService.GetSettings:input_type -> sirsi.admin.v2.GetSettingsRequest
-	15, // 30: sirsi.admin.v2.AdminService.UpdateSettings:input_type -> sirsi.admin.v2.UpdateSettingsRequest
-	17, // 31: sirsi.admin.v2.AdminService.ListAuditTrail:input_type -> sirsi.admin.v2.ListAuditTrailRequest
-	26, // 32: sirsi.admin.v2.AdminService.GetSystemOverview:output_type -> sirsi.admin.v2.SystemOverview
-	1,  // 33: sirsi.admin.v2.AdminService.LogDevSession:output_type -> sirsi.admin.v2.LogDevSessionResponse
-	21, // 34: sirsi.admin.v2.AdminService.GetDevMetrics:output_type -> sirsi.admin.v2.DevMetrics
-	24, // 35: sirsi.admin.v2.AdminService.SyncGitHubStats:output_type -> sirsi.admin.v2.SyncGitHubStatsResponse
-	35, // 36: sirsi.admin.v2.AdminService.ListEstates:output_type -> sirsi.admin.v2.ListEstatesResponse
-	36, // 37: sirsi.admin.v2.AdminService.GetEstate:output_type -> sirsi.admin.v2.Estate
-	36, // 38: sirsi.admin.v2.AdminService.CreateEstate:output_type -> sirsi.admin.v2.Estate
-	36, // 39: sirsi.admin.v2.AdminService.UpdateEstate:output_type -> sirsi.admin.v2.Estate
-	37, // 40: sirsi.admin.v2.AdminService.DeleteEstate:output_type -> sirsi.admin.v2.DeleteEstateResponse
-	4,  // 41: sirsi.admin.v2.AdminService.ListUsers:output_type -> sirsi.admin.v2.ListUsersResponse
-	6,  // 42: sirsi.admin.v2.AdminService.ManageUserRole:output_type -> sirsi.admin.v2.ManageUserRoleResponse
-	9,  // 43: sirsi.admin.v2.AdminService.ListNotifications:output_type -> sirsi.admin.v2.ListNotificationsResponse
-	11, // 44: sirsi.admin.v2.AdminService.SendNotification:output_type -> sirsi.admin.v2.SendNotificationResponse
-	14, // 45: sirsi.admin.v2.AdminService.GetSettings:output_type -> sirsi.admin.v2.GetSettingsResponse
-	16, // 46: sirsi.admin.v2.AdminService.UpdateSettings:output_type -> sirsi.admin.v2.UpdateSettingsResponse
-	18, // 47: sirsi.admin.v2.AdminService.ListAuditTrail:output_type -> sirsi.admin.v2.ListAuditTrailResponse
-	32, // [32:48] is the sub-list for method output_type
-	16, // [16:32] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	1,  // 0: sirsi.admin.v2.SyncCatalogRequest.items:type_name -> sirsi.admin.v2.SyncCatalogItem
+	30, // 1: sirsi.admin.v2.ListUsersRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
+	5,  // 2: sirsi.admin.v2.ListUsersResponse.users:type_name -> sirsi.admin.v2.User
+	31, // 3: sirsi.admin.v2.ListUsersResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
+	30, // 4: sirsi.admin.v2.ListNotificationsRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
+	10, // 5: sirsi.admin.v2.ListNotificationsResponse.notifications:type_name -> sirsi.admin.v2.Notification
+	31, // 6: sirsi.admin.v2.ListNotificationsResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
+	15, // 7: sirsi.admin.v2.GetSettingsResponse.settings:type_name -> sirsi.admin.v2.SystemSettings
+	15, // 8: sirsi.admin.v2.UpdateSettingsRequest.settings:type_name -> sirsi.admin.v2.SystemSettings
+	30, // 9: sirsi.admin.v2.ListAuditTrailRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
+	22, // 10: sirsi.admin.v2.ListAuditTrailResponse.logs:type_name -> sirsi.admin.v2.AuditLogEntry
+	31, // 11: sirsi.admin.v2.ListAuditTrailResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
+	32, // 12: sirsi.admin.v2.DevMetrics.burn_rate:type_name -> sirsi.common.v1.Money
+	25, // 13: sirsi.admin.v2.DevMetrics.activity:type_name -> sirsi.admin.v2.DailyActivity
+	32, // 14: sirsi.admin.v2.SystemOverview.revenue_mtd:type_name -> sirsi.common.v1.Money
+	10, // 15: sirsi.admin.v2.SystemOverview.recent_alerts:type_name -> sirsi.admin.v2.Notification
+	22, // 16: sirsi.admin.v2.SystemOverview.activity_feed:type_name -> sirsi.admin.v2.AuditLogEntry
+	28, // 17: sirsi.admin.v2.AdminService.GetSystemOverview:input_type -> sirsi.admin.v2.GetSystemOverviewRequest
+	3,  // 18: sirsi.admin.v2.AdminService.LogDevSession:input_type -> sirsi.admin.v2.LogDevSessionRequest
+	23, // 19: sirsi.admin.v2.AdminService.GetDevMetrics:input_type -> sirsi.admin.v2.GetDevMetricsRequest
+	26, // 20: sirsi.admin.v2.AdminService.SyncGitHubStats:input_type -> sirsi.admin.v2.SyncGitHubStatsRequest
+	33, // 21: sirsi.admin.v2.AdminService.ListEstates:input_type -> sirsi.admin.v2.ListEstatesRequest
+	34, // 22: sirsi.admin.v2.AdminService.GetEstate:input_type -> sirsi.admin.v2.GetEstateRequest
+	35, // 23: sirsi.admin.v2.AdminService.CreateEstate:input_type -> sirsi.admin.v2.CreateEstateRequest
+	36, // 24: sirsi.admin.v2.AdminService.UpdateEstate:input_type -> sirsi.admin.v2.UpdateEstateRequest
+	37, // 25: sirsi.admin.v2.AdminService.DeleteEstate:input_type -> sirsi.admin.v2.DeleteEstateRequest
+	6,  // 26: sirsi.admin.v2.AdminService.ListUsers:input_type -> sirsi.admin.v2.ListUsersRequest
+	8,  // 27: sirsi.admin.v2.AdminService.ManageUserRole:input_type -> sirsi.admin.v2.ManageUserRoleRequest
+	11, // 28: sirsi.admin.v2.AdminService.ListNotifications:input_type -> sirsi.admin.v2.ListNotificationsRequest
+	13, // 29: sirsi.admin.v2.AdminService.SendNotification:input_type -> sirsi.admin.v2.SendNotificationRequest
+	16, // 30: sirsi.admin.v2.AdminService.GetSettings:input_type -> sirsi.admin.v2.GetSettingsRequest
+	18, // 31: sirsi.admin.v2.AdminService.UpdateSettings:input_type -> sirsi.admin.v2.UpdateSettingsRequest
+	20, // 32: sirsi.admin.v2.AdminService.ListAuditTrail:input_type -> sirsi.admin.v2.ListAuditTrailRequest
+	0,  // 33: sirsi.admin.v2.AdminService.SyncCatalog:input_type -> sirsi.admin.v2.SyncCatalogRequest
+	29, // 34: sirsi.admin.v2.AdminService.GetSystemOverview:output_type -> sirsi.admin.v2.SystemOverview
+	4,  // 35: sirsi.admin.v2.AdminService.LogDevSession:output_type -> sirsi.admin.v2.LogDevSessionResponse
+	24, // 36: sirsi.admin.v2.AdminService.GetDevMetrics:output_type -> sirsi.admin.v2.DevMetrics
+	27, // 37: sirsi.admin.v2.AdminService.SyncGitHubStats:output_type -> sirsi.admin.v2.SyncGitHubStatsResponse
+	38, // 38: sirsi.admin.v2.AdminService.ListEstates:output_type -> sirsi.admin.v2.ListEstatesResponse
+	39, // 39: sirsi.admin.v2.AdminService.GetEstate:output_type -> sirsi.admin.v2.Estate
+	39, // 40: sirsi.admin.v2.AdminService.CreateEstate:output_type -> sirsi.admin.v2.Estate
+	39, // 41: sirsi.admin.v2.AdminService.UpdateEstate:output_type -> sirsi.admin.v2.Estate
+	40, // 42: sirsi.admin.v2.AdminService.DeleteEstate:output_type -> sirsi.admin.v2.DeleteEstateResponse
+	7,  // 43: sirsi.admin.v2.AdminService.ListUsers:output_type -> sirsi.admin.v2.ListUsersResponse
+	9,  // 44: sirsi.admin.v2.AdminService.ManageUserRole:output_type -> sirsi.admin.v2.ManageUserRoleResponse
+	12, // 45: sirsi.admin.v2.AdminService.ListNotifications:output_type -> sirsi.admin.v2.ListNotificationsResponse
+	14, // 46: sirsi.admin.v2.AdminService.SendNotification:output_type -> sirsi.admin.v2.SendNotificationResponse
+	17, // 47: sirsi.admin.v2.AdminService.GetSettings:output_type -> sirsi.admin.v2.GetSettingsResponse
+	19, // 48: sirsi.admin.v2.AdminService.UpdateSettings:output_type -> sirsi.admin.v2.UpdateSettingsResponse
+	21, // 49: sirsi.admin.v2.AdminService.ListAuditTrail:output_type -> sirsi.admin.v2.ListAuditTrailResponse
+	2,  // 50: sirsi.admin.v2.AdminService.SyncCatalog:output_type -> sirsi.admin.v2.SyncCatalogResponse
+	34, // [34:51] is the sub-list for method output_type
+	17, // [17:34] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_sirsi_admin_v2_admin_service_proto_init() }
@@ -1834,7 +2024,7 @@ func file_sirsi_admin_v2_admin_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sirsi_admin_v2_admin_service_proto_rawDesc), len(file_sirsi_admin_v2_admin_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   27,
+			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

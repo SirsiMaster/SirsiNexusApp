@@ -47,9 +47,6 @@ const (
 	// TenantServiceUpdateTenantProcedure is the fully-qualified name of the TenantService's
 	// UpdateTenant RPC.
 	TenantServiceUpdateTenantProcedure = "/sirsi.admin.v2.TenantService/UpdateTenant"
-	// TenantServiceCreateCheckoutSessionProcedure is the fully-qualified name of the TenantService's
-	// CreateCheckoutSession RPC.
-	TenantServiceCreateCheckoutSessionProcedure = "/sirsi.admin.v2.TenantService/CreateCheckoutSession"
 	// TenantServiceStartProvisioningProcedure is the fully-qualified name of the TenantService's
 	// StartProvisioning RPC.
 	TenantServiceStartProvisioningProcedure = "/sirsi.admin.v2.TenantService/StartProvisioning"
@@ -74,8 +71,6 @@ type TenantServiceClient interface {
 	GetTenant(context.Context, *connect.Request[v2.GetTenantRequest]) (*connect.Response[v2.Tenant], error)
 	GetTenantByOwner(context.Context, *connect.Request[v2.GetTenantByOwnerRequest]) (*connect.Response[v2.Tenant], error)
 	UpdateTenant(context.Context, *connect.Request[v2.UpdateTenantRequest]) (*connect.Response[v2.Tenant], error)
-	// Stripe Integration
-	CreateCheckoutSession(context.Context, *connect.Request[v2.CreateCheckoutSessionRequest]) (*connect.Response[v2.CreateCheckoutSessionResponse], error)
 	// Provisioning
 	StartProvisioning(context.Context, *connect.Request[v2.StartProvisioningRequest]) (*connect.Response[v2.ProvisioningStatus], error)
 	GetProvisioningStatus(context.Context, *connect.Request[v2.GetProvisioningStatusRequest]) (*connect.Response[v2.ProvisioningStatus], error)
@@ -120,12 +115,6 @@ func NewTenantServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 			connect.WithSchema(tenantServiceMethods.ByName("UpdateTenant")),
 			connect.WithClientOptions(opts...),
 		),
-		createCheckoutSession: connect.NewClient[v2.CreateCheckoutSessionRequest, v2.CreateCheckoutSessionResponse](
-			httpClient,
-			baseURL+TenantServiceCreateCheckoutSessionProcedure,
-			connect.WithSchema(tenantServiceMethods.ByName("CreateCheckoutSession")),
-			connect.WithClientOptions(opts...),
-		),
 		startProvisioning: connect.NewClient[v2.StartProvisioningRequest, v2.ProvisioningStatus](
 			httpClient,
 			baseURL+TenantServiceStartProvisioningProcedure,
@@ -165,7 +154,6 @@ type tenantServiceClient struct {
 	getTenant             *connect.Client[v2.GetTenantRequest, v2.Tenant]
 	getTenantByOwner      *connect.Client[v2.GetTenantByOwnerRequest, v2.Tenant]
 	updateTenant          *connect.Client[v2.UpdateTenantRequest, v2.Tenant]
-	createCheckoutSession *connect.Client[v2.CreateCheckoutSessionRequest, v2.CreateCheckoutSessionResponse]
 	startProvisioning     *connect.Client[v2.StartProvisioningRequest, v2.ProvisioningStatus]
 	getProvisioningStatus *connect.Client[v2.GetProvisioningStatusRequest, v2.ProvisioningStatus]
 	listTenants           *connect.Client[v2.ListTenantsRequest, v2.ListTenantsResponse]
@@ -191,11 +179,6 @@ func (c *tenantServiceClient) GetTenantByOwner(ctx context.Context, req *connect
 // UpdateTenant calls sirsi.admin.v2.TenantService.UpdateTenant.
 func (c *tenantServiceClient) UpdateTenant(ctx context.Context, req *connect.Request[v2.UpdateTenantRequest]) (*connect.Response[v2.Tenant], error) {
 	return c.updateTenant.CallUnary(ctx, req)
-}
-
-// CreateCheckoutSession calls sirsi.admin.v2.TenantService.CreateCheckoutSession.
-func (c *tenantServiceClient) CreateCheckoutSession(ctx context.Context, req *connect.Request[v2.CreateCheckoutSessionRequest]) (*connect.Response[v2.CreateCheckoutSessionResponse], error) {
-	return c.createCheckoutSession.CallUnary(ctx, req)
 }
 
 // StartProvisioning calls sirsi.admin.v2.TenantService.StartProvisioning.
@@ -230,8 +213,6 @@ type TenantServiceHandler interface {
 	GetTenant(context.Context, *connect.Request[v2.GetTenantRequest]) (*connect.Response[v2.Tenant], error)
 	GetTenantByOwner(context.Context, *connect.Request[v2.GetTenantByOwnerRequest]) (*connect.Response[v2.Tenant], error)
 	UpdateTenant(context.Context, *connect.Request[v2.UpdateTenantRequest]) (*connect.Response[v2.Tenant], error)
-	// Stripe Integration
-	CreateCheckoutSession(context.Context, *connect.Request[v2.CreateCheckoutSessionRequest]) (*connect.Response[v2.CreateCheckoutSessionResponse], error)
 	// Provisioning
 	StartProvisioning(context.Context, *connect.Request[v2.StartProvisioningRequest]) (*connect.Response[v2.ProvisioningStatus], error)
 	GetProvisioningStatus(context.Context, *connect.Request[v2.GetProvisioningStatusRequest]) (*connect.Response[v2.ProvisioningStatus], error)
@@ -270,12 +251,6 @@ func NewTenantServiceHandler(svc TenantServiceHandler, opts ...connect.HandlerOp
 		TenantServiceUpdateTenantProcedure,
 		svc.UpdateTenant,
 		connect.WithSchema(tenantServiceMethods.ByName("UpdateTenant")),
-		connect.WithHandlerOptions(opts...),
-	)
-	tenantServiceCreateCheckoutSessionHandler := connect.NewUnaryHandler(
-		TenantServiceCreateCheckoutSessionProcedure,
-		svc.CreateCheckoutSession,
-		connect.WithSchema(tenantServiceMethods.ByName("CreateCheckoutSession")),
 		connect.WithHandlerOptions(opts...),
 	)
 	tenantServiceStartProvisioningHandler := connect.NewUnaryHandler(
@@ -318,8 +293,6 @@ func NewTenantServiceHandler(svc TenantServiceHandler, opts ...connect.HandlerOp
 			tenantServiceGetTenantByOwnerHandler.ServeHTTP(w, r)
 		case TenantServiceUpdateTenantProcedure:
 			tenantServiceUpdateTenantHandler.ServeHTTP(w, r)
-		case TenantServiceCreateCheckoutSessionProcedure:
-			tenantServiceCreateCheckoutSessionHandler.ServeHTTP(w, r)
 		case TenantServiceStartProvisioningProcedure:
 			tenantServiceStartProvisioningHandler.ServeHTTP(w, r)
 		case TenantServiceGetProvisioningStatusProcedure:
@@ -353,10 +326,6 @@ func (UnimplementedTenantServiceHandler) GetTenantByOwner(context.Context, *conn
 
 func (UnimplementedTenantServiceHandler) UpdateTenant(context.Context, *connect.Request[v2.UpdateTenantRequest]) (*connect.Response[v2.Tenant], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.TenantService.UpdateTenant is not implemented"))
-}
-
-func (UnimplementedTenantServiceHandler) CreateCheckoutSession(context.Context, *connect.Request[v2.CreateCheckoutSessionRequest]) (*connect.Response[v2.CreateCheckoutSessionResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.TenantService.CreateCheckoutSession is not implemented"))
 }
 
 func (UnimplementedTenantServiceHandler) StartProvisioning(context.Context, *connect.Request[v2.StartProvisioningRequest]) (*connect.Response[v2.ProvisioningStatus], error) {

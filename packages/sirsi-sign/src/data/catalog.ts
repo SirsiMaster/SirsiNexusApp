@@ -148,6 +148,47 @@ export const BUNDLES: Record<string, Bundle> = {
 }
 
 export const PRODUCTS: Record<string, Product> = {
+    'solo-plan': {
+        id: 'solo-plan',
+        name: 'Sirsi Solo',
+        shortDescription: 'The Independent Professional Plan',
+        description: 'Perfect for solo practitioners and small businesses needing automated contracts and secure vaulting.',
+        category: 'platform',
+        bundledPrice: 500,
+        standalonePrice: 500,
+        hours: 0,
+        timeline: 1,
+        timelineUnit: 'months',
+        recurring: true,
+        features: [
+            'Up to 10 Active Contracts',
+            'Full Sirsi Sign Accessibility',
+            'Financial Ledger Core',
+            '10GB Vault Storage',
+            'Standard Support'
+        ]
+    },
+    'business-plan': {
+        id: 'business-plan',
+        name: 'Sirsi Business',
+        shortDescription: 'The Enterprise Operations Plan',
+        description: 'Advanced features for scaling firms with team management and high-volume signing.',
+        category: 'platform',
+        bundledPrice: 2500,
+        standalonePrice: 2500,
+        hours: 0,
+        timeline: 1,
+        timelineUnit: 'months',
+        recurring: true,
+        features: [
+            'Unlimited Active Contracts',
+            'Multi-User Team Permissions',
+            'Hypervisor Operations Dashboard',
+            '100GB Vault Storage',
+            'Priority 24/7 Support',
+            'Custom Subdomains'
+        ]
+    },
     'maintenance': {
         id: 'maintenance',
         name: 'Maintenance & Support',

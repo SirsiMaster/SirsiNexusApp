@@ -190,6 +190,7 @@ const (
 	ProvisioningState_PROVISIONING_STATE_ACTIVE       ProvisioningState = 3
 	ProvisioningState_PROVISIONING_STATE_SUSPENDED    ProvisioningState = 4
 	ProvisioningState_PROVISIONING_STATE_ARCHIVED     ProvisioningState = 5
+	ProvisioningState_PROVISIONING_STATE_FAILED       ProvisioningState = 6
 )
 
 // Enum value maps for ProvisioningState.
@@ -201,6 +202,7 @@ var (
 		3: "PROVISIONING_STATE_ACTIVE",
 		4: "PROVISIONING_STATE_SUSPENDED",
 		5: "PROVISIONING_STATE_ARCHIVED",
+		6: "PROVISIONING_STATE_FAILED",
 	}
 	ProvisioningState_value = map[string]int32{
 		"PROVISIONING_STATE_UNSPECIFIED":  0,
@@ -209,6 +211,7 @@ var (
 		"PROVISIONING_STATE_ACTIVE":       3,
 		"PROVISIONING_STATE_SUSPENDED":    4,
 		"PROVISIONING_STATE_ARCHIVED":     5,
+		"PROVISIONING_STATE_FAILED":       6,
 	}
 )
 
@@ -1071,6 +1074,7 @@ func (x *DeactivateTenantResponse) GetSuccess() bool {
 type StartProvisioningRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TenantId      string                 `protobuf:"bytes,1,opt,name=tenant_id,json=tenantId,proto3" json:"tenant_id,omitempty"`
+	Plan          Plan                   `protobuf:"varint,2,opt,name=plan,proto3,enum=sirsi.admin.v2.Plan" json:"plan,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1110,6 +1114,13 @@ func (x *StartProvisioningRequest) GetTenantId() string {
 		return x.TenantId
 	}
 	return ""
+}
+
+func (x *StartProvisioningRequest) GetPlan() Plan {
+	if x != nil {
+		return x.Plan
+	}
+	return Plan_PLAN_UNSPECIFIED
 }
 
 type GetProvisioningStatusRequest struct {
@@ -1308,126 +1319,6 @@ func (x *ProvisioningStep) GetErrorMessage() string {
 	return ""
 }
 
-type CreateCheckoutSessionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	OwnerUid      string                 `protobuf:"bytes,1,opt,name=owner_uid,json=ownerUid,proto3" json:"owner_uid,omitempty"`
-	Plan          Plan                   `protobuf:"varint,2,opt,name=plan,proto3,enum=sirsi.admin.v2.Plan" json:"plan,omitempty"`
-	SuccessUrl    string                 `protobuf:"bytes,3,opt,name=success_url,json=successUrl,proto3" json:"success_url,omitempty"`
-	CancelUrl     string                 `protobuf:"bytes,4,opt,name=cancel_url,json=cancelUrl,proto3" json:"cancel_url,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateCheckoutSessionRequest) Reset() {
-	*x = CreateCheckoutSessionRequest{}
-	mi := &file_sirsi_admin_v2_tenant_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateCheckoutSessionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateCheckoutSessionRequest) ProtoMessage() {}
-
-func (x *CreateCheckoutSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_tenant_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateCheckoutSessionRequest.ProtoReflect.Descriptor instead.
-func (*CreateCheckoutSessionRequest) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_tenant_proto_rawDescGZIP(), []int{15}
-}
-
-func (x *CreateCheckoutSessionRequest) GetOwnerUid() string {
-	if x != nil {
-		return x.OwnerUid
-	}
-	return ""
-}
-
-func (x *CreateCheckoutSessionRequest) GetPlan() Plan {
-	if x != nil {
-		return x.Plan
-	}
-	return Plan_PLAN_UNSPECIFIED
-}
-
-func (x *CreateCheckoutSessionRequest) GetSuccessUrl() string {
-	if x != nil {
-		return x.SuccessUrl
-	}
-	return ""
-}
-
-func (x *CreateCheckoutSessionRequest) GetCancelUrl() string {
-	if x != nil {
-		return x.CancelUrl
-	}
-	return ""
-}
-
-type CreateCheckoutSessionResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	CheckoutUrl   string                 `protobuf:"bytes,2,opt,name=checkout_url,json=checkoutUrl,proto3" json:"checkout_url,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateCheckoutSessionResponse) Reset() {
-	*x = CreateCheckoutSessionResponse{}
-	mi := &file_sirsi_admin_v2_tenant_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateCheckoutSessionResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateCheckoutSessionResponse) ProtoMessage() {}
-
-func (x *CreateCheckoutSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sirsi_admin_v2_tenant_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateCheckoutSessionResponse.ProtoReflect.Descriptor instead.
-func (*CreateCheckoutSessionResponse) Descriptor() ([]byte, []int) {
-	return file_sirsi_admin_v2_tenant_proto_rawDescGZIP(), []int{16}
-}
-
-func (x *CreateCheckoutSessionResponse) GetSessionId() string {
-	if x != nil {
-		return x.SessionId
-	}
-	return ""
-}
-
-func (x *CreateCheckoutSessionResponse) GetCheckoutUrl() string {
-	if x != nil {
-		return x.CheckoutUrl
-	}
-	return ""
-}
-
 var File_sirsi_admin_v2_tenant_proto protoreflect.FileDescriptor
 
 const file_sirsi_admin_v2_tenant_proto_rawDesc = "" +
@@ -1497,9 +1388,10 @@ const file_sirsi_admin_v2_tenant_proto_rawDesc = "" +
 	"\x17DeactivateTenantRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"4\n" +
 	"\x18DeactivateTenantResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"7\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"a\n" +
 	"\x18StartProvisioningRequest\x12\x1b\n" +
-	"\ttenant_id\x18\x01 \x01(\tR\btenantId\";\n" +
+	"\ttenant_id\x18\x01 \x01(\tR\btenantId\x12(\n" +
+	"\x04plan\x18\x02 \x01(\x0e2\x14.sirsi.admin.v2.PlanR\x04plan\";\n" +
 	"\x1cGetProvisioningStatusRequest\x12\x1b\n" +
 	"\ttenant_id\x18\x01 \x01(\tR\btenantId\"\xe6\x01\n" +
 	"\x12ProvisioningStatus\x12\x1b\n" +
@@ -1515,18 +1407,7 @@ const file_sirsi_admin_v2_tenant_proto_rawDesc = "" +
 	"\n" +
 	"started_at\x18\x03 \x01(\tR\tstartedAt\x12!\n" +
 	"\fcompleted_at\x18\x04 \x01(\tR\vcompletedAt\x12#\n" +
-	"\rerror_message\x18\x05 \x01(\tR\ferrorMessage\"\xa5\x01\n" +
-	"\x1cCreateCheckoutSessionRequest\x12\x1b\n" +
-	"\towner_uid\x18\x01 \x01(\tR\bownerUid\x12(\n" +
-	"\x04plan\x18\x02 \x01(\x0e2\x14.sirsi.admin.v2.PlanR\x04plan\x12\x1f\n" +
-	"\vsuccess_url\x18\x03 \x01(\tR\n" +
-	"successUrl\x12\x1d\n" +
-	"\n" +
-	"cancel_url\x18\x04 \x01(\tR\tcancelUrl\"a\n" +
-	"\x1dCreateCheckoutSessionResponse\x12\x1d\n" +
-	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\x12!\n" +
-	"\fcheckout_url\x18\x02 \x01(\tR\vcheckoutUrl*\x83\x01\n" +
+	"\rerror_message\x18\x05 \x01(\tR\ferrorMessage*\x83\x01\n" +
 	"\fTenantStatus\x12\x1d\n" +
 	"\x19TENANT_STATUS_UNSPECIFIED\x10\x00\x12\x18\n" +
 	"\x14TENANT_STATUS_ACTIVE\x10\x01\x12\x1b\n" +
@@ -1541,27 +1422,27 @@ const file_sirsi_admin_v2_tenant_proto_rawDesc = "" +
 	"\x1aCLOUD_PROVIDER_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12CLOUD_PROVIDER_GCP\x10\x01\x12\x16\n" +
 	"\x12CLOUD_PROVIDER_AWS\x10\x02\x12\x18\n" +
-	"\x14CLOUD_PROVIDER_AZURE\x10\x03*\xde\x01\n" +
+	"\x14CLOUD_PROVIDER_AZURE\x10\x03*\xfd\x01\n" +
 	"\x11ProvisioningState\x12\"\n" +
 	"\x1ePROVISIONING_STATE_UNSPECIFIED\x10\x00\x12\x1e\n" +
 	"\x1aPROVISIONING_STATE_PENDING\x10\x01\x12#\n" +
 	"\x1fPROVISIONING_STATE_PROVISIONING\x10\x02\x12\x1d\n" +
 	"\x19PROVISIONING_STATE_ACTIVE\x10\x03\x12 \n" +
 	"\x1cPROVISIONING_STATE_SUSPENDED\x10\x04\x12\x1f\n" +
-	"\x1bPROVISIONING_STATE_ARCHIVED\x10\x05*\x91\x01\n" +
+	"\x1bPROVISIONING_STATE_ARCHIVED\x10\x05\x12\x1d\n" +
+	"\x19PROVISIONING_STATE_FAILED\x10\x06*\x91\x01\n" +
 	"\n" +
 	"StepStatus\x12\x1b\n" +
 	"\x17STEP_STATUS_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13STEP_STATUS_PENDING\x10\x01\x12\x1b\n" +
 	"\x17STEP_STATUS_IN_PROGRESS\x10\x02\x12\x18\n" +
 	"\x14STEP_STATUS_COMPLETE\x10\x03\x12\x16\n" +
-	"\x12STEP_STATUS_FAILED\x10\x042\x97\a\n" +
+	"\x12STEP_STATUS_FAILED\x10\x042\xa1\x06\n" +
 	"\rTenantService\x12K\n" +
 	"\fCreateTenant\x12#.sirsi.admin.v2.CreateTenantRequest\x1a\x16.sirsi.admin.v2.Tenant\x12E\n" +
 	"\tGetTenant\x12 .sirsi.admin.v2.GetTenantRequest\x1a\x16.sirsi.admin.v2.Tenant\x12S\n" +
 	"\x10GetTenantByOwner\x12'.sirsi.admin.v2.GetTenantByOwnerRequest\x1a\x16.sirsi.admin.v2.Tenant\x12K\n" +
-	"\fUpdateTenant\x12#.sirsi.admin.v2.UpdateTenantRequest\x1a\x16.sirsi.admin.v2.Tenant\x12t\n" +
-	"\x15CreateCheckoutSession\x12,.sirsi.admin.v2.CreateCheckoutSessionRequest\x1a-.sirsi.admin.v2.CreateCheckoutSessionResponse\x12a\n" +
+	"\fUpdateTenant\x12#.sirsi.admin.v2.UpdateTenantRequest\x1a\x16.sirsi.admin.v2.Tenant\x12a\n" +
 	"\x11StartProvisioning\x12(.sirsi.admin.v2.StartProvisioningRequest\x1a\".sirsi.admin.v2.ProvisioningStatus\x12i\n" +
 	"\x15GetProvisioningStatus\x12,.sirsi.admin.v2.GetProvisioningStatusRequest\x1a\".sirsi.admin.v2.ProvisioningStatus\x12V\n" +
 	"\vListTenants\x12\".sirsi.admin.v2.ListTenantsRequest\x1a#.sirsi.admin.v2.ListTenantsResponse\x12M\n" +
@@ -1582,76 +1463,72 @@ func file_sirsi_admin_v2_tenant_proto_rawDescGZIP() []byte {
 }
 
 var file_sirsi_admin_v2_tenant_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_sirsi_admin_v2_tenant_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_sirsi_admin_v2_tenant_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_sirsi_admin_v2_tenant_proto_goTypes = []any{
-	(TenantStatus)(0),                     // 0: sirsi.admin.v2.TenantStatus
-	(Plan)(0),                             // 1: sirsi.admin.v2.Plan
-	(CloudProvider)(0),                    // 2: sirsi.admin.v2.CloudProvider
-	(ProvisioningState)(0),                // 3: sirsi.admin.v2.ProvisioningState
-	(StepStatus)(0),                       // 4: sirsi.admin.v2.StepStatus
-	(*Tenant)(nil),                        // 5: sirsi.admin.v2.Tenant
-	(*TenantConfig)(nil),                  // 6: sirsi.admin.v2.TenantConfig
-	(*ListTenantsRequest)(nil),            // 7: sirsi.admin.v2.ListTenantsRequest
-	(*ListTenantsResponse)(nil),           // 8: sirsi.admin.v2.ListTenantsResponse
-	(*GetTenantRequest)(nil),              // 9: sirsi.admin.v2.GetTenantRequest
-	(*GetTenantByOwnerRequest)(nil),       // 10: sirsi.admin.v2.GetTenantByOwnerRequest
-	(*CreateTenantRequest)(nil),           // 11: sirsi.admin.v2.CreateTenantRequest
-	(*UpdateTenantRequest)(nil),           // 12: sirsi.admin.v2.UpdateTenantRequest
-	(*SuspendTenantRequest)(nil),          // 13: sirsi.admin.v2.SuspendTenantRequest
-	(*DeactivateTenantRequest)(nil),       // 14: sirsi.admin.v2.DeactivateTenantRequest
-	(*DeactivateTenantResponse)(nil),      // 15: sirsi.admin.v2.DeactivateTenantResponse
-	(*StartProvisioningRequest)(nil),      // 16: sirsi.admin.v2.StartProvisioningRequest
-	(*GetProvisioningStatusRequest)(nil),  // 17: sirsi.admin.v2.GetProvisioningStatusRequest
-	(*ProvisioningStatus)(nil),            // 18: sirsi.admin.v2.ProvisioningStatus
-	(*ProvisioningStep)(nil),              // 19: sirsi.admin.v2.ProvisioningStep
-	(*CreateCheckoutSessionRequest)(nil),  // 20: sirsi.admin.v2.CreateCheckoutSessionRequest
-	(*CreateCheckoutSessionResponse)(nil), // 21: sirsi.admin.v2.CreateCheckoutSessionResponse
-	(*v1.AuditEntry)(nil),                 // 22: sirsi.common.v1.AuditEntry
-	(*v1.PaginationRequest)(nil),          // 23: sirsi.common.v1.PaginationRequest
-	(*v1.PaginationResponse)(nil),         // 24: sirsi.common.v1.PaginationResponse
+	(TenantStatus)(0),                    // 0: sirsi.admin.v2.TenantStatus
+	(Plan)(0),                            // 1: sirsi.admin.v2.Plan
+	(CloudProvider)(0),                   // 2: sirsi.admin.v2.CloudProvider
+	(ProvisioningState)(0),               // 3: sirsi.admin.v2.ProvisioningState
+	(StepStatus)(0),                      // 4: sirsi.admin.v2.StepStatus
+	(*Tenant)(nil),                       // 5: sirsi.admin.v2.Tenant
+	(*TenantConfig)(nil),                 // 6: sirsi.admin.v2.TenantConfig
+	(*ListTenantsRequest)(nil),           // 7: sirsi.admin.v2.ListTenantsRequest
+	(*ListTenantsResponse)(nil),          // 8: sirsi.admin.v2.ListTenantsResponse
+	(*GetTenantRequest)(nil),             // 9: sirsi.admin.v2.GetTenantRequest
+	(*GetTenantByOwnerRequest)(nil),      // 10: sirsi.admin.v2.GetTenantByOwnerRequest
+	(*CreateTenantRequest)(nil),          // 11: sirsi.admin.v2.CreateTenantRequest
+	(*UpdateTenantRequest)(nil),          // 12: sirsi.admin.v2.UpdateTenantRequest
+	(*SuspendTenantRequest)(nil),         // 13: sirsi.admin.v2.SuspendTenantRequest
+	(*DeactivateTenantRequest)(nil),      // 14: sirsi.admin.v2.DeactivateTenantRequest
+	(*DeactivateTenantResponse)(nil),     // 15: sirsi.admin.v2.DeactivateTenantResponse
+	(*StartProvisioningRequest)(nil),     // 16: sirsi.admin.v2.StartProvisioningRequest
+	(*GetProvisioningStatusRequest)(nil), // 17: sirsi.admin.v2.GetProvisioningStatusRequest
+	(*ProvisioningStatus)(nil),           // 18: sirsi.admin.v2.ProvisioningStatus
+	(*ProvisioningStep)(nil),             // 19: sirsi.admin.v2.ProvisioningStep
+	(*v1.AuditEntry)(nil),                // 20: sirsi.common.v1.AuditEntry
+	(*v1.PaginationRequest)(nil),         // 21: sirsi.common.v1.PaginationRequest
+	(*v1.PaginationResponse)(nil),        // 22: sirsi.common.v1.PaginationResponse
 }
 var file_sirsi_admin_v2_tenant_proto_depIdxs = []int32{
 	0,  // 0: sirsi.admin.v2.Tenant.status:type_name -> sirsi.admin.v2.TenantStatus
 	6,  // 1: sirsi.admin.v2.Tenant.config:type_name -> sirsi.admin.v2.TenantConfig
-	22, // 2: sirsi.admin.v2.Tenant.created:type_name -> sirsi.common.v1.AuditEntry
-	22, // 3: sirsi.admin.v2.Tenant.updated:type_name -> sirsi.common.v1.AuditEntry
+	20, // 2: sirsi.admin.v2.Tenant.created:type_name -> sirsi.common.v1.AuditEntry
+	20, // 3: sirsi.admin.v2.Tenant.updated:type_name -> sirsi.common.v1.AuditEntry
 	1,  // 4: sirsi.admin.v2.Tenant.plan:type_name -> sirsi.admin.v2.Plan
 	2,  // 5: sirsi.admin.v2.Tenant.cloud_provider:type_name -> sirsi.admin.v2.CloudProvider
 	3,  // 6: sirsi.admin.v2.Tenant.provisioning_status:type_name -> sirsi.admin.v2.ProvisioningState
-	23, // 7: sirsi.admin.v2.ListTenantsRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
+	21, // 7: sirsi.admin.v2.ListTenantsRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
 	0,  // 8: sirsi.admin.v2.ListTenantsRequest.status_filter:type_name -> sirsi.admin.v2.TenantStatus
 	5,  // 9: sirsi.admin.v2.ListTenantsResponse.tenants:type_name -> sirsi.admin.v2.Tenant
-	24, // 10: sirsi.admin.v2.ListTenantsResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
+	22, // 10: sirsi.admin.v2.ListTenantsResponse.pagination:type_name -> sirsi.common.v1.PaginationResponse
 	6,  // 11: sirsi.admin.v2.CreateTenantRequest.config:type_name -> sirsi.admin.v2.TenantConfig
 	1,  // 12: sirsi.admin.v2.CreateTenantRequest.plan:type_name -> sirsi.admin.v2.Plan
 	2,  // 13: sirsi.admin.v2.CreateTenantRequest.cloud_provider:type_name -> sirsi.admin.v2.CloudProvider
 	5,  // 14: sirsi.admin.v2.UpdateTenantRequest.tenant:type_name -> sirsi.admin.v2.Tenant
-	3,  // 15: sirsi.admin.v2.ProvisioningStatus.state:type_name -> sirsi.admin.v2.ProvisioningState
-	19, // 16: sirsi.admin.v2.ProvisioningStatus.steps:type_name -> sirsi.admin.v2.ProvisioningStep
-	4,  // 17: sirsi.admin.v2.ProvisioningStep.status:type_name -> sirsi.admin.v2.StepStatus
-	1,  // 18: sirsi.admin.v2.CreateCheckoutSessionRequest.plan:type_name -> sirsi.admin.v2.Plan
+	1,  // 15: sirsi.admin.v2.StartProvisioningRequest.plan:type_name -> sirsi.admin.v2.Plan
+	3,  // 16: sirsi.admin.v2.ProvisioningStatus.state:type_name -> sirsi.admin.v2.ProvisioningState
+	19, // 17: sirsi.admin.v2.ProvisioningStatus.steps:type_name -> sirsi.admin.v2.ProvisioningStep
+	4,  // 18: sirsi.admin.v2.ProvisioningStep.status:type_name -> sirsi.admin.v2.StepStatus
 	11, // 19: sirsi.admin.v2.TenantService.CreateTenant:input_type -> sirsi.admin.v2.CreateTenantRequest
 	9,  // 20: sirsi.admin.v2.TenantService.GetTenant:input_type -> sirsi.admin.v2.GetTenantRequest
 	10, // 21: sirsi.admin.v2.TenantService.GetTenantByOwner:input_type -> sirsi.admin.v2.GetTenantByOwnerRequest
 	12, // 22: sirsi.admin.v2.TenantService.UpdateTenant:input_type -> sirsi.admin.v2.UpdateTenantRequest
-	20, // 23: sirsi.admin.v2.TenantService.CreateCheckoutSession:input_type -> sirsi.admin.v2.CreateCheckoutSessionRequest
-	16, // 24: sirsi.admin.v2.TenantService.StartProvisioning:input_type -> sirsi.admin.v2.StartProvisioningRequest
-	17, // 25: sirsi.admin.v2.TenantService.GetProvisioningStatus:input_type -> sirsi.admin.v2.GetProvisioningStatusRequest
-	7,  // 26: sirsi.admin.v2.TenantService.ListTenants:input_type -> sirsi.admin.v2.ListTenantsRequest
-	13, // 27: sirsi.admin.v2.TenantService.SuspendTenant:input_type -> sirsi.admin.v2.SuspendTenantRequest
-	14, // 28: sirsi.admin.v2.TenantService.DeactivateTenant:input_type -> sirsi.admin.v2.DeactivateTenantRequest
-	5,  // 29: sirsi.admin.v2.TenantService.CreateTenant:output_type -> sirsi.admin.v2.Tenant
-	5,  // 30: sirsi.admin.v2.TenantService.GetTenant:output_type -> sirsi.admin.v2.Tenant
-	5,  // 31: sirsi.admin.v2.TenantService.GetTenantByOwner:output_type -> sirsi.admin.v2.Tenant
-	5,  // 32: sirsi.admin.v2.TenantService.UpdateTenant:output_type -> sirsi.admin.v2.Tenant
-	21, // 33: sirsi.admin.v2.TenantService.CreateCheckoutSession:output_type -> sirsi.admin.v2.CreateCheckoutSessionResponse
-	18, // 34: sirsi.admin.v2.TenantService.StartProvisioning:output_type -> sirsi.admin.v2.ProvisioningStatus
-	18, // 35: sirsi.admin.v2.TenantService.GetProvisioningStatus:output_type -> sirsi.admin.v2.ProvisioningStatus
-	8,  // 36: sirsi.admin.v2.TenantService.ListTenants:output_type -> sirsi.admin.v2.ListTenantsResponse
-	5,  // 37: sirsi.admin.v2.TenantService.SuspendTenant:output_type -> sirsi.admin.v2.Tenant
-	15, // 38: sirsi.admin.v2.TenantService.DeactivateTenant:output_type -> sirsi.admin.v2.DeactivateTenantResponse
-	29, // [29:39] is the sub-list for method output_type
-	19, // [19:29] is the sub-list for method input_type
+	16, // 23: sirsi.admin.v2.TenantService.StartProvisioning:input_type -> sirsi.admin.v2.StartProvisioningRequest
+	17, // 24: sirsi.admin.v2.TenantService.GetProvisioningStatus:input_type -> sirsi.admin.v2.GetProvisioningStatusRequest
+	7,  // 25: sirsi.admin.v2.TenantService.ListTenants:input_type -> sirsi.admin.v2.ListTenantsRequest
+	13, // 26: sirsi.admin.v2.TenantService.SuspendTenant:input_type -> sirsi.admin.v2.SuspendTenantRequest
+	14, // 27: sirsi.admin.v2.TenantService.DeactivateTenant:input_type -> sirsi.admin.v2.DeactivateTenantRequest
+	5,  // 28: sirsi.admin.v2.TenantService.CreateTenant:output_type -> sirsi.admin.v2.Tenant
+	5,  // 29: sirsi.admin.v2.TenantService.GetTenant:output_type -> sirsi.admin.v2.Tenant
+	5,  // 30: sirsi.admin.v2.TenantService.GetTenantByOwner:output_type -> sirsi.admin.v2.Tenant
+	5,  // 31: sirsi.admin.v2.TenantService.UpdateTenant:output_type -> sirsi.admin.v2.Tenant
+	18, // 32: sirsi.admin.v2.TenantService.StartProvisioning:output_type -> sirsi.admin.v2.ProvisioningStatus
+	18, // 33: sirsi.admin.v2.TenantService.GetProvisioningStatus:output_type -> sirsi.admin.v2.ProvisioningStatus
+	8,  // 34: sirsi.admin.v2.TenantService.ListTenants:output_type -> sirsi.admin.v2.ListTenantsResponse
+	5,  // 35: sirsi.admin.v2.TenantService.SuspendTenant:output_type -> sirsi.admin.v2.Tenant
+	15, // 36: sirsi.admin.v2.TenantService.DeactivateTenant:output_type -> sirsi.admin.v2.DeactivateTenantResponse
+	28, // [28:37] is the sub-list for method output_type
+	19, // [19:28] is the sub-list for method input_type
 	19, // [19:19] is the sub-list for extension type_name
 	19, // [19:19] is the sub-list for extension extendee
 	0,  // [0:19] is the sub-list for field type_name
@@ -1668,7 +1545,7 @@ func file_sirsi_admin_v2_tenant_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sirsi_admin_v2_tenant_proto_rawDesc), len(file_sirsi_admin_v2_tenant_proto_rawDesc)),
 			NumEnums:      5,
-			NumMessages:   17,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -6,7 +6,7 @@ import {
     createColumnHelper
 } from '@tanstack/react-table';
 import { useUsers, useManageUserRole } from '../../hooks/useAdmin';
-import { User } from '../../gen/proto/admin/v1/admin_pb';
+import type { User } from '../../gen/sirsi/admin/v2/admin_service_pb';
 
 const columnHelper = createColumnHelper<User>();
 

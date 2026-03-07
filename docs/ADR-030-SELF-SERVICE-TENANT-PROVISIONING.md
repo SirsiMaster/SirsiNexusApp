@@ -13,36 +13,33 @@ The Sirsi platform requires a mechanism for new public clients to sign up, provi
 
 ## Decision
 
-### Commerce Architecture — Two Paths
+### Commerce Architecture — Converged Enforcement
 
-**Path A — SaaS Self-Service (Priority)**
-- Public pricing page at `sirsi.ai/pricing`
-- Three tiers: **Free ($0)**, **Solo ($49/mo)**, **Business ($499/mo)**
-- Stripe Checkout (subscription mode) for Solo and Business
-- Automated 6-step onboarding wizard provisions tenant infrastructure
-- Zero human intervention required
+**Commerce is unified across both SaaS and Enterprise paths:**
+1. **SaaS Self-Service**: User-directed via `/signup/onboarding`
+2. **Enterprise Bespoke**: Admin-directed via Sirsi Sign envelopes
 
-**Path B — Enterprise Bespoke**
-- Custom engagements via Sirsi Sign (`sign.sirsi.ai`)
-- Product catalog + MSA/SOW + e-signature + per-phase billing
-- FinalWishes is vendor #1 on this path — its catalog structure is the proven blueprint
-- Catalog interfaces (`Product`, `Bundle`, `WBSPhase`) are already generalized
+**The "Sirsi Way" of Payment Handling:**
+- All payments (subscriptions and one-offs) route through the **OpenSign REST API**.
+- Every SaaS signup creates a **Legal Execution Record** (Signup Envelope) in the **Sirsi Vault** before redirecting to Stripe.
+- **Financial Settlement** is managed by the OpenSign Payment Bridge, ensuring consistent webhook handling and ledger updates across the entire portfolio.
+- SaaS Tiers occupy first-class slots in the **Universal Catalog**, subjecting them to the same pricing algorithms and Hypervisor observability as enterprise SOWs.
 
-Both paths converge at the **TenantService** (ConnectRPC) endpoint.
-
-### Pricing Tiers
+### Pricing Tiers (Standardized)
 
 | | Free | Solo | Business |
 |:---|:---|:---|:---|
-| **Price** | $0/mo | $49/mo | $499/mo |
-| **Target** | Exploration | Solo founders & startups | Existing businesses |
+| **Price** | $0/mo | $500/mo | $2,500/mo |
+| **Target** | Exploration | Independent Professionals | Enterprise Operations |
 | **Users** | 1 | 5 | Unlimited |
 | **Infrastructure** | Shared (Sirsi GCP) | Dedicated Cloud Run | Dedicated Cloud Run + DB |
-| **Cloud Options** | GCP only | GCP only | GCP, AWS, Azure (On-Prem Phase 5) |
-| **Contracts** | View only (3) | Full e-sign (25/mo) | Unlimited |
-| **Document Vault** | 100MB | 5GB | 50GB |
+| **Cloud Options** | GCP only | GCP only | GCP, AWS, Azure |
+| **Contracts** | View only (3) | Full e-sign (10 active) | Unlimited active |
+| **Document Vault** | 100MB | 10GB | 100GB |
 | **GitHub Repo** | None | Private (SirsiMaster org) | Private + CI/CD templates |
 | **Hypervisor** | Basic health | Standard telemetry | Full diagnostics + SLA |
+
+*Prices standardized in `packages/sirsi-sign/src/data/catalog.ts` per Rule 12.*
 
 ### Locked Decisions
 
@@ -142,3 +139,18 @@ Every repo inherits:
 - ADR-027: React Portal Migration
 - ADR-029: Cloud Run Deployment Architecture
 - `packages/sirsi-sign/src/data/catalog.ts` (Enterprise catalog blueprint)
+
+## Phase 3: Implementation Status (March 6, 2026)
+
+**Phase 3 (GitHub Automation & API Convergence) is COMPLETE.**
+
+1.  **Stripe/OpenSign Bridge**: Decommissioned parallel Stripe logic. All SaaS signups now create a legal record in the Vault via the OpenSign Payment Bridge (`/api/payments/create-session`).
+2.  **GitHub Infrastructure-as-Code**: The Go `sirsi-admin-service` now integrates with the GitHub API (`github.com/google/go-github/v60`).
+    - Solo and Business plans automatically trigger the creation of a private repository from the `SirsiMaster/tenant-scaffold` template.
+    - Repositories are named according to the tenant slug and initialized with canonical Sirsi documentation and CI/CD workflows.
+3.  **Real-Time Provisioning Status**: The Onboarding Wizard has transitioned from simulated client-side timers to a robust polling mechanism.
+    - Frontend calls `tenantClient.getProvisioningStatus` every 2 seconds.
+    - Backend tracks progress in a stateful map, allowing for reliable recovery and multi-step progress tracking.
+    - Supports `PROVISIONING_STATE_FAILED` and individual step status updates.
+4.  **Security Integration**: GitHub integration is gated by `SIRSI_GITHUB_PAT`. If missing, the system gracefully skips repository creation while maintaining the overall orchestration flow.
+5.  **Componentized Catalog Sync**: Extracted the Stripe synchronization logic into `StripeCatalogSync.tsx`, enabling portfolio companies (FinalWishes, Assiduous) to replicate automated catalog-to-payment-gateway provisioning in their respective admin portals.

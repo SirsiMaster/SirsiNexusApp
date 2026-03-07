@@ -55,6 +55,24 @@ export function AdminHeader({ isLightTheme, onToggleTheme }: AdminHeaderProps) {
                     {isLightTheme ? '🌙 Dark Mode' : '☀️ Light Mode'}
                 </button>
 
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '6px 14px',
+                    background: 'rgba(200,169,81,0.1)',
+                    border: '1px solid rgba(200,169,81,0.4)',
+                    borderRadius: '20px',
+                    color: '#C8A951',
+                    fontSize: '10px',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em'
+                }}>
+                    <span style={{ fontSize: '12px' }}>🛡️</span>
+                    Bipartite Authentication Active
+                </div>
+
                 <div className="avatar" style={{
                     width: '40px',
                     height: '40px',

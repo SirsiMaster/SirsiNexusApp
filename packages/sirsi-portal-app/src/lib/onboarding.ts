@@ -17,7 +17,7 @@ import { createClient } from '@connectrpc/connect'
 import {
     TenantService,
 } from '@/gen/sirsi/admin/v2/tenant_pb'
-import type { PlanId } from './tiers'
+import { SAAS_TIERS, type PlanId } from './tiers'
 
 // ── Create the gRPC client ───────────────────────────────────────
 const tenantClient = createClient(TenantService, transport)
@@ -117,6 +117,7 @@ export async function provisionTenant(data: OnboardingData, firebaseUid: string)
         // 2. Kick off provisioning
         await tenantClient.startProvisioning({
             tenantId: tenant.id,
+            plan: planToProto(data.plan),
         })
 
         return {
@@ -133,6 +134,15 @@ export async function provisionTenant(data: OnboardingData, firebaseUid: string)
     }
 }
 
+export async function getProvisioningStatus(tenantId: string) {
+    try {
+        return await tenantClient.getProvisioningStatus({ tenantId })
+    } catch (error: any) {
+        console.error('Failed to get provisioning status:', error)
+        throw error
+    }
+}
+
 // ── Full Onboarding Flow ──────────────────────────────────────────
 export async function runFullOnboarding(data: OnboardingData): Promise<OnboardingResult> {
     // Step 1: Create Firebase account
@@ -146,22 +156,71 @@ export async function runFullOnboarding(data: OnboardingData): Promise<Onboardin
 }
 
 // ── Stripe Checkout ───────────────────────────────────────────────
+const OPENSIGN_BASE = import.meta.env.VITE_OPENSIGN_API_URL
+    || 'https://us-central1-sirsi-opensign.cloudfunctions.net/opensignApi'
+
+// ── Stripe Checkout (OpenSign Convergence) ──────────────────────
 export async function createCheckoutSession(
     ownerUid: string,
     plan: PlanId,
     successUrl: string,
-    cancelUrl: string
+    cancelUrl: string,
+    signerName: string,
+    signerEmail: string
 ): Promise<{ checkoutUrl: string } | { error: string }> {
     try {
-        const resp = await tenantClient.createCheckoutSession({
-            ownerUid,
-            plan: planToProto(plan),
-            successUrl,
-            cancelUrl,
+        console.log(`🚀 Initiating SaaS Onboarding for ${plan}...`)
+
+        // 1. Create a "SaaS Signup Envelope" in OpenSign
+        // This ensures the user has a legal record of their signup in the Sirsi Vault
+        const envelopeResp = await fetch(`${OPENSIGN_BASE}/api/guest/envelopes`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                projectId: 'sirsi',
+                docType: 'saas-signup',
+                signerName,
+                signerEmail,
+                plan: plan,
+                metadata: {
+                    ownerUid,
+                    plan,
+                    type: 'onboarding_signup',
+                    isSaaSSignup: true
+                }
+            })
         })
-        return { checkoutUrl: resp.checkoutUrl }
+
+        if (!envelopeResp.ok) {
+            throw new Error(`OpenSign Envelope error: ${envelopeResp.statusText}`)
+        }
+
+        const envelope = await envelopeResp.json()
+        const envelopeId = envelope.envelopeId
+
+        const tier = SAAS_TIERS[plan]
+        const amountCents = tier.price
+
+        const paymentResp = await fetch(`${OPENSIGN_BASE}/api/payments/create-session`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                envelopeId,
+                amount: amountCents,
+                successUrl: `${successUrl}&session_id={CHECKOUT_SESSION_ID}&envelope_id=${envelopeId}`,
+                cancelUrl,
+                paymentMethodTypes: ['card', 'us_bank_account']
+            })
+        })
+
+        if (!paymentResp.ok) {
+            throw new Error(`OpenSign Payment error: ${paymentResp.statusText}`)
+        }
+
+        const payment = await paymentResp.json()
+        return { checkoutUrl: payment.checkoutUrl }
     } catch (error: any) {
-        console.error('Stripe session error:', error)
-        return { error: 'Failed to initiate secure payment. Please try again.' }
+        console.error('SaaS Onboarding error:', error)
+        return { error: 'Failed to initiate secure onboarding. Please try again or contact support.' }
     }
 }

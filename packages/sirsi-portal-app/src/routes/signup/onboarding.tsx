@@ -18,7 +18,7 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { usePageMeta } from '../../hooks/usePageMeta'
 import { Route as rootRoute } from '../__root'
 import { getAllTiers, type PlanId, type SaaSTier } from '@/lib/tiers'
-import { createAccount, provisionTenant, createCheckoutSession } from '@/lib/onboarding'
+import { createAccount, provisionTenant, createCheckoutSession, getProvisioningStatus } from '@/lib/onboarding'
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
@@ -103,8 +103,49 @@ function OnboardingWizard() {
         { label: 'Seeding initial data', status: 'pending' },
         { label: 'Registering with Hypervisor', status: 'pending' },
     ])
+    const [provisioningTenantId, setProvisioningTenantId] = useState<string | null>(null)
     const provisioningStarted = useRef(false)
     const stateRestored = useRef(false)
+
+    // Poll for status when in step 5
+    useEffect(() => {
+        if (!provisioningTenantId || state.step !== 5) return
+
+        const poll = async () => {
+            try {
+                const status = await getProvisioningStatus(provisioningTenantId)
+
+                // Sync the UI steps with backend steps
+                setProvisioningSteps(status.steps.map(s => ({
+                    label: s.name,
+                    status: s.status === 3 ? 'complete' : (s.status === 2 ? 'active' : 'pending')
+                    // 3 = COMPLETE, 2 = IN_PROGRESS
+                })))
+
+                if (status.state === 3) { // ACTIVE
+                    setTimeout(() => {
+                        setState(prev => ({ ...prev, step: 6 }))
+                    }, 1000)
+                    return true
+                }
+
+                if (status.state === 6) { // FAILED
+                    alert('Provisioning failed. Please contact support.')
+                    return true
+                }
+            } catch (e) {
+                console.error('Failed to poll provisioning status:', e)
+            }
+            return false
+        }
+
+        const interval = setInterval(async () => {
+            const stop = await poll()
+            if (stop) clearInterval(interval)
+        }, 2000)
+
+        return () => clearInterval(interval)
+    }, [provisioningTenantId, state.step])
 
     // Restore state from sessionStorage on mount (if returning from Stripe)
     useEffect(() => {
@@ -162,32 +203,12 @@ function OnboardingWizard() {
             cloudProvider: state.infrastructure.cloudProvider,
             region: state.infrastructure.region,
         }, uid).then(result => {
-            if (!result.success) {
-                console.warn('Provisioning error (non-blocking):', result.error)
+            if (result.success && result.tenantId) {
+                setProvisioningTenantId(result.tenantId)
+            } else if (result.error) {
+                console.error('Provisioning error:', result.error)
             }
         })
-
-        // Animate through steps visually
-        const stepDelay = 1200
-        for (let i = 0; i < 6; i++) {
-            setTimeout(() => {
-                setProvisioningSteps(prev => prev.map((s, idx) => {
-                    if (idx < i) return { ...s, status: 'complete' }
-                    if (idx === i) return { ...s, status: 'active' }
-                    return s
-                }))
-            }, i * stepDelay)
-
-            // Mark last step complete and advance to Step 6
-            if (i === 5) {
-                setTimeout(() => {
-                    setProvisioningSteps(prev => prev.map(s => ({ ...s, status: 'complete' as const })))
-                    setTimeout(() => {
-                        setState(prev => ({ ...prev, step: 6 }))
-                    }, 800)
-                }, (i + 1) * stepDelay)
-            }
-        }
     }, [state.step])
 
     const goNext = async () => {
@@ -233,7 +254,9 @@ function OnboardingWizard() {
                 firebaseUid || 'anonymous',
                 state.plan,
                 successUrl,
-                cancelUrl
+                cancelUrl,
+                state.organization.companyName,
+                state.account.email
             )
             setLoading(false)
 

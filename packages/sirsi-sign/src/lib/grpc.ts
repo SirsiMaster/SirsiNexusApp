@@ -1,7 +1,7 @@
-import { createPromiseClient, type Interceptor } from "@connectrpc/connect";
+import { createClient, type Interceptor } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
-import { ContractsService } from "../gen/proto/contracts/v1/contracts_connect";
-import { AdminService } from "../gen/proto/admin/v1/admin_connect";
+import { ContractsService } from "../gen/sirsi/contracts/v2/contract_service_pb";
+import { AdminService } from "../gen/sirsi/admin/v2/admin_service_pb";
 import { auth } from "./firebase";
 
 /**
@@ -26,5 +26,5 @@ const transport = createConnectTransport({
     interceptors: [authInterceptor],
 });
 
-export const contractsClient = createPromiseClient(ContractsService, transport);
-export const adminClient = createPromiseClient(AdminService, transport);
+export const contractsClient = createClient(ContractsService, transport);
+export const adminClient = createClient(AdminService, transport);

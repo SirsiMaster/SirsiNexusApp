@@ -514,4 +514,91 @@ app.post('/api/security/mfa/provision', authenticate, async (req: AuthenticatedR
     }
 });
 
+/**
+ * Catalog Synchronization (Stripe Product Creation)
+ * POST /api/catalog/sync
+ * Requirement: Admin authentication
+ */
+app.post('/api/catalog/sync', authenticate, async (req: AuthenticatedRequest, res) => {
+    try {
+        // Retrieve user data to check role (req.user only has decoded token)
+        const userDoc = await db.collection('users').doc(req.user!.uid).get();
+        const userData = userDoc.data();
+
+        if (userData?.role !== 'admin') {
+            res.status(403).json({ error: 'Permission denied. Admin elevation required.' });
+            return;
+        }
+
+        const logs: string[] = [];
+
+        // Receive items to sync from the client (Canonical Source of Truth is the frontend catalog)
+        const { items } = req.body;
+
+        if (!items || !Array.isArray(items)) {
+            res.status(400).json({ error: 'Missing items array' });
+            return;
+        }
+
+        for (const item of items) {
+            // Search for existing product with this sirsi_id
+            const existingProducts = await stripe.products.search({
+                query: `metadata['sirsi_id']:'${item.id}'`,
+            });
+
+            let stripeProduct;
+            if (existingProducts.data.length > 0) {
+                stripeProduct = existingProducts.data[0];
+                logs.push(`✅ [Product] ${item.name} exists: ${stripeProduct.id}`);
+            } else {
+                stripeProduct = await stripe.products.create({
+                    name: item.name,
+                    description: item.description,
+                    metadata: {
+                        sirsi_id: item.id,
+                        sirsi_managed: 'true',
+                        type: item.recurring ? 'saas_tier' : 'bundle'
+                    }
+                });
+                logs.push(`🟢 [Product] Created ${item.name}: ${stripeProduct.id}`);
+            }
+
+            // Check if active price exists for this amount/interval
+            const existingPrices = await stripe.prices.list({
+                product: stripeProduct.id,
+                active: true,
+            });
+
+            const hasActivePrice = existingPrices.data.some(p =>
+                p.unit_amount === item.amount &&
+                (item.recurring ? p.recurring?.interval === 'month' : !p.recurring)
+            );
+
+            if (!hasActivePrice) {
+                const priceConfig: Stripe.PriceCreateParams = {
+                    product: stripeProduct.id,
+                    unit_amount: item.amount,
+                    currency: 'usd',
+                    metadata: { sirsi_id: item.id }
+                };
+
+                if (item.recurring) {
+                    priceConfig.recurring = { interval: 'month' };
+                }
+
+                const price = await stripe.prices.create(priceConfig);
+                logs.push(`   💰 [Price] Created for ${item.name}: ${price.id} ($${(item.amount / 100).toLocaleString()}${item.recurring ? '/mo' : ''})`);
+            } else {
+                const existingPrice = existingPrices.data.find(p => p.unit_amount === item.amount);
+                logs.push(`   ℹ️ [Price] ${item.name} price ($${(item.amount / 100).toLocaleString()}) already active: ${existingPrice?.id}`);
+            }
+        }
+
+        res.json({ success: true, logs });
+    } catch (err: any) {
+        console.error('Catalog Sync Error:', err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
 export { app as opensignApp };

@@ -4,11 +4,15 @@ go 1.24.0
 
 require (
 	connectrpc.com/connect v1.19.1
+	github.com/google/go-github/v60 v60.0.0
 	github.com/sirsimaster/sirsi-nexus/gen/go v0.0.0-00010101000000-000000000000
 	golang.org/x/net v0.49.0
+	golang.org/x/oauth2 v0.35.0
 )
 
 require (
+	github.com/google/go-querystring v1.1.0 // indirect
+	github.com/stripe/stripe-go/v82 v82.5.1 // indirect
 	golang.org/x/text v0.33.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 )

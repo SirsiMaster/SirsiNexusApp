@@ -6,7 +6,7 @@ import {
     createColumnHelper
 } from '@tanstack/react-table';
 import { useEstates } from '../../hooks/useAdmin';
-import { Estate } from '../../gen/proto/admin/v1/admin_pb';
+import { Estate } from '../../gen/sirsi/admin/v2/estate_pb';
 
 const columnHelper = createColumnHelper<Estate>();
 
@@ -22,22 +22,22 @@ export function EstatesManagement() {
             header: 'Estate Name',
             cell: info => <span className="text-white font-semibold">{info.getValue()}</span>,
         }),
-        columnHelper.accessor('ownerName', {
+        columnHelper.accessor('ownerEmail', {
             header: 'Owner',
             cell: info => <span className="text-blue-200">{info.getValue()}</span>,
         }),
-        columnHelper.accessor('status', {
+        columnHelper.accessor('phase', {
             header: 'Status',
             cell: info => (
-                <span className={`px-2 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${info.getValue() === 'Active' ? 'bg-emerald/10 text-emerald border border-emerald/20' : 'bg-white/5 text-slate-400 border border-white/10'
+                <span className={`px-2 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${info.getValue() !== 0 ? 'bg-emerald/10 text-emerald border border-emerald/20' : 'bg-white/5 text-slate-400 border border-white/10'
                     }`}>
-                    {info.getValue()}
+                    {info.getValue().toString()}
                 </span>
             ),
         }),
         columnHelper.accessor('createdAt', {
             header: 'Created',
-            cell: info => <span className="text-slate-500">{new Date(Number(info.getValue()) * 1000).toLocaleDateString()}</span>,
+            cell: info => <span className="text-slate-500">{new Date(Number(info.getValue())).toLocaleDateString()}</span>,
         }),
     ], []);
 

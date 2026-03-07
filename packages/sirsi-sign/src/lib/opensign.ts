@@ -391,3 +391,15 @@ export async function healthCheck(): Promise<{
 }> {
     return request('/api/health')
 }
+
+/**
+ * Synchronize the Sirsi Universal Catalog with Stripe.
+ * Creates or updates products and prices in Stripe.
+ * Maps to POST /api/catalog/sync
+ */
+export async function syncCatalog(items: any[]): Promise<{ success: boolean; logs: string[] }> {
+    return request('/api/catalog/sync', {
+        method: 'POST',
+        body: JSON.stringify({ items })
+    })
+}

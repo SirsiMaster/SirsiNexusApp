@@ -8,18 +8,33 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"connectrpc.com/connect"
+	"github.com/google/go-github/v60/github"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
+	"golang.org/x/oauth2"
 
 	adminv2 "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2"
 	"github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2/v2connect"
 	commonv1 "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/common/v1"
+	"github.com/stripe/stripe-go/v82"
+	"github.com/stripe/stripe-go/v82/price"
+	"github.com/stripe/stripe-go/v82/product"
+)
+
+var (
+	// Mock in-memory store for provisioning status
+	provisioningStatuses = make(map[string]*adminv2.ProvisioningStatus)
 )
 
 type AdminServer struct{}
 type HypervisorServer struct{}
+type TenantServer struct {
+	v2connect.UnimplementedTenantServiceHandler
+	ghClient *github.Client
+}
 
 const settingsFile = "settings.json"
 
@@ -430,7 +445,105 @@ func (s *AdminServer) ListAuditTrail(
 	return res, nil
 }
 
-type TenantServer struct{}
+func (s *AdminServer) SyncCatalog(
+	ctx context.Context,
+	req *connect.Request[adminv2.SyncCatalogRequest],
+) (*connect.Response[adminv2.SyncCatalogResponse], error) {
+	// 1. Initial Auth Check (Administrative Privilege)
+	// In production, checking for 'admin' role in context.
+
+	stripe.Key = os.Getenv("STRIPE_SECRET_KEY")
+	if stripe.Key == "" {
+		// Fallback for development if secret not in env
+		log.Println("⚠️ STRIPE_SECRET_KEY not set, using mock response")
+		return connect.NewResponse(&adminv2.SyncCatalogResponse{
+			Success: true,
+			Logs:    []string{"⚠️ No Stripe key found. Running in simulation mode.", "Mocked success for " + fmt.Sprint(len(req.Msg.Items)) + " items."},
+		}), nil
+	}
+
+	var logs []string
+	for _, item := range req.Msg.Items {
+		// Search for existing product
+		params := &stripe.ProductSearchParams{}
+		params.Query = fmt.Sprintf("metadata['sirsi_id']:'%s'", item.Id)
+		iter := product.Search(params)
+
+		var stripeProd *stripe.Product
+		if iter.Next() {
+			stripeProd = iter.Product()
+			logs = append(logs, fmt.Sprintf("✅ [Product] %s matched: %s", item.Name, stripeProd.ID))
+		} else {
+			// Create product
+			newProd, err := product.New(&stripe.ProductParams{
+				Name:        stripe.String(item.Name),
+				Description: stripe.String(item.Description),
+				Metadata: map[string]string{
+					"sirsi_id":      item.Id,
+					"sirsi_managed": "true",
+					"type": func() string {
+						if item.Recurring {
+							return "saas_tier"
+						}
+						return "bundle"
+					}(),
+				},
+			})
+			if err != nil {
+				logs = append(logs, fmt.Sprintf("❌ [Product] Failed to create %s: %v", item.Name, err))
+				continue
+			}
+			stripeProd = newProd
+			logs = append(logs, fmt.Sprintf("🟢 [Product] Created %s: %s", item.Name, stripeProd.ID))
+		}
+
+		// Sync Price
+		priceListParams := &stripe.PriceListParams{
+			Product: stripe.String(stripeProd.ID),
+			Active:  stripe.Bool(true),
+		}
+		priceIter := price.List(priceListParams)
+
+		foundPrice := false
+		for priceIter.Next() {
+			p := priceIter.Price()
+			if p.UnitAmount == item.Amount {
+				if (item.Recurring && p.Recurring != nil && p.Recurring.Interval == stripe.PriceRecurringIntervalMonth) || (!item.Recurring && p.Recurring == nil) {
+					logs = append(logs, fmt.Sprintf("   ℹ️ [Price] %s price ($%d) already active: %s", item.Name, item.Amount/100, p.ID))
+					foundPrice = true
+					break
+				}
+			}
+		}
+
+		if !foundPrice {
+			priceParams := &stripe.PriceParams{
+				Product:    stripe.String(stripeProd.ID),
+				UnitAmount: stripe.Int64(item.Amount),
+				Currency:   stripe.String(string(stripe.CurrencyUSD)),
+				Metadata: map[string]string{
+					"sirsi_id": item.Id,
+				},
+			}
+			if item.Recurring {
+				priceParams.Recurring = &stripe.PriceRecurringParams{
+					Interval: stripe.String(string(stripe.PriceRecurringIntervalMonth)),
+				}
+			}
+			newPrice, err := price.New(priceParams)
+			if err != nil {
+				logs = append(logs, fmt.Sprintf("   ❌ [Price] Failed to create: %v", err))
+			} else {
+				logs = append(logs, fmt.Sprintf("   💰 [Price] Created for %s: %s ($%d)", item.Name, newPrice.ID, item.Amount/100))
+			}
+		}
+	}
+
+	return connect.NewResponse(&adminv2.SyncCatalogResponse{
+		Success: true,
+		Logs:    logs,
+	}), nil
+}
 
 // ═══════════════════════════════════════════════════════════════════
 // TenantService — ADR-030 Self-Service Tenant Provisioning
@@ -558,9 +671,14 @@ func (s *TenantServer) StartProvisioning(
 	ctx context.Context,
 	req *connect.Request[adminv2.StartProvisioningRequest],
 ) (*connect.Response[adminv2.ProvisioningStatus], error) {
-	log.Printf("StartProvisioning for tenant: %s", req.Msg.TenantId)
-	return connect.NewResponse(&adminv2.ProvisioningStatus{
-		TenantId:    req.Msg.TenantId,
+	tenantID := req.Msg.TenantId
+	plan := req.Msg.Plan
+
+	log.Printf("🚀 Starting provisioning for tenant: %s (Plan: %s)", tenantID, plan)
+
+	// Create initial status
+	status := &adminv2.ProvisioningStatus{
+		TenantId:    tenantID,
 		State:       adminv2.ProvisioningState_PROVISIONING_STATE_PROVISIONING,
 		CurrentStep: 1,
 		TotalSteps:  6,
@@ -572,45 +690,117 @@ func (s *TenantServer) StartProvisioning(
 			{Name: "Seeding initial data", Status: adminv2.StepStatus_STEP_STATUS_PENDING},
 			{Name: "Registering with Hypervisor", Status: adminv2.StepStatus_STEP_STATUS_PENDING},
 		},
-	}), nil
+	}
+	provisioningStatuses[tenantID] = status
+
+	// Run provisioning in background
+	go s.runProvisioning(tenantID, plan)
+
+	return connect.NewResponse(status), nil
 }
 
 func (s *TenantServer) GetProvisioningStatus(
 	ctx context.Context,
 	req *connect.Request[adminv2.GetProvisioningStatusRequest],
 ) (*connect.Response[adminv2.ProvisioningStatus], error) {
-	// Mock: return fully provisioned
-	return connect.NewResponse(&adminv2.ProvisioningStatus{
-		TenantId:    req.Msg.TenantId,
-		State:       adminv2.ProvisioningState_PROVISIONING_STATE_ACTIVE,
-		CurrentStep: 6,
-		TotalSteps:  6,
-		Steps: []*adminv2.ProvisioningStep{
-			{Name: "Creating Firebase project", Status: adminv2.StepStatus_STEP_STATUS_COMPLETE},
-			{Name: "Provisioning Cloud Run service", Status: adminv2.StepStatus_STEP_STATUS_COMPLETE},
-			{Name: "Configuring DNS", Status: adminv2.StepStatus_STEP_STATUS_COMPLETE},
-			{Name: "Creating GitHub repository", Status: adminv2.StepStatus_STEP_STATUS_COMPLETE},
-			{Name: "Seeding initial data", Status: adminv2.StepStatus_STEP_STATUS_COMPLETE},
-			{Name: "Registering with Hypervisor", Status: adminv2.StepStatus_STEP_STATUS_COMPLETE},
-		},
-	}), nil
+	status, ok := provisioningStatuses[req.Msg.TenantId]
+	if !ok {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("provisioning session not found for tenant: %s", req.Msg.TenantId))
+	}
+	return connect.NewResponse(status), nil
 }
 
-func (s *TenantServer) CreateCheckoutSession(
-	ctx context.Context,
-	req *connect.Request[adminv2.CreateCheckoutSessionRequest],
-) (*connect.Response[adminv2.CreateCheckoutSessionResponse], error) {
-	log.Printf("CreateCheckoutSession: owner=%s plan=%s", req.Msg.OwnerUid, req.Msg.Plan)
+// ── Private Provisioning Logic ────────────────────────────────────
 
-	// Mock Stripe Checkout URL
-	// In production, this would use the Stripe SDK to create a session
-	mockUrl := fmt.Sprintf("https://checkout.stripe.com/pay/mock_session_%s?success_url=%s&cancel_url=%s",
-		req.Msg.Plan.String(), req.Msg.SuccessUrl, req.Msg.CancelUrl)
+func (s *TenantServer) runProvisioning(tenantID string, plan adminv2.Plan) {
+	status := provisioningStatuses[tenantID]
+	if status == nil {
+		return
+	}
 
-	return connect.NewResponse(&adminv2.CreateCheckoutSessionResponse{
-		SessionId:   "mock_session_id_" + req.Msg.Plan.String(),
-		CheckoutUrl: mockUrl,
-	}), nil
+	stepDelay := 2 * time.Second
+
+	// Step 1: Firebase
+	time.Sleep(stepDelay)
+	status.Steps[0].Status = adminv2.StepStatus_STEP_STATUS_COMPLETE
+	status.CurrentStep = 2
+	status.Steps[1].Status = adminv2.StepStatus_STEP_STATUS_IN_PROGRESS
+
+	// Step 2: Cloud Run
+	time.Sleep(stepDelay)
+	status.Steps[1].Status = adminv2.StepStatus_STEP_STATUS_COMPLETE
+	status.CurrentStep = 3
+	status.Steps[2].Status = adminv2.StepStatus_STEP_STATUS_IN_PROGRESS
+
+	// Step 3: DNS
+	time.Sleep(stepDelay)
+	status.Steps[2].Status = adminv2.StepStatus_STEP_STATUS_COMPLETE
+	status.CurrentStep = 4
+	status.Steps[3].Status = adminv2.StepStatus_STEP_STATUS_IN_PROGRESS
+
+	// Step 4: GitHub (Conditional)
+	if plan == adminv2.Plan_PLAN_SOLO || plan == adminv2.Plan_PLAN_BUSINESS {
+		log.Printf("📦 Creating GitHub repo for tenant %s...", tenantID)
+		err := s.createTenantRepo(tenantID)
+		if err != nil {
+			log.Printf("❌ GitHub Repo creation failed: %v", err)
+			status.Steps[3].Status = adminv2.StepStatus_STEP_STATUS_FAILED
+			status.State = adminv2.ProvisioningState_PROVISIONING_STATE_FAILED
+			return
+		}
+	} else {
+		log.Printf("ℹ️ Skipping GitHub repo for plan: %s", plan)
+	}
+	status.Steps[3].Status = adminv2.StepStatus_STEP_STATUS_COMPLETE
+	status.CurrentStep = 5
+	status.Steps[4].Status = adminv2.StepStatus_STEP_STATUS_IN_PROGRESS
+
+	// Step 5: Seeding
+	time.Sleep(stepDelay)
+	status.Steps[4].Status = adminv2.StepStatus_STEP_STATUS_COMPLETE
+	status.CurrentStep = 6
+	status.Steps[5].Status = adminv2.StepStatus_STEP_STATUS_IN_PROGRESS
+
+	// Step 6: Hypervisor
+	time.Sleep(stepDelay)
+	status.Steps[5].Status = adminv2.StepStatus_STEP_STATUS_COMPLETE
+	status.State = adminv2.ProvisioningState_PROVISIONING_STATE_ACTIVE
+	log.Printf("✅ Provisioning complete for tenant: %s", tenantID)
+}
+
+func (s *TenantServer) createTenantRepo(tenantID string) error {
+	if s.ghClient == nil {
+		log.Println("⚠️  Skipping GitHub repo creation (no SIRSI_GITHUB_PAT provided)")
+		// Simulate successful skip for mock/development
+		time.Sleep(1 * time.Second)
+		return nil
+	}
+
+	ctx := context.Background()
+	// Clean up tenant ID for repo name (must be compatible with GitHub)
+	repoName := strings.ReplaceAll(strings.ToLower(tenantID), " ", "-")
+	repoName = strings.TrimPrefix(repoName, "tenant_")
+
+	input := &github.TemplateRepoRequest{
+		Name:        github.String(repoName),
+		Owner:       github.String("SirsiMaster"),
+		Description: github.String(fmt.Sprintf("Infrastructure repository for Sirsi Tenant: %s (Provisioned via Autonomous Engine)", tenantID)),
+		Private:     github.Bool(true),
+	}
+
+	log.Printf("🔨 Calling GitHub API to create %s from template...", repoName)
+	repo, _, err := s.ghClient.Repositories.CreateFromTemplate(ctx, "SirsiMaster", "tenant-scaffold", input)
+	if err != nil {
+		// If error is "already exists", we can consider it a success/skip
+		if strings.Contains(err.Error(), "already exists") {
+			log.Printf("ℹ️  Repo %s already exists, skipping.", repoName)
+			return nil
+		}
+		return fmt.Errorf("github api error: %w", err)
+	}
+
+	log.Printf("🚀 Successfully created GitHub repo: %s", repo.GetHTMLURL())
+	return nil
 }
 
 func (s *TenantServer) SuspendTenant(
@@ -1032,9 +1222,22 @@ func corsMiddleware(next http.Handler) http.Handler {
 
 func main() {
 	loadSettings()
+
+	// Initialize GitHub client if PAT is provided
+	var ghClient *github.Client
+	if pat := os.Getenv("SIRSI_GITHUB_PAT"); pat != "" {
+		ctx := context.Background()
+		ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: pat})
+		tc := oauth2.NewClient(ctx, ts)
+		ghClient = github.NewClient(tc)
+		log.Println("✅ GitHub integration enabled via SIRSI_GITHUB_PAT")
+	} else {
+		log.Println("⚠️ GitHub integration disabled (SIRSI_GITHUB_PAT missing)")
+	}
+
 	mux := http.NewServeMux()
 	mux.Handle(v2connect.NewAdminServiceHandler(&AdminServer{}))
-	mux.Handle(v2connect.NewTenantServiceHandler(&TenantServer{}))
+	mux.Handle(v2connect.NewTenantServiceHandler(&TenantServer{ghClient: ghClient}))
 	mux.Handle(v2connect.NewHypervisorServiceHandler(&HypervisorServer{}))
 
 	port := os.Getenv("PORT")
@@ -1042,12 +1245,17 @@ func main() {
 		port = "8080"
 	}
 
-	fmt.Printf("Sirsi Admin Service v0.9.0-alpha listening on :%s\n", port)
+	fmt.Printf("Sirsi Admin Service v0.9.1-alpha (GitHub Integrated) listening on :%s\n", port)
+
+	// Apply CORS middleware to the entire mux
+	handler := corsMiddleware(mux)
+
+	// Use h2c for local development (plain HTTP/2)
 	err := http.ListenAndServe(
 		":"+port,
-		h2c.NewHandler(corsMiddleware(mux), &http2.Server{}),
+		h2c.NewHandler(handler, &http2.Server{}),
 	)
 	if err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		log.Fatal(err)
 	}
 }

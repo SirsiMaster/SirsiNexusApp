@@ -10,8 +10,7 @@ plugins:
   - remote: buf.build/protocolbuffers/go
     out: gen/go
     opt: paths=source_relative
-  # TypeScript/JavaScript client (React frontends)
-  # In Connect-ES v2, protoc-gen-es (bufbuild/es) handles both messages and services
-  - remote: buf.build/bufbuild/es:v2.2.3
+  # TypeScript/JavaScript client (React frontends) - PB ES v2 (Schemas)
+  - remote: buf.build/bufbuild/es
     out: gen/ts
     opt: target=ts

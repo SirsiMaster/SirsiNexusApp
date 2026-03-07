@@ -6,7 +6,7 @@ import {
     flexRender,
     createColumnHelper
 } from '@tanstack/react-table';
-import { Notification } from '../../gen/proto/admin/v1/admin_pb';
+import type { Notification } from '../../gen/sirsi/admin/v2/admin_service_pb';
 
 const columnHelper = createColumnHelper<Notification>();
 

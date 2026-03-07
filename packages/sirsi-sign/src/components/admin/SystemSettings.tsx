@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSettings, useUpdateSettings } from '../../hooks/useAdmin';
+import { StripeCatalogSync, type SyncItem } from './StripeCatalogSync';
+import { PRODUCTS, BUNDLES } from '../../data/catalog';
 
 export function SystemSettings() {
     const { data: settings, isLoading, isError } = useSettings();
@@ -8,6 +10,31 @@ export function SystemSettings() {
     const [maintenanceMode, setMaintenanceMode] = useState(false);
     const [region, setRegion] = useState('us-central1');
     const [multiplier, setMultiplier] = useState(2.0);
+
+    // Map catalog products for synchronization
+    const syncItems: SyncItem[] = [
+        {
+            id: 'solo',
+            name: PRODUCTS['solo-plan'].name,
+            amount: (PRODUCTS['solo-plan']?.standalonePrice || 500) * 100,
+            description: PRODUCTS['solo-plan'].shortDescription,
+            recurring: true
+        },
+        {
+            id: 'business',
+            name: PRODUCTS['business-plan'].name,
+            amount: (PRODUCTS['business-plan']?.standalonePrice || 2500) * 100,
+            description: PRODUCTS['business-plan'].shortDescription,
+            recurring: true
+        },
+        {
+            id: 'finalwishes-core',
+            name: BUNDLES['finalwishes-core'].name,
+            amount: BUNDLES['finalwishes-core'].price * 100,
+            description: BUNDLES['finalwishes-core'].shortDescription,
+            recurring: false
+        }
+    ];
 
     // Sync local state with backend data
     useEffect(() => {
@@ -129,9 +156,7 @@ export function SystemSettings() {
                             </div>
                         ))}
                     </div>
-                    <button className="w-full py-3 border border-white/10 text-white inter text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-white/5 transition-all">
-                        Rotate All Security Keys
-                    </button>
+                    <StripeCatalogSync items={syncItems} projectName="Sirsi Universal" />
                 </div>
             </div>
         </div>
