@@ -2,7 +2,7 @@
 
 This index tracks **all** architectural decisions for the Sirsi platform — the unified product that spans web application, desktop application (Tauri), mobile application (React Native), Cloud Hypervisor, website, and pitch deck. All distributions share one codebase, one set of rules, one ADR registry.
 
-**Total ADRs: 25** | **Next available: ADR-031**
+**Total ADRs: 26** | **Next available: ADR-032**
 
 ---
 
@@ -35,6 +35,7 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 | [ADR-028](ADR-028-PROTO-VERSIONING-ALIGNMENT.md) | Proto/gRPC Versioning Alignment — v2 Canonical | Accepted | 2026-03-03 |
 | [ADR-029](ADR-029-CLOUD-RUN-DEPLOYMENT.md) | Cloud Run Deployment Architecture — sirsi-admin Service | Accepted | 2026-03-04 |
 | [ADR-030](ADR-030-SELF-SERVICE-TENANT-PROVISIONING.md) | Self-Service Tenant Provisioning & Client Onboarding Engine | Accepted | 2026-03-06 |
+| [ADR-031](ADR-031-UNIFIED-COMMERCE-PIPELINE.md) | Unified Commerce & Signing Pipeline — 100% gRPC | Accepted | 2026-03-06 |
 
 ---
 
@@ -45,8 +46,9 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 - ADR-007: Contracts gRPC Service — gRPC contract CRUD and execution backend
 - ADR-008: Printable MSA Viewer — Full-fidelity legal document rendering component
 - ADR-014: Bipartite Dual-Signature Ceremony (Provider/Client Workflows)
-- ADR-015: OpenSign Convergence — Dual-Client Architecture (gRPC + REST SDK)
+- ADR-015: OpenSign Convergence — Dual-Client Architecture (gRPC + REST SDK) — **SUPERSEDED by ADR-031**
 - ADR-023: Contract Lifecycle (`DRAFT` → `FULLY_EXECUTED` → `COMPLETED` → `ARCHIVED`)
+- ADR-031: Unified Commerce & Signing Pipeline — CatalogService + SigningService, 100% gRPC, zero REST
 
 ### Platform Architecture
 - ADR-028: Proto/gRPC Versioning Alignment — v2 canonical, v1 retired, single `/proto/` source of truth
@@ -93,6 +95,7 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 | ADR-010 — ADR-028 | Active — Platform decisions |
 | ADR-029 | Active — Cloud Run Deployment Architecture |
 | ADR-030 | Active — Self-Service Tenant Provisioning |
-| ADR-031+ | Next available |
+| ADR-031 | Active — Unified Commerce & Signing Pipeline |
+| ADR-032+ | Next available |
 
-> **Last updated:** March 6, 2026 — Added ADR-030 (Self-Service Tenant Provisioning & Client Onboarding Engine)
+> **Last updated:** March 6, 2026 — Added ADR-031 (Unified Commerce & Signing Pipeline)
