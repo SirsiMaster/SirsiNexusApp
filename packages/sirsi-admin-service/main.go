@@ -432,24 +432,44 @@ func (s *AdminServer) ListAuditTrail(
 
 type TenantServer struct{}
 
+// ═══════════════════════════════════════════════════════════════════
+// TenantService — ADR-030 Self-Service Tenant Provisioning
+// ═══════════════════════════════════════════════════════════════════
+
 func (s *TenantServer) ListTenants(
 	ctx context.Context,
 	req *connect.Request[adminv2.ListTenantsRequest],
 ) (*connect.Response[adminv2.ListTenantsResponse], error) {
 	tenants := []*adminv2.Tenant{
 		{
-			Id:          "tenant_fw",
-			Name:        "FinalWishes",
-			Slug:        "finalwishes",
-			Description: "Premier Legacy Management Platform",
-			Status:      adminv2.TenantStatus_TENANT_STATUS_ACTIVE,
+			Id:                 "tenant_fw",
+			Name:               "FinalWishes",
+			Slug:               "finalwishes",
+			Description:        "Premier Legacy Management Platform",
+			Status:             adminv2.TenantStatus_TENANT_STATUS_ACTIVE,
+			OwnerUid:           "fw_admin_001",
+			SuperadminUids:     []string{"cylton_uid", "hypervisor_svc"},
+			Plan:               adminv2.Plan_PLAN_BUSINESS,
+			CloudProvider:      adminv2.CloudProvider_CLOUD_PROVIDER_GCP,
+			ProvisioningStatus: adminv2.ProvisioningState_PROVISIONING_STATE_ACTIVE,
+			Region:             "us-east1",
+			Industry:           "Legal",
+			CompanySize:        "11-50",
 		},
 		{
-			Id:          "tenant_as",
-			Name:        "Assiduous",
-			Slug:        "assiduous",
-			Description: "Autonomous AI Agent Infrastructure",
-			Status:      adminv2.TenantStatus_TENANT_STATUS_ACTIVE,
+			Id:                 "tenant_as",
+			Name:               "Assiduous",
+			Slug:               "assiduous",
+			Description:        "Autonomous AI Agent Infrastructure",
+			Status:             adminv2.TenantStatus_TENANT_STATUS_ACTIVE,
+			OwnerUid:           "as_admin_001",
+			SuperadminUids:     []string{"cylton_uid", "hypervisor_svc"},
+			Plan:               adminv2.Plan_PLAN_BUSINESS,
+			CloudProvider:      adminv2.CloudProvider_CLOUD_PROVIDER_GCP,
+			ProvisioningStatus: adminv2.ProvisioningState_PROVISIONING_STATE_ACTIVE,
+			Region:             "us-central1",
+			Industry:           "Technology",
+			CompanySize:        "1-10",
 		},
 	}
 	return connect.NewResponse(&adminv2.ListTenantsResponse{
@@ -464,28 +484,137 @@ func (s *TenantServer) GetTenant(
 	ctx context.Context,
 	req *connect.Request[adminv2.GetTenantRequest],
 ) (*connect.Response[adminv2.Tenant], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, fmt.Errorf("unimplemented"))
+	// Mock: return FinalWishes for any ID
+	return connect.NewResponse(&adminv2.Tenant{
+		Id:                 req.Msg.Id,
+		Name:               "FinalWishes",
+		Slug:               "finalwishes",
+		Status:             adminv2.TenantStatus_TENANT_STATUS_ACTIVE,
+		Plan:               adminv2.Plan_PLAN_BUSINESS,
+		CloudProvider:      adminv2.CloudProvider_CLOUD_PROVIDER_GCP,
+		ProvisioningStatus: adminv2.ProvisioningState_PROVISIONING_STATE_ACTIVE,
+		Region:             "us-east1",
+		SuperadminUids:     []string{"cylton_uid", "hypervisor_svc"},
+	}), nil
+}
+
+func (s *TenantServer) GetTenantByOwner(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetTenantByOwnerRequest],
+) (*connect.Response[adminv2.Tenant], error) {
+	log.Printf("GetTenantByOwner: %s", req.Msg.OwnerUid)
+	return connect.NewResponse(&adminv2.Tenant{
+		Id:                 "tenant_mock",
+		Name:               "Mock Tenant",
+		Slug:               "mock-tenant",
+		OwnerUid:           req.Msg.OwnerUid,
+		Status:             adminv2.TenantStatus_TENANT_STATUS_ACTIVE,
+		Plan:               adminv2.Plan_PLAN_FREE,
+		ProvisioningStatus: adminv2.ProvisioningState_PROVISIONING_STATE_ACTIVE,
+		SuperadminUids:     []string{"cylton_uid", "hypervisor_svc"},
+	}), nil
 }
 
 func (s *TenantServer) CreateTenant(
 	ctx context.Context,
 	req *connect.Request[adminv2.CreateTenantRequest],
 ) (*connect.Response[adminv2.Tenant], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, fmt.Errorf("unimplemented"))
+	log.Printf("CreateTenant: name=%s slug=%s plan=%s cloud=%s region=%s",
+		req.Msg.Name, req.Msg.Slug, req.Msg.Plan, req.Msg.CloudProvider, req.Msg.Region)
+
+	// Generate a mock tenant ID
+	tenantId := fmt.Sprintf("tenant_%s", req.Msg.Slug)
+
+	tenant := &adminv2.Tenant{
+		Id:                 tenantId,
+		Name:               req.Msg.Name,
+		Slug:               req.Msg.Slug,
+		Description:        req.Msg.Description,
+		Status:             adminv2.TenantStatus_TENANT_STATUS_ACTIVE,
+		OwnerUid:           req.Msg.OwnerUid,
+		SuperadminUids:     []string{"cylton_uid", "hypervisor_svc"},
+		Plan:               req.Msg.Plan,
+		CloudProvider:      req.Msg.CloudProvider,
+		Region:             req.Msg.Region,
+		Industry:           req.Msg.Industry,
+		CompanySize:        req.Msg.CompanySize,
+		StripeCustomerId:   req.Msg.StripeCustomerId,
+		ProvisioningStatus: adminv2.ProvisioningState_PROVISIONING_STATE_PENDING,
+		Config:             req.Msg.Config,
+	}
+
+	return connect.NewResponse(tenant), nil
 }
 
 func (s *TenantServer) UpdateTenant(
 	ctx context.Context,
 	req *connect.Request[adminv2.UpdateTenantRequest],
 ) (*connect.Response[adminv2.Tenant], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, fmt.Errorf("unimplemented"))
+	log.Printf("UpdateTenant: %s", req.Msg.Id)
+	return connect.NewResponse(req.Msg.Tenant), nil
+}
+
+func (s *TenantServer) StartProvisioning(
+	ctx context.Context,
+	req *connect.Request[adminv2.StartProvisioningRequest],
+) (*connect.Response[adminv2.ProvisioningStatus], error) {
+	log.Printf("StartProvisioning for tenant: %s", req.Msg.TenantId)
+	return connect.NewResponse(&adminv2.ProvisioningStatus{
+		TenantId:    req.Msg.TenantId,
+		State:       adminv2.ProvisioningState_PROVISIONING_STATE_PROVISIONING,
+		CurrentStep: 1,
+		TotalSteps:  6,
+		Steps: []*adminv2.ProvisioningStep{
+			{Name: "Creating Firebase project", Status: adminv2.StepStatus_STEP_STATUS_IN_PROGRESS},
+			{Name: "Provisioning Cloud Run service", Status: adminv2.StepStatus_STEP_STATUS_PENDING},
+			{Name: "Configuring DNS", Status: adminv2.StepStatus_STEP_STATUS_PENDING},
+			{Name: "Creating GitHub repository", Status: adminv2.StepStatus_STEP_STATUS_PENDING},
+			{Name: "Seeding initial data", Status: adminv2.StepStatus_STEP_STATUS_PENDING},
+			{Name: "Registering with Hypervisor", Status: adminv2.StepStatus_STEP_STATUS_PENDING},
+		},
+	}), nil
+}
+
+func (s *TenantServer) GetProvisioningStatus(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetProvisioningStatusRequest],
+) (*connect.Response[adminv2.ProvisioningStatus], error) {
+	// Mock: return fully provisioned
+	return connect.NewResponse(&adminv2.ProvisioningStatus{
+		TenantId:    req.Msg.TenantId,
+		State:       adminv2.ProvisioningState_PROVISIONING_STATE_ACTIVE,
+		CurrentStep: 6,
+		TotalSteps:  6,
+		Steps: []*adminv2.ProvisioningStep{
+			{Name: "Creating Firebase project", Status: adminv2.StepStatus_STEP_STATUS_COMPLETE},
+			{Name: "Provisioning Cloud Run service", Status: adminv2.StepStatus_STEP_STATUS_COMPLETE},
+			{Name: "Configuring DNS", Status: adminv2.StepStatus_STEP_STATUS_COMPLETE},
+			{Name: "Creating GitHub repository", Status: adminv2.StepStatus_STEP_STATUS_COMPLETE},
+			{Name: "Seeding initial data", Status: adminv2.StepStatus_STEP_STATUS_COMPLETE},
+			{Name: "Registering with Hypervisor", Status: adminv2.StepStatus_STEP_STATUS_COMPLETE},
+		},
+	}), nil
+}
+
+func (s *TenantServer) SuspendTenant(
+	ctx context.Context,
+	req *connect.Request[adminv2.SuspendTenantRequest],
+) (*connect.Response[adminv2.Tenant], error) {
+	log.Printf("SuspendTenant: %s", req.Msg.Id)
+	return connect.NewResponse(&adminv2.Tenant{
+		Id:     req.Msg.Id,
+		Status: adminv2.TenantStatus_TENANT_STATUS_SUSPENDED,
+	}), nil
 }
 
 func (s *TenantServer) DeactivateTenant(
 	ctx context.Context,
 	req *connect.Request[adminv2.DeactivateTenantRequest],
 ) (*connect.Response[adminv2.DeactivateTenantResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, fmt.Errorf("unimplemented"))
+	log.Printf("DeactivateTenant: %s", req.Msg.Id)
+	return connect.NewResponse(&adminv2.DeactivateTenantResponse{
+		Success: true,
+	}), nil
 }
 
 // ═══════════════════════════════════════════════════════════════════

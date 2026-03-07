@@ -1,4 +1,5 @@
 // proto/sirsi/admin/v2/tenant.proto
+// ADR-030: Self-Service Tenant Provisioning
 syntax = "proto3";
 
 package sirsi.admin.v2;
@@ -8,22 +9,46 @@ import "sirsi/common/v1/common.proto";
 option go_package = "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2";
 
 service TenantService {
-  rpc ListTenants(ListTenantsRequest) returns (ListTenantsResponse);
-  rpc GetTenant(GetTenantRequest) returns (Tenant);
+  // Client-facing
   rpc CreateTenant(CreateTenantRequest) returns (Tenant);
+  rpc GetTenant(GetTenantRequest) returns (Tenant);
+  rpc GetTenantByOwner(GetTenantByOwnerRequest) returns (Tenant);
   rpc UpdateTenant(UpdateTenantRequest) returns (Tenant);
+
+  // Provisioning
+  rpc StartProvisioning(StartProvisioningRequest) returns (ProvisioningStatus);
+  rpc GetProvisioningStatus(GetProvisioningStatusRequest) returns (ProvisioningStatus);
+
+  // Admin (superadmin only)
+  rpc ListTenants(ListTenantsRequest) returns (ListTenantsResponse);
+  rpc SuspendTenant(SuspendTenantRequest) returns (Tenant);
   rpc DeactivateTenant(DeactivateTenantRequest) returns (DeactivateTenantResponse);
 }
 
+// ═══ Core Messages ═══
+
 message Tenant {
   string id = 1;
-  string name = 2;                    // e.g., "FinalWishes"
-  string slug = 3;                    // e.g., "finalwishes"
+  string name = 2;                          // Display name, e.g. "Acme Corp"
+  string slug = 3;                          // URL-safe, e.g. "acme-corp"
   string description = 4;
   TenantStatus status = 5;
   TenantConfig config = 6;
   sirsi.common.v1.AuditEntry created = 7;
   sirsi.common.v1.AuditEntry updated = 8;
+
+  // ADR-030 fields
+  string owner_uid = 9;                     // Firebase UID of the client who created it
+  repeated string superadmin_uids = 10;     // Always includes Cylton + Hypervisor
+  Plan plan = 11;
+  CloudProvider cloud_provider = 12;
+  string cloud_project_id = 13;             // GCP project / AWS account / Azure subscription
+  string github_repo_url = 14;
+  ProvisioningState provisioning_status = 15;
+  string region = 16;                       // Cloud region, e.g. "us-east1"
+  string stripe_customer_id = 17;
+  string industry = 18;
+  string company_size = 19;
 }
 
 enum TenantStatus {
@@ -33,13 +58,38 @@ enum TenantStatus {
   TENANT_STATUS_DEACTIVATED = 3;
 }
 
+enum Plan {
+  PLAN_UNSPECIFIED = 0;
+  PLAN_FREE = 1;
+  PLAN_SOLO = 2;
+  PLAN_BUSINESS = 3;
+}
+
+enum CloudProvider {
+  CLOUD_PROVIDER_UNSPECIFIED = 0;
+  CLOUD_PROVIDER_GCP = 1;
+  CLOUD_PROVIDER_AWS = 2;
+  CLOUD_PROVIDER_AZURE = 3;
+}
+
+enum ProvisioningState {
+  PROVISIONING_STATE_UNSPECIFIED = 0;
+  PROVISIONING_STATE_PENDING = 1;
+  PROVISIONING_STATE_PROVISIONING = 2;
+  PROVISIONING_STATE_ACTIVE = 3;
+  PROVISIONING_STATE_SUSPENDED = 4;
+  PROVISIONING_STATE_ARCHIVED = 5;
+}
+
 message TenantConfig {
   string primary_color = 1;
   string logo_url = 2;
-  string domain = 3;                  // Custom domain or subdomain
-  repeated string enabled_services = 4; // ["contracts", "vault", "payments"]
+  string domain = 3;                        // Custom domain or subdomain
+  repeated string enabled_services = 4;     // ["contracts", "vault", "payments"]
   string stripe_connect_account_id = 5;
 }
+
+// ═══ Request/Response Messages ═══
 
 message ListTenantsRequest {
   sirsi.common.v1.PaginationRequest pagination = 1;
@@ -53,11 +103,21 @@ message ListTenantsResponse {
 
 message GetTenantRequest { string id = 1; }
 
+message GetTenantByOwnerRequest { string owner_uid = 1; }
+
 message CreateTenantRequest {
   string name = 1;
   string slug = 2;
   string description = 3;
   TenantConfig config = 4;
+  // ADR-030 onboarding fields
+  string owner_uid = 5;
+  Plan plan = 6;
+  CloudProvider cloud_provider = 7;
+  string region = 8;
+  string industry = 9;
+  string company_size = 10;
+  string stripe_customer_id = 11;
 }
 
 message UpdateTenantRequest {
@@ -66,6 +126,42 @@ message UpdateTenantRequest {
   repeated string update_mask = 3;
 }
 
+message SuspendTenantRequest { string id = 1; }
+
 message DeactivateTenantRequest { string id = 1; }
 
 message DeactivateTenantResponse { bool success = 1; }
+
+// ═══ Provisioning Messages ═══
+
+message StartProvisioningRequest {
+  string tenant_id = 1;
+}
+
+message GetProvisioningStatusRequest {
+  string tenant_id = 1;
+}
+
+message ProvisioningStatus {
+  string tenant_id = 1;
+  ProvisioningState state = 2;
+  int32 current_step = 3;                   // 1-6
+  int32 total_steps = 4;                    // 6
+  repeated ProvisioningStep steps = 5;
+}
+
+message ProvisioningStep {
+  string name = 1;                          // e.g. "Creating Firebase project"
+  StepStatus status = 2;
+  string started_at = 3;
+  string completed_at = 4;
+  string error_message = 5;
+}
+
+enum StepStatus {
+  STEP_STATUS_UNSPECIFIED = 0;
+  STEP_STATUS_PENDING = 1;
+  STEP_STATUS_IN_PROGRESS = 2;
+  STEP_STATUS_COMPLETE = 3;
+  STEP_STATUS_FAILED = 4;
+}
