@@ -1,0 +1,222 @@
+// proto/sirsi/sign/v1/signing.proto
+// SigningService — Unified Document Signing, Payment, MFA, and Vault
+//
+// Absorbs all 12 OpenSign REST API endpoints into ConnectRPC.
+// Replaces opensign.ts (406 lines) with proto-generated types.
+// PDF download and Stripe webhooks remain as HTTP handlers on the same server.
+syntax = "proto3";
+
+package sirsi.sign.v1;
+
+option go_package = "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/sign/v1";
+
+service SigningService {
+  // ── Envelope Lifecycle ──────────────────────────────────────────
+  rpc CreateEnvelope(CreateEnvelopeRequest) returns (Envelope);
+  rpc CreateGuestEnvelope(CreateGuestEnvelopeRequest) returns (Envelope);
+  rpc GetEnvelope(GetEnvelopeRequest) returns (Envelope);
+  rpc SignEnvelope(SignEnvelopeRequest) returns (SignEnvelopeResponse);
+
+  // ── Payment Sessions ────────────────────────────────────────────
+  rpc CreatePaymentSession(CreatePaymentSessionRequest) returns (PaymentSession);
+  rpc GetPaymentStatus(GetPaymentStatusRequest) returns (PaymentStatusResponse);
+  rpc RequestWireInstructions(WireInstructionsRequest) returns (WireInstructionsResponse);
+
+  // ── MFA ─────────────────────────────────────────────────────────
+  rpc ProvisionMFA(ProvisionMFARequest) returns (ProvisionMFAResponse);
+  rpc SendMFACode(SendMFACodeRequest) returns (MFAActionResponse);
+  rpc VerifyMFACode(VerifyMFACodeRequest) returns (MFAActionResponse);
+
+  // ── Security ────────────────────────────────────────────────────
+  rpc VerifySignedRedirect(VerifyRedirectRequest) returns (VerifyRedirectResponse);
+
+  // ── Vault ───────────────────────────────────────────────────────
+  rpc ListVaultFiles(ListVaultFilesRequest) returns (ListVaultFilesResponse);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Envelope Messages
+// ═══════════════════════════════════════════════════════════════════
+
+message EnvelopeRecipient {
+  string name = 1;
+  string email = 2;
+  string role = 3;    // "signer" | "countersigner" | "viewer"
+}
+
+message Envelope {
+  string id = 1;
+  string project_id = 2;
+  string doc_type = 3;
+  string signer_name = 4;
+  string signer_email = 5;
+  string status = 6;            // "created" | "signed" | "completed"
+  string signing_url = 7;
+  map<string, string> metadata = 8;
+  string contract_id = 9;       // links to ContractsService record
+  string message = 10;
+  int64 created_at = 11;
+  int64 updated_at = 12;
+}
+
+message CreateEnvelopeRequest {
+  string doc_type = 1;
+  repeated EnvelopeRecipient recipients = 2;
+  map<string, string> metadata = 3;
+  string document_url = 4;
+  string callback_url = 5;
+}
+
+message CreateGuestEnvelopeRequest {
+  string project_id = 1;
+  string doc_type = 2;
+  string signer_name = 3;
+  string signer_email = 4;
+  map<string, string> metadata = 5;
+  string document_url = 6;
+  string callback_url = 7;
+  string redirect_url = 8;
+  string plan = 9;
+  int64 amount = 10;
+}
+
+message GetEnvelopeRequest {
+  string id = 1;
+  bool guest = 2;               // if true, no auth required
+}
+
+message SignEnvelopeRequest {
+  string envelope_id = 1;
+  string signature_data = 2;    // base64 signature stroke data
+  string signer_name = 3;
+  string signer_email = 4;
+  string signature_image = 5;   // base64 rendered signature image
+  bool guest = 6;
+}
+
+message SignEnvelopeResponse {
+  bool success = 1;
+  string message = 2;
+  string status = 3;            // "completed" | "partially_signed"
+  string callback_url = 4;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Payment Messages
+// ═══════════════════════════════════════════════════════════════════
+
+message CreatePaymentSessionRequest {
+  string envelope_id = 1;
+  string plan_id = 2;           // optional: Stripe Price ID from CatalogService
+  int64 amount = 3;             // fallback: raw amount in cents
+  string project_id = 4;
+  string success_url = 5;
+  string cancel_url = 6;
+  repeated string payment_method_types = 7;  // ["card", "us_bank_account"]
+}
+
+message PaymentSession {
+  string session_id = 1;
+  string checkout_url = 2;
+  string envelope_id = 3;
+}
+
+message GetPaymentStatusRequest {
+  string envelope_id = 1;
+}
+
+message PaymentStatusResponse {
+  string status = 1;
+  string payment_status = 2;
+  PaymentMetadata payment_metadata = 3;
+}
+
+message PaymentMetadata {
+  string stripe_session_id = 1;
+  int64 amount_paid = 2;
+  string currency = 3;
+  string paid_at = 4;
+}
+
+message WireInstructionsRequest {
+  string email = 1;
+  string reference = 2;
+  string envelope_id = 3;
+}
+
+message WireInstructionsResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// MFA Messages
+// ═══════════════════════════════════════════════════════════════════
+
+message ProvisionMFARequest {
+  string email = 1;
+}
+
+message ProvisionMFAResponse {
+  bool success = 1;
+  string secret = 2;
+  string qr_url = 3;
+  bool enrolled = 4;
+  string identity = 5;
+}
+
+message SendMFACodeRequest {
+  string method = 1;            // "email" | "sms" | "totp"
+  string target = 2;
+  string user_id = 3;
+}
+
+message VerifyMFACodeRequest {
+  string method = 1;
+  string target = 2;
+  string code = 3;
+  string email = 4;
+}
+
+message MFAActionResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Security Messages
+// ═══════════════════════════════════════════════════════════════════
+
+message VerifyRedirectRequest {
+  map<string, string> params = 1;
+}
+
+message VerifyRedirectResponse {
+  bool valid = 1;
+  map<string, string> params = 2;
+  string session_token = 3;
+  string session_signature = 4;
+  int64 expires = 5;
+  string error = 6;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Vault Messages
+// ═══════════════════════════════════════════════════════════════════
+
+message ListVaultFilesRequest {
+  string project_id = 1;
+}
+
+message VaultFile {
+  string name = 1;
+  string path = 2;
+  int64 size_bytes = 3;
+  string content_type = 4;
+  int64 created_at = 5;
+  int64 updated_at = 6;
+}
+
+message ListVaultFilesResponse {
+  repeated VaultFile files = 1;
+}

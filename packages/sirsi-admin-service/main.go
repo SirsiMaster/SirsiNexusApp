@@ -19,6 +19,7 @@ import (
 	adminv2 "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2"
 	"github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2/v2connect"
 	commonv1 "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/common/v1"
+	signv1connect "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/sign/v1/v1connect"
 	"github.com/stripe/stripe-go/v82"
 	"github.com/stripe/stripe-go/v82/price"
 	"github.com/stripe/stripe-go/v82/product"
@@ -1677,6 +1678,7 @@ func corsMiddleware(next http.Handler) http.Handler {
 func main() {
 	loadSettings()
 	loadCatalogStore()
+	loadEnvelopeStore()
 
 	// Initialize GitHub client if PAT is provided
 	var ghClient *github.Client
@@ -1695,6 +1697,7 @@ func main() {
 	mux.Handle(v2connect.NewTenantServiceHandler(&TenantServer{ghClient: ghClient}))
 	mux.Handle(v2connect.NewHypervisorServiceHandler(&HypervisorServer{}))
 	mux.Handle(v2connect.NewCatalogServiceHandler(&CatalogServer{}))
+	mux.Handle(signv1connect.NewSigningServiceHandler(&SigningServer{}))
 
 	port := os.Getenv("PORT")
 	if port == "" {
