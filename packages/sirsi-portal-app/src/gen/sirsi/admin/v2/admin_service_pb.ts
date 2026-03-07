@@ -16,85 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file sirsi/admin/v2/admin_service.proto.
  */
 export const file_sirsi_admin_v2_admin_service: GenFile = /*@__PURE__*/
-  fileDesc("CiJzaXJzaS9hZG1pbi92Mi9hZG1pbl9zZXJ2aWNlLnByb3RvEg5zaXJzaS5hZG1pbi52MiJEChJTeW5jQ2F0YWxvZ1JlcXVlc3QSLgoFaXRlbXMYASADKAsyHy5zaXJzaS5hZG1pbi52Mi5TeW5jQ2F0YWxvZ0l0ZW0iYwoPU3luY0NhdGFsb2dJdGVtEgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSDgoGYW1vdW50GAMgASgDEhMKC2Rlc2NyaXB0aW9uGAQgASgJEhEKCXJlY3VycmluZxgFIAEoCCI0ChNTeW5jQ2F0YWxvZ1Jlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDAoEbG9ncxgCIAMoCSJOChRMb2dEZXZTZXNzaW9uUmVxdWVzdBIUCgxkZXZlbG9wZXJfaWQYASABKAkSDgoGYWN0aW9uGAIgASgJEhAKCG1ldGFkYXRhGAMgASgJIisKFUxvZ0RldlNlc3Npb25SZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJIlAKBFVzZXISCgoCaWQYASABKAkSDQoFZW1haWwYAiABKAkSDAoEbmFtZRgDIAEoCRIMCgRyb2xlGAQgASgJEhEKCXRlbmFudF9pZBgFIAEoCSJdChBMaXN0VXNlcnNSZXF1ZXN0EjYKCnBhZ2luYXRpb24YASABKAsyIi5zaXJzaS5jb21tb24udjEuUGFnaW5hdGlvblJlcXVlc3QSEQoJdGVuYW50X2lkGAIgASgJInEKEUxpc3RVc2Vyc1Jlc3BvbnNlEiMKBXVzZXJzGAEgAygLMhQuc2lyc2kuYWRtaW4udjIuVXNlchI3CgpwYWdpbmF0aW9uGAIgASgLMiMuc2lyc2kuY29tbW9uLnYxLlBhZ2luYXRpb25SZXNwb25zZSI2ChVNYW5hZ2VVc2VyUm9sZVJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIMCgRyb2xlGAIgASgJIikKFk1hbmFnZVVzZXJSb2xlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCJ8CgxOb3RpZmljYXRpb24SCgoCaWQYASABKAkSFAoMcmVjaXBpZW50X2lkGAIgASgJEg0KBXRpdGxlGAMgASgJEgwKBGJvZHkYBCABKAkSDAoEdHlwZRgFIAEoCRIPCgdzZW50X2F0GAYgASgDEg4KBnN0YXR1cxgHIAEoCSJoChhMaXN0Tm90aWZpY2F0aW9uc1JlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLnNpcnNpLmNvbW1vbi52MS5QYWdpbmF0aW9uUmVxdWVzdBIUCgxyZWNpcGllbnRfaWQYAiABKAkiiQEKGUxpc3ROb3RpZmljYXRpb25zUmVzcG9uc2USMwoNbm90aWZpY2F0aW9ucxgBIAMoCzIcLnNpcnNpLmFkbWluLnYyLk5vdGlmaWNhdGlvbhI3CgpwYWdpbmF0aW9uGAIgASgLMiMuc2lyc2kuY29tbW9uLnYxLlBhZ2luYXRpb25SZXNwb25zZSJrChdTZW5kTm90aWZpY2F0aW9uUmVxdWVzdBIUCgxyZWNpcGllbnRfaWQYASABKAkSDQoFdGl0bGUYAiABKAkSDAoEYm9keRgDIAEoCRIMCgR0eXBlGAQgASgJEg8KB2NoYW5uZWwYBSABKAkiMwoYU2VuZE5vdGlmaWNhdGlvblJlc3BvbnNlEhcKD25vdGlmaWNhdGlvbl9pZBgBIAEoCSJbCg5TeXN0ZW1TZXR0aW5ncxIYChBtYWludGVuYW5jZV9tb2RlGAEgASgIEhUKDWFjdGl2ZV9yZWdpb24YAiABKAkSGAoQc2lyc2lfbXVsdGlwbGllchgDIAEoASIUChJHZXRTZXR0aW5nc1JlcXVlc3QiRwoTR2V0U2V0dGluZ3NSZXNwb25zZRIwCghzZXR0aW5ncxgBIAEoCzIeLnNpcnNpLmFkbWluLnYyLlN5c3RlbVNldHRpbmdzIkkKFVVwZGF0ZVNldHRpbmdzUmVxdWVzdBIwCghzZXR0aW5ncxgBIAEoCzIeLnNpcnNpLmFkbWluLnYyLlN5c3RlbVNldHRpbmdzIikKFlVwZGF0ZVNldHRpbmdzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCJlChVMaXN0QXVkaXRUcmFpbFJlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLnNpcnNpLmNvbW1vbi52MS5QYWdpbmF0aW9uUmVxdWVzdBIUCgxmaWx0ZXJfbGV2ZWwYAiABKAkifgoWTGlzdEF1ZGl0VHJhaWxSZXNwb25zZRIrCgRsb2dzGAEgAygLMh0uc2lyc2kuYWRtaW4udjIuQXVkaXRMb2dFbnRyeRI3CgpwYWdpbmF0aW9uGAIgASgLMiMuc2lyc2kuY29tbW9uLnYxLlBhZ2luYXRpb25SZXNwb25zZSJ+Cg1BdWRpdExvZ0VudHJ5EgoKAmlkGAEgASgJEhEKCXRpbWVzdGFtcBgCIAEoAxINCgVsZXZlbBgDIAEoCRIOCgZzb3VyY2UYBCABKAkSDwoHbWVzc2FnZRgFIAEoCRIMCgR1c2VyGAYgASgJEhAKCG1ldGFkYXRhGAcgASgJIk8KFEdldERldk1ldHJpY3NSZXF1ZXN0EhEKCXRlbmFudF9pZBgBIAEoCRISCgpzdGFydF90aW1lGAIgASgDEhAKCGVuZF90aW1lGAMgASgDIr8BCgpEZXZNZXRyaWNzEhAKCHZlbG9jaXR5GAEgASgBEhMKC29wZW5faXNzdWVzGAIgASgFEhUKDWNsb3NlZF9pc3N1ZXMYAyABKAUSFwoPYWN0aXZlX3Nlc3Npb25zGAQgASgFEikKCWJ1cm5fcmF0ZRgFIAEoCzIWLnNpcnNpLmNvbW1vbi52MS5Nb25leRIvCghhY3Rpdml0eRgGIAMoCzIdLnNpcnNpLmFkbWluLnYyLkRhaWx5QWN0aXZpdHkiRwoNRGFpbHlBY3Rpdml0eRIMCgRkYXRlGAEgASgJEg8KB2NvbW1pdHMYAiABKAUSFwoPc2Vzc2lvbl9taW51dGVzGAMgASgFIioKFlN5bmNHaXRIdWJTdGF0c1JlcXVlc3QSEAoIcmVwb191cmwYASABKAkiQAoXU3luY0dpdEh1YlN0YXRzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIUCgxzeW5jZWRfY291bnQYAiABKAUiGgoYR2V0U3lzdGVtT3ZlcnZpZXdSZXF1ZXN0IowCCg5TeXN0ZW1PdmVydmlldxIVCg10b3RhbF90ZW5hbnRzGAEgASgFEhcKD3RvdGFsX2NvbnRyYWN0cxgCIAEoBRIrCgtyZXZlbnVlX210ZBgDIAEoCzIWLnNpcnNpLmNvbW1vbi52MS5Nb25leRIYChBzaXJzaV9tdWx0aXBsaWVyGAQgASgBEhgKEG1haW50ZW5hbmNlX21vZGUYBSABKAgSMwoNcmVjZW50X2FsZXJ0cxgGIAMoCzIcLnNpcnNpLmFkbWluLnYyLk5vdGlmaWNhdGlvbhI0Cg1hY3Rpdml0eV9mZWVkGAcgAygLMh0uc2lyc2kuYWRtaW4udjIuQXVkaXRMb2dFbnRyeTKMDAoMQWRtaW5TZXJ2aWNlEl0KEUdldFN5c3RlbU92ZXJ2aWV3Eiguc2lyc2kuYWRtaW4udjIuR2V0U3lzdGVtT3ZlcnZpZXdSZXF1ZXN0Gh4uc2lyc2kuYWRtaW4udjIuU3lzdGVtT3ZlcnZpZXcSXAoNTG9nRGV2U2Vzc2lvbhIkLnNpcnNpLmFkbWluLnYyLkxvZ0RldlNlc3Npb25SZXF1ZXN0GiUuc2lyc2kuYWRtaW4udjIuTG9nRGV2U2Vzc2lvblJlc3BvbnNlElEKDUdldERldk1ldHJpY3MSJC5zaXJzaS5hZG1pbi52Mi5HZXREZXZNZXRyaWNzUmVxdWVzdBoaLnNpcnNpLmFkbWluLnYyLkRldk1ldHJpY3MSYgoPU3luY0dpdEh1YlN0YXRzEiYuc2lyc2kuYWRtaW4udjIuU3luY0dpdEh1YlN0YXRzUmVxdWVzdBonLnNpcnNpLmFkbWluLnYyLlN5bmNHaXRIdWJTdGF0c1Jlc3BvbnNlElYKC0xpc3RFc3RhdGVzEiIuc2lyc2kuYWRtaW4udjIuTGlzdEVzdGF0ZXNSZXF1ZXN0GiMuc2lyc2kuYWRtaW4udjIuTGlzdEVzdGF0ZXNSZXNwb25zZRJFCglHZXRFc3RhdGUSIC5zaXJzaS5hZG1pbi52Mi5HZXRFc3RhdGVSZXF1ZXN0GhYuc2lyc2kuYWRtaW4udjIuRXN0YXRlEksKDENyZWF0ZUVzdGF0ZRIjLnNpcnNpLmFkbWluLnYyLkNyZWF0ZUVzdGF0ZVJlcXVlc3QaFi5zaXJzaS5hZG1pbi52Mi5Fc3RhdGUSSwoMVXBkYXRlRXN0YXRlEiMuc2lyc2kuYWRtaW4udjIuVXBkYXRlRXN0YXRlUmVxdWVzdBoWLnNpcnNpLmFkbWluLnYyLkVzdGF0ZRJZCgxEZWxldGVFc3RhdGUSIy5zaXJzaS5hZG1pbi52Mi5EZWxldGVFc3RhdGVSZXF1ZXN0GiQuc2lyc2kuYWRtaW4udjIuRGVsZXRlRXN0YXRlUmVzcG9uc2USUAoJTGlzdFVzZXJzEiAuc2lyc2kuYWRtaW4udjIuTGlzdFVzZXJzUmVxdWVzdBohLnNpcnNpLmFkbWluLnYyLkxpc3RVc2Vyc1Jlc3BvbnNlEl8KDk1hbmFnZVVzZXJSb2xlEiUuc2lyc2kuYWRtaW4udjIuTWFuYWdlVXNlclJvbGVSZXF1ZXN0GiYuc2lyc2kuYWRtaW4udjIuTWFuYWdlVXNlclJvbGVSZXNwb25zZRJoChFMaXN0Tm90aWZpY2F0aW9ucxIoLnNpcnNpLmFkbWluLnYyLkxpc3ROb3RpZmljYXRpb25zUmVxdWVzdBopLnNpcnNpLmFkbWluLnYyLkxpc3ROb3RpZmljYXRpb25zUmVzcG9uc2USZQoQU2VuZE5vdGlmaWNhdGlvbhInLnNpcnNpLmFkbWluLnYyLlNlbmROb3RpZmljYXRpb25SZXF1ZXN0Giguc2lyc2kuYWRtaW4udjIuU2VuZE5vdGlmaWNhdGlvblJlc3BvbnNlElYKC0dldFNldHRpbmdzEiIuc2lyc2kuYWRtaW4udjIuR2V0U2V0dGluZ3NSZXF1ZXN0GiMuc2lyc2kuYWRtaW4udjIuR2V0U2V0dGluZ3NSZXNwb25zZRJfCg5VcGRhdGVTZXR0aW5ncxIlLnNpcnNpLmFkbWluLnYyLlVwZGF0ZVNldHRpbmdzUmVxdWVzdBomLnNpcnNpLmFkbWluLnYyLlVwZGF0ZVNldHRpbmdzUmVzcG9uc2USXwoOTGlzdEF1ZGl0VHJhaWwSJS5zaXJzaS5hZG1pbi52Mi5MaXN0QXVkaXRUcmFpbFJlcXVlc3QaJi5zaXJzaS5hZG1pbi52Mi5MaXN0QXVkaXRUcmFpbFJlc3BvbnNlElYKC1N5bmNDYXRhbG9nEiIuc2lyc2kuYWRtaW4udjIuU3luY0NhdGFsb2dSZXF1ZXN0GiMuc2lyc2kuYWRtaW4udjIuU3luY0NhdGFsb2dSZXNwb25zZUK7AQoSY29tLnNpcnNpLmFkbWluLnYyQhFBZG1pblNlcnZpY2VQcm90b1ABWjhnaXRodWIuY29tL3NpcnNpbWFzdGVyL3NpcnNpLW5leHVzL2dlbi9nby9zaXJzaS9hZG1pbi92MqICA1NBWKoCDlNpcnNpLkFkbWluLlYyygIOU2lyc2lcQWRtaW5cVjLiAhpTaXJzaVxBZG1pblxWMlxHUEJNZXRhZGF0YeoCEFNpcnNpOjpBZG1pbjo6VjJiBnByb3RvMw", [file_sirsi_common_v1_common, file_sirsi_admin_v2_estate]);
-
-/**
- * @generated from message sirsi.admin.v2.SyncCatalogRequest
- */
-export type SyncCatalogRequest = Message<"sirsi.admin.v2.SyncCatalogRequest"> & {
-  /**
-   * @generated from field: repeated sirsi.admin.v2.SyncCatalogItem items = 1;
-   */
-  items: SyncCatalogItem[];
-};
-
-/**
- * Describes the message sirsi.admin.v2.SyncCatalogRequest.
- * Use `create(SyncCatalogRequestSchema)` to create a new message.
- */
-export const SyncCatalogRequestSchema: GenMessage<SyncCatalogRequest> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 0);
-
-/**
- * @generated from message sirsi.admin.v2.SyncCatalogItem
- */
-export type SyncCatalogItem = Message<"sirsi.admin.v2.SyncCatalogItem"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: string name = 2;
-   */
-  name: string;
-
-  /**
-   * in cents
-   *
-   * @generated from field: int64 amount = 3;
-   */
-  amount: bigint;
-
-  /**
-   * @generated from field: string description = 4;
-   */
-  description: string;
-
-  /**
-   * @generated from field: bool recurring = 5;
-   */
-  recurring: boolean;
-};
-
-/**
- * Describes the message sirsi.admin.v2.SyncCatalogItem.
- * Use `create(SyncCatalogItemSchema)` to create a new message.
- */
-export const SyncCatalogItemSchema: GenMessage<SyncCatalogItem> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 1);
-
-/**
- * @generated from message sirsi.admin.v2.SyncCatalogResponse
- */
-export type SyncCatalogResponse = Message<"sirsi.admin.v2.SyncCatalogResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: repeated string logs = 2;
-   */
-  logs: string[];
-};
-
-/**
- * Describes the message sirsi.admin.v2.SyncCatalogResponse.
- * Use `create(SyncCatalogResponseSchema)` to create a new message.
- */
-export const SyncCatalogResponseSchema: GenMessage<SyncCatalogResponse> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 2);
+  fileDesc("CiJzaXJzaS9hZG1pbi92Mi9hZG1pbl9zZXJ2aWNlLnByb3RvEg5zaXJzaS5hZG1pbi52MiJOChRMb2dEZXZTZXNzaW9uUmVxdWVzdBIUCgxkZXZlbG9wZXJfaWQYASABKAkSDgoGYWN0aW9uGAIgASgJEhAKCG1ldGFkYXRhGAMgASgJIisKFUxvZ0RldlNlc3Npb25SZXNwb25zZRISCgpzZXNzaW9uX2lkGAEgASgJIlAKBFVzZXISCgoCaWQYASABKAkSDQoFZW1haWwYAiABKAkSDAoEbmFtZRgDIAEoCRIMCgRyb2xlGAQgASgJEhEKCXRlbmFudF9pZBgFIAEoCSJdChBMaXN0VXNlcnNSZXF1ZXN0EjYKCnBhZ2luYXRpb24YASABKAsyIi5zaXJzaS5jb21tb24udjEuUGFnaW5hdGlvblJlcXVlc3QSEQoJdGVuYW50X2lkGAIgASgJInEKEUxpc3RVc2Vyc1Jlc3BvbnNlEiMKBXVzZXJzGAEgAygLMhQuc2lyc2kuYWRtaW4udjIuVXNlchI3CgpwYWdpbmF0aW9uGAIgASgLMiMuc2lyc2kuY29tbW9uLnYxLlBhZ2luYXRpb25SZXNwb25zZSI2ChVNYW5hZ2VVc2VyUm9sZVJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIMCgRyb2xlGAIgASgJIikKFk1hbmFnZVVzZXJSb2xlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCJ8CgxOb3RpZmljYXRpb24SCgoCaWQYASABKAkSFAoMcmVjaXBpZW50X2lkGAIgASgJEg0KBXRpdGxlGAMgASgJEgwKBGJvZHkYBCABKAkSDAoEdHlwZRgFIAEoCRIPCgdzZW50X2F0GAYgASgDEg4KBnN0YXR1cxgHIAEoCSJoChhMaXN0Tm90aWZpY2F0aW9uc1JlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLnNpcnNpLmNvbW1vbi52MS5QYWdpbmF0aW9uUmVxdWVzdBIUCgxyZWNpcGllbnRfaWQYAiABKAkiiQEKGUxpc3ROb3RpZmljYXRpb25zUmVzcG9uc2USMwoNbm90aWZpY2F0aW9ucxgBIAMoCzIcLnNpcnNpLmFkbWluLnYyLk5vdGlmaWNhdGlvbhI3CgpwYWdpbmF0aW9uGAIgASgLMiMuc2lyc2kuY29tbW9uLnYxLlBhZ2luYXRpb25SZXNwb25zZSJrChdTZW5kTm90aWZpY2F0aW9uUmVxdWVzdBIUCgxyZWNpcGllbnRfaWQYASABKAkSDQoFdGl0bGUYAiABKAkSDAoEYm9keRgDIAEoCRIMCgR0eXBlGAQgASgJEg8KB2NoYW5uZWwYBSABKAkiMwoYU2VuZE5vdGlmaWNhdGlvblJlc3BvbnNlEhcKD25vdGlmaWNhdGlvbl9pZBgBIAEoCSJbCg5TeXN0ZW1TZXR0aW5ncxIYChBtYWludGVuYW5jZV9tb2RlGAEgASgIEhUKDWFjdGl2ZV9yZWdpb24YAiABKAkSGAoQc2lyc2lfbXVsdGlwbGllchgDIAEoASIUChJHZXRTZXR0aW5nc1JlcXVlc3QiRwoTR2V0U2V0dGluZ3NSZXNwb25zZRIwCghzZXR0aW5ncxgBIAEoCzIeLnNpcnNpLmFkbWluLnYyLlN5c3RlbVNldHRpbmdzIkkKFVVwZGF0ZVNldHRpbmdzUmVxdWVzdBIwCghzZXR0aW5ncxgBIAEoCzIeLnNpcnNpLmFkbWluLnYyLlN5c3RlbVNldHRpbmdzIikKFlVwZGF0ZVNldHRpbmdzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCJlChVMaXN0QXVkaXRUcmFpbFJlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLnNpcnNpLmNvbW1vbi52MS5QYWdpbmF0aW9uUmVxdWVzdBIUCgxmaWx0ZXJfbGV2ZWwYAiABKAkifgoWTGlzdEF1ZGl0VHJhaWxSZXNwb25zZRIrCgRsb2dzGAEgAygLMh0uc2lyc2kuYWRtaW4udjIuQXVkaXRMb2dFbnRyeRI3CgpwYWdpbmF0aW9uGAIgASgLMiMuc2lyc2kuY29tbW9uLnYxLlBhZ2luYXRpb25SZXNwb25zZSJ+Cg1BdWRpdExvZ0VudHJ5EgoKAmlkGAEgASgJEhEKCXRpbWVzdGFtcBgCIAEoAxINCgVsZXZlbBgDIAEoCRIOCgZzb3VyY2UYBCABKAkSDwoHbWVzc2FnZRgFIAEoCRIMCgR1c2VyGAYgASgJEhAKCG1ldGFkYXRhGAcgASgJIk8KFEdldERldk1ldHJpY3NSZXF1ZXN0EhEKCXRlbmFudF9pZBgBIAEoCRISCgpzdGFydF90aW1lGAIgASgDEhAKCGVuZF90aW1lGAMgASgDIr8BCgpEZXZNZXRyaWNzEhAKCHZlbG9jaXR5GAEgASgBEhMKC29wZW5faXNzdWVzGAIgASgFEhUKDWNsb3NlZF9pc3N1ZXMYAyABKAUSFwoPYWN0aXZlX3Nlc3Npb25zGAQgASgFEikKCWJ1cm5fcmF0ZRgFIAEoCzIWLnNpcnNpLmNvbW1vbi52MS5Nb25leRIvCghhY3Rpdml0eRgGIAMoCzIdLnNpcnNpLmFkbWluLnYyLkRhaWx5QWN0aXZpdHkiRwoNRGFpbHlBY3Rpdml0eRIMCgRkYXRlGAEgASgJEg8KB2NvbW1pdHMYAiABKAUSFwoPc2Vzc2lvbl9taW51dGVzGAMgASgFIioKFlN5bmNHaXRIdWJTdGF0c1JlcXVlc3QSEAoIcmVwb191cmwYASABKAkiQAoXU3luY0dpdEh1YlN0YXRzUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIUCgxzeW5jZWRfY291bnQYAiABKAUiGgoYR2V0U3lzdGVtT3ZlcnZpZXdSZXF1ZXN0IowCCg5TeXN0ZW1PdmVydmlldxIVCg10b3RhbF90ZW5hbnRzGAEgASgFEhcKD3RvdGFsX2NvbnRyYWN0cxgCIAEoBRIrCgtyZXZlbnVlX210ZBgDIAEoCzIWLnNpcnNpLmNvbW1vbi52MS5Nb25leRIYChBzaXJzaV9tdWx0aXBsaWVyGAQgASgBEhgKEG1haW50ZW5hbmNlX21vZGUYBSABKAgSMwoNcmVjZW50X2FsZXJ0cxgGIAMoCzIcLnNpcnNpLmFkbWluLnYyLk5vdGlmaWNhdGlvbhI0Cg1hY3Rpdml0eV9mZWVkGAcgAygLMh0uc2lyc2kuYWRtaW4udjIuQXVkaXRMb2dFbnRyeTK0CwoMQWRtaW5TZXJ2aWNlEl0KEUdldFN5c3RlbU92ZXJ2aWV3Eiguc2lyc2kuYWRtaW4udjIuR2V0U3lzdGVtT3ZlcnZpZXdSZXF1ZXN0Gh4uc2lyc2kuYWRtaW4udjIuU3lzdGVtT3ZlcnZpZXcSXAoNTG9nRGV2U2Vzc2lvbhIkLnNpcnNpLmFkbWluLnYyLkxvZ0RldlNlc3Npb25SZXF1ZXN0GiUuc2lyc2kuYWRtaW4udjIuTG9nRGV2U2Vzc2lvblJlc3BvbnNlElEKDUdldERldk1ldHJpY3MSJC5zaXJzaS5hZG1pbi52Mi5HZXREZXZNZXRyaWNzUmVxdWVzdBoaLnNpcnNpLmFkbWluLnYyLkRldk1ldHJpY3MSYgoPU3luY0dpdEh1YlN0YXRzEiYuc2lyc2kuYWRtaW4udjIuU3luY0dpdEh1YlN0YXRzUmVxdWVzdBonLnNpcnNpLmFkbWluLnYyLlN5bmNHaXRIdWJTdGF0c1Jlc3BvbnNlElYKC0xpc3RFc3RhdGVzEiIuc2lyc2kuYWRtaW4udjIuTGlzdEVzdGF0ZXNSZXF1ZXN0GiMuc2lyc2kuYWRtaW4udjIuTGlzdEVzdGF0ZXNSZXNwb25zZRJFCglHZXRFc3RhdGUSIC5zaXJzaS5hZG1pbi52Mi5HZXRFc3RhdGVSZXF1ZXN0GhYuc2lyc2kuYWRtaW4udjIuRXN0YXRlEksKDENyZWF0ZUVzdGF0ZRIjLnNpcnNpLmFkbWluLnYyLkNyZWF0ZUVzdGF0ZVJlcXVlc3QaFi5zaXJzaS5hZG1pbi52Mi5Fc3RhdGUSSwoMVXBkYXRlRXN0YXRlEiMuc2lyc2kuYWRtaW4udjIuVXBkYXRlRXN0YXRlUmVxdWVzdBoWLnNpcnNpLmFkbWluLnYyLkVzdGF0ZRJZCgxEZWxldGVFc3RhdGUSIy5zaXJzaS5hZG1pbi52Mi5EZWxldGVFc3RhdGVSZXF1ZXN0GiQuc2lyc2kuYWRtaW4udjIuRGVsZXRlRXN0YXRlUmVzcG9uc2USUAoJTGlzdFVzZXJzEiAuc2lyc2kuYWRtaW4udjIuTGlzdFVzZXJzUmVxdWVzdBohLnNpcnNpLmFkbWluLnYyLkxpc3RVc2Vyc1Jlc3BvbnNlEl8KDk1hbmFnZVVzZXJSb2xlEiUuc2lyc2kuYWRtaW4udjIuTWFuYWdlVXNlclJvbGVSZXF1ZXN0GiYuc2lyc2kuYWRtaW4udjIuTWFuYWdlVXNlclJvbGVSZXNwb25zZRJoChFMaXN0Tm90aWZpY2F0aW9ucxIoLnNpcnNpLmFkbWluLnYyLkxpc3ROb3RpZmljYXRpb25zUmVxdWVzdBopLnNpcnNpLmFkbWluLnYyLkxpc3ROb3RpZmljYXRpb25zUmVzcG9uc2USZQoQU2VuZE5vdGlmaWNhdGlvbhInLnNpcnNpLmFkbWluLnYyLlNlbmROb3RpZmljYXRpb25SZXF1ZXN0Giguc2lyc2kuYWRtaW4udjIuU2VuZE5vdGlmaWNhdGlvblJlc3BvbnNlElYKC0dldFNldHRpbmdzEiIuc2lyc2kuYWRtaW4udjIuR2V0U2V0dGluZ3NSZXF1ZXN0GiMuc2lyc2kuYWRtaW4udjIuR2V0U2V0dGluZ3NSZXNwb25zZRJfCg5VcGRhdGVTZXR0aW5ncxIlLnNpcnNpLmFkbWluLnYyLlVwZGF0ZVNldHRpbmdzUmVxdWVzdBomLnNpcnNpLmFkbWluLnYyLlVwZGF0ZVNldHRpbmdzUmVzcG9uc2USXwoOTGlzdEF1ZGl0VHJhaWwSJS5zaXJzaS5hZG1pbi52Mi5MaXN0QXVkaXRUcmFpbFJlcXVlc3QaJi5zaXJzaS5hZG1pbi52Mi5MaXN0QXVkaXRUcmFpbFJlc3BvbnNlQrsBChJjb20uc2lyc2kuYWRtaW4udjJCEUFkbWluU2VydmljZVByb3RvUAFaOGdpdGh1Yi5jb20vc2lyc2ltYXN0ZXIvc2lyc2ktbmV4dXMvZ2VuL2dvL3NpcnNpL2FkbWluL3YyogIDU0FYqgIOU2lyc2kuQWRtaW4uVjLKAg5TaXJzaVxBZG1pblxWMuICGlNpcnNpXEFkbWluXFYyXEdQQk1ldGFkYXRh6gIQU2lyc2k6OkFkbWluOjpWMmIGcHJvdG8z", [file_sirsi_common_v1_common, file_sirsi_admin_v2_estate]);
 
 /**
  * @generated from message sirsi.admin.v2.LogDevSessionRequest
@@ -123,7 +45,7 @@ export type LogDevSessionRequest = Message<"sirsi.admin.v2.LogDevSessionRequest"
  * Use `create(LogDevSessionRequestSchema)` to create a new message.
  */
 export const LogDevSessionRequestSchema: GenMessage<LogDevSessionRequest> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 3);
+  messageDesc(file_sirsi_admin_v2_admin_service, 0);
 
 /**
  * @generated from message sirsi.admin.v2.LogDevSessionResponse
@@ -140,7 +62,7 @@ export type LogDevSessionResponse = Message<"sirsi.admin.v2.LogDevSessionRespons
  * Use `create(LogDevSessionResponseSchema)` to create a new message.
  */
 export const LogDevSessionResponseSchema: GenMessage<LogDevSessionResponse> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 4);
+  messageDesc(file_sirsi_admin_v2_admin_service, 1);
 
 /**
  * @generated from message sirsi.admin.v2.User
@@ -177,7 +99,7 @@ export type User = Message<"sirsi.admin.v2.User"> & {
  * Use `create(UserSchema)` to create a new message.
  */
 export const UserSchema: GenMessage<User> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 5);
+  messageDesc(file_sirsi_admin_v2_admin_service, 2);
 
 /**
  * @generated from message sirsi.admin.v2.ListUsersRequest
@@ -199,7 +121,7 @@ export type ListUsersRequest = Message<"sirsi.admin.v2.ListUsersRequest"> & {
  * Use `create(ListUsersRequestSchema)` to create a new message.
  */
 export const ListUsersRequestSchema: GenMessage<ListUsersRequest> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 6);
+  messageDesc(file_sirsi_admin_v2_admin_service, 3);
 
 /**
  * @generated from message sirsi.admin.v2.ListUsersResponse
@@ -221,7 +143,7 @@ export type ListUsersResponse = Message<"sirsi.admin.v2.ListUsersResponse"> & {
  * Use `create(ListUsersResponseSchema)` to create a new message.
  */
 export const ListUsersResponseSchema: GenMessage<ListUsersResponse> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 7);
+  messageDesc(file_sirsi_admin_v2_admin_service, 4);
 
 /**
  * @generated from message sirsi.admin.v2.ManageUserRoleRequest
@@ -243,7 +165,7 @@ export type ManageUserRoleRequest = Message<"sirsi.admin.v2.ManageUserRoleReques
  * Use `create(ManageUserRoleRequestSchema)` to create a new message.
  */
 export const ManageUserRoleRequestSchema: GenMessage<ManageUserRoleRequest> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 8);
+  messageDesc(file_sirsi_admin_v2_admin_service, 5);
 
 /**
  * @generated from message sirsi.admin.v2.ManageUserRoleResponse
@@ -260,7 +182,7 @@ export type ManageUserRoleResponse = Message<"sirsi.admin.v2.ManageUserRoleRespo
  * Use `create(ManageUserRoleResponseSchema)` to create a new message.
  */
 export const ManageUserRoleResponseSchema: GenMessage<ManageUserRoleResponse> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 9);
+  messageDesc(file_sirsi_admin_v2_admin_service, 6);
 
 /**
  * @generated from message sirsi.admin.v2.Notification
@@ -307,7 +229,7 @@ export type Notification = Message<"sirsi.admin.v2.Notification"> & {
  * Use `create(NotificationSchema)` to create a new message.
  */
 export const NotificationSchema: GenMessage<Notification> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 10);
+  messageDesc(file_sirsi_admin_v2_admin_service, 7);
 
 /**
  * @generated from message sirsi.admin.v2.ListNotificationsRequest
@@ -329,7 +251,7 @@ export type ListNotificationsRequest = Message<"sirsi.admin.v2.ListNotifications
  * Use `create(ListNotificationsRequestSchema)` to create a new message.
  */
 export const ListNotificationsRequestSchema: GenMessage<ListNotificationsRequest> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 11);
+  messageDesc(file_sirsi_admin_v2_admin_service, 8);
 
 /**
  * @generated from message sirsi.admin.v2.ListNotificationsResponse
@@ -351,7 +273,7 @@ export type ListNotificationsResponse = Message<"sirsi.admin.v2.ListNotification
  * Use `create(ListNotificationsResponseSchema)` to create a new message.
  */
 export const ListNotificationsResponseSchema: GenMessage<ListNotificationsResponse> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 12);
+  messageDesc(file_sirsi_admin_v2_admin_service, 9);
 
 /**
  * @generated from message sirsi.admin.v2.SendNotificationRequest
@@ -394,7 +316,7 @@ export type SendNotificationRequest = Message<"sirsi.admin.v2.SendNotificationRe
  * Use `create(SendNotificationRequestSchema)` to create a new message.
  */
 export const SendNotificationRequestSchema: GenMessage<SendNotificationRequest> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 13);
+  messageDesc(file_sirsi_admin_v2_admin_service, 10);
 
 /**
  * @generated from message sirsi.admin.v2.SendNotificationResponse
@@ -411,7 +333,7 @@ export type SendNotificationResponse = Message<"sirsi.admin.v2.SendNotificationR
  * Use `create(SendNotificationResponseSchema)` to create a new message.
  */
 export const SendNotificationResponseSchema: GenMessage<SendNotificationResponse> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 14);
+  messageDesc(file_sirsi_admin_v2_admin_service, 11);
 
 /**
  * @generated from message sirsi.admin.v2.SystemSettings
@@ -438,7 +360,7 @@ export type SystemSettings = Message<"sirsi.admin.v2.SystemSettings"> & {
  * Use `create(SystemSettingsSchema)` to create a new message.
  */
 export const SystemSettingsSchema: GenMessage<SystemSettings> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 15);
+  messageDesc(file_sirsi_admin_v2_admin_service, 12);
 
 /**
  * @generated from message sirsi.admin.v2.GetSettingsRequest
@@ -451,7 +373,7 @@ export type GetSettingsRequest = Message<"sirsi.admin.v2.GetSettingsRequest"> & 
  * Use `create(GetSettingsRequestSchema)` to create a new message.
  */
 export const GetSettingsRequestSchema: GenMessage<GetSettingsRequest> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 16);
+  messageDesc(file_sirsi_admin_v2_admin_service, 13);
 
 /**
  * @generated from message sirsi.admin.v2.GetSettingsResponse
@@ -468,7 +390,7 @@ export type GetSettingsResponse = Message<"sirsi.admin.v2.GetSettingsResponse"> 
  * Use `create(GetSettingsResponseSchema)` to create a new message.
  */
 export const GetSettingsResponseSchema: GenMessage<GetSettingsResponse> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 17);
+  messageDesc(file_sirsi_admin_v2_admin_service, 14);
 
 /**
  * @generated from message sirsi.admin.v2.UpdateSettingsRequest
@@ -485,7 +407,7 @@ export type UpdateSettingsRequest = Message<"sirsi.admin.v2.UpdateSettingsReques
  * Use `create(UpdateSettingsRequestSchema)` to create a new message.
  */
 export const UpdateSettingsRequestSchema: GenMessage<UpdateSettingsRequest> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 18);
+  messageDesc(file_sirsi_admin_v2_admin_service, 15);
 
 /**
  * @generated from message sirsi.admin.v2.UpdateSettingsResponse
@@ -502,7 +424,7 @@ export type UpdateSettingsResponse = Message<"sirsi.admin.v2.UpdateSettingsRespo
  * Use `create(UpdateSettingsResponseSchema)` to create a new message.
  */
 export const UpdateSettingsResponseSchema: GenMessage<UpdateSettingsResponse> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 19);
+  messageDesc(file_sirsi_admin_v2_admin_service, 16);
 
 /**
  * @generated from message sirsi.admin.v2.ListAuditTrailRequest
@@ -526,7 +448,7 @@ export type ListAuditTrailRequest = Message<"sirsi.admin.v2.ListAuditTrailReques
  * Use `create(ListAuditTrailRequestSchema)` to create a new message.
  */
 export const ListAuditTrailRequestSchema: GenMessage<ListAuditTrailRequest> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 20);
+  messageDesc(file_sirsi_admin_v2_admin_service, 17);
 
 /**
  * @generated from message sirsi.admin.v2.ListAuditTrailResponse
@@ -548,7 +470,7 @@ export type ListAuditTrailResponse = Message<"sirsi.admin.v2.ListAuditTrailRespo
  * Use `create(ListAuditTrailResponseSchema)` to create a new message.
  */
 export const ListAuditTrailResponseSchema: GenMessage<ListAuditTrailResponse> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 21);
+  messageDesc(file_sirsi_admin_v2_admin_service, 18);
 
 /**
  * @generated from message sirsi.admin.v2.AuditLogEntry
@@ -595,7 +517,7 @@ export type AuditLogEntry = Message<"sirsi.admin.v2.AuditLogEntry"> & {
  * Use `create(AuditLogEntrySchema)` to create a new message.
  */
 export const AuditLogEntrySchema: GenMessage<AuditLogEntry> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 22);
+  messageDesc(file_sirsi_admin_v2_admin_service, 19);
 
 /**
  * Development Intelligence Center messages
@@ -624,7 +546,7 @@ export type GetDevMetricsRequest = Message<"sirsi.admin.v2.GetDevMetricsRequest"
  * Use `create(GetDevMetricsRequestSchema)` to create a new message.
  */
 export const GetDevMetricsRequestSchema: GenMessage<GetDevMetricsRequest> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 23);
+  messageDesc(file_sirsi_admin_v2_admin_service, 20);
 
 /**
  * @generated from message sirsi.admin.v2.DevMetrics
@@ -666,7 +588,7 @@ export type DevMetrics = Message<"sirsi.admin.v2.DevMetrics"> & {
  * Use `create(DevMetricsSchema)` to create a new message.
  */
 export const DevMetricsSchema: GenMessage<DevMetrics> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 24);
+  messageDesc(file_sirsi_admin_v2_admin_service, 21);
 
 /**
  * @generated from message sirsi.admin.v2.DailyActivity
@@ -693,7 +615,7 @@ export type DailyActivity = Message<"sirsi.admin.v2.DailyActivity"> & {
  * Use `create(DailyActivitySchema)` to create a new message.
  */
 export const DailyActivitySchema: GenMessage<DailyActivity> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 25);
+  messageDesc(file_sirsi_admin_v2_admin_service, 22);
 
 /**
  * @generated from message sirsi.admin.v2.SyncGitHubStatsRequest
@@ -710,7 +632,7 @@ export type SyncGitHubStatsRequest = Message<"sirsi.admin.v2.SyncGitHubStatsRequ
  * Use `create(SyncGitHubStatsRequestSchema)` to create a new message.
  */
 export const SyncGitHubStatsRequestSchema: GenMessage<SyncGitHubStatsRequest> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 26);
+  messageDesc(file_sirsi_admin_v2_admin_service, 23);
 
 /**
  * @generated from message sirsi.admin.v2.SyncGitHubStatsResponse
@@ -732,7 +654,7 @@ export type SyncGitHubStatsResponse = Message<"sirsi.admin.v2.SyncGitHubStatsRes
  * Use `create(SyncGitHubStatsResponseSchema)` to create a new message.
  */
 export const SyncGitHubStatsResponseSchema: GenMessage<SyncGitHubStatsResponse> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 27);
+  messageDesc(file_sirsi_admin_v2_admin_service, 24);
 
 /**
  * @generated from message sirsi.admin.v2.GetSystemOverviewRequest
@@ -745,7 +667,7 @@ export type GetSystemOverviewRequest = Message<"sirsi.admin.v2.GetSystemOverview
  * Use `create(GetSystemOverviewRequestSchema)` to create a new message.
  */
 export const GetSystemOverviewRequestSchema: GenMessage<GetSystemOverviewRequest> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 28);
+  messageDesc(file_sirsi_admin_v2_admin_service, 25);
 
 /**
  * @generated from message sirsi.admin.v2.SystemOverview
@@ -792,7 +714,7 @@ export type SystemOverview = Message<"sirsi.admin.v2.SystemOverview"> & {
  * Use `create(SystemOverviewSchema)` to create a new message.
  */
 export const SystemOverviewSchema: GenMessage<SystemOverview> = /*@__PURE__*/
-  messageDesc(file_sirsi_admin_v2_admin_service, 29);
+  messageDesc(file_sirsi_admin_v2_admin_service, 26);
 
 /**
  * @generated from service sirsi.admin.v2.AdminService
@@ -937,16 +859,6 @@ export const AdminService: GenService<{
     methodKind: "unary";
     input: typeof ListAuditTrailRequestSchema;
     output: typeof ListAuditTrailResponseSchema;
-  },
-  /**
-   * Catalog Management
-   *
-   * @generated from rpc sirsi.admin.v2.AdminService.SyncCatalog
-   */
-  syncCatalog: {
-    methodKind: "unary";
-    input: typeof SyncCatalogRequestSchema;
-    output: typeof SyncCatalogResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_sirsi_admin_v2_admin_service, 0);

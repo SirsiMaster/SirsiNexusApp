@@ -17,17 +17,7 @@ export const useContracts = (projectId = '', userEmail = '', pageSize = 50) => {
     });
 };
 
-export const useEstates = (pageSize = 10, pageToken = '') => {
-    return useQuery({
-        queryKey: ['estates', pageSize, pageToken],
-        queryFn: async () => {
-            const res = await adminClient.listEstates({
-                pagination: { pageSize, pageToken }
-            });
-            return res;
-        }
-    });
-};
+
 
 export const useUsers = (pageSize = 10, pageToken = '') => {
     return useQuery({
@@ -129,23 +119,3 @@ export const useAuditTrail = (filterLevel = 'ALL', pageSize = 50, pageToken = ''
     });
 };
 
-export const useSyncCatalog = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: async (items: { id: string, name: string, description: string, amount: number, recurring: boolean }[]) => {
-            const res = await adminClient.syncCatalog({
-                items: items.map(item => ({
-                    id: item.id,
-                    name: item.name,
-                    description: item.description,
-                    amount: BigInt(item.amount),
-                    recurring: item.recurring
-                }))
-            });
-            return res;
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['settings'] });
-        }
-    });
-};

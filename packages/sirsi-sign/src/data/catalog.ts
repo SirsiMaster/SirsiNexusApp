@@ -1,5 +1,6 @@
-// FinalWishes Product Catalog
-// This is the single source of truth for all products and pricing
+// Sirsi Universal Offerings Engine — Seed Catalog
+// DEPRECATED: This static catalog is preserved as seed data for the CatalogService backend.
+// New products/bundles should be created via the CatalogService gRPC API (catalog.proto).
 // Ported from the SIRSI Universal Offerings Engine (catalog-data.js)
 // CRITICAL: PER GEMINI.MD RULE 12, all pricing must be dynamic. No hardcoded
 // dollar amounts should exist in the UI or templates outside of this catalog.

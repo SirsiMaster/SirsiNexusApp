@@ -81,9 +81,6 @@ const (
 	// AdminServiceListAuditTrailProcedure is the fully-qualified name of the AdminService's
 	// ListAuditTrail RPC.
 	AdminServiceListAuditTrailProcedure = "/sirsi.admin.v2.AdminService/ListAuditTrail"
-	// AdminServiceSyncCatalogProcedure is the fully-qualified name of the AdminService's SyncCatalog
-	// RPC.
-	AdminServiceSyncCatalogProcedure = "/sirsi.admin.v2.AdminService/SyncCatalog"
 )
 
 // AdminServiceClient is a client for the sirsi.admin.v2.AdminService service.
@@ -110,8 +107,6 @@ type AdminServiceClient interface {
 	UpdateSettings(context.Context, *connect.Request[v2.UpdateSettingsRequest]) (*connect.Response[v2.UpdateSettingsResponse], error)
 	// Audit & Logging
 	ListAuditTrail(context.Context, *connect.Request[v2.ListAuditTrailRequest]) (*connect.Response[v2.ListAuditTrailResponse], error)
-	// Catalog Management
-	SyncCatalog(context.Context, *connect.Request[v2.SyncCatalogRequest]) (*connect.Response[v2.SyncCatalogResponse], error)
 }
 
 // NewAdminServiceClient constructs a client for the sirsi.admin.v2.AdminService service. By
@@ -221,12 +216,6 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(adminServiceMethods.ByName("ListAuditTrail")),
 			connect.WithClientOptions(opts...),
 		),
-		syncCatalog: connect.NewClient[v2.SyncCatalogRequest, v2.SyncCatalogResponse](
-			httpClient,
-			baseURL+AdminServiceSyncCatalogProcedure,
-			connect.WithSchema(adminServiceMethods.ByName("SyncCatalog")),
-			connect.WithClientOptions(opts...),
-		),
 	}
 }
 
@@ -248,7 +237,6 @@ type adminServiceClient struct {
 	getSettings       *connect.Client[v2.GetSettingsRequest, v2.GetSettingsResponse]
 	updateSettings    *connect.Client[v2.UpdateSettingsRequest, v2.UpdateSettingsResponse]
 	listAuditTrail    *connect.Client[v2.ListAuditTrailRequest, v2.ListAuditTrailResponse]
-	syncCatalog       *connect.Client[v2.SyncCatalogRequest, v2.SyncCatalogResponse]
 }
 
 // GetSystemOverview calls sirsi.admin.v2.AdminService.GetSystemOverview.
@@ -331,11 +319,6 @@ func (c *adminServiceClient) ListAuditTrail(ctx context.Context, req *connect.Re
 	return c.listAuditTrail.CallUnary(ctx, req)
 }
 
-// SyncCatalog calls sirsi.admin.v2.AdminService.SyncCatalog.
-func (c *adminServiceClient) SyncCatalog(ctx context.Context, req *connect.Request[v2.SyncCatalogRequest]) (*connect.Response[v2.SyncCatalogResponse], error) {
-	return c.syncCatalog.CallUnary(ctx, req)
-}
-
 // AdminServiceHandler is an implementation of the sirsi.admin.v2.AdminService service.
 type AdminServiceHandler interface {
 	// System Monitoring & Stats
@@ -360,8 +343,6 @@ type AdminServiceHandler interface {
 	UpdateSettings(context.Context, *connect.Request[v2.UpdateSettingsRequest]) (*connect.Response[v2.UpdateSettingsResponse], error)
 	// Audit & Logging
 	ListAuditTrail(context.Context, *connect.Request[v2.ListAuditTrailRequest]) (*connect.Response[v2.ListAuditTrailResponse], error)
-	// Catalog Management
-	SyncCatalog(context.Context, *connect.Request[v2.SyncCatalogRequest]) (*connect.Response[v2.SyncCatalogResponse], error)
 }
 
 // NewAdminServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -467,12 +448,6 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(adminServiceMethods.ByName("ListAuditTrail")),
 		connect.WithHandlerOptions(opts...),
 	)
-	adminServiceSyncCatalogHandler := connect.NewUnaryHandler(
-		AdminServiceSyncCatalogProcedure,
-		svc.SyncCatalog,
-		connect.WithSchema(adminServiceMethods.ByName("SyncCatalog")),
-		connect.WithHandlerOptions(opts...),
-	)
 	return "/sirsi.admin.v2.AdminService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AdminServiceGetSystemOverviewProcedure:
@@ -507,8 +482,6 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 			adminServiceUpdateSettingsHandler.ServeHTTP(w, r)
 		case AdminServiceListAuditTrailProcedure:
 			adminServiceListAuditTrailHandler.ServeHTTP(w, r)
-		case AdminServiceSyncCatalogProcedure:
-			adminServiceSyncCatalogHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -580,8 +553,4 @@ func (UnimplementedAdminServiceHandler) UpdateSettings(context.Context, *connect
 
 func (UnimplementedAdminServiceHandler) ListAuditTrail(context.Context, *connect.Request[v2.ListAuditTrailRequest]) (*connect.Response[v2.ListAuditTrailResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.AdminService.ListAuditTrail is not implemented"))
-}
-
-func (UnimplementedAdminServiceHandler) SyncCatalog(context.Context, *connect.Request[v2.SyncCatalogRequest]) (*connect.Response[v2.SyncCatalogResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.AdminService.SyncCatalog is not implemented"))
 }

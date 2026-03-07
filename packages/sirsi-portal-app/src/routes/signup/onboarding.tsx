@@ -17,7 +17,7 @@ import { createRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { usePageMeta } from '../../hooks/usePageMeta'
 import { Route as rootRoute } from '../__root'
-import { getAllTiers, type PlanId, type SaaSTier } from '@/lib/tiers'
+import { getAllTiers, fetchDynamicTiers, type PlanId, type SaaSTier } from '@/lib/tiers'
 import { createAccount, provisionTenant, createCheckoutSession, getProvisioningStatus } from '@/lib/onboarding'
 
 export const Route = createRoute({
@@ -106,6 +106,12 @@ function OnboardingWizard() {
     const [provisioningTenantId, setProvisioningTenantId] = useState<string | null>(null)
     const provisioningStarted = useRef(false)
     const stateRestored = useRef(false)
+    const [dynamicTiers, setDynamicTiers] = useState<SaaSTier[]>(getAllTiers())
+
+    // Fetch dynamic tiers from CatalogService on mount
+    useEffect(() => {
+        fetchDynamicTiers().then(setDynamicTiers)
+    }, [])
 
     // Poll for status when in step 5
     useEffect(() => {
@@ -250,13 +256,17 @@ function OnboardingWizard() {
             const successUrl = `${window.location.origin}${window.location.pathname}?session_id={CHECKOUT_SESSION_ID}`
             const cancelUrl = `${window.location.origin}${window.location.pathname}`
 
+            // Find the dynamic tier to get stripePriceId
+            const selectedTier = dynamicTiers.find(t => t.id === state.plan)
+
             const result = await createCheckoutSession(
                 firebaseUid || 'anonymous',
                 state.plan,
                 successUrl,
                 cancelUrl,
                 state.organization.companyName,
-                state.account.email
+                state.account.email,
+                selectedTier?.stripePriceId
             )
             setLoading(false)
 
@@ -364,7 +374,7 @@ function OnboardingWizard() {
                                 Select the tier that fits your needs. You can upgrade anytime.
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                {getAllTiers().map((tier: SaaSTier) => (
+                                {dynamicTiers.map((tier: SaaSTier) => (
                                     <button key={tier.id} onClick={() => updateField('plan', tier.id as any)}
                                         className={`text-left p-5 rounded-xl border-2 transition-all ${state.plan === tier.id
                                             ? 'border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20 shadow-lg shadow-emerald-500/10'

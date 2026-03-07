@@ -31,10 +31,19 @@ var (
 
 type AdminServer struct{}
 type HypervisorServer struct{}
+type CatalogServer struct {
+	v2connect.UnimplementedCatalogServiceHandler
+}
 type TenantServer struct {
 	v2connect.UnimplementedTenantServiceHandler
 	ghClient *github.Client
 }
+
+// ── In-memory catalog store (precursor to Cloud SQL) ──
+var (
+	catalogProducts = make(map[string]*adminv2.CatalogProduct)
+	catalogBundles  = make(map[string]*adminv2.CatalogBundle)
+)
 
 const settingsFile = "settings.json"
 
@@ -445,104 +454,549 @@ func (s *AdminServer) ListAuditTrail(
 	return res, nil
 }
 
-func (s *AdminServer) SyncCatalog(
-	ctx context.Context,
-	req *connect.Request[adminv2.SyncCatalogRequest],
-) (*connect.Response[adminv2.SyncCatalogResponse], error) {
-	// 1. Initial Auth Check (Administrative Privilege)
-	// In production, checking for 'admin' role in context.
+// ═══════════════════════════════════════════════════════════════════
+// CatalogServer — Unified Product & Bundle Management
+// Every mutation syncs to Stripe automatically.
+// ═══════════════════════════════════════════════════════════════════
 
+func ensureStripeKey() bool {
 	stripe.Key = os.Getenv("STRIPE_SECRET_KEY")
-	if stripe.Key == "" {
-		// Fallback for development if secret not in env
-		log.Println("⚠️ STRIPE_SECRET_KEY not set, using mock response")
-		return connect.NewResponse(&adminv2.SyncCatalogResponse{
-			Success: true,
-			Logs:    []string{"⚠️ No Stripe key found. Running in simulation mode.", "Mocked success for " + fmt.Sprint(len(req.Msg.Items)) + " items."},
-		}), nil
+	return stripe.Key != ""
+}
+
+// generateCatalogID creates a deterministic ID for catalog items
+func generateCatalogID(tenantID, name string) string {
+	slug := strings.ToLower(strings.ReplaceAll(name, " ", "-"))
+	// Remove non-alphanumeric characters except hyphens
+	var clean []byte
+	for _, c := range []byte(slug) {
+		if (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '-' {
+			clean = append(clean, c)
+		}
+	}
+	return tenantID + "_" + string(clean)
+}
+
+// syncProductToStripe creates or updates a Stripe product+price for a CatalogProduct
+func syncProductToStripe(p *adminv2.CatalogProduct) error {
+	if !ensureStripeKey() {
+		log.Println("⚠️ STRIPE_SECRET_KEY not set — skipping Stripe sync (dev mode)")
+		p.StripeProductId = "mock_prod_" + p.Id
+		p.StripePriceId = "mock_price_" + p.Id
+		return nil
 	}
 
-	var logs []string
-	for _, item := range req.Msg.Items {
-		// Search for existing product
-		params := &stripe.ProductSearchParams{}
-		params.Query = fmt.Sprintf("metadata['sirsi_id']:'%s'", item.Id)
-		iter := product.Search(params)
+	// Search for existing Stripe product by sirsi_id metadata
+	searchParams := &stripe.ProductSearchParams{}
+	searchParams.Query = fmt.Sprintf("metadata['sirsi_id']:'%s'", p.Id)
+	iter := product.Search(searchParams)
 
-		var stripeProd *stripe.Product
-		if iter.Next() {
-			stripeProd = iter.Product()
-			logs = append(logs, fmt.Sprintf("✅ [Product] %s matched: %s", item.Name, stripeProd.ID))
+	var stripeProd *stripe.Product
+	if iter.Next() {
+		stripeProd = iter.Product()
+		log.Printf("✅ [Catalog] Product matched in Stripe: %s → %s", p.Name, stripeProd.ID)
+		// Update product metadata if name/description changed
+		updated, err := product.Update(stripeProd.ID, &stripe.ProductParams{
+			Name:        stripe.String(p.Name),
+			Description: stripe.String(p.Description),
+		})
+		if err != nil {
+			log.Printf("⚠️ [Catalog] Failed to update Stripe product %s: %v", stripeProd.ID, err)
 		} else {
-			// Create product
-			newProd, err := product.New(&stripe.ProductParams{
-				Name:        stripe.String(item.Name),
-				Description: stripe.String(item.Description),
-				Metadata: map[string]string{
-					"sirsi_id":      item.Id,
-					"sirsi_managed": "true",
-					"type": func() string {
-						if item.Recurring {
-							return "saas_tier"
-						}
-						return "bundle"
-					}(),
-				},
-			})
-			if err != nil {
-				logs = append(logs, fmt.Sprintf("❌ [Product] Failed to create %s: %v", item.Name, err))
-				continue
-			}
-			stripeProd = newProd
-			logs = append(logs, fmt.Sprintf("🟢 [Product] Created %s: %s", item.Name, stripeProd.ID))
+			stripeProd = updated
 		}
-
-		// Sync Price
-		priceListParams := &stripe.PriceListParams{
-			Product: stripe.String(stripeProd.ID),
-			Active:  stripe.Bool(true),
+	} else {
+		// Create new product
+		categoryType := "addon"
+		if p.Recurring {
+			categoryType = "saas_tier"
+		} else if p.Category == "platform" {
+			categoryType = "bundle"
 		}
-		priceIter := price.List(priceListParams)
-
-		foundPrice := false
-		for priceIter.Next() {
-			p := priceIter.Price()
-			if p.UnitAmount == item.Amount {
-				if (item.Recurring && p.Recurring != nil && p.Recurring.Interval == stripe.PriceRecurringIntervalMonth) || (!item.Recurring && p.Recurring == nil) {
-					logs = append(logs, fmt.Sprintf("   ℹ️ [Price] %s price ($%d) already active: %s", item.Name, item.Amount/100, p.ID))
-					foundPrice = true
-					break
-				}
-			}
+		newProd, err := product.New(&stripe.ProductParams{
+			Name:        stripe.String(p.Name),
+			Description: stripe.String(p.Description),
+			Metadata: map[string]string{
+				"sirsi_id":      p.Id,
+				"sirsi_managed": "true",
+				"tenant_id":     p.TenantId,
+				"category":      p.Category,
+				"type":          categoryType,
+			},
+		})
+		if err != nil {
+			return fmt.Errorf("failed to create Stripe product: %w", err)
 		}
+		stripeProd = newProd
+		log.Printf("🟢 [Catalog] Created Stripe product: %s → %s", p.Name, stripeProd.ID)
+	}
+	p.StripeProductId = stripeProd.ID
 
-		if !foundPrice {
-			priceParams := &stripe.PriceParams{
-				Product:    stripe.String(stripeProd.ID),
-				UnitAmount: stripe.Int64(item.Amount),
-				Currency:   stripe.String(string(stripe.CurrencyUSD)),
-				Metadata: map[string]string{
-					"sirsi_id": item.Id,
-				},
-			}
-			if item.Recurring {
-				priceParams.Recurring = &stripe.PriceRecurringParams{
-					Interval: stripe.String(string(stripe.PriceRecurringIntervalMonth)),
-				}
-			}
-			newPrice, err := price.New(priceParams)
-			if err != nil {
-				logs = append(logs, fmt.Sprintf("   ❌ [Price] Failed to create: %v", err))
-			} else {
-				logs = append(logs, fmt.Sprintf("   💰 [Price] Created for %s: %s ($%d)", item.Name, newPrice.ID, item.Amount/100))
+	// Check if a matching price already exists
+	priceListParams := &stripe.PriceListParams{
+		Product: stripe.String(stripeProd.ID),
+		Active:  stripe.Bool(true),
+	}
+	priceIter := price.List(priceListParams)
+
+	var matchedPrice *stripe.Price
+	for priceIter.Next() {
+		cp := priceIter.Price()
+		if cp.UnitAmount == p.PriceCents {
+			isRecurringMatch := (p.Recurring && cp.Recurring != nil) || (!p.Recurring && cp.Recurring == nil)
+			if isRecurringMatch {
+				matchedPrice = cp
+				break
 			}
 		}
 	}
 
-	return connect.NewResponse(&adminv2.SyncCatalogResponse{
-		Success: true,
-		Logs:    logs,
+	if matchedPrice != nil {
+		p.StripePriceId = matchedPrice.ID
+		log.Printf("   ℹ️ [Price] Existing price matched: %s ($%d)", matchedPrice.ID, p.PriceCents/100)
+	} else {
+		// Create new price (Stripe prices are immutable — always create new)
+		priceParams := &stripe.PriceParams{
+			Product:    stripe.String(stripeProd.ID),
+			UnitAmount: stripe.Int64(p.PriceCents),
+			Currency:   stripe.String(string(stripe.CurrencyUSD)),
+			Metadata: map[string]string{
+				"sirsi_id":  p.Id,
+				"tenant_id": p.TenantId,
+			},
+		}
+		if p.Recurring {
+			interval := string(stripe.PriceRecurringIntervalMonth)
+			if p.Interval == "year" {
+				interval = string(stripe.PriceRecurringIntervalYear)
+			}
+			priceParams.Recurring = &stripe.PriceRecurringParams{
+				Interval: stripe.String(interval),
+			}
+		}
+		newPrice, err := price.New(priceParams)
+		if err != nil {
+			return fmt.Errorf("failed to create Stripe price: %w", err)
+		}
+		p.StripePriceId = newPrice.ID
+		log.Printf("   💰 [Price] Created: %s ($%d)", newPrice.ID, p.PriceCents/100)
+	}
+
+	return nil
+}
+
+// deactivateStripePrice sets a Stripe price to inactive
+func deactivateStripePrice(priceID string) error {
+	if !ensureStripeKey() || strings.HasPrefix(priceID, "mock_") {
+		return nil
+	}
+	_, err := price.Update(priceID, &stripe.PriceParams{
+		Active: stripe.Bool(false),
+	})
+	return err
+}
+
+func (s *CatalogServer) ListProducts(
+	ctx context.Context,
+	req *connect.Request[adminv2.ListProductsRequest],
+) (*connect.Response[adminv2.ListProductsResponse], error) {
+	tenantID := req.Msg.TenantId
+	var result []*adminv2.CatalogProduct
+	for _, p := range catalogProducts {
+		if !req.Msg.IncludeArchived && p.Archived {
+			continue
+		}
+		if tenantID != "" && p.TenantId != tenantID {
+			continue
+		}
+		if req.Msg.CategoryFilter != "" && p.Category != req.Msg.CategoryFilter {
+			continue
+		}
+		result = append(result, p)
+	}
+	return connect.NewResponse(&adminv2.ListProductsResponse{
+		Products: result,
+		Pagination: &commonv1.PaginationResponse{
+			TotalCount: int32(len(result)),
+		},
 	}), nil
+}
+
+func (s *CatalogServer) GetProduct(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetProductRequest],
+) (*connect.Response[adminv2.CatalogProduct], error) {
+	p, ok := catalogProducts[req.Msg.Id]
+	if !ok {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("product %s not found", req.Msg.Id))
+	}
+	return connect.NewResponse(p), nil
+}
+
+func (s *CatalogServer) CreateProduct(
+	ctx context.Context,
+	req *connect.Request[adminv2.CreateProductRequest],
+) (*connect.Response[adminv2.CatalogProduct], error) {
+	now := time.Now().UnixMilli()
+	tenantID := req.Msg.TenantId
+	if tenantID == "" {
+		tenantID = "sirsi"
+	}
+	id := generateCatalogID(tenantID, req.Msg.Name)
+
+	p := &adminv2.CatalogProduct{
+		Id:                   id,
+		TenantId:             tenantID,
+		Name:                 req.Msg.Name,
+		ShortDescription:     req.Msg.ShortDescription,
+		Description:          req.Msg.Description,
+		Category:             req.Msg.Category,
+		PriceCents:           req.Msg.PriceCents,
+		StandalonePriceCents: req.Msg.StandalonePriceCents,
+		Hours:                req.Msg.Hours,
+		TimelineWeeks:        req.Msg.TimelineWeeks,
+		TimelineUnit:         req.Msg.TimelineUnit,
+		Recurring:            req.Msg.Recurring,
+		Interval:             req.Msg.Interval,
+		Features:             req.Msg.Features,
+		DetailedScope:        req.Msg.DetailedScope,
+		CreatedAt:            now,
+		UpdatedAt:            now,
+	}
+
+	// Sync to Stripe
+	if err := syncProductToStripe(p); err != nil {
+		log.Printf("⚠️ [Catalog] Stripe sync failed for %s: %v (product saved locally)", p.Name, err)
+	}
+
+	catalogProducts[id] = p
+	saveCatalogStore()
+	log.Printf("🟢 [Catalog] Created product: %s (%s) — Stripe: %s", p.Name, p.Id, p.StripeProductId)
+	return connect.NewResponse(p), nil
+}
+
+func (s *CatalogServer) UpdateProduct(
+	ctx context.Context,
+	req *connect.Request[adminv2.UpdateProductRequest],
+) (*connect.Response[adminv2.CatalogProduct], error) {
+	existing, ok := catalogProducts[req.Msg.Id]
+	if !ok {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("product %s not found", req.Msg.Id))
+	}
+
+	updated := req.Msg.Product
+	if updated == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("product field is required"))
+	}
+
+	oldPriceCents := existing.PriceCents
+	oldPriceID := existing.StripePriceId
+
+	// Merge fields
+	if updated.Name != "" {
+		existing.Name = updated.Name
+	}
+	if updated.ShortDescription != "" {
+		existing.ShortDescription = updated.ShortDescription
+	}
+	if updated.Description != "" {
+		existing.Description = updated.Description
+	}
+	if updated.Category != "" {
+		existing.Category = updated.Category
+	}
+	if updated.PriceCents != 0 {
+		existing.PriceCents = updated.PriceCents
+	}
+	if updated.StandalonePriceCents != 0 {
+		existing.StandalonePriceCents = updated.StandalonePriceCents
+	}
+	if updated.Hours != 0 {
+		existing.Hours = updated.Hours
+	}
+	if updated.TimelineWeeks != 0 {
+		existing.TimelineWeeks = updated.TimelineWeeks
+	}
+	if updated.TimelineUnit != "" {
+		existing.TimelineUnit = updated.TimelineUnit
+	}
+	if len(updated.Features) > 0 {
+		existing.Features = updated.Features
+	}
+	if len(updated.DetailedScope) > 0 {
+		existing.DetailedScope = updated.DetailedScope
+	}
+	existing.Recurring = updated.Recurring
+	if updated.Interval != "" {
+		existing.Interval = updated.Interval
+	}
+	existing.UpdatedAt = time.Now().UnixMilli()
+
+	// If price changed, archive old Stripe price and create new one
+	if existing.PriceCents != oldPriceCents && oldPriceID != "" {
+		log.Printf("   📦 [Price] Archiving old price %s (amount changed: $%d → $%d)", oldPriceID, oldPriceCents/100, existing.PriceCents/100)
+		if err := deactivateStripePrice(oldPriceID); err != nil {
+			log.Printf("   ⚠️ Failed to deactivate old price: %v", err)
+		}
+	}
+
+	// Re-sync to Stripe (will create new price if amount changed, or update product metadata)
+	if err := syncProductToStripe(existing); err != nil {
+		log.Printf("⚠️ [Catalog] Stripe sync failed for %s: %v", existing.Name, err)
+	}
+
+	catalogProducts[req.Msg.Id] = existing
+	saveCatalogStore()
+	log.Printf("✏️ [Catalog] Updated product: %s", existing.Name)
+	return connect.NewResponse(existing), nil
+}
+
+func (s *CatalogServer) ArchiveProduct(
+	ctx context.Context,
+	req *connect.Request[adminv2.ArchiveProductRequest],
+) (*connect.Response[adminv2.ArchiveResponse], error) {
+	p, ok := catalogProducts[req.Msg.Id]
+	if !ok {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("product %s not found", req.Msg.Id))
+	}
+
+	p.Archived = true
+	p.UpdatedAt = time.Now().UnixMilli()
+
+	// Deactivate Stripe price
+	if p.StripePriceId != "" {
+		if err := deactivateStripePrice(p.StripePriceId); err != nil {
+			log.Printf("⚠️ [Catalog] Failed to deactivate Stripe price for %s: %v", p.Name, err)
+		} else {
+			log.Printf("🗄️ [Catalog] Deactivated Stripe price for %s: %s", p.Name, p.StripePriceId)
+		}
+	}
+
+	saveCatalogStore()
+	return connect.NewResponse(&adminv2.ArchiveResponse{
+		Success: true,
+		Message: fmt.Sprintf("Product %s archived and Stripe price deactivated", p.Name),
+	}), nil
+}
+
+func (s *CatalogServer) RecoverProduct(
+	ctx context.Context,
+	req *connect.Request[adminv2.RecoverProductRequest],
+) (*connect.Response[adminv2.CatalogProduct], error) {
+	p, ok := catalogProducts[req.Msg.Id]
+	if !ok {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("product %s not found", req.Msg.Id))
+	}
+
+	p.Archived = false
+	p.UpdatedAt = time.Now().UnixMilli()
+
+	// Re-sync to Stripe (creates a new active price)
+	if err := syncProductToStripe(p); err != nil {
+		log.Printf("⚠️ [Catalog] Stripe re-sync failed for recovered product %s: %v", p.Name, err)
+	}
+
+	saveCatalogStore()
+	log.Printf("♻️ [Catalog] Recovered product: %s", p.Name)
+	return connect.NewResponse(p), nil
+}
+
+// ── Bundle CRUD ───────────────────────────────────────────────────
+
+func (s *CatalogServer) ListBundles(
+	ctx context.Context,
+	req *connect.Request[adminv2.ListBundlesRequest],
+) (*connect.Response[adminv2.ListBundlesResponse], error) {
+	tenantID := req.Msg.TenantId
+	var result []*adminv2.CatalogBundle
+	for _, b := range catalogBundles {
+		if !req.Msg.IncludeArchived && b.Archived {
+			continue
+		}
+		if tenantID != "" && b.TenantId != tenantID {
+			continue
+		}
+		result = append(result, b)
+	}
+	return connect.NewResponse(&adminv2.ListBundlesResponse{
+		Bundles: result,
+		Pagination: &commonv1.PaginationResponse{
+			TotalCount: int32(len(result)),
+		},
+	}), nil
+}
+
+func (s *CatalogServer) GetBundle(
+	ctx context.Context,
+	req *connect.Request[adminv2.GetBundleRequest],
+) (*connect.Response[adminv2.CatalogBundle], error) {
+	b, ok := catalogBundles[req.Msg.Id]
+	if !ok {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("bundle %s not found", req.Msg.Id))
+	}
+	return connect.NewResponse(b), nil
+}
+
+func (s *CatalogServer) CreateBundle(
+	ctx context.Context,
+	req *connect.Request[adminv2.CreateBundleRequest],
+) (*connect.Response[adminv2.CatalogBundle], error) {
+	now := time.Now().UnixMilli()
+	tenantID := req.Msg.TenantId
+	if tenantID == "" {
+		tenantID = "sirsi"
+	}
+	id := generateCatalogID(tenantID, req.Msg.Name)
+
+	b := &adminv2.CatalogBundle{
+		Id:                 id,
+		TenantId:           tenantID,
+		Name:               req.Msg.Name,
+		ShortDescription:   req.Msg.ShortDescription,
+		Description:        req.Msg.Description,
+		PriceCents:         req.Msg.PriceCents,
+		Hours:              req.Msg.Hours,
+		TimelineWeeks:      req.Msg.TimelineWeeks,
+		TimelineUnit:       req.Msg.TimelineUnit,
+		AddonDiscountPct:   req.Msg.AddonDiscountPct,
+		IncludedProductIds: req.Msg.IncludedProductIds,
+		CreatedAt:          now,
+		UpdatedAt:          now,
+	}
+
+	catalogBundles[id] = b
+	saveCatalogStore()
+	log.Printf("🟢 [Catalog] Created bundle: %s (%s)", b.Name, b.Id)
+	return connect.NewResponse(b), nil
+}
+
+func (s *CatalogServer) UpdateBundle(
+	ctx context.Context,
+	req *connect.Request[adminv2.UpdateBundleRequest],
+) (*connect.Response[adminv2.CatalogBundle], error) {
+	existing, ok := catalogBundles[req.Msg.Id]
+	if !ok {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("bundle %s not found", req.Msg.Id))
+	}
+
+	updated := req.Msg.Bundle
+	if updated == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("bundle field is required"))
+	}
+
+	if updated.Name != "" {
+		existing.Name = updated.Name
+	}
+	if updated.ShortDescription != "" {
+		existing.ShortDescription = updated.ShortDescription
+	}
+	if updated.Description != "" {
+		existing.Description = updated.Description
+	}
+	if updated.PriceCents != 0 {
+		existing.PriceCents = updated.PriceCents
+	}
+	if updated.Hours != 0 {
+		existing.Hours = updated.Hours
+	}
+	if updated.TimelineWeeks != 0 {
+		existing.TimelineWeeks = updated.TimelineWeeks
+	}
+	if updated.TimelineUnit != "" {
+		existing.TimelineUnit = updated.TimelineUnit
+	}
+	if updated.AddonDiscountPct != 0 {
+		existing.AddonDiscountPct = updated.AddonDiscountPct
+	}
+	if len(updated.IncludedProductIds) > 0 {
+		existing.IncludedProductIds = updated.IncludedProductIds
+	}
+	existing.UpdatedAt = time.Now().UnixMilli()
+
+	catalogBundles[req.Msg.Id] = existing
+	saveCatalogStore()
+	log.Printf("✏️ [Catalog] Updated bundle: %s", existing.Name)
+	return connect.NewResponse(existing), nil
+}
+
+func (s *CatalogServer) ArchiveBundle(
+	ctx context.Context,
+	req *connect.Request[adminv2.ArchiveBundleRequest],
+) (*connect.Response[adminv2.ArchiveResponse], error) {
+	b, ok := catalogBundles[req.Msg.Id]
+	if !ok {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("bundle %s not found", req.Msg.Id))
+	}
+	b.Archived = true
+	b.UpdatedAt = time.Now().UnixMilli()
+	saveCatalogStore()
+	return connect.NewResponse(&adminv2.ArchiveResponse{
+		Success: true,
+		Message: fmt.Sprintf("Bundle %s archived", b.Name),
+	}), nil
+}
+
+func (s *CatalogServer) RecoverBundle(
+	ctx context.Context,
+	req *connect.Request[adminv2.RecoverBundleRequest],
+) (*connect.Response[adminv2.CatalogBundle], error) {
+	b, ok := catalogBundles[req.Msg.Id]
+	if !ok {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("bundle %s not found", req.Msg.Id))
+	}
+	b.Archived = false
+	b.UpdatedAt = time.Now().UnixMilli()
+	saveCatalogStore()
+	log.Printf("♻️ [Catalog] Recovered bundle: %s", b.Name)
+	return connect.NewResponse(b), nil
+}
+
+// ── Catalog Persistence (JSON file — precursor to Cloud SQL) ─────
+
+const catalogStoreFile = "catalog_store.json"
+
+type catalogStoreData struct {
+	Products map[string]*adminv2.CatalogProduct `json:"products"`
+	Bundles  map[string]*adminv2.CatalogBundle  `json:"bundles"`
+}
+
+func loadCatalogStore() {
+	data, err := os.ReadFile(catalogStoreFile)
+	if err != nil {
+		if os.IsNotExist(err) {
+			log.Println("📦 [Catalog] No catalog store found — starting fresh")
+			return
+		}
+		log.Printf("⚠️ [Catalog] Error reading catalog store: %v", err)
+		return
+	}
+	var store catalogStoreData
+	if err := json.Unmarshal(data, &store); err != nil {
+		log.Printf("⚠️ [Catalog] Error parsing catalog store: %v", err)
+		return
+	}
+	if store.Products != nil {
+		catalogProducts = store.Products
+	}
+	if store.Bundles != nil {
+		catalogBundles = store.Bundles
+	}
+	log.Printf("📦 [Catalog] Loaded %d products, %d bundles from store", len(catalogProducts), len(catalogBundles))
+}
+
+func saveCatalogStore() {
+	store := catalogStoreData{
+		Products: catalogProducts,
+		Bundles:  catalogBundles,
+	}
+	data, err := json.MarshalIndent(store, "", "  ")
+	if err != nil {
+		log.Printf("⚠️ [Catalog] Error marshaling catalog store: %v", err)
+		return
+	}
+	if err := os.WriteFile(catalogStoreFile, data, 0644); err != nil {
+		log.Printf("⚠️ [Catalog] Error writing catalog store: %v", err)
+	}
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -1222,6 +1676,7 @@ func corsMiddleware(next http.Handler) http.Handler {
 
 func main() {
 	loadSettings()
+	loadCatalogStore()
 
 	// Initialize GitHub client if PAT is provided
 	var ghClient *github.Client
@@ -1239,6 +1694,7 @@ func main() {
 	mux.Handle(v2connect.NewAdminServiceHandler(&AdminServer{}))
 	mux.Handle(v2connect.NewTenantServiceHandler(&TenantServer{ghClient: ghClient}))
 	mux.Handle(v2connect.NewHypervisorServiceHandler(&HypervisorServer{}))
+	mux.Handle(v2connect.NewCatalogServiceHandler(&CatalogServer{}))
 
 	port := os.Getenv("PORT")
 	if port == "" {

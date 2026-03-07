@@ -160,13 +160,17 @@ const OPENSIGN_BASE = import.meta.env.VITE_OPENSIGN_API_URL
     || 'https://us-central1-sirsi-opensign.cloudfunctions.net/opensignApi'
 
 // ── Stripe Checkout (OpenSign Convergence) ──────────────────────
+// When stripePriceId is provided (from CatalogService), it's sent to OpenSign
+// which creates the checkout session using Stripe's line_items mode (proper product reference).
+// Falls back to raw amount mode when stripePriceId is not available (dev/free tier).
 export async function createCheckoutSession(
     ownerUid: string,
     plan: PlanId,
     successUrl: string,
     cancelUrl: string,
     signerName: string,
-    signerEmail: string
+    signerEmail: string,
+    stripePriceId?: string | null
 ): Promise<{ checkoutUrl: string } | { error: string }> {
     try {
         console.log(`🚀 Initiating SaaS Onboarding for ${plan}...`)
@@ -201,16 +205,28 @@ export async function createCheckoutSession(
         const tier = SAAS_TIERS[plan]
         const amountCents = tier.price
 
+        // Build payment body — prefer stripePriceId for proper Stripe product linkage
+        const paymentBody: Record<string, any> = {
+            envelopeId,
+            successUrl: `${successUrl}&session_id={CHECKOUT_SESSION_ID}&envelope_id=${envelopeId}`,
+            cancelUrl,
+            paymentMethodTypes: ['card', 'us_bank_account'],
+        }
+
+        if (stripePriceId) {
+            // CatalogService-managed: use Stripe Price ID for proper product reference
+            paymentBody.priceId = stripePriceId
+            console.log(`   💳 Using CatalogService price: ${stripePriceId}`)
+        } else {
+            // Fallback: raw amount mode (for dev or when CatalogService is unavailable)
+            paymentBody.amount = amountCents
+            console.log(`   💳 Using raw amount: $${amountCents / 100} (no CatalogService price)`)
+        }
+
         const paymentResp = await fetch(`${OPENSIGN_BASE}/api/payments/create-session`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                envelopeId,
-                amount: amountCents,
-                successUrl: `${successUrl}&session_id={CHECKOUT_SESSION_ID}&envelope_id=${envelopeId}`,
-                cancelUrl,
-                paymentMethodTypes: ['card', 'us_bank_account']
-            })
+            body: JSON.stringify(paymentBody)
         })
 
         if (!paymentResp.ok) {

@@ -1,0 +1,192 @@
+// proto/sirsi/admin/v2/catalog.proto
+// CatalogService — Unified Product & Bundle Management
+//
+// All product/price mutations sync to Stripe automatically.
+// Tenant-scoped: each tenant sees only their catalog items.
+// Superadmin bypasses tenant filter.
+syntax = "proto3";
+
+package sirsi.admin.v2;
+
+import "sirsi/common/v1/common.proto";
+
+option go_package = "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2";
+
+service CatalogService {
+  // ── Product CRUD ────────────────────────────────────────────────
+  // Every mutation syncs to Stripe: creates/updates product + price.
+  rpc ListProducts(ListProductsRequest) returns (ListProductsResponse);
+  rpc GetProduct(GetProductRequest) returns (CatalogProduct);
+  rpc CreateProduct(CreateProductRequest) returns (CatalogProduct);
+  rpc UpdateProduct(UpdateProductRequest) returns (CatalogProduct);
+  rpc ArchiveProduct(ArchiveProductRequest) returns (ArchiveResponse);
+  rpc RecoverProduct(RecoverProductRequest) returns (CatalogProduct);
+
+  // ── Bundle CRUD ─────────────────────────────────────────────────
+  rpc ListBundles(ListBundlesRequest) returns (ListBundlesResponse);
+  rpc GetBundle(GetBundleRequest) returns (CatalogBundle);
+  rpc CreateBundle(CreateBundleRequest) returns (CatalogBundle);
+  rpc UpdateBundle(UpdateBundleRequest) returns (CatalogBundle);
+  rpc ArchiveBundle(ArchiveBundleRequest) returns (ArchiveResponse);
+  rpc RecoverBundle(RecoverBundleRequest) returns (CatalogBundle);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Product Messages
+// ═══════════════════════════════════════════════════════════════════
+
+message CatalogProduct {
+  string id = 1;
+  string tenant_id = 2;                // "sirsi" for platform-level products
+  string name = 3;
+  string short_description = 4;
+  string description = 5;
+  string category = 6;                 // "platform" | "feature" | "service" | "addon"
+  int64 price_cents = 7;               // canonical bundled price in cents
+  int64 standalone_price_cents = 8;    // standalone price in cents
+  int32 hours = 9;                     // estimated labor hours
+  int32 timeline_weeks = 10;           // estimated delivery weeks
+  string timeline_unit = 11;           // "weeks" | "months"
+  bool recurring = 12;                 // true for SaaS subscriptions
+  string interval = 13;               // "month" | "year" | "one_time"
+  repeated string features = 14;       // feature bullet points
+  repeated string detailed_scope = 15; // WBS-level scope items
+
+  // Stripe sync state
+  string stripe_product_id = 16;       // Stripe product ID (prod_xxx)
+  string stripe_price_id = 17;         // Active Stripe price ID (price_xxx)
+
+  // Lifecycle
+  bool archived = 18;
+  int64 created_at = 19;
+  int64 updated_at = 20;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Bundle Messages
+// ═══════════════════════════════════════════════════════════════════
+
+message CatalogBundle {
+  string id = 1;
+  string tenant_id = 2;
+  string name = 3;
+  string short_description = 4;
+  string description = 5;
+  int64 price_cents = 6;
+  int32 hours = 7;
+  int32 timeline_weeks = 8;
+  string timeline_unit = 9;            // "weeks" | "months"
+  int32 addon_discount_pct = 10;       // discount % for addons included in bundle
+  repeated string included_product_ids = 11;
+
+  // Stripe sync state
+  string stripe_product_id = 12;
+  string stripe_price_id = 13;
+
+  // Lifecycle
+  bool archived = 14;
+  int64 created_at = 15;
+  int64 updated_at = 16;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// Request / Response Messages
+// ═══════════════════════════════════════════════════════════════════
+
+// ── Products ──────────────────────────────────────────────────────
+
+message ListProductsRequest {
+  sirsi.common.v1.PaginationRequest pagination = 1;
+  string tenant_id = 2;               // empty = use auth context tenant
+  bool include_archived = 3;
+  string category_filter = 4;         // optional: filter by category
+}
+
+message ListProductsResponse {
+  repeated CatalogProduct products = 1;
+  sirsi.common.v1.PaginationResponse pagination = 2;
+}
+
+message GetProductRequest {
+  string id = 1;
+}
+
+message CreateProductRequest {
+  string tenant_id = 1;
+  string name = 2;
+  string short_description = 3;
+  string description = 4;
+  string category = 5;
+  int64 price_cents = 6;
+  int64 standalone_price_cents = 7;
+  int32 hours = 8;
+  int32 timeline_weeks = 9;
+  string timeline_unit = 10;
+  bool recurring = 11;
+  string interval = 12;
+  repeated string features = 13;
+  repeated string detailed_scope = 14;
+}
+
+message UpdateProductRequest {
+  string id = 1;
+  CatalogProduct product = 2;
+}
+
+message ArchiveProductRequest {
+  string id = 1;
+}
+
+message RecoverProductRequest {
+  string id = 1;
+}
+
+// ── Bundles ───────────────────────────────────────────────────────
+
+message ListBundlesRequest {
+  sirsi.common.v1.PaginationRequest pagination = 1;
+  string tenant_id = 2;
+  bool include_archived = 3;
+}
+
+message ListBundlesResponse {
+  repeated CatalogBundle bundles = 1;
+  sirsi.common.v1.PaginationResponse pagination = 2;
+}
+
+message GetBundleRequest {
+  string id = 1;
+}
+
+message CreateBundleRequest {
+  string tenant_id = 1;
+  string name = 2;
+  string short_description = 3;
+  string description = 4;
+  int64 price_cents = 5;
+  int32 hours = 6;
+  int32 timeline_weeks = 7;
+  string timeline_unit = 8;
+  int32 addon_discount_pct = 9;
+  repeated string included_product_ids = 10;
+}
+
+message UpdateBundleRequest {
+  string id = 1;
+  CatalogBundle bundle = 2;
+}
+
+message ArchiveBundleRequest {
+  string id = 1;
+}
+
+message RecoverBundleRequest {
+  string id = 1;
+}
+
+// ── Shared ────────────────────────────────────────────────────────
+
+message ArchiveResponse {
+  bool success = 1;
+  string message = 2;
+}

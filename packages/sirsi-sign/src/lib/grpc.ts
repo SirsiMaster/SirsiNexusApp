@@ -2,6 +2,7 @@ import { createClient, type Interceptor } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import { ContractsService } from "../gen/sirsi/contracts/v2/contract_service_pb";
 import { AdminService } from "../gen/sirsi/admin/v2/admin_service_pb";
+import { CatalogService } from "../gen/sirsi/admin/v2/catalog_pb";
 import { auth } from "./firebase";
 
 /**
@@ -26,5 +27,12 @@ const transport = createConnectTransport({
     interceptors: [authInterceptor],
 });
 
+// Admin transport (for CatalogService, AdminService — uses sirsi-admin-service)
+const adminTransport = createConnectTransport({
+    baseUrl: import.meta.env.VITE_GATEWAY_URL || "http://localhost:8080",
+    interceptors: [authInterceptor],
+});
+
 export const contractsClient = createClient(ContractsService, transport);
-export const adminClient = createClient(AdminService, transport);
+export const adminClient = createClient(AdminService, adminTransport);
+export const catalogClient = createClient(CatalogService, adminTransport);

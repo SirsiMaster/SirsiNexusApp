@@ -1,40 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useSettings, useUpdateSettings } from '../../hooks/useAdmin';
-import { StripeCatalogSync, type SyncItem } from './StripeCatalogSync';
-import { PRODUCTS, BUNDLES } from '../../data/catalog';
+import { useProducts, useBundles } from '../../hooks/useCatalog';
 
 export function SystemSettings() {
     const { data: settings, isLoading, isError } = useSettings();
     const updateSettings = useUpdateSettings();
+    const { products, loading: productsLoading } = useProducts();
+    const { bundles, loading: bundlesLoading } = useBundles();
 
     const [maintenanceMode, setMaintenanceMode] = useState(false);
     const [region, setRegion] = useState('us-central1');
     const [multiplier, setMultiplier] = useState(2.0);
-
-    // Map catalog products for synchronization
-    const syncItems: SyncItem[] = [
-        {
-            id: 'solo',
-            name: PRODUCTS['solo-plan'].name,
-            amount: (PRODUCTS['solo-plan']?.standalonePrice || 500) * 100,
-            description: PRODUCTS['solo-plan'].shortDescription,
-            recurring: true
-        },
-        {
-            id: 'business',
-            name: PRODUCTS['business-plan'].name,
-            amount: (PRODUCTS['business-plan']?.standalonePrice || 2500) * 100,
-            description: PRODUCTS['business-plan'].shortDescription,
-            recurring: true
-        },
-        {
-            id: 'finalwishes-core',
-            name: BUNDLES['finalwishes-core'].name,
-            amount: BUNDLES['finalwishes-core'].price * 100,
-            description: BUNDLES['finalwishes-core'].shortDescription,
-            recurring: false
-        }
-    ];
 
     // Sync local state with backend data
     useEffect(() => {
@@ -61,6 +37,9 @@ export function SystemSettings() {
         region !== settings.activeRegion ||
         multiplier !== settings.sirsiMultiplier
     );
+
+    const syncedProducts = products.filter(p => p.stripeProductId && !p.stripeProductId.startsWith('mock_'));
+    const syncedBundles = bundles.filter(b => b.stripeProductId && !b.stripeProductId.startsWith('mock_'));
 
     return (
         <div className="flex flex-col gap-10">
@@ -133,7 +112,7 @@ export function SystemSettings() {
                     </div>
                 </div>
 
-                {/* Integration Secrets Status */}
+                {/* Integration & Catalog Health */}
                 <div className="neo-glass-panel p-8 border border-white/10 rounded-xl flex flex-col gap-6">
                     <h3 className="cinzel text-xs text-gold tracking-widest font-bold uppercase">Integration Health</h3>
                     <div className="space-y-4">
@@ -156,7 +135,30 @@ export function SystemSettings() {
                             </div>
                         ))}
                     </div>
-                    <StripeCatalogSync items={syncItems} projectName="Sirsi Universal" />
+
+                    {/* Catalog Health — replaces hardcoded StripeCatalogSync */}
+                    <div className="mt-4 p-4 bg-black/20 border border-gold/10 rounded-lg">
+                        <h4 className="cinzel text-[10px] text-gold tracking-widest font-bold uppercase mb-3">Catalog Health</h4>
+                        {productsLoading || bundlesLoading ? (
+                            <div className="text-slate-500 inter text-xs animate-pulse">Querying CatalogService...</div>
+                        ) : (
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="flex flex-col bg-black/30 p-3 rounded border border-white/5">
+                                    <span className="text-gold font-mono text-xl">{products.length}</span>
+                                    <span className="inter text-[9px] text-slate-500 uppercase">Products</span>
+                                    <span className="inter text-[8px] text-emerald mt-1">{syncedProducts.length} synced to Stripe</span>
+                                </div>
+                                <div className="flex flex-col bg-black/30 p-3 rounded border border-white/5">
+                                    <span className="text-gold font-mono text-xl">{bundles.length}</span>
+                                    <span className="inter text-[9px] text-slate-500 uppercase">Bundles</span>
+                                    <span className="inter text-[8px] text-emerald mt-1">{syncedBundles.length} synced to Stripe</span>
+                                </div>
+                            </div>
+                        )}
+                        <p className="inter text-[8px] text-slate-600 mt-2 uppercase tracking-wider">
+                            Manage catalog via Studio Governance → Product & Addon Catalog
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -37,25 +37,7 @@ service AdminService {
   // Audit & Logging
   rpc ListAuditTrail(ListAuditTrailRequest) returns (ListAuditTrailResponse);
 
-  // Catalog Management
-  rpc SyncCatalog(SyncCatalogRequest) returns (SyncCatalogResponse);
-}
-
-message SyncCatalogRequest {
-  repeated SyncCatalogItem items = 1;
-}
-
-message SyncCatalogItem {
-  string id = 1;
-  string name = 2;
-  int64 amount = 3; // in cents
-  string description = 4;
-  bool recurring = 5;
-}
-
-message SyncCatalogResponse {
-  bool success = 1;
-  repeated string logs = 2;
+  // Catalog Management → MOVED to CatalogService (catalog.proto)
 }
 
 message LogDevSessionRequest {

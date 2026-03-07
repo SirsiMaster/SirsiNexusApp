@@ -4,9 +4,15 @@
  * Canonical tiers from ADR-030: Free / Solo / Business
  * Used by: pricing page, onboarding wizard, client portal, Stripe integration
  *
- * Stripe Price IDs will be populated after Stripe product creation.
- * Until then, checkout will show a placeholder.
+ * Static defaults below. Use fetchDynamicTiers() to hydrate with real
+ * Stripe Price IDs and dynamic pricing from CatalogService.
  */
+
+import { createClient } from '@connectrpc/connect'
+import { CatalogService } from '@/gen/sirsi/admin/v2/catalog_pb'
+import { transport } from './transport'
+
+const catalogClient = createClient(CatalogService, transport)
 
 export type PlanId = 'free' | 'solo' | 'business'
 
@@ -59,7 +65,7 @@ export const SAAS_TIERS: Record<PlanId, SaaSTier> = {
         price: 50000,
         priceDisplay: '$500',
         interval: 'month',
-        stripePriceId: null, // TODO: Create in Stripe Dashboard → populate here
+        stripePriceId: null, // Hydrated by fetchDynamicTiers()
         tagline: 'For solo founders & startups',
         popular: true,
         features: [
@@ -83,7 +89,7 @@ export const SAAS_TIERS: Record<PlanId, SaaSTier> = {
         price: 250000,
         priceDisplay: '$2,500',
         interval: 'month',
-        stripePriceId: null, // TODO: Create in Stripe Dashboard → populate here
+        stripePriceId: null, // Hydrated by fetchDynamicTiers()
         tagline: 'For scaling businesses',
         features: [
             'Unlimited users',
@@ -118,4 +124,54 @@ export function getAllTiers(): SaaSTier[] {
 /** Check if a tier has Stripe integration ready */
 export function isStripeReady(id: PlanId): boolean {
     return SAAS_TIERS[id].stripePriceId !== null
+}
+
+/**
+ * Fetch dynamic tier data from CatalogService and enrich static definitions.
+ * 
+ * Queries for products with category "platform" and recurring=true (SaaS tiers).
+ * Matches by name (case-insensitive) and populates stripePriceId + dynamic pricing.
+ * 
+ * Falls back gracefully to static SAAS_TIERS if backend is unavailable.
+ */
+export async function fetchDynamicTiers(): Promise<SaaSTier[]> {
+    try {
+        const res = await catalogClient.listProducts({
+            tenantId: 'sirsi',
+            categoryFilter: '',
+            includeArchived: false,
+        })
+
+        // Create a lookup map from product name → catalog product
+        const productMap = new Map<string, { stripePriceId: string; price: bigint }>();
+        for (const product of res.products) {
+            if (product.recurring && product.stripePriceId) {
+                productMap.set(product.name.toLowerCase(), {
+                    stripePriceId: product.stripePriceId,
+                    price: product.priceCents,
+                })
+            }
+        }
+
+        // Enrich static tiers with dynamic data
+        const enrichedTiers = getAllTiers().map(tier => {
+            const dynamicData = productMap.get(tier.name.toLowerCase())
+            if (dynamicData && !dynamicData.stripePriceId.startsWith('mock_')) {
+                const priceCents = Number(dynamicData.price)
+                return {
+                    ...tier,
+                    stripePriceId: dynamicData.stripePriceId,
+                    price: priceCents,
+                    priceDisplay: `$${(priceCents / 100).toLocaleString()}`,
+                }
+            }
+            return tier
+        })
+
+        console.log(`📦 [Tiers] Hydrated ${productMap.size} tiers from CatalogService`)
+        return enrichedTiers
+    } catch (error) {
+        console.warn('⚠️ [Tiers] CatalogService unavailable — using static tier definitions', error)
+        return getAllTiers()
+    }
 }
