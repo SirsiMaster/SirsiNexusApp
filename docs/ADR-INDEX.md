@@ -2,7 +2,7 @@
 
 This index tracks **all** architectural decisions for the Sirsi platform — the unified product that spans web application, desktop application (Tauri), mobile application (React Native), Cloud Hypervisor, website, and pitch deck. All distributions share one codebase, one set of rules, one ADR registry.
 
-**Total ADRs: 26** | **Next available: ADR-032**
+**Total ADRs: 37** | **Next available: ADR-043**
 
 ---
 
@@ -36,6 +36,17 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 | [ADR-029](ADR-029-CLOUD-RUN-DEPLOYMENT.md) | Cloud Run Deployment Architecture — sirsi-admin Service | Accepted | 2026-03-04 |
 | [ADR-030](ADR-030-SELF-SERVICE-TENANT-PROVISIONING.md) | Self-Service Tenant Provisioning & Client Onboarding Engine | Accepted | 2026-03-06 |
 | [ADR-031](ADR-031-UNIFIED-COMMERCE-PIPELINE.md) | Unified Commerce & Signing Pipeline — 100% gRPC | Accepted | 2026-03-06 |
+| ADR-032 | Master Blueprint v4 — Total Maximal Architecture | Proposed | 2026-03-07 |
+| ADR-033 | AlloyDB AI Migration + Cognitive SQL | Proposed | 2026-03-07 |
+| ADR-034 | NebuLang Protocol — Knowledge Graph + DLT Anchoring | Proposed | 2026-03-07 |
+| ADR-035 | Agent Swarm Architecture | Proposed | 2026-03-07 |
+| ADR-036 | Self-Evolving Agent Protocol | Proposed | 2026-03-07 |
+| ADR-037 | Hybrid LLM Engine — Quad-Model Routing | Proposed | 2026-03-07 |
+| ADR-038 | Autonomous Infrastructure Genesis | Proposed | 2026-03-07 |
+| ADR-039 | Direct-to-Metal Orchestration Protocol | Proposed | 2026-03-07 |
+| ADR-040 | KG Query Engine — Predictive Infrastructure | Proposed | 2026-03-07 |
+| ADR-041 | Tri-Silicon Mesh Orchestration | Proposed | 2026-03-07 |
+| ADR-042 | Sovereign Compute Deployment Model (Mac Studio Clusters) | Proposed | 2026-03-07 |
 
 ---
 
@@ -63,8 +74,21 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 
 ### Portfolio & Governance
 - ADR-017: CockroachDB Decommission — removed from all runtime, k8s, health checks
-- ADR-019: Rust/WASM Decommission — Go confirmed as sole backend language
+- ADR-019: Rust/WASM Decommission — Go sole backend; **NOTE: Rust re-adopted for native clients (Tauri, headless, cluster) per ADR-032**
 - ADR-020: Application Firewall — repo-scoped AI directives, design language firewalls
+
+### Master Blueprint v4 (Proposed — Epochs 3-10)
+- ADR-032: Master Blueprint v4 — Total maximal architecture plan
+- ADR-033: AlloyDB AI Migration — Cloud SQL → AlloyDB with cognitive SQL
+- ADR-034: NebuLang Protocol — Knowledge Graph with DLT truth anchoring
+- ADR-035: Agent Swarm — Coordinator + domain agent architecture
+- ADR-036: Self-Evolving Agent — Agents that expand their own capabilities
+- ADR-037: Hybrid LLM Engine — Quad-model routing (reasoning/speed/sovereign/in-DB)
+- ADR-038: Autonomous Genesis — Natural language → production stack
+- ADR-039: Direct-to-Metal — NETCONF/Redfish/DCGM/TPU direct hardware
+- ADR-040: KG Query Engine — Predictive infrastructure-as-data
+- ADR-041: Tri-Silicon Mesh — Silicon-aware workload scheduling
+- ADR-042: Sovereign Compute — Mac Studio M5 Max cluster deployment
 - ADR-025: Unified App Architecture — Single React codebase, Tauri desktop, Sirsi Rail UCS
 
 ### React Migration & Frontend Architecture
@@ -96,6 +120,7 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 | ADR-029 | Active — Cloud Run Deployment Architecture |
 | ADR-030 | Active — Self-Service Tenant Provisioning |
 | ADR-031 | Active — Unified Commerce & Signing Pipeline |
-| ADR-032+ | Next available |
+| ADR-032 — ADR-042 | Proposed — Master Blueprint v4 decisions |
+| ADR-043+ | Next available |
 
-> **Last updated:** March 6, 2026 — Added ADR-031 (Unified Commerce & Signing Pipeline)
+> **Last updated:** March 7, 2026 — Reserved ADR-032 through ADR-042 for Master Blueprint v4

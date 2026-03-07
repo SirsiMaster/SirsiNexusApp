@@ -1,7 +1,7 @@
 # SIRSI_RULES.md
 **Operational Directive for All Development Agents (SirsiNexusApp)**
-**Version:** 6.3.0 (Commerce & Versioning Canon)
-**Date:** March 6, 2026
+**Version:** 7.0.0 (Master Blueprint v4 Canon)
+**Date:** March 7, 2026
 
 ---
 
@@ -140,20 +140,26 @@ The following files serve as the immutable benchmark for this repo:
 29. `.github/workflows/deploy-portal.yml`
 30. `.github/workflows/deploy-contracts.yml`
 
+### 🗺 Strategic Planning (1)
+31. `docs/SIRSI_MASTER_BLUEPRINT.md` — **Master Blueprint v4: Total Maximal Architecture**
+
 ## 3. Technology Stack (SirsiNexusApp — Platform Layer)
 
 | Layer | Technology | Decision |
 | :--- | :--- | :--- |
 | **Logic** | **Go (Golang)** | Cloud Run, **gRPC + Protobuf**, Official Firebase Admin SDK |
 | **Web** | **React 19 + Vite 7** | **gRPC-Web**, TailwindCSS, Zustand, shadcn/ui, **recharts** |
+| **Native Clients** | **Rust** | Tauri 2.x desktop, headless daemon, Mac Studio cluster coordinator |
 | **Mobile** | **React Native + Expo** | **gRPC + Protobuf**, Shared logic with Web, iOS/Android |
-| **Database** | **Cloud SQL + Firestore** | Hybrid: SQL for PII/Vault, NoSQL for real-time |
+| **Database** | **AlloyDB AI + Firestore** | Hybrid: SQL+AI for PII/KG/Vault, NoSQL for real-time |
 | **Auth** | **Firebase Auth** | MFA (TOTP) Required |
 | **Security** | **SOC 2 + KMS** | Software Keys (No HSM), AES-256 |
-| **AI** | **Gemini (Vertex AI)** | The "Guidance Engine" |
+| **AI** | **Quad-Model Engine** | Primary reasoning + speed + sovereign + in-database AI |
 | **E-Sign** | **OpenSign (Community)** | Self-Hosted (Google Cloud Run) |
+| **Consensus** | **Distributed Ledger** | Logic shard ordering, KG anchoring, infrastructure proofs |
+| **Inference** | **Tensor Sharding (Evaluate)** | Distributed ML across heterogeneous silicon |
 
-> ⚠️ **REMOVED**: Rust/WASM (decommissioned — ADR-019), Hedera/HCS (never operationalized), CockroachDB (decommissioned — ADR-017)
+> ⚠️ **REMOVED**: CockroachDB (decommissioned — ADR-017). **CHANGED**: Rust/WASM decommissioned for browser/backend (ADR-019), but Rust re-adopted for native clients (ADR-032).
 
 ## 4. Design Language: "Swiss Neo-Deco"
 
@@ -215,6 +221,21 @@ SirsiNexusApp uses the **Swiss Neo-Deco** design language across ALL packages �
 *   **Source of Truth**: `packages/sirsi-portal-app/package.json` `"version"` field
 *   **On Every Release**, update ALL of: `package.json`, root `VERSION`, `docs/core/VERSION.md`, `docs/core/CHANGELOG.md`, `src/routes/changelog.tsx`, git tag
 *   **Document versions** are independent of app versions (see `VERSIONING_STANDARD.md` §1.3)
+
+## 5.2 Documentation Firewall (Rule 26)
+> **INTERNAL ONLY information must NEVER appear in public-facing documents.**
+
+*   **Public-facing documents**: Landing page (sirsi.ai), pitch deck, investor materials, `TECHNICAL_DESIGN.md`, `PROJECT_SCOPE.md`
+*   **Internal-only documents**: `SIRSI_MASTER_BLUEPRINT.md`, `ARCHITECTURE_DESIGN.md`, proto definitions, SQL schemas
+*   **Patent names and value propositions**: ✅ Safe for all documents
+*   **Implementation mechanisms**: ❌ INTERNAL ONLY — this includes:
+    *   HCS topic architecture and distributed ledger internals
+    *   LLM model names and routing decision logic
+    *   Cognitive SQL patterns and AlloyDB AI query details
+    *   Tensor sharding partition strategy and RDMA protocols
+    *   Agent self-evolution protocol internals
+    *   Proto service definitions and gRPC implementation details
+    *   Hardware SDK library names (scrapligo, go-dcgm, etc.)
 
 ## 6. Interaction Protocol
 *   **User**: "I want X."

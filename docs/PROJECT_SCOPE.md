@@ -1,206 +1,176 @@
 # SirsiNexus Project Scope
-## AI-Powered Cloud Infrastructure Platform
+## The Autonomous CTO — AI-Powered Sovereign Infrastructure Platform
 
-**Version:** 2.0.0  
-**Current Phase:** Phase 12 - Tri-Silicon Mesh & Sovereign Compute  
+**Version:** 4.0.0  
+**Current Phase:** Master Blueprint v4 — 10 Epochs, 30 Sprints  
 **Project Start:** January 2025  
 **Location:** /Users/thekryptodragon/Development/SirsiNexusApp  
-**Latest Update:** Tri-Silicon Strategy & Patent Moat (February 16, 2026)
+**Latest Update:** Master Blueprint v4 — Dual-Shard Architecture (March 7, 2026)
 
 ---
 
-SirsiNexus is an AI-powered cloud infrastructure optimization platform that combines deep-tech silicon orchestration with autonomous operations. The platform bridges the world's most powerful compute architectures—NVIDIA, Google TPU, and Apple Silicon—into a unified, sovereign neural mesh.
+SirsiNexus is the world's first **Autonomous CTO** — an AI platform that autonomously builds, manages, verifies, and cryptographically proves its own infrastructure. The platform bridges the world's most powerful compute architectures — NVIDIA CUDA, Google TPU MXU, and Apple Silicon Neural Engine — into a unified, sovereign neural mesh coordinated by distributed ledger consensus.
 
 ### **Core Mission**
-Transform how organizations approach cloud infrastructure through **Tri-Silicon Orchestration**, **LLM Memory Resilience**, and **Autonomous Sovereign Compute**. We provide the "Truth Engine" for AI infrastructure, ensuring verifiable, deterministic outcomes across multi-cloud and on-premise nano-datacenters.
+Transform how organizations approach infrastructure through **Autonomous Infrastructure Genesis**, **Cryptographic Infrastructure Proofs**, and **Direct-to-Metal Orchestration**. Sirsi provides the "Truth Engine" for AI infrastructure: verifiable, deterministic, self-evolving outcomes across multi-cloud and on-premise sovereign compute clusters.
 
 ---
 
-## 🏗️ **WHAT WE'VE BUILT**
+## 🧬 THE INNOVATION: Dual-Shard Architecture
 
-### **Polyglot Technology Stack**
-- **Core Engine**: Rust binary (`sirsi-nexus`) with Axum, SQLx, Tokio
-- **AI Platform**: Python with TensorFlow, PyTorch, Prophet for analytics and ML
-- **Cloud Connectors**: Go services for AWS, Azure, GCP, DigitalOcean integrations
-- **Frontend**: Next.js 15 + React 18 + TypeScript (57 pages, 100% functional)
-- **Database**: CockroachDB (distributed SQL) with Redis caching
-- **Real-time**: WebSocket + gRPC communication protocols
+Sirsi operates on two parallel sharding planes — the **Neural-Fractal Architecture**:
 
-### **Real AI Integration**
-- **NebuLang Protocol**: Proprietary Knowledge Graph integration for LLM Memory Resilience.
-- **Neural-Fractal Architecture**: Autonomous "Conduction Logic" for verified multi-cloud solutions.
-- **KG Query Engine**: Predictive "Infrastructure-as-Data" reducing hardware waste by 40%.
-- **OpenAI GPT-4 Turbo**: Production-grade infrastructure analysis.
-- **Anthropic Claude-3.5-Sonnet**: Advanced reasoning and high-fidelity GTM strategy.  
-- **TensorFlow/PyTorch**: Time-series analytics and cost prediction ensemble models.
+1. **Logic Shards** (Consensus Layer) — Distributed ledger provides deterministic ordering, immutable audit trail, and cryptographic verification for every AI decision. All agent coordination flows through consensus-ordered topics.
 
-### **Professional Demo Architecture**
-- **Industry Scenarios**: Healthcare (Kulturio), Media (TVFone), Education (UniEdu)
-- **Real Agent Operations**: Actual cloud provider API integrations on demo data
-- **Business Deliverables**: PDF reports, ROI calculations, migration plans
-- **Zero Production Risk**: Complete environment isolation with audit trails
+2. **Tensor Shards** (Compute Layer) — Model inference is distributed across heterogeneous silicon nodes, with activations exchanged via RDMA zero-copy transfers.
+
+Together, these planes enable infrastructure decisions that are both **computationally optimal** AND **cryptographically provable** — a capability that no existing system provides.
 
 ---
 
-## 📊 **CURRENT CAPABILITIES**
+## 📡 PLATFORM DELIVERY
 
-### **AI-Powered Infrastructure Analysis**
-- **Real-time Cost Optimization**: 20-30% cost reduction through AI analysis
-- **Predictive Analytics**: Machine learning models for usage and cost forecasting
-- **Anomaly Detection**: Automated identification of infrastructure inefficiencies
-- **Business Intelligence**: Strategic recommendations aligned with business goals
+| Platform | Technology | Status |
+|:---------|:-----------|:-------|
+| **Web** | React 19 + Vite 7 + TypeScript | ✅ Shipping (primary) |
+| **Desktop** | Rust + Tauri 2.x | 🔵 Planned (Epoch 8) |
+| **Headless** | Rust daemon (CLI/API) | 🔵 Planned (Epoch 8) |
+| **iOS / Android** | React Native + Expo | 🔵 Planned (Epoch 8) |
+| **Mac Studio Native** | Rust + Swift FFI + MLX | 🔵 Planned (Epoch 10) |
 
-### **Sovereign Tri-Silicon Framework**
-- **NVIDIA Agent**: Silicon-native CUDA orchestration for standard datacenter racks.
-- **GCP TPU Agent**: High-performance orchestration for massive cloud-scale training.
-- **Apple Silicon Agent**: Nano-datacenter orchestration for Mac Studio clusters via Thunderbolt 5 RDMA.
-- **Mesh Coordination**: Unified hypervisor management of heterogeneous silicon pods.
-
-### **Enterprise-Grade Platform**
-- **Authentication**: JWT with 2FA, session management, role-based access
-- **Security**: SPIFFE/SPIRE identity, rate limiting, input validation
-- **Monitoring**: Prometheus + Grafana + OpenTelemetry observability
-- **Deployment**: Kubernetes with Helm charts, Docker containerization
-
-### **UCS Infrastructure Layer**
-- **Universal Component System**: Centralized library for portfolio-wide consistency
-- **Integrated Independence**: Stripe, Plaid, Sendgrid, and Chase as core utilities
-- **Global Asset Management**: Centralized security, keys, and audit logs via Sirsi Vault
-- **Portfolio-Wide Synergy**: Standardized interfaces across all tenant applications
+All platforms share the same **Go + gRPC backend** via protobuf contracts.
 
 ---
 
-## 🎭 **DEMO ARCHITECTURE HIGHLIGHTS**
+## 🏛 EIGHT-PATENT PORTFOLIO
 
-### **Professional Demo Experience**
-```
-User Journey:
-1. Select Industry Scenario (Healthcare/Media/Education)
-2. View Current Infrastructure (Real data analysis)
-3. Witness Live AI Analysis (Real GPT-4/Claude processing)
-4. Receive Business Deliverables (PDF reports, migration plans)
-5. See Real-time Optimization (Live cost calculations)
-```
-
-### **Safety-First Approach**
-- **Demo Data Only**: No production systems ever accessed
-- **Isolated Environments**: Complete separation from real infrastructure
-- **Audit Trails**: Every operation logged for security compliance
-- **Credential Management**: Demo-specific authentication with strict controls
-
-### **Business Value Demonstration**
-- **Quantified ROI**: Specific percentage cost savings with justification
-- **Migration Strategies**: Detailed technical and business planning
-- **Compliance Alignment**: Healthcare HIPAA, financial regulations support
-- **Executive Reporting**: C-suite ready business impact summaries
+| # | Patent | Description |
+|:--|:-------|:------------|
+| P-001 | **NebuLang Protocol** | Zero-hallucination AI via Knowledge Graph grounding with distributed ledger anchoring |
+| P-002 | **Neural-Fractal Architecture** | Recursive dual-shard verification at every infrastructure level |
+| P-003 | **KG Query Engine** | Predictive Infrastructure-as-Data — databases that forecast their own failures |
+| P-004 | **Autonomous Infrastructure Genesis** | Natural language → complete production stack, zero human intervention |
+| P-005 | **Tri-Silicon Mesh Orchestration** | Silicon-characteristic-aware workload scheduling (CUDA/MXU/Neural Engine) |
+| P-006 | **Cryptographic Infrastructure Proofs** | Mathematically verifiable infrastructure state via consensus anchoring |
+| P-007 | **Self-Evolving Agent Protocol** | AI agents that observe operations and autonomously expand capabilities |
+| P-008 | **Direct-to-Metal Orchestration** | Bypass IaC — direct NETCONF/Redfish/DCGM/TPU communication with AI-driven config |
 
 ---
 
-## 📈 **PERFORMANCE METRICS**
+## 🤖 AI ENGINE STACK
 
-### **Technical Performance**
-- **AI Response Time**: < 2 minutes for complex infrastructure analysis
-- **WebSocket Latency**: < 100ms for real-time updates
-- **Database Performance**: < 50ms for typical CockroachDB queries
-- **Frontend Load**: < 3 seconds initial page load
-- **Concurrent Users**: 50+ simultaneous demo sessions supported
-
-### **AI Model Performance**
-- **Cost Prediction Accuracy**: 92% for 30-day forecasts
-- **Anomaly Detection F1-Score**: 88% with low false positive rate
-- **Recommendation Relevance**: 94% business alignment score
-- **Processing Speed**: 1,000+ infrastructure components per minute
-
-### **Business Impact Metrics**
-- **Cost Optimization**: 20-30% average infrastructure cost reduction
-- **Deployment Speed**: 40% faster cloud migrations through automation
-- **Operational Efficiency**: 60% reduction in manual infrastructure management
-- **Risk Mitigation**: 85% reduction in configuration-related incidents
+| Model Class | Role | Deployment |
+|:------------|:-----|:-----------|
+| **Primary Reasoning** | Deep analysis: infrastructure genesis, code generation, patent-grade planning | Cloud API |
+| **Speed Inference** | Real-time: anomaly detection, NL commands, telemetry analysis | Cloud API (Vertex AI) |
+| **Sovereign Open-Weights** | On-prem: data that never leaves the mesh, edge deployment, offline mode | Local cluster (MLX/RDMA) |
+| **In-Database AI** | Cognitive SQL: AI-powered queries, auto vector embeddings, semantic search | Managed database |
 
 ---
 
-## 🛠️ **DEVELOPMENT JOURNEY**
+## 🔧 DIRECT HARDWARE COMMUNICATION
 
-### **Phase Completion History**
-- **Phase 8** (Aug 2025): Commercial Traction ✅
-  - Secured $147K in contracted revenue, validation across heavy industry.
-- **Phase 9** (Oct 2025): Deep-Tech Patent Moat ✅
-  - Codified NebuLang, Neural-Fractal, and KG Query patents.
-- **Phase 10** (Jan 2026): UCS & Infrastructure Layer ✅
-  - Stripe, Plaid, Sendgrid, and Chase integration complete.
-- **Phase 11** (Feb 2026): Tri-Silicon Strategy 🔄 **IN PROGRESS**
-  - NVIDIA + TPU + Apple Silicon orchestration logic.
-- **Phase 12** (Target Q3 2026): Sovereign Mac Clusters ⏳ **UPCOMING**
-  - Beta launch of Sirsi Apple Cluster Hypervisor (Mac Studio M5 clusters).
+Sirsi bypasses infrastructure-as-code tools and speaks directly to vendor hardware:
 
-### **Key Achievements**
-- **100% TypeScript Compilation**: All 57 frontend pages functional
-- **Real AI Integration**: Production OpenAI and Anthropic API usage
-- **Polyglot Success**: Rust + Python + Go + TypeScript working together
-- **Production Readiness**: Enterprise security, monitoring, deployment
-- **Documentation Consolidation**: 144+ files organized into 7 core documents
-- **Codebase Streamlining**: Complete removal of redundant directories and services
-
-### **Recent Consolidation (July 10, 2025)**
-- **Removed Redundancies**: Eliminated `analytics/`, `frontend/`, `ml-platform/`, `core-engine-demo/`
-- **Unified Demo Structure**: Consolidated all demo data into single organized location
-- **Script Optimization**: Reduced duplicate shell scripts, kept comprehensive versions
-- **Docker Cleanup**: Maintained only production Dockerfiles, removed test duplicates
-- **Result**: Clean, maintainable codebase with zero functional impact
+| Vendor | Protocol | Capabilities |
+|:-------|:---------|:-------------|
+| **Cisco** | NETCONF, RESTCONF, gNMI | Switch/router config, ACLs, BGP, streaming telemetry |
+| **Dell** | Redfish, iDRAC REST | Server lifecycle, BIOS, RAID, firmware, power management |
+| **NVIDIA** | DCGM, NVML | GPU monitoring, compute mode, ECC, NVLink topology |
+| **Google** | Cloud TPU API (gRPC) | TPU provisioning, XLA compilation, pod management |
+| **Apple** | IOKit, MLX, Neural Engine | Silicon discovery, ML inference, unified memory management |
+| **Juniper** | NETCONF, Junos XML | Firewall rules, BGP peering, routing instances |
+| **Arista** | eAPI, gNMI | VXLAN fabric, EVPN, interface provisioning |
 
 ---
 
-## 🔮 **CURRENT PRIORITIES**
+## 🖥 SOVEREIGN COMPUTE (Mac Studio Clusters)
 
-### **Phase 7 Implementation Focus**
-1. **Demo Environment Setup**: Complete industry scenario data creation
-2. **Real Agent Operations**: Implement actual cloud provider integrations on demo data  
-3. **Business Deliverable Generation**: PDF reports, ROI calculations, migration plans
-4. **Demo Orchestration**: Seamless user experience from scenario selection to results
-5. **Safety Validation**: Comprehensive testing of production isolation
-
-### **Success Criteria**
-- **Professional Demo Flow**: Complete end-to-end scenarios working flawlessly
-- **Real AI Value**: Demonstrable business insights from actual AI analysis
-- **Zero Risk Validation**: Confirmed isolation from all production systems
-- **Business Readiness**: Executive-level presentations and deliverables
-- **Technical Excellence**: Production-grade performance and reliability
+4× Mac Studio M5 Max nodes with:
+- 512GB unified RAM per node (2TB total)
+- Thunderbolt 5 (120Gbps) + 100GbE (RoCE v2) interconnects
+- ML inference on Apple Neural Engine + Metal GPU
+- Model weights distributed via tensor sharding
+- Consensus coordination via distributed ledger
 
 ---
 
-## 🚀 **FUTURE VISION**
+## 🏗️ TECHNOLOGY STACK
 
-### **Beyond Phase 7**
-- **Apple Cluster Beta**: Q3 2026 launch of RDMA-powered Mac Studio pods.
-- **$1M ARR Milestone**: Q1 2027 revenue target with 12+ enterprise accounts.
-- **IP Expansion**: Final 3-patent submission package by Q2 2026.
-- **Global Scaling**: Multi-region deployment, international sovereign cloud compliance.
-- **Platform Ecosystem**: Partner integrations, marketplace capabilities
-
-### **Long-term Impact**
-Transform SirsiNexus from a demo platform into the industry standard for AI-powered cloud infrastructure optimization, delivering measurable business value while maintaining the highest standards of security and reliability.
-
----
-
-## 📋 **PROJECT STATUS SUMMARY**
-
-**Overall Progress**: 85% Complete  
-**Current Phase**: Phase 7 (Real Application Demo) - 40% Complete  
-**Next Milestone**: Professional demo scenarios operational  
-**Estimated Completion**: August 2025  
-
-**Key Strengths**:
-- Robust polyglot architecture
-- Real AI integration with production APIs
-- Enterprise-grade security and monitoring
-- Comprehensive documentation and testing
-
-**Current Focus**:
-- Demo environment implementation
-- Real agent operation validation
-- Business value demonstration
-- Production safety confirmation
+| Layer | Technology | Decision |
+|:------|:-----------|:---------|
+| **Backend** | **Go (Golang)** | Cloud Run, gRPC + Protobuf, Firebase Admin SDK |
+| **Web** | **React 19 + Vite 7** | gRPC-Web, TailwindCSS, Zustand, shadcn/ui, Recharts |
+| **Native Clients** | **Rust** | Tauri desktop, headless daemon, cluster coordinator |
+| **Mobile** | **React Native + Expo** | gRPC + Protobuf, shared logic with Web |
+| **Database** | **AlloyDB AI + Firestore** | Hybrid: SQL+AI for PII/KG, NoSQL for real-time |
+| **Auth** | **Firebase Auth** | MFA (TOTP) Required |
+| **Security** | **SOC 2 + KMS** | Software Keys, AES-256, consensus attestation |
+| **AI** | **Quad-Model Engine** | Deep reasoning + speed + sovereign + in-database |
+| **E-Sign** | **OpenSign (Community)** | Self-Hosted (Google Cloud Run) |
+| **Consensus** | **Distributed Ledger** | Logic shard ordering, KG anchoring, infrastructure proofs |
+| **Inference** | **Tensor Sharding** | Distributed ML across heterogeneous silicon |
 
 ---
 
-*SirsiNexus represents the convergence of artificial intelligence and cloud infrastructure management, delivered through a professional demonstration platform that showcases real capabilities while maintaining absolute production safety.*
+## 📈 CURRENT CAPABILITIES (Operational)
+
+- ✅ React admin portal with 25+ routes (Swiss Neo-Deco design)
+- ✅ Go + ConnectRPC backend on Cloud Run (scale-to-zero)
+- ✅ Firebase Auth with SMS MFA (TOTP)
+- ✅ Sirsi Sign e-signature platform (sign.sirsi.ai)
+- ✅ Stripe payment integration (cards, ACH, wire)
+- ✅ Plaid bank account linking
+- ✅ OpenSign self-hosted e-signatures
+- ✅ Hypervisor Operations Command Center (telemetry dashboard)
+- ✅ Catalog-driven pricing engine (CatalogService gRPC)
+- ✅ Tenant provisioning architecture (ADR-030)
+- ✅ CI/CD pipeline (GitHub Actions → Firebase Hosting)
+- ✅ Investor pitch deck (16 slides, Swiss Neo-Deco)
+
+## 🔮 PLANNED CAPABILITIES (Master Blueprint v4)
+
+- 🔵 Client & Investor Portals (Epoch 1)
+- 🔵 Self-service tenant onboarding wizard (Epoch 1)
+- 🔵 AlloyDB AI migration + Knowledge Graph (Epoch 3)
+- 🔵 Agent Swarm + self-evolution (Epoch 4)
+- 🔵 Autonomous Infrastructure Genesis (Epoch 5)
+- 🔵 Direct-to-Metal hardware communication (Epoch 9)
+- 🔵 Multi-platform delivery: Rust Desktop + Mobile (Epoch 8)
+- 🔵 Sovereign Mac Studio compute clusters (Epoch 10)
+- 🔵 Living Digital Twin visualization (Epoch 7)
+- 🔵 Autonomous SOC 2 compliance engine (Epoch 6)
+
+---
+
+## 📊 BUSINESS METRICS
+
+- **Contracted Revenue**: $147K secured
+- **Patent Portfolio**: 8 utility patent applications
+- **Validation**: Google for Startups, NVIDIA Inception
+- **Target**: $1M ARR run-rate by Q4 2026
+- **Hiring**: VP of Engineering (Hypervisor), Head of Growth (GTM)
+
+---
+
+## 📋 IMPLEMENTATION ROADMAP
+
+| Epoch | Focus | Sprints | Target |
+|:------|:------|:--------|:-------|
+| **0** | Repo Hygiene | Sprint 0 | March 2026 |
+| **1** | Ship the Business (Portals, Payments, Tenants) | 1–3 | March–April 2026 |
+| **2** | Harden & Observe (Security, Monitoring) | 4–6 | April–May 2026 |
+| **3** | Truth Engine (AlloyDB AI, KG, Ledger) | 7–9 | May–June 2026 |
+| **4** | Agent Swarm | 10–13 | June–July 2026 |
+| **5** | Autonomous CTO | 14–16 | July–August 2026 |
+| **6** | Commerce at Scale | 17–18 | August 2026 |
+| **7** | Real-Time Intelligence | 19–21 | September 2026 |
+| **8** | Multi-Platform | 22–24 | Sept–Oct 2026 |
+| **9** | Direct-to-Metal | 25–27 | Oct–Nov 2026 |
+| **10** | Sovereign Compute | 28–30 | Nov–Dec 2026 |
+
+> **Canonical Blueprint**: `docs/SIRSI_MASTER_BLUEPRINT.md`
+
+---
+
+*SirsiNexus: The Autonomous CTO. Building, managing, and proving infrastructure at the speed of thought.*

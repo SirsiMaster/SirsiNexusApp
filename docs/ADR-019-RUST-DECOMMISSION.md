@@ -1,7 +1,14 @@
 # ADR-019: Rust/WASM Decommission
 
+> **⚠️ PARTIAL SUPERSESSION (March 7, 2026):** This ADR decommissioned Rust/WASM for **in-browser and backend server** usage. That decision stands — Go remains the sole backend language. However, as of **Master Blueprint v4 (ADR-032)**, Rust is **RE-ADOPTED** for native platform clients:
+> - **Tauri 2.x desktop app** (`packages/sirsi-desktop/`)
+> - **Headless daemon** (`packages/sirsi-headless/`) for data center CLI/API deployment
+> - **Mac Studio cluster coordinator** (`packages/sirsi-cluster/`) for sovereign compute
+>
+> Rust is used for **native compilation targets only** — not WASM, not backend servers. The Go + gRPC backend is unchanged.
+
 ## Status
-**Accepted** — February 27, 2026
+**Accepted** — February 27, 2026 *(partially superseded by ADR-032, March 7, 2026)*
 
 ## Context
 The SirsiNexusApp monorepo contained a Rust-based `core-engine/` directory (v0.7.6-alpha) that was part of an earlier architecture vision. This engine was intended to provide:
