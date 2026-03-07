@@ -467,7 +467,7 @@ export function getMockBackendData(): BackendData {
         serviceHealth: [
             { service: 'admin-service', status: 'operational', uptime: 99.98 },
             { service: 'fw-api', status: 'operational', uptime: 99.95 },
-            { service: 'opensign-host', status: 'operational', uptime: 99.90 },
+            { service: 'signing-service', status: 'operational', uptime: 99.90 },
         ],
         grpcThroughput: [
             { service: 'admin-service', rps: 142, trend: [120, 130, 135, 140, 138, 142, 142] },
@@ -486,14 +486,14 @@ export function getMockIntegrationData(): IntegrationData {
         serviceHealth: [
             { name: 'Stripe', status: 'operational', lastCheck: '30s ago', responseTimeMs: 45 },
             { name: 'SendGrid', status: 'operational', lastCheck: '30s ago', responseTimeMs: 120 },
-            { name: 'OpenSign', status: 'operational', lastCheck: '30s ago', responseTimeMs: 85 },
+            { name: 'SigningService', status: 'operational', lastCheck: '30s ago', responseTimeMs: 85 },
             { name: 'Firebase Auth', status: 'operational', lastCheck: '30s ago', responseTimeMs: 22 },
             { name: 'Cloud KMS', status: 'operational', lastCheck: '30s ago', responseTimeMs: 18 },
             { name: 'Plaid', status: 'unknown', lastCheck: 'Not configured', responseTimeMs: 0 },
         ],
         webhooks: [
             { url: '/api/webhooks/stripe', eventTypes: ['payment_intent.succeeded', 'charge.refunded'], successRate: 99.8, avgResponseMs: 45, retryCount: 1 },
-            { url: '/api/webhooks/opensign', eventTypes: ['envelope.completed', 'envelope.voided'], successRate: 100, avgResponseMs: 38, retryCount: 0 },
+            { url: '/api/webhooks/signing', eventTypes: ['envelope.completed', 'envelope.voided'], successRate: 100, avgResponseMs: 38, retryCount: 0 },
         ],
         apiKeys: [
             { service: 'Stripe', expiresAt: '2026-12-31', daysRemaining: 304, rotationStatus: 'Current' },

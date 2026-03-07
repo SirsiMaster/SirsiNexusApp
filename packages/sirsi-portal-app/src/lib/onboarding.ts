@@ -17,10 +17,12 @@ import { createClient } from '@connectrpc/connect'
 import {
     TenantService,
 } from '@/gen/sirsi/admin/v2/tenant_pb'
+import { SigningService } from '@/gen/sirsi/sign/v1/signing_pb'
 import { SAAS_TIERS, type PlanId } from './tiers'
 
-// ── Create the gRPC client ───────────────────────────────────────
+// ── Create gRPC clients ─────────────────────────────────────────
 const tenantClient = createClient(TenantService, transport)
+const signingClient = createClient(SigningService, transport)
 
 // ── Types ─────────────────────────────────────────────────────────
 export interface OnboardingData {
@@ -155,14 +157,11 @@ export async function runFullOnboarding(data: OnboardingData): Promise<Onboardin
     return provisionTenant(data, authResult.uid)
 }
 
-// ── Stripe Checkout ───────────────────────────────────────────────
-const OPENSIGN_BASE = import.meta.env.VITE_OPENSIGN_API_URL
-    || 'https://us-central1-sirsi-opensign.cloudfunctions.net/opensignApi'
-
-// ── Stripe Checkout (OpenSign Convergence) ──────────────────────
-// When stripePriceId is provided (from CatalogService), it's sent to OpenSign
-// which creates the checkout session using Stripe's line_items mode (proper product reference).
-// Falls back to raw amount mode when stripePriceId is not available (dev/free tier).
+// ── Stripe Checkout (gRPC — SigningService) ─────────────────────
+// Replaces the legacy OpenSign REST fetch() calls.
+// When stripePriceId is provided (from CatalogService), it's sent to
+// SigningService.CreatePaymentSession using Stripe's line_items mode.
+// Falls back to raw amount when stripePriceId is not available.
 export async function createCheckoutSession(
     ownerUid: string,
     plan: PlanId,
@@ -175,66 +174,48 @@ export async function createCheckoutSession(
     try {
         console.log(`🚀 Initiating SaaS Onboarding for ${plan}...`)
 
-        // 1. Create a "SaaS Signup Envelope" in OpenSign
-        // This ensures the user has a legal record of their signup in the Sirsi Vault
-        const envelopeResp = await fetch(`${OPENSIGN_BASE}/api/guest/envelopes`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                projectId: 'sirsi',
-                docType: 'saas-signup',
-                signerName,
-                signerEmail,
-                plan: plan,
-                metadata: {
-                    ownerUid,
-                    plan,
-                    type: 'onboarding_signup',
-                    isSaaSSignup: true
-                }
-            })
+        // 1. Create a "SaaS Signup Envelope" via SigningService gRPC
+        const envelope = await signingClient.createGuestEnvelope({
+            projectId: 'sirsi',
+            docType: 'saas-signup',
+            signerName,
+            signerEmail,
+            plan: plan,
+            metadata: {
+                ownerUid,
+                plan,
+                type: 'onboarding_signup',
+                isSaaSSignup: 'true'
+            },
+            amount: BigInt(0),
+            documentUrl: '',
+            callbackUrl: '',
+            redirectUrl: '',
         })
 
-        if (!envelopeResp.ok) {
-            throw new Error(`OpenSign Envelope error: ${envelopeResp.statusText}`)
-        }
-
-        const envelope = await envelopeResp.json()
-        const envelopeId = envelope.envelopeId
+        const envelopeId = envelope.id
 
         const tier = SAAS_TIERS[plan]
         const amountCents = tier.price
 
-        // Build payment body — prefer stripePriceId for proper Stripe product linkage
-        const paymentBody: Record<string, any> = {
+        // 2. Create Stripe Checkout session via SigningService gRPC
+        const session = await signingClient.createPaymentSession({
             envelopeId,
+            planId: stripePriceId || '',
+            amount: stripePriceId ? BigInt(0) : BigInt(amountCents),
+            projectId: 'sirsi',
             successUrl: `${successUrl}&session_id={CHECKOUT_SESSION_ID}&envelope_id=${envelopeId}`,
             cancelUrl,
             paymentMethodTypes: ['card', 'us_bank_account'],
-        }
+        })
 
         if (stripePriceId) {
-            // CatalogService-managed: use Stripe Price ID for proper product reference
-            paymentBody.priceId = stripePriceId
             console.log(`   💳 Using CatalogService price: ${stripePriceId}`)
         } else {
-            // Fallback: raw amount mode (for dev or when CatalogService is unavailable)
-            paymentBody.amount = amountCents
             console.log(`   💳 Using raw amount: $${amountCents / 100} (no CatalogService price)`)
         }
 
-        const paymentResp = await fetch(`${OPENSIGN_BASE}/api/payments/create-session`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(paymentBody)
-        })
-
-        if (!paymentResp.ok) {
-            throw new Error(`OpenSign Payment error: ${paymentResp.statusText}`)
-        }
-
-        const payment = await paymentResp.json()
-        return { checkoutUrl: payment.checkoutUrl }
+        return { checkoutUrl: session.checkoutUrl }
     } catch (error: any) {
         console.error('SaaS Onboarding error:', error)
         return { error: 'Failed to initiate secure onboarding. Please try again or contact support.' }
