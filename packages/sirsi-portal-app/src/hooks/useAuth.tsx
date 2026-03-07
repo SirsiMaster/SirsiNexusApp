@@ -36,24 +36,6 @@ const MOCK_USER = {
 } as unknown as User
 
 // ── Provider ──────────────────────────────────────────────────────
-// Check if there's a valid demo session in sessionStorage
-function getDemoSession(): User | null {
-    try {
-        const raw = sessionStorage.getItem('investorAuth')
-        if (!raw) return null
-        const parsed = JSON.parse(raw)
-        if (parsed?.id && parsed?.name) {
-            // Return a mock User-like object for demo sessions
-            return {
-                uid: `demo-${parsed.id}`,
-                email: `${parsed.id.toLowerCase()}@sirsi.ai`,
-                displayName: parsed.name,
-                emailVerified: true,
-            } as unknown as User
-        }
-    } catch { /* invalid JSON, ignore */ }
-    return null
-}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null)
@@ -87,19 +69,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
             if (firebaseUser) {
+                console.info('[Auth] Firebase user:', firebaseUser.email)
                 setUser(firebaseUser)
             } else {
-                // No Firebase user — check for demo session as fallback
-                const demoUser = getDemoSession()
-                setUser(demoUser)
+                console.info('[Auth] No Firebase session — user is logged out')
+                setUser(null)
             }
             setLoading(false)
         }, (err) => {
             console.error('[Auth] onAuthStateChanged error:', err)
-            // Even on error, check for demo session
-            const demoUser = getDemoSession()
-            setUser(demoUser)
             setError(err.message)
+            setUser(null)
             setLoading(false)
         })
 
@@ -144,8 +124,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const signOut = useCallback(async () => {
         try {
-            // Always clear demo session
-            sessionStorage.removeItem('investorAuth')
             if (IS_MOCK) {
                 sessionStorage.setItem('sirsi_mock_logged_out', 'true')
                 sessionStorage.removeItem('sirsi_mock_user')
@@ -154,8 +132,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             }
             await firebaseSignOut(auth)
             // onAuthStateChanged will clear the user
-            // But also force-clear for demo sessions
-            setUser(null)
         } catch (err: any) {
             console.error('[Auth] signOut error:', err)
         }

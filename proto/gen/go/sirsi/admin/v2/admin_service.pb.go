@@ -1577,7 +1577,7 @@ var File_sirsi_admin_v2_admin_service_proto protoreflect.FileDescriptor
 
 const file_sirsi_admin_v2_admin_service_proto_rawDesc = "" +
 	"\n" +
-	"\"sirsi/admin/v2/admin_service.proto\x12\x0esirsi.admin.v2\x1a\x1csirsi/common/v1/common.proto\x1a\x1bsirsi/admin/v2/estate.proto\"m\n" +
+	"\"sirsi/admin/v2/admin_service.proto\x12\x0esirsi.admin.v2\x1a\x1csirsi/common/v1/common.proto\"m\n" +
 	"\x14LogDevSessionRequest\x12!\n" +
 	"\fdeveloper_id\x18\x01 \x01(\tR\vdeveloperId\x12\x16\n" +
 	"\x06action\x18\x02 \x01(\tR\x06action\x12\x1a\n" +
@@ -1693,17 +1693,12 @@ const file_sirsi_admin_v2_admin_service_proto_rawDesc = "" +
 	"\x10sirsi_multiplier\x18\x04 \x01(\x01R\x0fsirsiMultiplier\x12)\n" +
 	"\x10maintenance_mode\x18\x05 \x01(\bR\x0fmaintenanceMode\x12A\n" +
 	"\rrecent_alerts\x18\x06 \x03(\v2\x1c.sirsi.admin.v2.NotificationR\frecentAlerts\x12B\n" +
-	"\ractivity_feed\x18\a \x03(\v2\x1d.sirsi.admin.v2.AuditLogEntryR\factivityFeed2\xb4\v\n" +
+	"\ractivity_feed\x18\a \x03(\v2\x1d.sirsi.admin.v2.AuditLogEntryR\factivityFeed2\xa0\b\n" +
 	"\fAdminService\x12]\n" +
 	"\x11GetSystemOverview\x12(.sirsi.admin.v2.GetSystemOverviewRequest\x1a\x1e.sirsi.admin.v2.SystemOverview\x12\\\n" +
 	"\rLogDevSession\x12$.sirsi.admin.v2.LogDevSessionRequest\x1a%.sirsi.admin.v2.LogDevSessionResponse\x12Q\n" +
 	"\rGetDevMetrics\x12$.sirsi.admin.v2.GetDevMetricsRequest\x1a\x1a.sirsi.admin.v2.DevMetrics\x12b\n" +
-	"\x0fSyncGitHubStats\x12&.sirsi.admin.v2.SyncGitHubStatsRequest\x1a'.sirsi.admin.v2.SyncGitHubStatsResponse\x12V\n" +
-	"\vListEstates\x12\".sirsi.admin.v2.ListEstatesRequest\x1a#.sirsi.admin.v2.ListEstatesResponse\x12E\n" +
-	"\tGetEstate\x12 .sirsi.admin.v2.GetEstateRequest\x1a\x16.sirsi.admin.v2.Estate\x12K\n" +
-	"\fCreateEstate\x12#.sirsi.admin.v2.CreateEstateRequest\x1a\x16.sirsi.admin.v2.Estate\x12K\n" +
-	"\fUpdateEstate\x12#.sirsi.admin.v2.UpdateEstateRequest\x1a\x16.sirsi.admin.v2.Estate\x12Y\n" +
-	"\fDeleteEstate\x12#.sirsi.admin.v2.DeleteEstateRequest\x1a$.sirsi.admin.v2.DeleteEstateResponse\x12P\n" +
+	"\x0fSyncGitHubStats\x12&.sirsi.admin.v2.SyncGitHubStatsRequest\x1a'.sirsi.admin.v2.SyncGitHubStatsResponse\x12P\n" +
 	"\tListUsers\x12 .sirsi.admin.v2.ListUsersRequest\x1a!.sirsi.admin.v2.ListUsersResponse\x12_\n" +
 	"\x0eManageUserRole\x12%.sirsi.admin.v2.ManageUserRoleRequest\x1a&.sirsi.admin.v2.ManageUserRoleResponse\x12h\n" +
 	"\x11ListNotifications\x12(.sirsi.admin.v2.ListNotificationsRequest\x1a).sirsi.admin.v2.ListNotificationsResponse\x12e\n" +
@@ -1757,14 +1752,6 @@ var file_sirsi_admin_v2_admin_service_proto_goTypes = []any{
 	(*v1.PaginationRequest)(nil),      // 27: sirsi.common.v1.PaginationRequest
 	(*v1.PaginationResponse)(nil),     // 28: sirsi.common.v1.PaginationResponse
 	(*v1.Money)(nil),                  // 29: sirsi.common.v1.Money
-	(*ListEstatesRequest)(nil),        // 30: sirsi.admin.v2.ListEstatesRequest
-	(*GetEstateRequest)(nil),          // 31: sirsi.admin.v2.GetEstateRequest
-	(*CreateEstateRequest)(nil),       // 32: sirsi.admin.v2.CreateEstateRequest
-	(*UpdateEstateRequest)(nil),       // 33: sirsi.admin.v2.UpdateEstateRequest
-	(*DeleteEstateRequest)(nil),       // 34: sirsi.admin.v2.DeleteEstateRequest
-	(*ListEstatesResponse)(nil),       // 35: sirsi.admin.v2.ListEstatesResponse
-	(*Estate)(nil),                    // 36: sirsi.admin.v2.Estate
-	(*DeleteEstateResponse)(nil),      // 37: sirsi.admin.v2.DeleteEstateResponse
 }
 var file_sirsi_admin_v2_admin_service_proto_depIdxs = []int32{
 	27, // 0: sirsi.admin.v2.ListUsersRequest.pagination:type_name -> sirsi.common.v1.PaginationRequest
@@ -1787,36 +1774,26 @@ var file_sirsi_admin_v2_admin_service_proto_depIdxs = []int32{
 	0,  // 17: sirsi.admin.v2.AdminService.LogDevSession:input_type -> sirsi.admin.v2.LogDevSessionRequest
 	20, // 18: sirsi.admin.v2.AdminService.GetDevMetrics:input_type -> sirsi.admin.v2.GetDevMetricsRequest
 	23, // 19: sirsi.admin.v2.AdminService.SyncGitHubStats:input_type -> sirsi.admin.v2.SyncGitHubStatsRequest
-	30, // 20: sirsi.admin.v2.AdminService.ListEstates:input_type -> sirsi.admin.v2.ListEstatesRequest
-	31, // 21: sirsi.admin.v2.AdminService.GetEstate:input_type -> sirsi.admin.v2.GetEstateRequest
-	32, // 22: sirsi.admin.v2.AdminService.CreateEstate:input_type -> sirsi.admin.v2.CreateEstateRequest
-	33, // 23: sirsi.admin.v2.AdminService.UpdateEstate:input_type -> sirsi.admin.v2.UpdateEstateRequest
-	34, // 24: sirsi.admin.v2.AdminService.DeleteEstate:input_type -> sirsi.admin.v2.DeleteEstateRequest
-	3,  // 25: sirsi.admin.v2.AdminService.ListUsers:input_type -> sirsi.admin.v2.ListUsersRequest
-	5,  // 26: sirsi.admin.v2.AdminService.ManageUserRole:input_type -> sirsi.admin.v2.ManageUserRoleRequest
-	8,  // 27: sirsi.admin.v2.AdminService.ListNotifications:input_type -> sirsi.admin.v2.ListNotificationsRequest
-	10, // 28: sirsi.admin.v2.AdminService.SendNotification:input_type -> sirsi.admin.v2.SendNotificationRequest
-	13, // 29: sirsi.admin.v2.AdminService.GetSettings:input_type -> sirsi.admin.v2.GetSettingsRequest
-	15, // 30: sirsi.admin.v2.AdminService.UpdateSettings:input_type -> sirsi.admin.v2.UpdateSettingsRequest
-	17, // 31: sirsi.admin.v2.AdminService.ListAuditTrail:input_type -> sirsi.admin.v2.ListAuditTrailRequest
-	26, // 32: sirsi.admin.v2.AdminService.GetSystemOverview:output_type -> sirsi.admin.v2.SystemOverview
-	1,  // 33: sirsi.admin.v2.AdminService.LogDevSession:output_type -> sirsi.admin.v2.LogDevSessionResponse
-	21, // 34: sirsi.admin.v2.AdminService.GetDevMetrics:output_type -> sirsi.admin.v2.DevMetrics
-	24, // 35: sirsi.admin.v2.AdminService.SyncGitHubStats:output_type -> sirsi.admin.v2.SyncGitHubStatsResponse
-	35, // 36: sirsi.admin.v2.AdminService.ListEstates:output_type -> sirsi.admin.v2.ListEstatesResponse
-	36, // 37: sirsi.admin.v2.AdminService.GetEstate:output_type -> sirsi.admin.v2.Estate
-	36, // 38: sirsi.admin.v2.AdminService.CreateEstate:output_type -> sirsi.admin.v2.Estate
-	36, // 39: sirsi.admin.v2.AdminService.UpdateEstate:output_type -> sirsi.admin.v2.Estate
-	37, // 40: sirsi.admin.v2.AdminService.DeleteEstate:output_type -> sirsi.admin.v2.DeleteEstateResponse
-	4,  // 41: sirsi.admin.v2.AdminService.ListUsers:output_type -> sirsi.admin.v2.ListUsersResponse
-	6,  // 42: sirsi.admin.v2.AdminService.ManageUserRole:output_type -> sirsi.admin.v2.ManageUserRoleResponse
-	9,  // 43: sirsi.admin.v2.AdminService.ListNotifications:output_type -> sirsi.admin.v2.ListNotificationsResponse
-	11, // 44: sirsi.admin.v2.AdminService.SendNotification:output_type -> sirsi.admin.v2.SendNotificationResponse
-	14, // 45: sirsi.admin.v2.AdminService.GetSettings:output_type -> sirsi.admin.v2.GetSettingsResponse
-	16, // 46: sirsi.admin.v2.AdminService.UpdateSettings:output_type -> sirsi.admin.v2.UpdateSettingsResponse
-	18, // 47: sirsi.admin.v2.AdminService.ListAuditTrail:output_type -> sirsi.admin.v2.ListAuditTrailResponse
-	32, // [32:48] is the sub-list for method output_type
-	16, // [16:32] is the sub-list for method input_type
+	3,  // 20: sirsi.admin.v2.AdminService.ListUsers:input_type -> sirsi.admin.v2.ListUsersRequest
+	5,  // 21: sirsi.admin.v2.AdminService.ManageUserRole:input_type -> sirsi.admin.v2.ManageUserRoleRequest
+	8,  // 22: sirsi.admin.v2.AdminService.ListNotifications:input_type -> sirsi.admin.v2.ListNotificationsRequest
+	10, // 23: sirsi.admin.v2.AdminService.SendNotification:input_type -> sirsi.admin.v2.SendNotificationRequest
+	13, // 24: sirsi.admin.v2.AdminService.GetSettings:input_type -> sirsi.admin.v2.GetSettingsRequest
+	15, // 25: sirsi.admin.v2.AdminService.UpdateSettings:input_type -> sirsi.admin.v2.UpdateSettingsRequest
+	17, // 26: sirsi.admin.v2.AdminService.ListAuditTrail:input_type -> sirsi.admin.v2.ListAuditTrailRequest
+	26, // 27: sirsi.admin.v2.AdminService.GetSystemOverview:output_type -> sirsi.admin.v2.SystemOverview
+	1,  // 28: sirsi.admin.v2.AdminService.LogDevSession:output_type -> sirsi.admin.v2.LogDevSessionResponse
+	21, // 29: sirsi.admin.v2.AdminService.GetDevMetrics:output_type -> sirsi.admin.v2.DevMetrics
+	24, // 30: sirsi.admin.v2.AdminService.SyncGitHubStats:output_type -> sirsi.admin.v2.SyncGitHubStatsResponse
+	4,  // 31: sirsi.admin.v2.AdminService.ListUsers:output_type -> sirsi.admin.v2.ListUsersResponse
+	6,  // 32: sirsi.admin.v2.AdminService.ManageUserRole:output_type -> sirsi.admin.v2.ManageUserRoleResponse
+	9,  // 33: sirsi.admin.v2.AdminService.ListNotifications:output_type -> sirsi.admin.v2.ListNotificationsResponse
+	11, // 34: sirsi.admin.v2.AdminService.SendNotification:output_type -> sirsi.admin.v2.SendNotificationResponse
+	14, // 35: sirsi.admin.v2.AdminService.GetSettings:output_type -> sirsi.admin.v2.GetSettingsResponse
+	16, // 36: sirsi.admin.v2.AdminService.UpdateSettings:output_type -> sirsi.admin.v2.UpdateSettingsResponse
+	18, // 37: sirsi.admin.v2.AdminService.ListAuditTrail:output_type -> sirsi.admin.v2.ListAuditTrailResponse
+	27, // [27:38] is the sub-list for method output_type
+	16, // [16:27] is the sub-list for method input_type
 	16, // [16:16] is the sub-list for extension type_name
 	16, // [16:16] is the sub-list for extension extendee
 	0,  // [0:16] is the sub-list for field type_name
@@ -1827,7 +1804,6 @@ func file_sirsi_admin_v2_admin_service_proto_init() {
 	if File_sirsi_admin_v2_admin_service_proto != nil {
 		return
 	}
-	file_sirsi_admin_v2_estate_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

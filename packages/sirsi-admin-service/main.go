@@ -83,67 +83,6 @@ func saveSettings() {
 	}
 }
 
-func (s *AdminServer) ListEstates(
-	ctx context.Context,
-	req *connect.Request[adminv2.ListEstatesRequest],
-) (*connect.Response[adminv2.ListEstatesResponse], error) {
-	log.Printf("ListEstates called")
-
-	// Mock implementation
-	estates := []*adminv2.Estate{
-		{
-			Id:         "est_123",
-			Name:       "Blue Ridge Estate",
-			OwnerEmail: "alice@wonderland.com",
-			Phase:      adminv2.EstatePhase_ESTATE_PHASE_FUNDING,
-			CreatedAt:  1700000000,
-		},
-		{
-			Id:         "est_456",
-			Name:       "Crystal Peak Manor",
-			OwnerEmail: "bob@builder.com",
-			Phase:      adminv2.EstatePhase_ESTATE_PHASE_PLANNING,
-			CreatedAt:  1700005000,
-		},
-	}
-
-	res := connect.NewResponse(&adminv2.ListEstatesResponse{
-		Estates: estates,
-		Pagination: &commonv1.PaginationResponse{
-			TotalCount: int32(len(estates)),
-		},
-	})
-	return res, nil
-}
-
-func (s *AdminServer) GetEstate(
-	ctx context.Context,
-	req *connect.Request[adminv2.GetEstateRequest],
-) (*connect.Response[adminv2.Estate], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, fmt.Errorf("unimplemented"))
-}
-
-func (s *AdminServer) CreateEstate(
-	ctx context.Context,
-	req *connect.Request[adminv2.CreateEstateRequest],
-) (*connect.Response[adminv2.Estate], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, fmt.Errorf("unimplemented"))
-}
-
-func (s *AdminServer) UpdateEstate(
-	ctx context.Context,
-	req *connect.Request[adminv2.UpdateEstateRequest],
-) (*connect.Response[adminv2.Estate], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, fmt.Errorf("unimplemented"))
-}
-
-func (s *AdminServer) DeleteEstate(
-	ctx context.Context,
-	req *connect.Request[adminv2.DeleteEstateRequest],
-) (*connect.Response[adminv2.DeleteEstateResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, fmt.Errorf("unimplemented"))
-}
-
 func (s *AdminServer) GetSystemOverview(
 	ctx context.Context,
 	req *connect.Request[adminv2.GetSystemOverviewRequest],

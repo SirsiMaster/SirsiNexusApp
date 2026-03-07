@@ -6,56 +6,6 @@ import { transport } from "../lib/transport";
 
 const client = createClient(AdminService as any, transport);
 
-// Estate Management
-export const useEstates = (req: any = {}) => {
-    return useQuery({
-        queryKey: ['estates', req],
-        queryFn: async () => {
-            const res = await (client as any).listEstates({
-                pagination: { pageSize: 50, pageToken: "" },
-                ...req
-            });
-            return res.estates;
-        },
-    });
-};
-
-export const useEstate = (id: string) => {
-    return useQuery({
-        queryKey: ['estate', id],
-        queryFn: async () => {
-            const res = await (client as any).getEstate({ id });
-            return res.estate;
-        },
-        enabled: !!id,
-    });
-};
-
-export const useCreateEstate = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: async (req: any) => {
-            return await (client as any).createEstate(req);
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['estates'] });
-        },
-    });
-};
-
-export const useUpdateEstate = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: async (req: any) => {
-            return await (client as any).updateEstate(req);
-        },
-        onSuccess: (_, variables) => {
-            queryClient.invalidateQueries({ queryKey: ['estates'] });
-            queryClient.invalidateQueries({ queryKey: ['estate', variables.id] });
-        },
-    });
-};
-
 // Development Intelligence
 export const useDevMetrics = (req: any) => {
     return useQuery({

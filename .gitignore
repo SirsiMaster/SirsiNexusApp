@@ -147,5 +147,5 @@ node2/
 node3/
 qdrant-data/
 heap_profiler/
-packages/sirsi-admin-service/sirsi-admin
+packages/sirsi-admin-service/sirsi-admin-service
 packages/sirsi-admin-service/settings.json

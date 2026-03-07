@@ -4,7 +4,6 @@ syntax = "proto3";
 package sirsi.admin.v2;
 
 import "sirsi/common/v1/common.proto";
-import "sirsi/admin/v2/estate.proto";
 
 option go_package = "github.com/sirsimaster/sirsi-nexus/gen/go/sirsi/admin/v2";
 
@@ -14,13 +13,6 @@ service AdminService {
   rpc LogDevSession(LogDevSessionRequest) returns (LogDevSessionResponse);
   rpc GetDevMetrics(GetDevMetricsRequest) returns (DevMetrics);
   rpc SyncGitHubStats(SyncGitHubStatsRequest) returns (SyncGitHubStatsResponse);
-  
-  // Estate Management Hub
-  rpc ListEstates(ListEstatesRequest) returns (ListEstatesResponse);
-  rpc GetEstate(GetEstateRequest) returns (Estate);
-  rpc CreateEstate(CreateEstateRequest) returns (Estate);
-  rpc UpdateEstate(UpdateEstateRequest) returns (Estate);
-  rpc DeleteEstate(DeleteEstateRequest) returns (DeleteEstateResponse);
 
   // User & Access Control
   rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);

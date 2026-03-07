@@ -47,20 +47,6 @@ const (
 	// AdminServiceSyncGitHubStatsProcedure is the fully-qualified name of the AdminService's
 	// SyncGitHubStats RPC.
 	AdminServiceSyncGitHubStatsProcedure = "/sirsi.admin.v2.AdminService/SyncGitHubStats"
-	// AdminServiceListEstatesProcedure is the fully-qualified name of the AdminService's ListEstates
-	// RPC.
-	AdminServiceListEstatesProcedure = "/sirsi.admin.v2.AdminService/ListEstates"
-	// AdminServiceGetEstateProcedure is the fully-qualified name of the AdminService's GetEstate RPC.
-	AdminServiceGetEstateProcedure = "/sirsi.admin.v2.AdminService/GetEstate"
-	// AdminServiceCreateEstateProcedure is the fully-qualified name of the AdminService's CreateEstate
-	// RPC.
-	AdminServiceCreateEstateProcedure = "/sirsi.admin.v2.AdminService/CreateEstate"
-	// AdminServiceUpdateEstateProcedure is the fully-qualified name of the AdminService's UpdateEstate
-	// RPC.
-	AdminServiceUpdateEstateProcedure = "/sirsi.admin.v2.AdminService/UpdateEstate"
-	// AdminServiceDeleteEstateProcedure is the fully-qualified name of the AdminService's DeleteEstate
-	// RPC.
-	AdminServiceDeleteEstateProcedure = "/sirsi.admin.v2.AdminService/DeleteEstate"
 	// AdminServiceListUsersProcedure is the fully-qualified name of the AdminService's ListUsers RPC.
 	AdminServiceListUsersProcedure = "/sirsi.admin.v2.AdminService/ListUsers"
 	// AdminServiceManageUserRoleProcedure is the fully-qualified name of the AdminService's
@@ -90,12 +76,6 @@ type AdminServiceClient interface {
 	LogDevSession(context.Context, *connect.Request[v2.LogDevSessionRequest]) (*connect.Response[v2.LogDevSessionResponse], error)
 	GetDevMetrics(context.Context, *connect.Request[v2.GetDevMetricsRequest]) (*connect.Response[v2.DevMetrics], error)
 	SyncGitHubStats(context.Context, *connect.Request[v2.SyncGitHubStatsRequest]) (*connect.Response[v2.SyncGitHubStatsResponse], error)
-	// Estate Management Hub
-	ListEstates(context.Context, *connect.Request[v2.ListEstatesRequest]) (*connect.Response[v2.ListEstatesResponse], error)
-	GetEstate(context.Context, *connect.Request[v2.GetEstateRequest]) (*connect.Response[v2.Estate], error)
-	CreateEstate(context.Context, *connect.Request[v2.CreateEstateRequest]) (*connect.Response[v2.Estate], error)
-	UpdateEstate(context.Context, *connect.Request[v2.UpdateEstateRequest]) (*connect.Response[v2.Estate], error)
-	DeleteEstate(context.Context, *connect.Request[v2.DeleteEstateRequest]) (*connect.Response[v2.DeleteEstateResponse], error)
 	// User & Access Control
 	ListUsers(context.Context, *connect.Request[v2.ListUsersRequest]) (*connect.Response[v2.ListUsersResponse], error)
 	ManageUserRole(context.Context, *connect.Request[v2.ManageUserRoleRequest]) (*connect.Response[v2.ManageUserRoleResponse], error)
@@ -142,36 +122,6 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			httpClient,
 			baseURL+AdminServiceSyncGitHubStatsProcedure,
 			connect.WithSchema(adminServiceMethods.ByName("SyncGitHubStats")),
-			connect.WithClientOptions(opts...),
-		),
-		listEstates: connect.NewClient[v2.ListEstatesRequest, v2.ListEstatesResponse](
-			httpClient,
-			baseURL+AdminServiceListEstatesProcedure,
-			connect.WithSchema(adminServiceMethods.ByName("ListEstates")),
-			connect.WithClientOptions(opts...),
-		),
-		getEstate: connect.NewClient[v2.GetEstateRequest, v2.Estate](
-			httpClient,
-			baseURL+AdminServiceGetEstateProcedure,
-			connect.WithSchema(adminServiceMethods.ByName("GetEstate")),
-			connect.WithClientOptions(opts...),
-		),
-		createEstate: connect.NewClient[v2.CreateEstateRequest, v2.Estate](
-			httpClient,
-			baseURL+AdminServiceCreateEstateProcedure,
-			connect.WithSchema(adminServiceMethods.ByName("CreateEstate")),
-			connect.WithClientOptions(opts...),
-		),
-		updateEstate: connect.NewClient[v2.UpdateEstateRequest, v2.Estate](
-			httpClient,
-			baseURL+AdminServiceUpdateEstateProcedure,
-			connect.WithSchema(adminServiceMethods.ByName("UpdateEstate")),
-			connect.WithClientOptions(opts...),
-		),
-		deleteEstate: connect.NewClient[v2.DeleteEstateRequest, v2.DeleteEstateResponse](
-			httpClient,
-			baseURL+AdminServiceDeleteEstateProcedure,
-			connect.WithSchema(adminServiceMethods.ByName("DeleteEstate")),
 			connect.WithClientOptions(opts...),
 		),
 		listUsers: connect.NewClient[v2.ListUsersRequest, v2.ListUsersResponse](
@@ -225,11 +175,6 @@ type adminServiceClient struct {
 	logDevSession     *connect.Client[v2.LogDevSessionRequest, v2.LogDevSessionResponse]
 	getDevMetrics     *connect.Client[v2.GetDevMetricsRequest, v2.DevMetrics]
 	syncGitHubStats   *connect.Client[v2.SyncGitHubStatsRequest, v2.SyncGitHubStatsResponse]
-	listEstates       *connect.Client[v2.ListEstatesRequest, v2.ListEstatesResponse]
-	getEstate         *connect.Client[v2.GetEstateRequest, v2.Estate]
-	createEstate      *connect.Client[v2.CreateEstateRequest, v2.Estate]
-	updateEstate      *connect.Client[v2.UpdateEstateRequest, v2.Estate]
-	deleteEstate      *connect.Client[v2.DeleteEstateRequest, v2.DeleteEstateResponse]
 	listUsers         *connect.Client[v2.ListUsersRequest, v2.ListUsersResponse]
 	manageUserRole    *connect.Client[v2.ManageUserRoleRequest, v2.ManageUserRoleResponse]
 	listNotifications *connect.Client[v2.ListNotificationsRequest, v2.ListNotificationsResponse]
@@ -257,31 +202,6 @@ func (c *adminServiceClient) GetDevMetrics(ctx context.Context, req *connect.Req
 // SyncGitHubStats calls sirsi.admin.v2.AdminService.SyncGitHubStats.
 func (c *adminServiceClient) SyncGitHubStats(ctx context.Context, req *connect.Request[v2.SyncGitHubStatsRequest]) (*connect.Response[v2.SyncGitHubStatsResponse], error) {
 	return c.syncGitHubStats.CallUnary(ctx, req)
-}
-
-// ListEstates calls sirsi.admin.v2.AdminService.ListEstates.
-func (c *adminServiceClient) ListEstates(ctx context.Context, req *connect.Request[v2.ListEstatesRequest]) (*connect.Response[v2.ListEstatesResponse], error) {
-	return c.listEstates.CallUnary(ctx, req)
-}
-
-// GetEstate calls sirsi.admin.v2.AdminService.GetEstate.
-func (c *adminServiceClient) GetEstate(ctx context.Context, req *connect.Request[v2.GetEstateRequest]) (*connect.Response[v2.Estate], error) {
-	return c.getEstate.CallUnary(ctx, req)
-}
-
-// CreateEstate calls sirsi.admin.v2.AdminService.CreateEstate.
-func (c *adminServiceClient) CreateEstate(ctx context.Context, req *connect.Request[v2.CreateEstateRequest]) (*connect.Response[v2.Estate], error) {
-	return c.createEstate.CallUnary(ctx, req)
-}
-
-// UpdateEstate calls sirsi.admin.v2.AdminService.UpdateEstate.
-func (c *adminServiceClient) UpdateEstate(ctx context.Context, req *connect.Request[v2.UpdateEstateRequest]) (*connect.Response[v2.Estate], error) {
-	return c.updateEstate.CallUnary(ctx, req)
-}
-
-// DeleteEstate calls sirsi.admin.v2.AdminService.DeleteEstate.
-func (c *adminServiceClient) DeleteEstate(ctx context.Context, req *connect.Request[v2.DeleteEstateRequest]) (*connect.Response[v2.DeleteEstateResponse], error) {
-	return c.deleteEstate.CallUnary(ctx, req)
 }
 
 // ListUsers calls sirsi.admin.v2.AdminService.ListUsers.
@@ -326,12 +246,6 @@ type AdminServiceHandler interface {
 	LogDevSession(context.Context, *connect.Request[v2.LogDevSessionRequest]) (*connect.Response[v2.LogDevSessionResponse], error)
 	GetDevMetrics(context.Context, *connect.Request[v2.GetDevMetricsRequest]) (*connect.Response[v2.DevMetrics], error)
 	SyncGitHubStats(context.Context, *connect.Request[v2.SyncGitHubStatsRequest]) (*connect.Response[v2.SyncGitHubStatsResponse], error)
-	// Estate Management Hub
-	ListEstates(context.Context, *connect.Request[v2.ListEstatesRequest]) (*connect.Response[v2.ListEstatesResponse], error)
-	GetEstate(context.Context, *connect.Request[v2.GetEstateRequest]) (*connect.Response[v2.Estate], error)
-	CreateEstate(context.Context, *connect.Request[v2.CreateEstateRequest]) (*connect.Response[v2.Estate], error)
-	UpdateEstate(context.Context, *connect.Request[v2.UpdateEstateRequest]) (*connect.Response[v2.Estate], error)
-	DeleteEstate(context.Context, *connect.Request[v2.DeleteEstateRequest]) (*connect.Response[v2.DeleteEstateResponse], error)
 	// User & Access Control
 	ListUsers(context.Context, *connect.Request[v2.ListUsersRequest]) (*connect.Response[v2.ListUsersResponse], error)
 	ManageUserRole(context.Context, *connect.Request[v2.ManageUserRoleRequest]) (*connect.Response[v2.ManageUserRoleResponse], error)
@@ -374,36 +288,6 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 		AdminServiceSyncGitHubStatsProcedure,
 		svc.SyncGitHubStats,
 		connect.WithSchema(adminServiceMethods.ByName("SyncGitHubStats")),
-		connect.WithHandlerOptions(opts...),
-	)
-	adminServiceListEstatesHandler := connect.NewUnaryHandler(
-		AdminServiceListEstatesProcedure,
-		svc.ListEstates,
-		connect.WithSchema(adminServiceMethods.ByName("ListEstates")),
-		connect.WithHandlerOptions(opts...),
-	)
-	adminServiceGetEstateHandler := connect.NewUnaryHandler(
-		AdminServiceGetEstateProcedure,
-		svc.GetEstate,
-		connect.WithSchema(adminServiceMethods.ByName("GetEstate")),
-		connect.WithHandlerOptions(opts...),
-	)
-	adminServiceCreateEstateHandler := connect.NewUnaryHandler(
-		AdminServiceCreateEstateProcedure,
-		svc.CreateEstate,
-		connect.WithSchema(adminServiceMethods.ByName("CreateEstate")),
-		connect.WithHandlerOptions(opts...),
-	)
-	adminServiceUpdateEstateHandler := connect.NewUnaryHandler(
-		AdminServiceUpdateEstateProcedure,
-		svc.UpdateEstate,
-		connect.WithSchema(adminServiceMethods.ByName("UpdateEstate")),
-		connect.WithHandlerOptions(opts...),
-	)
-	adminServiceDeleteEstateHandler := connect.NewUnaryHandler(
-		AdminServiceDeleteEstateProcedure,
-		svc.DeleteEstate,
-		connect.WithSchema(adminServiceMethods.ByName("DeleteEstate")),
 		connect.WithHandlerOptions(opts...),
 	)
 	adminServiceListUsersHandler := connect.NewUnaryHandler(
@@ -458,16 +342,6 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 			adminServiceGetDevMetricsHandler.ServeHTTP(w, r)
 		case AdminServiceSyncGitHubStatsProcedure:
 			adminServiceSyncGitHubStatsHandler.ServeHTTP(w, r)
-		case AdminServiceListEstatesProcedure:
-			adminServiceListEstatesHandler.ServeHTTP(w, r)
-		case AdminServiceGetEstateProcedure:
-			adminServiceGetEstateHandler.ServeHTTP(w, r)
-		case AdminServiceCreateEstateProcedure:
-			adminServiceCreateEstateHandler.ServeHTTP(w, r)
-		case AdminServiceUpdateEstateProcedure:
-			adminServiceUpdateEstateHandler.ServeHTTP(w, r)
-		case AdminServiceDeleteEstateProcedure:
-			adminServiceDeleteEstateHandler.ServeHTTP(w, r)
 		case AdminServiceListUsersProcedure:
 			adminServiceListUsersHandler.ServeHTTP(w, r)
 		case AdminServiceManageUserRoleProcedure:
@@ -505,26 +379,6 @@ func (UnimplementedAdminServiceHandler) GetDevMetrics(context.Context, *connect.
 
 func (UnimplementedAdminServiceHandler) SyncGitHubStats(context.Context, *connect.Request[v2.SyncGitHubStatsRequest]) (*connect.Response[v2.SyncGitHubStatsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.AdminService.SyncGitHubStats is not implemented"))
-}
-
-func (UnimplementedAdminServiceHandler) ListEstates(context.Context, *connect.Request[v2.ListEstatesRequest]) (*connect.Response[v2.ListEstatesResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.AdminService.ListEstates is not implemented"))
-}
-
-func (UnimplementedAdminServiceHandler) GetEstate(context.Context, *connect.Request[v2.GetEstateRequest]) (*connect.Response[v2.Estate], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.AdminService.GetEstate is not implemented"))
-}
-
-func (UnimplementedAdminServiceHandler) CreateEstate(context.Context, *connect.Request[v2.CreateEstateRequest]) (*connect.Response[v2.Estate], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.AdminService.CreateEstate is not implemented"))
-}
-
-func (UnimplementedAdminServiceHandler) UpdateEstate(context.Context, *connect.Request[v2.UpdateEstateRequest]) (*connect.Response[v2.Estate], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.AdminService.UpdateEstate is not implemented"))
-}
-
-func (UnimplementedAdminServiceHandler) DeleteEstate(context.Context, *connect.Request[v2.DeleteEstateRequest]) (*connect.Response[v2.DeleteEstateResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("sirsi.admin.v2.AdminService.DeleteEstate is not implemented"))
 }
 
 func (UnimplementedAdminServiceHandler) ListUsers(context.Context, *connect.Request[v2.ListUsersRequest]) (*connect.Response[v2.ListUsersResponse], error) {

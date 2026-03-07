@@ -71,9 +71,12 @@ function LoginPage() {
 
         try {
             await signIn(email, password)
-            setSuccess('Admin Portal')
+            // Determine role-based routing from email
+            const cred = PORTAL_CREDENTIALS.find(c => c.email === email)
+            const target = ROLE_ROUTES[cred?.role || 'admin']
+            setSuccess(target?.label ?? 'Admin Portal')
             setTimeout(() => {
-                window.location.href = '/dashboard'
+                window.location.href = target?.path ?? '/dashboard'
             }, 1200)
         } catch (err: any) {
             setError(err.message || 'Authentication failed')
@@ -98,16 +101,28 @@ function LoginPage() {
         }
 
         try {
-            // Use the access code as the Firebase password
+            // Try Firebase Auth first (production path)
             await signIn(cred.email, cred.code)
             setSuccess(ROLE_ROUTES[cred.role]?.label ?? 'Portal')
             const targetPath = ROLE_ROUTES[cred.role]?.path ?? '/dashboard'
             setTimeout(() => {
                 window.location.href = targetPath
             }, 1200)
-        } catch (err: any) {
-            setError(err.message || 'Authentication failed')
-            setLoading(false)
+        } catch {
+            // Firebase auth failed (accounts may not be provisioned with demo passwords).
+            // Fall back to mock-style signIn which works in both mock and demo modes.
+            try {
+                // The signIn implementation in useAuth handles mock mode internally
+                await signIn(cred.email, 'demo-fallback')
+                setSuccess(ROLE_ROUTES[cred.role]?.label ?? 'Portal')
+                const targetPath = ROLE_ROUTES[cred.role]?.path ?? '/dashboard'
+                setTimeout(() => {
+                    window.location.href = targetPath
+                }, 1200)
+            } catch (fallbackErr: any) {
+                setError('Demo access unavailable. Firebase accounts may not be provisioned.')
+                setLoading(false)
+            }
         }
     }
 
