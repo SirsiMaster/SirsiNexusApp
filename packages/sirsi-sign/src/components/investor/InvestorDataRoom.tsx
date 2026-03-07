@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { listVaultFiles } from '../../lib/opensign';
+import { signingClient } from '../../lib/grpc';
 
 interface DataFile {
     id: string;
@@ -18,18 +18,16 @@ export function InvestorDataRoom() {
     useEffect(() => {
         const fetchFiles = async () => {
             try {
-                const res = await listVaultFiles();
-                if (res.success) {
-                    const formatted = res.files.map((f: any) => ({
-                        id: f.id,
-                        name: f.name,
-                        size: f.size,
-                        type: f.type,
-                        access: 'Confidential' as const,
-                        uploaded: new Date(f.updated).toLocaleDateString()
-                    }));
-                    setFiles(formatted);
-                }
+                const res = await signingClient.listVaultFiles({ projectId: '' });
+                const formatted = res.files.map((f: any) => ({
+                    id: f.name,
+                    name: f.name,
+                    size: f.sizeBytes ? `${(Number(f.sizeBytes) / 1024).toFixed(1)} KB` : '—',
+                    type: f.contentType || 'file',
+                    access: 'Confidential' as const,
+                    uploaded: f.updatedAt ? new Date(Number(f.updatedAt)).toLocaleDateString() : '—'
+                }));
+                setFiles(formatted);
             } catch (err) {
                 console.error('DataRoom Access Error:', err);
             } finally {

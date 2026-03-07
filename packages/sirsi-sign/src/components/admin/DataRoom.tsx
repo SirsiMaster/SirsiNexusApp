@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { listVaultFiles } from '../../lib/opensign';
+import { signingClient } from '../../lib/grpc';
 
 interface DataFile {
     id: string;
@@ -33,20 +33,18 @@ export function DataRoom() {
     useEffect(() => {
         const fetchFiles = async () => {
             try {
-                const res = await listVaultFiles();
-                if (res.success) {
-                    const formatted = res.files.map((f: any) => ({
-                        id: f.id,
-                        name: f.name,
-                        size: f.size,
-                        type: f.type,
-                        access: 'Restricted' as const,
-                        uploaded: new Date(f.updated).toLocaleDateString(),
-                        downloads: 0,
-                        description: `Secure document: ${f.name}`
-                    }));
-                    setRealFiles(formatted);
-                }
+                const res = await signingClient.listVaultFiles({ projectId: '' });
+                const formatted = res.files.map((f: any) => ({
+                    id: f.name,
+                    name: f.name,
+                    size: f.sizeBytes ? `${(Number(f.sizeBytes) / 1024).toFixed(1)} KB` : '—',
+                    type: f.contentType || 'file',
+                    access: 'Restricted' as const,
+                    uploaded: f.updatedAt ? new Date(Number(f.updatedAt)).toLocaleDateString() : '—',
+                    downloads: 0,
+                    description: `Secure document: ${f.name}`
+                }));
+                setRealFiles(formatted);
             } catch (err) {
                 console.error('DataRoom Feed Error:', err);
             } finally {

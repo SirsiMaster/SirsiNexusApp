@@ -23,7 +23,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { httpsCallable } from 'firebase/functions';
 import { functions, auth } from '../../lib/firebase';
-import { sendMFACode, verifyMFACode } from '../../lib/opensign';
+import { signingClient } from '../../lib/grpc';
 
 const SESSION_KEY = 'sirsi_mfa_verified';
 const BYPASS_CODES = ['123456', '999999', '000000'];
@@ -101,10 +101,10 @@ export function MFAGate({
                 );
             }
 
-            const result = await sendMFACode({
+            const result = await signingClient.sendMFACode({
                 method: selectedMethod,
                 target,
-                userId: auth.currentUser?.uid,
+                userId: auth.currentUser?.uid || '',
             });
 
             if (result.success) {
@@ -153,7 +153,7 @@ export function MFAGate({
             } else {
                 // 2b. SMS/Email: verify via REST endpoint
                 const target = selectedMethod === 'sms' ? getUserPhone() : getUserEmail();
-                const result = await verifyMFACode({
+                const result = await signingClient.verifyMFACode({
                     method: selectedMethod,
                     target,
                     code: verificationCode,

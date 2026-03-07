@@ -15,7 +15,7 @@ import { useConfigStore } from '../../store/useConfigStore'
 import { BUNDLES, calculateTotal, calculateTimeline, calculateTotalHours } from '../../data/catalog'
 import { contractsClient } from '../../lib/grpc'
 import { getStripe } from '../../lib/stripe'
-import { createGuestEnvelope, createPaymentSession, requestWireInstructions } from '../../lib/opensign'
+import { signingClient } from '../../lib/grpc'
 import { SignatureCapture } from '../vault/SignatureCapture'
 import { MFAGate } from '../auth/MFAGate'
 import { usePlaidLink } from 'react-plaid-link'
@@ -315,7 +315,7 @@ export function SirsiVault() {
                     status: 7 as any, // FULLY_EXECUTED
                     countersignerSignatureImageData: countersignerSignatureImageData,
                     countersignerSignatureHash: sigHash,
-                    countersignerSignedAt: BigInt(Date.now()) as any,
+                    countersignedAt: BigInt(Date.now()) as any,
                     countersignerTitle: signatureData.title || 'CEO',
                     legalAcknowledgment: true,
                 }
@@ -414,22 +414,25 @@ export function SirsiVault() {
 
             // ADR-015: Create corresponding OpenSign envelope
             try {
-                const envelope = await createGuestEnvelope({
+                const envelope = await signingClient.createGuestEnvelope({
                     projectId: storeProjectId || 'finalwishes',
                     docType: tpl.docType,
                     signerName: signatureData.name,
                     signerEmail: signatureData.email,
                     metadata: {
                         contractId: contract.id,
-                        projectId: storeProjectId,
-                        selectedBundle: selectedBundle,
-                        totalAmount: totalAmountCents
+                        projectId: storeProjectId || '',
+                        selectedBundle: selectedBundle || '',
+                        totalAmount: String(totalAmountCents)
                     },
                     plan: `${selectedPaymentPlan}-month`,
-                    amount: totalAmountCents
+                    amount: BigInt(totalAmountCents),
+                    documentUrl: '',
+                    callbackUrl: '',
+                    redirectUrl: '',
                 })
-                setOpenSignEnvelopeId(envelope.envelopeId)
-                console.log(`📋 OpenSign envelope created: ${envelope.envelopeId}`)
+                setOpenSignEnvelopeId(envelope.id)
+                console.log(`📋 OpenSign envelope created: ${envelope.id}`)
             } catch (envErr) {
                 // Non-fatal: payment can still fall back to contractId
                 console.warn('OpenSign envelope creation failed (non-blocking):', envErr)
@@ -510,13 +513,14 @@ export function SirsiVault() {
 
                 // If ACH is already linked, create payment session via OpenSign (ADR-015)
                 if (signatureData.selectedPaymentMethod === 'bank' && achLinked) {
-                    const achSession = await createPaymentSession({
+                    const achSession = await signingClient.createPaymentSession({
                         envelopeId: openSignEnvelopeId || signatureEvidence?.envelopeId || contractId,
                         planId: 'payment-1',
                         projectId: storeProjectId || 'finalwishes',
                         successUrl: window.location.origin + `/contracts/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}&method=ach`,
                         cancelUrl: window.location.href,
-                        paymentMethodTypes: ['us_bank_account']
+                        paymentMethodTypes: ['us_bank_account'],
+                        amount: BigInt(0),
                     })
 
                     if (achSession.checkoutUrl) {
@@ -534,7 +538,7 @@ export function SirsiVault() {
                 if (signatureData.selectedPaymentMethod === 'wire') {
                     console.log('🏦 Wire Transfer Selected: Requesting instructions via OpenSign');
                     try {
-                        await requestWireInstructions({
+                        await signingClient.requestWireInstructions({
                             email: signatureData.email,
                             reference: `SIRSI-${contractId.substring(0, 8).toUpperCase()}`,
                             envelopeId: openSignEnvelopeId || signatureEvidence?.envelopeId || contractId
@@ -548,13 +552,14 @@ export function SirsiVault() {
                 }
 
                 // Card payment — create session via OpenSign (ADR-015)
-                const session = await createPaymentSession({
+                const session = await signingClient.createPaymentSession({
                     envelopeId: openSignEnvelopeId || signatureEvidence?.envelopeId || contractId,
                     planId: 'payment-1',
                     projectId: storeProjectId || 'finalwishes',
                     successUrl: window.location.origin + `/contracts/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
                     cancelUrl: window.location.href,
-                    paymentMethodTypes: ['card']
+                    paymentMethodTypes: ['card'],
+                    amount: BigInt(0),
                 })
 
 
