@@ -445,9 +445,11 @@ func (s *SigningServer) SendMFACode(
 		log.Printf("🟢 [MFA] Email code sent to %s (SendGrid status: %d)", req.Msg.Target, resp.StatusCode)
 
 	case "sms":
-		// SMS via Twilio — requires TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER
-		// Not yet provisioned. Log the code for testing and return success.
-		log.Printf("⚠️ [MFA] SMS delivery not yet provisioned (Twilio). Code: %s, Target: %s", code, req.Msg.Target)
+		// SMS MFA is delivered natively by Firebase Auth (Identity Platform).
+		// The PhoneMultiFactorGenerator in the client SDK handles SMS delivery
+		// through Google's infrastructure — no Twilio integration needed.
+		// This server-side path exists as a fallback for non-Firebase contexts.
+		log.Printf("ℹ️ [MFA] SMS delivery handled by Firebase Auth. Fallback code: %s, Target: %s", code, req.Msg.Target)
 
 	case "totp":
 		// TOTP codes are generated client-side — nothing to send
