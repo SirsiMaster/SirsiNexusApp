@@ -37,6 +37,7 @@ const usersRoute = lazyRoute('/users', () => import('./routes/users'))
 const contractsRoute = lazyRoute('/contracts', () => import('./routes/contracts'))
 const settingsRoute = lazyRoute('/settings', () => import('./routes/settings'))
 const developmentRoute = lazyRoute('/development', () => import('./routes/development'))
+const catalogRoute = lazyRoute('/catalog', () => import('./routes/catalog'))
 const telemetryRoute = lazyRoute('/telemetry', () => import('./routes/telemetry'))
 
 // Security
@@ -95,6 +96,7 @@ const routeTree = (rootRoute as any).addChildren([
   contractsRoute as any,
   settingsRoute as any,
   developmentRoute as any,
+  catalogRoute as any,
   telemetryRoute as any,
   // Security
   securityRoute as any,

@@ -23,7 +23,7 @@ import {
     Bot, Sparkles, Monitor, Settings2, LogOut, Search, ChevronDown,
     Sun, Moon, PanelLeftClose, UserPlus, Upload, Sliders, HelpCircle,
     MessageCircle, User, TrendingUp, Radio, Server, Database, HardDrive, Archive,
-    GitBranch
+    GitBranch, Package
 } from 'lucide-react'
 import { CommandPalette } from '../components/command-palette/CommandPalette'
 import { NotificationCenter } from '../components/notifications/NotificationCenter'
@@ -54,6 +54,7 @@ const sidebarGroups: NavGroup[] = [
             { to: '/data-room', label: 'Data Room', icon: FolderOpen },
             { to: '/tenants', label: 'Operations', icon: Building2 },
             { to: '/contracts', label: 'Contracts', icon: FileText },
+            { to: '/catalog', label: 'Catalog', icon: Package },
             { to: '/security', label: 'Security & Settings', icon: Lock },
             { to: '/ai-agents', label: 'AI Agents', icon: Bot },
             { to: '/hypervisor', label: 'Sirsi Hypervisor', icon: Sparkles },

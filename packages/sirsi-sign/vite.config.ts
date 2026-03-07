@@ -13,4 +13,17 @@ export default defineConfig({
       'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-firebase': ['firebase', '@firebase/app', '@firebase/auth', '@firebase/component', '@firebase/logger', '@firebase/util'],
+          'vendor-connectrpc': ['@connectrpc/connect', '@connectrpc/connect-web', '@bufbuild/protobuf'],
+          'vendor-tanstack': ['@tanstack/react-query', '@tanstack/react-router', '@tanstack/react-table'],
+          'vendor-payments': ['@stripe/stripe-js', 'react-plaid-link'],
+          'vendor-state': ['zustand'],
+        },
+      },
+    },
+  },
 })
