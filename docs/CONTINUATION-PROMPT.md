@@ -100,16 +100,12 @@ The React app uses `VITE_AUTH_MODE=mock` for local dev. Production login (`/logi
 
 **Files**: `packages/sirsi-portal-app/src/hooks/useAuth.tsx`, `packages/sirsi-portal-app/src/routes/login.tsx`
 
-#### 3. AdminService Estate Methods (4 Unimplemented)
-These 4 ConnectRPC methods return `CodeUnimplemented`:
-- `GetEstate` (line 121)
-- `CreateEstate` (line 128)
-- `UpdateEstate` (line 135)
-- `DeleteEstate` (line 142)
+#### 3. Estate Proto/Code Cleanup (Architectural Leakage)
+The `estate.proto`, Go stubs (GetEstate/CreateEstate/UpdateEstate/DeleteEstate), generated `estate_pb.ts`, and `useAdminService` hooks for estates are **FinalWishes domain concepts** that were incorrectly placed in the Sirsi platform layer. Estates are to FinalWishes what tenants are to Sirsi — they belong in the tenant repo.
 
-These are needed for FinalWishes estate document management. Implement with Cloud SQL persistence.
+**Action**: Delete `proto/sirsi/admin/v2/estate.proto`, remove Estate methods from `main.go`, remove Estate hooks from `useAdminService.ts`, delete generated `estate_pb.ts`. Migrate to FinalWishes repo when that backend is built.
 
-**Files**: `packages/sirsi-admin-service/main.go`
+**Files**: `proto/sirsi/admin/v2/estate.proto`, `packages/sirsi-admin-service/main.go` (lines 121-142), `packages/sirsi-portal-app/src/hooks/useAdminService.ts`, `packages/sirsi-portal-app/src/gen/sirsi/admin/v2/estate_pb.ts`
 
 ### 🟡 P1 — Infrastructure Hardening
 
