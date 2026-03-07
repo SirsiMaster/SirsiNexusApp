@@ -1680,6 +1680,16 @@ func main() {
 	loadCatalogStore()
 	loadEnvelopeStore()
 
+	// Initialize Cloud SQL (graceful fallback to in-memory if not configured)
+	db = initDB()
+	if db != nil {
+		if err := runMigrations(db); err != nil {
+			log.Printf("⚠️ Schema migration failed: %v (continuing with in-memory)", err)
+			db.Close()
+			db = nil
+		}
+	}
+
 	// Initialize GitHub client if PAT is provided
 	var ghClient *github.Client
 	if pat := os.Getenv("SIRSI_GITHUB_PAT"); pat != "" {
@@ -1704,7 +1714,7 @@ func main() {
 		port = "8080"
 	}
 
-	fmt.Printf("Sirsi Admin Service v0.9.1-alpha (GitHub Integrated) listening on :%s\n", port)
+	fmt.Printf("Sirsi Admin Service v0.9.3-alpha (Cloud SQL + GitHub Integrated) listening on :%s\n", port)
 
 	// Apply CORS middleware to the entire mux
 	handler := corsMiddleware(mux)

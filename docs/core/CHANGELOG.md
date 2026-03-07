@@ -4,6 +4,43 @@ All notable changes to the Sirsi Nexus project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.9.3-alpha] - 2026-03-07
+
+### 🏗 CLOUD SQL + CATALOG UI + BACKLOG SWEEP
+
+#### Cloud SQL Persistence Layer
+- Added `database.go` — PostgreSQL connection pool via `pgx/v5` driver
+- Added `schema.sql` — Full schema for tenants, catalog, signing, provisioning
+- Added `catalog_sql.go` — SQL CRUD operations with UPSERT pattern
+- Graceful fallback: uses in-memory stores when `DATABASE_URL` is not set
+- Cloud SQL instance: `sirsi-nexus-live:us-central1:sirsi-vault-sql` (PostgreSQL 15)
+
+#### Admin Catalog Manager (`/catalog`)
+- New React route: product table, bundle table, KPI row, search, tenant filter
+- Full CRUD: create, archive, recover products and bundles
+- Stripe sync status indicator (synced/pending per product)
+- Create modal with recurring billing toggle
+- 16 KB code-split chunk (`catalog-*.js`)
+
+#### Bundle Code Splitting (sirsi-sign)
+- Main chunk: **1,325 KB → 948 KB** (29% reduction)
+- 5 vendor chunks: firebase (91 KB), connectrpc (105 KB), tanstack (182 KB), payments (8 KB), state (1 KB)
+
+#### Security — Vulnerability Triage
+- npm audit: **9 vulnerabilities → 0**
+- Removed orphaned `@storybook/nextjs`, `eslint-config-next` from `ui/` package
+- Fixed `glob@10.5.0` (command injection CVE)
+
+#### OpenSign References Cleanup (ADR-031)
+- Renamed `openSignEnvelopeId` → `signingEnvelopeId` in SirsiVault
+- Updated all ADR-015 comments to reference ADR-031
+- Legal contract text preserved (Rule 9)
+
+#### Documentation
+- **ADR-031**: Unified Commerce & Signing Pipeline (formal decision record)
+- ADR-INDEX updated to 26 ADRs
+- `scripts/provision-stripe-products.js` — Stripe SaaS tier provisioner
+
 ## [0.9.2-alpha] - 2026-03-06
 
 ### 🏗 UNIFIED COMMERCE & SIGNING PIPELINE — 100% gRPC

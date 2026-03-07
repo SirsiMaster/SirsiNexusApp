@@ -107,8 +107,8 @@ export function SirsiVault() {
     const [clientLegalAck, setClientLegalAck] = useState(false)
     const [countersignerLegalAck, setCountersignerLegalAck] = useState(false)
 
-    // OpenSign Envelope State (ADR-015)
-    const [openSignEnvelopeId, setOpenSignEnvelopeId] = useState<string | null>(null)
+    // Signing Envelope State (ADR-031: Unified Signing Pipeline)
+    const [signingEnvelopeId, setSigningEnvelopeId] = useState<string | null>(null)
 
     const { open: openPlaid, ready: plaidReady } = usePlaidLink({
         token: plaidLinkToken,
@@ -412,7 +412,7 @@ export function SirsiVault() {
 
             setStoreContractId(contract.id);
 
-            // ADR-015: Create corresponding OpenSign envelope
+            // ADR-031: Create signing envelope via gRPC SigningService
             try {
                 const envelope = await signingClient.createGuestEnvelope({
                     projectId: storeProjectId || 'finalwishes',
@@ -431,11 +431,11 @@ export function SirsiVault() {
                     callbackUrl: '',
                     redirectUrl: '',
                 })
-                setOpenSignEnvelopeId(envelope.id)
-                console.log(`📋 OpenSign envelope created: ${envelope.id}`)
+                setSigningEnvelopeId(envelope.id)
+                console.log(`📋 Signing envelope created: ${envelope.id}`)
             } catch (envErr) {
                 // Non-fatal: payment can still fall back to contractId
-                console.warn('OpenSign envelope creation failed (non-blocking):', envErr)
+                console.warn('Signing envelope creation failed (non-blocking):', envErr)
             }
         } catch (err: any) {
             console.error('Failed to create draft:', err);
@@ -511,10 +511,10 @@ export function SirsiVault() {
                     }
                 }
 
-                // If ACH is already linked, create payment session via OpenSign (ADR-015)
+                // If ACH is already linked, create payment session via SigningService (ADR-031)
                 if (signatureData.selectedPaymentMethod === 'bank' && achLinked) {
                     const achSession = await signingClient.createPaymentSession({
-                        envelopeId: openSignEnvelopeId || signatureEvidence?.envelopeId || contractId,
+                        envelopeId: signingEnvelopeId || signatureEvidence?.envelopeId || contractId,
                         planId: 'payment-1',
                         projectId: storeProjectId || 'finalwishes',
                         successUrl: window.location.origin + `/contracts/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}&method=ach`,
@@ -534,14 +534,14 @@ export function SirsiVault() {
                     return
                 }
 
-                // Wire transfers — request secure wire instructions via OpenSign (ADR-015)
+                // Wire transfers — request secure wire instructions via SigningService (ADR-031)
                 if (signatureData.selectedPaymentMethod === 'wire') {
-                    console.log('🏦 Wire Transfer Selected: Requesting instructions via OpenSign');
+                    console.log('🏦 Wire Transfer Selected: Requesting instructions via SigningService');
                     try {
                         await signingClient.requestWireInstructions({
                             email: signatureData.email,
                             reference: `SIRSI-${contractId.substring(0, 8).toUpperCase()}`,
-                            envelopeId: openSignEnvelopeId || signatureEvidence?.envelopeId || contractId
+                            envelopeId: signingEnvelopeId || signatureEvidence?.envelopeId || contractId
                         })
                     } catch (wireErr) {
                         console.warn('Wire instructions email failed (non-blocking):', wireErr)
@@ -551,9 +551,9 @@ export function SirsiVault() {
                     return;
                 }
 
-                // Card payment — create session via OpenSign (ADR-015)
+                // Card payment — create session via SigningService (ADR-031)
                 const session = await signingClient.createPaymentSession({
-                    envelopeId: openSignEnvelopeId || signatureEvidence?.envelopeId || contractId,
+                    envelopeId: signingEnvelopeId || signatureEvidence?.envelopeId || contractId,
                     planId: 'payment-1',
                     projectId: storeProjectId || 'finalwishes',
                     successUrl: window.location.origin + `/contracts/${storeProjectId}/payment/success?session_id={CHECKOUT_SESSION_ID}`,

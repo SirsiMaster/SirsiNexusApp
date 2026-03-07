@@ -29,11 +29,26 @@ interface Release {
 
 const releases: Release[] = [
     {
+        version: 'v0.9.3-alpha',
+        date: '2026-03-07',
+        title: 'Cloud SQL + Catalog UI + Backlog Sweep',
+        channel: 'alpha',
+        tag: 'current',
+        highlights: [
+            'Cloud SQL: PostgreSQL 15 persistence layer (database.go, schema.sql, catalog_sql.go)',
+            'Admin Catalog Manager (/catalog): product/bundle CRUD, KPI row, Stripe sync status',
+            'sirsi-sign bundle: 1,325 KB → 948 KB (29% reduction, 5 vendor chunks)',
+            'npm audit: 9 vulnerabilities → 0 (removed Storybook/Next.js orphans)',
+            'OpenSign references cleanup: ADR-015 → ADR-031 migration complete',
+            'ADR-031: Unified Commerce & Signing Pipeline (formal decision record)',
+            'Stripe provisioner script: scripts/provision-stripe-products.js',
+        ],
+    },
+    {
         version: 'v0.9.2-alpha',
         date: '2026-03-06',
         title: 'Unified Commerce & Signing Pipeline — 100% gRPC',
         channel: 'alpha',
-        tag: 'current',
         highlights: [
             'CatalogService: 12 RPCs — products, bundles, Stripe auto-sync, tenant scoping',
             'SigningService: 12 RPCs — envelopes, payments (card/ACH/wire), MFA, vault',
