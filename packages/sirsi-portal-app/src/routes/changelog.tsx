@@ -29,11 +29,26 @@ interface Release {
 
 const releases: Release[] = [
     {
+        version: 'v0.9.0-alpha',
+        date: '2026-03-06',
+        title: 'Protobuf ES v2 Upgrade & ADR-030 Phase 3 — GitHub Automation',
+        channel: 'alpha',
+        tag: 'current',
+        highlights: [
+            'gRPC Infrastructure: Protobuf ES v2.11.0 — all schemas regenerated with buf.build/bufbuild/es',
+            'Connect v2 Migration: createPromiseClient → createClient across sirsi-sign',
+            'ADR-030 Phase 3: GitHub API integration for automatic tenant repo provisioning',
+            'StripeCatalogSync: reusable UCS component for Stripe product/price sync via gRPC',
+            'Provisioning engine: multi-step progress tracking (Firebase → Stripe → GitHub → DNS)',
+            'Deleted 2,600+ lines of stale v1 proto gen files + orphaned _connect.ts descriptors',
+            'Firebase sub-package pinning to resolve Rollup deep-import resolution failures',
+        ],
+    },
+    {
         version: 'v0.8.3-alpha',
         date: '2026-03-06',
         title: 'Self-Service Tenant Provisioning & Commerce Architecture',
         channel: 'alpha',
-        tag: 'current',
         highlights: [
             'ADR-030: Two-path commerce architecture (SaaS Self-Service + Enterprise Bespoke)',
             'Pricing page rewrite: Free / Solo ($49) / Business ($499) with feature comparison matrix',

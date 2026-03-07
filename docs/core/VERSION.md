@@ -18,8 +18,8 @@ Sirsi Nexus follows [Semantic Versioning](https://semver.org/):
 ## Current Version
 
 ```
-v0.8.3-alpha — March 6, 2026
-Stack: Go + ConnectRPC | React 19 + Vite 7 | Cloud SQL + Firestore | Firebase Auth
+v0.9.0-alpha — March 6, 2026
+Stack: Go + ConnectRPC | React 19 + Vite 7 | Protobuf ES v2 | Cloud SQL + Firestore | Firebase Auth
 ```
 
 ---
@@ -31,6 +31,32 @@ Stack: Go + ConnectRPC | React 19 + Vite 7 | Cloud SQL + Firestore | Firebase Au
 > **Database**: Cloud SQL (PostgreSQL) + Firestore  
 > **Design**: Swiss Neo-Deco (Emerald + Gold, Cinzel + Inter)  
 > **Key ADRs**: ADR-027 (React Migration), ADR-026 (Hypervisor Protocol), ADR-028 (Proto Versioning), ADR-030 (Tenant Provisioning)
+
+---
+
+## Version 0.9.0-alpha (2026-03-06)
+
+### 🏗 Protobuf ES v2 Upgrade & ADR-030 Phase 3 Completion
+
+#### gRPC Infrastructure Upgrade
+- All TypeScript schemas regenerated with `buf.build/bufbuild/es` (Protobuf ES v2.11.0)
+- `sirsi-sign` migrated from `createPromiseClient` (Connect v1) → `createClient` (Connect v2)
+- All `new Request()` constructors replaced with plain objects (v2 pattern)
+- Deleted stale v1 gen files (`proto/admin/v1`, `proto/contracts/v1`) — 2,646 lines removed
+- Removed 12 orphaned `_connect.ts` files from intermediate generation step
+- Firebase sub-packages pinned to exact versions for Rollup compatibility
+
+#### ADR-030 Phase 3: GitHub Automation & Catalog Sync
+- Go backend: GitHub API integration (`go-github/v60`) for tenant repo provisioning
+- `StripeCatalogSync.tsx`: reusable UCS component for Stripe product/price sync
+- `catalog.ts`: canonical product/bundle definitions (Solo, Business, FinalWishes Core)
+- Multi-step provisioning engine: Firebase → Stripe → GitHub → DNS
+- GitHub integration gated by `SIRSI_GITHUB_PAT` env var
+
+#### Commits
+| Hash | Message |
+|:-----|:--------|
+| `5f16a9f` | feat(ADR-030 Phase 3 + gRPC v2): GitHub automation, catalog sync, Protobuf ES v2 upgrade |
 
 ---
 
@@ -387,6 +413,7 @@ Critical architectural audit revealed missing core SirsiNexus components from th
 ### ERA 3 — React Migration
 | ADR | Title | Date |
 |:----|:------|:-----|
+| ADR-030 | Self-Service Tenant Provisioning & Client Onboarding Engine | 2026-03-06 |
 | ADR-027 | React Portal Migration — HTML-to-React Admin Console | 2026-03-03 |
 | ADR-026 | Hypervisor Command Protocol — Operational Telemetry via gRPC | 2026-03-02 |
 
