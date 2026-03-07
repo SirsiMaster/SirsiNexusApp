@@ -596,6 +596,23 @@ func (s *TenantServer) GetProvisioningStatus(
 	}), nil
 }
 
+func (s *TenantServer) CreateCheckoutSession(
+	ctx context.Context,
+	req *connect.Request[adminv2.CreateCheckoutSessionRequest],
+) (*connect.Response[adminv2.CreateCheckoutSessionResponse], error) {
+	log.Printf("CreateCheckoutSession: owner=%s plan=%s", req.Msg.OwnerUid, req.Msg.Plan)
+
+	// Mock Stripe Checkout URL
+	// In production, this would use the Stripe SDK to create a session
+	mockUrl := fmt.Sprintf("https://checkout.stripe.com/pay/mock_session_%s?success_url=%s&cancel_url=%s",
+		req.Msg.Plan.String(), req.Msg.SuccessUrl, req.Msg.CancelUrl)
+
+	return connect.NewResponse(&adminv2.CreateCheckoutSessionResponse{
+		SessionId:   "mock_session_id_" + req.Msg.Plan.String(),
+		CheckoutUrl: mockUrl,
+	}), nil
+}
+
 func (s *TenantServer) SuspendTenant(
 	ctx context.Context,
 	req *connect.Request[adminv2.SuspendTenantRequest],

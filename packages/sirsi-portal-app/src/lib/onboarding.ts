@@ -144,3 +144,24 @@ export async function runFullOnboarding(data: OnboardingData): Promise<Onboardin
     // Step 5: Provision tenant
     return provisionTenant(data, authResult.uid)
 }
+
+// ── Stripe Checkout ───────────────────────────────────────────────
+export async function createCheckoutSession(
+    ownerUid: string,
+    plan: PlanId,
+    successUrl: string,
+    cancelUrl: string
+): Promise<{ checkoutUrl: string } | { error: string }> {
+    try {
+        const resp = await tenantClient.createCheckoutSession({
+            ownerUid,
+            plan: planToProto(plan),
+            successUrl,
+            cancelUrl,
+        })
+        return { checkoutUrl: resp.checkoutUrl }
+    } catch (error: any) {
+        console.error('Stripe session error:', error)
+        return { error: 'Failed to initiate secure payment. Please try again.' }
+    }
+}

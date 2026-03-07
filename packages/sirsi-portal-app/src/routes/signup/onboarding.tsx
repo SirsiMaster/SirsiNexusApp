@@ -18,7 +18,7 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { usePageMeta } from '../../hooks/usePageMeta'
 import { Route as rootRoute } from '../__root'
 import { getAllTiers, type PlanId, type SaaSTier } from '@/lib/tiers'
-import { createAccount, provisionTenant } from '@/lib/onboarding'
+import { createAccount, provisionTenant, createCheckoutSession } from '@/lib/onboarding'
 
 export const Route = createRoute({
     getParentRoute: () => rootRoute as any,
@@ -104,6 +104,33 @@ function OnboardingWizard() {
         { label: 'Registering with Hypervisor', status: 'pending' },
     ])
     const provisioningStarted = useRef(false)
+    const stateRestored = useRef(false)
+
+    // Restore state from sessionStorage on mount (if returning from Stripe)
+    useEffect(() => {
+        if (stateRestored.current) return
+        stateRestored.current = true
+
+        const saved = sessionStorage.getItem('sirsi_onboarding_state')
+        const savedUid = sessionStorage.getItem('sirsi_onboarding_uid')
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved)
+                // If returning with ?session_id, advance to step 4
+                const urlParams = new URLSearchParams(window.location.search)
+                if (urlParams.has('session_id')) {
+                    parsed.step = 4
+                    sessionStorage.removeItem('sirsi_onboarding_state')
+                    sessionStorage.removeItem('sirsi_onboarding_uid')
+                }
+                setState(parsed)
+                if (savedUid) setFirebaseUid(savedUid)
+                console.log('Restored onboarding state from session')
+            } catch (e) {
+                console.error('Failed to restore onboarding state', e)
+            }
+        }
+    }, [])
 
     const updateField = useCallback(<K extends keyof WizardState>(
         section: K,
@@ -190,6 +217,34 @@ function OnboardingWizard() {
             if (!state.organization.industry) errs.industry = 'Select an industry'
             if (!state.organization.companySize) errs.companySize = 'Select company size'
             if (Object.keys(errs).length > 0) { setErrors(errs); return }
+        }
+        if (state.step === 3 && state.plan !== 'free') {
+            // Initiate Stripe Checkout for Solo/Business
+            setLoading(true)
+
+            // Save state so we can restore it on return
+            sessionStorage.setItem('sirsi_onboarding_state', JSON.stringify(state))
+            if (firebaseUid) sessionStorage.setItem('sirsi_onboarding_uid', firebaseUid)
+
+            const successUrl = `${window.location.origin}${window.location.pathname}?session_id={CHECKOUT_SESSION_ID}`
+            const cancelUrl = `${window.location.origin}${window.location.pathname}`
+
+            const result = await createCheckoutSession(
+                firebaseUid || 'anonymous',
+                state.plan,
+                successUrl,
+                cancelUrl
+            )
+            setLoading(false)
+
+            if ('error' in result) {
+                alert(result.error) // Replace with better UI in production
+                return
+            }
+
+            // Redirect to Stripe
+            window.location.href = result.checkoutUrl
+            return
         }
         setState(prev => ({ ...prev, step: Math.min(prev.step + 1, 6) }))
     }
