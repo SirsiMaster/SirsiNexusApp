@@ -28,7 +28,7 @@ You are working on **SirsiNexusApp** — the Sirsi Technologies master monorepo.
 - Pushed to main: commit `50a9a20`
 
 ### Sprint D2/D3 — Canon Alignment ✅
-- Rewrote `docs/PROJECT_SCOPE.md` for v4 (8 patents, multi-platform, dual-shard)
+- Rewrote `docs/PROJECT_SCOPE.md` for v4 (5 patents, multi-platform, dual-shard)
 - Reserved ADR-032 through ADR-042 in `docs/ADR-INDEX.md`
 - Added supersession note to ADR-019 (Rust re-adopted for native clients)
 - Updated `SIRSI_RULES.md` to v7.0.0:
@@ -111,10 +111,10 @@ firebase deploy --only hosting:sirsi-sign --project sirsi-nexus-live
 ## Agent Handoff Prompts (For Parallel Work)
 
 Four prompts are ready for delegation to other agents:
-1. **Pitch Deck Agent** — update 16 slides for 8 patents, multi-platform, direct-to-metal
+1. **Pitch Deck Agent** — update 16 slides for 5 patents, multi-platform, direct-to-metal
 2. **Landing Page Agent** — React hero, feature grid, patent badges, platform strip
 3. **Technical Deep Dive Agent** — update TECHNICAL_DESIGN.md with IP firewall
-4. **Investor Summary Agent** — rewrite for 8 patents, verify financials
+4. **Investor Summary Agent** — rewrite for 5 patents, verify financials
 
 See artifact: `agent_handoff_prompts.md`
 

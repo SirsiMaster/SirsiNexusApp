@@ -2,7 +2,7 @@
 
 This index tracks **all** architectural decisions for the Sirsi platform — the unified product that spans web application, desktop application (Tauri), mobile application (React Native), Cloud Hypervisor, website, and pitch deck. All distributions share one codebase, one set of rules, one ADR registry.
 
-**Total ADRs: 37** | **Next available: ADR-043**
+**Total ADRs: 37** | **Next available: ADR-044**
 
 ---
 
@@ -40,13 +40,14 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 | ADR-033 | AlloyDB AI Migration + Cognitive SQL | Proposed | 2026-03-07 |
 | ADR-034 | NebuLang Protocol — Knowledge Graph + DLT Anchoring | Proposed | 2026-03-07 |
 | ADR-035 | Agent Swarm Architecture | Proposed | 2026-03-07 |
-| ADR-036 | Self-Evolving Agent Protocol | Proposed | 2026-03-07 |
+| ADR-036 | Fire Team Protocol — Agent Swarm Orchestration | Proposed | 2026-03-07 |
 | ADR-037 | Hybrid LLM Engine — Quad-Model Routing | Proposed | 2026-03-07 |
-| ADR-038 | Autonomous Infrastructure Genesis | Proposed | 2026-03-07 |
-| ADR-039 | Direct-to-Metal Orchestration Protocol | Proposed | 2026-03-07 |
-| ADR-040 | KG Query Engine — Predictive Infrastructure | Proposed | 2026-03-07 |
-| ADR-041 | Tri-Silicon Mesh Orchestration | Proposed | 2026-03-07 |
+| ADR-038 | Direct-to-Metal Orchestration Protocol (Feature) | Proposed | 2026-03-07 |
+| ADR-039 | Autonomous Infrastructure Genesis (Feature) | Proposed | 2026-03-07 |
+| ADR-040 | KG Query Engine — Human ↔ NebuLang Translator | Proposed | 2026-03-07 |
+| ADR-041 | Tri-Silicon Mesh Orchestration (Feature) | Proposed | 2026-03-07 |
 | ADR-042 | Sovereign Compute Deployment Model (Mac Studio Clusters) | Proposed | 2026-03-07 |
+| ADR-043 | KG Sharding Protocol — Distributed Knowledge Graph Partitioning | Proposed | 2026-03-08 |
 
 ---
 
@@ -82,13 +83,14 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 - ADR-033: AlloyDB AI Migration — Cloud SQL → AlloyDB with cognitive SQL
 - ADR-034: NebuLang Protocol — Knowledge Graph with DLT truth anchoring
 - ADR-035: Agent Swarm — Coordinator + domain agent architecture
-- ADR-036: Self-Evolving Agent — Agents that expand their own capabilities
+- ADR-036: Fire Team Protocol — Agent swarm orchestration (Patent P-004)
 - ADR-037: Hybrid LLM Engine — Quad-model routing (reasoning/speed/sovereign/in-DB)
-- ADR-038: Autonomous Genesis — Natural language → production stack
-- ADR-039: Direct-to-Metal — NETCONF/Redfish/DCGM/TPU direct hardware
-- ADR-040: KG Query Engine — Predictive infrastructure-as-data
-- ADR-041: Tri-Silicon Mesh — Silicon-aware workload scheduling
+- ADR-038: Direct-to-Metal — NETCONF/Redfish/DCGM/TPU direct hardware (Feature, not patent)
+- ADR-039: Autonomous Genesis — Natural language → production stack (Feature, not patent)
+- ADR-040: KG Query Engine — Human ↔ NebuLang translator (Patent P-003)
+- ADR-041: Tri-Silicon Mesh — Silicon-aware workload scheduling (Feature, not patent)
 - ADR-042: Sovereign Compute — Mac Studio M5 Max cluster deployment
+- ADR-043: KG Sharding Protocol — Distributed KG partitioning (Patent P-005)
 - ADR-025: Unified App Architecture — Single React codebase, Tauri desktop, Sirsi Rail UCS
 
 ### React Migration & Frontend Architecture
@@ -120,7 +122,7 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 | ADR-029 | Active — Cloud Run Deployment Architecture |
 | ADR-030 | Active — Self-Service Tenant Provisioning |
 | ADR-031 | Active — Unified Commerce & Signing Pipeline |
-| ADR-032 — ADR-042 | Proposed — Master Blueprint v4 decisions |
+| ADR-032 — ADR-043 | Proposed — Master Blueprint v4 decisions |
 | ADR-043+ | Next available |
 
-> **Last updated:** March 7, 2026 — Reserved ADR-032 through ADR-042 for Master Blueprint v4
+> **Last updated:** March 8, 2026 — Updated patent portfolio to 5 (was 8), added ADR-043 (KG Sharding)

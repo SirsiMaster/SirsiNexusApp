@@ -21,7 +21,20 @@
 
 ---
 
-## I. THE DUAL-SHARD ARCHITECTURE
+## I. THE TECHNICAL BEDROCK (Core Stack)
+
+Sirsi is built on a four-tier foundation of "integrated independence," ensuring that the platform is both robust and sovereign.
+
+| Tier | Component | Role | Technology |
+| :--- | :--- | :--- | :--- |
+| **01** | **Core Kernel** | Native Systems | **Rust** — Tauri desktop, headless daemon, and Mac Studio cluster coordination. |
+| **02** | **Orchestration** | Stack Fabric | **Go** — High-frequency data mesh. Relational persistence with atomic state synchronization. |
+| **03** | **Trust Layer** | DLT Verification | **Hedera** — Immutable audit trails. Publicly verifiable state logs and DID standards. |
+| **04** | **Edge Fabric** | Acceleration | **NGINX** — Reverse proxy, encryption, and edge acceleration for the gRPC-Web mesh. |
+
+---
+
+## II. THE DUAL-SHARD ARCHITECTURE
 
 > **This is the core innovation. This is the patent. This is what makes Sirsi unprecedented.**
 
@@ -715,18 +728,17 @@ CREATE INDEX idx_infra_drift ON infrastructure_state(drift_detected) WHERE drift
 
 ---
 
-## XII. 8 PATENTS
+## XII. 5 PATENTS
 
-| # | Title | Core Innovation | Epoch |
-|:--|:------|:----------------|:------|
-| P-001 | NebuLang Protocol | Zero-hallucination LLM via DLT-consensus-verified Knowledge Graph grounding | 3 |
-| P-002 | Neural-Fractal Architecture | Recursive dual-shard (logic + tensor) verification at every infrastructure level | 5 |
-| P-003 | KG Query Engine | Predictive Infrastructure-as-Data — databases that predict their own failures | 7 |
-| P-004 | Autonomous Infrastructure Genesis | Natural language → complete production stack, zero human intervention | 5 |
-| P-005 | Tri-Silicon Mesh Orchestration | Silicon-characteristic-aware workload scheduling (CUDA/MXU/Neural Engine) | 9 |
-| P-006 | Cryptographic Infrastructure Proofs | Mathematically verifiable infrastructure state via Hedera consensus anchoring | 3 |
-| P-007 | Self-Evolving Agent Protocol | Agents observe operations and autonomously expand their capability registry | 4 |
-| P-008 | Direct-to-Metal Orchestration | Bypass IaC — direct NETCONF/Redfish/DCGM/TPU with AI-driven silicon-aware config | 9 |
+| # | Title | Core Innovation | Status |
+|:--|:------|:----------------|:-------|
+| P-001 | NebuLang Protocol | The machine-to-machine communication language for all node and agent interaction in the Neural-Fractal Architecture. | Filed |
+| P-002 | Neural-Fractal Architecture | The recursive dual-shard (Logic + Tensor) system architecture that provides consensus-ordered reasoning with distributed inference. | Filed |
+| P-003 | KG Query Engine | Translates human-readable queries into NebuLang for system execution, and translates machine responses back to human-readable intent. | Filed |
+| P-004 | Fire Team Protocol | Autonomous agent swarms organized in military command structures for task decomposition, execution, and self-coordination. | In Design |
+| P-005 | KG Sharding Protocol | Sharding overlay for distributing Knowledge Graph management and query execution across heterogeneous silicon nodes. | In Design |
+
+> **Note:** Capabilities such as Tri-Silicon Mesh Orchestration, Cryptographic Infrastructure Proofs, Direct-to-Metal Communication, and Autonomous Infrastructure Genesis are **platform features**, not standalone patents. They are implementations of the patented protocols above.
 
 ---
 

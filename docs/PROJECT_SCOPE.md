@@ -42,18 +42,17 @@ All platforms share the same **Go + gRPC backend** via protobuf contracts.
 
 ---
 
-## 🏛 EIGHT-PATENT PORTFOLIO
+## 🏛 FIVE-PATENT PORTFOLIO
 
-| # | Patent | Description |
-|:--|:-------|:------------|
-| P-001 | **NebuLang Protocol** | Zero-hallucination AI via Knowledge Graph grounding with distributed ledger anchoring |
-| P-002 | **Neural-Fractal Architecture** | Recursive dual-shard verification at every infrastructure level |
-| P-003 | **KG Query Engine** | Predictive Infrastructure-as-Data — databases that forecast their own failures |
-| P-004 | **Autonomous Infrastructure Genesis** | Natural language → complete production stack, zero human intervention |
-| P-005 | **Tri-Silicon Mesh Orchestration** | Silicon-characteristic-aware workload scheduling (CUDA/MXU/Neural Engine) |
-| P-006 | **Cryptographic Infrastructure Proofs** | Mathematically verifiable infrastructure state via consensus anchoring |
-| P-007 | **Self-Evolving Agent Protocol** | AI agents that observe operations and autonomously expand capabilities |
-| P-008 | **Direct-to-Metal Orchestration** | Bypass IaC — direct NETCONF/Redfish/DCGM/TPU communication with AI-driven config |
+| # | Patent | Description | Status |
+|:--|:-------|:------------|:-------|
+| P-001 | **NebuLang Protocol** | The 100% protobuf machine-to-machine language used between nodes and agents in the Neural Fractal Architecture — the only language Sirsi devices speak | Filed |
+| P-002 | **Neural-Fractal Architecture** | Recursive dual-shard verification at every infrastructure level — the system that binds heterogeneous silicon | Filed |
+| P-003 | **KG Query Engine** | Machine-to-human readable Knowledge Graph translator — converts human language queries into NebuLang and back | Filed |
+| P-004 | **Fire Team Protocol** | Agent swarm orchestration — autonomous fire teams and squads that self-organize and self-verify across distributed infrastructure | In Design |
+| P-005 | **KG Sharding Protocol** | Knowledge Graph partitioning and distributed query execution across heterogeneous compute nodes | In Design |
+
+> **Note:** Tri-Silicon Mesh, Cryptographic Proofs, Direct-to-Metal, and Autonomous Genesis are **platform features**, not standalone patents.
 
 ---
 
@@ -146,7 +145,7 @@ Sirsi bypasses infrastructure-as-code tools and speaks directly to vendor hardwa
 ## 📊 BUSINESS METRICS
 
 - **Contracted Revenue**: $147K secured
-- **Patent Portfolio**: 8 utility patent applications
+- **Patent Portfolio**: 5 patents (3 filed, 2 in design)
 - **Validation**: Google for Startups, NVIDIA Inception
 - **Target**: $1M ARR run-rate by Q4 2026
 - **Hiring**: VP of Engineering (Hypervisor), Head of Growth (GTM)

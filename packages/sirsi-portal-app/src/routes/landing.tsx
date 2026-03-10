@@ -1,24 +1,17 @@
 /**
- * Landing Page — sirsi.ai homepage (PIXEL-PERFECT port of index.html)
+ * Landing Page — sirsi.ai homepage
  *
- * Source of truth: packages/sirsi-portal/index.html (923 lines)
- * Rule 22: React must achieve pixel-perfect parity with HTML before extending.
+ * Version: 4.0.0 — Master Blueprint v4 alignment
+ * Design: Swiss Neo-Deco (Cinzel headings, Inter body, Emerald #059669 + Gold #C8A951)
+ * IP Firewall: No model names, no HCS/Hedera, no proto/gRPC, no code snippets.
  *
- * Sections (matching HTML exactly):
- *   1. Hero (hex-pattern overlay, badge, h1, 3 CTA buttons, decorative circles)
- *   2. Dual-Path (triangle-pattern, Enterprise + Investor cards with hover overlays)
- *   3. AI Differentiators (cross-pattern, dark bg, 3+2 feature cards, AI metrics panel)
- *   4. Core Capabilities (grid-dots-pattern, 3 feature cards)
- *   5. Multi-Cloud Platform (organic-pattern, checklist, demo panel, 4 real-time metrics)
- *   6. CTA Banner (emerald→blue gradient)
- *
- * Missing from prior React port (now fixed):
- *   - All 7 geometric pattern overlays (CSS SVG backgrounds)
- *   - Full dark: class support on every element
- *   - "Platform Validation" gradient button
- *   - Multi-Cloud Platform section (entire section)
- *   - Hover gradient overlays on dual-path cards
- *   - Mobile hamburger menu (handled by PublicHeader in __root.tsx)
+ * Sections:
+ *   1. Hero — "The Autonomous CTO" with animated mesh
+ *   2. Patent Portfolio Badge — 8 patents, gold ribbon
+ *   3. Feature Grid — 8 capabilities in 4×2 grid
+ *   4. Platform Strip — Web · Desktop · Mobile · Mac Studio
+ *   5. Tri-Silicon Visual — NVIDIA / Google TPU / Apple Silicon
+ *   6. CTA — Schedule a Technical Briefing
  */
 
 import { useState, useEffect } from 'react'
@@ -48,8 +41,10 @@ export const HomeRoute = createRoute({
     component: LandingPage,
 })
 
-// ── Geometric pattern CSS (inline to avoid external stylesheet dependency) ──
+// ── Geometric pattern CSS ──
 const patternStyles = `
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
 .hex-pattern {
   position: absolute; width: 100%; height: 100%; pointer-events: none;
   background-image:
@@ -57,17 +52,6 @@ const patternStyles = `
     url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><polygon points="30,5 55,30 30,55 5,30" fill="none" stroke="rgba(200,169,81,0.08)" stroke-width="1"/></svg>');
   background-size: 100px 86.6px, 60px 60px;
   opacity: 0.25;
-}
-.triangle-pattern {
-  position: absolute; width: 100%; height: 100%; pointer-events: none;
-  background-image:
-    url('data:image/svg+xml,<svg width="60" height="52" xmlns="http://www.w3.org/2000/svg"><polygon points="30,0 60,52 0,52" fill="none" stroke="rgba(59,130,246,0.15)" stroke-width="1"/><polygon points="0,0 30,52 -30,52" fill="none" stroke="rgba(16,185,129,0.12)" stroke-width="1"/><polygon points="60,0 90,52 30,52" fill="none" stroke="rgba(168,85,247,0.1)" stroke-width="1"/></svg>');
-  background-size: 60px 52px; opacity: 0.35;
-}
-.cross-pattern {
-  position: absolute; width: 100%; height: 100%; pointer-events: none;
-  background-image: url('data:image/svg+xml,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><path d="M20,5 L20,35 M5,20 L35,20" stroke="rgba(16,185,129,0.15)" stroke-width="2" stroke-linecap="round"/></svg>');
-  background-size: 40px 40px; opacity: 0.3;
 }
 .diamond-gold-pattern {
   position: absolute; width: 100%; height: 100%; pointer-events: none;
@@ -82,35 +66,60 @@ const patternStyles = `
   background-image: url('data:image/svg+xml,<svg width="50" height="50" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="50" height="50" fill="none" stroke="rgba(16,185,129,0.1)" stroke-width="1"/><circle cx="0" cy="0" r="3" fill="rgba(59,130,246,0.2)"/><circle cx="50" cy="0" r="3" fill="rgba(59,130,246,0.2)"/><circle cx="0" cy="50" r="3" fill="rgba(59,130,246,0.2)"/><circle cx="50" cy="50" r="3" fill="rgba(59,130,246,0.2)"/><circle cx="25" cy="25" r="2" fill="rgba(200,169,81,0.15)"/></svg>');
   background-size: 50px 50px; opacity: 0.35;
 }
-.organic-pattern {
-  position: absolute; width: 100%; height: 100%; pointer-events: none;
-  background-image:
-    radial-gradient(ellipse at 20% 30%, rgba(16,185,129,0.06) 0%, transparent 35%),
-    radial-gradient(ellipse at 60% 70%, rgba(200,169,81,0.05) 0%, transparent 40%),
-    radial-gradient(ellipse at 80% 10%, rgba(168,85,247,0.04) 0%, transparent 30%),
-    radial-gradient(ellipse at 10% 90%, rgba(16,185,129,0.05) 0%, transparent 35%),
-    radial-gradient(ellipse at 90% 50%, rgba(59,130,246,0.06) 0%, transparent 40%);
-  opacity: 0.4;
+
+@keyframes meshFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.04; }
+  50% { transform: translateY(-20px) rotate(1deg); opacity: 0.08; }
+}
+.mesh-bg {
+  animation: meshFloat 8s ease-in-out infinite;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+.delay-600 { animation-delay: 0.6s; }
+.delay-700 { animation-delay: 0.7s; }
+.delay-800 { animation-delay: 0.8s; }
+
+.glass-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.glass-card:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(16,185,129,0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px -15px rgba(16,185,129,0.15);
+}
+
+.gold-badge {
+  background: linear-gradient(135deg, rgba(200,169,81,0.15), rgba(200,169,81,0.05));
+  border: 1px solid rgba(200,169,81,0.4);
+}
+
+.silicon-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.silicon-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4);
 }
 `
 
-// ── Reusable check icon ──
-function CheckIcon({ color = '#10b981' }: { color?: string }) {
-    return (
-        <svg className="w-5 h-5 flex-shrink-0" fill={color} viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-        </svg>
-    )
-}
-
-function CheckMark() {
-    return (
-        <svg className="w-5 h-5 text-emerald-600 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-        </svg>
-    )
-}
-
+// ── TelemetryPulse component — live telemetry widget ──
 function TelemetryPulse() {
     const [stats, setStats] = useState({
         fidelity: 100.00,
@@ -133,7 +142,7 @@ function TelemetryPulse() {
 
     return (
         <TooltipProvider>
-            <div className="bg-white/5 backdrop-blur-md p-10 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden group">
+            <div className="glass-card p-10 rounded-3xl shadow-2xl relative overflow-hidden group transition-all duration-500">
                 <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-700">
                     <Bot size={120} />
                 </div>
@@ -141,11 +150,11 @@ function TelemetryPulse() {
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-3">
                             <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                            <h4 className="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.2em] opacity-80">
+                            <h4 className="text-[10px] font-semibold text-emerald-400 uppercase tracking-[0.2em] opacity-80">
                                 SIGNAL: TRUE // TELEMETRY PULSE
                             </h4>
                         </div>
-                        <div className="px-2 py-0.5 rounded text-[8px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-widest">
+                        <div className="px-2 py-0.5 rounded text-[8px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 uppercase tracking-widest">
                             Authentic
                         </div>
                     </div>
@@ -154,19 +163,18 @@ function TelemetryPulse() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <div className="text-left border-l-2 border-emerald-500/20 pl-4 hover:border-emerald-500 transition-colors cursor-help">
-                                    <div className="text-3xl font-bold tracking-tighter text-white mb-1 font-mono">
+                                    <div className="text-3xl font-semibold tracking-tighter text-white mb-1 font-mono">
                                         {stats.fidelity.toFixed(2)}%
                                     </div>
-                                    <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1">
+                                    <div className="text-[9px] font-medium text-slate-500 uppercase tracking-widest flex items-center gap-1">
                                         Inference Fidelity <Info size={8} />
                                     </div>
                                 </div>
                             </TooltipTrigger>
                             <TooltipContent className="max-w-xs bg-slate-900 border-emerald-500/30 text-emerald-50 p-3">
                                 <div className="space-y-2">
-                                    <p className="font-bold text-emerald-400 uppercase tracking-widest text-[10px]">Business Meaning: Determinism</p>
-                                    <p className="text-[11px] leading-relaxed">Measures the Hypervisor’s adherence to Sirsi canonical rules. Every operational decision is 100% grounded in platform policy.</p>
-                                    <div className="pt-2 border-t border-white/10 text-[9px] text-slate-400">CONTEXT: Unlike generic LLMs, these decisions are deterministic and policy-locked.</div>
+                                    <p className="font-medium text-emerald-400 uppercase tracking-widest text-[10px]">Business Meaning: Determinism</p>
+                                    <p className="text-[11px] leading-relaxed">Measures the Hypervisor's adherence to Sirsi canonical rules. Every operational decision is 100% grounded in platform policy.</p>
                                 </div>
                             </TooltipContent>
                         </Tooltip>
@@ -174,19 +182,18 @@ function TelemetryPulse() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <div className="text-left border-l-2 border-emerald-500/20 pl-4 hover:border-emerald-500 transition-colors cursor-help">
-                                    <div className="text-3xl font-bold tracking-tighter text-white mb-1 font-mono">
+                                    <div className="text-3xl font-semibold tracking-tighter text-white mb-1 font-mono">
                                         &lt; {stats.latency.toFixed(1)}ms
                                     </div>
-                                    <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1">
+                                    <div className="text-[9px] font-medium text-slate-500 uppercase tracking-widest flex items-center gap-1">
                                         Inference Latency <Info size={8} />
                                     </div>
                                 </div>
                             </TooltipTrigger>
                             <TooltipContent className="max-w-xs bg-slate-900 border-emerald-500/30 text-emerald-50 p-3">
                                 <div className="space-y-2">
-                                    <p className="font-bold text-emerald-400 uppercase tracking-widest text-[10px]">Business Meaning: Reaction Speed</p>
+                                    <p className="font-medium text-emerald-400 uppercase tracking-widest text-[10px]">Business Meaning: Reaction Speed</p>
                                     <p className="text-[11px] leading-relaxed">The time taken for the AI to analyze anomaly signals and execute a fix. Sub-50ms is required for true self-healing.</p>
-                                    <div className="pt-2 border-t border-white/10 text-[9px] text-slate-400">CONTEXT: Reactive scaling and security blocking occur before human-readable alerts are generated.</div>
                                 </div>
                             </TooltipContent>
                         </Tooltip>
@@ -194,19 +201,18 @@ function TelemetryPulse() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <div className="text-left border-l-2 border-emerald-500/20 pl-4 hover:border-emerald-500 transition-colors cursor-help">
-                                    <div className="text-3xl font-bold tracking-tighter text-emerald-400 mb-1 font-mono">
+                                    <div className="text-3xl font-semibold tracking-tighter text-emerald-400 mb-1 font-mono">
                                         {(stats.validations / 1000000).toFixed(2)}M+
                                     </div>
-                                    <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1">
+                                    <div className="text-[9px] font-medium text-slate-500 uppercase tracking-widest flex items-center gap-1">
                                         Daily Validations <Info size={8} />
                                     </div>
                                 </div>
                             </TooltipTrigger>
                             <TooltipContent className="max-w-xs bg-slate-900 border-emerald-500/30 text-emerald-50 p-3">
                                 <div className="space-y-2">
-                                    <p className="font-bold text-emerald-400 uppercase tracking-widest text-[10px]">Business Meaning: Drift Prevention</p>
-                                    <p className="text-[11px] leading-relaxed">The total number of integrity checks performed across the Global Portfolio to ensure 1:1 compliance with IAC.</p>
-                                    <div className="pt-2 border-t border-white/10 text-[9px] text-slate-400">CONTEXT: Every security policy and resource limit is validated thousands of times per hour.</div>
+                                    <p className="font-medium text-emerald-400 uppercase tracking-widest text-[10px]">Business Meaning: Drift Prevention</p>
+                                    <p className="text-[11px] leading-relaxed">The total number of integrity checks performed across the Global Portfolio to ensure 1:1 compliance.</p>
                                 </div>
                             </TooltipContent>
                         </Tooltip>
@@ -214,25 +220,24 @@ function TelemetryPulse() {
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <div className="text-left border-l-2 border-emerald-500/20 pl-4 hover:border-emerald-500 transition-colors cursor-help">
-                                    <div className="text-3xl font-bold tracking-tighter text-emerald-100/40 mb-1 font-mono">
+                                    <div className="text-3xl font-semibold tracking-tighter text-emerald-100/40 mb-1 font-mono">
                                         {stats.manual.toFixed(2)}%
                                     </div>
-                                    <div className="text-[9px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1">
+                                    <div className="text-[9px] font-medium text-slate-500 uppercase tracking-widest flex items-center gap-1">
                                         Manual Rate <Info size={8} />
                                     </div>
                                 </div>
                             </TooltipTrigger>
                             <TooltipContent className="max-w-xs bg-slate-900 border-emerald-500/30 text-emerald-50 p-3">
                                 <div className="space-y-2">
-                                    <p className="font-bold text-emerald-400 uppercase tracking-widest text-[10px]">Business Meaning: Efficiency</p>
+                                    <p className="font-medium text-emerald-400 uppercase tracking-widest text-[10px]">Business Meaning: Efficiency</p>
                                     <p className="text-[11px] leading-relaxed">The percentage of infrastructure events requiring human intervention. Lower is higher platform autonomy.</p>
-                                    <div className="pt-2 border-t border-white/10 text-[9px] text-slate-400">CONTEXT: Achieving ZTO (Zero-Touch Operations) is the prerequisite for scaling to $100M+ AUM.</div>
                                 </div>
                             </TooltipContent>
                         </Tooltip>
                     </div>
 
-                    <div className="mt-12 pt-8 border-t border-white/5 flex justify-between items-center text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">
+                    <div className="mt-12 pt-8 border-t border-white/5 flex justify-between items-center text-[10px] font-medium text-slate-500 uppercase tracking-[0.2em]">
                         <span className="flex items-center gap-2">
                             <span className="w-1 h-1 bg-emerald-500 rounded-full" />
                             GLOBAL OPTIMIZATION // TRUE
@@ -245,197 +250,322 @@ function TelemetryPulse() {
     )
 }
 
+// ── Feature card data for the 8-capability grid ──
+const features = [
+    {
+        title: 'Autonomous Genesis',
+        desc: 'Describe what you need. We build it. Natural language to complete production stacks — zero human touch.',
+        icon: (
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+            </svg>
+        ),
+    },
+    {
+        title: 'Knowledge Graph',
+        desc: "AI that can't hallucinate about your infrastructure. Every decision grounded in a verified truth graph.",
+        icon: (
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+            </svg>
+        ),
+    },
+    {
+        title: 'Agent Swarm',
+        desc: 'Self-evolving agents that learn and improve autonomously. Each agent expands its own capability registry.',
+        icon: (
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+            </svg>
+        ),
+    },
+    {
+        title: 'Digital Twin',
+        desc: 'Walk through your infrastructure in 3D. A living replica of every service, connection, and data flow.',
+        icon: (
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+            </svg>
+        ),
+    },
+    {
+        title: 'Direct-to-Metal',
+        desc: 'Bypass Terraform. Speak directly to Cisco routers, Dell servers, and NVIDIA GPUs via native protocols.',
+        icon: (
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z" />
+            </svg>
+        ),
+    },
+    {
+        title: 'Sovereign Compute',
+        desc: 'Your data never leaves your network. Run the full AI stack on your own Apple Silicon clusters.',
+        icon: (
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+            </svg>
+        ),
+    },
+    {
+        title: 'Predictive Intelligence',
+        desc: 'Predict failures before they happen. AI learns from historical patterns to prevent downtime proactively.',
+        icon: (
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v-5.5m3 5.5v-3.5m3 3.5v-1.5" />
+            </svg>
+        ),
+    },
+    {
+        title: 'Autonomous Compliance',
+        desc: 'SOC 2 compliance, proven mathematically. Every infrastructure state is cryptographically verifiable.',
+        icon: (
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+            </svg>
+        ),
+    },
+]
+
+// ── Patent names ──
+const patents = [
+    'NebuLang Protocol',
+    'Neural-Fractal Architecture',
+    'KG Query Engine',
+    'Autonomous Infrastructure Genesis',
+    'Tri-Silicon Mesh Orchestration',
+    'Cryptographic Infrastructure Proofs',
+    'Self-Evolving Agent Protocol',
+    'Direct-to-Metal Orchestration',
+]
+
 function LandingPage() {
-    usePageMeta('SirsiNexus — Autonomous Infrastructure OS', 'Sirsi Nexus is the autonomous infrastructure operating system. Build, host, optimize, and scale cloud infrastructure through natural conversation.')
+    usePageMeta(
+        'Sirsi — Intelligent Infrastructure',
+        'Sirsi is the world\'s first AI platform that autonomously builds, manages, and cryptographically proves its own infrastructure. 8 patents. Multi-platform. Direct-to-metal.'
+    )
+
     return (
         <>
-            {/* Inject pattern CSS */}
+            {/* Inject CSS */}
             <style>{patternStyles}</style>
 
             {/* ═══════════════ 1. HERO SECTION ═══════════════ */}
-            <section className="relative bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-100 dark:from-slate-900 dark:via-emerald-900 dark:to-emerald-800 py-24 overflow-hidden">
-                {/* Hexagonal Pattern Overlay */}
-                <div className="hex-pattern" />
-                <div className="max-w-7xl mx-auto px-6">
+            <section
+                id="hero"
+                className="relative min-h-[90vh] flex items-center overflow-hidden"
+                style={{ background: 'linear-gradient(160deg, #022c22 0%, #064e3b 30%, #000000 100%)' }}
+            >
+                {/* Animated mesh background */}
+                <div className="absolute inset-0 overflow-hidden">
+                    <div className="hex-pattern" />
+                    <div className="mesh-bg absolute inset-0" style={{
+                        backgroundImage: 'radial-gradient(ellipse at 30% 40%, rgba(16,185,129,0.08) 0%, transparent 50%), radial-gradient(ellipse at 70% 60%, rgba(200,169,81,0.05) 0%, transparent 50%)',
+                    }} />
+                </div>
+
+                <div className="max-w-7xl mx-auto px-6 w-full relative z-10 py-20">
                     <div className="text-center">
                         {/* Badge */}
-                        <div className="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 px-4 py-2 rounded-full mb-6">
+                        <div className="animate-fade-in-up inline-flex items-center gap-2 gold-badge px-5 py-2.5 rounded-full mb-8">
                             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                            <span className="text-sm font-medium text-emerald-700 dark:text-emerald-300">
-                                Revolutionary AI-Powered Infrastructure Platform
+                            <span className="text-sm font-medium" style={{ color: '#C8A951' }}>
+                                8 Patent Portfolio · AI-Powered Infrastructure
                             </span>
                         </div>
 
-                        <h1 className="text-5xl md:text-7xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight">
-                            The Future of <br className="hidden md:block" />
-                            <span className="text-emerald-600">Intelligent Infrastructure</span>
+                        {/* Headline — Cinzel */}
+                        <h1
+                            className="animate-fade-in-up delay-100 text-5xl md:text-7xl lg:text-8xl mb-6 leading-[0.95] tracking-[0.04em]"
+                            style={{
+                                fontFamily: "'Cinzel', serif",
+                                fontWeight: 600,
+                                color: '#ffffff',
+                            }}
+                        >
+                            THE FUTURE OF
+                            <br />
+                            <span style={{ color: '#10B981' }}>INTELLIGENT INFRASTRUCTURE</span>
                         </h1>
 
-                        <p className="text-2xl text-slate-600 dark:text-slate-400 mb-4 max-w-4xl mx-auto font-light">
-                            SirsiNexus doesn't just manage infrastructure—it{' '}
-                            <span className="font-semibold text-emerald-600">thinks, learns, and evolves</span> with your business.
-                        </p>
-                        <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
-                            Our AI agents embed directly into your cloud ecosystem, making autonomous decisions,
-                            predicting failures before they happen, and optimizing resources in real-time.
+                        {/* Subheadline — Inter */}
+                        <p
+                            className="animate-fade-in-up delay-200 text-xl md:text-2xl mb-4 max-w-3xl mx-auto leading-relaxed"
+                            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, color: 'rgba(255,255,255,0.7)' }}
+                        >
+                            The world's first AI platform that builds, manages, and{' '}
+                            <span style={{ color: '#10B981', fontWeight: 500 }}>cryptographically proves</span>{' '}
+                            its own infrastructure.
                         </p>
 
-                        {/* CTA Buttons — 3 buttons matching HTML */}
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <button className="inline-flex items-center px-8 py-4 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        <p
+                            className="animate-fade-in-up delay-300 text-base md:text-lg mb-10 max-w-2xl mx-auto"
+                            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, color: 'rgba(255,255,255,0.45)' }}
+                        >
+                            Describe what you need in plain English. Sirsi builds it, verifies it, and proves it — autonomously.
+                        </p>
+
+                        {/* CTA buttons */}
+                        <div className="animate-fade-in-up delay-400 flex flex-col sm:flex-row gap-4 justify-center">
+                            <LinkComp
+                                to="/signup"
+                                className="inline-flex items-center px-8 py-4 font-medium rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg text-white"
+                                style={{ background: 'linear-gradient(135deg, #059669, #10B981)', fontFamily: "'Inter', sans-serif" }}
+                            >
                                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
-                                Start Live Demo
-                            </button>
-                            <LinkComp to="/documentation"
-                                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-emerald-500 to-blue-500 text-white font-semibold rounded-lg hover:from-emerald-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
-                                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                                Platform Validation
+                                Start Free
                             </LinkComp>
-                            <LinkComp to="/documentation"
-                                className="inline-flex items-center px-8 py-4 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-300">
+                            <a
+                                href="mailto:cylton@sirsi.ai?subject=Technical%20Briefing%20Request"
+                                className="inline-flex items-center px-8 py-4 font-medium rounded-lg transition-all duration-300 transform hover:scale-105"
+                                style={{
+                                    fontFamily: "'Inter', sans-serif",
+                                    border: '1px solid rgba(200,169,81,0.5)',
+                                    color: '#C8A951',
+                                    background: 'rgba(200,169,81,0.05)',
+                                }}
+                            >
                                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
-                                Technical Deep Dive
-                            </LinkComp>
+                                Schedule a Briefing
+                            </a>
                         </div>
                     </div>
                 </div>
-                {/* Background decoration */}
-                <div className="absolute top-10 left-10 w-20 h-20 bg-emerald-200 dark:bg-emerald-800 rounded-full opacity-30 animate-pulse" />
-                <div className="absolute bottom-10 right-10 w-32 h-32 bg-blue-200 dark:bg-blue-800 rounded-full opacity-20 animate-pulse" style={{ animationDelay: '1s' }} />
+
+                {/* Decorative elements */}
+                <div className="absolute top-20 left-10 w-40 h-40 rounded-full opacity-10 animate-pulse" style={{ background: 'radial-gradient(circle, #10B981, transparent)' }} />
+                <div className="absolute bottom-20 right-10 w-60 h-60 rounded-full opacity-5 animate-pulse" style={{ background: 'radial-gradient(circle, #C8A951, transparent)', animationDelay: '1s' }} />
             </section>
 
-            {/* ═══════════════ 2. DUAL PATH SECTION ═══════════════ */}
-            <section className="relative py-20 bg-gradient-to-br from-white via-slate-50 to-emerald-50/20 dark:from-slate-900 dark:via-slate-800 dark:to-emerald-900/20 overflow-hidden">
-                {/* Triangle Pattern */}
-                <div className="triangle-pattern" />
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">Choose Your Path to Revolutionary Infrastructure</h2>
-                        <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-                            Whether you're building the future or investing in it, SirsiNexus provides the tools and opportunities you need
+            {/* ═══════════════ 2. PATENT PORTFOLIO BADGE ═══════════════ */}
+            <section className="py-20 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #000000 0%, #022c22 50%, #000000 100%)' }}>
+                <div className="diamond-gold-pattern" />
+                <div className="max-w-5xl mx-auto px-6 relative z-10">
+                    <div className="text-center mb-12 animate-fade-in-up">
+                        {/* Gold badge */}
+                        <div className="inline-flex items-center gap-3 gold-badge px-8 py-4 rounded-full mb-8">
+                            <svg className="w-6 h-6" fill="none" stroke="#C8A951" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M18.75 4.236c.982.143 1.954.317 2.916.52A6.003 6.003 0 0016.27 9.728M18.75 4.236V4.5c0 2.108-.966 3.99-2.48 5.228m0 0a6.003 6.003 0 01-5.54 0" />
+                            </svg>
+                            <span
+                                className="text-lg tracking-[0.1em]"
+                                style={{ fontFamily: "'Cinzel', serif", fontWeight: 600, color: '#C8A951' }}
+                            >
+                                8 PATENT PORTFOLIO
+                            </span>
+                        </div>
+
+                        <p
+                            className="text-base max-w-2xl mx-auto mb-12"
+                            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, color: 'rgba(255,255,255,0.5)' }}
+                        >
+                            Each patent represents a fundamental innovation in autonomous infrastructure.
+                            Together, they form an impenetrable IP moat.
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                        {/* Enterprise/Developer Path */}
-                        <div className="group relative bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-slate-200 dark:border-slate-700 hover:shadow-2xl transition-all duration-300 hover:border-blue-300 dark:hover:border-blue-600">
-                            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent dark:from-blue-900/20 dark:to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            <div className="relative z-10">
-                                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                                    </svg>
+                    {/* Patent grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {patents.map((name, i) => (
+                            <div
+                                key={name}
+                                className={`animate-fade-in-up delay-${(i + 1) * 100} glass-card p-5 rounded-xl text-center transition-all duration-500`}
+                            >
+                                <div className="text-[10px] font-medium uppercase tracking-widest mb-2" style={{ color: '#C8A951' }}>
+                                    P-{String(i + 1).padStart(3, '0')}
                                 </div>
-                                <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-slate-100">For Enterprises & Developers</h3>
-                                <p className="text-slate-600 dark:text-slate-400 mb-6">
-                                    Deploy AI agents that think, learn, and evolve with your infrastructure.
-                                    Experience autonomous decision-making and predictive optimization.
-                                </p>
-                                <ul className="space-y-3 mb-8">
-                                    <li className="flex items-center gap-3 text-sm"><CheckIcon color="#3b82f6" /> Access open-source codebase</li>
-                                    <li className="flex items-center gap-3 text-sm"><CheckIcon color="#3b82f6" /> Join developer community</li>
-                                    <li className="flex items-center gap-3 text-sm"><CheckIcon color="#3b82f6" /> Get early access updates</li>
-                                </ul>
-                                <div className="space-y-3">
-                                    <a href="https://github.com/SirsiMaster/SirsiNexusApp" target="_blank" rel="noopener noreferrer"
-                                        className="block w-full text-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors group-hover:shadow-lg">
-                                        <span className="flex items-center justify-center gap-2">
-                                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fillRule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.418 2.865 8.167 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.645.349-1.086.635-1.335-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.682-.103-.253-.446-1.27.098-2.647 0 0 .84-.268 2.75 1.025A9.578 9.578 0 0110 4.836a9.578 9.578 0 012.504.337c1.909-1.293 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.698 1.026 1.591 1.026 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.48C17.138 18.163 20 14.418 20 10c0-5.523-4.477-10-10-10z" clipRule="evenodd" />
-                                            </svg>
-                                            Explore on GitHub
-                                        </span>
-                                    </a>
-                                    <LinkComp to="/signup"
-                                        className="block w-full text-center px-6 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                                        Sign Up for Updates
-                                    </LinkComp>
+                                <div className="text-sm font-medium text-white leading-tight" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                    {name}
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Investor Path */}
-                        <div className="group relative bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 border border-slate-200 dark:border-slate-700 hover:shadow-2xl transition-all duration-300 hover:border-emerald-300 dark:hover:border-emerald-600 overflow-hidden">
-                            <div className="absolute top-0 right-0 bg-gradient-to-l from-emerald-100 to-emerald-50 dark:from-emerald-900/30 dark:to-emerald-800/20 px-4 py-1 rounded-bl-xl">
-                                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-wider">Exclusive Access</span>
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-transparent dark:from-emerald-900/20 dark:to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            <div className="relative z-10">
-                                <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </div>
-                                <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-slate-100">For Investors</h3>
-                                <p className="text-slate-600 dark:text-slate-400 mb-6">
-                                    Access exclusive investment opportunities in the future of AI-powered infrastructure.
-                                    Join strategic partners shaping enterprise technology.
-                                </p>
-                                <ul className="space-y-3 mb-8">
-                                    <li className="flex items-center gap-3 text-sm"><CheckIcon /> Financial projections & KPIs</li>
-                                    <li className="flex items-center gap-3 text-sm"><CheckIcon /> Secure data room access</li>
-                                    <li className="flex items-center gap-3 text-sm"><CheckIcon /> Strategic committee insights</li>
-                                </ul>
-                                <div className="space-y-3">
-                                    <LinkComp to="/investor-portal"
-                                        className="block w-full text-center px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white font-semibold rounded-lg hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 group-hover:shadow-lg">
-                                        <span className="flex items-center justify-center gap-2">
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                            </svg>
-                                            Access Investor Portal
-                                        </span>
-                                    </LinkComp>
-                                    <LinkComp to="/signup"
-                                        className="block w-full text-center px-6 py-3 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 font-semibold rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-                                        Request Investor Access
-                                    </LinkComp>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* ═══════════════ 3. AI DIFFERENTIATORS (dark section) ═══════════════ */}
-            <section className="py-24 bg-gradient-to-br from-slate-900 via-emerald-900 to-slate-800 text-white relative overflow-hidden">
-                {/* Gold Diamond Pattern Overlay — diagonal + gold per brand spec */}
-                <div className="diamond-gold-pattern" />
+            {/* ═══════════════ 3. FEATURE GRID (8 capabilities) ═══════════════ */}
+            <section
+                id="features"
+                className="py-24 relative overflow-hidden"
+                style={{ background: 'linear-gradient(180deg, #000000 0%, #064e3b 50%, #000000 100%)' }}
+            >
+                <div className="grid-dots-pattern" />
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
                     <div className="text-center mb-16">
-                        <p className="text-emerald-400 font-bold mb-4 text-xs uppercase tracking-[0.4em]">
-                            INTELLIGENT INFRASTRUCTURE
+                        <p className="text-emerald-400 font-medium mb-4 text-xs uppercase tracking-[0.4em]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                            CAPABILITIES
                         </p>
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white tracking-[0.1em]" style={{ fontFamily: "var(--snd-font-heading), 'Cinzel', serif" }}>
-                            AUTONOMOUS DECISION MAKING
+                        <h2
+                            className="text-4xl md:text-5xl mb-6 tracking-[0.08em]"
+                            style={{ fontFamily: "'Cinzel', serif", fontWeight: 600, color: '#ffffff' }}
+                        >
+                            WHAT SIRSI DOES
                         </h2>
-                        <p className="text-emerald-100/60 max-w-2xl mx-auto text-lg font-medium leading-relaxed">
-                            Traditional infrastructure tools manage resources. SirsiNexus <span className="text-emerald-400">thinks about them</span>.
+                        <p className="text-lg max-w-2xl mx-auto" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, color: 'rgba(255,255,255,0.5)' }}>
+                            Eight core capabilities that make Sirsi the only platform you need for autonomous infrastructure.
                         </p>
                     </div>
 
-                    <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {features.map((f, i) => (
+                            <div
+                                key={f.title}
+                                className={`animate-fade-in-up delay-${(i % 4 + 1) * 100} glass-card p-7 rounded-2xl transition-all duration-500 group`}
+                            >
+                                <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-all duration-300 group-hover:scale-110"
+                                    style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}
+                                >
+                                    <span className="text-emerald-400">{f.icon}</span>
+                                </div>
+                                <h3 className="text-lg font-medium text-white mb-3" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>
+                                    {f.title}
+                                </h3>
+                                <p className="text-sm leading-relaxed" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, color: 'rgba(255,255,255,0.5)' }}>
+                                    {f.desc}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════ 4. TELEMETRY + AI DIFFERENTIATOR ═══════════════ */}
+            <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(160deg, #022c22 0%, #000000 100%)' }}>
+                <div className="diamond-gold-pattern" />
+                <div className="max-w-7xl mx-auto px-6 relative z-10">
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
                         <div className="space-y-8">
+                            <div>
+                                <p className="text-emerald-400 font-medium mb-4 text-xs uppercase tracking-[0.4em]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                                    LIVE INTELLIGENCE
+                                </p>
+                                <h2
+                                    className="text-3xl md:text-4xl mb-6 tracking-[0.06em]"
+                                    style={{ fontFamily: "'Cinzel', serif", fontWeight: 600, color: '#ffffff' }}
+                                >
+                                    AUTONOMOUS DECISION MAKING
+                                </h2>
+                            </div>
+
                             {[
-                                { title: 'Predictive Failure Prevention', desc: 'Our AI agents analyze patterns across billions of telemetry points to predict and preempt failures weeks before they materialize, maintaining zero-downtime operations.' },
-                                { title: 'Self-Healing Core', desc: "When anomalous states are detected, the Hypervisor doesn't just alert—it autonomously reconfigures networks, migrates databases, and re-optimizes clusters." },
-                                { title: 'Dynamic Cost Arbitrage', desc: 'Continuous cross-provider resource bidding to ensure your workloads are always running on the most efficient hardware at the lowest possible cost.' },
+                                { title: 'Predictive Failure Prevention', desc: 'AI agents analyze patterns across billions of telemetry points to predict and preempt failures weeks before they materialize.' },
+                                { title: 'Self-Healing Infrastructure', desc: "When anomalous states are detected, the Hypervisor autonomously reconfigures networks, migrates databases, and re-optimizes clusters." },
+                                { title: 'Dynamic Cost Arbitrage', desc: 'Continuous cross-provider resource optimization ensures your workloads always run on the most efficient hardware at the lowest cost.' },
                             ].map(d => (
                                 <div key={d.title} className="flex items-start gap-5 group">
-                                    <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 border border-white/10 group-hover:bg-emerald-500/20 group-hover:border-emerald-400/50 transition-all shadow-sm">
+                                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 transition-all duration-300 group-hover:scale-110"
+                                        style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}
+                                    >
                                         <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 className="font-bold mb-2 text-xl text-white tracking-tight">{d.title}</h4>
-                                        <p className="text-emerald-50/70 text-base leading-relaxed">{d.desc}</p>
+                                        <h4 className="font-medium mb-2 text-lg text-white" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 500 }}>{d.title}</h4>
+                                        <p className="text-base leading-relaxed" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, color: 'rgba(255,255,255,0.5)' }}>{d.desc}</p>
                                     </div>
                                 </div>
                             ))}
@@ -443,202 +573,142 @@ function LandingPage() {
 
                         <TelemetryPulse />
                     </div>
-
-                    {/* Feature Cards Row 1 — 3 cards */}
-                    <div className="grid md:grid-cols-3 gap-8 mb-12">
-                        {[
-                            { title: 'Zero-Touch Operations', desc: 'From deployment to optimization, SirsiNexus handles the complexity so your team can focus on innovation instead of infrastructure maintenance.', gradient: 'from-emerald-500 to-emerald-600', icon: 'M13 10V3L4 14h7v7l9-11h-7z', bg: 'bg-white dark:bg-slate-800' },
-                            { title: 'Adaptive Intelligence', desc: "Our AI doesn't just follow rules—it learns your business patterns, adapts to your growth, and evolves its decision-making over time.", gradient: 'from-blue-500 to-blue-600', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', bg: 'bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700' },
-                            { title: 'Enterprise Security', desc: 'Built-in security intelligence that continuously monitors, detects threats, and adapts security policies across your entire infrastructure ecosystem.', gradient: 'from-purple-500 to-purple-600', icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z', bg: 'bg-gradient-to-br from-gray-50 to-white dark:from-slate-800 dark:to-slate-700' },
-                        ].map(card => (
-                            <div key={card.title} className={`${card.bg} p-8 rounded-xl border border-slate-200 dark:border-slate-600 hover:border-emerald-300 transition-colors shadow-sm hover:shadow-md`}>
-                                <div className={`w-16 h-16 bg-gradient-to-br ${card.gradient} rounded-xl flex items-center justify-center mb-6`}>
-                                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={card.icon} />
-                                    </svg>
-                                </div>
-                                <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">{card.title}</h3>
-                                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{card.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Feature Cards Row 2 — 2 cards */}
-                    <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                        <div className="bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-900/20 dark:to-slate-800 p-8 rounded-xl border border-slate-200 dark:border-slate-600 hover:border-emerald-300 transition-colors shadow-sm hover:shadow-md">
-                            <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mb-6">
-                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-4l-4 4z" />
-                                </svg>
-                            </div>
-                            <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">Natural Language Interfaces</h3>
-                            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">Transform app building, migration, and optimization with conversational AI. Simply describe your infrastructure needs in plain English—"Scale my web app for Black Friday traffic" or "Migrate my database to AWS with zero downtime"—and watch SirsiNexus execute complex operations seamlessly.</p>
-                        </div>
-                        <div className="bg-gradient-to-br from-slate-50 to-emerald-50 dark:from-slate-800 dark:to-emerald-900/20 p-8 rounded-xl border border-slate-200 dark:border-slate-600 hover:border-emerald-300 transition-colors shadow-sm hover:shadow-md">
-                            <div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-emerald-600 rounded-xl flex items-center justify-center mb-6">
-                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                                </svg>
-                            </div>
-                            <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-slate-100">LLM & Knowledge Graphs</h3>
-                            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">Turbocharge your AI integration with state-of-the-art Large Language Models and dynamic knowledge graphs. Our system understands your infrastructure context, relationships, and dependencies to make intelligent scaling decisions and optimize performance automatically.</p>
-                        </div>
-                    </div>
-                </div>
-                {/* Background Effects */}
-                <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-                    <div className="diamond-gold-pattern" />
-                    <div className="absolute top-20 left-20 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
-                    <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
                 </div>
             </section>
 
-            {/* ═══════════════ 4. CORE CAPABILITIES ═══════════════ */}
-            <section id="features" className="relative py-20 bg-gradient-to-br from-white via-emerald-50/30 to-white dark:from-slate-900 dark:via-emerald-950/50 dark:to-slate-900 overflow-hidden">
-                {/* Grid Dots Pattern */}
-                <div className="grid-dots-pattern" />
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">Core Platform Capabilities</h2>
-                        <p className="text-xl text-slate-600 dark:text-slate-400">Comprehensive infrastructure management with AI-powered automation</p>
+            {/* ═══════════════ 5. PLATFORM STRIP ═══════════════ */}
+            <section className="py-16 relative" style={{ background: '#000000', borderTop: '1px solid rgba(200,169,81,0.15)', borderBottom: '1px solid rgba(200,169,81,0.15)' }}>
+                <div className="max-w-5xl mx-auto px-6 text-center">
+                    <p className="text-xs font-medium uppercase tracking-[0.3em] mb-8" style={{ color: '#C8A951', fontFamily: "'Inter', sans-serif" }}>
+                        MULTI-PLATFORM DELIVERY
+                    </p>
+                    <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+                        {[
+                            { label: 'Web', icon: '🌐' },
+                            { label: 'Desktop', icon: '🖥️' },
+                            { label: 'Mobile', icon: '📱' },
+                            { label: 'Mac Studio', icon: '⚡' },
+                        ].map((p, i) => (
+                            <div key={p.label} className="flex items-center gap-3 group">
+                                <span className="text-2xl group-hover:scale-110 transition-transform">{p.icon}</span>
+                                <span className="text-lg font-medium text-white/70 group-hover:text-white transition-colors" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}>
+                                    {p.label}
+                                </span>
+                                {i < 3 && <span className="text-white/20 ml-4 hidden md:inline">·</span>}
+                            </div>
+                        ))}
                     </div>
+                </div>
+            </section>
+
+            {/* ═══════════════ 6. TRI-SILICON VISUAL ═══════════════ */}
+            <section className="py-24 relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #000000 0%, #022c22 50%, #000000 100%)' }}>
+                <div className="max-w-6xl mx-auto px-6 relative z-10">
+                    <div className="text-center mb-16">
+                        <p className="text-emerald-400 font-medium mb-4 text-xs uppercase tracking-[0.4em]" style={{ fontFamily: "'Inter', sans-serif" }}>
+                            TRI-SILICON MESH
+                        </p>
+                        <h2
+                            className="text-3xl md:text-4xl mb-6 tracking-[0.06em]"
+                            style={{ fontFamily: "'Cinzel', serif", fontWeight: 600, color: '#ffffff' }}
+                        >
+                            THREE SILICON ARCHITECTURES. ONE PLATFORM.
+                        </h2>
+                    </div>
+
                     <div className="grid md:grid-cols-3 gap-8">
                         {[
-                            { title: 'Smart Migration Wizards', desc: 'AI-guided migration processes that analyze your current infrastructure and create optimized migration paths with zero-downtime strategies.', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' },
-                            { title: 'Predictive Auto-Scaling', desc: 'Machine learning algorithms that predict traffic patterns and business cycles to scale resources proactively, not reactively.', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
-                            { title: 'Intelligent Analytics', desc: 'Deep learning models that provide actionable insights, anomaly detection, and performance optimization recommendations in real-time.', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' },
-                        ].map(item => (
-                            <div key={item.title} className="bg-gradient-to-br from-slate-50 via-emerald-50/20 to-slate-50 dark:from-slate-800 dark:via-emerald-900/20 dark:to-slate-800 p-6 rounded-lg hover:shadow-lg transition-shadow border border-emerald-100/50 dark:border-emerald-900/30">
-                                <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center mb-4 shadow-sm">
-                                    <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
-                                    </svg>
+                            {
+                                name: 'NVIDIA',
+                                subtitle: 'Enterprise GPU',
+                                desc: 'Standardized orchestration for CUDA workloads in public and private cloud.',
+                                accent: '#76b900',
+                                bgAccent: 'rgba(118,185,0,0.08)',
+                                borderAccent: 'rgba(118,185,0,0.25)',
+                            },
+                            {
+                                name: 'Google TPU',
+                                subtitle: 'Cloud Scale',
+                                desc: 'High-efficiency orchestration for frontier-class AI inference at scale.',
+                                accent: '#4285f4',
+                                bgAccent: 'rgba(66,133,244,0.08)',
+                                borderAccent: 'rgba(66,133,244,0.25)',
+                            },
+                            {
+                                name: 'Apple Silicon',
+                                subtitle: 'Sovereign Pods',
+                                desc: 'Localized nano-datacenters with 512GB unified memory. Your data never leaves.',
+                                accent: '#a1a1aa',
+                                bgAccent: 'rgba(161,161,170,0.08)',
+                                borderAccent: 'rgba(161,161,170,0.25)',
+                            },
+                        ].map(s => (
+                            <div
+                                key={s.name}
+                                className="silicon-card p-8 rounded-2xl text-center"
+                                style={{ background: s.bgAccent, border: `1px solid ${s.borderAccent}` }}
+                            >
+                                <div className="text-3xl font-medium mb-2 tracking-wider" style={{ fontFamily: "'Cinzel', serif", color: s.accent, fontWeight: 500 }}>
+                                    {s.name}
                                 </div>
-                                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                                <p className="text-slate-600 dark:text-slate-400">{item.desc}</p>
+                                <div className="text-xs uppercase tracking-[0.2em] mb-6 font-medium" style={{ color: s.accent, opacity: 0.7 }}>
+                                    {s.subtitle}
+                                </div>
+                                <p className="text-sm leading-relaxed" style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, color: 'rgba(255,255,255,0.5)' }}>
+                                    {s.desc}
+                                </p>
                             </div>
                         ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* ═══════════════ 5. MULTI-CLOUD PLATFORM (NEW — was missing) ═══════════════ */}
-            <section id="platform" className="relative py-20 bg-gradient-to-tr from-slate-50 via-white to-emerald-50/40 dark:from-slate-800 dark:via-slate-900 dark:to-emerald-950/60 overflow-hidden">
-                {/* Organic Pattern */}
-                <div className="organic-pattern" />
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">Multi-Cloud Platform</h2>
-                        <p className="text-xl text-slate-600 dark:text-slate-400">Unified management across AWS, Azure, GCP, and more</p>
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <div>
-                            <h3 className="text-2xl font-semibold mb-4">Enterprise-Ready Architecture</h3>
-                            <ul className="space-y-3 text-slate-600 dark:text-slate-400">
-                                <li className="flex items-center"><CheckMark />Go-powered backend services for maximum performance</li>
-                                <li className="flex items-center"><CheckMark />Python ML platform with TensorFlow and PyTorch</li>
-                                <li className="flex items-center"><CheckMark />Go-based cloud connectors for seamless integration</li>
-                                <li className="flex items-center"><CheckMark />React/Next.js frontend with TypeScript</li>
-                            </ul>
-                        </div>
-                        <div className="bg-gradient-to-br from-white via-emerald-50/20 to-white dark:from-slate-800 dark:via-emerald-950/30 dark:to-slate-800 p-6 rounded-lg border border-emerald-200/40 dark:border-emerald-700/30 shadow-sm">
-                            {/* Infrastructure Demo Panel */}
-                            <div className="mb-8">
-                                <div className="flex items-center justify-between mb-4">
-                                    <div className="text-lg font-semibold text-emerald-600">Infrastructure State: <span className="text-emerald-500">Idle</span></div>
-                                    <div className="text-slate-500 dark:text-slate-400 text-sm italic">Click 'Start Interactive Demo' at the top to begin</div>
-                                </div>
-                                {/* Progress Bar */}
-                                <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden mb-4">
-                                    <div className="h-full bg-emerald-500 w-0 transition-all duration-500 ease-in-out" />
-                                </div>
-                                {/* Details Panel */}
-                                <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
-                                    <div className="text-center text-slate-600 dark:text-slate-400">
-                                        Click 'Start Demo' to begin the infrastructure deployment simulation
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Real-Time Metrics */}
-                            <div className="text-center">
-                                <h4 className="text-xl font-semibold mb-4 text-slate-900 dark:text-slate-100">Real-Time Metrics</h4>
-                                <div className="grid grid-cols-2 gap-4">
-                                    {[
-                                        { val: '99.2%', label: 'Success Rate' },
-                                        { val: '$2.8M', label: 'Cost Savings' },
-                                        { val: '12,847', label: 'Resources Migrated' },
-                                        { val: '47.3 TB', label: 'Data Transferred' },
-                                    ].map(m => (
-                                        <div key={m.label} className="bg-gradient-to-br from-emerald-50 to-emerald-100/80 dark:from-emerald-900/20 dark:to-emerald-800/30 p-4 rounded-lg border border-emerald-200/30 dark:border-emerald-700/20">
-                                            <div className="text-2xl font-bold text-emerald-600">{m.val}</div>
-                                            <div className="text-sm text-slate-600 dark:text-slate-400">{m.label}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ═══════════════ 6. ROI SECTION ═══════════════ */}
-            <section className="py-20 bg-white dark:bg-slate-900">
-                <div className="max-w-5xl mx-auto px-6">
-                    <div className="text-center mb-14">
-                        <p className="text-emerald-600 text-sm font-semibold uppercase tracking-widest mb-3">
-                            Measurable Impact
-                        </p>
-                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4">
-                            ROI-Positive from Day One
-                        </h2>
-                        <p className="text-lg text-slate-500 dark:text-slate-400 max-w-3xl mx-auto">
-                            The Sirsi Hypervisor pays for itself. Our AI optimization engine typically delivers
-                            20–30% infrastructure cost savings within the first 90 days.
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                        {[
-                            { value: '20–30%', label: 'Cost Reduction', desc: 'Average infrastructure savings through AI-driven optimization' },
-                            { value: '3–6 mo', label: 'ROI Payback', desc: 'Time to achieve positive return on platform investment' },
-                            { value: '60%', label: 'Ops Reduction', desc: 'Decrease in manual infrastructure management effort' },
-                            { value: '85%', label: 'Incident Reduction', desc: 'Fewer configuration-related incidents through automation' },
-                        ].map(item => (
-                            <div key={item.label} className="text-center group">
-                                <div className="text-3xl md:text-4xl font-bold text-emerald-600 mb-2 group-hover:scale-105 transition-transform">
-                                    {item.value}
-                                </div>
-                                <div className="font-semibold text-slate-900 dark:text-slate-100 mb-1 text-sm">{item.label}</div>
-                                <div className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{item.desc}</div>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="mt-12 text-center">
-                        <LinkComp
-                            to="/pricing"
-                            className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-semibold text-sm transition-colors"
-                        >
-                            See pricing plans →
-                        </LinkComp>
                     </div>
                 </div>
             </section>
 
             {/* ═══════════════ 7. CTA SECTION ═══════════════ */}
-            <section id="signup" className="py-20 bg-gradient-to-r from-emerald-600 to-blue-600">
-                <div className="max-w-4xl mx-auto px-6 text-center">
-                    <h2 className="text-3xl font-bold text-white mb-4">Ready to Transform Your Infrastructure?</h2>
-                    <p className="text-xl text-white/90 mb-8">Join hundreds of enterprises already using SirsiNexus for their cloud operations</p>
+            <section
+                id="contact"
+                className="py-24 relative overflow-hidden"
+                style={{ background: 'linear-gradient(135deg, #059669 0%, #064e3b 50%, #022c22 100%)' }}
+            >
+                <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+                    <h2
+                        className="text-3xl md:text-5xl mb-6 tracking-[0.06em]"
+                        style={{ fontFamily: "'Cinzel', serif", fontWeight: 600, color: '#ffffff' }}
+                    >
+                        SCHEDULE A TECHNICAL BRIEFING
+                    </h2>
+                    <p
+                        className="text-lg mb-10 max-w-2xl mx-auto"
+                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, color: 'rgba(255,255,255,0.7)' }}
+                    >
+                        See the Autonomous CTO in action. We'll walk you through the 8-patent platform,
+                        direct-to-metal capabilities, and the Tri-Silicon Mesh architecture.
+                    </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <LinkComp to="/investor-portal"
-                            className="inline-flex items-center px-8 py-4 bg-white text-emerald-600 font-semibold rounded-lg hover:bg-gray-50 transition-colors">
+                        <a
+                            href="mailto:cylton@sirsi.ai?subject=Technical%20Briefing%20Request"
+                            className="inline-flex items-center px-10 py-4 font-medium rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                            style={{
+                                fontFamily: "'Inter', sans-serif",
+                                background: '#ffffff',
+                                color: '#059669',
+                                fontWeight: 500,
+                            }}
+                        >
                             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            View Business Case
-                        </LinkComp>
-                        <LinkComp to="/login"
-                            className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-emerald-600 transition-colors">
+                            Schedule Briefing
+                        </a>
+                        <LinkComp
+                            to="/login"
+                            className="inline-flex items-center px-10 py-4 font-medium rounded-lg transition-all duration-300 border"
+                            style={{
+                                fontFamily: "'Inter', sans-serif",
+                                borderColor: 'rgba(255,255,255,0.3)',
+                                color: '#ffffff',
+                                fontWeight: 400,
+                            }}
+                        >
                             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>

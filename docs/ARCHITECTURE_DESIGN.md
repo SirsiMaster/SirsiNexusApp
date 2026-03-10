@@ -14,10 +14,11 @@ User ← → Sirsi Persona ← → Tri-Silicon Domain Agents (NVIDIA • TPU •
 ```
 
 **ARCHITECTURAL REQUIREMENTS:**
+- ✅ **Technical Bedrock**: 4-Tier foundation (Rust Kernel, Go Orchestration, Hedera Trust, NGINX Fabric)
 - ✅ **Sirsi Hypervisor**: Central orchestrating intelligence managing all agent communication
 - ✅ **Tri-Silicon Orchestator**: Silicon-native conduction for NVIDIA, TPU, and Apple clusters
-- ✅ **NebuLang Protocol**: Zero-hallucination agent communication via Knowledge Graph grounding
-- ✅ **Neural-Fractal Architecture**: Recursive infrastructure-as-code verified against silicon state
+- ✅ **NebuLang Protocol (P-001)**: Zero-hallucination agent communication via Knowledge Graph grounding
+- ✅ **Neural-Fractal Architecture (P-002)**: Recursive infrastructure-as-code verified against silicon state
 - ✅ **OMNI-Persona**: Embedded consciousness across all multi-cloud and on-premise contexts
 
 A dense, end-to-end specification for a production-ready, agent-embedded migration orchestration platform.
@@ -30,7 +31,7 @@ A dense, end-to-end specification for a production-ready, agent-embedded migrati
    - 1.5 [Complete SirsiNexus Technical Architecture](#15-complete-sirsinexus-technical-architecture)
    - 1.6 [UCS (Universal Component System) & Infrastructure Independence](#16-ucs-universal-component-system--infrastructure-independence)
    - 1.7 [Tri-Silicon Orchestration & Sovereign Compute Mesh](#17-tri-silicon-orchestration--sovereign-compute-mesh)
-   - 1.8 [Deep-Tech Patent Moat (3 Submissions)](#18-deep-tech-patent-moat-3-submissions)
+   - 1.8 [Deep-Tech Patent Moat (5 Submissions)](#18-deep-tech-patent-moat-5-submissions)
 2. [Current Development Status](#2-current-development-status)
 3. [Core Capabilities & Design Principles](#3-core-capabilities--design-principles)
 4. [High-Level Architecture](#4-high-level-architecture)
@@ -231,13 +232,15 @@ SirsiNexus is the first autonomous infrastructure OS designed to bridge three di
 2.  **Google TPU (Cloud Scale)**: Integration with XLA and TPU v5 for massive training and inference acceleration.
 3.  **Apple Silicon (Sovereign Nano-Datacenters)**: Orchestration of Mac Studio "Neural-Hashgraph Pods" (4-node clusters) via Thunderbolt 5 RDMA. Use massive 512GB+ Unified RAM for hyper-agile local LLM deployment and data sovereignty.
 
-## 1.8. Deep-Tech Patent Moat (3 Submissions)
+## 1.8. Deep-Tech Patent Moat (5 Submissions)
 
-The platform is fortified by three pending utility patents that define the "Sirsi Advantage":
+The platform is fortified by five pending utility patents that define the "Sirsi Advantage":
 
-1.  **NebuLang Protocol**: Proprietary **LLM Memory Resilience** via Knowledge Graph grounding. Ensures 100% deterministic infrastructure-as-code and eliminates AI hallucinations by enforcing consensus-verified state mappings.
-2.  **Neural-Fractal Architecture**: A recursive AI logic system that converts business requirements into verified, silicon-native cloud solutions. It provides total fault-tolerance across AWS, Azure, GCP, and on-premise clusters, automatically healing desynchronized infrastructure states.
-3.  **KG Query Engine**: Transitioning from reactive observability to predictive **"Infrastructure-as-Data."** Utilizes the Hedera-based knowledge graph to identify waste and technical debt in real-time, delivering 40%+ cost reductions.
+1.  **NebuLang Protocol (Filed)**: The machine-to-machine communication language for all node and agent interaction in the Neural-Fractal Architecture.
+2.  **Neural-Fractal Architecture (Filed)**: Recursive dual-shard verification at every infrastructure level — the system that binds heterogeneous silicon into a unified neural mesh.
+3.  **KG Query Engine (Filed)**: Translates human-readable queries into NebuLang for system execution, and translates machine responses back to human-readable intent.
+4.  **Fire Team Protocol (In Design)**: Agent swarm orchestration — autonomous fire teams and squads that self-organize, self-delegate, and self-verify across distributed infrastructure.
+5.  **KG Sharding Protocol (In Design)**: Knowledge Graph partitioning and distributed query execution across heterogeneous compute nodes with consensus-verified state synchronization.
 
 ### 💡 Sirsi Persona (Omnipresent AI)
 
