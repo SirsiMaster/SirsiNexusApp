@@ -33,7 +33,7 @@ We are the only platform automating high-performance compute across the three do
 | P-001 | **NebuLang Protocol** | The 100% protobuf machine-to-machine language between nodes and agents — the only language Sirsi devices speak | Filed |
 | P-002 | **Neural-Fractal Architecture** | Recursive self-verifying infrastructure — binds heterogeneous silicon into a unified neural mesh | Filed |
 | P-003 | **KG Query Engine** | Machine-to-human Knowledge Graph translator — converts natural language queries into NebuLang and back | Filed |
-| P-004 | **Fire Team Protocol** | Agent swarm orchestration — autonomous fire teams that self-organize and self-verify | In Design |
+| P-004 | **Fire Team Protocol** | Always-on AI agents that live inside the business, communicate in the platform's proprietary language, and self-escalate to the Hypervisor when needed | In Design |
 | P-005 | **KG Sharding Protocol** | Knowledge Graph partitioning and distributed query execution across heterogeneous compute nodes | In Design |
 
 > **Note:** Tri-Silicon Mesh, Direct-to-Metal Communication, Cryptographic Proofs, and Autonomous Genesis are **platform features** built on the patented protocols.

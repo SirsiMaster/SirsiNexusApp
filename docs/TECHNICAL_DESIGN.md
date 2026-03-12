@@ -20,7 +20,7 @@ The platform operates on a **Dual-Shard Architecture** — a patented fusion of 
 | **Autonomous Infrastructure Genesis** | Natural language → complete production stack, zero human touch |
 | **Quad-Model AI Engine** | Four specialized AI models for different latency/quality/sovereignty requirements |
 | **Knowledge Graph + Truth Anchoring** | AI that cannot hallucinate about your infrastructure |
-| **Agent Swarm** | Self-evolving agents that autonomously expand their own capabilities |
+| **Fire Team Protocol** | Persistent AI agents that live inside the business, communicate via NebuLang, and self-escalate (Agent → Hypervisor → SirsiMaster) |
 | **Direct Hardware Communication** | Bypass IaC tools — speak directly to Cisco, Dell, NVIDIA, Google TPU, Apple Silicon |
 | **Cryptographic Infrastructure Proofs** | Mathematically verifiable infrastructure state via distributed ledger |
 | **Multi-Platform Delivery** | Web, Desktop, Mobile, Headless Daemon, Mac Studio Native — all sharing one backend |
@@ -107,19 +107,26 @@ The KG Query Engine (Patent P-003) enables predictive infrastructure management:
 
 ---
 
-## 5. Agent Swarm Architecture
+## 5. Agent Swarm Architecture — Fire Team Protocol (Patent P-004)
 
-Sirsi employs a hierarchical **coordinator + domain agents** pattern:
+Sirsi employs a hierarchical **coordinator + domain agents** pattern governed by the **Fire Team Protocol** — a composition patent that requires and unifies all four other patents (P-001 through P-003, P-005) into a single orchestration system.
 
-### 5.1 Coordinator
+### 5.1 Coordinator: The Sirsi Hypervisor
 
 The **Sirsi Hypervisor** (powered by the primary reasoning engine) acts as the central coordinator. It:
-- Decomposes complex tasks into subtasks using the **Neural-Fractal decomposition** algorithm
-- Assigns subtasks to the most capable domain agent
+- Decomposes complex tasks into subtasks using the **Neural-Fractal decomposition** algorithm (Patent P-002)
+- Assigns subtasks to the most capable domain agent via **NebuLang** (Patent P-001)
 - Monitors progress and handles failures
 - Maintains consensus ordering via the distributed ledger
 
-### 5.2 Domain Agents
+### 5.2 Domain Agents (Permanent Residents)
+
+Unlike ephemeral agent frameworks (CrewAI, AutoGen, LangGraph) that spin up agents per request, Fire Team agents are **permanent denizens** of the business entity. They:
+
+- **Never sleep or rest** — always-on, always available, continuously monitoring their domain
+- **Communicate exclusively in NebuLang** (Patent P-001) — pure protobuf, not LLM text prompts
+- **Traverse both planes natively** — can read the LLM output buffer AND query the Knowledge Graph (Patent P-003) without human mediation
+- **Self-administer and self-coordinate** — negotiate task boundaries, handle failures, and redistribute work autonomously
 
 | Agent Domain | Responsibility |
 |:-------------|:---------------|
@@ -131,16 +138,19 @@ The **Sirsi Hypervisor** (powered by the primary reasoning engine) acts as the c
 | **Integration Agent** | Third-party service coordination, API health, webhook management |
 | **Compliance Agent** | Regulatory framework enforcement, evidence collection, audit preparation |
 
-### 5.3 Self-Evolution (Patent P-007)
+### 5.3 Tiered Escalation Protocol
 
-Agents observe operational patterns and autonomously propose new automations:
-1. Agent identifies a repeating manual task
-2. Agent proposes an automation rule to the Hypervisor
-3. Hypervisor evaluates the proposal against safety constraints
-4. If approved, the automation is registered in the agent's capability registry
-5. The agent can now execute the task autonomously
+When an agent encounters a problem it cannot resolve autonomously, it follows a strict three-tier escalation chain:
 
-This creates a continuously expanding capability surface without human intervention.
+1. **Agent → Hypervisor (Sirsi AI)**: The agent escalates to the Sirsi Hypervisor, which has full platform context and can make autonomous decisions or coordinate multiple agents.
+2. **Hypervisor → SirsiMaster (Human Superadmin)**: If the Hypervisor determines the decision exceeds its authority (e.g., financial commitments, architectural changes, compliance exceptions), it escalates to the SirsiMaster.
+3. **SirsiMaster → Resolution**: The human superadmin resolves the issue, and the decision is recorded on the consensus ledger as an immutable precedent.
+
+This creates a continuously expanding capability surface — every escalation that the Hypervisor resolves becomes a learned precedent, reducing future escalations.
+
+### 5.4 Why Fire Team is Patent-Worthy
+
+No existing agent framework combines: (a) persistent stateful agents communicating via a proprietary protocol, (b) native dual-plane traversal of both LLM inference and Knowledge Graph, and (c) autonomous governance with a tiered escalation hierarchy. The Fire Team Protocol is a **composition patent** — it cannot function without NebuLang (P-001), Neural-Fractal Architecture (P-002), KG Query Engine (P-003), and KG Sharding (P-005).
 
 ---
 
@@ -288,7 +298,7 @@ No system combines distributed-ledger-consensus-ordered reasoning with distribut
 | P-001 | **NebuLang Protocol** | The machine-to-machine communication language for all node and agent interaction in the Neural-Fractal Architecture. | Filed |
 | P-002 | **Neural-Fractal Architecture** | The recursive dual-shard (Logic + Tensor) system architecture that provides consensus-ordered reasoning with distributed inference. | Filed |
 | P-003 | **KG Query Engine** | Translates human-readable queries into NebuLang for system execution, and translates machine responses back to human-readable intent. | Filed |
-| P-004 | **Fire Team Protocol** | Autonomous agent swarms organized in military command structures for task decomposition, execution, and self-coordination. | In Design |
+| P-004 | **Fire Team Protocol** | Persistent autonomous agents that live inside the business entity, communicate exclusively via NebuLang (P-001), traverse both LLM buffer and Knowledge Graph (P-003) without human interaction, and self-escalate through a tiered command chain (Agent → Hypervisor → SirsiMaster). Composition patent requiring P-001, P-002, P-003, P-005. | In Design |
 | P-005 | **KG Sharding Protocol** | Sharding overlay for distributing Knowledge Graph management and query execution across heterogeneous silicon nodes. | In Design |
 
 > **Note:** Capabilities such as Tri-Silicon Mesh Orchestration, Cryptographic Infrastructure Proofs, Direct-to-Metal Communication, and Autonomous Infrastructure Genesis are **platform features** — not standalone patents. They are implementations of the patented protocols above.

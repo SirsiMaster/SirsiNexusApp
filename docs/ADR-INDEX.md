@@ -40,7 +40,7 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 | ADR-033 | AlloyDB AI Migration + Cognitive SQL | Proposed | 2026-03-07 |
 | ADR-034 | NebuLang Protocol — Knowledge Graph + DLT Anchoring | Proposed | 2026-03-07 |
 | ADR-035 | Agent Swarm Architecture | Proposed | 2026-03-07 |
-| ADR-036 | Fire Team Protocol — Agent Swarm Orchestration | Proposed | 2026-03-07 |
+| ADR-036 | Fire Team Protocol — Persistent Autonomous Agents (Composition Patent) | Proposed | 2026-03-07 |
 | ADR-037 | Hybrid LLM Engine — Quad-Model Routing | Proposed | 2026-03-07 |
 | ADR-038 | Direct-to-Metal Orchestration Protocol (Feature) | Proposed | 2026-03-07 |
 | ADR-039 | Autonomous Infrastructure Genesis (Feature) | Proposed | 2026-03-07 |
@@ -83,7 +83,7 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 - ADR-033: AlloyDB AI Migration — Cloud SQL → AlloyDB with cognitive SQL
 - ADR-034: NebuLang Protocol — Knowledge Graph with DLT truth anchoring
 - ADR-035: Agent Swarm — Coordinator + domain agent architecture
-- ADR-036: Fire Team Protocol — Agent swarm orchestration (Patent P-004)
+- ADR-036: Fire Team Protocol — Persistent autonomous agents, NebuLang-only communication, tiered escalation (Patent P-004, composition of P-001–P-003, P-005)
 - ADR-037: Hybrid LLM Engine — Quad-model routing (reasoning/speed/sovereign/in-DB)
 - ADR-038: Direct-to-Metal — NETCONF/Redfish/DCGM/TPU direct hardware (Feature, not patent)
 - ADR-039: Autonomous Genesis — Natural language → production stack (Feature, not patent)

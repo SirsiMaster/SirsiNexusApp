@@ -239,7 +239,7 @@ The platform is fortified by five pending utility patents that define the "Sirsi
 1.  **NebuLang Protocol (Filed)**: The machine-to-machine communication language for all node and agent interaction in the Neural-Fractal Architecture.
 2.  **Neural-Fractal Architecture (Filed)**: Recursive dual-shard verification at every infrastructure level — the system that binds heterogeneous silicon into a unified neural mesh.
 3.  **KG Query Engine (Filed)**: Translates human-readable queries into NebuLang for system execution, and translates machine responses back to human-readable intent.
-4.  **Fire Team Protocol (In Design)**: Agent swarm orchestration — autonomous fire teams and squads that self-organize, self-delegate, and self-verify across distributed infrastructure.
+4.  **Fire Team Protocol (In Design)**: Persistent autonomous agents that live permanently inside a business entity, communicate exclusively via NebuLang (P-001), traverse both the LLM output buffer and Knowledge Graph without human interaction, and self-escalate through a tiered command chain (Agent → Hypervisor → SirsiMaster). This is a composition patent — it requires P-001, P-002, P-003, and P-005 to function.
 5.  **KG Sharding Protocol (In Design)**: Knowledge Graph partitioning and distributed query execution across heterogeneous compute nodes with consensus-verified state synchronization.
 
 ### 💡 Sirsi Persona (Omnipresent AI)
@@ -680,7 +680,7 @@ pub struct UIIntegration {
   - High-speed 100GbE inter-pod mesh validation
   - Local Hedera Mirror Node synchronization logic
 - 🎯 **IP & Patent Finalization**
-  - Finalize all 3 utility patent documentation packages
+  - Finalize all 5 utility patent documentation packages
   - Verification of LLM Memory Resilience via NebuLang Protocol
 
 ---

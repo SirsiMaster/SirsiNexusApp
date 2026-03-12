@@ -704,7 +704,9 @@ CREATE INDEX idx_infra_drift ON infrastructure_state(drift_detected) WHERE drift
 │                                                               │
 │  Patent P-001: NebuLang (KG + HCS grounding)                 │
 │  Patent P-002: Neural-Fractal (recursive dual-shard verif.)  │
-│  Patent P-005: Tri-Silicon (silicon-aware scheduling)         │
+│  Patent P-003: KG Query Engine (human ↔ NebuLang)            │
+│  Patent P-004: Fire Team (persistent autonomous agents)      │
+│  Patent P-005: KG Sharding (distributed KG partitioning)     │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -735,7 +737,7 @@ CREATE INDEX idx_infra_drift ON infrastructure_state(drift_detected) WHERE drift
 | P-001 | NebuLang Protocol | The machine-to-machine communication language for all node and agent interaction in the Neural-Fractal Architecture. | Filed |
 | P-002 | Neural-Fractal Architecture | The recursive dual-shard (Logic + Tensor) system architecture that provides consensus-ordered reasoning with distributed inference. | Filed |
 | P-003 | KG Query Engine | Translates human-readable queries into NebuLang for system execution, and translates machine responses back to human-readable intent. | Filed |
-| P-004 | Fire Team Protocol | Autonomous agent swarms organized in military command structures for task decomposition, execution, and self-coordination. | In Design |
+| P-004 | Fire Team Protocol | Persistent autonomous agents that live inside the business entity, communicate exclusively via NebuLang (P-001), traverse both LLM buffer and Knowledge Graph (P-003) natively, and self-escalate through a tiered command chain (Agent → Hypervisor → SirsiMaster). Composition patent requiring P-001, P-002, P-003, P-005. | In Design |
 | P-005 | KG Sharding Protocol | Sharding overlay for distributing Knowledge Graph management and query execution across heterogeneous silicon nodes. | In Design |
 
 > **Note:** Capabilities such as Tri-Silicon Mesh Orchestration, Cryptographic Infrastructure Proofs, Direct-to-Metal Communication, and Autonomous Infrastructure Genesis are **platform features**, not standalone patents. They are implementations of the patented protocols above.

@@ -49,7 +49,7 @@ All platforms share the same **Go + gRPC backend** via protobuf contracts.
 | P-001 | **NebuLang Protocol** | The 100% protobuf machine-to-machine language used between nodes and agents in the Neural Fractal Architecture — the only language Sirsi devices speak | Filed |
 | P-002 | **Neural-Fractal Architecture** | Recursive dual-shard verification at every infrastructure level — the system that binds heterogeneous silicon | Filed |
 | P-003 | **KG Query Engine** | Machine-to-human readable Knowledge Graph translator — converts human language queries into NebuLang and back | Filed |
-| P-004 | **Fire Team Protocol** | Agent swarm orchestration — autonomous fire teams and squads that self-organize and self-verify across distributed infrastructure | In Design |
+| P-004 | **Fire Team Protocol** | Persistent autonomous agents that live inside the business entity, communicate via NebuLang (P-001), traverse LLM buffer and KG natively, and self-escalate (Agent → Hypervisor → SirsiMaster). Composition patent requiring P-001–P-003, P-005. | In Design |
 | P-005 | **KG Sharding Protocol** | Knowledge Graph partitioning and distributed query execution across heterogeneous compute nodes | In Design |
 
 > **Note:** Tri-Silicon Mesh, Cryptographic Proofs, Direct-to-Metal, and Autonomous Genesis are **platform features**, not standalone patents.
