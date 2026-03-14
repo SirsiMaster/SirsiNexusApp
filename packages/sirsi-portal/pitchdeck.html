@@ -953,7 +953,7 @@
             <div class="slide-inner">
                 <div class="slide-header">
                     <h3>THE CRISIS</h3>
-                    <h2>AI Needs Data. Data Can't Leave. <span style="color: var(--primary);">Now What?</span></h2>
+                    <h2 style="white-space: nowrap;">AI Needs Data. Data Can't Leave. <span style="color: var(--primary);">Now What?</span></h2>
                 </div>
 
                 <div class="slide-content s3-clean-bg">
@@ -1124,10 +1124,12 @@
                             <div class="s3-card-tag">Can Leave The Building</div>
                             <p class="s3-card-body">Attorney-client privilege. HIPAA. ITAR. Proprietary research. For these verticals, cloud AI is legally impossible.</p>
                             <ul class="s3-verticals">
-                                <li>Law firms — client privilege</li>
-                                <li>Biotech — proprietary compounds</li>
-                                <li>Finance — non-public trading data</li>
                                 <li>Government — classified workloads</li>
+                                <li>Finance — non-public trading data</li>
+                                <li>Biotech — proprietary compounds</li>
+                                <li>Law firms — client privilege</li>
+                                <li>Unbanked — no cloud billing access</li>
+                                <li>Unteched — no infrastructure team</li>
                             </ul>
                             <div class="s3-card-source">NIST SP 800-171, HIPAA §164.312</div>
                         </div>
@@ -1681,6 +1683,7 @@
                             text-align: justify;
                             display: -webkit-box;
                             -webkit-line-clamp: 3;
+                            line-clamp: 3;
                             -webkit-box-orient: vertical;
                             overflow: hidden;
                         }
@@ -2657,9 +2660,205 @@
                 </div>
             </div>
         </div>
+        <!-- Slide 08: Competitor Landscape -->
+        <div class="slide">
+            <div class="slide-inner">
+                <!-- Background elements -->
+                <div
+                    style="position: absolute; top: 0; right: 0; width: 400px; height: 400px; background-image: radial-gradient(var(--primary) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity: 0.08; pointer-events: none;">
+                </div>
 
+                <div class="slide-header">
+                    <h3>COMPETITIVE LANDSCAPE</h3>
+                    <h2>Nobody Else <span style="color: var(--primary);">Can Do This.</span></h2>
+                </div>
 
-        <!-- Slide 08: Go To Market Strategy -->
+                <div class="slide-content" style="display: flex; flex-direction: column; justify-content: center;">
+                    <style>
+                        .comp-table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            font-family: 'Inter', sans-serif;
+                        }
+
+                        .comp-table thead th {
+                            font-family: 'Cinzel', serif;
+                            font-size: var(--deck-micro);
+                            letter-spacing: 0.12em;
+                            text-transform: uppercase;
+                            color: var(--text-slate);
+                            padding: 10px 14px;
+                            border-bottom: 2px solid var(--border);
+                            text-align: center;
+                            font-weight: 500;
+                        }
+
+                        .comp-table thead th:first-child {
+                            text-align: left;
+                            color: var(--gold-dark);
+                        }
+
+                        .comp-table thead th.comp-sirsi {
+                            color: var(--primary);
+                            border-bottom: 2px solid var(--primary);
+                            background: rgba(16,185,129,0.03);
+                        }
+
+                        .comp-table tbody td {
+                            font-size: var(--deck-card-desc);
+                            padding: 10px 14px;
+                            border-bottom: 1px solid var(--border);
+                            text-align: center;
+                            color: var(--text-dark);
+                            vertical-align: middle;
+                        }
+
+                        .comp-table tbody td:first-child {
+                            text-align: left;
+                            font-weight: 500;
+                            font-size: var(--deck-small);
+                            color: var(--text-dark);
+                            letter-spacing: 0.02em;
+                        }
+
+                        .comp-table tbody td.comp-sirsi-col {
+                            background: rgba(16,185,129,0.03);
+                            color: var(--primary);
+                            font-weight: 500;
+                        }
+
+                        .comp-table tbody tr:last-child td {
+                            border-bottom: none;
+                        }
+
+                        .comp-check {
+                            color: var(--primary);
+                            font-weight: 600;
+                        }
+
+                        .comp-x {
+                            color: #cbd5e1;
+                        }
+
+                        .comp-partial {
+                            color: var(--gold-dark);
+                        }
+
+                        .comp-dim {
+                            color: var(--text-slate);
+                            font-weight: 400;
+                        }
+                    </style>
+
+                    <div class="strategic-bridge">
+                        <p>Incumbents sell hardware <span style="color: var(--primary);">or</span> cloud <span style="color: var(--primary);">or</span> software. Sirsi is the only platform that unifies all three with patent protection and sovereign deployment.</p>
+                    </div>
+
+                    <div style="border: 1px solid var(--border); background: #fff; overflow: hidden;">
+                        <table class="comp-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 18%;">Capability</th>
+                                    <th class="comp-sirsi" style="width: 18%;">Sirsi Sovereign</th>
+                                    <th style="width: 16%;">NVIDIA DGX H100</th>
+                                    <th style="width: 16%;">NVIDIA DGX Spark</th>
+                                    <th style="width: 16%;">Cloud GPU</th>
+                                    <th style="width: 16%;">DIY / OSS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>System Cost</td>
+                                    <td class="comp-sirsi-col">$78K</td>
+                                    <td class="comp-dim">$350K+</td>
+                                    <td class="comp-dim">$160K</td>
+                                    <td class="comp-dim">$300K/yr</td>
+                                    <td class="comp-dim">$40K+ labor</td>
+                                </tr>
+                                <tr>
+                                    <td>Unified Memory</td>
+                                    <td class="comp-sirsi-col">2 TB</td>
+                                    <td>640 GB</td>
+                                    <td>512 GB</td>
+                                    <td>Varies</td>
+                                    <td>Fragmented</td>
+                                </tr>
+                                <tr>
+                                    <td>Inference (tok/s)</td>
+                                    <td class="comp-sirsi-col">18–22</td>
+                                    <td>8–12</td>
+                                    <td>4–6</td>
+                                    <td>12–18</td>
+                                    <td>2–6</td>
+                                </tr>
+                                <tr>
+                                    <td>Data Sovereignty</td>
+                                    <td class="comp-sirsi-col"><span class="comp-check">✓ Air-Gapped</span></td>
+                                    <td><span class="comp-check">✓</span></td>
+                                    <td><span class="comp-check">✓</span></td>
+                                    <td><span class="comp-x">✗ Cloud-Only</span></td>
+                                    <td><span class="comp-partial">~ Partial</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Setup Time</td>
+                                    <td class="comp-sirsi-col">2 Weeks</td>
+                                    <td class="comp-dim">6+ Months</td>
+                                    <td class="comp-dim">2–3 Months</td>
+                                    <td>1–2 Weeks</td>
+                                    <td class="comp-dim">3–6 Months</td>
+                                </tr>
+                                <tr>
+                                    <td>DevOps Required</td>
+                                    <td class="comp-sirsi-col"><span class="comp-check">None</span></td>
+                                    <td class="comp-dim">Dedicated Team</td>
+                                    <td class="comp-dim">Specialist</td>
+                                    <td class="comp-dim">3–5 Engineers</td>
+                                    <td class="comp-dim">Full Team</td>
+                                </tr>
+                                <tr>
+                                    <td>Patent Moat</td>
+                                    <td class="comp-sirsi-col"><span class="comp-check">6 Patents</span></td>
+                                    <td><span class="comp-x">—</span></td>
+                                    <td><span class="comp-x">—</span></td>
+                                    <td><span class="comp-x">—</span></td>
+                                    <td><span class="comp-x">—</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Autonomous Ops</td>
+                                    <td class="comp-sirsi-col"><span class="comp-check">✓ Hypervisor</span></td>
+                                    <td><span class="comp-x">✗</span></td>
+                                    <td><span class="comp-x">✗</span></td>
+                                    <td><span class="comp-partial">~ Limited</span></td>
+                                    <td><span class="comp-x">✗</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="display: flex; gap: 16px; margin-top: 16px; align-items: stretch;">
+                        <div style="flex: 1; border: 1px solid var(--border); border-left: 2.5px solid var(--gold-neo); padding: 12px 16px; background: #fff;">
+                            <div style="font-family: 'Cinzel', serif; font-size: var(--deck-micro); color: var(--gold-dark); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">NVIDIA's Weakness</div>
+                            <div style="font-size: var(--deck-card-desc); color: var(--text-dark); line-height: 1.4;">Sells hardware only. No autonomous operations, no integrated AI stack, no patent-protected architecture. Customers still need a full DevOps team.</div>
+                        </div>
+                        <div style="flex: 1; border: 1px solid var(--border); border-left: 2.5px solid var(--gold-neo); padding: 12px 16px; background: #fff;">
+                            <div style="font-family: 'Cinzel', serif; font-size: var(--deck-micro); color: var(--gold-dark); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Cloud's Weakness</div>
+                            <div style="font-size: var(--deck-card-desc); color: var(--text-dark); line-height: 1.4;">Data leaves the building. Impossible for regulated industries. Costs compound annually with no ownership equity.</div>
+                        </div>
+                        <div style="flex: 1; border: 1px solid var(--border); border-left: 2.5px solid var(--primary); padding: 12px 16px; background: rgba(16,185,129,0.02);">
+                            <div style="font-family: 'Cinzel', serif; font-size: var(--deck-micro); color: var(--primary); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Sirsi's Position</div>
+                            <div style="font-size: var(--deck-card-desc); color: var(--text-dark); line-height: 1.4;">The only turnkey sovereign AI platform: hardware + software + autonomous ops + patent moat. No assembly. No DevOps. No data egress.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slide-footer">
+                    <div>SIRSI TECHNOLOGIES INC.</div>
+                    <div>CONFIDENTIAL // COMPETITIVE LANDSCAPE // SLIDE 08</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 09: Go To Market Strategy -->
         <div class="slide">
             <div class="slide-inner">
                 <!-- Technical Dot Matrix -->
@@ -2849,7 +3048,7 @@
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // GO TO MARKET STRATEGY // SLIDE 08</div>
+                    <div>CONFIDENTIAL // GO TO MARKET STRATEGY // SLIDE 09</div>
                 </div>
             </div> <!-- End slide-inner -->
         </div> <!-- End slide -->
@@ -2974,12 +3173,32 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- TAM → SAM → SOM Funnel -->
+                        <div style="grid-column: 1 / -1; display: flex; gap: 0; margin-top: 8px; border: 1px solid var(--border); background: #fff;">
+                            <div style="flex: 3; padding: 14px 20px; border-right: 1px solid var(--border);">
+                                <div style="font-size: var(--deck-micro); color: var(--text-slate); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Total Addressable Market</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--text-dark); font-weight: 500;">$1.55T</div>
+                                <div style="font-size: var(--deck-micro); color: var(--text-slate); margin-top: 2px;">Global Cloud Infrastructure + AI Services</div>
+                            </div>
+                            <div style="flex: 2; padding: 14px 20px; border-right: 1px solid var(--border); border-left: 2.5px solid var(--primary); background: rgba(16,185,129,0.02);">
+                                <div style="font-size: var(--deck-micro); color: var(--primary); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Serviceable Addressable Market</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--primary); font-weight: 500;">$2.4B</div>
+                                <div style="font-size: var(--deck-micro); color: var(--text-slate); margin-top: 2px;">Sovereign Cloud IaaS — Regulated On-Prem AI</div>
+                            </div>
+                            <div style="flex: 1.5; padding: 14px 20px; border-left: 2.5px solid var(--gold-dark); background: rgba(200,169,81,0.03);">
+                                <div style="font-size: var(--deck-micro); color: var(--gold-dark); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Year 1 Target (SOM)</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold-dark); font-weight: 500;">$19.5M</div>
+                                <div style="font-size: var(--deck-micro); color: var(--text-slate); margin-top: 2px;">250 Sovereign Platform Deployments</div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // MARKET ARCHITECTURE // SLIDE 09</div>
+                    <div>CONFIDENTIAL // MARKET ARCHITECTURE // SLIDE 10</div>
                 </div>
             </div>
         </div>
