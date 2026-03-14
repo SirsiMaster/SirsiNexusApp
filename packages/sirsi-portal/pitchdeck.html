@@ -1095,20 +1095,15 @@
                     </div>
 
                     <div class="s3-dash">
-                        <!-- BARRIER 01: Financial -->
+                        <!-- RISK 01: Financial -->
                         <div class="s3-card">
                             <div class="s3-card-num">Risk 01 // Financial</div>
                             <div class="s3-card-hero">$350K<span style="font-size: 1.8rem; color: var(--text-slate);">+</span></div>
                             <div class="s3-card-tag">Enterprise GPU Server Entry Price</div>
-                            <p class="s3-card-body">The only "real" option for on-prem AI is a $350K enterprise GPU server — or $300K/yr in cloud GPU bills that grow annually.</p>
-                            <div class="s3-card-compare">
-                                <span class="s3-card-compare-old">$350K GPU Server</span>
-                                <span class="s3-card-compare-arrow">→</span>
-                                <span class="s3-card-compare-new">$78K Sirsi</span>
-                            </div>
+                            <p class="s3-card-body">The only "real" option for on-prem AI is a $350K enterprise GPU server — or $300K/yr in cloud GPU bills that grow annually. Most companies never even get a quote.</p>
                         </div>
 
-                        <!-- BARRIER 02: Regulatory -->
+                        <!-- RISK 02: Regulatory -->
                         <div class="s3-card">
                             <div class="s3-card-num">Risk 02 // Regulatory</div>
                             <div class="s3-card-hero">0 <span style="font-size: 1.8rem; color: var(--text-slate);">Bytes</span></div>
@@ -1122,24 +1117,14 @@
                             </ul>
                         </div>
 
-                        <!-- BARRIER 03: Operational -->
+                        <!-- RISK 03: Operational -->
                         <div class="s3-card">
                             <div class="s3-card-num">Risk 03 // Operational</div>
                             <div class="s3-card-hero">6 <span style="font-size: 1.8rem; color: var(--text-slate);">Mo.</span></div>
                             <div class="s3-card-tag">Enterprise GPU Waitlist</div>
                             <p class="s3-card-body">GPU scarcity, proprietary CUDA lock-in, and a specialized DevOps team just to keep the lights on. Most companies can't even start.</p>
-                            <div class="s3-card-compare">
-                                <span class="s3-card-compare-old">6-month wait</span>
-                                <span class="s3-card-compare-arrow">→</span>
-                                <span class="s3-card-compare-new">2-week delivery</span>
-                            </div>
                         </div>
                     </div>
-
-                    <p
-                        style="font-family:'Cinzel', serif; font-size: 1.15rem; color: var(--primary); font-weight: 500; text-align:center; margin-top: 20px; text-transform: uppercase; letter-spacing: 0.08em;">
-                        250 companies × $78K = $19.5M addressable pipeline
-                    </p>
 
                 </div>
 
@@ -3620,7 +3605,7 @@
                                     style="display: flex; flex-direction: column; gap: 14px; font-size: var(--deck-card-desc); font-weight: 500;">
                                     <div
                                         style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
-                                        <span style="color: var(--text-slate);">Target ARR (Year 5):</span>
+                                        <span style="color: var(--text-slate);">Target ARR (2030):</span>
                                         <strong style="color: var(--primary); font-weight: 500;">$73M+</strong>
                                     </div>
                                     <div
@@ -3650,6 +3635,14 @@
                                         <span style="color: var(--text-slate);">LTV / CAC Ratio:</span> <strong
                                             style="color: var(--primary); font-weight: 500;">9.8x</strong>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div style="padding: 14px 20px; background: rgba(4,120,87,0.04); border: 1px solid rgba(4,120,87,0.15); border-left: 3px solid var(--primary); display: flex; align-items: center; gap: 14px;">
+                                <div style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--primary); font-weight: 500; line-height: 1;">250</div>
+                                <div>
+                                    <div style="font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--primary); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500;">Sovereign Deployments × $78K</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-slate); margin-top: 2px;">$19.5M pipeline velocity — Year 3 (2028) when M5 Ultra hits market</div>
                                 </div>
                             </div>
 
@@ -4143,10 +4136,10 @@
                 type: 'line',
                 plugins: [ChartDataLabels],
                 data: {
-                    labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+                    labels: ['Y1 (2026)', 'Y2 (2027)', 'Y3 (2028)', 'Y4 (2029)', 'Y5 (2030)'],
                     datasets: [{
                         label: 'Revenue ($M)',
-                        data: [2.0, 8.0, 18.0, 38.0, 73.0],
+                        data: [2.5, 9.0, 32.0, 55.0, 73.0],
                         borderColor: '#047857',
                         backgroundColor: 'rgba(4, 120, 87, 0.1)',
                         fill: true,
@@ -4161,7 +4154,7 @@
                     },
                     {
                         label: 'EBITDA ($M)',
-                        data: [-1.5, 1.2, 8.5, 18.0, 35.0],
+                        data: [-2.0, 0.5, 14.0, 25.0, 35.0],
                         borderColor: '#8D5FD3',
                         backgroundColor: 'rgba(141, 95, 211, 0.1)',
                         fill: true,
