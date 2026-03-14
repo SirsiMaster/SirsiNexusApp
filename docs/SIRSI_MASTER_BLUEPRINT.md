@@ -730,7 +730,7 @@ CREATE INDEX idx_infra_drift ON infrastructure_state(drift_detected) WHERE drift
 
 ---
 
-## XII. 5 PATENTS
+## XII. 6 PATENTS
 
 | # | Title | Core Innovation | Status |
 |:--|:------|:----------------|:-------|
@@ -739,8 +739,9 @@ CREATE INDEX idx_infra_drift ON infrastructure_state(drift_detected) WHERE drift
 | P-003 | KG Query Engine | Translates human-readable queries into NebuLang for system execution, and translates machine responses back to human-readable intent. | Filed |
 | P-004 | Fire Team Protocol | Persistent autonomous agents that live inside the business entity, communicate exclusively via NebuLang (P-001), traverse both LLM buffer and Knowledge Graph (P-003) natively, and self-escalate through a tiered command chain (Agent → Hypervisor → SirsiMaster). Composition patent requiring P-001, P-002, P-003, P-005. | In Design |
 | P-005 | KG Sharding Protocol | Sharding overlay for distributing Knowledge Graph management and query execution across heterogeneous silicon nodes. | In Design |
+| P-006 | Sovereign Platform | Magnetic-docking hardware appliance that bypasses Thunderbolt 5 via PCIe Gen 5 interposition, clustering 4 Mac Studios into a unified 2 TB AI supercomputer with ~120 GB/s fabric bandwidth and sub-microsecond latency. ADR-044. | In Design |
 
-> **Note:** Capabilities such as Tri-Silicon Mesh Orchestration, Cryptographic Infrastructure Proofs, Direct-to-Metal Communication, and Autonomous Infrastructure Genesis are **platform features**, not standalone patents. They are implementations of the patented protocols above.
+> **Note:** Capabilities such as Tri-Silicon Mesh Orchestration, Cryptographic Infrastructure Proofs, and Autonomous Infrastructure Genesis are **platform features**, not standalone patents. Direct-to-Metal hardware orchestration is now patent-backed by P-006 (Sovereign Platform). See `docs/SOVEREIGN_PLATFORM_ARCHITECTURE.md` for the canonical hardware specification.
 
 ---
 

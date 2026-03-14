@@ -2,7 +2,7 @@
 
 This index tracks **all** architectural decisions for the Sirsi platform — the unified product that spans web application, desktop application (Tauri), mobile application (React Native), Cloud Hypervisor, website, and pitch deck. All distributions share one codebase, one set of rules, one ADR registry.
 
-**Total ADRs: 37** | **Next available: ADR-044**
+**Total ADRs: 38** | **Next available: ADR-045**
 
 ---
 
@@ -48,6 +48,7 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 | ADR-041 | Tri-Silicon Mesh Orchestration (Feature) | Proposed | 2026-03-07 |
 | ADR-042 | Sovereign Compute Deployment Model (Mac Studio Clusters) | Proposed | 2026-03-07 |
 | ADR-043 | KG Sharding Protocol — Distributed Knowledge Graph Partitioning | Proposed | 2026-03-08 |
+| [ADR-044](ADR-044-SOVEREIGN-PLATFORM.md) | Sirsi Nexus Sovereign Platform — Patent P-006 (Mag-Dock Hardware Clustering) | Proposed | 2026-03-14 |
 
 ---
 
@@ -91,6 +92,7 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 - ADR-041: Tri-Silicon Mesh — Silicon-aware workload scheduling (Feature, not patent)
 - ADR-042: Sovereign Compute — Mac Studio M5 Max cluster deployment
 - ADR-043: KG Sharding Protocol — Distributed KG partitioning (Patent P-005)
+- ADR-044: Sovereign Platform — Mag-Dock PCIe Gen 5 hardware clustering (Patent P-006)
 - ADR-025: Unified App Architecture — Single React codebase, Tauri desktop, Sirsi Rail UCS
 
 ### React Migration & Frontend Architecture
@@ -122,7 +124,7 @@ This index tracks **all** architectural decisions for the Sirsi platform — the
 | ADR-029 | Active — Cloud Run Deployment Architecture |
 | ADR-030 | Active — Self-Service Tenant Provisioning |
 | ADR-031 | Active — Unified Commerce & Signing Pipeline |
-| ADR-032 — ADR-043 | Proposed — Master Blueprint v4 decisions |
-| ADR-043+ | Next available |
+| ADR-032 — ADR-044 | Proposed — Master Blueprint v4 decisions |
+| ADR-045+ | Next available |
 
-> **Last updated:** March 8, 2026 — Updated patent portfolio to 5 (was 8), added ADR-043 (KG Sharding)
+> **Last updated:** March 14, 2026 — Added ADR-044 (Sovereign Platform, Patent P-006). Patent portfolio now 6.
