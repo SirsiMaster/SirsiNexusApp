@@ -1540,19 +1540,19 @@
                             max-width: 66.666%;
                         }
 
-                        .ip-card {
+                        div.ip-card {
                             display: flex;
                             flex-direction: column;
                             background: #fff;
                             border: 1px solid #e5e7eb;
                             border-left: 2.5px solid var(--gold-neo);
-                            padding: 14px 16px;
+                            padding: 16px 20px;
                             position: relative;
                             overflow: hidden;
                         }
 
                         /* Large watermark numeral */
-                        .ip-card::after {
+                        div.ip-card::after {
                             content: attr(data-num);
                             position: absolute;
                             top: -4px;
@@ -1565,7 +1565,7 @@
                             pointer-events: none;
                         }
 
-                        .ip-card::before {
+                        div.ip-card::before {
                             display: none;
                         }
 
