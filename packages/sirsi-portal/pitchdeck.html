@@ -342,6 +342,34 @@
             gap: 12px;
         }
 
+        /* SPACING RESET: gap: 12px is the ONLY source of vertical spacing
+           between direct children of slide-content. Kill all margins. */
+        .slide-content > * {
+            margin-top: 0;
+            margin-bottom: 0;
+            flex-shrink: 0;
+        }
+
+        /* Let the main body element (grids, tables, etc.) fill remaining space */
+        .slide-content > *:last-child:not(style):not(.slide-footer) {
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        /* Universal subtitle – matches Slide 7 golden reference exactly */
+        .slide-subtitle,
+        .strategic-bridge,
+        .ip-subtitle,
+        .hw-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--deck-body) !important;
+            color: var(--text-slate) !important;
+            line-height: 1.4 !important;
+            margin: 0 !important;
+            flex-shrink: 0;
+        }
+
         /* P0-2: Global body text justification (excludes centered contexts) */
         .slide-content p,
         .info-card p,
@@ -2833,7 +2861,7 @@
                 <div class="slide-content">
                     <!-- Technical Status Header -->
                     <div class="grid grid-center"
-                        style="grid-template-columns: auto auto auto auto 1fr; gap: 15px; margin-bottom: 25px;">
+                        style="grid-template-columns: auto auto auto auto 1fr; gap: 15px;">
                         <div
                             style="font-size: var(--deck-small); font-weight: 500; color: var(--gold-dark); letter-spacing: 0.1em; text-transform: uppercase;">
                             MOAT VALIDATION //</div>
@@ -2852,7 +2880,7 @@
 
 
                     <!-- Roadmap Engine (The Arrow Graphic) -->
-                    <div style="display: flex; flex-direction: column; gap: 0; margin-bottom: 15px;">
+                    <div style="display: flex; flex-direction: column; gap: 0;">
                         <!-- Milestones: Top (EPOCH START) -->
                         <div
                             style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 10px; padding-left: 20px;">
@@ -2938,7 +2966,7 @@
                     </div>
 
                     <!-- Market Path to Sovereign -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 15px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden;">
                         <div style="padding: 14px 16px; background: #fff; border-right: 1px solid var(--border); text-align: center;">
                             <div style="font-size: 1.1rem; margin-bottom: 4px;">💻</div>
                             <div style="font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 500; color: var(--text-dark); letter-spacing: 0.08em; text-transform: uppercase;">Software</div>
@@ -3957,7 +3985,7 @@
         <div class="slide">
             <div class="slide-inner">
                 <div class="slide-content">
-                    <div class="text-center" style="margin-bottom: 40px;">
+                    <div class="text-center">
                         <h3 class="cinzel">SEED OFFERING</h3>
                         <h2>Join the AI Infrastructure Revolution</h2>
                     </div>
