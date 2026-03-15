@@ -370,6 +370,42 @@
             flex-shrink: 0;
         }
 
+        /* ═══ UNIVERSAL TYPE SYSTEM ═══ */
+        /* Card titles: Cinzel, --deck-card-title (1.15rem) */
+        .info-card h4,
+        .info-card .card-title {
+            font-family: 'Cinzel', serif;
+            font-size: var(--deck-card-title);
+            font-weight: 500;
+            color: var(--text-dark);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        /* Card body: Inter, --deck-card-desc (0.9rem) */
+        .info-card p,
+        .info-card .card-body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--deck-card-desc);
+            color: var(--text-slate);
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        /* Card labels/tags: Inter, --deck-card-label (0.82rem) */
+        .info-card .card-label,
+        .info-card h5 {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--deck-card-label);
+            color: var(--gold-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+            margin: 0;
+        }
+
         /* P0-2: Global body text justification (excludes centered contexts) */
         .slide-content p,
         .info-card p,
