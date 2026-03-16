@@ -3286,10 +3286,11 @@
                     </div>
 
                     <!-- ═══ BAND 2: Two-Column Panel Zone ═══ -->
-                    <div style="display: flex; gap: 24px; align-items: flex-start; flex: 1;">
+                    <div style="flex: 0 0 auto;">
+                    <div id="s11-panel-zone" style="display: flex; gap: 24px; align-items: stretch;">
 
                         <!-- LEFT: Career Grid (57%) -->
-                        <div style="flex: 0 0 57%;">
+                        <div id="s11-left" style="flex: 0 0 57%;">
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px 30px;">
                                 <div style="padding-left: 14px; border-left: 2px solid var(--primary);">
                                     <div
@@ -3363,41 +3364,24 @@
                                         DCA Live AI Leadership Award. $1M raised via Visa, Techstars, and Hedera.</div>
                                 </div>
                             </div>
-
-                            <!-- Institutional Logos -->
-                            <div
-                                style="display: flex; flex-wrap: wrap; gap: 18px; margin-top: 22px; opacity: 0.35; filter: grayscale(1); align-items: center;">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg"
-                                    style="height: 11px;">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Seal_of_the_United_States_Department_of_State.svg"
-                                    style="height: 14px;">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_the_Federal_Reserve_System.svg/1200px-Logo_of_the_Federal_Reserve_System.svg.png"
-                                    style="height: 12px;">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/MIT_logo.svg/1280px-MIT_logo.svg.png"
-                                    style="height: 9px;">
-                                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Howard_University_logo.svg/1200px-Howard_University_logo.svg.png"
-                                    style="height: 14px;">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Oracle_logo.svg/1200px-Oracle_logo.svg.png"
-                                    style="height: 9px;">
-                            </div>
                         </div>
 
                         <!-- RIGHT: Channel Panel (~40%) -->
-                        <div style="flex: 1; background: linear-gradient(180deg, rgba(200,169,81,0.04) 0%, rgba(248,247,244,0.6) 40%, rgba(255,255,255,0.9) 100%); border: 1px solid rgba(200,169,81,0.18); border-top: 3px solid var(--gold-neo); border-radius: 4px; padding: 22px 20px 18px; box-shadow: inset 0 2px 8px rgba(200,169,81,0.06), 0 1px 4px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
+                        <div id="s11-right" style="flex: 1; background: linear-gradient(180deg, rgba(200,169,81,0.04) 0%, rgba(248,247,244,0.6) 40%, rgba(255,255,255,0.9) 100%); border: 1px solid rgba(200,169,81,0.18); border-top: 3px solid var(--gold-neo); border-radius: 4px; padding: 16px 18px 14px; box-shadow: inset 0 2px 8px rgba(200,169,81,0.06), 0 1px 4px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
 
                             <!-- Channel Header -->
-                            <div style="margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(200,169,81,0.15);">
-                                <h3 style="margin: 0 0 4px 0; font-size: 1.1rem;">PROJECTED FIRST HIRES</h3>
+                            <div style="margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(200,169,81,0.15);">
+                                <h3 style="margin: 0 0 2px 0; font-size: 1rem;">PROJECTED FIRST HIRES</h3>
                                 <div
                                     style="font-size: var(--deck-micro); color: var(--text-light); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 400;">
                                     Post-Funding Roadmap</div>
                             </div>
 
                             <!-- Hire Cards -->
-                            <div style="display: flex; flex-direction: column; gap: 16px; flex: 1;">
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
 
                                 <!-- CAIO -->
-                                <div style="padding: 12px 14px; background: #fff; border: 1px solid rgba(5,150,105,0.12); border-left: 3px solid var(--primary); border-radius: 4px;">
+                                <div style="padding: 10px 12px; background: #fff; border: 1px solid rgba(5,150,105,0.12); border-left: 3px solid var(--primary); border-radius: 4px;">
                                     <div class="cinzel"
                                         style="font-size: var(--deck-small); color: var(--primary); letter-spacing: 0.08em; text-transform: uppercase;">
                                         Chief AI Officer</div>
@@ -3414,7 +3398,7 @@
                                 </div>
 
                                 <!-- CGO -->
-                                <div style="padding: 12px 14px; background: #fff; border: 1px solid rgba(200,169,81,0.15); border-left: 3px solid var(--gold-dark); border-radius: 4px;">
+                                <div style="padding: 10px 12px; background: #fff; border: 1px solid rgba(200,169,81,0.15); border-left: 3px solid var(--gold-dark); border-radius: 4px;">
                                     <div class="cinzel"
                                         style="font-size: var(--deck-small); color: var(--primary); letter-spacing: 0.08em; text-transform: uppercase;">
                                         Chief Growth Officer</div>
@@ -3431,7 +3415,7 @@
                                 </div>
 
                                 <!-- VP Eng — Active Search -->
-                                <div style="padding: 12px 14px; background: rgba(200,169,81,0.03); border: 1px dashed rgba(200,169,81,0.25); border-radius: 4px;">
+                                <div style="padding: 10px 12px; background: rgba(200,169,81,0.03); border: 1px dashed rgba(200,169,81,0.25); border-radius: 4px;">
                                     <div class="cinzel"
                                         style="font-size: var(--deck-card-label); color: var(--gold-dark); letter-spacing: 0.08em; text-transform: uppercase;">
                                         VP of Engineering</div>
@@ -3445,10 +3429,28 @@
                             </div>
 
                             <!-- Channel Footer Badge -->
-                            <div style="padding-top: 14px; border-top: 1px solid rgba(200,169,81,0.12); text-align: center; margin-top: 16px;">
+                            <div style="padding-top: 10px; border-top: 1px solid rgba(200,169,81,0.12); text-align: center; margin-top: auto;">
                                 <span style="font-size: var(--deck-micro); color: var(--gold-dark); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;">3 Hires Planned · Q3 2026</span>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Institutional Logos — Full Width -->
+                    <div
+                        style="display: flex; flex-wrap: wrap; gap: 18px; margin-top: 16px; opacity: 0.35; filter: grayscale(1); align-items: center;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg"
+                            style="height: 11px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Seal_of_the_United_States_Department_of_State.svg"
+                            style="height: 14px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_the_Federal_Reserve_System.svg/1200px-Logo_of_the_Federal_Reserve_System.svg.png"
+                            style="height: 12px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/MIT_logo.svg/1280px-MIT_logo.svg.png"
+                            style="height: 9px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Howard_University_logo.svg/1200px-Howard_University_logo.svg.png"
+                            style="height: 14px;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Oracle_logo.svg/1200px-Oracle_logo.svg.png"
+                            style="height: 9px;">
+                    </div>
                     </div>
                 </div>
 
