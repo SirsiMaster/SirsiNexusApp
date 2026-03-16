@@ -461,6 +461,38 @@
             z-index: 1000;
         }
 
+        /* Slide 13 (Financials): body fills page, 24px clearance above footer */
+        /* Footer is at bottom: 40px, ~16px tall → content must stop at ~80px from bottom */
+        #slide-financials .slide-inner {
+            padding-bottom: 80px;
+        }
+        #slide-financials .slide-content {
+            overflow: visible;
+        }
+        /* Force the 2-col grid and its children to stretch vertically */
+        #slide-financials .slide-content > .grid {
+            flex: 1;
+        }
+        #slide-financials .slide-content > .grid > .grid {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Revenue chart card stretches to fill remaining left-column space */
+        #slide-financials .slide-content > .grid > .grid:first-child > .info-card:first-child {
+            flex: 1;
+            height: auto;
+        }
+        /* Right column: Platform Economics stays fixed, Funding Roadmap stretches */
+        #slide-financials .slide-content > .grid > .grid:last-child > .info-card:last-child {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        #slide-financials .slide-content > .grid > .grid:last-child > .info-card:last-child > div:last-child {
+            flex: 1;
+        }
+
         .slide-footnote {
             position: absolute;
             bottom: 62px;
@@ -3638,7 +3670,7 @@
         </div>
 
         <!-- Slide 13: Financials - Comprehensive Dashboard -->
-        <div class="slide">
+        <div class="slide" id="slide-financials">
             <div class="slide-inner">
                 <div class="slide-header">
                     <h3>GROWTH TRAJECTORY</h3>
