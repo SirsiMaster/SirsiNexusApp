@@ -3287,7 +3287,7 @@
 
                     <!-- ═══ BAND 2: Two-Column Panel Zone ═══ -->
                     <div style="flex: 0 0 auto;">
-                    <div id="s11-panel-zone" style="display: flex; gap: 24px; align-items: stretch;">
+                    <div id="s11-panel-zone" style="display: flex; gap: 24px; align-items: flex-start;">
 
                         <!-- LEFT: Career Grid (57%) -->
                         <div id="s11-left" style="flex: 0 0 57%;">
@@ -3367,71 +3367,68 @@
                         </div>
 
                         <!-- RIGHT: Channel Panel (~40%) -->
-                        <div id="s11-right" style="flex: 1; background: linear-gradient(180deg, rgba(200,169,81,0.04) 0%, rgba(248,247,244,0.6) 40%, rgba(255,255,255,0.9) 100%); border: 1px solid rgba(200,169,81,0.18); border-top: 3px solid var(--gold-neo); border-radius: 4px; padding: 16px 18px 14px; box-shadow: inset 0 2px 8px rgba(200,169,81,0.06), 0 1px 4px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
+                        <div id="s11-right" style="flex: 1; background: linear-gradient(180deg, rgba(200,169,81,0.04) 0%, rgba(248,247,244,0.6) 40%, rgba(255,255,255,0.9) 100%); border: 1px solid rgba(200,169,81,0.18); border-top: 3px solid var(--gold-neo); border-radius: 4px; padding: 8px 14px 6px; box-shadow: inset 0 2px 8px rgba(200,169,81,0.06), 0 1px 4px rgba(0,0,0,0.04); display: flex; flex-direction: column; overflow: hidden;">
 
                             <!-- Channel Header -->
-                            <div style="margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(200,169,81,0.15);">
-                                <h3 style="margin: 0 0 2px 0; font-size: 1rem;">PROJECTED FIRST HIRES</h3>
+                            <div style="margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid rgba(200,169,81,0.15);">
+                                <h3 style="margin: 0; font-size: 0.9rem;">PROJECTED FIRST HIRES</h3>
                                 <div
                                     style="font-size: var(--deck-micro); color: var(--text-light); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 400;">
                                     Post-Funding Roadmap</div>
                             </div>
 
                             <!-- Hire Cards -->
-                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div style="display: flex; flex-direction: column; gap: 5px;">
 
                                 <!-- CAIO -->
-                                <div style="padding: 10px 12px; background: #fff; border: 1px solid rgba(5,150,105,0.12); border-left: 3px solid var(--primary); border-radius: 4px;">
+                                <div style="padding: 5px 8px; background: #fff; border: 1px solid rgba(5,150,105,0.12); border-left: 3px solid var(--primary); border-radius: 3px;">
                                     <div class="cinzel"
                                         style="font-size: var(--deck-small); color: var(--primary); letter-spacing: 0.08em; text-transform: uppercase;">
                                         Chief AI Officer</div>
                                     <div
-                                        style="font-size: var(--deck-card-label); font-weight: 400; color: var(--text-slate); margin-top: 3px;">
+                                        style="font-size: var(--deck-card-label); font-weight: 400; color: var(--text-slate); margin-top: 1px;">
                                         Sriram Nagaraj, Ph.D. <span
                                             style="font-size: var(--deck-micro); color: var(--gold-dark); font-style: italic;">(Prospective)</span>
                                         <a href="https://www.linkedin.com/in/sriram-nagaraj-4166831a8/" target="_blank"><i
                                                 class="fab fa-linkedin" style="color: #0077B5; font-size: var(--deck-micro);"></i></a>
                                     </div>
                                     <div
-                                        style="font-size: var(--deck-small); color: var(--text-light); line-height: 1.4; margin-top: 2px; font-weight: 400;">
+                                        style="font-size: var(--deck-small); color: var(--text-light); line-height: 1.35; font-weight: 400;">
                                         Physics-Informed ML. Sr. Data Scientist, Federal Reserve.</div>
                                 </div>
 
                                 <!-- CGO -->
-                                <div style="padding: 10px 12px; background: #fff; border: 1px solid rgba(200,169,81,0.15); border-left: 3px solid var(--gold-dark); border-radius: 4px;">
+                                <div style="padding: 5px 8px; background: #fff; border: 1px solid rgba(200,169,81,0.15); border-left: 3px solid var(--gold-dark); border-radius: 3px;">
                                     <div class="cinzel"
                                         style="font-size: var(--deck-small); color: var(--primary); letter-spacing: 0.08em; text-transform: uppercase;">
                                         Chief Growth Officer</div>
                                     <div
-                                        style="font-size: var(--deck-card-label); font-weight: 400; color: var(--text-slate); margin-top: 3px;">
+                                        style="font-size: var(--deck-card-label); font-weight: 400; color: var(--text-slate); margin-top: 1px;">
                                         Erin Horne McKinney, M.A. <span
                                             style="font-size: var(--deck-micro); color: var(--gold-dark); font-style: italic;">(Prospective)</span>
                                         <a href="https://www.linkedin.com/in/erinhornemckinney/" target="_blank"><i
                                                 class="fab fa-linkedin" style="color: #0077B5; font-size: var(--deck-micro);"></i></a>
                                     </div>
                                     <div
-                                        style="font-size: var(--deck-small); color: var(--text-slate); line-height: 1.4; margin-top: 2px; font-weight: 400;">
+                                        style="font-size: var(--deck-small); color: var(--text-slate); line-height: 1.35; font-weight: 400;">
                                         Tech Titan & DC Innovation Lead. CEO, ACCESS Consulting.</div>
                                 </div>
 
                                 <!-- VP Eng — Active Search -->
-                                <div style="padding: 10px 12px; background: rgba(200,169,81,0.03); border: 1px dashed rgba(200,169,81,0.25); border-radius: 4px;">
+                                <div style="padding: 5px 8px; background: rgba(200,169,81,0.03); border: 1px dashed rgba(200,169,81,0.25); border-radius: 3px;">
                                     <div class="cinzel"
                                         style="font-size: var(--deck-card-label); color: var(--gold-dark); letter-spacing: 0.08em; text-transform: uppercase;">
                                         VP of Engineering</div>
                                     <div
-                                        style="font-size: var(--deck-micro); color: var(--text-light); text-transform: uppercase; margin-top: 4px; letter-spacing: 0.15em; font-weight: 500;">
+                                        style="font-size: var(--deck-micro); color: var(--text-light); text-transform: uppercase; margin-top: 2px; letter-spacing: 0.15em; font-weight: 500;">
                                         Active Search</div>
                                     <div
-                                        style="font-size: var(--deck-small); color: var(--text-slate); margin-top: 2px; font-style: italic; font-weight: 400;">
+                                        style="font-size: var(--deck-small); color: var(--text-slate); font-style: italic; font-weight: 400;">
                                         Hardware-mesh & distributed systems.</div>
                                 </div>
                             </div>
 
-                            <!-- Channel Footer Badge -->
-                            <div style="padding-top: 10px; border-top: 1px solid rgba(200,169,81,0.12); text-align: center; margin-top: auto;">
-                                <span style="font-size: var(--deck-micro); color: var(--gold-dark); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;">3 Hires Planned · Q3 2026</span>
-                            </div>
+
                         </div>
                     </div>
 
@@ -4198,6 +4195,14 @@
             const progress = ((currentSlide - 1) / (totalSlides - 1)) * 100;
             const progressEl = document.getElementById('progressBar');
             if (progressEl) progressEl.style.width = progress + '%';
+
+            if (currentSlide === 11) {
+                setTimeout(function() {
+                    var l = document.getElementById('s11-left');
+                    var r = document.getElementById('s11-right');
+                    if (l && r) { r.style.height = l.offsetHeight + 'px'; }
+                }, 50);
+            }
 
             if (currentSlide === 12) {
                 setTimeout(drawRevenueChart, 400);
