@@ -461,6 +461,18 @@
             z-index: 1000;
         }
 
+        .slide-footnote {
+            position: absolute;
+            bottom: 62px;
+            left: 0;
+            right: 0;
+            font-size: 0.6rem;
+            color: #94a3b8;
+            letter-spacing: 0.02em;
+            line-height: 1.4;
+            text-align: left;
+        }
+
         /* 4. Grid Utility System (Safe Globalized Grid) */
         .grid {
             display: grid;
@@ -771,7 +783,7 @@
             color: var(--text-slate);
             font-size: 0.55rem;
             font-weight: 700;
-            padding: 10px 4px;
+            padding: 6px 4px;
             text-align: left;
             text-transform: uppercase;
             letter-spacing: 0.1em;
@@ -779,7 +791,7 @@
         }
 
         .num-table td {
-            padding: 10px 4px;
+            padding: 6px 4px;
             font-size: var(--deck-small);
             font-weight: 400;
             border-bottom: 1px solid #f1f5f9;
@@ -3447,8 +3459,8 @@
                 </div>
 
                 <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC. // CONFIDENTIAL</div>
-                    <div>SLIDE 10 // THE CORE TEAM</div>
+                    <div>SIRSI TECHNOLOGIES INC.</div>
+                    <div>CONFIDENTIAL // THE CORE TEAM // SLIDE 11</div>
                 </div>
             </div>
         </div>
@@ -3620,7 +3632,7 @@
                 </div>
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // PROVEN PERFORMANCE // SLIDE 11</div>
+                    <div>CONFIDENTIAL // PROVEN PERFORMANCE // SLIDE 12</div>
                 </div>
             </div>
         </div>
@@ -3633,10 +3645,10 @@
                     <h2>Scale to $73M ARR <span style="font-size: var(--deck-subtitle); color: var(--text-light); font-weight: 400; letter-spacing: 0;">(Projected)</span></h2>
                 </div>
                 <div class="slide-content">
-                    <div class="grid grid-2 gap-30">
+                    <div class="grid grid-2" style="gap: 20px;">
                         <!-- Left Column: Charts -->
-                        <div class="grid gap-20">
-                            <div class="info-card" style="height: 300px;">
+                        <div class="grid" style="gap: 14px;">
+                            <div class="info-card" style="height: 260px;">
                                 <div class="flex-between">
                                     <h3 style="font-size: var(--deck-card-desc);">PROJECTED REVENUE & EBITDA ($M)</h3>
                                     <div class="flex" style="gap: 15px; font-size: var(--deck-small);">
@@ -3648,53 +3660,53 @@
                                             EBITDA</div>
                                     </div>
                                 </div>
-                                <div style="flex: 1; min-height: 220px; margin-top: 15px;">
+                                <div style="flex: 1; min-height: 190px; margin-top: 10px;">
                                     <canvas id="revenueChart"></canvas>
                                 </div>
                             </div>
                             <div class="info-card">
-                                <h3 style="font-size: var(--deck-subtitle); margin-bottom: 10px;">CUSTOMER BASE GROWTH</h3>
-                                <div style="height: 120px;">
+                                <h3 style="font-size: var(--deck-subtitle); margin-bottom: 6px;">CUSTOMER BASE GROWTH</h3>
+                                <div style="height: 90px;">
                                     <canvas id="userChart"></canvas>
                                 </div>
                                 <p
-                                    style="text-align: center; margin-top: 10px; font-size: var(--deck-subtitle); color: var(--primary); font-weight: 500;">
+                                    style="text-align: center; margin-top: 6px; font-size: var(--deck-subtitle); color: var(--primary); font-weight: 500;">
                                     500,000 CONSERVATIVE TARGET (2030) <span style="font-size: var(--deck-micro); color: var(--text-light); font-weight: 400;">(Projected)</span></p>
                             </div>
                         </div>
 
                         <!-- Right Column: Strategic Metrics -->
-                        <div class="grid gap-20">
-                            <div class="info-card gold" style="padding: 24px;">
+                        <div class="grid" style="gap: 14px;">
+                            <div class="info-card gold" style="padding: 16px 20px;">
                                 <h3 class="cinzel"
-                                    style="color: var(--gold-dark); margin-bottom: 20px; font-size: var(--deck-card-desc); font-weight: 500; letter-spacing: 0.1em;">
+                                    style="color: var(--gold-dark); margin-bottom: 12px; font-size: var(--deck-card-desc); font-weight: 500; letter-spacing: 0.1em;">
                                     PLATFORM ECONOMICS <span style="font-size: 0.55rem; color: var(--text-light); font-weight: 400; letter-spacing: 0.05em;">(Projected)</span></h3>
                                 <div
-                                    style="display: flex; flex-direction: column; gap: 14px; font-size: var(--deck-card-desc); font-weight: 500;">
+                                    style="display: flex; flex-direction: column; gap: 10px; font-size: var(--deck-card-desc); font-weight: 500;">
                                     <div
-                                        style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+                                        style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px;">
                                         <span style="color: var(--text-slate);">Target ARR (2030):</span>
                                         <strong style="color: var(--primary); font-weight: 500;">$73M+</strong>
                                     </div>
                                     <div
-                                        style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+                                        style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px;">
                                         <span style="color: var(--text-slate);">Scale Milestone:</span> <strong
                                             style="color: var(--text-dark); font-weight: 500;">20,000
                                             Customers</strong>
                                     </div>
                                     <div
-                                        style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+                                        style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px;">
                                         <span style="color: var(--text-slate);">IP Milestones:</span> <strong
                                             style="color: var(--gold-dark); font-weight: 500;">5 Patents
                                             in Design</strong>
                                     </div>
                                     <div
-                                        style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+                                        style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px;">
                                         <span style="color: var(--text-slate);">Platform Gross Margin:</span>
                                         <strong style="color: var(--primary); font-weight: 500;">88.4%</strong>
                                     </div>
                                     <div
-                                        style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+                                        style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px;">
                                         <span style="color: var(--text-slate);">CAC Payback Period:</span>
                                         <strong style="color: var(--text-dark); font-weight: 500;">4.2
                                             Months</strong>
@@ -3706,7 +3718,7 @@
                                 </div>
                             </div>
 
-                            <div style="padding: 14px 20px; background: rgba(4,120,87,0.04); border: 1px solid rgba(4,120,87,0.15); border-left: 3px solid var(--primary); display: flex; align-items: center; gap: 14px;">
+                            <div style="padding: 10px 16px; background: rgba(4,120,87,0.04); border: 1px solid rgba(4,120,87,0.15); border-left: 3px solid var(--primary); display: flex; align-items: center; gap: 12px;">
                                 <div style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--primary); font-weight: 500; line-height: 1;">250</div>
                                 <div>
                                     <div style="font-family: 'Cinzel', serif; font-size: 0.7rem; color: var(--primary); letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500;">Sovereign Deployments × $78K</div>
@@ -3714,11 +3726,11 @@
                                 </div>
                             </div>
 
-                            <div class="info-card" style="padding: 24px; border-top: 5px solid var(--text-dark);">
+                            <div class="info-card" style="padding: 16px 20px; border-top: 4px solid var(--text-dark);">
                                 <h3 class="cinzel"
-                                    style="color: var(--text-dark); margin-bottom: 15px; font-size: var(--deck-subtitle); font-weight: 500; letter-spacing: 0.1em;">
+                                    style="color: var(--text-dark); margin-bottom: 10px; font-size: var(--deck-subtitle); font-weight: 500; letter-spacing: 0.1em;">
                                     FUNDING ROADMAP</h3>
-                                <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
                                     <div style="display: flex; align-items: center; gap: 12px;">
                                         <div style="width: 10px; height: 10px; background: var(--primary); border-radius: 50%; flex-shrink: 0;"></div>
                                         <div style="flex: 1;">
@@ -3747,7 +3759,7 @@
                 </div>
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // FINANCIALS // SLIDE 12</div>
+                    <div>CONFIDENTIAL // FINANCIALS // SLIDE 13</div>
                 </div>
             </div>
         </div>
@@ -3765,15 +3777,10 @@
                 </div>
 
                 <div class="slide-content">
-                    <div style="display: flex; align-items: center; gap: 24px; background: var(--primary); color: #fff; padding: 12px 24px; border-radius: 4px; box-shadow: 0 6px 20px rgba(4, 120, 87, 0.3); flex-shrink: 0; margin-bottom: 6px;">
-                        <div style="display: flex; align-items: baseline; gap: 14px; flex-shrink: 0;">
-                            <span style="font-family: 'Cinzel'; font-size: var(--deck-card-desc); letter-spacing: 0.12em; font-weight: 500; opacity: 0.9;">INVESTOR TAX SHIELD</span>
-                            <span style="font-size: 1.5rem; font-weight: 500; color: #fff;">$0 Federal Capital Gains</span>
-                        </div>
-                        <div style="width: 1px; height: 30px; background: rgba(255,255,255,0.3); flex-shrink: 0;"></div>
-                        <p style="font-size: var(--deck-small); line-height: 1.4; opacity: 0.92; margin: 0;">
-                            Under IRC §1202 (QSBS), Sirsi investors pay <span style="font-weight: 500;">zero federal capital gains tax</span> on qualified holdings. A $100M gross gain becomes a $100M net distribution.
-                        </p>
+                    <div style="display: flex; align-items: center; gap: 20px; background: var(--primary); color: #fff; padding: 14px 28px; border-radius: 4px; box-shadow: 0 6px 20px rgba(4, 120, 87, 0.3); flex-shrink: 0; margin-bottom: 6px;">
+                        <span style="font-family: 'Cinzel', serif; font-size: 1.6rem; font-weight: 500; color: #fff; white-space: nowrap;">$0 Federal Capital Gains</span>
+                        <div style="width: 1px; height: 28px; background: rgba(255,255,255,0.3); flex-shrink: 0;"></div>
+                        <span style="font-size: 0.85rem; opacity: 0.92; white-space: nowrap;">IRC §1202 QSBS Qualified — 100% Tax-Exempt on Qualified Holdings</span>
                     </div>
 
                     <div class="num-grid">
@@ -4009,7 +4016,7 @@
                 </div>
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // BY THE NUMBERS // SLIDE 13</div>
+                    <div>CONFIDENTIAL // BY THE NUMBERS // SLIDE 14</div>
                 </div>
             </div>
         </div>
@@ -4102,7 +4109,7 @@
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // SEED OFFERING // SLIDE 14</div>
+                    <div>CONFIDENTIAL // SEED OFFERING // SLIDE 15</div>
                 </div>
             </div>
         </div>
@@ -4153,7 +4160,7 @@
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // THE PARTNERSHIP // SLIDE 15</div>
+                    <div>CONFIDENTIAL // THE PARTNERSHIP // SLIDE 16</div>
                 </div>
             </div>
         </div>
@@ -4199,7 +4206,7 @@
                 }, 50);
             }
 
-            if (currentSlide === 12) {
+            if (currentSlide === 13) {
                 setTimeout(drawRevenueChart, 400);
                 setTimeout(drawUserChart, 600);
             }
