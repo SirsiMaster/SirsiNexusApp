@@ -483,26 +483,53 @@
             flex: 1;
             height: auto;
         }
-        /* Right column: Revenue Composition table fills space */
+        /* Right column: single card fills the entire column */
         #slide-financials .slide-content > .grid > .grid:last-child {
-            gap: 8px;
+            gap: 0;
         }
-        #slide-financials .slide-content > .grid > .grid:last-child > .info-card {
+        #slide-financials .slide-content > .grid > .grid:last-child > .fin-panel {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
-        /* Revenue composition table styles */
-        .rev-comp-table { width: 100%; border-collapse: collapse; font-size: 0.7rem; }
-        .rev-comp-table th { font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-slate); font-weight: 500; padding: 4px 6px; text-align: right; border-bottom: 1px solid var(--border); }
-        .rev-comp-table th:first-child { text-align: left; }
-        .rev-comp-table td { padding: 4px 6px; text-align: right; font-weight: 500; color: var(--text-dark); border-bottom: 1px solid rgba(0,0,0,0.04); }
-        .rev-comp-table td:first-child { text-align: left; font-size: 0.65rem; }
-        .rev-comp-table tr.rev-total td { font-weight: 500; border-top: 2px solid var(--text-dark); border-bottom: none; color: var(--text-dark); }
-        .rev-comp-table tr.rev-recurring td { color: var(--primary); font-size: 0.6rem; border-bottom: none; }
-        .rev-comp-table .rev-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
-        .rev-comp-table .rev-label { font-size: 0.65rem; color: var(--text-dark); }
-        .rev-comp-table .rev-type { font-size: 0.5rem; color: var(--text-slate); letter-spacing: 0.05em; text-transform: uppercase; display: block; margin-top: 1px; }
+        /* Revenue composition table — institutional grade */
+        .fin-table-wrap { flex: 1; display: flex; flex-direction: column; }
+        .fin-table { width: 100%; border-collapse: collapse; flex: 1; }
+        .fin-table th {
+            font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;
+            color: var(--text-slate); font-weight: 500; padding: 10px 8px 8px;
+            text-align: right; border-bottom: 2px solid var(--text-dark);
+        }
+        .fin-table th:first-child { text-align: left; }
+        .fin-table td {
+            padding: 14px 8px; text-align: right; font-size: 0.9rem;
+            font-weight: 500; color: var(--text-dark);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        .fin-table td:first-child { text-align: left; }
+        .fin-table .line-indicator {
+            width: 12px; height: 12px; border-radius: 2px;
+            display: inline-block; margin-right: 8px; vertical-align: middle;
+        }
+        .fin-table .line-name { font-size: 0.85rem; color: var(--text-dark); vertical-align: middle; }
+        .fin-table .line-badge {
+            font-size: 0.5rem; letter-spacing: 0.06em; text-transform: uppercase;
+            padding: 2px 5px; border-radius: 2px; margin-left: 6px;
+            vertical-align: middle; font-weight: 600;
+        }
+        .fin-table .badge-rec { background: rgba(4,120,87,0.1); color: var(--primary); }
+        .fin-table .badge-one { background: rgba(200,169,81,0.15); color: var(--gold-dark); }
+        .fin-table tr.fin-total td {
+            font-weight: 500; font-size: 0.95rem;
+            border-top: 2px solid var(--text-dark); border-bottom: 1px solid var(--border);
+            padding-top: 14px;
+        }
+        .fin-table tr.fin-recurring td {
+            color: var(--primary); font-size: 0.8rem;
+            border-bottom: none; padding-top: 8px; padding-bottom: 8px;
+        }
+        .fin-table td.y5-col { font-weight: 500; }
+        .fin-gm { text-align: center !important; font-size: 0.8rem; font-weight: 500; }
 
         .slide-footnote {
             position: absolute;
@@ -3718,87 +3745,103 @@
                             </div>
                         </div>
 
-                        <!-- Right Column: Revenue Composition -->
-                        <div class="grid" style="gap: 8px;">
-                            <!-- Revenue by Line -->
-                            <div class="info-card gold" style="padding: 10px 14px;">
+                        <!-- Right Column: Revenue Composition (Single Panel) -->
+                        <div class="grid" style="gap: 0;">
+                            <div class="info-card gold fin-panel" style="padding: 16px 18px;">
                                 <h3 class="cinzel"
-                                    style="color: var(--gold-dark); margin-bottom: 6px; font-size: var(--deck-card-desc); font-weight: 500; letter-spacing: 0.1em;">
-                                    REVENUE COMPOSITION <span style="font-size: 0.5rem; color: var(--text-light); font-weight: 400; letter-spacing: 0.05em;">(Projected, $M)</span></h3>
-                                <table class="rev-comp-table">
+                                    style="color: var(--gold-dark); margin-bottom: 14px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em;">
+                                    REVENUE COMPOSITION <span style="font-size: 0.6rem; color: var(--text-light); font-weight: 400; letter-spacing: 0.04em;">Projected, $M</span></h3>
+
+                                <div class="fin-table-wrap">
+                                <table class="fin-table">
                                     <thead>
                                         <tr>
-                                            <th>Line</th>
-                                            <th>Y1 '26</th>
-                                            <th>Y2 '27</th>
-                                            <th>Y3 '28</th>
-                                            <th>Y4 '29</th>
-                                            <th>Y5 '30</th>
+                                            <th style="width: 30%;">Offering</th>
+                                            <th>'26</th>
+                                            <th>'27</th>
+                                            <th>'28</th>
+                                            <th>'29</th>
+                                            <th>'30</th>
+                                            <th>GM</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><span class="rev-dot" style="background: var(--primary);"></span><span class="rev-label">Platform SaaS</span><span class="rev-type">🔄 Recurring</span></td>
-                                            <td>$1.0</td><td>$4.0</td><td>$10.0</td><td>$18.0</td><td style="color: var(--primary);">$28.0</td>
+                                            <td>
+                                                <span class="line-indicator" style="background: var(--primary);"></span><span class="line-name">Platform SaaS</span><span class="line-badge badge-rec">Rec</span>
+                                            </td>
+                                            <td>1.0</td><td>4.0</td><td>10.0</td><td>18.0</td>
+                                            <td class="y5-col" style="color: var(--primary);">28.0</td>
+                                            <td class="fin-gm" style="color: var(--primary);">88%</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="rev-dot" style="background: var(--gold-dark);"></span><span class="rev-label">Sovereign Pods</span><span class="rev-type">💰 One-time</span></td>
-                                            <td style="color: var(--text-slate);">—</td><td>$19.5</td><td>$31.2</td><td>$39.0</td><td style="color: var(--gold-dark);">$46.8</td>
+                                            <td>
+                                                <span class="line-indicator" style="background: var(--gold-dark);"></span><span class="line-name">Sovereign Pods</span><span class="line-badge badge-one">HW</span>
+                                            </td>
+                                            <td style="color: var(--text-light);">—</td><td>19.5</td><td>31.2</td><td>39.0</td>
+                                            <td class="y5-col" style="color: var(--gold-dark);">46.8</td>
+                                            <td class="fin-gm" style="color: var(--gold-dark);">17%</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="rev-dot" style="background: #8D5FD3;"></span><span class="rev-label">Project Services</span><span class="rev-type">💰 One-time</span></td>
-                                            <td>$0.1</td><td>$2.5</td><td>$4.0</td><td>$5.0</td><td>$6.0</td>
+                                            <td>
+                                                <span class="line-indicator" style="background: #8D5FD3;"></span><span class="line-name">Project Services</span><span class="line-badge badge-one">Svc</span>
+                                            </td>
+                                            <td>0.1</td><td>2.5</td><td>4.0</td><td>5.0</td>
+                                            <td class="y5-col">6.0</td>
+                                            <td class="fin-gm" style="color: #8D5FD3;">65%</td>
                                         </tr>
                                         <tr>
-                                            <td><span class="rev-dot" style="background: #0D9488;"></span><span class="rev-label">Managed Services</span><span class="rev-type">🔄 Recurring</span></td>
-                                            <td>$0.05</td><td>$2.0</td><td>$5.0</td><td>$9.0</td><td style="color: #0D9488;">$14.0</td>
+                                            <td>
+                                                <span class="line-indicator" style="background: #0D9488;"></span><span class="line-name">Managed Services</span><span class="line-badge badge-rec">Rec</span>
+                                            </td>
+                                            <td>0.05</td><td>2.0</td><td>5.0</td><td>9.0</td>
+                                            <td class="y5-col" style="color: #0D9488;">14.0</td>
+                                            <td class="fin-gm" style="color: #0D9488;">65%</td>
                                         </tr>
-                                        <tr class="rev-total">
-                                            <td><strong>TOTAL</strong></td>
-                                            <td><strong>$1.15</strong></td><td><strong>$28.0</strong></td><td><strong>$50.2</strong></td><td><strong>$71.0</strong></td><td><strong>$94.8</strong></td>
+                                        <tr class="fin-total">
+                                            <td><strong>Total Revenue</strong></td>
+                                            <td><strong>1.15</strong></td><td><strong>28.0</strong></td><td><strong>50.2</strong></td><td><strong>71.0</strong></td>
+                                            <td class="y5-col"><strong>94.8</strong></td>
+                                            <td class="fin-gm" style="font-weight: 500;">48%</td>
                                         </tr>
-                                        <tr class="rev-recurring">
-                                            <td>Recurring Rev</td>
-                                            <td>$1.05</td><td>$6.0</td><td>$15.0</td><td>$27.0</td><td>$42.0</td>
+                                        <tr class="fin-recurring">
+                                            <td style="font-style: italic;">Recurring Revenue</td>
+                                            <td>1.05</td><td>6.0</td><td>15.0</td><td>27.0</td>
+                                            <td class="y5-col">42.0</td>
+                                            <td></td>
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-
-                            <!-- Sovereign Pods callout -->
-                            <div style="padding: 8px 14px; background: rgba(4,120,87,0.04); border: 1px solid rgba(4,120,87,0.15); border-left: 3px solid var(--primary); display: flex; align-items: center; gap: 10px;">
-                                <div style="font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--primary); font-weight: 500; line-height: 1;">250</div>
-                                <div>
-                                    <div style="font-family: 'Cinzel', serif; font-size: 0.6rem; color: var(--primary); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;">Sovereign Pods × $78K — Year 2 (2027)</div>
-                                    <div style="font-size: 0.7rem; color: var(--text-slate); margin-top: 1px;">$19.5M hardware revenue · 250 → 400 → 500 → 600 units</div>
                                 </div>
-                            </div>
 
-                            <!-- Margin & COGS Summary -->
-                            <div class="info-card" style="padding: 10px 14px; border-top: 3px solid var(--text-dark);">
-                                <h3 class="cinzel"
-                                    style="color: var(--text-dark); margin-bottom: 6px; font-size: 0.6rem; font-weight: 500; letter-spacing: 0.1em;">
-                                    GROSS MARGIN BY LINE</h3>
-                                <div style="display: flex; flex-direction: column; gap: 5px; font-size: 0.7rem;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 3px; border-bottom: 1px solid var(--border);">
-                                        <span style="color: var(--text-slate);"><span class="rev-dot" style="background: var(--primary);"></span>Platform SaaS</span>
-                                        <strong style="color: var(--primary); font-weight: 500;">88%</strong>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 3px; border-bottom: 1px solid var(--border);">
-                                        <span style="color: var(--text-slate);"><span class="rev-dot" style="background: var(--gold-dark);"></span>Sovereign Pods <span style="font-size: 0.55rem;">(incl. Apple pass-through)</span></span>
-                                        <strong style="color: var(--gold-dark); font-weight: 500;">17%</strong>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 3px; border-bottom: 1px solid var(--border);">
-                                        <span style="color: var(--text-slate);"><span class="rev-dot" style="background: #8D5FD3;"></span>Project Services</span>
-                                        <strong style="color: #8D5FD3; font-weight: 500;">65%</strong>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 3px; border-bottom: 1px solid var(--border);">
-                                        <span style="color: var(--text-slate);"><span class="rev-dot" style="background: #0D9488;"></span>Managed Services</span>
-                                        <strong style="color: #0D9488; font-weight: 500;">65%</strong>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2px;">
-                                        <span style="color: var(--text-dark); font-weight: 500;">Blended Y5 Margin</span>
-                                        <strong style="color: var(--text-dark); font-weight: 500; font-family: 'Cinzel', serif;">48%</strong>
+                                <!-- Unit Economics -->
+                                <div style="margin-top: auto; padding-top: 12px; border-top: 2px solid var(--text-dark);">
+                                    <h4 class="cinzel" style="font-size: 0.65rem; letter-spacing: 0.12em; color: var(--text-dark); margin-bottom: 10px; font-weight: 500;">UNIT ECONOMICS</h4>
+                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 10px;">
+                                        <div style="padding: 7px 8px; background: rgba(4,120,87,0.04); border-radius: 4px; border-left: 3px solid var(--primary);">
+                                            <div style="font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--primary); font-weight: 500; line-height: 1.1;">4.2 mo</div>
+                                            <div style="font-size: 0.6rem; color: var(--text-slate); margin-top: 3px;">CAC Payback</div>
+                                        </div>
+                                        <div style="padding: 7px 8px; background: rgba(4,120,87,0.04); border-radius: 4px; border-left: 3px solid var(--primary);">
+                                            <div style="font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--primary); font-weight: 500; line-height: 1.1;">9.8x</div>
+                                            <div style="font-size: 0.6rem; color: var(--text-slate); margin-top: 3px;">LTV / CAC</div>
+                                        </div>
+                                        <div style="padding: 7px 8px; background: rgba(4,120,87,0.04); border-radius: 4px; border-left: 3px solid var(--primary);">
+                                            <div style="font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--primary); font-weight: 500; line-height: 1.1;">115%</div>
+                                            <div style="font-size: 0.6rem; color: var(--text-slate); margin-top: 3px;">Target NRR</div>
+                                        </div>
+                                        <div style="padding: 7px 8px; background: rgba(200,169,81,0.06); border-radius: 4px; border-left: 3px solid var(--gold-dark);">
+                                            <div style="font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--gold-dark); font-weight: 500; line-height: 1.1;">$78K</div>
+                                            <div style="font-size: 0.6rem; color: var(--text-slate); margin-top: 3px;">Sovereign ASP</div>
+                                        </div>
+                                        <div style="padding: 7px 8px; background: rgba(200,169,81,0.06); border-radius: 4px; border-left: 3px solid var(--gold-dark);">
+                                            <div style="font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--gold-dark); font-weight: 500; line-height: 1.1;">$2.1K</div>
+                                            <div style="font-size: 0.6rem; color: var(--text-slate); margin-top: 3px;">Blended ACV</div>
+                                        </div>
+                                        <div style="padding: 7px 8px; background: rgba(0,0,0,0.02); border-radius: 4px; border-left: 3px solid var(--text-dark);">
+                                            <div style="font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--text-dark); font-weight: 500; line-height: 1.1;">48%</div>
+                                            <div style="font-size: 0.6rem; color: var(--text-slate); margin-top: 3px;">Blended GM (Y5)</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
