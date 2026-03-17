@@ -339,13 +339,21 @@
             min-height: 0;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 20px;
+            justify-content: flex-start;
+            padding: 16px 56px 36px;
         }
 
-        /* SPACING RESET: gap: 12px is the ONLY vertical spacer. */
+        /* SPACING RESET: gap is the ONLY vertical spacer. */
         .slide-content > * {
             margin-top: 0;
             margin-bottom: 0;
+        }
+
+        /* Push footnotes to the bottom of the slide, keeping main content anchored near top.
+           Footnotes are typically small <p> elements at the end of .slide-content. */
+        .slide-content > p:last-child {
+            margin-top: auto !important;
         }
 
         /* Universal subtitle – matches Slide 7 golden reference exactly */
@@ -461,75 +469,171 @@
             z-index: 1000;
         }
 
-        /* Slide 13 (Financials): body fills page, 24px clearance above footer */
-        /* Footer is at bottom: 40px, ~16px tall → content must stop at ~80px from bottom */
+        /* ═══════════════════════════════════════════════════
+           Slide 13 (Financials) — Balanced Layout System
+           Spacing unit: 20px (uniform everywhere)
+           ═══════════════════════════════════════════════════ */
         #slide-financials .slide-inner {
-            padding-bottom: 80px;
+            padding-bottom: 36px;
         }
         #slide-financials .slide-content {
-            overflow: visible;
-        }
-        /* Force the 2-col grid and its children to stretch vertically */
-        #slide-financials .slide-content > .grid {
+            display: flex; flex-direction: column;
+            gap: 22px;
             flex: 1;
+            padding: 12px 56px 36px;
         }
-        #slide-financials .slide-content > .grid > .grid {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+
+        /* ── Top Row: UE (left) + Seed Chart (center) + Revenue Table (right) ── */
+        .fin-top-row {
+            display: grid; grid-template-columns: 34% auto 1fr; gap: 28px;
+            align-items: stretch;
         }
-        /* Revenue chart card stretches to fill remaining left-column space */
-        #slide-financials .slide-content > .grid > .grid:first-child > .info-card:first-child {
-            flex: 1;
-            height: auto;
+
+        /* Left column: Unit Economics */
+        .fin-left-col { display: flex; flex-direction: column; }
+        .fin-left-col > h3 {
+            font-size: 1.0rem; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--text-dark); font-weight: 700; margin-bottom: 10px;
         }
-        /* Right column: single card fills the entire column */
-        #slide-financials .slide-content > .grid > .grid:last-child {
-            gap: 0;
+        .fin-ue-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
         }
-        #slide-financials .slide-content > .grid > .grid:last-child > .fin-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+        .fin-ue-cell {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 6px; padding: 14px 12px;
+            border-left: 3px solid var(--border);
         }
-        /* Revenue composition table — institutional grade */
-        .fin-table-wrap { flex: 1; display: flex; flex-direction: column; }
-        .fin-table { width: 100%; border-collapse: collapse; flex: 1; }
+        .fin-ue-val {
+            font-family: 'Cinzel', serif; font-size: 1.4rem;
+            font-weight: 500; line-height: 1; color: var(--text-dark);
+        }
+        .fin-ue-label {
+            font-size: 0.65rem; color: var(--text-dark);
+            text-transform: uppercase; letter-spacing: 0.06em;
+            margin-top: 5px; line-height: 1.3;
+        }
+        .fin-ue-bench {
+            font-size: 0.56rem; color: var(--primary); margin-top: 3px;
+            font-weight: 500;
+        }
+
+        /* Right column: Revenue table */
+        .fin-right-col { display: flex; flex-direction: column; }
+        .fin-right-col > h3,
+        .fin-table-card > h3 {
+            font-size: 1.0rem; letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--text-dark); font-weight: 700; margin-bottom: 8px;
+        }
+        .fin-table-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 6px; padding: 14px 16px;
+        }
+        .fin-table { width: 100%; border-collapse: collapse; }
         .fin-table th {
-            font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;
-            color: var(--text-slate); font-weight: 500; padding: 10px 8px 8px;
+            font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase;
+            color: var(--text-dark); font-weight: 500; padding: 0 4px 6px;
             text-align: right; border-bottom: 2px solid var(--text-dark);
         }
         .fin-table th:first-child { text-align: left; }
         .fin-table td {
-            padding: 14px 8px; text-align: right; font-size: 0.9rem;
+            padding: 7px 4px; text-align: right; font-size: 0.88rem;
             font-weight: 500; color: var(--text-dark);
             border-bottom: 1px solid rgba(0,0,0,0.06);
         }
-        .fin-table td:first-child { text-align: left; }
-        .fin-table .line-indicator {
-            width: 12px; height: 12px; border-radius: 2px;
-            display: inline-block; margin-right: 8px; vertical-align: middle;
+        .fin-table td:first-child { text-align: left; font-size: 0.82rem; }
+        .fin-table .ln-dot {
+            width: 7px; height: 7px; border-radius: 2px;
+            display: inline-block; margin-right: 4px; vertical-align: middle;
         }
-        .fin-table .line-name { font-size: 0.85rem; color: var(--text-dark); vertical-align: middle; }
-        .fin-table .line-badge {
-            font-size: 0.5rem; letter-spacing: 0.06em; text-transform: uppercase;
-            padding: 2px 5px; border-radius: 2px; margin-left: 6px;
+        .fin-table .ln-tag {
+            font-size: 0.42rem; letter-spacing: 0.05em; text-transform: uppercase;
+            padding: 1px 3px; border-radius: 2px; margin-left: 3px;
             vertical-align: middle; font-weight: 600;
         }
-        .fin-table .badge-rec { background: rgba(4,120,87,0.1); color: var(--primary); }
-        .fin-table .badge-one { background: rgba(200,169,81,0.15); color: var(--gold-dark); }
-        .fin-table tr.fin-total td {
-            font-weight: 500; font-size: 0.95rem;
-            border-top: 2px solid var(--text-dark); border-bottom: 1px solid var(--border);
-            padding-top: 14px;
+        .fin-table .tag-r { background: rgba(4,120,87,0.1); color: var(--primary); }
+        .fin-table .tag-hw { background: rgba(200,169,81,0.15); color: var(--gold-dark); }
+        .fin-table .tag-s { background: rgba(141,95,211,0.1); color: #8D5FD3; }
+        .fin-table tr.ft-total td {
+            font-weight: 500; font-size: 0.88rem;
+            border-top: 2px solid var(--text-dark); border-bottom: none;
+            padding-top: 7px;
         }
-        .fin-table tr.fin-recurring td {
-            color: var(--primary); font-size: 0.8rem;
-            border-bottom: none; padding-top: 8px; padding-bottom: 8px;
+        .fin-table tr.ft-rec td {
+            color: var(--primary); font-size: 0.78rem; font-style: italic;
+            border-bottom: none; padding-top: 3px; padding-bottom: 0;
         }
-        .fin-table td.y5-col { font-weight: 500; }
-        .fin-gm { text-align: center !important; font-size: 0.8rem; font-weight: 500; }
+        .fin-table tr.ft-ebitda td {
+            color: var(--text-dark); font-size: 0.78rem;
+            border-bottom: none; padding-top: 3px; padding-bottom: 0;
+        }
+        .fin-table .gm-col { text-align: center !important; font-size: 0.78rem; }
+
+        /* ── Full-Width Growth Engine ── */
+        .fin-engine {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 6px; padding: 18px 24px;
+        }
+        .fin-engine > h3 {
+            font-size: 1.0rem; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--text-dark); font-weight: 700; margin-bottom: 14px;
+        }
+        .fin-engine-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+        }
+        /* Each quadrant: equal structure for horizontal bullet alignment */
+        .fin-engine-section {
+            display: flex; flex-direction: column;
+        }
+        .fin-engine-section h5 {
+            font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em;
+            color: var(--text-dark); font-weight: 700; margin-bottom: 8px;
+            padding-bottom: 6px; border-bottom: 1px solid var(--border);
+        }
+        .fin-engine-section p, .fin-engine-section li {
+            font-size: 0.85rem; color: var(--text-dark); line-height: 1.65;
+            margin: 0; text-align: justify;
+        }
+        .fin-engine-section ul {
+            list-style: none; padding: 0; margin: 0;
+        }
+        .fin-engine-section li {
+            padding: 3px 0 3px 14px;
+            position: relative;
+        }
+        .fin-engine-section li::before {
+            content: '•'; color: var(--primary); font-weight: 700;
+            position: absolute; left: 0; top: 3px;
+        }
+        /* Vertical seed allocation bar chart: center column */
+        .fin-seed-chart {
+            display: flex; flex-direction: column; align-items: center;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 6px; padding: 14px 16px; overflow: hidden;
+        }
+        .fin-seed-chart > h3 {
+            font-size: 1.0rem; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--text-dark); font-weight: 700; margin-bottom: 10px;
+            text-align: center; white-space: nowrap;
+        }
+        .fin-seed-bars {
+            display: flex; gap: 14px; align-items: flex-end;
+            flex: 1; width: 100%; min-height: 0;
+        }
+        .fin-seed-bar-col {
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            flex: 1;
+        }
+        .fin-seed-bar-fill {
+            width: 36px; border-radius: 3px 3px 0 0;
+        }
+        .fin-seed-bar-val {
+            font-size: 0.7rem; font-weight: 500; color: var(--text-dark);
+            text-align: center;
+        }
+        .fin-seed-bar-label {
+            font-size: 0.54rem; color: var(--text-dark); text-transform: uppercase;
+            letter-spacing: 0.04em; text-align: center; line-height: 1.2;
+        }
 
         .slide-footnote {
             position: absolute;
@@ -1101,7 +1205,7 @@
                     <h2>AI Promised Efficiency. <span style="color: var(--primary);">It Delivered Risk.</span></h2>
                 </div>
 
-                <div class="slide-content" style="padding-top: 36px;">
+                <div class="slide-content">
                     <style>
 
                         .s3-dash {
@@ -3179,74 +3283,75 @@
                 </div>
 
                 <div class="slide-content">
-                    <div class="grid grid-2 gap-40 grid-center">
+                    <div style="display: grid; grid-template-columns: 200px 1fr 1fr; gap: 28px; align-items: center;">
 
-                        <!-- Left Column: Supporting Architecture Mesh -->
-                        <div
-                            style="position: relative; width: 100%; display: flex; align-items: center; justify-content: center;">
-                            <svg viewBox="0 0 600 420" style="width: 100%; max-height: 100%;">
-                                <path d="M 50 210 L 550 210 M 300 30 L 300 390" stroke="var(--border)" stroke-width="2"
-                                    opacity="0.7" />
-                                <circle cx="240" cy="185" r="125" fill="none" stroke="var(--text-dark)"
-                                    stroke-width="2.5" stroke-dasharray="10 5" opacity="0.5" />
-                                <text x="40" y="35" font-size="14" font-weight="600" fill="var(--text-slate)"
-                                    text-anchor="start" style="letter-spacing: 0.1em; text-transform: uppercase;">Vector
-                                    01: AI-Optimized IaaS</text>
-                                <text x="40" y="55" font-size="18" font-weight="700" fill="var(--text-dark)"
-                                    text-anchor="start">$37.5B¹</text>
+                        <!-- Left Column: TAM → SAM → SOM (Verticalized) -->
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div style="padding: 14px 16px; border: 1px solid var(--border); background: #fff;">
+                                <div style="font-size: var(--deck-micro); color: var(--text-slate); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Total Addressable Market</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--text-dark); font-weight: 500;">$89B³</div>
+                                <div style="font-size: var(--deck-micro); color: var(--text-slate); margin-top: 2px;">AI Infrastructure + Cloud Management + Sovereign Compute</div>
+                            </div>
+                            <div style="padding: 14px 16px; border: 1px solid var(--border); border-left: 2.5px solid var(--primary); background: rgba(16,185,129,0.02);">
+                                <div style="font-size: var(--deck-micro); color: var(--primary); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Serviceable Addressable Market</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--primary); font-weight: 500;">$4.8B⁴</div>
+                                <div style="font-size: var(--deck-micro); color: var(--text-slate); margin-top: 2px;">Autonomous Infrastructure Management</div>
+                            </div>
+                            <div style="padding: 14px 16px; border: 1px solid var(--border); border-left: 2.5px solid var(--gold-dark); background: rgba(200,169,81,0.03);">
+                                <div style="font-size: var(--deck-micro); color: var(--gold-dark); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Year 1 Target (SOM)</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold-dark); font-weight: 500;">$3.2M⁵</div>
+                                <div style="font-size: var(--deck-micro); color: var(--text-slate); margin-top: 2px;">40 Sovereign Platform Deployments × $78K Avg</div>
+                            </div>
+                        </div>
 
-                                <circle cx="360" cy="185" r="145" fill="none" stroke="var(--primary)" stroke-width="2.5"
-                                    stroke-dasharray="6 3" opacity="0.5" />
-                                <text x="560" y="25" font-size="14" font-weight="600" fill="var(--primary)"
-                                    text-anchor="end" style="letter-spacing: 0.1em; text-transform: uppercase;">Vector
-                                    02: Cloud Mgmt Platforms</text>
-                                <text x="560" y="47" font-size="18" font-weight="700" fill="var(--text-dark)"
-                                    text-anchor="end">$14B²</text>
+                        <!-- Center Column: Venn Diagram (Shrunk) -->
+                        <div style="position: relative; display: flex; align-items: center; justify-content: center;">
+                            <svg viewBox="0 0 420 380" style="width: 100%; max-width: 380px;">
+                                <!-- Crosshair -->
+                                <path d="M 30 190 L 390 190 M 210 20 L 210 360" stroke="var(--border)" stroke-width="1.5" opacity="0.5" />
 
-                                <circle cx="300" cy="265" r="100" fill="none" stroke="var(--gold-neo)" stroke-width="3"
-                                    opacity="0.6" />
-                                <text x="300" y="405" font-size="14" font-weight="600" fill="var(--gold-dark)"
-                                    text-anchor="middle"
-                                    style="letter-spacing: 0.1em; text-transform: uppercase;">Vector 03:
-                                    Systemic Autonomy</text>
+                                <!-- Circle 1: AI-Optimized IaaS -->
+                                <circle cx="170" cy="170" r="110" fill="none" stroke="var(--text-dark)" stroke-width="2" stroke-dasharray="8 4" opacity="0.5" />
+                                <text x="20" y="22" font-size="11" font-weight="600" fill="var(--text-slate)" text-anchor="start" style="letter-spacing: 0.08em; text-transform: uppercase;">Vector 01: AI-Optimized IaaS</text>
+                                <text x="20" y="42" font-size="16" font-weight="700" fill="var(--text-dark)" text-anchor="start">$37.5B¹</text>
 
-                                <path d="M 300 150 L 360 215 L 300 285 L 240 215 Z" fill="var(--gold-neo)"
-                                    opacity="0.25" />
-                                <path d="M 300 150 L 360 215 L 300 285 L 240 215 Z" fill="none"
-                                    stroke="var(--gold-dark)" stroke-width="4" />
-                                <circle cx="300" cy="215" r="8" fill="var(--gold-dark)" />
-                                <line x1="300" y1="215" x2="480" y2="330" stroke="var(--text-dark)" stroke-width="2"
-                                    opacity="0.9" />
-                                <text x="560" y="355" font-size="20" font-weight="600" fill="var(--gold-dark)"
-                                    text-anchor="end" style="letter-spacing: 0.05em;">SIRSI UNIFIED MESH</text>
-                                <text x="560" y="375" font-size="13" font-weight="500" fill="var(--text-slate)"
-                                    text-anchor="end" style="letter-spacing: 0.1em;">WHERE
-                                    SIRSI WINS</text>
+                                <!-- Circle 2: Cloud Mgmt -->
+                                <circle cx="260" cy="170" r="120" fill="none" stroke="var(--primary)" stroke-width="2" stroke-dasharray="5 3" opacity="0.5" />
+                                <text x="400" y="22" font-size="11" font-weight="600" fill="var(--primary)" text-anchor="end" style="letter-spacing: 0.08em; text-transform: uppercase;">Vector 02: Cloud Mgmt</text>
+                                <text x="400" y="42" font-size="16" font-weight="700" fill="var(--text-dark)" text-anchor="end">$14B²</text>
+
+                                <!-- Circle 3: Systemic Autonomy -->
+                                <circle cx="215" cy="240" r="85" fill="none" stroke="var(--gold-neo)" stroke-width="2.5" opacity="0.6" />
+                                <text x="210" y="370" font-size="11" font-weight="600" fill="var(--gold-dark)" text-anchor="middle" style="letter-spacing: 0.08em; text-transform: uppercase;">Vector 03: Systemic Autonomy</text>
+
+                                <!-- Diamond intersection -->
+                                <path d="M 215 130 L 270 195 L 215 260 L 160 195 Z" fill="var(--gold-neo)" opacity="0.25" />
+                                <path d="M 215 130 L 270 195 L 215 260 L 160 195 Z" fill="none" stroke="var(--gold-dark)" stroke-width="3" />
+                                <circle cx="215" cy="195" r="6" fill="var(--gold-dark)" />
+
+                                <!-- Callout line -->
+                                <line x1="215" y1="195" x2="350" y2="290" stroke="var(--text-dark)" stroke-width="1.5" opacity="0.8" />
+                                <text x="400" y="305" font-size="15" font-weight="600" fill="var(--gold-dark)" text-anchor="end" style="letter-spacing: 0.04em;">SIRSI UNIFIED MESH</text>
+                                <text x="400" y="322" font-size="10" font-weight="500" fill="var(--text-slate)" text-anchor="end" style="letter-spacing: 0.08em;">WHERE SIRSI WINS</text>
                             </svg>
                         </div>
 
                         <!-- Right Column: The Primary Narrative -->
-                        <div
-                            style="display: flex; flex-direction: column; gap: 12px; border-left: 2px solid var(--primary); padding-left: 35px;">
+                        <div style="display: flex; flex-direction: column; gap: 12px; border-left: 2px solid var(--primary); padding-left: 28px;">
                             <div>
-                                <h3
-                                    style="color: var(--primary); margin-bottom: 8px; letter-spacing: 0.35em; text-transform: uppercase;">
+                                <h3 style="color: var(--primary); margin-bottom: 8px; letter-spacing: 0.35em; text-transform: uppercase;">
                                     THE STRATEGIC THESIS</h3>
-                                <p
-                                    style="font-size: var(--deck-tagline); line-height: 1.3; color: var(--text-dark); font-weight: 500; margin-bottom: 12px; max-width: 700px;">
-                                    Sirsi sits at the intersection of three multi-trillion dollar shifts and
-                                    controls
+                                <p style="font-size: var(--deck-tagline); line-height: 1.3; color: var(--text-dark); font-weight: 500; margin-bottom: 12px;">
+                                    Sirsi sits at the intersection of three multi-trillion dollar shifts and controls
                                     the connective tissue between them.
                                 </p>
 
                                 <div style="display: flex; flex-direction: column; gap: 10px;">
                                     <div style="display: flex; gap: 18px; align-items: flex-start;">
-                                        <div
-                                            style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--text-dark); color: #fff; font-weight: 500; border-radius: 4px; flex-shrink: 0; font-size: var(--deck-card-desc);">
+                                        <div style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--text-dark); color: #fff; font-weight: 500; border-radius: 4px; flex-shrink: 0; font-size: var(--deck-card-desc);">
                                             01</div>
                                         <div>
-                                            <div
-                                                style="font-size: var(--deck-body); font-weight: 500; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px;">
+                                            <div style="font-size: var(--deck-body); font-weight: 500; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px;">
                                                 Sirsi Automates The Cloud</div>
                                             <div style="font-size: var(--deck-card-desc); color: var(--text-slate); line-height: 1.4;">
                                                 $37.5B AI infrastructure market still runs on manual dashboards.
@@ -3254,12 +3359,10 @@
                                         </div>
                                     </div>
                                     <div style="display: flex; gap: 18px; align-items: flex-start;">
-                                        <div
-                                            style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--primary); color: #fff; font-weight: 500; border-radius: 4px; flex-shrink: 0; font-size: var(--deck-card-desc);">
+                                        <div style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--primary); color: #fff; font-weight: 500; border-radius: 4px; flex-shrink: 0; font-size: var(--deck-card-desc);">
                                             02</div>
                                         <div>
-                                            <div
-                                                style="font-size: var(--deck-body); font-weight: 500; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px;">
+                                            <div style="font-size: var(--deck-body); font-weight: 500; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px;">
                                                 Sirsi Pools Compute Everywhere</div>
                                             <div style="font-size: var(--deck-card-desc); color: var(--text-slate); line-height: 1.4;">
                                                 AI workloads demand cross-continent power.
@@ -3267,12 +3370,10 @@
                                         </div>
                                     </div>
                                     <div style="display: flex; gap: 18px; align-items: flex-start;">
-                                        <div
-                                            style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--gold-dark); color: #fff; font-weight: 500; border-radius: 4px; flex-shrink: 0; font-size: var(--deck-card-desc);">
+                                        <div style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--gold-dark); color: #fff; font-weight: 500; border-radius: 4px; flex-shrink: 0; font-size: var(--deck-card-desc);">
                                             03</div>
                                         <div>
-                                            <div
-                                                style="font-size: var(--deck-body); font-weight: 500; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px;">
+                                            <div style="font-size: var(--deck-body); font-weight: 500; color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px;">
                                                 Sirsi Is Already There</div>
                                             <div style="font-size: var(--deck-card-desc); color: var(--text-slate); line-height: 1.4;">
                                                 90% of organizations will adopt hybrid multi-cloud by 2027 (Gartner).
@@ -3283,24 +3384,6 @@
                             </div>
                         </div>
 
-                        <!-- TAM → SAM → SOM Funnel -->
-                        <div style="grid-column: 1 / -1; display: flex; gap: 0; margin-top: 4px; border: 1px solid var(--border); background: #fff;">
-                            <div style="flex: 3; padding: 8px 14px; border-right: 1px solid var(--border);">
-                                <div style="font-size: var(--deck-micro); color: var(--text-slate); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Total Addressable Market</div>
-                                <div style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--text-dark); font-weight: 500;">$89B³</div>
-                                <div style="font-size: var(--deck-micro); color: var(--text-slate); margin-top: 2px;">AI Infrastructure + Cloud Management + Sovereign Compute</div>
-                            </div>
-                            <div style="flex: 2; padding: 8px 14px; border-right: 1px solid var(--border); border-left: 2.5px solid var(--primary); background: rgba(16,185,129,0.02);">
-                                <div style="font-size: var(--deck-micro); color: var(--primary); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Serviceable Addressable Market</div>
-                                <div style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--primary); font-weight: 500;">$4.8B⁴</div>
-                                <div style="font-size: var(--deck-micro); color: var(--text-slate); margin-top: 2px;">Autonomous Infrastructure Management — Regulated Enterprises</div>
-                            </div>
-                            <div style="flex: 1.5; padding: 8px 14px; border-left: 2.5px solid var(--gold-dark); background: rgba(200,169,81,0.03);">
-                                <div style="font-size: var(--deck-micro); color: var(--gold-dark); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Year 1 Target (SOM)</div>
-                                <div style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold-dark); font-weight: 500;">$3.2M⁵</div>
-                                <div style="font-size: var(--deck-micro); color: var(--text-slate); margin-top: 2px;">40 Sovereign Platform Deployments × $78K Avg</div>
-                            </div>
-                        </div>
                     </div>
                     <p style="font-size: 0.48rem; color: rgba(0,0,0,0.85); margin: 6px 0 0; line-height: 1.6; text-align: left;"><sup>1</sup> Gartner, AI-Optimized IaaS End-User Spending Forecast, 2026. <sup>2</sup> Research &amp; Markets, Cloud Management Platform Market Size, 2026. <sup>3</sup> Composite: Gartner AI IaaS ($37.5B) + Cloud Mgmt ($14B) + Sovereign IaaS ($80B), overlap-adjusted. <sup>4</sup> Sirsi estimate: regulated enterprise subset (HIPAA, FISMA, FedRAMP). <sup>5</sup> Sirsi projection: 40 deployments x $78K avg. contract, Year 1 post-seed.</p>
                 </div>
@@ -3715,135 +3798,198 @@
                     <h2>Scale to $95M Revenue <span style="font-size: var(--deck-subtitle); color: var(--text-light); font-weight: 400; letter-spacing: 0;">(Projected)</span></h2>
                 </div>
                 <div class="slide-content">
-                    <div class="grid grid-2" style="gap: 20px;">
-                        <!-- Left Column: Charts -->
-                        <div class="grid" style="gap: 14px;">
-                            <div class="info-card" style="height: 260px;">
-                                <div class="flex-between">
-                                    <h3 style="font-size: var(--deck-card-desc);">PROJECTED REVENUE & EBITDA ($M)</h3>
-                                    <div class="flex" style="gap: 15px; font-size: var(--deck-small);">
-                                        <div class="flex" style="gap: 5px;"><span
-                                                style="width: 10px; height: 10px; background: var(--primary); border-radius: 2px;"></span>
-                                            REV</div>
-                                        <div class="flex" style="gap: 5px;"><span
-                                                style="width: 10px; height: 10px; background: #8D5FD3; border-radius: 2px;"></span>
-                                            EBITDA</div>
-                                    </div>
+                    <!-- TOP ROW: 2-Column Grid -->
+                    <div class="fin-top-row">
+                        <!-- LEFT COLUMN: Unit Economics (3×3 Grid) -->
+                        <div class="fin-left-col">
+                            <h3>Unit Economics</h3>
+                            <div class="fin-ue-grid">
+                                <!-- Row 1: Customer Acquisition Efficiency -->
+                                <div class="fin-ue-cell" style="border-left-color: var(--primary);">
+                                    <div class="fin-ue-val" style="color: var(--primary);">4.2 mo</div>
+                                    <div class="fin-ue-label">CAC Payback</div>
+                                    <div class="fin-ue-bench">Elite (&lt;6 mo)</div>
                                 </div>
-                                <div style="flex: 1; min-height: 190px; margin-top: 10px;">
-                                    <canvas id="revenueChart"></canvas>
+                                <div class="fin-ue-cell" style="border-left-color: var(--primary);">
+                                    <div class="fin-ue-val" style="color: var(--primary);">9.8x</div>
+                                    <div class="fin-ue-label">LTV / CAC</div>
+                                    <div class="fin-ue-bench">3x+ healthy</div>
                                 </div>
-                            </div>
-                            <div class="info-card">
-                                <h3 style="font-size: var(--deck-subtitle); margin-bottom: 6px;">CUSTOMER BASE GROWTH</h3>
-                                <div style="height: 90px;">
-                                    <canvas id="userChart"></canvas>
+                                <div class="fin-ue-cell" style="border-left-color: var(--primary);">
+                                    <div class="fin-ue-val" style="color: var(--primary);">115%</div>
+                                    <div class="fin-ue-label">Net Revenue Retention</div>
+                                    <div class="fin-ue-bench">&gt;100% = expansion</div>
                                 </div>
-                                <p
-                                    style="text-align: center; margin-top: 6px; font-size: var(--deck-subtitle); color: var(--primary); font-weight: 500;">
-                                    500,000 CONSERVATIVE TARGET (2030) <span style="font-size: var(--deck-micro); color: var(--text-light); font-weight: 400;">(Projected)</span></p>
+                                <!-- Row 2: Margin & Revenue Quality -->
+                                <div class="fin-ue-cell" style="border-left-color: var(--gold-dark);">
+                                    <div class="fin-ue-val" style="color: var(--gold-dark);">88%</div>
+                                    <div class="fin-ue-label">SaaS Gross Margin</div>
+                                    <div class="fin-ue-bench">70%+ benchmark</div>
+                                </div>
+                                <div class="fin-ue-cell" style="border-left-color: var(--gold-dark);">
+                                    <div class="fin-ue-val" style="color: var(--gold-dark);">44%</div>
+                                    <div class="fin-ue-label">Recurring Rev % (Y5)</div>
+                                    <div class="fin-ue-bench">$42M of $94.8M</div>
+                                </div>
+                                <div class="fin-ue-cell" style="border-left-color: var(--text-dark);">
+                                    <div class="fin-ue-val">48%</div>
+                                    <div class="fin-ue-label">Blended GM (Y5)</div>
+                                    <div class="fin-ue-bench">HW+SW hybrid</div>
+                                </div>
+                                <!-- Row 3: SaaS Efficiency Benchmarks -->
+                                <div class="fin-ue-cell" style="border-left-color: var(--primary);">
+                                    <div class="fin-ue-val" style="color: var(--primary);">1.2x</div>
+                                    <div class="fin-ue-label">Magic Number</div>
+                                    <div class="fin-ue-bench">Elite &gt;0.7x</div>
+                                </div>
+                                <div class="fin-ue-cell" style="border-left-color: var(--primary);">
+                                    <div class="fin-ue-val" style="color: var(--primary);">56</div>
+                                    <div class="fin-ue-label">Rule of 40 Score</div>
+                                    <div class="fin-ue-bench">Top decile &gt;40</div>
+                                </div>
+                                <div class="fin-ue-cell" style="border-left-color: var(--primary);">
+                                    <div class="fin-ue-val" style="color: var(--primary);">0.8x</div>
+                                    <div class="fin-ue-label">Burn Multiple</div>
+                                    <div class="fin-ue-bench">Efficient &lt;1.0x</div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Right Column: Revenue Composition (Single Panel) -->
-                        <div class="grid" style="gap: 0;">
-                            <div class="info-card gold fin-panel" style="padding: 16px 18px;">
-                                <h3 class="cinzel"
-                                    style="color: var(--gold-dark); margin-bottom: 14px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em;">
-                                    REVENUE COMPOSITION <span style="font-size: 0.6rem; color: var(--text-light); font-weight: 400; letter-spacing: 0.04em;">Projected, $M</span></h3>
+                        <!-- CENTER COLUMN: Vertical Seed Capital Bar Chart -->
+                        <div class="fin-seed-chart">
+                            <h3>Seed Capital</h3>
+                            <div class="fin-seed-bars">
+                                <div class="fin-seed-bar-col">
+                                    <div class="fin-seed-bar-val">$3.3M</div>
+                                    <div class="fin-seed-bar-fill" style="height: 255px; background: var(--primary);"></div>
+                                    <div class="fin-seed-bar-label">Eng</div>
+                                </div>
+                                <div class="fin-seed-bar-col">
+                                    <div class="fin-seed-bar-val">$1.5M</div>
+                                    <div class="fin-seed-bar-fill" style="height: 116px; background: var(--gold-dark);"></div>
+                                    <div class="fin-seed-bar-label">GTM</div>
+                                </div>
+                                <div class="fin-seed-bar-col">
+                                    <div class="fin-seed-bar-val">$720K</div>
+                                    <div class="fin-seed-bar-fill" style="height: 56px; background: #8D5FD3;"></div>
+                                    <div class="fin-seed-bar-label">Infra</div>
+                                </div>
+                                <div class="fin-seed-bar-col">
+                                    <div class="fin-seed-bar-val">$480K</div>
+                                    <div class="fin-seed-bar-fill" style="height: 37px; background: var(--text-slate);"></div>
+                                    <div class="fin-seed-bar-label">Ops</div>
+                                </div>
+                            </div>
+                        </div>
 
-                                <div class="fin-table-wrap">
+                        <!-- RIGHT COLUMN: Revenue Composition Table -->
+                        <div class="fin-right-col">
+                            <div class="fin-table-card">
+                                <h3>Revenue Composition & Profitability <span style="font-weight: 400;">$M</span></h3>
                                 <table class="fin-table">
                                     <thead>
                                         <tr>
-                                            <th style="width: 30%;">Offering</th>
-                                            <th>'26</th>
-                                            <th>'27</th>
-                                            <th>'28</th>
-                                            <th>'29</th>
-                                            <th>'30</th>
-                                            <th>GM</th>
+                                            <th>Offering</th>
+                                            <th>'26</th><th>'27</th><th>'28</th><th>'29</th><th>'30</th>
+                                            <th class="gm-col">GM</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>
-                                                <span class="line-indicator" style="background: var(--primary);"></span><span class="line-name">Platform SaaS</span><span class="line-badge badge-rec">Rec</span>
-                                            </td>
+                                            <td><span class="ln-dot" style="background: var(--primary);"></span>Platform SaaS <span class="ln-tag tag-r">Rec</span></td>
                                             <td>1.0</td><td>4.0</td><td>10.0</td><td>18.0</td>
-                                            <td class="y5-col" style="color: var(--primary);">28.0</td>
-                                            <td class="fin-gm" style="color: var(--primary);">88%</td>
+                                            <td style="color: var(--primary);">28.0</td>
+                                            <td class="gm-col" style="color: var(--primary);">88%</td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                <span class="line-indicator" style="background: var(--gold-dark);"></span><span class="line-name">Sovereign Pods</span><span class="line-badge badge-one">HW</span>
-                                            </td>
+                                            <td><span class="ln-dot" style="background: var(--gold-dark);"></span>Sovereign Pods <span class="ln-tag tag-hw">HW</span></td>
                                             <td style="color: var(--text-light);">—</td><td>19.5</td><td>31.2</td><td>39.0</td>
-                                            <td class="y5-col" style="color: var(--gold-dark);">46.8</td>
-                                            <td class="fin-gm" style="color: var(--gold-dark);">17%</td>
+                                            <td style="color: var(--gold-dark);">46.8</td>
+                                            <td class="gm-col" style="color: var(--gold-dark);">17%</td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                <span class="line-indicator" style="background: #8D5FD3;"></span><span class="line-name">Project Services</span><span class="line-badge badge-one">Svc</span>
-                                            </td>
+                                            <td><span class="ln-dot" style="background: #8D5FD3;"></span>Project Services <span class="ln-tag tag-s">Svc</span></td>
                                             <td>0.1</td><td>2.5</td><td>4.0</td><td>5.0</td>
-                                            <td class="y5-col">6.0</td>
-                                            <td class="fin-gm" style="color: #8D5FD3;">65%</td>
+                                            <td>6.0</td>
+                                            <td class="gm-col" style="color: #8D5FD3;">65%</td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                <span class="line-indicator" style="background: #0D9488;"></span><span class="line-name">Managed Services</span><span class="line-badge badge-rec">Rec</span>
-                                            </td>
+                                            <td><span class="ln-dot" style="background: #0D9488;"></span>Managed Services <span class="ln-tag tag-r">Rec</span></td>
                                             <td>0.05</td><td>2.0</td><td>5.0</td><td>9.0</td>
-                                            <td class="y5-col" style="color: #0D9488;">14.0</td>
-                                            <td class="fin-gm" style="color: #0D9488;">65%</td>
+                                            <td style="color: #0D9488;">14.0</td>
+                                            <td class="gm-col" style="color: #0D9488;">65%</td>
                                         </tr>
-                                        <tr class="fin-total">
+                                        <tr class="ft-total">
                                             <td><strong>Total Revenue</strong></td>
                                             <td><strong>1.15</strong></td><td><strong>28.0</strong></td><td><strong>50.2</strong></td><td><strong>71.0</strong></td>
-                                            <td class="y5-col"><strong>94.8</strong></td>
-                                            <td class="fin-gm" style="font-weight: 500;">48%</td>
+                                            <td><strong>94.8</strong></td>
+                                            <td class="gm-col"><strong>48%</strong></td>
                                         </tr>
-                                        <tr class="fin-recurring">
-                                            <td style="font-style: italic;">Recurring Revenue</td>
+                                        <tr class="ft-rec">
+                                            <td>Recurring Revenue</td>
                                             <td>1.05</td><td>6.0</td><td>15.0</td><td>27.0</td>
-                                            <td class="y5-col">42.0</td>
+                                            <td>42.0</td>
                                             <td></td>
+                                        </tr>
+                                        <tr class="ft-ebitda">
+                                            <td><strong style="color: var(--text-dark);">EBITDA</strong></td>
+                                            <td style="color: #dc2626;">−4.0</td><td>2.0</td><td style="color: var(--primary);">10.0</td><td style="color: var(--primary);">18.0</td>
+                                            <td style="color: var(--primary);"><strong>30.0</strong></td>
+                                            <td class="gm-col" style="color: var(--primary);">32%</td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                                <!-- Unit Economics -->
-                                <div style="margin-top: auto; padding-top: 12px; border-top: 2px solid var(--text-dark);">
-                                    <h4 class="cinzel" style="font-size: 0.65rem; letter-spacing: 0.12em; color: var(--text-dark); margin-bottom: 10px; font-weight: 500;">UNIT ECONOMICS</h4>
-                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 10px;">
-                                        <div style="padding: 7px 8px; background: rgba(4,120,87,0.04); border-radius: 4px; border-left: 3px solid var(--primary);">
-                                            <div style="font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--primary); font-weight: 500; line-height: 1.1;">4.2 mo</div>
-                                            <div style="font-size: 0.6rem; color: var(--text-slate); margin-top: 3px;">CAC Payback</div>
-                                        </div>
-                                        <div style="padding: 7px 8px; background: rgba(4,120,87,0.04); border-radius: 4px; border-left: 3px solid var(--primary);">
-                                            <div style="font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--primary); font-weight: 500; line-height: 1.1;">9.8x</div>
-                                            <div style="font-size: 0.6rem; color: var(--text-slate); margin-top: 3px;">LTV / CAC</div>
-                                        </div>
-                                        <div style="padding: 7px 8px; background: rgba(4,120,87,0.04); border-radius: 4px; border-left: 3px solid var(--primary);">
-                                            <div style="font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--primary); font-weight: 500; line-height: 1.1;">115%</div>
-                                            <div style="font-size: 0.6rem; color: var(--text-slate); margin-top: 3px;">Target NRR</div>
-                                        </div>
-                                        <div style="padding: 7px 8px; background: rgba(200,169,81,0.06); border-radius: 4px; border-left: 3px solid var(--gold-dark);">
-                                            <div style="font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--gold-dark); font-weight: 500; line-height: 1.1;">$78K</div>
-                                            <div style="font-size: 0.6rem; color: var(--text-slate); margin-top: 3px;">Sovereign ASP</div>
-                                        </div>
-                                        <div style="padding: 7px 8px; background: rgba(200,169,81,0.06); border-radius: 4px; border-left: 3px solid var(--gold-dark);">
-                                            <div style="font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--gold-dark); font-weight: 500; line-height: 1.1;">$2.1K</div>
-                                            <div style="font-size: 0.6rem; color: var(--text-slate); margin-top: 3px;">Blended ACV</div>
-                                        </div>
-                                        <div style="padding: 7px 8px; background: rgba(0,0,0,0.02); border-radius: 4px; border-left: 3px solid var(--text-dark);">
-                                            <div style="font-family: 'Cinzel', serif; font-size: 1.05rem; color: var(--text-dark); font-weight: 500; line-height: 1.1;">48%</div>
-                                            <div style="font-size: 0.6rem; color: var(--text-slate); margin-top: 3px;">Blended GM (Y5)</div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <!-- FULL-WIDTH: Growth Engine & GTM Strategy -->
+                    <div class="fin-engine">
+                        <h3>Growth Engine & Go-to-Market Strategy</h3>
+                        <div class="fin-engine-grid">
+                            <!-- Quadrant 1: ICP -->
+                            <div class="fin-engine-section">
+                                <h5>Ideal Customer Profile</h5>
+                                <ul>
+                                    <li><strong style="color: var(--text-dark);">AI-Forward Enterprises:</strong> Mid-market companies with 500 to 5,000 employees deploying multi-model AI workloads</li>
+                                    <li><strong style="color: var(--text-dark);">High Compute Spend:</strong> $500K+ annual cloud and infrastructure budget across multi-vendor environments</li>
+                                    <li><strong style="color: var(--text-dark);">Sovereignty-First:</strong> Industries with data residency, ITAR, HIPAA, or regulatory compliance mandates</li>
+                                    <li><strong style="color: var(--text-dark);">Managed Service Providers:</strong> MSPs operating multi-tenant GPU clusters for enterprise customers</li>
+                                    <li><strong style="color: var(--text-dark);">Buyer Persona:</strong> CTO and VP Engineering with hybrid cloud modernization and AI-readiness mandates</li>
+                                </ul>
+                            </div>
+                            <!-- Quadrant 2: GTM Channels -->
+                            <div class="fin-engine-section">
+                                <h5>Go-to-Market Channels</h5>
+                                <ul>
+                                    <li><strong style="color: var(--text-dark);">Direct Enterprise Sales:</strong> 3 Account Executives targeting Sovereign Pod deployments and cluster deals</li>
+                                    <li><strong style="color: var(--text-dark);">Product-Led Growth:</strong> Self-serve SaaS platform with freemium tier driving organic conversion</li>
+                                    <li><strong style="color: var(--text-dark);">Channel Partners:</strong> Managed Service Providers, Value-Added Resellers, and system integrators</li>
+                                    <li><strong style="color: var(--text-dark);">Outbound Development:</strong> Demand generation engine with targeted CTO and VP Engineering outreach</li>
+                                    <li><strong style="color: var(--text-dark);">Developer Relations:</strong> Technical content, conference presence, and open-source community building</li>
+                                </ul>
+                            </div>
+                            <!-- Quadrant 3: Seed Deployment -->
+                            <div class="fin-engine-section">
+                                <h5>$6M Seed Capital Deployment</h5>
+                                <ul>
+                                    <li><strong style="color: var(--text-dark);">Engineering $3.3M:</strong> Core platform, Hypervisor, 6-patent IP filing, Quad-Model AI engine</li>
+                                    <li><strong style="color: var(--text-dark);">Go-to-Market $1.5M:</strong> 3 Account Executives, demand generation, DevRel program launch</li>
+                                    <li><strong style="color: var(--text-dark);">Infrastructure $720K:</strong> AlloyDB AI, Cloud Run, monitoring, staging environments, CI/CD pipeline</li>
+                                    <li><strong style="color: var(--text-dark);">Operations $480K:</strong> Legal, SOC 2 certification, office, and 18-month operational runway</li>
+                                    <li><strong style="color: var(--text-dark);">Runway:</strong> 18 months of fully funded operations through Series A close at $60M pre-money valuation</li>
+                                </ul>
+                            </div>
+                            <!-- Quadrant 4: 18-Month Milestones -->
+                            <div class="fin-engine-section">
+                                <h5>18-Month Funded Milestones</h5>
+                                <ul>
+                                    <li><strong style="color: var(--text-dark);">$1M+ Annual Recurring Revenue</strong> by Q4 2026 with 12+ enterprise customer accounts signed</li>
+                                    <li><strong style="color: var(--text-dark);">6-Patent Portfolio Filed</strong> by Q3 2026 including NebuLang, Neural-Fractal, Fire Team Protocol</li>
+                                    <li><strong style="color: var(--text-dark);">Multi-Platform Beta Launch:</strong> Web, Desktop via Rust/Tauri, Mobile via React and SwiftUI</li>
+                                    <li><strong style="color: var(--text-dark);">Direct-to-Metal Orchestration:</strong> Live hardware control for Cisco, Dell, NVIDIA, Apple, and Google systems</li>
+                                    <li><strong style="color: var(--text-dark);">Series A Readiness:</strong> Targeting $15M raise at $60M pre-money valuation by Q4 2026</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
