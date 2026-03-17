@@ -316,6 +316,17 @@
             width: 100%;
             position: relative;
             padding-bottom: 60px;
+            zoom: 1.25;
+        }
+
+        /* Slide 13 (Financials) stays at native 100% — already dense */
+        #slide-financials .slide-inner {
+            zoom: 1;
+        }
+
+        /* Slide 8 (GTM) zoomed up to fill viewport */
+        #slide-gtm .slide-inner {
+            zoom: 1.5625;
         }
 
         .slide-header {
@@ -1159,6 +1170,10 @@
                 padding: 40px;
                 background: white;
             }
+
+            .slide-inner {
+                zoom: 1;
+            }
         }
     </style>
 </head>
@@ -1183,11 +1198,19 @@
                         style="letter-spacing: 0.15em; font-size: 1.8rem; margin-bottom: 3rem; color: var(--primary); text-transform: uppercase; line-height: 1.8; text-align: center;">
                         Autonomous Operating System for AI Infrastructure
                     </p>
-                    <div
-                        style="border: 2px solid var(--gold-neo); padding: 12px 35px; background: var(--gold-light); border-radius: 4px;">
-                        <h3
-                            style="margin: 0; color: var(--gold-dark); font-size: var(--deck-card-title); letter-spacing: 0.1em; font-weight: 500;">
-                            SEED OFFERING: $6.0M</h3>
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <div
+                            style="border: 2px solid var(--gold-neo); padding: 12px 35px; background: var(--gold-light); border-radius: 4px;">
+                            <h3
+                                style="margin: 0; color: var(--gold-dark); font-size: var(--deck-card-title); letter-spacing: 0.1em; font-weight: 500;">
+                                SEED OFFERING: $6.0M</h3>
+                        </div>
+                        <div
+                            style="border: 2px solid var(--primary); padding: 12px 35px; background: var(--primary-light); border-radius: 4px;">
+                            <h3
+                                style="margin: 0; color: var(--primary-dark); font-size: var(--deck-card-title); letter-spacing: 0.1em; font-weight: 500;">
+                                SERIES A OFFERING: $15.0M</h3>
+                        </div>
                     </div>
                 </div>
                 <div class="slide-footer">
@@ -1199,10 +1222,10 @@
 
         <!-- Slide 02: The Crisis — Why 250 Companies Need This -->
         <div class="slide" id="slide-crisis">
-            <div class="slide-inner">
+            <div class="slide-inner" style="transform: scale(1.35); transform-origin: 0 0; width: 74%; height: 74%;">
                 <div class="slide-header">
                     <h3>THE CRISIS</h3>
-                    <h2>AI Promised Efficiency. <span style="color: var(--primary);">It Delivered Risk.</span></h2>
+                    <h2>The $150 Billion <span style="color: var(--primary);">Impossible Choice.</span></h2>
                 </div>
 
                 <div class="slide-content">
@@ -1221,7 +1244,7 @@
                             text-align: left;
                             background: #fff;
                             border: 1px solid var(--border);
-                            border-left: 2.5px solid var(--gold-neo);
+                            border-top: none;
                             padding: 18px 24px;
                             position: relative;
                             overflow: hidden;
@@ -1234,16 +1257,20 @@
                             left: 0;
                             right: 0;
                             height: 4px;
-                            background: linear-gradient(90deg, var(--gold-neo), var(--primary));
                         }
+
+                        .s3-card:nth-child(1)::before { background: linear-gradient(90deg, #94a3b8, #cbd5e1); }
+                        .s3-card:nth-child(2)::before { background: linear-gradient(90deg, var(--gold-neo), #e2c076); }
+                        .s3-card:nth-child(3)::before { background: linear-gradient(90deg, #dc2626, #ef4444); }
 
                         .s3-card-num {
                             font-family: 'Cinzel', serif;
-                            font-size: 0.75rem;
+                            font-size: 0.6rem;
                             color: var(--gold-dark);
-                            letter-spacing: 0.2em;
+                            letter-spacing: 0.15em;
                             text-transform: uppercase;
                             margin-bottom: 2px;
+                            white-space: nowrap;
                         }
 
                         .s3-card-hero {
@@ -1257,113 +1284,109 @@
                         }
 
                         .s3-card-tag {
-                            font-size: 0.8rem;
+                            font-size: 0.5rem;
                             font-weight: 500;
-                            letter-spacing: 0.08em;
+                            letter-spacing: 0.06em;
                             text-transform: uppercase;
                             color: var(--primary);
                             margin-bottom: 4px;
+                            white-space: nowrap;
                         }
 
                         .s3-card-body {
-                            font-size: var(--deck-card-desc);
+                            font-size: 0.65rem;
                             color: var(--text-dark);
                             line-height: 1.45;
                             margin: 0 0 4px;
                             text-align: justify;
                         }
 
-                        .s3-card-compare {
-                            margin-top: auto;
-                            display: inline-flex;
-                            align-items: center;
-                            gap: 8px;
-                            padding: 8px 14px;
-                            background: rgba(4,120,87,0.04);
-                            border: 1px solid rgba(4,120,87,0.12);
-                            border-radius: 4px;
-                            align-self: flex-start;
-                        }
-
-                        .s3-card-compare-old {
-                            font-family: 'Inter', sans-serif;
-                            font-size: 0.95rem;
-                            color: var(--text-slate);
-                            text-decoration: line-through;
-                            font-weight: 400;
-                        }
-
-                        .s3-card-compare-arrow {
-                            font-size: 0.8rem;
-                            color: var(--gold-dark);
-                        }
-
-                        .s3-card-compare-new {
-                            font-family: 'Cinzel', serif;
-                            font-size: 0.95rem;
-                            color: var(--primary);
-                            font-weight: 500;
-                        }
-
-                        .s3-verticals {
+                        .s3-pain-list {
                             list-style: none;
                             padding: 0;
-                            margin: 0 0 4px;
+                            margin: 6px 0 8px;
                         }
 
-                        .s3-verticals li {
-                            font-size: 0.95rem;
+                        .s3-pain-list li {
+                            font-size: var(--deck-card-desc);
                             color: var(--text-dark);
-                            padding: 2px 0;
+                            padding: 3px 0;
                             line-height: 1.35;
                             display: flex;
-                            align-items: center;
+                            align-items: flex-start;
                             gap: 6px;
                         }
 
-                        .s3-verticals li::before {
-                            content: '•';
-                            color: var(--gold-dark);
+                        .s3-pain-list li .pain-num {
+                            font-family: 'Inter', sans-serif;
                             font-weight: 500;
+                            color: var(--gold-dark);
+                            min-width: fit-content;
                             flex-shrink: 0;
+                        }
+
+                        .s3-card-badge {
+                            margin-top: auto;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 6px;
+                            padding: 4px 10px;
+                            border-radius: 4px;
+                            align-self: flex-start;
+                            font-size: var(--deck-card-stat);
+                            font-weight: 500;
+                        }
+
+                        .s3-card-badge.badge-slate {
+                            background: rgba(100,116,139,0.06);
+                            border: 1px solid rgba(100,116,139,0.15);
+                            color: #475569;
+                        }
+                        .s3-card-badge.badge-gold {
+                            background: rgba(200,169,81,0.06);
+                            border: 1px solid rgba(200,169,81,0.2);
+                            color: var(--gold-dark);
+                        }
+                        .s3-card-badge.badge-red {
+                            background: rgba(220,38,38,0.05);
+                            border: 1px solid rgba(220,38,38,0.15);
+                            color: #dc2626;
                         }
                     </style>
 
                     <div class="strategic-bridge">
-                        <p>Stop renting your own data.</p>
+                        <p>Every business in 2026 faces three options. <span style="color: var(--primary);">All of them lose money.</span></p>
                     </div>
 
                     <div class="s3-dash">
-                        <!-- RISK 01: Financial -->
+                        <!-- DOOR 1: The Capability Gap -->
                         <div class="s3-card">
-                            <div class="s3-card-num">Risk 01 // Financial</div>
-                            <div class="s3-card-hero">$350K<span style="font-size: 1.8rem; color: var(--text-slate);">+</span></div>
-                            <div class="s3-card-tag">Enterprise GPU Server Entry Price</div>
-                            <p class="s3-card-body">The only "real" option for on-prem AI is a $350K enterprise GPU server — or $300K/yr in cloud GPU bills that grow annually. Most companies never even get a quote.</p>
+                            <div class="s3-card-num">Door 01 // The Capability Gap</div>
+                            <div class="s3-card-hero">85<span style="font-size: 1.8rem; color: var(--text-slate);">% Fail</span></div>
+                            <div class="s3-card-tag">Build or Don't Modernize. Same Outcome.</div>
+                            <p class="s3-card-body">Don't modernize and lose $2M+/yr while competitors scale. Build it yourself and burn $5M to $20M before a single system goes live.</p>
+                            <div class="s3-card-badge badge-slate">The Rest Cost $20M</div>
                         </div>
 
-                        <!-- RISK 02: Regulatory -->
+                        <!-- DOOR 2: The Dependency Tax -->
                         <div class="s3-card">
-                            <div class="s3-card-num">Risk 02 // Control</div>
-                            <div class="s3-card-hero">0 <span style="font-size: 1.8rem; color: var(--text-slate);">Control</span></div>
-                            <div class="s3-card-tag">Over Your Own Infrastructure</div>
-                            <p class="s3-card-body">Vendor lock-in. Unpredictable bills. Compliance uncertainty. Whether you're cloud-native or regulated on-prem, you don't own the stack.</p>
-                            <ul class="s3-verticals">
-                                <li>Cloud-locked</li>
-                                <li>Regulated</li>
-                                <li>Unbanked &amp; unteched</li>
-                            </ul>
+                            <div class="s3-card-num">Door 02 // The Dependency Tax</div>
+                            <div class="s3-card-hero">$44.5<span style="font-size: 1.8rem; color: var(--text-slate);">B</span></div>
+                            <div class="s3-card-tag">Annual Waste on Cloud Infra</div>
+                            <p class="s3-card-body">30% of all cloud spend is pure waste. Three vendors control 90% of the market. Your bill grows. Your leverage shrinks.</p>
+                            <div class="s3-card-badge badge-gold">Permanent Tenants, Never Owners</div>
                         </div>
 
-                        <!-- RISK 03: Operational -->
+                        <!-- DOOR 3: The Sovereignty Risk -->
                         <div class="s3-card">
-                            <div class="s3-card-num">Risk 03 // Operational</div>
-                            <div class="s3-card-hero">6 <span style="font-size: 1.8rem; color: var(--text-slate);">Mo.</span></div>
-                            <div class="s3-card-tag">Enterprise GPU Waitlist</div>
-                            <p class="s3-card-body">GPU scarcity, proprietary CUDA lock-in, and a specialized DevOps team just to keep the lights on. Most companies can't even start.</p>
+                            <div class="s3-card-num">Door 03 // The Sovereignty Risk</div>
+                            <div class="s3-card-hero">90<span style="font-size: 1.8rem; color: var(--text-slate);">%</span></div>
+                            <div class="s3-card-tag">Of Enterprise AI Controlled by 3 Vendors</div>
+                            <p class="s3-card-body">Every API call routes your contracts, financials, and IP through infrastructure you don't own or control.</p>
+                            <div class="s3-card-badge badge-red">Your Data. Their Servers.</div>
                         </div>
                     </div>
-                    <p style="font-size: 0.48rem; color: rgba(0,0,0,0.85); margin: 6px 0 0; line-height: 1.6; text-align: left;"><sup>1</sup> NVIDIA DGX H100 8-GPU system: $350K–$450K (Cyfuture Cloud, GMI Cloud, 2025). <sup>2</sup> Cloud GPU costs: $300K+/yr for reserved H100 capacity (JarvisLabs, GMI Cloud). <sup>3</sup> GPU lead times: 3–6 months for H200 enterprise orders (Intel Market Research, Szwecent, 2025).</p>
+                    <p style="font-size: 0.48rem; color: rgba(0,0,0,0.85); margin: 6px 0 0; line-height: 1.6; text-align: left;"><sup>1</sup> Forbes/Informatica: 85% AI project failure rate. <sup>2</sup> Gartner: $5M–$20M GenAI deployment cost; 30% abandoned after PoC. <sup>3</sup> McKinsey: AI delay cost exceeds $2M/yr mid-size (2025). <sup>4</sup> IT Brief: $44.5B cloud infrastructure waste (2025). <sup>5</sup> USM Systems: $85K/mo avg AI infra cost. <sup>6</sup> Brookings: 3 vendors control 90% enterprise AI (2025). <sup>7</sup> IBM/Ponemon: shadow AI adds $670K in hidden operational risk; supply chain = 30% of incidents (2025).</p>
 
                 </div>
 
@@ -1659,22 +1682,22 @@
                     </div>
 
 
-                    <!-- LAYER 2: Hero KPI Outcomes -->
+                    <!-- LAYER 2: Hero KPI Outcomes — Each answers a Door from Slide 2 -->
                     <div class="sol-kpi-row">
                         <div class="sol-kpi">
                             <div class="sol-kpi-num">78%</div>
                             <div class="sol-kpi-tag">Infrastructure Cost Reduction</div>
-                            <p class="sol-kpi-desc">Cloud optimization saves 32%+ on existing spend. Sovereign deployment cuts $350K hardware to $78K. Either path, Sirsi pays for itself.</p>
+                            <p class="sol-kpi-desc">AI shouldn't cost $20M and take 18 months. Sirsi cuts infrastructure cost by 78%. $350K hardware becomes a $78K pod. Deployed in two weeks with managed support.</p>
                         </div>
                         <div class="sol-kpi">
                             <div class="sol-kpi-num">3 <span style="font-size: 1.6rem;">Paths</span></div>
-                            <div class="sol-kpi-tag">Cloud · Hybrid · Sovereign</div>
-                            <p class="sol-kpi-desc">Build on any cloud provider, migrate from legacy, optimize what you have, or go fully sovereign. One platform adapts to your business — not the other way around.</p>
+                            <div class="sol-kpi-tag">Migrate · Scale · Own</div>
+                            <p class="sol-kpi-desc">Migrate into an optimized cloud, fast and trustworthy. Scale what you already have with AI-predictive infrastructure. Or go fully sovereign and cut costs even further.</p>
                         </div>
                         <div class="sol-kpi">
-                            <div class="sol-kpi-num">2 <span style="font-size: 1.6rem;">Wk.</span></div>
-                            <div class="sol-kpi-tag">From Zero to Running</div>
-                            <p class="sol-kpi-desc">No 6-month waitlist. No specialized DevOps team. Sirsi deploys in two weeks — cloud, hybrid, or sovereign — with managed support from day one.</p>
+                            <div class="sol-kpi-num">0 <span style="font-size: 1.6rem;">Exfiltration</span></div>
+                            <div class="sol-kpi-tag">Sovereign AI for Sovereign Data</div>
+                            <p class="sol-kpi-desc">Combine your models with Sirsi's Knowledge Graph on the Sovereign Platform. Your institutional intelligence stays inside your walls, encoded, protected, and permanently yours.</p>
                         </div>
                     </div>
 
@@ -1684,7 +1707,7 @@
                         <div class="sol-proof-cite">— Ralph Kemp, CEO, Assiduous Realty</div>
                         <div class="sol-proof-badge">Verified Client</div>
                     </div>
-                    <p style="font-size: 0.48rem; color: rgba(0,0,0,0.85); margin: 6px 0 0; line-height: 1.6; text-align: left;"><sup>1</sup> 78% cost reduction: 4x Mac Studio M3 Ultra cluster (~$78K, Apple.com) vs. NVIDIA DGX H100 (~$350K, Cyfuture/GMI). <sup>2</sup> 2-week deployment: Sirsi internal benchmark, Assiduous Realty onboarding (2025).</p>
+                    <p style="font-size: 0.48rem; color: rgba(0,0,0,0.85); margin: 6px 0 0; line-height: 1.6; text-align: left;"><sup>1</sup> 78% cost reduction: Sirsi Pod (~$78K) vs. NVIDIA DGX H100 (~$350K, Cyfuture/GMI). <sup>2</sup> 2-week deployment: Sirsi internal benchmark, Assiduous Realty onboarding (2025). <sup>3</sup> Zero exfiltration: all inference runs locally on Apple Silicon unified memory — no data crosses trust boundaries.</p>
                 </div>
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
@@ -2251,7 +2274,7 @@
                                                 Per Node</th>
                                             <th
                                                 style="text-align: center; padding: 6px 10px; font-family: 'Cinzel', serif; font-size: var(--deck-card-label); color: var(--primary); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;">
-                                                Sirsi Rack</th>
+                                                Sirsi Cluster</th>
                                             <th
                                                 style="text-align: center; padding: 6px 10px; font-family: 'Cinzel', serif; font-size: var(--deck-card-label); color: var(--gold-dark); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;">
                                                 DGX H100</th>
@@ -2292,7 +2315,7 @@
                                                 512 GB</td>
                                             <td
                                                 style="padding: 6px 10px; text-align: center; font-weight: 500; color: var(--primary); font-size: 1.0rem;">
-                                                2 TB</td>
+                                                8 TB</td>
                                             <td
                                                 style="padding: 6px 10px; text-align: center; color: #dc2626; font-weight: 400; font-size: var(--deck-card-label);">
                                                 640 GB</td>
@@ -2417,211 +2440,7 @@
             </div>
         </div>
 
-        <!-- Slide 6: Tech Stack - Foundational Core Schematic -->
-        <div class="slide">
-            <div class="slide-inner">
-                <div class="slide-header">
-                    <h3>PLATFORM INFRASTRUCTURE</h3>
-                    <h2>Technical Bedrock. <span style="color: var(--primary);">Autonomous Core.</span></h2>
-                </div>
-
-                <div class="slide-content">
-                    <p style="font-size: var(--deck-body); color: var(--text-slate); margin: 0 0 32px; line-height: 1.4;">Eight autonomous tiers — from bare-metal Rust to AI orchestration — forming the only full-stack sovereign infrastructure platform.</p>
-                    <div style="display: flex; flex-direction: column; gap: 14px;">
-                        <!-- Row 1: Technical Tiers (Schematic Grid) -->
-                        <!-- Row 1: 4x2 Grid of Tech Pillars -->
-                        <div class="grid grid-4" style="gap: 18px; max-width: 95%; margin: 0 auto;">
-                            <!-- TIER 01: RUST -->
-                            <div class="info-card"
-                                style="padding: 18px 24px; border-top: 2.5px solid var(--primary); background: #fff; display: flex; flex-direction: column; gap: 10px;">
-                                <div>
-                                    <h3 style="font-size: var(--deck-small); color: var(--text-slate); margin-bottom: 2px;">TIER 01
-                                        // SECURE FOUNDATION</h3>
-                                    <div
-                                        style="font-size: var(--deck-card-title); font-weight: 500; color: var(--text-dark); line-height: 1;">
-                                        SECURE CORE</div>
-                                    <div style="font-size: var(--deck-card-label); color: var(--primary); letter-spacing: 0.2em; margin-top: 3px; font-weight: 500;">RUST</div>
-                                </div>
-                                <div style="border-top: 1.5px solid var(--border); padding-top: 6px;">
-                                    <div style="font-size: var(--deck-card-label); line-height: 1.4; color: var(--text-dark);">
-                                        Native desktop apps and direct hardware control of Mac Studio clusters.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- TIER 02: GO -->
-                            <div class="info-card"
-                                style="padding: 18px 24px; border-top: 2.5px solid var(--gold-neo); background: #fff; display: flex; flex-direction: column; gap: 10px;">
-                                <div>
-                                    <h3 style="font-size: var(--deck-small); color: var(--text-slate); margin-bottom: 2px;">TIER 02
-                                        // ORCHESTRATION</h3>
-                                    <div
-                                        style="font-size: var(--deck-card-title); font-weight: 500; color: var(--text-dark); line-height: 1;">
-                                        NERVE CENTER</div>
-                                    <div style="font-size: var(--deck-card-label); color: var(--primary); letter-spacing: 0.2em; margin-top: 3px; font-weight: 500;">GO</div>
-                                </div>
-                                <div style="border-top: 1.5px solid var(--border); padding-top: 6px;">
-                                    <div style="font-size: var(--deck-card-label); line-height: 1.4; color: var(--text-dark);">
-                                        Connects all services and manages data in real time.</div>
-                                </div>
-                            </div>
-
-                            <!-- TIER 03: HEDERA -->
-                            <div class="info-card"
-                                style="padding: 18px 24px; border-top: 2.5px solid var(--primary); background: #fff; display: flex; flex-direction: column; gap: 10px;">
-                                <div>
-                                    <h3 style="font-size: var(--deck-small); color: var(--text-slate); margin-bottom: 2px;">TIER 03
-                                        // TRUST LAYER</h3>
-                                    <div
-                                        style="font-size: var(--deck-card-title); font-weight: 500; color: var(--text-dark); line-height: 1;">
-                                        TRUST ENGINE</div>
-                                    <div style="font-size: var(--deck-card-label); color: var(--primary); letter-spacing: 0.2em; margin-top: 3px; font-weight: 500;">HEDERA</div>
-                                </div>
-                                <div style="border-top: 1.5px solid var(--border); padding-top: 6px;">
-                                    <div style="font-size: var(--deck-card-label); line-height: 1.4; color: var(--text-dark);">
-                                        Every action gets a permanent, tamper-proof receipt anyone can verify.</div>
-                                </div>
-                            </div>
-
-                            <!-- TIER 04: NGINX -->
-                            <div class="info-card"
-                                style="padding: 18px 24px; border-top: 2.5px solid var(--gold-neo); background: #fff; display: flex; flex-direction: column; gap: 10px;">
-                                <div>
-                                    <h3 style="font-size: var(--deck-small); color: var(--text-slate); margin-bottom: 2px;">TIER 04
-                                        // TRAFFIC CONTROL</h3>
-                                    <div
-                                        style="font-size: var(--deck-card-title); font-weight: 500; color: var(--text-dark); line-height: 1;">
-                                        GATEWAY</div>
-                                    <div style="font-size: var(--deck-card-label); color: var(--primary); letter-spacing: 0.2em; margin-top: 3px; font-weight: 500;">NGINX</div>
-                                </div>
-                                <div style="border-top: 1.5px solid var(--border); padding-top: 6px;">
-                                    <div style="font-size: var(--deck-card-label); line-height: 1.4; color: var(--text-dark);">
-                                        Routes all traffic securely and delivers pages instantly.</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Row 2: Tiers 05–08 -->
-                        <div class="grid grid-4" style="gap: 18px; max-width: 95%; margin: 0 auto; margin-top: 56px;">
-                            <div class="info-card"
-                                style="padding: 18px 24px; border-top: 2.5px solid var(--primary); background: #fff; display: flex; flex-direction: column; gap: 10px;">
-                                <div>
-                                    <h3 style="font-size: var(--deck-small); color: var(--text-slate); margin-bottom: 2px;">TIER 05
-                                        // AI ENGINE</h3>
-                                    <div
-                                        style="font-size: var(--deck-card-title); font-weight: 500; color: var(--text-dark); line-height: 1;">
-                                        AI BRAIN</div>
-                                    <div style="font-size: var(--deck-card-label); color: var(--primary); letter-spacing: 0.2em; margin-top: 3px; font-weight: 500;">PYTHON</div>
-                                </div>
-                                <div style="border-top: 1.5px solid var(--border); padding-top: 6px;">
-                                    <div style="font-size: var(--deck-card-label); line-height: 1.4; color: var(--text-dark);">
-                                        Runs machine learning models on-site without cloud dependency.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- TIER 06: TANSTACK -->
-                            <div class="info-card"
-                                style="padding: 18px 24px; border-top: 2.5px solid var(--gold-neo); background: #fff; display: flex; flex-direction: column; gap: 10px;">
-                                <div>
-                                    <h3 style="font-size: var(--deck-small); color: var(--text-slate); margin-bottom: 2px;">TIER 06
-                                        // LIVE DATA</h3>
-                                    <div
-                                        style="font-size: var(--deck-card-title); font-weight: 500; color: var(--text-dark); line-height: 1;">
-                                        LIVE MONITOR</div>
-                                    <div style="font-size: var(--deck-card-label); color: var(--primary); letter-spacing: 0.2em; margin-top: 3px; font-weight: 500;">TANSTACK</div>
-                                </div>
-                                <div style="border-top: 1.5px solid var(--border); padding-top: 6px;">
-                                    <div style="font-size: var(--deck-card-label); line-height: 1.4; color: var(--text-dark);">
-                                        See what every system is doing, the moment it happens.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- TIER 07: FIREBASE -->
-                            <div class="info-card"
-                                style="padding: 18px 24px; border-top: 2.5px solid var(--primary); background: #fff; display: flex; flex-direction: column; gap: 10px;">
-                                <div>
-                                    <h3 style="font-size: var(--deck-small); color: var(--text-slate); margin-bottom: 2px;">TIER 07
-                                        // IDENTITY</h3>
-                                    <div
-                                        style="font-size: var(--deck-card-title); font-weight: 500; color: var(--text-dark); line-height: 1;">
-                                        AUTH GATE</div>
-                                    <div style="font-size: var(--deck-card-label); color: var(--primary); letter-spacing: 0.2em; margin-top: 3px; font-weight: 500;">FIREBASE</div>
-                                </div>
-                                <div style="border-top: 1.5px solid var(--border); padding-top: 6px;">
-                                    <div style="font-size: var(--deck-card-label); line-height: 1.4; color: var(--text-dark);">
-                                        Multi-factor authentication and real-time data sync across all users.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- TIER 08: TYPESCRIPT -->
-                            <div class="info-card"
-                                style="padding: 18px 24px; border-top: 2.5px solid var(--gold-neo); background: #fff; display: flex; flex-direction: column; gap: 10px;">
-                                <div>
-                                    <h3 style="font-size: var(--deck-small); color: var(--text-slate); margin-bottom: 2px;">TIER 08
-                                        // USER INTERFACE</h3>
-                                    <div
-                                        style="font-size: var(--deck-card-title); font-weight: 500; color: var(--text-dark); line-height: 1;">
-                                        DASHBOARD</div>
-                                    <div style="font-size: var(--deck-card-label); color: var(--primary); letter-spacing: 0.2em; margin-top: 3px; font-weight: 500;">TYPESCRIPT</div>
-                                </div>
-                                <div style="border-top: 1.5px solid var(--border); padding-top: 6px;">
-                                    <div style="font-size: var(--deck-card-label); line-height: 1.4; color: var(--text-dark);">
-                                        Fast, polished, institutional-grade dashboards.</div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- Unified AI & Cloud Ecosystem Bar -->
-                    <div
-                        style="margin-top: 8px; padding: 10px 32px; display: flex; justify-content: center; align-items: center; gap: 28px; border-top: 1.5px solid var(--border);">
-                        <div
-                            style="font-weight: 500; font-size: var(--deck-small); color: var(--text-slate); letter-spacing: 0.2em; text-transform: uppercase;">
-                            AI ENGINE</div>
-                        <div style="width: 1px; height: 16px; background: var(--border);"></div>
-                        <div
-                            style="display: flex; gap: 18px; font-size: var(--deck-micro); color: var(--text-dark); font-weight: 400; letter-spacing: 0.04em;">
-                            <span><i class="fas fa-circle"
-                                    style="font-size: 0.3rem; color: var(--primary); vertical-align: middle; margin-right: 5px;"></i>ANTHROPIC
-                                (CLAUDE 4+)</span>
-                            <span><i class="fas fa-circle"
-                                    style="font-size: 0.3rem; color: var(--primary); vertical-align: middle; margin-right: 5px;"></i>GOOGLE
-                                (GEMINI 3+)</span>
-                            <span><i class="fas fa-circle"
-                                    style="font-size: 0.3rem; color: var(--primary); vertical-align: middle; margin-right: 5px;"></i>GOOGLE
-                                (GEMMA)</span>
-                            <span><i class="fas fa-circle"
-                                    style="font-size: 0.3rem; color: var(--primary); vertical-align: middle; margin-right: 5px;"></i>OPEN
-                                SOURCE</span>
-                        </div>
-                        <div style="width: 1px; height: 16px; background: var(--border);"></div>
-                        <div
-                            style="font-weight: 500; font-size: var(--deck-small); color: var(--text-slate); letter-spacing: 0.2em; text-transform: uppercase;">
-                            CLOUD</div>
-                        <div
-                            style="display: flex; gap: 28px; color: var(--text-light); align-items: center; filter: grayscale(1);">
-                            <i class="fab fa-aws fa-lg"></i>
-                            <i class="fab fa-microsoft fa-lg"></i>
-                            <i class="fab fa-google fa-lg"></i>
-                            <i class="fab fa-apple fa-lg"></i>
-                            <i class="fab fa-docker fa-lg"></i>
-                            <i class="fas fa-dharmachakra fa-lg"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="slide-footer">
-                    <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // PLATFORM INFRASTRUCTURE // SLIDE 06</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 07: Competitive Advantage Summary -->
+        <!-- Slide 06: Competitive Advantage Summary -->
         <div class="slide">
             <div class="slide-inner">
                 <!-- Technical Dot Matrix -->
@@ -2735,12 +2554,12 @@
                             </div>
                             <p
                                 style="font-size: var(--deck-card-desc); color: var(--text-slate); margin: 0; line-height: 1.4;">
-                                ~$250K for 2 TB unified memory vs. $350K+ for 640 GB GPU memory. Sovereign AI at democratic
-                                pricing.</p>
+                                ~$78K for 2 TB unified memory vs. $350K+ for 640 GB GPU memory. Sovereign AI at 1/5th the
+                                cost.</p>
                             <div
                                 style="margin-top: auto; display: inline-flex; padding: 2px 8px; background: rgba(4,120,87,0.06); border: 1px solid rgba(4,120,87,0.15); border-radius: 3px; align-self: flex-start;">
                                 <span
-                                    style="font-size: var(--deck-card-stat); font-weight: 500; color: var(--primary);">4.5×
+                                    style="font-size: var(--deck-card-stat); font-weight: 500; color: var(--primary);">14×
                                     Mem/$</span>
                             </div>
                         </div>
@@ -2832,7 +2651,7 @@
                             <p
                                 style="font-size: var(--deck-card-desc); color: var(--text-slate); margin: 0; line-height: 1.4;">
                                 Load full-size AI models into memory at once. No GPU server can match 512 GB per
-                                node unified memory — 2 TB across a 4-node cluster.</p>
+                                node unified memory — 2 TB across a 4-node pod.</p>
                             <div
                                 style="margin-top: auto; display: inline-flex; padding: 2px 8px; background: rgba(4,120,87,0.06); border: 1px solid rgba(4,120,87,0.15); border-radius: 3px; align-self: flex-start;">
                                 <span
@@ -2841,12 +2660,41 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Unified Technology & AI Ecosystem Bar -->
+                    <div style="margin-top: 12px; padding: 10px 24px; display: flex; justify-content: center; align-items: center; gap: 20px; border-top: 1.5px solid var(--border);">
+                        <div style="font-weight: 500; font-size: var(--deck-small); color: var(--text-slate); letter-spacing: 0.2em; text-transform: uppercase; white-space: nowrap;">PLATFORM</div>
+                        <div style="width: 1px; height: 16px; background: var(--border);"></div>
+                        <div style="display: flex; gap: 14px; font-size: var(--deck-micro); color: var(--text-dark); font-weight: 400; letter-spacing: 0.04em;">
+                            <span><i class="fas fa-circle" style="font-size: 0.3rem; color: var(--primary); vertical-align: middle; margin-right: 4px;"></i>RUST</span>
+                            <span><i class="fas fa-circle" style="font-size: 0.3rem; color: var(--primary); vertical-align: middle; margin-right: 4px;"></i>GO</span>
+                            <span><i class="fas fa-circle" style="font-size: 0.3rem; color: var(--primary); vertical-align: middle; margin-right: 4px;"></i>PYTHON</span>
+                            <span><i class="fas fa-circle" style="font-size: 0.3rem; color: var(--primary); vertical-align: middle; margin-right: 4px;"></i>TYPESCRIPT</span>
+                        </div>
+                        <div style="width: 1px; height: 16px; background: var(--border);"></div>
+                        <div style="font-weight: 500; font-size: var(--deck-small); color: var(--text-slate); letter-spacing: 0.2em; text-transform: uppercase; white-space: nowrap;">AI ENGINE</div>
+                        <div style="width: 1px; height: 16px; background: var(--border);"></div>
+                        <div style="display: flex; gap: 14px; font-size: var(--deck-micro); color: var(--text-dark); font-weight: 400; letter-spacing: 0.04em;">
+                            <span><i class="fas fa-circle" style="font-size: 0.3rem; color: var(--gold-neo); vertical-align: middle; margin-right: 4px;"></i>ANTHROPIC</span>
+                            <span><i class="fas fa-circle" style="font-size: 0.3rem; color: var(--gold-neo); vertical-align: middle; margin-right: 4px;"></i>GOOGLE</span>
+                            <span><i class="fas fa-circle" style="font-size: 0.3rem; color: var(--gold-neo); vertical-align: middle; margin-right: 4px;"></i>OPEN SOURCE</span>
+                        </div>
+                        <div style="width: 1px; height: 16px; background: var(--border);"></div>
+                        <div style="font-weight: 500; font-size: var(--deck-small); color: var(--text-slate); letter-spacing: 0.2em; text-transform: uppercase; white-space: nowrap;">CLOUD</div>
+                        <div style="display: flex; gap: 20px; color: var(--text-light); align-items: center; filter: grayscale(1);">
+                            <i class="fab fa-aws fa-lg"></i>
+                            <i class="fab fa-microsoft fa-lg"></i>
+                            <i class="fab fa-google fa-lg"></i>
+                            <i class="fab fa-apple fa-lg"></i>
+                            <i class="fab fa-docker fa-lg"></i>
+                        </div>
+                    </div>
                 </div>
-                    <p style="font-size: 0.48rem; color: rgba(0,0,0,0.85); margin: 6px 0 0; line-height: 1.6; text-align: left;"><sup>1</sup> $250K: 4x Mac Studio M3 Ultra (512GB each, 2TB total, apple.com March 2025). <sup>2</sup> $350K+: NVIDIA DGX H100 (640GB HBM3, Cyfuture/GMI 2025). <sup>3</sup> 4.8 kW: Apple M3 Ultra TDP specs (apple.com). 10.2 kW: DGX H100 rated power (NVIDIA specs). <sup>4</sup> 4.5x Mem/$: 2TB/$250K (8.2 GB/$K) vs 640GB/$350K (1.8 GB/$K).</p>
+                    <p style="font-size: 0.48rem; color: rgba(0,0,0,0.85); margin: 6px 0 0; line-height: 1.6; text-align: left;"><sup>1</sup> $78K: 1 Sirsi Pod = 4x Mac Studio M3 Ultra (512GB each, 2TB total, apple.com 2025). <sup>2</sup> $350K+: NVIDIA DGX H100 (640GB HBM3, Cyfuture/GMI 2025). <sup>3</sup> 4.8 kW: Apple M3 Ultra TDP specs (apple.com). 10.2 kW: DGX H100 rated power (NVIDIA specs). <sup>4</sup> 14x Mem/$: 2TB/$78K (26.3 GB/$K) vs 640GB/$350K (1.8 GB/$K).</p>
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // COMPETITIVE ADVANTAGE // SLIDE 07</div>
+                    <div>CONFIDENTIAL // COMPETITIVE ADVANTAGE // SLIDE 06</div>
                 </div>
             </div>
         </div>
@@ -3044,13 +2892,13 @@
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // COMPETITIVE LANDSCAPE // SLIDE 08</div>
+                    <div>CONFIDENTIAL // COMPETITIVE LANDSCAPE // SLIDE 07</div>
                 </div>
             </div>
         </div>
 
         <!-- Slide 09: Go To Market Strategy -->
-        <div class="slide">
+        <div class="slide" id="slide-gtm">
             <div class="slide-inner">
                 <!-- Technical Dot Matrix -->
                 <div
@@ -3065,10 +2913,10 @@
                     <h2>Execution Path. <span style="color: var(--primary);">Scaling Nationwide.</span></h2>
                 </div>
 
-                <div class="slide-content">
+                <div class="slide-content" style="gap: 12px; padding: 12px 36px 24px;">
                     <!-- Technical Status Header -->
                     <div class="grid grid-center"
-                        style="grid-template-columns: auto auto auto auto 1fr; gap: 15px;">
+                        style="grid-template-columns: auto auto auto auto auto auto 1fr; gap: 15px;">
                         <div
                             style="font-size: var(--deck-small); font-weight: 500; color: var(--gold-dark); letter-spacing: 0.1em; text-transform: uppercase;">
                             MOAT VALIDATION //</div>
@@ -3080,7 +2928,10 @@
                             $147K INITIAL ACV</div>
                         <div
                             style="padding: 4px 12px; border: 1px solid var(--text-dark); font-size: var(--deck-small); color: var(--text-dark); border-radius: 2px;">
-                            NVIDIA PARTNER</div>
+                            NVIDIA INCEPTION</div>
+                        <div
+                            style="padding: 4px 12px; border: 1px solid var(--primary); font-size: var(--deck-small); color: var(--primary); border-radius: 2px; background: var(--primary-light);">
+                            SIRSI SOVEREIGN PLATFORM</div>
                         <div style="height: 1px; background: var(--border); opacity: 0.5;"></div>
                     </div>
 
@@ -3090,166 +2941,116 @@
                     <div style="display: flex; flex-direction: column; gap: 0;">
                         <!-- Milestones: Top (EPOCH START) -->
                         <div
-                            style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 10px; padding-left: 20px;">
+                            style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 6px; padding-left: 20px;">
                             <div></div>
                             <div
-                                style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
-                                <div style="font-weight: 400; font-size: var(--deck-body); color: var(--text-dark);">Fall
-                                    2025
-                                </div>
-                                <div
-                                    style="font-size: var(--deck-micro); font-weight: 500; color: var(--gold-dark); text-transform: uppercase;">
-                                    Phase I // Sirsi AI MVP</div>
+                                style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 4px; margin: 0 8px;">
+                                <div style="font-weight: 500; font-size: var(--deck-micro); color: var(--gold-dark); text-transform: uppercase; letter-spacing: 0.1em;">Phase I</div>
+                                <div style="font-weight: 400; font-size: var(--deck-body); color: var(--text-dark);">IP Development</div>
+                                <div style="font-size: var(--deck-micro); font-weight: 400; color: var(--text-slate);">Fall 2026</div>
                             </div>
                             <div
-                                style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
-                                <div style="font-weight: 400; font-size: var(--deck-body); color: var(--text-dark);">Winter
-                                    2027
-                                </div>
-                                <div
-                                    style="font-size: var(--deck-micro); font-weight: 500; color: var(--primary); text-transform: uppercase;">
-                                    Phase II // Portal Launch</div>
+                                style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 4px; margin: 0 8px;">
+                                <div style="font-weight: 500; font-size: var(--deck-micro); color: var(--primary); text-transform: uppercase; letter-spacing: 0.1em;">Phase II</div>
+                                <div style="font-weight: 400; font-size: var(--deck-body); color: var(--text-dark);">Portal Launch</div>
+                                <div style="font-size: var(--deck-micro); font-weight: 400; color: var(--text-slate);">Winter 2027</div>
                             </div>
                             <div
-                                style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin: 0 15px;">
-                                <div style="font-weight: 400; font-size: var(--deck-body); color: var(--text-dark);">Winter
-                                    2028
-                                </div>
-                                <div
-                                    style="font-size: var(--deck-micro); font-weight: 500; color: var(--text-dark); text-transform: uppercase;">
-                                    Phase III // On-Prem</div>
+                                style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 4px; margin: 0 8px;">
+                                <div style="font-weight: 500; font-size: var(--deck-micro); color: var(--text-dark); text-transform: uppercase; letter-spacing: 0.1em;">Phase III</div>
+                                <div style="font-weight: 400; font-size: var(--deck-body); color: var(--text-dark);">On-Prem Scale</div>
+                                <div style="font-size: var(--deck-micro); font-weight: 400; color: var(--text-slate);">Winter 2028</div>
                             </div>
                         </div>
 
                         <!-- Flow Conduit (Arrow segments) -->
-                        <div style="display: flex; align-items: stretch; margin-bottom: 6px; gap: 8px; height: 44px;">
+                        <div style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 6px; padding-left: 20px; align-items: center;">
                             <div
-                                style="width: 60px; display: flex; align-items: center; justify-content: center; font-weight: 400; font-size: var(--deck-card-label); color: var(--text-slate); letter-spacing: 0.2em; writing-mode: vertical-lr; text-transform: uppercase; border-right: 1.5px solid var(--gold); transform: rotate(180deg);">
-                                START</div>
+                                style="display: flex; align-items: center; justify-content: center; font-weight: 400; font-size: 9px; color: var(--text-slate); letter-spacing: 0.15em; text-transform: uppercase; border-right: 1.5px solid var(--gold); padding: 8px 0;">
+                                S T A R T</div>
 
                             <div
-                                style="flex: 1; background: var(--primary-light); border: 1.5px solid var(--primary); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%);">
+                                style="padding: 8px 0; margin: 0 8px; background: var(--primary-light); border: 1px solid var(--primary); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.65rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%);">
                                 IP DEVELOPMENT</div>
 
                             <div
-                                style="flex: 1; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%, 6% 50%); margin-left: -10px;">
+                                style="padding: 8px 0; margin: 0 8px; background: var(--primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.65rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%, 6% 50%);">
                                 PUBLIC RELEASE</div>
 
                             <div
-                                style="flex: 1; background: var(--gold-light); border: 1.5px solid var(--gold); color: var(--gold-dark); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 1rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 6% 50%); margin-left: -10px;">
+                                style="padding: 8px 0; margin: 0 8px; background: var(--gold-light); border: 1px solid var(--gold); color: var(--gold-dark); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.65rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 6% 50%);">
                                 SCALE GLOBAL</div>
                         </div>
 
-                        <!-- Milestones: Bottom (EPOCH END) -->
-                        <div
-                            style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 10px; padding-left: 20px;">
-                            <div></div>
-                            <div
-                                style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
-                                <div style="font-weight: 400; font-size: var(--deck-body); color: var(--text-dark);">Fall
-                                    2026
-                                </div>
-                                <div style="font-size: var(--deck-micro); font-weight: 400; color: var(--text-slate);">AI Tech
-                                    Stack POC</div>
-                            </div>
-                            <div
-                                style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
-                                <div style="font-weight: 400; font-size: var(--deck-body); color: var(--text-dark);">Fall
-                                    2027
-                                </div>
-                                <div style="font-size: var(--deck-micro); font-weight: 400; color: var(--text-slate);">
-                                    Customer
-                                    Scale-Up</div>
-                            </div>
-                            <div
-                                style="text-align: center; border-top: 1px solid var(--border); padding-top: 8px; margin: 0 15px;">
-                                <div style="font-weight: 400; font-size: var(--deck-body); color: var(--text-dark);">Summer
-                                    2028
-                                </div>
-                                <div style="font-size: var(--deck-micro); font-weight: 400; color: var(--text-slate);">Global
-                                    Sovereign Deployment</div>
-                            </div>
-                        </div>
+
                     </div>
 
-                    <!-- Market Path to Sovereign -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden;">
-                        <div style="padding: 8px 10px; background: #fff; border-right: 1px solid var(--border); text-align: center;">
-                            <div style="font-size: 1.1rem; margin-bottom: 4px;">💻</div>
-                            <div style="font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 500; color: var(--text-dark); letter-spacing: 0.08em; text-transform: uppercase;">Software</div>
-                            <div style="font-size: 0.75rem; color: var(--text-slate); margin: 4px 0;">Platform + Managed Services</div>
-                            <div style="font-family: 'Cinzel', serif; font-size: 0.65rem; color: var(--primary); letter-spacing: 0.1em; font-weight: 500;">SEED // $5M</div>
-                        </div>
-                        <div style="padding: 8px 10px; background: #fff; border-right: 1px solid var(--border); text-align: center;">
-                            <div style="font-size: 1.1rem; margin-bottom: 4px;">☁️</div>
-                            <div style="font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 500; color: var(--text-dark); letter-spacing: 0.08em; text-transform: uppercase;">Cloud</div>
-                            <div style="font-size: 0.75rem; color: var(--text-slate); margin: 4px 0;">Cloud deployment &amp; optimization</div>
-                            <div style="font-family: 'Cinzel', serif; font-size: 0.65rem; color: var(--primary); letter-spacing: 0.1em; font-weight: 500;">REVENUE</div>
-                        </div>
-                        <div style="padding: 8px 10px; background: rgba(200,169,81,0.06); text-align: center;">
-                            <div style="font-size: 1.1rem; margin-bottom: 4px;">🏛</div>
-                            <div style="font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 500; color: var(--gold-dark); letter-spacing: 0.08em; text-transform: uppercase;">Sovereign</div>
-                            <div style="font-size: 0.75rem; color: var(--text-slate); margin: 4px 0;">Full on-prem. Data never leaves.</div>
-                            <div style="font-family: 'Cinzel', serif; font-size: 0.65rem; color: var(--gold-dark); letter-spacing: 0.1em; font-weight: 500;">SERIES A // $15M</div>
-                        </div>
-                    </div>
-
-                    <!-- Market Grid -->
-                    <div class="grid grid-3 gap-20">
-                        <div class="info-card" style="border-top: 2.5px solid var(--primary);">
-                            <div class="flex-between" style="margin-bottom: 8px;">
+                    <!-- Phase Cards -->
+                    <div style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; gap: 0; padding-left: 20px;">
+                        <div></div>
+                        <div class="info-card" style="margin: 0 8px; border-top: 2.5px solid var(--primary);">
+                            <div class="flex-between" style="margin-bottom: 4px; align-items: center;">
                                 <div
                                     style="font-size: var(--deck-micro); color: var(--primary); letter-spacing: 0.1em; font-weight: 500;">
                                     PHASE 01</div>
                                 <div
+                                    style="font-family: 'Cinzel', serif; font-size: 0.6rem; color: var(--primary); letter-spacing: 0.08em; font-weight: 500; text-transform: uppercase;">
+                                    Seed // $6M</div>
+                                <div
                                     style="background: var(--primary-light); color: var(--primary); font-size: 0.55rem; padding: 2px 6px; border-radius: 2px;">
                                     2025-2026</div>
                             </div>
-                            <h4 style="font-size: var(--deck-body); margin-bottom: 4px;">Studio Governance</h4>
+                            <h4 style="font-size: var(--deck-body); margin-bottom: 4px;">Sirsi Kernel Development</h4>
                             <p style="font-size: var(--deck-card-label); color: var(--text-slate); margin-bottom: 6px;">Sirsi
                                 ships
                                 the platform core, files 6 patents, and hardens security end-to-end.</p>
-                            <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 10px;">
+                            <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 6px;">
                                 <div style="font-size: var(--deck-micro); color: var(--primary); text-transform: uppercase;">Focus
                                     //
                                 </div>
                                 <div class="medium" style="font-size: var(--deck-small);">Patent Filing & Platform Core</div>
                             </div>
                         </div>
-                        <div class="info-card" style="border-top: 2.5px solid var(--gold-neo);">
-                            <div class="flex-between" style="margin-bottom: 8px;">
+                        <div class="info-card" style="margin: 0 8px; border-top: 2.5px solid var(--gold-neo);">
+                            <div class="flex-between" style="margin-bottom: 4px; align-items: center;">
                                 <div
                                     style="font-size: var(--deck-micro); color: var(--gold-dark); letter-spacing: 0.1em; font-weight: 500;">
                                     PHASE 02</div>
                                 <div
+                                    style="font-family: 'Cinzel', serif; font-size: 0.6rem; color: var(--gold-dark); letter-spacing: 0.08em; font-weight: 500; text-transform: uppercase;">
+                                    Revenue</div>
+                                <div
                                     style="background: var(--gold-light); color: var(--gold-dark); font-size: 0.55rem; padding: 2px 6px; border-radius: 2px;">
                                     2026-2027</div>
                             </div>
-                            <h4 style="font-size: var(--deck-body); margin-bottom: 4px;">Dev Intelligence</h4>
+                            <h4 style="font-size: var(--deck-body); margin-bottom: 4px;">Sirsi Cloud Integration</h4>
                             <p style="font-size: var(--deck-card-label); color: var(--text-slate); margin-bottom: 6px;">Sirsi
                                 becomes
                                 self-managing. Knowledge Graph, Fire Team agents, and the Hypervisor go live.</p>
-                            <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 10px;">
+                            <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 6px;">
                                 <div style="font-size: var(--deck-micro); color: var(--gold-dark); text-transform: uppercase;">
                                     Focus //
                                 </div>
                                 <div class="medium" style="font-size: var(--deck-small);">Knowledge Graph, Fire Team & Hypervisor</div>
                             </div>
                         </div>
-                        <div class="info-card" style="border-top: 2.5px solid var(--primary);">
-                            <div class="flex-between" style="margin-bottom: 8px;">
+                        <div class="info-card" style="margin: 0 8px; border-top: 2.5px solid var(--primary);">
+                            <div class="flex-between" style="margin-bottom: 8px; align-items: center;">
                                 <div
                                     style="font-size: var(--deck-micro); color: var(--primary); letter-spacing: 0.1em; font-weight: 500;">
                                     PHASE 03</div>
                                 <div
+                                    style="font-family: 'Cinzel', serif; font-size: 0.6rem; color: var(--primary); letter-spacing: 0.08em; font-weight: 500; text-transform: uppercase;">
+                                    Series A // $15M</div>
+                                <div
                                     style="background: var(--primary-light); color: var(--primary); font-size: 0.55rem; padding: 2px 6px; border-radius: 2px;">
                                     2027+</div>
                             </div>
-                            <h4 style="font-size: var(--deck-body); margin-bottom: 4px;">Sovereign Infra</h4>
+                            <h4 style="font-size: var(--deck-body); margin-bottom: 4px;">Sovereign Infrastructure</h4>
                             <p style="font-size: var(--deck-card-label); color: var(--text-slate); margin-bottom: 6px;">Sirsi
                                 deploys
                                 patent-backed sovereign Mac Studio clusters via the Sovereign Platform and controls hardware directly.</p>
-                            <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 10px;">
+                            <div style="margin-top: auto; border-top: 1px solid var(--border); padding-top: 6px;">
                                 <div style="font-size: var(--deck-micro); color: var(--primary); text-transform: uppercase;">Focus
                                     //
                                 </div>
@@ -3261,7 +3062,7 @@
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // GO TO MARKET STRATEGY // SLIDE 09</div>
+                    <div>CONFIDENTIAL // GO TO MARKET STRATEGY // SLIDE 08</div>
                 </div>
             </div> <!-- End slide-inner -->
         </div> <!-- End slide -->
@@ -3306,7 +3107,7 @@
 
                         <!-- Center Column: Venn Diagram (Shrunk) -->
                         <div style="position: relative; display: flex; align-items: center; justify-content: center;">
-                            <svg viewBox="0 0 420 380" style="width: 100%; max-width: 380px;">
+                            <svg viewBox="0 0 420 380" style="width: 100%; max-width: 540px;">
                                 <!-- Crosshair -->
                                 <path d="M 30 190 L 390 190 M 210 20 L 210 360" stroke="var(--border)" stroke-width="1.5" opacity="0.5" />
 
@@ -3390,7 +3191,7 @@
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // MARKET ARCHITECTURE // SLIDE 10</div>
+                    <div>CONFIDENTIAL // MARKET ARCHITECTURE // SLIDE 09</div>
                 </div>
             </div>
         </div>
@@ -3613,7 +3414,7 @@
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // THE CORE TEAM // SLIDE 11</div>
+                    <div>CONFIDENTIAL // THE CORE TEAM // SLIDE 10</div>
                 </div>
             </div>
         </div>
@@ -3643,7 +3444,7 @@
                                     </div>
                                     <div
                                         style="border: 2px solid var(--primary); color: var(--primary); padding: 4px 10px; font-size: var(--deck-micro); font-weight: 500; border-radius: 2px; text-transform: uppercase;">
-                                        Strategic Rollout</div>
+                                        $10K CONTRACTED</div>
                                 </div>
 
                                 <p
@@ -3706,7 +3507,7 @@
                                     </div>
                                     <div
                                         style="border: 2px solid var(--gold-dark); color: var(--gold-dark); padding: 4px 10px; font-size: var(--deck-micro); font-weight: 500; border-radius: 2px; text-transform: uppercase;">
-                                        $147K TOTAL CONTRACTED</div>
+                                        $137K CONTRACTED</div>
                                 </div>
 
                                 <p
@@ -3785,7 +3586,7 @@
                 </div>
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // PROVEN PERFORMANCE // SLIDE 12</div>
+                    <div>CONFIDENTIAL // PROVEN PERFORMANCE // SLIDE 11</div>
                 </div>
             </div>
         </div>
@@ -3988,7 +3789,7 @@
                                     <li><strong style="color: var(--text-dark);">6-Patent Portfolio Filed</strong> by Q3 2026 including NebuLang, Neural-Fractal, Fire Team Protocol</li>
                                     <li><strong style="color: var(--text-dark);">Multi-Platform Beta Launch:</strong> Web, Desktop via Rust/Tauri, Mobile via React and SwiftUI</li>
                                     <li><strong style="color: var(--text-dark);">Direct-to-Metal Orchestration:</strong> Live hardware control for Cisco, Dell, NVIDIA, Apple, and Google systems</li>
-                                    <li><strong style="color: var(--text-dark);">Series A Readiness:</strong> Targeting $15M raise at $60M pre-money valuation by Q4 2026</li>
+                                    <li><strong style="color: var(--text-dark);">Series A Readiness:</strong> Targeting $15M raise at $60M pre-money valuation by Q2 2027</li>
                                 </ul>
                             </div>
                         </div>
@@ -3996,7 +3797,7 @@
                 </div>
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // FINANCIALS // SLIDE 13</div>
+                    <div>CONFIDENTIAL // FINANCIALS // SLIDE 12</div>
                 </div>
             </div>
         </div>
@@ -4017,7 +3818,7 @@
                     <div style="display: flex; align-items: center; gap: 20px; background: var(--primary); color: #fff; padding: 14px 28px; border-radius: 4px; box-shadow: 0 6px 20px rgba(4, 120, 87, 0.3); flex-shrink: 0; margin-bottom: 6px;">
                         <span style="font-family: 'Cinzel', serif; font-size: 1.6rem; font-weight: 500; color: #fff; white-space: nowrap;">$0 Federal Capital Gains</span>
                         <div style="width: 1px; height: 28px; background: rgba(255,255,255,0.3); flex-shrink: 0;"></div>
-                        <span style="font-size: 0.85rem; opacity: 0.92; white-space: nowrap;">IRC §1202 QSBS Qualified — 100% Tax-Exempt on Qualified Holdings</span>
+                        <span style="font-size: 0.85rem; opacity: 0.92; white-space: nowrap;">Sirsi Technologies is IRC §1202 QSBS Qualified — 100% Tax-Exempt on Qualified Holdings</span>
                     </div>
 
                     <div class="num-grid">
@@ -4058,7 +3859,7 @@
                                         <td>$60.0M</td>
                                         <td>$75.0M</td>
                                         <td>20.0%</td>
-                                        <td>Q4 2026</td>
+                                        <td>Q2 2027</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -4253,7 +4054,7 @@
                 </div>
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // BY THE NUMBERS // SLIDE 14</div>
+                    <div>CONFIDENTIAL // BY THE NUMBERS // SLIDE 13</div>
                 </div>
             </div>
         </div>
@@ -4346,7 +4147,7 @@
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // SEED OFFERING // SLIDE 15</div>
+                    <div>CONFIDENTIAL // SEED OFFERING // SLIDE 14</div>
                 </div>
             </div>
         </div>
@@ -4397,7 +4198,7 @@
 
                 <div class="slide-footer">
                     <div>SIRSI TECHNOLOGIES INC.</div>
-                    <div>CONFIDENTIAL // THE PARTNERSHIP // SLIDE 16</div>
+                    <div>CONFIDENTIAL // THE PARTNERSHIP // SLIDE 15</div>
                 </div>
             </div>
         </div>
