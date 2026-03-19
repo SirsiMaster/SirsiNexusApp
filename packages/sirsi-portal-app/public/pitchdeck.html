@@ -319,10 +319,21 @@
         }
 
         /* ── Per-Slide Content Zoom (CSS only — fully independent) ── */
-        /* Global 1.2× zoom — fills content for Letter Landscape PDF proportions */
-        .slide .slide-content { zoom: 1.2; }
-        /* Slide 12 (Financials) is the densest — standard zoom */
-        #slide-financials .slide-content { zoom: 1.0; }
+        #slide-title .slide-content    { zoom: 1.0;  }  /* Slide 1  */
+        #slide-crisis .slide-content   { zoom: 1.45; }  /* Slide 2  */
+        #slide-solution .slide-content { zoom: 1.0;  }  /* Slide 3  */
+        #slide-ip .slide-content       { zoom: 0.93; }  /* Slide 4  */
+        #slide-hardware .slide-content { zoom: 1.05; }  /* Slide 5  */
+        #slide-advantage .slide-content{ zoom: 0.93; }  /* Slide 6  */
+        #slide-landscape .slide-content{ zoom: 1.0;  }  /* Slide 7  */
+        #slide-gtm .slide-content      { zoom: 1.25; }  /* Slide 8  */
+        #slide-market .slide-content   { zoom: 1.0;  }  /* Slide 9  */
+        #slide-wedge .slide-content    { zoom: 1.0;  }  /* Slide 10 */
+        #slide-traction .slide-content { zoom: 1.0;  }  /* Slide 11 */
+        #slide-financials .slide-content { zoom: 0.85; } /* Slide 12 */
+        #slide-numbers .slide-content  { zoom: 1.0;  }  /* Slide 13 */
+        #slide-seed .slide-content     { zoom: 1.0;  }  /* Slide 14 */
+        #slide-close .slide-content    { zoom: 1.0;  }  /* Slide 15 */
 
         .slide-header {
             margin-bottom: 0.3rem;
@@ -350,10 +361,6 @@
             padding: 16px 56px 36px;
         }
 
-        /* Make the primary content grid in each slide fill available vertical space */
-        .slide-content > .slide-header ~ *:not(.footnotes):not(.slide-footer) {
-            flex-grow: 1;
-        }
 
         /* SPACING RESET: gap is the ONLY vertical spacer. */
         .slide-content > * {
