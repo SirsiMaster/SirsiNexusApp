@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 /**
- * Sirsi Pitch Deck → PDF Export (Puppeteer)
+ * Sirsi Pitch Deck → PDF Export
  * 
- * Simplest possible approach: modify the live page to show ALL slides
- * vertically with page-break-after, then call page.pdf() directly.
- * Puppeteer's pdf() renders exactly what Chrome renders.
+ * Strategy: Screenshot each slide at full 1440×810 resolution using
+ * Puppeteer (real Chrome rendering), then embed each screenshot as a
+ * full-page image in a PDF using pdf-lib.
+ * 
+ * This approach captures EVERYTHING perfectly — CSS gradients, fonts,
+ * backgrounds, shadows — because it's a pixel-perfect screenshot.
+ * No CSS print issues, no viewport clipping, no page-break problems.
  * 
  * Usage:
  *   node scripts/export-pitchdeck-pdf.mjs
@@ -12,6 +16,7 @@
  */
 
 import puppeteer from 'puppeteer';
+import { PDFDocument } from 'pdf-lib';
 import { writeFileSync } from 'fs';
 import { resolve } from 'path';
 import { homedir } from 'os';
@@ -19,13 +24,16 @@ import { homedir } from 'os';
 const url = process.argv[2] || 'https://sirsi.ai/pitchdeck';
 const output = resolve(homedir(), 'Desktop', 'Sirsi_Technologies_Pitch_Deck.pdf');
 
-// PDF page size in pixels: 11in × 8.5in at 96dpi
-const PW = 1056;
-const PH = 816;
+// Capture at the design resolution — slides were built for this size
+const WIDTH = 1440;
+const HEIGHT = 810;
 
 console.log('\n  ╔══════════════════════════════════════════╗');
 console.log('  ║   Sirsi Technologies — PDF Export        ║');
 console.log('  ╚══════════════════════════════════════════╝\n');
+console.log(`  Source:  ${url}`);
+console.log(`  Output:  ${output}`);
+console.log(`  Resolution: ${WIDTH}×${HEIGHT} @ 2x\n`);
 
 async function main() {
     const browser = await puppeteer.launch({
@@ -34,78 +42,79 @@ async function main() {
     });
 
     const page = await browser.newPage();
-    // Use exact PDF page dimensions so 100vh = one printed page height
-    await page.setViewport({ width: PW, height: PH, deviceScaleFactor: 2 });
+    await page.setViewport({
+        width: WIDTH,
+        height: HEIGHT,
+        deviceScaleFactor: 2  // Retina-quality screenshots
+    });
 
-    console.log('  ⏳ Loading:', url);
+    console.log('  ⏳ Loading pitch deck...');
     await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
     await page.waitForSelector('.slide');
 
-    const totalSlides = await page.$$eval('.slide', s => s.length);
-    console.log(`  ✓ ${totalSlides} slides detected\n`);
-
-    // Reset ALL per-slide zoom values — they're tuned for fullscreen monitors,
-    // not for the smaller PDF viewport
+    // Hide UI chrome
     await page.addStyleTag({ content: `
-        .slide-content { zoom: 1.0 !important; }
-        .slide-inner { zoom: 1.0 !important; }
+        .nav-footer, .progress-container, .print-controls, .doc-header {
+            display: none !important;
+        }
     `});
 
-    // Transform the page: show all slides vertically for PDF export
-    await page.evaluate(() => {
-        // Remove nav and chrome
-        document.querySelectorAll('.nav-footer, .progress-container, .print-controls, .doc-header').forEach(el => el.remove());
+    const totalSlides = await page.$$eval('.slide', s => s.length);
+    console.log(`  ✓ ${totalSlides} slides loaded\n`);
 
-        // Unlock the html/body
-        document.documentElement.style.cssText = 'overflow:visible!important;height:auto!important;background:#fff!important;';
-        document.body.style.cssText = 'overflow:visible!important;height:auto!important;background:#fff!important;';
+    // Create the PDF document — Letter Landscape (11in × 8.5in = 792 × 612 points)
+    const pdf = await PDFDocument.create();
+    pdf.setTitle('Sirsi Technologies — Investor Pitch Deck');
+    pdf.setAuthor('Sirsi Technologies Inc.');
+    pdf.setSubject('Autonomous Operating System for AI Infrastructure');
+    pdf.setCreator('Sirsi PDF Export');
 
-        // Unlock the presentation wrapper
-        const pres = document.querySelector('.presentation');
-        if (pres) {
-            pres.style.cssText = 'position:relative!important;width:100%!important;height:auto!important;overflow:visible!important;background:transparent!important;';
-        }
+    // Letter landscape in points (1 inch = 72 points)
+    const PAGE_W = 11 * 72;   // 792
+    const PAGE_H = 8.5 * 72;  // 612
 
-        // Make every slide visible and stacked vertically
-        const slides = document.querySelectorAll('.slide');
-        slides.forEach((slide) => {
-            slide.className = 'slide'; // remove 'active' + any other state classes
-            slide.style.cssText = [
-                'display:flex!important',
-                'opacity:1!important',
-                'position:relative!important',
-                'width:100%!important',
-                'height:100vh!important',
-                'page-break-after:always',
-                'break-after:page',
-                'page-break-inside:avoid',
-                'break-inside:avoid',
-                'overflow:hidden!important',
-                'flex-shrink:0!important',
-            ].join(';');
+    for (let i = 1; i <= totalSlides; i++) {
+        process.stdout.write(`  📸 Slide ${i}/${totalSlides}...`);
+
+        // Navigate to this slide
+        await page.evaluate((num) => {
+            if (typeof showSlide === 'function') showSlide(num);
+        }, i);
+
+        // Wait for animations and images
+        await new Promise(r => setTimeout(r, 800));
+
+        // Take a pixel-perfect screenshot of the viewport
+        const pngBytes = await page.screenshot({
+            type: 'png',
+            clip: { x: 0, y: 0, width: WIDTH, height: HEIGHT },
+            omitBackground: false
         });
-    });
 
-    // Wait for layout to settle
-    await new Promise(r => setTimeout(r, 1500));
+        // Embed the screenshot as a full-page image in the PDF
+        const pngImage = await pdf.embedPng(pngBytes);
+        const pdfPage = pdf.addPage([PAGE_W, PAGE_H]);
+        pdfPage.drawImage(pngImage, {
+            x: 0,
+            y: 0,
+            width: PAGE_W,
+            height: PAGE_H
+        });
 
-    console.log('  📄 Generating landscape PDF...');
+        console.log(' ✓');
+    }
 
-    const pdfBuffer = await page.pdf({
-        width: '11in',
-        height: '8.5in',
-        printBackground: true,
-        margin: { top: 0, right: 0, bottom: 0, left: 0 },
-        preferCSSPageSize: false,
-        timeout: 60000
-    });
+    console.log('\n  📄 Saving PDF...');
+    const pdfBytes = await pdf.save();
+    writeFileSync(output, pdfBytes);
 
-    writeFileSync(output, pdfBuffer);
     await browser.close();
 
-    const sizeMB = (pdfBuffer.length / 1024 / 1024).toFixed(1);
+    const sizeMB = (pdfBytes.length / 1024 / 1024).toFixed(1);
     console.log(`\n  ✅ PDF saved: ${output}`);
-    console.log(`  📊 Size: ${sizeMB} MB | ${totalSlides} slides, Landscape\n`);
+    console.log(`  📊 Size: ${sizeMB} MB`);
+    console.log(`  📐 ${totalSlides} slides, Letter Landscape`);
+    console.log(`  🖼  ${WIDTH}×${HEIGHT} @ 2x per slide\n`);
 }
 
 main().catch(err => {
