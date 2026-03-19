@@ -4693,14 +4693,26 @@
         .print-slide .slide-inner {
             display: flex;
             flex-direction: column;
-            height: 100%;
+            height: auto;
             width: 100%;
             position: relative;
-            padding-bottom: 40px;
+            padding: 20px 30px 30px !important;
+            zoom: 0.58;
         }
 
         .print-slide .slide-content {
             zoom: 1 !important;
+            flex: 1;
+        }
+
+        .print-slide .slide-header {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+        }
+
+        .print-slide .slide-footer {
+            position: relative !important;
+            margin-top: auto;
         }
 
         /* ── Print UI Bar (same as MSA) ── */
