@@ -4596,294 +4596,168 @@
                 for (let i = 0; i < slides.length; i++) includeSlides.push(i);
             }
 
-            // ── Generate printable popup inline (no separate file needed) ──
-            const width = 1100;
-            const height = 850;
-            const left = (window.screen.width - width) / 2;
-            const top = (window.screen.height - height) / 2;
+            // Show loading indicator
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'print-loading';
+            loadingDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:99999;color:white;font-family:Cinzel,serif;font-size:1.5rem;letter-spacing:0.1em;';
+            loadingDiv.innerHTML = 'Rendering slides for PDF&hellip; <span id="print-progress">0</span> / ' + includeSlides.length;
+            document.body.appendChild(loadingDiv);
 
-            const popup = window.open(
-                '',
-                'PitchDeck_Print_Preview',
-                `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`
-            );
-
-            if (!popup) {
-                alert('Please allow popups for this website to print the deck.');
-                return;
+            // Load html2canvas from CDN if not already loaded
+            function loadHtml2Canvas() {
+                return new Promise(function(resolve, reject) {
+                    if (window.html2canvas) { resolve(); return; }
+                    var s = document.createElement('script');
+                    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                    s.onload = resolve;
+                    s.onerror = reject;
+                    document.head.appendChild(s);
+                });
             }
 
-            // Collect styles, EXCLUDING @media rules (they conflict with popup's own print rules)
-            const styles = Array.from(document.styleSheets)
-                .map(sheet => {
-                    try {
-                        return Array.from(sheet.cssRules)
-                            .filter(rule => !(rule instanceof CSSMediaRule))
-                            .map(rule => rule.cssText).join('\n');
-                    } catch (e) { return ''; }
-                }).join('\n');
+            loadHtml2Canvas().then(async function() {
+                var images = [];
+                var progressEl = document.getElementById('print-progress');
 
-            // Collect font links
-            const fontLinks = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
-                .map(link => link.href)
-                .filter(href => href.includes('fonts.googleapis.com'))
-                .map(href => `<link rel="stylesheet" href="${href}">`)
-                .join('\n');
+                for (var idx = 0; idx < includeSlides.length; idx++) {
+                    var i = includeSlides[idx];
+                    var slide = slides[i];
 
-            // Clone slide HTML — preserve the slide ID so #slide-xyz CSS rules still work
-            const slidesHTML = includeSlides.map(i => {
-                const slide = slides[i];
-                const wasHidden = slide.style.display === 'none' || !slide.classList.contains('active');
-                if (wasHidden) {
+                    // Temporarily show the slide at full viewport size
+                    var origDisplay = slide.style.display;
+                    var origOpacity = slide.style.opacity;
+                    var origPosition = slide.style.position;
+                    var origZIndex = slide.style.zIndex;
+
                     slide.style.display = 'flex';
                     slide.style.opacity = '1';
+                    slide.style.position = 'fixed';
+                    slide.style.zIndex = '99998';
+                    slide.style.top = '0';
+                    slide.style.left = '0';
+                    slide.style.width = '100vw';
+                    slide.style.height = '100vh';
+
+                    // Wait for render
+                    await new Promise(function(r) { setTimeout(r, 150); });
+
+                    // Capture screenshot
+                    var canvas = await html2canvas(slide, {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        backgroundColor: '#ffffff',
+                        width: slide.offsetWidth,
+                        height: slide.offsetHeight
+                    });
+
+                    images.push(canvas.toDataURL('image/png'));
+
+                    // Restore original styles
+                    slide.style.display = origDisplay;
+                    slide.style.opacity = origOpacity;
+                    slide.style.position = origPosition;
+                    slide.style.zIndex = origZIndex;
+                    slide.style.top = '';
+                    slide.style.left = '';
+                    slide.style.width = '';
+                    slide.style.height = '';
+
+                    progressEl.textContent = idx + 1;
                 }
-                const slideId = slide.id || '';
-                const html = slide.querySelector('.slide-inner').outerHTML;
-                if (wasHidden) {
-                    slide.style.display = '';
-                    slide.style.opacity = '';
+
+                // Remove loading
+                loadingDiv.remove();
+
+                // Build simple popup with just images — images print perfectly
+                var popW = 1100;
+                var popH = 850;
+                var popLeft = (window.screen.width - popW) / 2;
+                var popTop = (window.screen.height - popH) / 2;
+
+                var popup = window.open(
+                    '',
+                    'PitchDeck_Print_Preview',
+                    'width=' + popW + ',height=' + popH + ',top=' + popTop + ',left=' + popLeft + ',scrollbars=yes,resizable=yes'
+                );
+
+                if (!popup) {
+                    alert('Please allow popups for this website to print the deck.');
+                    return;
                 }
-                return `<div class="print-slide" id="${slideId}">${html}</div>`;
-            }).join('\n');
 
-            // Write the full printable document inline
-            popup.document.write(`<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Sirsi Technologies — Pitch Deck (Print)</title>
-    ${fontLinks}
-    <style>
-        /* ── Inherited deck styles ── */
-        ${styles}
+                var imagesHTML = '';
+                for (var j = 0; j < images.length; j++) {
+                    imagesHTML += '<div class="print-page"><img src="' + images[j] + '" alt="Slide ' + (j + 1) + '"></div>\n';
+                }
 
-        /* ── Print-specific overrides ── */
-        html {
-            overflow: auto !important;
-            overflow-y: scroll !important;
-            height: auto !important;
-            scroll-behavior: smooth;
+                var popupHTML = [
+                    '<!DOCTYPE html>',
+                    '<html lang="en">',
+                    '<head>',
+                    '<meta charset="utf-8">',
+                    '<title>Sirsi Technologies \u2014 Pitch Deck (Print)</title>',
+                    '<style>',
+                    '* { margin: 0; padding: 0; box-sizing: border-box; }',
+                    'html, body { background: #e5e7eb; overflow-y: auto; height: auto; }',
+                    '.print-ui-bar {',
+                    '  position: sticky; top: 0; z-index: 100;',
+                    '  display: flex; justify-content: space-between; align-items: center;',
+                    '  padding: 12px 24px; background: #0f172a; color: white;',
+                    '  font-family: Inter, sans-serif; font-size: 14px;',
+                    '}',
+                    '.print-ui-bar .gold { color: #C8A951; }',
+                    '.print-btn {',
+                    '  padding: 8px 20px; border: none; border-radius: 4px;',
+                    '  cursor: pointer; font-size: 13px; font-weight: 500;',
+                    '  display: inline-flex; align-items: center; gap: 8px;',
+                    '}',
+                    '.print-btn-gold { background: #C8A951; color: #0f172a; }',
+                    '.print-btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #94a3b8; margin-left: 8px; }',
+                    '.print-page {',
+                    '  width: 10in; margin: 20px auto;',
+                    '  box-shadow: 0 4px 24px rgba(0,0,0,0.15);',
+                    '}',
+                    '.print-page img { width: 100%; display: block; }',
+                    '@media print {',
+                    '  @page { size: landscape; margin: 0; }',
+                    '  html, body { background: white; }',
+                    '  .print-ui-bar { display: none; }',
+                    '  .print-page {',
+                    '    width: 100%; margin: 0; box-shadow: none;',
+                    '    page-break-after: always; break-after: page;',
+                    '  }',
+                    '  .print-page:last-child { page-break-after: auto; }',
+                    '  .print-page img { width: 100%; height: auto; }',
+                    '  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }',
+                    '}',
+                    '</style>',
+                    '</head>',
+                    '<body>',
+                    '<div class="print-ui-bar">',
+                    '  <div><span class="gold">Sirsi</span> Technologies | Pitch Deck</div>',
+                    '  <div>',
+                    '    <button onclick="window.print()" class="print-btn print-btn-gold">Print / Save as PDF</button>',
+                    '    <button onclick="window.close()" class="print-btn print-btn-outline">Close</button>',
+                    '  </div>',
+                    '</div>',
+                    imagesHTML,
+                    '</body>',
+                    '</html>'
+                ].join('\n');
+
+                popup.document.write(popupHTML);
+                popup.document.close();
+
+                // Auto-trigger print after a moment
+                setTimeout(function() { popup.print(); }, 800);
+
+            }).catch(function(err) {
+                loadingDiv.remove();
+                alert('Failed to load rendering library: ' + err.message);
+            });
         }
 
-        body {
-            margin: 0 !important;
-            padding: 0 !important;
-            padding-bottom: 40px !important;
-            background: #e5e7eb !important;
-            overflow: visible !important;
-            overflow-y: auto !important;
-            height: auto !important;
-            max-height: none !important;
-        }
-
-        .presentation {
-            display: none !important;
-        }
-
-        /* Hide all screen-only elements */
-        .nav-footer, .progress-container, .print-controls,
-        .doc-header, .presentation { display: none !important; }
-
-        /* ═══ PRINT SLIDE CONTAINER ═══
-         * Strategy: give .slide-inner the FULL viewport dimensions the slides
-         * were designed for (1440×900), then use transform:scale() to visually
-         * shrink it to fit. Transform doesn't affect layout — all flex/grid
-         * layouts work at their original size. Purely visual scaling.
-         */
-        .print-slide {
-            position: relative;
-            display: block;
-            width: 10in;
-            height: 7in;
-            padding: 0;
-            margin: 20px auto;
-            overflow: hidden;
-            box-sizing: border-box;
-            background: white;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-            border: 1px solid #d1d5db;
-            page-break-after: always;
-            break-after: page;
-            page-break-inside: avoid;
-            break-inside: avoid;
-        }
-
-        .print-slide:last-child {
-            page-break-after: auto;
-            break-after: auto;
-        }
-
-        /* The slide-inner gets FULL viewport dimensions.
-         * transform:scale(0.66) shrinks 1440px → ~950px ≈ 10in at 96dpi
-         */
-        .print-slide .slide-inner {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 1440px !important;
-            height: 900px !important;
-            display: flex !important;
-            flex-direction: column !important;
-            padding: 30px 50px 40px !important;
-            transform: scale(0.56);
-            transform-origin: top left;
-            overflow: hidden !important;
-            zoom: 1 !important;
-        }
-
-        /* slide-content works at original size — no zoom overrides needed */
-        .print-slide .slide-content {
-            flex: 1 !important;
-            overflow: hidden !important;
-            min-height: 0 !important;
-        }
-
-        /* Nuclear reset: per-slide zoom overrides must be neutralized */
-        .print-slide[id] .slide-content {
-            zoom: 1 !important;
-        }
-
-        .print-slide .slide-header {
-            padding-top: 0 !important;
-            margin-top: 0 !important;
-        }
-
-        .print-slide .slide-footer {
-            position: relative !important;
-            margin-top: auto !important;
-        }
-
-        /* Images: keep original styling, just ensure they fit width */
-        .print-slide img {
-            max-width: 100% !important;
-        }
-
-        /* Grids with height:100% need a real height in print */
-        .print-slide [style*="height: 100%"] {
-            min-height: 600px !important;
-        }
-
-        /* ── Print UI Bar (same as MSA) ── */
-        .print-ui-bar {
-            display: flex; align-items: center; justify-content: space-between;
-            background-color: #0f172a; color: white;
-            padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            font-family: 'Inter', sans-serif;
-        }
-        .print-ui-bar .brand {
-            font-family: 'Cinzel', serif; font-size: 1.25rem;
-            font-weight: 700; letter-spacing: 0.05em;
-        }
-        .print-ui-bar .brand .gold { color: #C8A951; }
-        .print-ui-bar .brand .divider { margin: 0 0.75rem; color: #334155; }
-        .print-ui-bar .actions { display: flex; gap: 1rem; }
-        .print-btn {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 0.5rem 1rem; border-radius: 4px;
-            font-family: 'Inter', sans-serif; font-size: 0.875rem;
-            font-weight: 500; cursor: pointer; border: 1px solid transparent;
-            white-space: nowrap; transition: all 0.2s ease;
-        }
-        .print-btn-gold {
-            background-color: #C8A951; color: #000; font-weight: 600;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .print-btn-gold:hover { background-color: #dcb95b; }
-        .print-btn-outline {
-            background: transparent; border-color: rgba(255,255,255,0.2); color: #94a3b8;
-        }
-        .print-btn-outline:hover { border-color: #C8A951; color: #C8A951; }
-        .print-btn svg { width: 16px; height: 16px; }
-
-        @media print {
-            @page { size: landscape; margin: 0.2in; }
-
-            html {
-                overflow: visible !important;
-                height: auto !important;
-            }
-
-            body {
-                background: white !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                overflow: visible !important;
-                height: auto !important;
-            }
-
-            .print-ui-bar { display: none !important; }
-
-            .print-slide {
-                width: 100% !important;
-                height: 7.5in !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                box-shadow: none !important;
-                border: none !important;
-                overflow: hidden !important;
-                page-break-after: always !important;
-                break-after: page !important;
-                page-break-inside: avoid !important;
-            }
-
-            .print-slide:last-child {
-                page-break-after: auto !important;
-            }
-
-            .print-slide .slide-inner {
-                transform: scale(0.62) !important;
-                transform-origin: top left !important;
-                width: 1440px !important;
-                height: 900px !important;
-                padding: 30px 50px 40px !important;
-                overflow: hidden !important;
-                zoom: 1 !important;
-            }
-
-            .print-slide .slide-content {
-                flex: 1 !important;
-                overflow: hidden !important;
-                min-height: 0 !important;
-            }
-
-            * {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            .print-slide *, .print-slide .slide-inner * {
-                box-shadow: none !important;
-                text-shadow: none !important;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="print-ui-bar">
-        <div class="brand">
-            <span class="gold">Sirsi</span> Technologies <span class="divider">|</span> Pitch Deck
-        </div>
-        <div class="actions">
-            <button onclick="window.print()" class="print-btn print-btn-gold">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                </svg>
-                Print / Save as PDF
-            </button>
-            <button onclick="window.close()" class="print-btn print-btn-outline">
-                Close Window
-            </button>
-        </div>
-    </div>
-    ${slidesHTML}
-    ${'<scr'+'ipt>'}setTimeout(function(){ window.print(); }, 500);${'</scr'+'ipt>'}
-</body>
-</html>`);
-            popup.document.close();
-        }
 
 
 
