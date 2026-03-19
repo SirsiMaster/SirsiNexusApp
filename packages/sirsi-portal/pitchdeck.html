@@ -4577,74 +4577,69 @@
         });
 
         function printSlides(mode) {
-            const slides = document.querySelectorAll('.slide');
-            const current = currentSlide - 1; // 0-indexed
+            var slides = document.querySelectorAll('.slide');
+            var current = currentSlide - 1;
 
-            // Close the menu
             document.getElementById('printMenu').classList.remove('open');
 
-            // Determine which slides to include
-            let includeSlides = [];
+            var includeSlides = [];
             if (mode === 'current') {
                 includeSlides = [current];
             } else if (mode === 'range') {
-                const from = parseInt(document.getElementById('printFrom').value) - 1;
-                const to = parseInt(document.getElementById('printTo').value) - 1;
-                for (let i = from; i <= to; i++) includeSlides.push(i);
+                var from = parseInt(document.getElementById('printFrom').value) - 1;
+                var to = parseInt(document.getElementById('printTo').value) - 1;
+                for (var i = from; i <= to; i++) includeSlides.push(i);
             } else {
-                // 'all'
-                for (let i = 0; i < slides.length; i++) includeSlides.push(i);
+                for (var i = 0; i < slides.length; i++) includeSlides.push(i);
             }
 
-            // Show loading indicator
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = 'print-loading';
-            loadingDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:99999;color:white;font-family:Cinzel,serif;font-size:1.5rem;letter-spacing:0.1em;';
-            loadingDiv.innerHTML = 'Rendering slides for PDF&hellip; <span id="print-progress">0</span> / ' + includeSlides.length;
+            // Loading overlay
+            var loadingDiv = document.createElement('div');
+            loadingDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;color:white;font-family:Cinzel,serif;';
+            loadingDiv.innerHTML = '<div style="font-size:1.8rem;letter-spacing:0.15em;margin-bottom:16px;">Generating PDF</div><div style="font-size:1rem;color:#C8A951;letter-spacing:0.1em;">Slide <span id="pdf-progress">0</span> of ' + includeSlides.length + '</div><div style="margin-top:24px;width:300px;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;"><div id="pdf-bar" style="width:0%;height:100%;background:#C8A951;transition:width 0.3s;"></div></div>';
             document.body.appendChild(loadingDiv);
 
-            // Load html2canvas from CDN if not already loaded
-            function loadHtml2Canvas() {
+            // Load libraries from CDN
+            function loadScript(url) {
                 return new Promise(function(resolve, reject) {
-                    if (window.html2canvas) { resolve(); return; }
+                    var existing = document.querySelector('script[src="' + url + '"]');
+                    if (existing) { resolve(); return; }
                     var s = document.createElement('script');
-                    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                    s.src = url;
                     s.onload = resolve;
                     s.onerror = reject;
                     document.head.appendChild(s);
                 });
             }
 
-            loadHtml2Canvas().then(async function() {
-                var images = [];
-                var progressEl = document.getElementById('print-progress');
+            Promise.all([
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'),
+                loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js')
+            ]).then(async function() {
+                var jsPDF = window.jspdf.jsPDF;
+                var pdf = new jsPDF({ orientation: 'landscape', unit: 'in', format: 'letter' });
+                var progressEl = document.getElementById('pdf-progress');
+                var barEl = document.getElementById('pdf-bar');
+
+                // Letter landscape: 11 x 8.5 inches
+                var pageW = 11;
+                var pageH = 8.5;
 
                 for (var idx = 0; idx < includeSlides.length; idx++) {
-                    var i = includeSlides[idx];
-                    var slide = slides[i];
+                    var si = includeSlides[idx];
+                    var slide = slides[si];
 
-                    // Temporarily show the slide at fixed landscape dimensions
-                    var origDisplay = slide.style.display;
-                    var origOpacity = slide.style.opacity;
-                    var origPosition = slide.style.position;
-                    var origZIndex = slide.style.zIndex;
+                    // Show slide at fixed landscape dimensions
+                    var origStyles = slide.getAttribute('style') || '';
+                    slide.setAttribute('style', 'display:flex!important;opacity:1!important;position:fixed!important;z-index:99998!important;top:0!important;left:0!important;width:1440px!important;height:810px!important;');
 
-                    slide.style.display = 'flex';
-                    slide.style.opacity = '1';
-                    slide.style.position = 'fixed';
-                    slide.style.zIndex = '99998';
-                    slide.style.top = '0';
-                    slide.style.left = '0';
-                    slide.style.width = '1440px';
-                    slide.style.height = '810px';
+                    // Wait for paint
+                    await new Promise(function(r) { setTimeout(r, 500); });
 
-                    // Wait for render + images to load
-                    await new Promise(function(r) { setTimeout(r, 400); });
-
-                    // Capture screenshot — catch errors per-slide
+                    var canvas;
                     try {
-                        var canvas = await html2canvas(slide, {
-                            scale: 1.5,
+                        canvas = await html2canvas(slide, {
+                            scale: 2,
                             useCORS: true,
                             allowTaint: true,
                             backgroundColor: null,
@@ -4652,126 +4647,41 @@
                             height: 810,
                             logging: false,
                             ignoreElements: function(el) {
-                                // Skip 0-dimension elements that crash createPattern
                                 if (el.offsetWidth === 0 || el.offsetHeight === 0) return true;
                                 return false;
                             }
                         });
-                        images.push(canvas.toDataURL('image/png'));
-                    } catch (captureErr) {
-                        console.warn('Slide ' + (i + 1) + ' capture failed:', captureErr);
-                        // Create a fallback white image with error text
-                        var fallback = document.createElement('canvas');
-                        fallback.width = 1920; fallback.height = 1080;
-                        var ctx = fallback.getContext('2d');
-                        ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, 1920, 1080);
-                        ctx.fillStyle = '#666'; ctx.font = '32px Inter, sans-serif';
-                        ctx.fillText('Slide ' + (i + 1) + ' — render error', 100, 540);
-                        images.push(fallback.toDataURL('image/png'));
+                    } catch (err) {
+                        console.warn('Slide ' + (si + 1) + ' failed:', err);
+                        canvas = document.createElement('canvas');
+                        canvas.width = 1440; canvas.height = 810;
+                        var ctx = canvas.getContext('2d');
+                        ctx.fillStyle = '#1a1a2e'; ctx.fillRect(0, 0, 1440, 810);
+                        ctx.fillStyle = '#C8A951'; ctx.font = '36px Cinzel, serif';
+                        ctx.fillText('Slide ' + (si + 1) + ' — Render Error', 200, 400);
                     }
 
-                    // Restore original styles
-                    slide.style.display = origDisplay;
-                    slide.style.opacity = origOpacity;
-                    slide.style.position = origPosition;
-                    slide.style.zIndex = origZIndex;
-                    slide.style.top = '';
-                    slide.style.left = '';
-                    slide.style.width = '';
-                    slide.style.height = '';
+                    // Restore
+                    slide.setAttribute('style', origStyles);
+
+                    // Add page (first page already exists)
+                    if (idx > 0) pdf.addPage();
+
+                    // Add image to fill the page
+                    var imgData = canvas.toDataURL('image/jpeg', 0.92);
+                    pdf.addImage(imgData, 'JPEG', 0, 0, pageW, pageH);
 
                     progressEl.textContent = idx + 1;
+                    barEl.style.width = Math.round(((idx + 1) / includeSlides.length) * 100) + '%';
                 }
 
-                // Remove loading
+                // Save the PDF
+                pdf.save('Sirsi_Technologies_Pitch_Deck.pdf');
                 loadingDiv.remove();
-
-                // Build simple popup with just images — images print perfectly
-                var popW = 1100;
-                var popH = 850;
-                var popLeft = (window.screen.width - popW) / 2;
-                var popTop = (window.screen.height - popH) / 2;
-
-                var popup = window.open(
-                    '',
-                    'PitchDeck_Print_Preview',
-                    'width=' + popW + ',height=' + popH + ',top=' + popTop + ',left=' + popLeft + ',scrollbars=yes,resizable=yes'
-                );
-
-                if (!popup) {
-                    alert('Please allow popups for this website to print the deck.');
-                    return;
-                }
-
-                var imagesHTML = '';
-                for (var j = 0; j < images.length; j++) {
-                    imagesHTML += '<div class="print-page"><img src="' + images[j] + '" alt="Slide ' + (j + 1) + '"></div>\n';
-                }
-
-                var popupHTML = [
-                    '<!DOCTYPE html>',
-                    '<html lang="en">',
-                    '<head>',
-                    '<meta charset="utf-8">',
-                    '<title>Sirsi Technologies \u2014 Pitch Deck (Print)</title>',
-                    '<style>',
-                    '* { margin: 0; padding: 0; box-sizing: border-box; }',
-                    'html, body { background: #e5e7eb; overflow-y: auto; height: auto; }',
-                    '.print-ui-bar {',
-                    '  position: sticky; top: 0; z-index: 100;',
-                    '  display: flex; justify-content: space-between; align-items: center;',
-                    '  padding: 12px 24px; background: #0f172a; color: white;',
-                    '  font-family: Inter, sans-serif; font-size: 14px;',
-                    '}',
-                    '.print-ui-bar .gold { color: #C8A951; }',
-                    '.print-btn {',
-                    '  padding: 8px 20px; border: none; border-radius: 4px;',
-                    '  cursor: pointer; font-size: 13px; font-weight: 500;',
-                    '  display: inline-flex; align-items: center; gap: 8px;',
-                    '}',
-                    '.print-btn-gold { background: #C8A951; color: #0f172a; }',
-                    '.print-btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #94a3b8; margin-left: 8px; }',
-                    '.print-page {',
-                    '  width: 10in; margin: 20px auto;',
-                    '  box-shadow: 0 4px 24px rgba(0,0,0,0.15);',
-                    '}',
-                    '.print-page img { width: 100%; display: block; }',
-                    '@media print {',
-                    '  @page { size: landscape; margin: 0; }',
-                    '  html, body { background: white; }',
-                    '  .print-ui-bar { display: none; }',
-                    '  .print-page {',
-                    '    width: 100%; margin: 0; box-shadow: none;',
-                    '    page-break-after: always; break-after: page;',
-                    '  }',
-                    '  .print-page:last-child { page-break-after: auto; }',
-                    '  .print-page img { width: 100%; height: auto; }',
-                    '  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }',
-                    '}',
-                    '</style>',
-                    '</head>',
-                    '<body>',
-                    '<div class="print-ui-bar">',
-                    '  <div><span class="gold">Sirsi</span> Technologies | Pitch Deck</div>',
-                    '  <div>',
-                    '    <button onclick="window.print()" class="print-btn print-btn-gold">Print / Save as PDF</button>',
-                    '    <button onclick="window.close()" class="print-btn print-btn-outline">Close</button>',
-                    '  </div>',
-                    '</div>',
-                    imagesHTML,
-                    '</body>',
-                    '</html>'
-                ].join('\n');
-
-                popup.document.write(popupHTML);
-                popup.document.close();
-
-                // Auto-trigger print after a moment
-                setTimeout(function() { popup.print(); }, 800);
 
             }).catch(function(err) {
                 loadingDiv.remove();
-                alert('Failed to load rendering library: ' + err.message);
+                alert('Failed to load PDF libraries: ' + err.message);
             });
         }
 
