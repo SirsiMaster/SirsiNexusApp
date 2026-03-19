@@ -4644,7 +4644,7 @@
                     slide.style.display = '';
                     slide.style.opacity = '';
                 }
-                return `<div class="print-slide slide" id="${slideId}">${html}</div>`;
+                return `<div class="print-slide" id="${slideId}">${html}</div>`;
             }).join('\n');
 
             // Write the full printable document inline
@@ -4685,36 +4685,31 @@
         .nav-footer, .progress-container, .print-controls,
         .doc-header, .presentation { display: none !important; }
 
-        /* ═══ COMPREHENSIVE OVERRIDE ═══
-         * The inherited .slide class sets: position:absolute, display:none,
-         * opacity:0, height:100%, padding:75px 70px 0, overflow:hidden.
-         * ALL of these must be explicitly counteracted.
+        /* ═══ PRINT SLIDE CONTAINER ═══
+         * No .slide class = no inherited position:absolute, display:none,
+         * opacity:0, padding:75px, overflow:hidden. Clean slate.
          */
-        .print-slide.slide {
-            position: relative !important;
-            display: block !important;
-            opacity: 1 !important;
-            top: auto !important;
-            left: auto !important;
-            width: 10in !important;
-            height: auto !important;
-            min-height: 7in !important;
-            max-height: 7.5in !important;
-            padding: 0 !important;
-            margin: 20px auto !important;
-            overflow: hidden !important;
-            box-sizing: border-box !important;
-            background: white !important;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.15) !important;
-            border: 1px solid #d1d5db !important;
-            transition: none !important;
+        .print-slide {
+            position: relative;
+            display: block;
+            width: 10in;
+            height: auto;
+            min-height: 7in;
+            max-height: 7.5in;
+            padding: 0;
+            margin: 20px auto;
+            overflow: hidden;
+            box-sizing: border-box;
+            background: white;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+            border: 1px solid #d1d5db;
             page-break-after: always;
             break-after: page;
             page-break-inside: avoid;
             break-inside: avoid;
         }
 
-        .print-slide.slide:last-child {
+        .print-slide:last-child {
             page-break-after: auto;
             break-after: auto;
         }
@@ -4813,12 +4808,7 @@
 
             .print-ui-bar { display: none !important; }
 
-            .print-slide.slide {
-                position: relative !important;
-                display: block !important;
-                opacity: 1 !important;
-                top: auto !important;
-                left: auto !important;
+            .print-slide {
                 width: 100% !important;
                 height: auto !important;
                 min-height: 7in !important;
@@ -4828,13 +4818,12 @@
                 box-shadow: none !important;
                 border: none !important;
                 overflow: hidden !important;
-                transition: none !important;
                 page-break-after: always !important;
                 break-after: page !important;
                 page-break-inside: avoid !important;
             }
 
-            .print-slide.slide:last-child {
+            .print-slide:last-child {
                 page-break-after: auto !important;
             }
 
