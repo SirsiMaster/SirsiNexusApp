@@ -13,7 +13,7 @@ mkdirSync(outDir, { recursive: true });
 async function main() {
     const browser = await puppeteer.launch({ headless: 'new', args: ['--no-sandbox'] });
     const page = await browser.newPage();
-    await page.setViewport({ width: 1728, height: 1117, deviceScaleFactor: 1 });
+    await page.setViewport({ width: 1728, height: 1335, deviceScaleFactor: 1 });
 
     await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
     await page.waitForSelector('.slide');
@@ -27,7 +27,7 @@ async function main() {
         await page.screenshot({
             path: resolve(outDir, `slide-${String(i).padStart(2,'0')}.png`),
             type: 'png',
-            clip: { x: 0, y: 0, width: 1728, height: 1117 }
+            clip: { x: 0, y: 0, width: 1728, height: 1335 }
         });
         console.log(`  ✓ Slide ${i}`);
     }

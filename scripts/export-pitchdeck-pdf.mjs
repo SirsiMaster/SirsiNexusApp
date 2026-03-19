@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /**
- * Sirsi Pitch Deck → PDF Export
+ * Sirsi Pitch Deck → PDF Export (v6 — Aspect Match)
  * 
- * Strategy: Screenshot each slide at full 1440×810 resolution using
- * Puppeteer (real Chrome rendering), then embed each screenshot as a
- * full-page image in a PDF using pdf-lib.
+ * KEY INSIGHT: The slides use 100vh. If we set the viewport to exactly
+ * match Letter Landscape aspect ratio (1.294:1), the 100vh slide will
+ * have the EXACT same proportions as the PDF page. Screenshot → embed
+ * at 100% fill. No dead space. No stretching. Perfect.
  * 
- * This approach captures EVERYTHING perfectly — CSS gradients, fonts,
- * backgrounds, shadows — because it's a pixel-perfect screenshot.
- * No CSS print issues, no viewport clipping, no page-break problems.
+ * At 1728px wide: height = 1728 / (11/8.5) = 1335px
+ * That's the magic number.
  * 
  * Usage:
  *   node scripts/export-pitchdeck-pdf.mjs
@@ -24,16 +24,17 @@ import { homedir } from 'os';
 const url = process.argv[2] || 'https://sirsi.ai/pitchdeck';
 const output = resolve(homedir(), 'Desktop', 'Sirsi_Technologies_Pitch_Deck.pdf');
 
-// Capture at the user's actual screen resolution
 const WIDTH = 1728;
-const HEIGHT = 1117;
+// Match Letter Landscape aspect ratio EXACTLY
+const HEIGHT = Math.round(WIDTH / (11 / 8.5));  // 1335
 
 console.log('\n  ╔══════════════════════════════════════════╗');
-console.log('  ║   Sirsi Technologies — PDF Export        ║');
+console.log('  ║   Sirsi Technologies — PDF Export  v6    ║');
 console.log('  ╚══════════════════════════════════════════╝\n');
 console.log(`  Source:  ${url}`);
 console.log(`  Output:  ${output}`);
-console.log(`  Resolution: ${WIDTH}×${HEIGHT} @ 2x\n`);
+console.log(`  Viewport: ${WIDTH}×${HEIGHT} @ 2x`);
+console.log(`  Aspect: ${(WIDTH/HEIGHT).toFixed(3)} (Letter = ${(11/8.5).toFixed(3)})\n`);
 
 async function main() {
     const browser = await puppeteer.launch({
@@ -45,7 +46,7 @@ async function main() {
     await page.setViewport({
         width: WIDTH,
         height: HEIGHT,
-        deviceScaleFactor: 2  // Retina-quality screenshots
+        deviceScaleFactor: 2
     });
 
     console.log('  ⏳ Loading pitch deck...');
@@ -62,63 +63,45 @@ async function main() {
     const totalSlides = await page.$$eval('.slide', s => s.length);
     console.log(`  ✓ ${totalSlides} slides loaded\n`);
 
-    // Create the PDF document — Letter Landscape (11in × 8.5in = 792 × 612 points)
+    // Create the PDF document — Letter Landscape
     const pdf = await PDFDocument.create();
     pdf.setTitle('Sirsi Technologies — Investor Pitch Deck');
     pdf.setAuthor('Sirsi Technologies Inc.');
     pdf.setSubject('Autonomous Operating System for AI Infrastructure');
-    pdf.setCreator('Sirsi PDF Export');
+    pdf.setCreator('Sirsi PDF Export v6');
 
-    // Letter landscape in points (1 inch = 72 points)
-    const PAGE_W = 11 * 72;   // 792
-    const PAGE_H = 8.5 * 72;  // 612
+    const PAGE_W = 11 * 72;   // 792 points
+    const PAGE_H = 8.5 * 72;  // 612 points
 
     for (let i = 1; i <= totalSlides; i++) {
         process.stdout.write(`  📸 Slide ${i}/${totalSlides}...`);
 
-        // Navigate to this slide
+        // Navigate to the slide
         await page.evaluate((num) => {
             if (typeof showSlide === 'function') showSlide(num);
         }, i);
 
-        // Wait for animations and images
+        // Wait for everything to render
         await new Promise(r => setTimeout(r, 800));
 
-        // Take a pixel-perfect screenshot of the viewport
+        // Take the screenshot — viewport matches page aspect perfectly
         const pngBytes = await page.screenshot({
             type: 'png',
             clip: { x: 0, y: 0, width: WIDTH, height: HEIGHT },
             omitBackground: false
         });
 
-        // Embed the screenshot — maintain aspect ratio, no stretching
+        // Embed — the aspect ratios match, so this fills 100% of the page
         const pngImage = await pdf.embedPng(pngBytes);
-
-        // Calculate scale to FIT within page while preserving aspect ratio
-        const imgAspect = WIDTH / HEIGHT;   // ~1.547
-        const pageAspect = PAGE_W / PAGE_H; // ~1.294
-
-        let drawW, drawH, drawX, drawY;
-        if (imgAspect > pageAspect) {
-            // Image is wider than page — fit to width, center vertically
-            drawW = PAGE_W;
-            drawH = PAGE_W / imgAspect;
-            drawX = 0;
-            drawY = (PAGE_H - drawH) / 2;
-        } else {
-            // Image is taller than page — fit to height, center horizontally
-            drawH = PAGE_H;
-            drawW = PAGE_H * imgAspect;
-            drawX = (PAGE_W - drawW) / 2;
-            drawY = 0;
-        }
-
         const pdfPage = pdf.addPage([PAGE_W, PAGE_H]);
+
         // White background
         pdfPage.drawRectangle({ x: 0, y: 0, width: PAGE_W, height: PAGE_H,
             color: { type: 'RGB', red: 1, green: 1, blue: 1 } });
+
+        // FILL entire page — aspect ratios are identical
         pdfPage.drawImage(pngImage, {
-            x: drawX, y: drawY, width: drawW, height: drawH
+            x: 0, y: 0, width: PAGE_W, height: PAGE_H
         });
 
         console.log(' ✓');
@@ -134,7 +117,7 @@ async function main() {
     console.log(`\n  ✅ PDF saved: ${output}`);
     console.log(`  📊 Size: ${sizeMB} MB`);
     console.log(`  📐 ${totalSlides} slides, Letter Landscape`);
-    console.log(`  🖼  ${WIDTH}×${HEIGHT} @ 2x per slide\n`);
+    console.log(`  🖼  ${WIDTH}×${HEIGHT} @ 2x (100% page fill)\n`);
 }
 
 main().catch(err => {
