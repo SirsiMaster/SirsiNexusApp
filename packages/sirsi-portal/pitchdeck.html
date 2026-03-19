@@ -4688,6 +4688,7 @@
         /* ═══ PRINT SLIDE CONTAINER ═══
          * No .slide class = no inherited position:absolute, display:none,
          * opacity:0, padding:75px, overflow:hidden. Clean slate.
+         * NO max-height or overflow:hidden — content flows freely.
          */
         .print-slide {
             position: relative;
@@ -4695,10 +4696,9 @@
             width: 10in;
             height: auto;
             min-height: 7in;
-            max-height: 7.5in;
             padding: 0;
             margin: 20px auto;
-            overflow: hidden;
+            overflow: visible;
             box-sizing: border-box;
             background: white;
             box-shadow: 0 4px 24px rgba(0,0,0,0.15);
@@ -4722,14 +4722,18 @@
             width: 100% !important;
             position: relative !important;
             padding: 10px 15px 20px !important;
+            padding-bottom: 40px !important;
             zoom: 0.65;
+            overflow: visible !important;
         }
 
-        /* Override .slide-content: inherited overflow:hidden clips content */
+        /* Override .slide-content: inherited min-height:0 + overflow:hidden kills content */
         .print-slide .slide-content {
             zoom: 1 !important;
-            flex: 1 !important;
+            flex: none !important;
+            min-height: auto !important;
             overflow: visible !important;
+            height: auto !important;
         }
 
         /* Nuclear reset: per-slide zoom overrides (ID selectors have high specificity) */
@@ -4812,12 +4816,11 @@
                 width: 100% !important;
                 height: auto !important;
                 min-height: 7in !important;
-                max-height: 8in !important;
                 padding: 0 !important;
                 margin: 0 !important;
                 box-shadow: none !important;
                 border: none !important;
-                overflow: hidden !important;
+                overflow: visible !important;
                 page-break-after: always !important;
                 break-after: page !important;
                 page-break-inside: avoid !important;
@@ -4830,13 +4833,16 @@
             .print-slide .slide-inner {
                 zoom: 0.68 !important;
                 height: auto !important;
-                padding: 10px 15px 20px !important;
-                overflow: hidden !important;
+                padding: 10px 15px 40px !important;
+                overflow: visible !important;
             }
 
             .print-slide .slide-content {
                 zoom: 1 !important;
+                flex: none !important;
+                min-height: auto !important;
                 overflow: visible !important;
+                height: auto !important;
             }
 
             * {
