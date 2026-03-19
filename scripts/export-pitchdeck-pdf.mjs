@@ -44,14 +44,21 @@ async function main() {
     const totalSlides = await page.$$eval('.slide', s => s.length);
     console.log(`  ✓ ${totalSlides} slides detected\n`);
 
+    // Reset ALL per-slide zoom values — they're tuned for fullscreen monitors,
+    // not for the smaller PDF viewport
+    await page.addStyleTag({ content: `
+        .slide-content { zoom: 1.0 !important; }
+        .slide-inner { zoom: 1.0 !important; }
+    `});
+
     // Transform the page: show all slides vertically for PDF export
     await page.evaluate(() => {
         // Remove nav and chrome
         document.querySelectorAll('.nav-footer, .progress-container, .print-controls, .doc-header').forEach(el => el.remove());
 
         // Unlock the html/body
-        document.documentElement.style.cssText = 'overflow:visible!important;height:auto!important;background:#000!important;';
-        document.body.style.cssText = 'overflow:visible!important;height:auto!important;background:#000!important;';
+        document.documentElement.style.cssText = 'overflow:visible!important;height:auto!important;background:#fff!important;';
+        document.body.style.cssText = 'overflow:visible!important;height:auto!important;background:#fff!important;';
 
         // Unlock the presentation wrapper
         const pres = document.querySelector('.presentation');
