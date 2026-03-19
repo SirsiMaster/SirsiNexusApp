@@ -1354,20 +1354,9 @@
         <div style="display: flex; align-items: center; gap: 24px;">
             <div class="memo-tag">PRIVATE SEED MEMORANDUM // INVESTOR RELATIONS</div>
             <div class="print-controls" id="printControls">
-                <button class="print-btn" onclick="togglePrintMenu()" title="Print options">
-                    <i class="fas fa-print"></i>
-                </button>
-                <div class="print-menu" id="printMenu">
-                    <button onclick="printSlides('current')"><i class="fas fa-file"></i> Print Current Slide</button>
-                    <button onclick="printSlides('all')"><i class="fas fa-copy"></i> Print All Slides</button>
-                    <div class="print-range-row">
-                        <label>Range:</label>
-                        <input type="number" id="printFrom" min="1" max="15" value="1" style="width: 42px;">
-                        <span>–</span>
-                        <input type="number" id="printTo" min="1" max="15" value="15" style="width: 42px;">
-                        <button onclick="printSlides('range')" class="print-range-go"><i class="fas fa-print"></i></button>
-                    </div>
-                </div>
+                <a href="/Sirsi_Technologies_Pitch_Deck.pdf" download class="print-btn" title="Download PDF" style="text-decoration:none;">
+                    <i class="fas fa-file-pdf"></i>
+                </a>
             </div>
         </div>
     </header>
