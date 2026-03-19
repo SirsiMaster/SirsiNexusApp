@@ -4639,19 +4639,36 @@
                     slide.style.height = '100vh';
 
                     // Wait for render
-                    await new Promise(function(r) { setTimeout(r, 150); });
+                    await new Promise(function(r) { setTimeout(r, 300); });
 
-                    // Capture screenshot
-                    var canvas = await html2canvas(slide, {
-                        scale: 2,
-                        useCORS: true,
-                        allowTaint: true,
-                        backgroundColor: '#ffffff',
-                        width: slide.offsetWidth,
-                        height: slide.offsetHeight
-                    });
-
-                    images.push(canvas.toDataURL('image/png'));
+                    // Capture screenshot — catch errors per-slide
+                    try {
+                        var canvas = await html2canvas(slide, {
+                            scale: 2,
+                            useCORS: true,
+                            allowTaint: true,
+                            backgroundColor: '#ffffff',
+                            width: slide.offsetWidth,
+                            height: slide.offsetHeight,
+                            logging: false,
+                            ignoreElements: function(el) {
+                                // Skip 0-dimension elements that crash createPattern
+                                if (el.offsetWidth === 0 || el.offsetHeight === 0) return true;
+                                return false;
+                            }
+                        });
+                        images.push(canvas.toDataURL('image/png'));
+                    } catch (captureErr) {
+                        console.warn('Slide ' + (i + 1) + ' capture failed:', captureErr);
+                        // Create a fallback white image with error text
+                        var fallback = document.createElement('canvas');
+                        fallback.width = 1920; fallback.height = 1080;
+                        var ctx = fallback.getContext('2d');
+                        ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, 1920, 1080);
+                        ctx.fillStyle = '#666'; ctx.font = '32px Inter, sans-serif';
+                        ctx.fillText('Slide ' + (i + 1) + ' — render error', 100, 540);
+                        images.push(fallback.toDataURL('image/png'));
+                    }
 
                     // Restore original styles
                     slide.style.display = origDisplay;
