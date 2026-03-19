@@ -4630,7 +4630,7 @@
                 .map(href => `<link rel="stylesheet" href="${href}">`)
                 .join('\n');
 
-            // Clone slide HTML (temporarily show hidden slides)
+            // Clone slide HTML — preserve the slide ID so #slide-xyz CSS rules still work
             const slidesHTML = includeSlides.map(i => {
                 const slide = slides[i];
                 const wasHidden = slide.style.display === 'none' || !slide.classList.contains('active');
@@ -4638,12 +4638,13 @@
                     slide.style.display = 'flex';
                     slide.style.opacity = '1';
                 }
+                const slideId = slide.id || '';
                 const html = slide.querySelector('.slide-inner').outerHTML;
                 if (wasHidden) {
                     slide.style.display = '';
                     slide.style.opacity = '';
                 }
-                return `<div class="print-slide">${html}</div>`;
+                return `<div class="print-slide slide" id="${slideId}">${html}</div>`;
             }).join('\n');
 
             // Write the full printable document inline
@@ -4682,7 +4683,14 @@
 
         /* Hide all screen-only elements */
         .nav-footer, .progress-container, .print-controls,
-        .doc-header, .presentation, .slide { display: none !important; }
+        .doc-header, .presentation { display: none !important; }
+
+        /* Override inherited .slide styles — print-slide IS the container now */
+        .print-slide.slide {
+            display: block !important;
+            position: relative !important;
+            opacity: 1 !important;
+        }
 
         .print-slide {
             width: 9.5in;
