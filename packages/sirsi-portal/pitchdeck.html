@@ -4686,19 +4686,19 @@
         .doc-header, .presentation { display: none !important; }
 
         /* ═══ PRINT SLIDE CONTAINER ═══
-         * No .slide class = no inherited position:absolute, display:none,
-         * opacity:0, padding:75px, overflow:hidden. Clean slate.
-         * NO max-height or overflow:hidden — content flows freely.
+         * Strategy: give .slide-inner the FULL viewport dimensions the slides
+         * were designed for (1440×900), then use transform:scale() to visually
+         * shrink it to fit. Transform doesn't affect layout — all flex/grid
+         * layouts work at their original size. Purely visual scaling.
          */
         .print-slide {
             position: relative;
             display: block;
             width: 10in;
-            height: auto;
-            min-height: 7in;
+            height: 7in;
             padding: 0;
             margin: 20px auto;
-            overflow: visible;
+            overflow: hidden;
             box-sizing: border-box;
             background: white;
             box-shadow: 0 4px 24px rgba(0,0,0,0.15);
@@ -4714,29 +4714,31 @@
             break-after: auto;
         }
 
-        /* Override .slide-inner: inherited height:100% references viewport */
+        /* The slide-inner gets FULL viewport dimensions.
+         * transform:scale(0.66) shrinks 1440px → ~950px ≈ 10in at 96dpi
+         */
         .print-slide .slide-inner {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 1440px !important;
+            height: 900px !important;
             display: flex !important;
             flex-direction: column !important;
-            height: auto !important;
-            width: 100% !important;
-            position: relative !important;
-            padding: 10px 15px 20px !important;
-            padding-bottom: 40px !important;
-            zoom: 0.65;
-            overflow: visible !important;
+            padding: 30px 50px 40px !important;
+            transform: scale(0.66);
+            transform-origin: top left;
+            overflow: hidden !important;
         }
 
-        /* Override .slide-content: inherited min-height:0 + overflow:hidden kills content */
+        /* slide-content works at original size — no zoom overrides needed */
         .print-slide .slide-content {
-            zoom: 1 !important;
-            flex: none !important;
-            min-height: auto !important;
-            overflow: visible !important;
-            height: auto !important;
+            flex: 1 !important;
+            overflow: hidden !important;
+            min-height: 0 !important;
         }
 
-        /* Nuclear reset: per-slide zoom overrides (ID selectors have high specificity) */
+        /* Nuclear reset: per-slide zoom overrides must be neutralized */
         .print-slide[id] .slide-content {
             zoom: 1 !important;
         }
@@ -4814,13 +4816,12 @@
 
             .print-slide {
                 width: 100% !important;
-                height: auto !important;
-                min-height: 7in !important;
+                height: 7.5in !important;
                 padding: 0 !important;
                 margin: 0 !important;
                 box-shadow: none !important;
                 border: none !important;
-                overflow: visible !important;
+                overflow: hidden !important;
                 page-break-after: always !important;
                 break-after: page !important;
                 page-break-inside: avoid !important;
@@ -4831,18 +4832,18 @@
             }
 
             .print-slide .slide-inner {
-                zoom: 0.68 !important;
-                height: auto !important;
-                padding: 10px 15px 40px !important;
-                overflow: visible !important;
+                transform: scale(0.72) !important;
+                transform-origin: top left !important;
+                width: 1440px !important;
+                height: 900px !important;
+                padding: 30px 50px 40px !important;
+                overflow: hidden !important;
             }
 
             .print-slide .slide-content {
-                zoom: 1 !important;
-                flex: none !important;
-                min-height: auto !important;
-                overflow: visible !important;
-                height: auto !important;
+                flex: 1 !important;
+                overflow: hidden !important;
+                min-height: 0 !important;
             }
 
             * {
