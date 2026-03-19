@@ -4725,7 +4725,7 @@
             width: 100% !important;
             position: relative !important;
             padding: 10px 15px 20px !important;
-            zoom: 0.72;
+            zoom: 0.65;
         }
 
         /* Override .slide-content: inherited overflow:hidden clips content */
@@ -4733,6 +4733,11 @@
             zoom: 1 !important;
             flex: 1 !important;
             overflow: visible !important;
+        }
+
+        /* Nuclear reset: per-slide zoom overrides (ID selectors have high specificity) */
+        .print-slide[id] .slide-content {
+            zoom: 1 !important;
         }
 
         .print-slide .slide-header {
@@ -4831,7 +4836,7 @@
             }
 
             .print-slide .slide-inner {
-                zoom: 0.75 !important;
+                zoom: 0.68 !important;
                 height: auto !important;
                 padding: 10px 15px 20px !important;
                 overflow: hidden !important;
