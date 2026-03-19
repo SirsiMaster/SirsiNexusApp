@@ -4544,7 +4544,11 @@
 
         }
 
+        let _navLock = 0;
         function changeSlide(n) {
+            const now = Date.now();
+            if (now - _navLock < 300) return; // Prevent rapid-fire double-skip
+            _navLock = now;
             currentSlide += n;
             showSlide(currentSlide);
         }
