@@ -4729,17 +4729,14 @@
             margin-top: auto;
         }
 
-        /* Images: auto-size, don't artificially constrain */
+        /* Images: keep original styling, just ensure they fit width */
         .print-slide img {
-            object-fit: contain !important;
-            height: auto !important;
             max-width: 100% !important;
         }
 
         /* Grids with height:100% need a real height in print */
         .print-slide [style*="height: 100%"] {
-            height: auto !important;
-            min-height: 500px !important;
+            min-height: 600px !important;
         }
 
         /* ── Print UI Bar (same as MSA) ── */
