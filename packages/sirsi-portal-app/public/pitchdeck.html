@@ -4729,6 +4729,13 @@
             margin-top: auto;
         }
 
+        /* Images: contain, don't clip */
+        .print-slide img {
+            max-height: 300px !important;
+            object-fit: contain !important;
+            height: auto !important;
+        }
+
         /* ── Print UI Bar (same as MSA) ── */
         .print-ui-bar {
             display: flex; align-items: center; justify-content: space-between;
