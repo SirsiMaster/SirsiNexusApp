@@ -24,9 +24,9 @@ import { homedir } from 'os';
 const url = process.argv[2] || 'https://sirsi.ai/pitchdeck';
 const output = resolve(homedir(), 'Desktop', 'Sirsi_Technologies_Pitch_Deck.pdf');
 
-// Capture at the design resolution — slides were built for this size
-const WIDTH = 1440;
-const HEIGHT = 810;
+// Capture at the user's actual screen resolution
+const WIDTH = 1728;
+const HEIGHT = 1117;
 
 console.log('\n  ╔══════════════════════════════════════════╗');
 console.log('  ║   Sirsi Technologies — PDF Export        ║');
@@ -91,14 +91,34 @@ async function main() {
             omitBackground: false
         });
 
-        // Embed the screenshot as a full-page image in the PDF
+        // Embed the screenshot — maintain aspect ratio, no stretching
         const pngImage = await pdf.embedPng(pngBytes);
+
+        // Calculate scale to FIT within page while preserving aspect ratio
+        const imgAspect = WIDTH / HEIGHT;   // ~1.547
+        const pageAspect = PAGE_W / PAGE_H; // ~1.294
+
+        let drawW, drawH, drawX, drawY;
+        if (imgAspect > pageAspect) {
+            // Image is wider than page — fit to width, center vertically
+            drawW = PAGE_W;
+            drawH = PAGE_W / imgAspect;
+            drawX = 0;
+            drawY = (PAGE_H - drawH) / 2;
+        } else {
+            // Image is taller than page — fit to height, center horizontally
+            drawH = PAGE_H;
+            drawW = PAGE_H * imgAspect;
+            drawX = (PAGE_W - drawW) / 2;
+            drawY = 0;
+        }
+
         const pdfPage = pdf.addPage([PAGE_W, PAGE_H]);
+        // White background
+        pdfPage.drawRectangle({ x: 0, y: 0, width: PAGE_W, height: PAGE_H,
+            color: { type: 'RGB', red: 1, green: 1, blue: 1 } });
         pdfPage.drawImage(pngImage, {
-            x: 0,
-            y: 0,
-            width: PAGE_W,
-            height: PAGE_H
+            x: drawX, y: drawY, width: drawW, height: drawH
         });
 
         console.log(' ✓');
