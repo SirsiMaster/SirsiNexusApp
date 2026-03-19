@@ -4623,7 +4623,7 @@
                     var i = includeSlides[idx];
                     var slide = slides[i];
 
-                    // Temporarily show the slide at full viewport size
+                    // Temporarily show the slide at fixed landscape dimensions
                     var origDisplay = slide.style.display;
                     var origOpacity = slide.style.opacity;
                     var origPosition = slide.style.position;
@@ -4635,21 +4635,21 @@
                     slide.style.zIndex = '99998';
                     slide.style.top = '0';
                     slide.style.left = '0';
-                    slide.style.width = '100vw';
-                    slide.style.height = '100vh';
+                    slide.style.width = '1440px';
+                    slide.style.height = '810px';
 
-                    // Wait for render
-                    await new Promise(function(r) { setTimeout(r, 300); });
+                    // Wait for render + images to load
+                    await new Promise(function(r) { setTimeout(r, 400); });
 
                     // Capture screenshot — catch errors per-slide
                     try {
                         var canvas = await html2canvas(slide, {
-                            scale: 2,
+                            scale: 1.5,
                             useCORS: true,
                             allowTaint: true,
-                            backgroundColor: '#ffffff',
-                            width: slide.offsetWidth,
-                            height: slide.offsetHeight,
+                            backgroundColor: null,
+                            width: 1440,
+                            height: 810,
                             logging: false,
                             ignoreElements: function(el) {
                                 // Skip 0-dimension elements that crash createPattern
