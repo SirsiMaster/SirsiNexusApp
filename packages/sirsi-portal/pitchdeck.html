@@ -315,19 +315,25 @@
             height: 100%;
             width: 100%;
             position: relative;
-            padding-bottom: 60px;
-            zoom: 1.25;
+            padding-bottom: 50px; /* matches footer height — content never overlaps */
         }
 
-        /* Slide 13 (Financials) stays at native 100% — already dense */
-        #slide-financials .slide-inner {
-            zoom: 1;
-        }
-
-        /* Slide 8 (GTM) zoomed up to fill viewport */
-        #slide-gtm .slide-inner {
-            zoom: 1.5625;
-        }
+        /* ── Per-Slide Content Zoom (CSS only — fully independent) ── */
+        #slide-title .slide-content    { zoom: 1.0;  }  /* Slide 1  */
+        #slide-crisis .slide-content   { zoom: 1.45; }  /* Slide 2  */
+        #slide-solution .slide-content { zoom: 1.0;  }  /* Slide 3  */
+        #slide-ip .slide-content       { zoom: 0.93; }  /* Slide 4  */
+        #slide-hardware .slide-content { zoom: 1.05; }  /* Slide 5  */
+        #slide-advantage .slide-content{ zoom: 0.93; }  /* Slide 6  */
+        #slide-landscape .slide-content{ zoom: 1.0;  }  /* Slide 7  */
+        #slide-gtm .slide-content      { zoom: 1.25; }  /* Slide 8  */
+        #slide-market .slide-content   { zoom: 1.0;  }  /* Slide 9  */
+        #slide-wedge .slide-content    { zoom: 1.0;  }  /* Slide 10 */
+        #slide-traction .slide-content { zoom: 1.0;  }  /* Slide 11 */
+        #slide-financials .slide-content { zoom: 0.85; } /* Slide 12 */
+        #slide-numbers .slide-content  { zoom: 1.0;  }  /* Slide 13 */
+        #slide-seed .slide-content     { zoom: 1.0;  }  /* Slide 14 */
+        #slide-close .slide-content    { zoom: 1.0;  }  /* Slide 15 */
 
         .slide-header {
             margin-bottom: 0.3rem;
@@ -448,13 +454,13 @@
         }
 
         .header-logo {
-            height: 42px;
+            height: 52px;
             width: auto;
         }
 
         .memo-tag {
             font-family: 'Cinzel', serif;
-            font-size: var(--deck-small);
+            font-size: 14px;
             letter-spacing: 0.15em;
             color: var(--text-slate);
         }
@@ -467,17 +473,19 @@
 
         .slide-footer {
             position: absolute;
-            bottom: 40px;
+            bottom: 0;
             left: 0;
             right: 0;
+            height: 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: var(--deck-micro);
+            font-size: 11px;
             color: #94a3b8;
             letter-spacing: 0.15em;
             text-transform: uppercase;
             z-index: 1000;
+            padding: 0 10px;
         }
 
         /* ═══════════════════════════════════════════════════
@@ -1149,30 +1157,188 @@
             line-height: 1.4;
         }
 
+        /* ── Print Controls ── */
+        .print-controls {
+            position: relative;
+        }
+
+        .print-btn {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-slate);
+            cursor: pointer;
+            padding: 6px 10px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .print-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .print-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            min-width: 220px;
+            z-index: 3000;
+            padding: 6px 0;
+        }
+
+        .print-menu.open {
+            display: block;
+        }
+
+        .print-menu button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 10px 16px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: var(--text-dark);
+            text-align: left;
+            transition: background 0.15s ease;
+        }
+
+        .print-menu button:hover {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .print-range-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .print-range-row label {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text-slate);
+            letter-spacing: 0.05em;
+        }
+
+        .print-range-row input {
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            padding: 4px 6px;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+        }
+
+        .print-range-row span {
+            color: var(--text-slate);
+            font-size: 12px;
+        }
+
+        .print-range-go {
+            min-width: auto !important;
+            width: 32px !important;
+            padding: 6px !important;
+            justify-content: center;
+            border: 1px solid var(--primary) !important;
+            border-radius: 3px !important;
+            color: var(--primary) !important;
+        }
+
         @media print {
 
-            html,
-            body {
-                overflow: visible;
-                height: auto;
+            @page {
+                size: landscape;
+                margin: 0.25in;
+            }
+
+            html, body {
+                overflow: visible !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
             }
 
             .nav-footer,
-            .progress-container {
-                display: none;
+            .progress-container,
+            .print-controls,
+            .doc-header {
+                display: none !important;
+            }
+
+            .presentation {
+                position: relative !important;
+                overflow: visible !important;
+                height: auto !important;
             }
 
             .slide {
-                display: block;
-                position: relative;
+                display: block !important;
+                position: relative !important;
+                opacity: 1 !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 7.5in !important;
+                max-height: 8in !important;
+                padding: 0.3in 0.45in !important;
+                margin: 0 !important;
+                background: white !important;
+                overflow: hidden !important;
+                box-sizing: border-box !important;
                 page-break-after: always;
-                height: 7.5in;
-                padding: 40px;
-                background: white;
+                break-after: page;
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            .slide:last-child {
+                page-break-after: auto;
+                break-after: auto;
             }
 
             .slide-inner {
-                zoom: 1;
+                zoom: 1 !important;
+                transform: none !important;
+                height: auto !important;
+                overflow: visible !important;
+                padding-bottom: 40px !important;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .slide *, .slide-inner * {
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+
+            .slide-footer {
+                position: relative !important;
+                margin-top: auto !important;
+            }
+
+            .slide[data-print-hide="true"] {
+                display: none !important;
+                height: 0 !important;
+                min-height: 0 !important;
+                page-break-after: auto !important;
+                break-after: auto !important;
             }
         }
     </style>
@@ -1185,11 +1351,29 @@
 
     <header class="doc-header" id="mainHeader">
         <img src="assets/pitch-deck/sirsi-logo.png" alt="Sirsi Logo" class="header-logo">
-        <div class="memo-tag">PRIVATE SEED MEMORANDUM // INVESTOR RELATIONS</div>
+        <div style="display: flex; align-items: center; gap: 24px;">
+            <div class="memo-tag">PRIVATE SEED MEMORANDUM // INVESTOR RELATIONS</div>
+            <div class="print-controls" id="printControls">
+                <button class="print-btn" onclick="togglePrintMenu()" title="Print options">
+                    <i class="fas fa-print"></i>
+                </button>
+                <div class="print-menu" id="printMenu">
+                    <button onclick="printSlides('current')"><i class="fas fa-file"></i> Print Current Slide</button>
+                    <button onclick="printSlides('all')"><i class="fas fa-copy"></i> Print All Slides</button>
+                    <div class="print-range-row">
+                        <label>Range:</label>
+                        <input type="number" id="printFrom" min="1" max="15" value="1" style="width: 42px;">
+                        <span>–</span>
+                        <input type="number" id="printTo" min="1" max="15" value="15" style="width: 42px;">
+                        <button onclick="printSlides('range')" class="print-range-go"><i class="fas fa-print"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
 
     <main class="presentation"><!-- Slide 1: Title -->
-        <div class="slide title-slide active">
+        <div class="slide title-slide active" id="slide-title">
             <div class="slide-inner">
                 <div class="slide-content"
                     style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -1222,7 +1406,7 @@
 
         <!-- Slide 02: The Crisis — Why 250 Companies Need This -->
         <div class="slide" id="slide-crisis">
-            <div class="slide-inner" style="transform: scale(1.35); transform-origin: 0 0; width: 74%; height: 74%;">
+            <div class="slide-inner">
                 <div class="slide-header">
                     <h3>THE CRISIS</h3>
                     <h2>The $150 Billion <span style="color: var(--primary);">Impossible Choice.</span></h2>
@@ -1716,7 +1900,7 @@
             </div>
         </div>
         <!-- Slide 5: The Intellectual Moat -->
-        <div class="slide">
+        <div class="slide" id="slide-ip">
             <div class="slide-inner">
                 <div class="slide-header">
                     <h3>Intellectual Property</h3>
@@ -2091,7 +2275,7 @@
         </div>
 
         <!-- Slide 08: Hardware Alpha - The Super-Mac Ecosystem -->
-        <div class="slide">
+        <div class="slide" id="slide-hardware">
             <div class="slide-inner">
                 <style>
                     /* ── SLIDE 7: HARDWARE ALPHA ── */
@@ -2441,7 +2625,7 @@
         </div>
 
         <!-- Slide 06: Competitive Advantage Summary -->
-        <div class="slide">
+        <div class="slide" id="slide-advantage">
             <div class="slide-inner">
                 <!-- Technical Dot Matrix -->
                 <div
@@ -2699,7 +2883,7 @@
             </div>
         </div>
         <!-- Slide 08: Competitor Landscape -->
-        <div class="slide">
+        <div class="slide" id="slide-landscape">
             <div class="slide-inner">
                 <!-- Background elements -->
                 <div
@@ -2913,7 +3097,7 @@
                     <h2>Execution Path. <span style="color: var(--primary);">Scaling Nationwide.</span></h2>
                 </div>
 
-                <div class="slide-content" style="gap: 12px; padding: 12px 36px 24px;">
+                <div class="slide-content" style="gap: 12px; padding: 12px 16px 24px;">
                     <!-- Technical Status Header -->
                     <div class="grid grid-center"
                         style="grid-template-columns: auto auto auto auto auto auto 1fr; gap: 15px;">
@@ -2938,10 +3122,10 @@
 
 
                     <!-- Roadmap Engine (The Arrow Graphic) -->
-                    <div style="display: flex; flex-direction: column; gap: 0;">
+                    <div style="display: flex; flex-direction: column; gap: 0; margin-top: 16px;">
                         <!-- Milestones: Top (EPOCH START) -->
                         <div
-                            style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 6px; padding-left: 20px;">
+                            style="display: grid; grid-template-columns: 20px 1fr 1fr 1fr; margin-bottom: 6px;">
                             <div></div>
                             <div
                                 style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 4px; margin: 0 8px;">
@@ -2964,10 +3148,10 @@
                         </div>
 
                         <!-- Flow Conduit (Arrow segments) -->
-                        <div style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; margin-bottom: 6px; padding-left: 20px; align-items: center;">
+                        <div style="display: grid; grid-template-columns: 40px 1fr 1fr 1fr; margin-bottom: 6px; align-items: center;">
                             <div
-                                style="display: flex; align-items: center; justify-content: center; font-weight: 400; font-size: 9px; color: var(--text-slate); letter-spacing: 0.15em; text-transform: uppercase; border-right: 1.5px solid var(--gold); padding: 8px 0;">
-                                S T A R T</div>
+                                style="display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 8px; color: var(--text-slate); letter-spacing: 0.08em; text-transform: uppercase; border-right: 1.5px solid var(--gold); padding: 8px 0;">
+                                START</div>
 
                             <div
                                 style="padding: 8px 0; margin: 0 8px; background: var(--primary-light); border: 1px solid var(--primary); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.65rem; letter-spacing: 0.05em; clip-path: polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%);">
@@ -2986,7 +3170,7 @@
                     </div>
 
                     <!-- Phase Cards -->
-                    <div style="display: grid; grid-template-columns: 60px 1fr 1fr 1fr; gap: 0; padding-left: 20px;">
+                    <div style="display: grid; grid-template-columns: 20px 1fr 1fr 1fr; gap: 0;">
                         <div></div>
                         <div class="info-card" style="margin: 0 8px; border-top: 2.5px solid var(--primary);">
                             <div class="flex-between" style="margin-bottom: 4px; align-items: center;">
@@ -3068,7 +3252,7 @@
         </div> <!-- End slide -->
 
         <!-- Slide 8: Market Architecture - The Trillion Dollar Convergence -->
-        <div class="slide">
+        <div class="slide" id="slide-market">
             <div class="slide-inner">
                 <!-- Technical Architecture Background -->
                 <div
@@ -3084,24 +3268,24 @@
                 </div>
 
                 <div class="slide-content">
-                    <div style="display: grid; grid-template-columns: 200px 1fr 1fr; gap: 28px; align-items: center;">
+                    <div style="display: grid; grid-template-columns: 300px 1fr 1fr; gap: 16px; align-items: center;">
 
                         <!-- Left Column: TAM → SAM → SOM (Verticalized) -->
-                        <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <div style="padding: 14px 16px; border: 1px solid var(--border); background: #fff;">
-                                <div style="font-size: var(--deck-micro); color: var(--text-slate); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Total Addressable Market</div>
-                                <div style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--text-dark); font-weight: 500;">$89B³</div>
-                                <div style="font-size: var(--deck-micro); color: var(--text-slate); margin-top: 2px;">AI Infrastructure + Cloud Management + Sovereign Compute</div>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="padding: 10px 14px; border: 1px solid var(--border); background: #fff;">
+                                <div style="font-size: 0.65rem; color: var(--text-slate); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Total Addressable Market</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--text-dark); font-weight: 500;">$89B³</div>
+                                <div style="font-size: 0.7rem; color: var(--text-slate); margin-top: 2px;">AI Infrastructure + Cloud Management + Sovereign Compute</div>
                             </div>
-                            <div style="padding: 14px 16px; border: 1px solid var(--border); border-left: 2.5px solid var(--primary); background: rgba(16,185,129,0.02);">
-                                <div style="font-size: var(--deck-micro); color: var(--primary); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Serviceable Addressable Market</div>
-                                <div style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--primary); font-weight: 500;">$4.8B⁴</div>
-                                <div style="font-size: var(--deck-micro); color: var(--text-slate); margin-top: 2px;">Autonomous Infrastructure Management</div>
+                            <div style="padding: 10px 14px; border: 1px solid var(--border); border-left: 2.5px solid var(--primary); background: rgba(16,185,129,0.02);">
+                                <div style="font-size: 0.65rem; color: var(--primary); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Serviceable Addressable Market</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--primary); font-weight: 500;">$4.8B⁴</div>
+                                <div style="font-size: 0.7rem; color: var(--text-slate); margin-top: 2px;">Autonomous Infrastructure Management</div>
                             </div>
-                            <div style="padding: 14px 16px; border: 1px solid var(--border); border-left: 2.5px solid var(--gold-dark); background: rgba(200,169,81,0.03);">
-                                <div style="font-size: var(--deck-micro); color: var(--gold-dark); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Year 1 Target (SOM)</div>
-                                <div style="font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold-dark); font-weight: 500;">$3.2M⁵</div>
-                                <div style="font-size: var(--deck-micro); color: var(--text-slate); margin-top: 2px;">40 Sovereign Platform Deployments × $78K Avg</div>
+                            <div style="padding: 10px 14px; border: 1px solid var(--border); border-left: 2.5px solid var(--gold-dark); background: rgba(200,169,81,0.03);">
+                                <div style="font-size: 0.65rem; color: var(--gold-dark); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Year 1 Target (SOM)</div>
+                                <div style="font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold-dark); font-weight: 500;">$3.2M⁵</div>
+                                <div style="font-size: 0.7rem; color: var(--text-slate); margin-top: 2px;">40 Sovereign Platform Deployments × $78K Avg</div>
                             </div>
                         </div>
 
@@ -3138,9 +3322,9 @@
                         </div>
 
                         <!-- Right Column: The Primary Narrative -->
-                        <div style="display: flex; flex-direction: column; gap: 12px; border-left: 2px solid var(--primary); padding-left: 28px;">
+                        <div style="display: flex; flex-direction: column; gap: 10px; border-left: 2px solid var(--primary); padding-left: 28px;">
                             <div>
-                                <h3 style="color: var(--primary); margin-bottom: 8px; letter-spacing: 0.35em; text-transform: uppercase;">
+                                <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 8px; letter-spacing: 0.35em; text-transform: uppercase;">
                                     THE STRATEGIC THESIS</h3>
                                 <p style="font-size: var(--deck-tagline); line-height: 1.3; color: var(--text-dark); font-weight: 500; margin-bottom: 12px;">
                                     Sirsi sits at the intersection of three multi-trillion dollar shifts and controls
@@ -3196,7 +3380,7 @@
             </div>
         </div>
 
-        <div class="slide">
+        <div class="slide" id="slide-wedge">
             <div class="slide-inner">
                 <div class="slide-header">
                     <h3>THE CORE TEAM</h3>
@@ -3256,7 +3440,7 @@
                     <div id="s11-panel-zone" style="display: flex; gap: 24px; align-items: flex-start;">
 
                         <!-- LEFT: Career Grid (57%) -->
-                        <div id="s11-left" style="flex: 0 0 57%;">
+                        <div id="s11-left" style="flex: 0 0 53%;">
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px 30px;">
                                 <div style="padding-left: 14px; border-left: 2px solid var(--primary);">
                                     <div
@@ -3267,8 +3451,7 @@
                                         Global Data & Access Lead</div>
                                     <div
                                         style="font-size: var(--deck-card-label); color: var(--text-slate); line-height: 1.45; font-weight: 400;">
-                                        Privacy governance and access controls for 3B+ users. International compliance
-                                        frameworks.</div>
+                                        Privacy governance and access controls for 3B+ users.</div>
                                 </div>
                                 <div style="padding-left: 14px; border-left: 2px solid var(--gold-dark);">
                                     <div
@@ -3279,8 +3462,7 @@
                                         Lead Vault Architect</div>
                                     <div
                                         style="font-size: var(--deck-card-label); color: var(--text-slate); line-height: 1.45; font-weight: 400;">
-                                        Secure vault for US Passport & Visa Database. Lead Modernization Advisor
-                                        (travel.state.gov).</div>
+                                        Secure vault for US Passport & Visa Database. Lead Modernization Advisor.</div>
                                 </div>
                                 <div style="padding-left: 14px; border-left: 2px solid var(--primary);">
                                     <div
@@ -3291,8 +3473,7 @@
                                         Expert Cyber Risk Examiner</div>
                                     <div
                                         style="font-size: var(--deck-card-label); color: var(--text-slate); line-height: 1.45; font-weight: 400;">
-                                        Cybersecurity resilience and risk management for the nation's largest financial
-                                        institutions.</div>
+                                        Cybersecurity resilience and risk management for major financial institutions.</div>
                                 </div>
                                 <div style="padding-left: 14px; border-left: 2px solid var(--gold-dark);">
                                     <div
@@ -3303,8 +3484,7 @@
                                         Chicago Booth MBA (2018)</div>
                                     <div
                                         style="font-size: var(--deck-card-label); color: var(--text-slate); line-height: 1.45; font-weight: 400;">
-                                        University of Chicago Booth School of Business. MIT xPRO Certification, Systems
-                                        Architecture.</div>
+                                        University of Chicago Booth School of Business. MIT xPRO Systems Architecture.</div>
                                 </div>
                                 <div style="padding-left: 14px; border-left: 2px solid var(--primary);">
                                     <div
@@ -3315,8 +3495,7 @@
                                         6 Patent Portfolio in Design</div>
                                     <div
                                         style="font-size: var(--deck-card-label); color: var(--text-slate); line-height: 1.45; font-weight: 400;">
-                                        6 patents pending across autonomous orchestration, distributed inference, and
-                                        sovereign AI.</div>
+                                        6 patents across autonomous orchestration, distributed inference, and sovereign AI.</div>
                                 </div>
                                 <div style="padding-left: 14px; border-left: 2px solid var(--gold-dark);">
                                     <div
@@ -3324,16 +3503,16 @@
                                         Awards & Venture</div>
                                     <div
                                         style="font-size: 1rem; font-weight: 500; color: var(--text-dark); margin-bottom: 3px;">
-                                        TEDCO $100K · Who's Who in Tech '26</div>
+                                        TEDCO $100K · Who's Who '26</div>
                                     <div
                                         style="font-size: var(--deck-card-label); color: var(--text-slate); line-height: 1.45; font-weight: 400;">
-                                        DCA Live AI Leadership Award. $1M raised via Visa, Techstars, and Hedera.</div>
+                                        DCA Live AI Leadership. $1M raised via Visa, Techstars, Hedera.</div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- RIGHT: Channel Panel (~40%) -->
-                        <div id="s11-right" style="flex: 1; background: linear-gradient(180deg, rgba(200,169,81,0.04) 0%, rgba(248,247,244,0.6) 40%, rgba(255,255,255,0.9) 100%); border: 1px solid rgba(200,169,81,0.18); border-top: 3px solid var(--gold-neo); border-radius: 4px; padding: 8px 14px 6px; box-shadow: inset 0 2px 8px rgba(200,169,81,0.06), 0 1px 4px rgba(0,0,0,0.04); display: flex; flex-direction: column; overflow: hidden;">
+                        <!-- RIGHT: Channel Panel (~44%) -->
+                        <div id="s11-right" style="flex: 1; background: linear-gradient(180deg, rgba(200,169,81,0.04) 0%, rgba(248,247,244,0.6) 40%, rgba(255,255,255,0.9) 100%); border: 1px solid rgba(200,169,81,0.18); border-top: 3px solid var(--gold-neo); border-radius: 4px; padding: 8px 14px 6px; box-shadow: inset 0 2px 8px rgba(200,169,81,0.06), 0 1px 4px rgba(0,0,0,0.04); display: flex; flex-direction: column;">
 
                             <!-- Channel Header -->
                             <div style="margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid rgba(200,169,81,0.15);">
@@ -3420,7 +3599,7 @@
         </div>
 
         <!-- Slide 12: Strategic Traction -->
-        <div class="slide">
+        <div class="slide" id="slide-traction">
             <div class="slide-inner">
                 <div class="slide-header">
                     <h3>STRATEGIC TRACTION</h3>
@@ -3752,22 +3931,18 @@
                             <div class="fin-engine-section">
                                 <h5>Ideal Customer Profile</h5>
                                 <ul>
-                                    <li><strong style="color: var(--text-dark);">AI-Forward Enterprises:</strong> Mid-market companies with 500 to 5,000 employees deploying multi-model AI workloads</li>
-                                    <li><strong style="color: var(--text-dark);">High Compute Spend:</strong> $500K+ annual cloud and infrastructure budget across multi-vendor environments</li>
-                                    <li><strong style="color: var(--text-dark);">Sovereignty-First:</strong> Industries with data residency, ITAR, HIPAA, or regulatory compliance mandates</li>
-                                    <li><strong style="color: var(--text-dark);">Managed Service Providers:</strong> MSPs operating multi-tenant GPU clusters for enterprise customers</li>
-                                    <li><strong style="color: var(--text-dark);">Buyer Persona:</strong> CTO and VP Engineering with hybrid cloud modernization and AI-readiness mandates</li>
+                                    <li><strong style="color: var(--text-dark);">AI-Forward Enterprises:</strong> Mid-market companies (500–5K employees) deploying multi-model AI workloads</li>
+                                    <li><strong style="color: var(--text-dark);">Sovereignty-First:</strong> Industries with ITAR, HIPAA, or data residency compliance mandates</li>
+                                    <li><strong style="color: var(--text-dark);">Buyer Persona:</strong> CTO / VP Engineering with hybrid cloud modernization mandates</li>
                                 </ul>
                             </div>
                             <!-- Quadrant 2: GTM Channels -->
                             <div class="fin-engine-section">
                                 <h5>Go-to-Market Channels</h5>
                                 <ul>
-                                    <li><strong style="color: var(--text-dark);">Direct Enterprise Sales:</strong> 3 Account Executives targeting Sovereign Pod deployments and cluster deals</li>
-                                    <li><strong style="color: var(--text-dark);">Product-Led Growth:</strong> Self-serve SaaS platform with freemium tier driving organic conversion</li>
-                                    <li><strong style="color: var(--text-dark);">Channel Partners:</strong> Managed Service Providers, Value-Added Resellers, and system integrators</li>
-                                    <li><strong style="color: var(--text-dark);">Outbound Development:</strong> Demand generation engine with targeted CTO and VP Engineering outreach</li>
-                                    <li><strong style="color: var(--text-dark);">Developer Relations:</strong> Technical content, conference presence, and open-source community building</li>
+                                    <li><strong style="color: var(--text-dark);">Direct Enterprise Sales:</strong> 3 AEs targeting Sovereign Pod deployments and cluster deals</li>
+                                    <li><strong style="color: var(--text-dark);">Product-Led Growth:</strong> Self-serve SaaS with freemium tier driving organic conversion</li>
+                                    <li><strong style="color: var(--text-dark);">Channel Partners:</strong> MSPs, VARs, and system integrators</li>
                                 </ul>
                             </div>
                             <!-- Quadrant 3: Seed Deployment -->
@@ -3775,21 +3950,17 @@
                                 <h5>$6M Seed Capital Deployment</h5>
                                 <ul>
                                     <li><strong style="color: var(--text-dark);">Engineering $3.3M:</strong> Core platform, Hypervisor, 6-patent IP filing, Quad-Model AI engine</li>
-                                    <li><strong style="color: var(--text-dark);">Go-to-Market $1.5M:</strong> 3 Account Executives, demand generation, DevRel program launch</li>
-                                    <li><strong style="color: var(--text-dark);">Infrastructure $720K:</strong> AlloyDB AI, Cloud Run, monitoring, staging environments, CI/CD pipeline</li>
-                                    <li><strong style="color: var(--text-dark);">Operations $480K:</strong> Legal, SOC 2 certification, office, and 18-month operational runway</li>
-                                    <li><strong style="color: var(--text-dark);">Runway:</strong> 18 months of fully funded operations through Series A close at $60M pre-money valuation</li>
+                                    <li><strong style="color: var(--text-dark);">Go-to-Market $1.5M:</strong> 3 AEs, demand generation, DevRel program launch</li>
+                                    <li><strong style="color: var(--text-dark);">Runway:</strong> 18 months fully funded through Series A at $60M pre-money</li>
                                 </ul>
                             </div>
                             <!-- Quadrant 4: 18-Month Milestones -->
                             <div class="fin-engine-section">
                                 <h5>18-Month Funded Milestones</h5>
                                 <ul>
-                                    <li><strong style="color: var(--text-dark);">$1M+ Annual Recurring Revenue</strong> by Q4 2026 with 12+ enterprise customer accounts signed</li>
-                                    <li><strong style="color: var(--text-dark);">6-Patent Portfolio Filed</strong> by Q3 2026 including NebuLang, Neural-Fractal, Fire Team Protocol</li>
-                                    <li><strong style="color: var(--text-dark);">Multi-Platform Beta Launch:</strong> Web, Desktop via Rust/Tauri, Mobile via React and SwiftUI</li>
-                                    <li><strong style="color: var(--text-dark);">Direct-to-Metal Orchestration:</strong> Live hardware control for Cisco, Dell, NVIDIA, Apple, and Google systems</li>
-                                    <li><strong style="color: var(--text-dark);">Series A Readiness:</strong> Targeting $15M raise at $60M pre-money valuation by Q2 2027</li>
+                                    <li><strong style="color: var(--text-dark);">$1M+ ARR</strong> by Q4 2026 with 12+ enterprise accounts signed</li>
+                                    <li><strong style="color: var(--text-dark);">6-Patent Portfolio Filed</strong> by Q3 2026 — NebuLang, Neural-Fractal, Fire Team</li>
+                                    <li><strong style="color: var(--text-dark);">Series A Readiness:</strong> $15M raise at $60M pre-money by Q2 2027</li>
                                 </ul>
                             </div>
                         </div>
@@ -3803,7 +3974,7 @@
         </div>
 
         <!-- Slide 14: By The Numbers (Strategic Design Alignment) -->
-        <div class="slide">
+        <div class="slide" id="slide-numbers">
             <div class="slide-inner">
                 <div class="slide-header">
                     <div class="num-header">
@@ -4061,7 +4232,7 @@
 
 
         <!-- Slide 15: Seed Offering (The Ask) -->
-        <div class="slide">
+        <div class="slide" id="slide-seed">
             <div class="slide-inner">
                 <div class="slide-content">
                     <div class="text-center">
@@ -4153,7 +4324,7 @@
         </div>
 
         <!-- Slide 16: The Partnership -->
-        <div class="slide">
+        <div class="slide" id="slide-close">
             <div class="slide-inner">
                 <div class="slide-content flex-center"
                     style="text-align: center; background: radial-gradient(circle at center, rgba(4, 120, 87, 0.05) 0%, transparent 70%);">
@@ -4248,6 +4419,9 @@
                 setTimeout(drawRevenueChart, 400);
                 setTimeout(drawUserChart, 600);
             }
+
+            // Auto-zoom content to fit viewport
+
         }
 
         function changeSlide(n) {
@@ -4387,6 +4561,236 @@
                 }
             });
         }
+
+        /* ── Print Controls ── */
+        function togglePrintMenu() {
+            const menu = document.getElementById('printMenu');
+            menu.classList.toggle('open');
+        }
+
+        // Close print menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const controls = document.getElementById('printControls');
+            if (controls && !controls.contains(e.target)) {
+                document.getElementById('printMenu').classList.remove('open');
+            }
+        });
+
+        function printSlides(mode) {
+            const slides = document.querySelectorAll('.slide');
+            const current = currentSlide - 1; // 0-indexed
+
+            // Close the menu
+            document.getElementById('printMenu').classList.remove('open');
+
+            // Determine which slides to include
+            let includeSlides = [];
+            if (mode === 'current') {
+                includeSlides = [current];
+            } else if (mode === 'range') {
+                const from = parseInt(document.getElementById('printFrom').value) - 1;
+                const to = parseInt(document.getElementById('printTo').value) - 1;
+                for (let i = from; i <= to; i++) includeSlides.push(i);
+            } else {
+                // 'all'
+                for (let i = 0; i < slides.length; i++) includeSlides.push(i);
+            }
+
+            // ── Generate printable popup inline (no separate file needed) ──
+            const width = 1100;
+            const height = 850;
+            const left = (window.screen.width - width) / 2;
+            const top = (window.screen.height - height) / 2;
+
+            const popup = window.open(
+                '',
+                'PitchDeck_Print_Preview',
+                `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`
+            );
+
+            if (!popup) {
+                alert('Please allow popups for this website to print the deck.');
+                return;
+            }
+
+            // Collect all styles from current page
+            const styles = Array.from(document.styleSheets)
+                .map(sheet => {
+                    try {
+                        return Array.from(sheet.cssRules).map(rule => rule.cssText).join('\n');
+                    } catch (e) { return ''; }
+                }).join('\n');
+
+            // Collect font links
+            const fontLinks = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+                .map(link => link.href)
+                .filter(href => href.includes('fonts.googleapis.com'))
+                .map(href => `<link rel="stylesheet" href="${href}">`)
+                .join('\n');
+
+            // Clone slide HTML (temporarily show hidden slides)
+            const slidesHTML = includeSlides.map(i => {
+                const slide = slides[i];
+                const wasHidden = slide.style.display === 'none' || !slide.classList.contains('active');
+                if (wasHidden) {
+                    slide.style.display = 'flex';
+                    slide.style.opacity = '1';
+                }
+                const html = slide.querySelector('.slide-inner').outerHTML;
+                if (wasHidden) {
+                    slide.style.display = '';
+                    slide.style.opacity = '';
+                }
+                return `<div class="print-slide">${html}</div>`;
+            }).join('\n');
+
+            // Write the full printable document inline
+            popup.document.write(`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Sirsi Technologies — Pitch Deck (Print)</title>
+    ${fontLinks}
+    <style>
+        /* ── Inherited deck styles ── */
+        ${styles}
+
+        /* ── Print-specific overrides ── */
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #e5e7eb !important;
+            overflow: visible !important;
+            height: auto !important;
+        }
+
+        /* Hide all screen-only elements */
+        .nav-footer, .progress-container, .print-controls,
+        .doc-header, .presentation, .slide { display: none !important; }
+
+        .print-slide {
+            width: 9.5in;
+            height: 7in;
+            margin: 20px auto;
+            padding: 0.25in 0.4in;
+            overflow: hidden;
+            box-sizing: border-box;
+            position: relative;
+            background: white;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+            border: 1px solid #d1d5db;
+            page-break-after: always;
+            break-after: page;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .print-slide:last-child {
+            page-break-after: auto;
+            break-after: auto;
+        }
+
+        .print-slide .slide-inner {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            padding-bottom: 40px;
+        }
+
+        .print-slide .slide-content {
+            zoom: 1 !important;
+        }
+
+        /* ── Print UI Bar (same as MSA) ── */
+        .print-ui-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            background-color: #0f172a; color: white;
+            padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            font-family: 'Inter', sans-serif;
+        }
+        .print-ui-bar .brand {
+            font-family: 'Cinzel', serif; font-size: 1.25rem;
+            font-weight: 700; letter-spacing: 0.05em;
+        }
+        .print-ui-bar .brand .gold { color: #C8A951; }
+        .print-ui-bar .brand .divider { margin: 0 0.75rem; color: #334155; }
+        .print-ui-bar .actions { display: flex; gap: 1rem; }
+        .print-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 1rem; border-radius: 4px;
+            font-family: 'Inter', sans-serif; font-size: 0.875rem;
+            font-weight: 500; cursor: pointer; border: 1px solid transparent;
+            white-space: nowrap; transition: all 0.2s ease;
+        }
+        .print-btn-gold {
+            background-color: #C8A951; color: #000; font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .print-btn-gold:hover { background-color: #dcb95b; }
+        .print-btn-outline {
+            background: transparent; border-color: rgba(255,255,255,0.2); color: #94a3b8;
+        }
+        .print-btn-outline:hover { border-color: #C8A951; color: #C8A951; }
+        .print-btn svg { width: 16px; height: 16px; }
+
+        @media print {
+            @page { size: landscape; margin: 0.5in; }
+
+            body { background: white !important; padding: 0 !important; margin: 0 !important; }
+
+            .print-ui-bar { display: none !important; }
+
+            .print-slide {
+                width: 100% !important;
+                height: auto !important;
+                min-height: 6.5in;
+                max-height: 7in;
+                padding: 0.2in 0.35in !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .print-slide *, .print-slide .slide-inner * {
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-ui-bar">
+        <div class="brand">
+            <span class="gold">Sirsi</span> Technologies <span class="divider">|</span> Pitch Deck
+        </div>
+        <div class="actions">
+            <button onclick="window.print()" class="print-btn print-btn-gold">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                Print / Save as PDF
+            </button>
+            <button onclick="window.close()" class="print-btn print-btn-outline">
+                Close Window
+            </button>
+        </div>
+    </div>
+    ${slidesHTML}
+</body>
+</html>`);
+            popup.document.close();
+        }
+
+
 
         showSlide(1);
     </script>
