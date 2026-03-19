@@ -4685,48 +4685,54 @@
         .nav-footer, .progress-container, .print-controls,
         .doc-header, .presentation { display: none !important; }
 
-        /* Override inherited .slide styles — print-slide IS the container now */
+        /* ═══ COMPREHENSIVE OVERRIDE ═══
+         * The inherited .slide class sets: position:absolute, display:none,
+         * opacity:0, height:100%, padding:75px 70px 0, overflow:hidden.
+         * ALL of these must be explicitly counteracted.
+         */
         .print-slide.slide {
-            display: block !important;
             position: relative !important;
+            display: block !important;
             opacity: 1 !important;
-        }
-
-        .print-slide {
-            width: 9.5in;
-            height: 7in;
-            margin: 20px auto;
-            padding: 0.25in 0.4in;
-            overflow: hidden;
-            box-sizing: border-box;
-            position: relative;
-            background: white;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-            border: 1px solid #d1d5db;
+            top: auto !important;
+            left: auto !important;
+            width: 9.5in !important;
+            height: 7in !important;
+            padding: 0 !important;
+            margin: 20px auto !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
+            background: white !important;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15) !important;
+            border: 1px solid #d1d5db !important;
+            transition: none !important;
             page-break-after: always;
             break-after: page;
             page-break-inside: avoid;
             break-inside: avoid;
         }
 
-        .print-slide:last-child {
+        .print-slide.slide:last-child {
             page-break-after: auto;
             break-after: auto;
         }
 
+        /* Override .slide-inner: inherited height:100% references viewport */
         .print-slide .slide-inner {
-            display: flex;
-            flex-direction: column;
-            height: auto;
-            width: 100%;
-            position: relative;
+            display: flex !important;
+            flex-direction: column !important;
+            height: auto !important;
+            width: 100% !important;
+            position: relative !important;
             padding: 20px 30px 30px !important;
             zoom: 0.58;
         }
 
+        /* Override .slide-content: inherited overflow:hidden clips content */
         .print-slide .slide-content {
             zoom: 1 !important;
-            flex: 1;
+            flex: 1 !important;
+            overflow: visible !important;
         }
 
         .print-slide .slide-header {
@@ -4736,7 +4742,7 @@
 
         .print-slide .slide-footer {
             position: relative !important;
-            margin-top: auto;
+            margin-top: auto !important;
         }
 
         /* Images: keep original styling, just ensure they fit width */
@@ -4800,32 +4806,40 @@
 
             .print-ui-bar { display: none !important; }
 
-            .print-slide {
+            .print-slide.slide {
+                position: relative !important;
+                display: block !important;
+                opacity: 1 !important;
+                top: auto !important;
+                left: auto !important;
                 width: 100% !important;
                 height: 7.5in !important;
                 max-height: 7.5in !important;
-                padding: 0.15in 0.25in !important;
+                padding: 0 !important;
                 margin: 0 !important;
                 box-shadow: none !important;
                 border: none !important;
                 overflow: hidden !important;
+                transition: none !important;
                 page-break-after: always !important;
                 break-after: page !important;
                 page-break-inside: avoid !important;
             }
 
-            .print-slide:last-child {
+            .print-slide.slide:last-child {
                 page-break-after: auto !important;
             }
 
             .print-slide .slide-inner {
                 zoom: 0.55 !important;
                 height: auto !important;
+                padding: 20px 30px 30px !important;
                 overflow: hidden !important;
             }
 
             .print-slide .slide-content {
                 zoom: 1 !important;
+                overflow: visible !important;
             }
 
             * {
