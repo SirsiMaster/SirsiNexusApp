@@ -15,7 +15,7 @@
         "@connectrpc/connect": "^1.4.0",
         "@connectrpc/connect-node": "^2.1.1",
         "@sendgrid/mail": "^8.1.6",
-        "axios": "^1.13.5",
+        "axios": "^1.13.6",
         "firebase-admin": "^13.0.0",
         "plaid": "^41.1.0",
         "stripe": "^14.10.0"
